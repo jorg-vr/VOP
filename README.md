@@ -1,4 +1,10 @@
-# Vakoverschrijvend Project van groep 5
+# Vakoverschrijdend Project van groep 5
+
+### [Timesheets]()
+
+[Laatste vergadering](https://docs.google.com/document/d/1Lh5QsRfRk6YIFIKWIE6E53umxwNmmVDvcZCAYrl9r9c/edit#)
+
+[Volgende vergadering]()
 
 ### Team
 * Jorg:   Teamleider
