@@ -1,9 +1,8 @@
 # Vakoverschrijdend Project van groep 5
 
 ### [Timesheets]()
-
-[Laatste vergadering](https://docs.google.com/document/d/1Lh5QsRfRk6YIFIKWIE6E53umxwNmmVDvcZCAYrl9r9c/edit#)
-[Volgende vergadering]()
+* [Laatste vergadering](https://docs.google.com/document/d/1Lh5QsRfRk6YIFIKWIE6E53umxwNmmVDvcZCAYrl9r9c/edit#)
+* [Volgende vergadering]()
 
 ### Team
 * Jorg:   Teamleider
@@ -67,5 +66,5 @@ Notice how this doesn’t work for the other non-imperative forms:
 
 ### Git workflow
 
-## [Feature Branch Workflow](https://www.atlassian.com/git/tutorials/comparing-workflows#Feature-Branch-Workflow)
+#### [Feature Branch Workflow](https://www.atlassian.com/git/tutorials/comparing-workflows#Feature-Branch-Workflow)
 
