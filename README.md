@@ -1,19 +1,20 @@
 # Vakoverschrijdend Project van groep 5
 
-### [Timesheets]()
-* [Laatste vergadering](https://docs.google.com/document/d/1Lh5QsRfRk6YIFIKWIE6E53umxwNmmVDvcZCAYrl9r9c/edit#)
-* [Volgende vergadering]()
+### [Persoonlijke timesheets](https://docs.google.com/spreadsheets/d/13IeYrYabPoF_jOV6B7rT37mbyNtSmx6vzdmhjrjOPnA/edit)
+Verslagen van de vergaderingen op de [wiki](https://github.ugent.be/VakOverschrijdendProject/2016-2017-groep-05/wiki/Verslagen)
 
-### Team
-* Jorg:   Teamleider
-* Tomas:  Systeemadministrator
-* Billie: API-beheerder
-* Thomas: Test-beheerder
-* Freek:  Documentatie-beheerder
-* Sam:    Customer Relations Officer
-* Jarre:  Secretaris/kuisman/versnapering-voorziener
+## Git workflow
+#### [Feature Branch Workflow](https://www.atlassian.com/git/tutorials/comparing-workflows#Feature-Branch-Workflow)
 
-[Github Markdown](https://guides.github.com/features/mastering-markdown/)
+* Niet code-gerelateerde zaken op de [wiki](https://github.ugent.be/VakOverschrijdendProject/2016-2017-groep-05/wiki)
+    - Use cases
+    - Verslagen
+    - ...
+* Altijd op een eigen feature branch werken 
+* Wanneer feature klaar is, eerst rebasen en dan pull request indienen
+* Voor mergen naar master moet minstens één persoon goedkeuren
+* Gebruik commit template voor master merges
+
 
 ### [Commit style](https://chris.beams.io/posts/git-commit/)
 1. Separate subject from body with a blank line
@@ -26,7 +27,7 @@
 
 **A properly formed Git commit subject line should always be able to complete the following sentence:**
 
-    If applied, this commit will your subject line here
+    If applied, this commit will *your subject line here*
 
 For example:
 
@@ -64,7 +65,13 @@ Notice how this doesn’t work for the other non-imperative forms:
     Resolves: #123
     See also: #456, #789
 
-### Git workflow
+[Mastering Github Markdown](https://guides.github.com/features/mastering-markdown/)
 
-#### [Feature Branch Workflow](https://www.atlassian.com/git/tutorials/comparing-workflows#Feature-Branch-Workflow)
-
+### Team
+* Jorg:   Teamleider
+* Tomas:  Systeemadministrator
+* Billie: API-beheerder
+* Thomas: Test-beheerder
+* Freek:  Documentatie-beheerder
+* Sam:    Customer Relations Officer
+* Jarre:  Secretaris/kuisman/versnapering-voorziener
