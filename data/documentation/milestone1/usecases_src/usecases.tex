@@ -1,0 +1,1896 @@
+\documentclass{article}
+\usepackage[dvipnames, table]{xcolor}
+\usepackage[utf8]{inputenc}
+\usepackage[dutch]{babel}
+\usepackage{tabularx}
+\usepackage{pdfpages}
+\usepackage{enumitem}
+\usepackage{geometry}
+ \geometry{
+ a4paper,
+ total={170mm,257mm},
+ left=27mm,
+ top=20mm,
+ }
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+\title{usecases}
+\begin{document}
+\includepdf[pages={1}]{voorblad_use_cases.pdf}
+\tableofcontents
+\centering
+\newpage
+
+\rowcolors[]{1}{white}{lightgray}
+\section{Use cases, milestone 1}
+
+\subsection{Account aanmaken}
+
+\begin{tabularx}{\textwidth}{ | l | X |} 
+
+\hline
+ \multicolumn{2}{| c |}{Account aanmaken}\\
+
+ 
+ \hline\hline
+ Korte omschrijving & 
+
+ De acties die ondernomen moeten worden door de gebruiker om een account aan te maken.\\
+ \hline
+
+ Triggers & 
+ 
+ De gebruiker kiest om een account aan te maken.\\
+ \hline
+
+ Precondities & 
+ De gebruiker bevindt zich op de website van Solvas Fleet en heeft beheerdersrechten.\newline
+ De gebruiker heeft een identiteit.
+ \\
+ \hline
+
+ Postcondities & 
+ De gebruiker heeft een account met de ingegeven gegevens op de website.\newline
+ De uitgevoerde acties zijn terug te vinden in de historiek\\
+ \hline
+ 
+ Actoren & 
+ Verzekeringsmakelaar\\
+ \hline
+ 
+ Normale flow & 
+ 
+ \begin{enumerate}
+ 	\item Het systeem geeft een formulier weer waar de gebruiker zijn login en paswoord kan invullen.
+ 	\item De gebruiker vult zijn gegevens in.
+ 	\item De gebruiker bevestigt deze gegevens.
+    \item Aanmaken van een account wordt beëindigd.
+ \end{enumerate} \\ 
+ \hline
+ 
+  Alternatieve flow & 
+ \textbf{2A~:}  De gebruiker annuleert het aanmaken.
+ 	\begin{enumerate}[label=\alph*]
+ 		\item Het systeem vervolgt de normale flow vanaf stap 4.
+ 	\end{enumerate}
+ \\ 
+ \hline
+ 
+ Exceptionele flow & 
+ \textbf{3A~:}  De gebruiker heeft de gegevens niet correct ingevuld.
+ 	\begin{enumerate}[label=\alph*]
+ 		\item Het systeem toont een boodschap die de tekortkomingen van het formulier weergeeft.
+ 		\item De normale flow wordt hervat vanaf stap 2.
+ 	\end{enumerate}
+ \\ 
+ \hline
+ 
+ 
+\end{tabularx}
+
+\subsection{Account wijzigen}
+
+\begin{tabularx}{\textwidth}{ | l | X |} 
+
+\hline
+ \multicolumn{2}{| c |}{Account wijzigen}\\
+
+ 
+ \hline\hline
+ Korte omschrijving & 
+
+ De acties die ondernomen moeten worden door de gebruiker om zijn accountgegevens aan te passen.\\
+ \hline
+
+ Triggers & 
+ 
+ De gebruiker kiest om een geselecteerd account te wijzigen.\\
+ \hline
+
+ Precondities & 
+ De gebruiker is ingelogd op de website en heeft beheerdersrechten.\newline
+ Er moet minstens één account aanwezig zijn.\\
+ \hline
+
+ Postcondities & 
+ Het geselecteerde gegeven van de gebruiker is gewijzigd indien een nieuwe waarde werd gekozen.\newline
+  De uitgevoerde acties zijn terug te vinden in de historiek.\\
+ \hline
+ 
+ Actoren & 
+Administrator\\ \hline
+ 
+ Normale flow & 
+ 
+ \begin{enumerate}
+ 	\item Het systeem geeft de huidige waarden weer van de accountgegevens. 
+ 	\item De gebruiker wijzigt de gewenste waarde(n).
+	\item De gebruiker bevestigt de wijzigingen.
+    \item Het wijzigen van het account wordt beëindigd.
+ \end{enumerate} \\ 
+ \hline
+ 
+  Alternatieve flow & 
+ \textbf{2A:}  De gebruiker annuleert het aanmaken.
+ 	\begin{enumerate}[label=\alph*]
+ 		\item Het systeem vervolgt de normale flow vanaf stap 4.
+ 	\end{enumerate}
+ \\ 
+ \hline
+  Exceptionele flow & 
+ \textbf{3A~:}  De gebruiker heeft de gegevens niet correct ingevuld.
+ 	\begin{enumerate}[label=\alph*]
+ 		\item Het systeem toont een boodschap die de tekortkomingen van het formulier weergeeft.
+ 		\item De normale flow wordt hervat vanaf stap 2.
+ 	\end{enumerate}
+ \\ 
+ \hline
+ 
+ 
+\end{tabularx}
+
+\subsection{Account verwijderen}
+
+\begin{tabularx}{\textwidth}{ | l | X |} 
+
+\hline
+ \multicolumn{2}{| c |}{Account verwijderen}\\
+
+ 
+ \hline\hline
+ Korte omschrijving & 
+
+ De acties die ondernomen moeten worden door de gebruiker om een account te \newline verwijderen.\\
+ \hline
+
+ Triggers & 
+ 
+ De gebruiker kiest om een account te verwijderen.\\
+ \hline
+
+ Precondities & 
+ De gebruiker is ingelogd op de website en heeft beheerdersrechten.\newline
+ De geselecteerde account is niet de administrator.\\
+ \hline
+
+ Postcondities & 
+ Het account van de gebruiker is verwijderd. \newline
+  De uitgevoerde acties zijn terug te vinden in de historiek.\\
+ \hline
+ 
+ Actoren & 
+ Administrator\\
+ \hline
+ 
+ Normale flow & 
+ 
+ \begin{enumerate}
+ 	\item Het systeem toont een venster om het verwijderen te bevestigen. 
+ 	\item De gebruiker bevestigt de verwijdering.
+    \item Het verwijderen van het account wordt beëindigd.
+ \end{enumerate} \\ 
+ \hline
+ 
+  Alternatieve flow & 
+ \textbf{2A~:}  De gebruiker annuleert het verwijderen.
+ 	\begin{enumerate}[label=\alph*]
+ 		\item Het systeem vervolgt de normale flow vanaf stap 3.
+ 	\end{enumerate}
+ \\ 
+ \hline
+ 
+ 
+\end{tabularx}
+
+\subsection{Identiteit aanmaken}
+\centering
+\rowcolors[]{1}{white}{lightgray}
+\begin{tabularx}{\textwidth}{ | l | X |} 
+
+\hline
+ \multicolumn{2}{| c |}{Identiteit aanmaken}\\
+ 
+ 
+ \hline\hline
+ Korte omschrijving & 
+
+De acties die ondernomen moeten worden om een identiteit aan te maken. Een identiteit wordt gebruikt om een (rechts)persoon of een bedrijf te kunnen identificeren a.d.h.v. hun account en omgekeerd. \\
+ \hline
+ Triggers &
+ De gebruiker wenst een identiteit aan te maken.\\
+ \hline
+Precondities & 
+
+ Een aanvraag om een identiteit aan te maken.\\
+ \hline
+
+ Postcondities & 
+ 
+ Een aangemaakte identiteit voor de aangeboden gebruikersgegevens. De actie is ook terug te vinden in de historiek.\\
+ \hline
+ 
+ Actoren & 
+ 
+ Administrator\\
+ \hline
+ 
+ Normale flow & 
+ 
+ \begin{enumerate}
+ 
+	\item Het systeem biedt de gebruiker een formulier aan waarin de gebruikersgegeven kunnen ingevuld worden.
+	\item De gebruiker vult zijn gegevens in.
+	\item De gebruiker bevestigt zijn gegevens.
+	\item Het systeem biedt de optie aan om een account aan te maken die bij deze identiteit zal horen (zie use case Account aanmaken).
+	\item Het aanmaken van een identiteit wordt beëindigd.
+ 	
+ \end{enumerate}\\ 
+ \hline
+ 
+ Alternatieve flow & 
+ 	\textbf{3A~:} Het aanmaken van een identiteit wordt geannuleerd.
+     \begin{enumerate}[label=\alph*]
+ 		\item De normale flow wordt hervat vanaf stap 5.
+ 	\end{enumerate}
+    \textbf{4A~:} De te registreren gegevens zijn al aanwezig in de database.
+     \begin{enumerate}[label=\alph*]
+ 		\item Het systeem genereert een boodschap die duidelijk maakt dat er al een account gekoppeld is aan deze gegevens.
+		\item De normale flow wordt hervat vanaf stap 1.
+ 	\end{enumerate}
+     \textbf{4B~:} De ingegeven gebruikersgegevens zijn niet correct.
+     	\begin{enumerate}[label=\alph*]
+ 		\item Het systeem genereert een boodschap die aangeeft dat de gegevens niet correct zijn. 
+        \item De normale flow wordt hervat vanaf stap 1.
+ 	\end{enumerate}
+
+ \\ 
+ \hline
+  Include & 
+ 
+ \begin{enumerate}
+ 	\item Account aanmaken
+ \end{enumerate}\\ 
+ \hline
+
+ \end{tabularx}
+
+\newpage
+\subsection{Identiteit aanpassen}
+\centering
+\rowcolors[]{1}{white}{lightgray}
+\begin{tabularx}{\textwidth}{ | l | X |} 
+
+\hline
+ \multicolumn{2}{| c |}{Identiteit aanpassen}\\
+ 
+ \hline\hline
+ Korte omschrijving & 
+
+De acties die ondernomen moeten worden om een identiteit aan te passen. De actie is ook terug te vinden in de historiek. \\
+ \hline
+Triggers &
+De gebruiker wenst een identiteit aan te passen.\\
+\hline
+
+ Precondities & 
+Een aanvraag om een identiteit aan te passen.\\
+ \hline
+
+ Postcondities & 
+ 
+ Een doorgevoerde aanpassing aan een identiteit.\\
+ \hline
+ 
+ Actoren & 
+ 
+ Administrator\\
+ \hline
+ 
+ Normale flow & 
+ 
+ \begin{enumerate}
+	\item De gebruiker kiest de identiteit die men wenst aan te passen.
+	\item Het systeem biedt de gebruiker een ingevuld formulier met de huidige gegevens aan.
+	\item De gebruiker past de gebruikersgegevens aan.
+	\item De gebruiker bevestigt de aanpassingen.
+	\item Het aanpassen van een identiteit wordt beëindigd.
+ 	
+ \end{enumerate}\\ 
+ \hline
+ 
+  Alternatieve flow & 
+   	\textbf{1A/3A~:} De gebruiker annuleert het aanpassen van een identiteit.
+ 	\begin{enumerate}[label=\alph*]
+ 		\item De normale flow wordt hervat vanaf stap 5.
+ 	\end{enumerate}
+  
+  
+   	\textbf{2A~:} De identiteit kan niet gevonden worden in het systeem.
+ 	\begin{enumerate}[label=\alph*]
+        \item Het systeem genereert een boodschap die aangeeft dat identiteit niet in het systeem aanwezig is en er een nieuwe identiteit dient gekozen te worden.
+        \item De normale flow wordt hervat vanaf stap 1.
+ 	\end{enumerate}
+    
+    
+      \textbf{5A~:} De aangepaste gebruikersgegevens zijn niet correct.
+ 	\begin{enumerate}[label=\alph*]
+    	\item Het systeem genereert een boodschap die aangeeft dat de aangepaste gegevens niet meer correct zijn en deze opnieuw dienen ingevuld te worden.
+ 		\item De normale flow wordt hervat vanaf stap 3.
+ 	\end{enumerate}
+ \\
+ \hline
+
+ \end{tabularx}
+ 
+ \newpage
+\subsection{Identiteit verwijderen}
+\centering
+\rowcolors[]{1}{white}{lightgray}
+\begin{tabularx}{\textwidth}{ | l | X |} 
+
+\hline
+ \multicolumn{2}{| c |}{Identiteit verwijderen}\\
+
+ 
+ \hline\hline
+ Korte omschrijving & 
+
+De acties die ondernomen moeten worden om een identiteit te verwijderen. \\
+ \hline
+
+ Triggers &
+ De gebruiker wenst een identiteit te verwijderen.\\
+ \hline
+ 
+ Precondities & 
+
+ Een aanvraag van de gebruiker om een identiteit te verwijderen.\\
+ \hline
+
+ Postcondities & 
+ 
+ De identiteit en alle bijhorende accounts zijn verwijderd. De actie is ook terug te vinden in de historiek.\\
+ \hline
+ 
+ Actoren & 
+ 
+ Administrator\\
+ \hline
+ 
+ Normale flow & 
+ 
+ \begin{enumerate}
+ 
+ 
+		\item Het systeem zoekt de te verwijderen identiteit en genereert een extra bevestiging waarin hij duidelijk maakt dat  alle accounts die bij deze identiteit horen ook zullen verwijderd moeten worden.
+		\item De gebruiker bevestigt.
+ 		\item Het verwijderen wordt beëindigd.
+ \end{enumerate}\\ 
+ \hline
+ 
+ Alternatieve flow & 
+  	\textbf{1A~:} De identificatie kan niet worden gevonden in het systeem.
+	\begin{enumerate}[label=\alph*]
+ 		\item Het systeem genereert een boodschap die duidelijk maakt dat de identiteit niet bestaat en dat er een nieuwe aanvraag nodig is.
+        \item De normale flow wordt hervat vanaf stap 3.
+ 	\end{enumerate}
+    	\textbf{2A~:} Er wordt aangegeven dat men de identiteit toch wil bewaren.
+	\begin{enumerate}[label=\alph*]
+        \item De normale flow wordt hervat vanaf stap 3.
+ 	\end{enumerate}
+
+ \\ 
+ \hline
+ 
+
+ Include & 
+ \begin{enumerate}
+ 	\item Account verwijderen
+ \end{enumerate}\\
+ \hline
+\end{tabularx}
+
+
+
+\newpage
+\subsection{Vloot aanmaken}
+\centering
+\rowcolors[]{1}{white}{lightgray}
+\begin{tabularx}{\textwidth}{ | l | X |} 
+
+\hline
+ \multicolumn{2}{| c |}{Vloot aanmaken}\\
+
+ 
+ \hline\hline
+ Korte omschrijving & 
+
+ De acties die moeten ondernomen worden door een gebruiker bij het aanmaken van een nieuwe vloot\\
+ \hline
+ 
+ Triggers & 
+
+ De gebruiker geeft aan dat hij een nieuwe vloot wil aanmaken.\\
+ \hline
+
+
+ Precondities & 
+
+ De gebruiker moet ingelogd zijn en de juiste rechten hebben voor het aanmaken van een vloot.\\
+ \hline
+
+ Postcondities & 
+ 
+ De vloot is toegevoegd aan de databank en zal overal consistent getoond worden wanneer het wordt opgevraagd op de website. Deze actie is ook te zien bij de historiek.\\
+ \hline
+ 
+ Actoren & 
+ 
+ Verzekeringsmakelaar\\
+ \hline
+ 
+ Normale flow & 
+ 
+ \begin{enumerate}
+    \item Het systeem verzoekt de gebruiker een klant te kiezen van wie de nieuwe vloot zal zijn.
+    \item De gebruiker voert de informatie in.
+    \item Het systeem vraagt geeft om de informatie te bevestigen.
+    \item De gebruiker bevestigt de informatie.
+    \item Het systeem vraagt of de gebruiker klaar is of direct subvloten wilt toevoegen.
+    \item De gebruiker bevestigt klaar te zijn.
+    \item Het aanmaken van een vloot wordt beëindigd.
+ \end{enumerate}\\ 
+ \hline
+ 
+ Alternatieve flow & 
+ 
+ \textbf{3A~:} De gebruiker annuleert de actie. 
+ 	\begin{enumerate}[label=\alph*]
+        \item De normale flow wordt hervat vanaf stap 7.
+ 	\end{enumerate}
+ \textbf{6A~:} De gebruiker kiest om subvloten toe te voegen. 
+ 	\begin{enumerate}[label=\alph*]
+    	\item Zie use case "Subvloot aanmaken"
+        \item De normale flow wordt hervat vanaf stap 5.
+ 	\end{enumerate}
+    \\ 
+ Include &
+ \begin{enumerate}
+ \item Subvloot aanmaken
+ \end{enumerate}\\
+ \hline
+ 
+ \hline
+\end{tabularx}
+\newpage
+\subsection{Vloot wijzigen}
+\centering
+\rowcolors[]{1}{white}{lightgray}
+\begin{tabularx}{\textwidth}{ | l | X |} 
+
+\hline
+ \multicolumn{2}{| c |}{Vloot wijzigen}\\
+
+ 
+ \hline\hline
+ Korte omschrijving & 
+
+ De acties die moeten ondernomen worden door een gebruiker bij het wijzigen van een vloot naar een andere klant.\\
+ \hline
+
+ Triggers & 
+ 
+ De gebruiker selecteert de vloot die moet gewijzigd worden.\\
+ \hline
+
+ Precondities & 
+
+ De gebruiker moet ingelogd zijn en de juiste rechten hebben voor het wijzigen van een vloot.\\
+ \hline
+
+ Postcondities & 
+ 
+ De wijzigingen aan de vloot zijn overal doorgevoerd. De actie is ook terug te vinden in de historiek.\\
+ \hline
+ 
+ Actoren & 
+ 
+ Verzekeringsmakelaar\\
+ \hline
+ 
+ Normale flow & 
+ 
+ \begin{enumerate}
+    \item Het systeem toont een scherm met de klant van wie de vloot is.
+    \item De gebruiker wijzigt de klant.
+    \item Het systeem vraagt om te bevestigen.
+    \item De gebruiker bevestigt de wijzigingen.
+    \item Het wijzigen van de vloot wordt beëindigd.
+ \end{enumerate}\\ 
+ \hline
+ 
+ Alternatieve flow & 
+ 
+
+ \textbf{2A~:} De gebruiker annuleert de actie.
+ \begin{enumerate}[label=\alph*]
+ 	\item De normale flow wordt hervat vanaf stap 5.
+ \end{enumerate}\\ 
+ \hline
+ 
+\end{tabularx}
+\newpage
+\subsection{Vloot verwijderen}
+\centering
+\rowcolors[]{1}{white}{lightgray}
+\begin{tabularx}{\textwidth}{ | l | X |} 
+
+\hline
+ \multicolumn{2}{| c |}{Vloot verwijderen}\\
+
+ 
+ \hline\hline
+ Korte omschrijving & 
+
+ De acties die moeten ondernomen worden door een gebruiker bij het verwijderen van een vloot.\\
+ \hline
+
+ Triggers & 
+ 
+ De gebruiker selecteert de vloot die verwijderd moet worden.\\
+ \hline
+
+ Precondities & 
+
+ De gebruiker moet ingelogd zijn en de juiste rechten hebben voor het verwijderen van een vloot.\\
+ \hline
+
+ Postcondities & 
+ 
+ Het verwijderen van de vloot is overal doorgevoerd. De actie is ook terug te vinden in de historiek.\\
+ \hline
+ 
+ Actoren & 
+ 
+ Verzekeringsmakelaar\\
+ \hline
+ 
+ Normale flow & 
+ 
+ \begin{enumerate}
+    \item Het systeem toont een scherm met de klant van wie de vloot is samen met alle voertuigen in de vloot en vraagt of de gehele vloot samen met zijn voertuigen verwijderd mag worden.
+    \item De gebruiker bevestigt.
+    \item Het wijzigen van de vloot wordt beëindigd.
+ \end{enumerate}\\ 
+ \hline
+ 
+ Alternatieve flow & 
+ 
+
+ \textbf{2A~:} De gebruiker annuleert de actie.
+ \begin{enumerate}[label=\alph*]
+ 	\item De normale flow wordt hervat vanaf stap 3.
+ \end{enumerate}\\ 
+ \hline
+ 
+\end{tabularx}
+\newpage
+\subsection{Subvloot aanmaken}
+\centering
+\rowcolors[]{1}{white}{lightgray}
+\begin{tabularx}{\textwidth}{ | l | X |} 
+
+\hline
+ \multicolumn{2}{| c |}{Subvloot aanmaken}\\
+
+ 
+ \hline\hline
+ Korte omschrijving & 
+
+ De acties die moeten ondernomen worden door een gebruiker bij het aanmaken van een nieuwe subvloot\\
+ \hline
+ 
+ Triggers & 
+
+ De gebruiker geeft aan dat hij een nieuwe subvloot wil aanmaken.\\
+ \hline
+
+
+ Precondities & 
+
+ De gebruiker moet ingelogd zijn en de juiste rechten hebben voor het aanmaken van een subvloot.\\
+ \hline
+
+ Postcondities & 
+ 
+ De subvloot is toegevoegd aan de databank en zal overal consistent getoond worden wanneer het wordt opgevraagd op de website. Deze actie is ook te zien bij de historiek.\\
+ \hline
+ 
+ Actoren & 
+ 
+ Verzekeringsmakelaar\\
+ \hline
+ 
+ Normale flow & 
+ 
+ \begin{enumerate}
+    \item Het systeem verzoekt de gebruiker algemene informatie over de subvloot in te voeren en het aanmaken van de subvloot te bevestigen.
+    \item De klant voert de informatie in en bevestigt het aanmaken van de subvloot.
+    \item Het systeem verzoekt de gebruiker wagens toe te voegen aan de subvloot.
+    \item De gebruiker voert manueel wagens toe. Zie use case "Voertuig aanmaken".
+    \item Het systeem toont een overzicht van subvloot.
+    \item Het aanmaken van de subvloot wordt beëindigd
+ \end{enumerate}\\ 
+ \hline
+ 
+ Alternatieve flow & 
+ \textbf{2A/4A~:} De gebruiker annuleert de actie.
+ \begin{enumerate}[label=\alph*]
+ 	\item De normale flow wordt hervat vanaf stap 6.
+ \end{enumerate}
+ \textbf{4B~:} De gebruiker voegt wagens toe aan de hand van een Excel bestand. 
+ 	\begin{enumerate}[label=\alph*]
+ 		\item Zie use case "Excel opladen".
+        \item De normale flow wordt hervat vanaf stap 5.
+ 	\end{enumerate}\\ 
+ \hline
+ 
+ Exceptionele flow & 
+ \textbf{3A~:} De gebruiker heeft incorrecte informatie ingevuld.
+ 	\begin{enumerate}[label=\alph*]
+ 		\item Het systeem toont een overzicht van de fouten en verzoekt de gebruiker correcte informatie in te vullen.
+        \item De normale flow wordt hervat vanaf stap 2.
+ 	\end{enumerate}
+ \\ 
+ \hline
+ 
+ Include & 
+ 
+ \begin{enumerate}
+ 	\item Voertuig aanmaken
+    \item Excel opladen
+ \end{enumerate}\\ 
+ \hline
+\end{tabularx}
+
+\newpage
+\subsection{Subvloot wijzigen}
+\centering
+\rowcolors[]{1}{white}{lightgray}
+\begin{tabularx}{\textwidth}{ | l | X |} 
+
+\hline
+ \multicolumn{2}{| c |}{Subvloot wijzigen}\\
+
+ 
+ \hline\hline
+ Korte omschrijving & 
+
+ De acties die moeten ondernomen worden door een gebruiker bij het wijzigen van een subvloot.\\
+ \hline
+
+ Triggers & 
+ 
+ De gebruiker selecteert de subvloot die moet gewijzigd worden.\\
+ \hline
+
+ Precondities & 
+
+ De gebruiker moet ingelogd zijn en de juiste rechten hebben voor het wijzigen van een subvloot.\\
+ \hline
+
+ Postcondities & 
+ 
+ De wijzigingen aan de subvloot zijn overal doorgevoerd. De actie is ook terug te vinden in de historiek.\\
+ \hline
+ 
+ Actoren & 
+ 
+ Verzekeringsmakelaar\\
+ \hline
+ 
+ Normale flow & 
+ 
+ \begin{enumerate}
+    \item Het systeem toont een scherm met de data van de subvloot.
+    \item De gebruiker wijzigt de data.
+    \item Het systeem toont een overzicht van de wijzigingen en verzoekt de gebruiker de wijzigingen te bevestigen.
+    \item De gebruiker bevestigt de wijzigingen.
+    \item Het systeem toont een scherm met een overzicht van de wijzigingen.
+    \item De wijziging wordt beëindigd.
+ \end{enumerate}\\ 
+ \hline
+ 
+ Alternatieve flow & 
+ \textbf{2A~:} De gebruiker annuleert de actie.
+ \begin{enumerate}[label=\alph*]
+ 	\item De normale flow wordt hervat vanaf stap 6.
+ \end{enumerate}
+
+ \textbf{4A~:} De gebruiker gaat niet akkoord met de wijzigingen die zullen doorgevoerd worden.
+ \begin{enumerate}
+ 	\item De normale flow wordt hervat vanaf stap 2.
+ \end{enumerate}\\ 
+ \hline
+ 
+\end{tabularx}
+
+\newpage
+\subsection{Subvloot verwijderen}
+\centering
+\rowcolors[]{1}{white}{lightgray}
+\begin{tabularx}{\textwidth}{ | l | X |} 
+
+\hline
+ \multicolumn{2}{| c |}{Subvloot verwijderen}\\
+
+ 
+ \hline\hline
+ Korte omschrijving & 
+
+ De acties die moeten ondernomen worden door een gebruiker bij het verwijderen van een subvloot. \\
+ \hline
+Triggers & 
+ 
+ De gebruiker selecteert de subvloot die moet verwijderd worden. \\
+ \hline
+
+
+ Precondities & 
+
+ De gebruiker moet ingelogd zijn en de juiste rechten hebben voor het verwijderen van een subvloot.\\
+ \hline
+ 
+ 
+ Postcondities & 
+ 
+ De subvloot is gearchiveerd. Alle voertuigen die behoren tot de subvloot zijn ook gearchiveerd. De actie is ook terug te vinden in de historiek.\\
+ \hline
+ 
+ Actoren & 
+ 
+ Verzekeringsmakelaar\\
+ \hline
+ 
+ Normale flow & 
+ 
+ \begin{enumerate}
+    \item Het systeem verzoekt de gebruiker de verwijdering te bevestigen.
+    \item De gebruiker bevestigt de verwijdering.
+    \item Er wordt een scherm getoond dat de subvloot succesvol verwijderd is.
+    \item Het verwijderen wordt beëindigd.
+ \end{enumerate}\\ 
+ \hline
+ Alternatieve flow & 
+ 	
+    \textbf{2A~:} De gebruiker annuleert de actie.
+ 	\begin{enumerate}[label=\alph*]
+ 		\item Het systeem gaat verder naar stap 4.
+ 	\end{enumerate}
+    
+ \\ 
+ \hline
+\end{tabularx}
+
+\subsection{Voertuig aanmaken}
+
+\begin{tabularx}{\textwidth}{ | l | X |} 
+
+\hline
+ \multicolumn{2}{| c |}{Voertuig aanmaken}\\
+
+ 
+ \hline\hline
+ Korte omschrijving & 
+
+ De acties die ondernomen moeten worden door de gebruiker om een (of meerdere) voertuigen te registreren.\\
+ \hline
+
+ Triggers & 
+ 
+ De gebruiker kiest om een nieuw voertuig te registreren.\\
+ \hline
+
+ Precondities & 
+ De gebruiker is ingelogd op de website en heeft beheerdersrechten.\\
+ \hline
+
+ Postcondities & 
+ De geregistreerde voertuigen bevinden zich in de database en de uitgevoerde acties zijn terug te vinden in de historiek.\\
+ \hline
+ 
+ Actoren & 
+ Verzekeringsmakelaar\\
+ \hline
+ 
+ Normale flow & 
+ 
+ \begin{enumerate}
+ 	\item Het systeem vraagt om een subvloot te selecteren waaraan het voertuig toegevoegd moet worden.
+ 	\item De gebruiker selecteert een subvloot.
+ 	\item Het systeem geeft een formulier om de benodigde data van het voertuig in te voeren.
+	\item De gebruiker vult alle nodige gegevens in.
+    \item Het systeem vraagt om de data te bevestigen.
+    \item De gebruiker bevestigt de data.
+    \item Het systeem vraagt of de gebruiker klaar is.
+    \item De gebruiker geeft aan dat hij klaar is met registreren.
+    \item Het aanmaken wordt beëindigd.
+ \end{enumerate} \\ 
+ \hline
+ 
+ Alternatieve flow & 
+ 	\textbf{2A~:} De gebruiker kiest om een nieuwe vloot aan te maken.
+ 	\begin{enumerate}[label=\alph*]
+ 		\item De gebruiker wordt doorverwezen naar de 'Subvloot Aanmaken' use case.
+ 		\item Het systeem keert terug naar stap 1.
+ 	\end{enumerate}
+    \textbf{2A/4A/6A~:} De gebruiker annuleert de registratie.
+ 	\begin{enumerate}[label=\alph*]
+ 		\item De normale flow wordt hervat vanaf stap 9.
+ 	\end{enumerate}
+    \textbf{8A~:} De gebruiker kiest om een verzekering toe te voegen aan het voertuig.
+ 	\begin{enumerate}[label=\alph*]
+ 		\item De gebruiker wordt doorverwezen naar de 'Voertuig verzekeren' use case.
+        \item Het systeem keert terug naar stap 7.
+ 	\end{enumerate}
+    \textbf{8B~:} De gebruiker kiest om nog een voertuig te registreren binnen dezelfde subvloot.
+ 	\begin{enumerate}[label=\alph*]
+ 		\item Het systeem keert terug naar stap 3.
+ 	\end{enumerate}
+ \\ 
+ \hline
+ Exceptionele flow &
+    \textbf{4A~:} De gebruiker vult niet alle data (correct) in.
+ 	\begin{enumerate}[label=\alph*]
+ 		\item Het systeem keert terug naar stap 3.
+ 	\end{enumerate}
+ 
+ \\
+ \hline
+ 
+ Include & 
+ 
+ \begin{enumerate}
+ 	\item Subvloot aanmaken
+    \item Voertuig verzekeren
+ \end{enumerate}\\ 
+ \hline
+ 
+ 
+\end{tabularx}
+
+
+\newpage
+\subsection{Voertuig wijzigen}
+
+\begin{tabularx}{\textwidth}{ | l | X |} 
+
+\hline
+ \multicolumn{2}{| c |}{Voertuig wijzigen}\\
+
+ 
+ \hline\hline
+ Korte omschrijving & 
+
+ De acties die ondernomen moeten worden door de gebruiker om een voertuig te wijzigen.\\
+ \hline
+
+ Triggers & 
+ 
+ De gebruiker kiest om een voertuig te wijzigen.\\
+ \hline
+
+ Precondities & 
+ De gebruiker is ingelogd op de website en heeft beheerdersrechten.\\
+ \hline
+
+ Postcondities & 
+ De wijzigingen worden correct opgeslaan in de database in de database en de uitgevoerde acties zijn terug te vinden in de historiek.\\
+ \hline
+ 
+ Actoren & 
+ Verzekeringsmakelaar\\
+ \hline
+ 
+ Normale flow & 
+ 
+ \begin{enumerate}
+ 	\item Het systeem vraagt aan de gebruiker om een voertuig te selecteren.
+    \item De gebruiker selecteert een voertuig waarop wijzigingen toegepast moeten worden.
+    \item Het systeem geeft de volgende data weer:
+    \begin{itemize}
+    	\item Voertuigdata
+        \item Subvloot waartoe het voertuig behoort
+        \item Verzekeringen van het voertuig
+    \end{itemize}
+    \item De gebruiker past de voertuigdata/subvloot aan.
+    \item Het systeem toont een overzicht van de wijzigingen en vraagt om deze te bevestigen.
+    \item De gebruiker bevestigt de wijzigingen.
+    \item Het wijzigen wordt beëindigd.
+ \end{enumerate} \\ 
+ \hline
+ 
+ Alternatieve flow & 
+    \textbf{4A~:} De gebruiker kiest om een verzekering te wijzigen.
+ 	\begin{enumerate}[label=\alph*]
+ 		\item De gebruiker wordt doorverwezen naar de 'Verzekering voertuig wijzigen' use case.
+        \item Het systeem keert terug naar stap 3.
+ 	\end{enumerate}
+    \textbf{4B~:} De gebruiker annuleert het wijzigen.
+ 	\begin{enumerate}[label=\alph*]
+ 		\item De normale flow wordt hervat vanaf stap 7.
+ 	\end{enumerate}
+    \textbf{6A~:} De gebruiker kiest om nog verdere wijzigingen toe te passen.
+ 	\begin{enumerate}[label=\alph*]
+ 		\item Het systeem keert terug naar stap 3.
+ 	\end{enumerate}
+ \\ 
+ \hline
+ 
+ Exceptionele flow &
+ 	\textbf{5A~:} De data is niet correct. %bv: na aanpassen zijn het voertuigtype van de vloot en het voertuig verschillend.
+ 	\begin{enumerate}[label=\alph*]
+ 		\item Het systeem keert terug naar stap 3.
+ 	\end{enumerate}
+ 
+ \\
+ \hline
+ 
+ Include & 
+ 
+ \begin{enumerate}
+ 	\item Verzekering voertuig wijzigen
+ \end{enumerate}\\ 
+ \hline
+ 
+ 
+\end{tabularx}
+
+\newpage
+\subsection{Voertuig verwijderen}
+
+\begin{tabularx}{\textwidth}{ | l | X |} 
+
+\hline
+ \multicolumn{2}{| c |}{Voertuig verwijderen}\\
+
+ 
+ \hline\hline
+ Korte omschrijving & 
+
+ De acties die ondernomen moeten worden door de gebruiker om een voertuig te verwijderen.\\
+ \hline
+
+ Triggers & 
+ 
+ De gebruiker kiest om een geselecteerd voertuig te verwijderen.\\
+ \hline
+
+ Precondities & 
+ De gebruiker is ingelogd op de website en heeft beheerdersrechten.\\
+ \hline
+
+ Postcondities & 
+ Het voertuig en alle verwijzingen hiernaar zijn uit de database verwijderd en het voertuig is gearchiveerd.\\
+ \hline
+ 
+ Actoren & 
+ Verzekeringsmakelaar\\
+ \hline
+ 
+ Normale flow & 
+ 
+ \begin{enumerate}
+ 	\item Het systeem geeft een waarschuwing en vraagt bevestiging om door te gaan met het verwijderen.
+    \item De gebruiker bevestigt het verwijderen.
+    \item Het systeem bevestigt dat het verwijderen geslaagd is.
+    \item Het verwijderen wordt beëindigd.
+ \end{enumerate} \\ 
+ \hline
+ 
+ Alternatieve flow & 
+ 	\textbf{2A~:} De gebruiker annuleert het verwijderen.
+ 	\begin{enumerate}[label=\alph*]
+ 		\item Her verwijderproces wordt stopgeze\
+ 	\end{enumerate}
+ \\ 
+ \hline
+
+ 
+\end{tabularx}
+
+\newpage
+
+\section{Use cases, milestones 2 \& 3} 
+
+\subsection{Voertuig verzekeren}
+\centering
+\rowcolors[]{1}{white}{lightgray}
+\begin{tabularx}{\textwidth}{ | l | X |} 
+
+\hline
+ \multicolumn{2}{| c |}{Voertuig verzekeren}\\
+
+ 
+ \hline\hline
+ Korte omschrijving & 
+
+ De acties die ondernomen moeten worden om een voertuig te koppelen aan een verzekering.\\
+ \hline
+Triggers & 
+ 
+ De gebruiker geeft aan dat hij een verzekering wilt koppelen aan een geselecteerd voertuig.\\
+ \hline
+
+ Precondities & 
+
+ Er moet ingelogd zijn als een gebruiker met de juiste rechten om aanpassingen te kunnen doen.\\
+ \hline
+
+ Postcondities & 
+ 
+ De toegevoegde verzekering moet terug te vinden zijn in de databank en de aanpassing moet direct zichtbaar zijn wanneer een overzicht wordt opgevraagd. Wanneer de historiek wordt opgevraagd, moet dit eveneens zichtbaar zijn.\\
+ \hline
+ 
+ Actoren & 
+ 
+ Verzekeringsmakelaar\\
+ \hline 
+ 
+ 
+ Normale flow &
+ \begin{enumerate}
+ \item Het systeem geeft twee opties:
+ 	\begin{enumerate}
+ 	\item Keuze uit de bestaande verzekeringen
+    \item Maak een nieuwe verzekering aan
+ 	\end{enumerate}
+ \item De gebruiker kiest een bestaande verzekering.
+ \item De gebruiker bevestigt de gekozen verzekering.
+ \item Het proces wordt beëindigd.
+ \end{enumerate}  \\ 
+ \hline
+ 
+ Alternatieve flow & 
+ \textbf{2A~:} De gebruiker kiest om een nieuwe verzekering aan te maken.
+ \begin{enumerate}[label=\alph*]
+ \item De gebruiker gaat naar de use case "Verzekering aanmaken".
+ \item De gebruiker keert terug naar stap 2.
+ \end{enumerate}  
+ \textbf{3A~:} De gebruiker annuleert de gekozen verzekering.
+ \begin{enumerate}[label=\alph*]
+ \item De gebruiker keert terug naar stap 1.
+ \end{enumerate}  
+ \textbf{3B~:} De gebruiker annuleert het proces.
+ \begin{enumerate}[label=\alph*]
+ \item De gebruiker keert terug naar stap 4.
+ \end{enumerate} \\ 
+ \hline
+
+ Include & 
+ \begin{enumerate}
+ \item Verzekering aanmaken
+ \end{enumerate}
+   \\ 
+ \hline
+\end{tabularx}
+\newpage
+\subsection{Verzekering voertuig wijzigen}
+\centering
+\rowcolors[]{1}{white}{lightgray}
+\begin{tabularx}{\textwidth}{ | l | X |} 
+
+\hline
+ \multicolumn{2}{| c |}{Verzekering van een voertuig wijzigen}\\
+
+ 
+ \hline\hline
+ Korte omschrijving & 
+
+ De acties die ondernomen moeten worden een nieuwe verzekering aan een geselecteerd voertuig te koppelen of de bestaande verzekering aan te passen.\\
+ \hline
+Triggers & 
+ 
+ De gebruiker geeft aan dat hij een verzekering van een geselecteerd voertuig wilt wijzigen.\\
+ \hline
+ Precondities & 
+
+ Er moet ingelogd zijn als een gebruiker met de juiste rechten om aanpassingen te kunnen doen.\\
+ \hline
+
+ Postcondities & 
+ 
+ De aangepaste koppeling tussen verzekering en voertuig moet terug te vinden zijn in de databank en de aanpassing moet direct zichtbaar zijn wanneer een overzicht wordt opgevraagd. Wanneer de historiek wordt opgevraagd, moet dit eveneens zichtbaar zijn. \\
+ \hline
+ 
+ Actoren & 
+ 
+ Verzekeringsmakelaar\\ 
+ \hline
+ 
+
+ 
+ Normale flow &
+ \begin{enumerate}
+ \item Het systeem geeft twee opties:
+ 	\begin{enumerate}
+    \item Kies uit een nieuwe verzekering uit de lijst van de bestaande verzekeringen.
+    \item Wijzig de bestaande verzekering.
+ 	\end{enumerate}
+ \item De gebruiker kiest een nieuwe verzekering uit de lijst.
+ \item De gebruiker bevestigt de aanpassingen.
+ \item Het wijzigen wordt beëindigd.
+ \end{enumerate}  \\ 
+ \hline
+ 
+ Alternatieve flow & 
+ 
+ \textbf{2A~:} De gebruiker kiest ervoor de verzekering aan te passen.
+  \begin{enumerate}[label=\alph*]
+ \item Het systeem geeft een waarschuwing dat dit de verzekering voor alle voertuigen aanpast.
+ \item De gebruiker bevestigd en gaat naar de use case "Verzekering wijzigen".
+ \item De gebruiker keert terug naar stap 2.
+ \end{enumerate} 
+ \textbf{2B~:} De gebruiker annuleert het wijzigen.
+  \begin{enumerate}[label=\alph*]
+ \item Het systeem keert terug naar stap 4.
+ \end{enumerate}
+ \textbf{3A~:} De gebruiker annuleert de aanpassing.
+ \begin{enumerate}[label=\alph*]
+ \item De gebruiker keert terug naar stap 1.
+ \end{enumerate}  \\ 
+ \hline
+ 
+
+ Include & 
+ \begin{enumerate}
+ \item Verzekering wijzigen
+ \end{enumerate}
+  \\ 
+ \hline
+\end{tabularx}
+\newpage
+\subsection{Verzekering voertuig verwijderen}
+\centering
+\rowcolors[]{1}{white}{lightgray}
+\begin{tabularx}{\textwidth}{ | l | X |} 
+
+\hline
+ \multicolumn{2}{| c |}{Verzekering van een voertuig verwijderen}\\
+
+ 
+ \hline\hline
+ Korte omschrijving & 
+
+ De acties die ondernomen moeten worden om een verzekering te verwijderen van een geselecteerd voertuig.\\
+ \hline
+ 
+ Triggers & 
+ 
+ De gebruiker geeft aan dat hij een verzekering van een geselecteerd voertuig wilt verwijderen.\\
+ \hline
+ Precondities & 
+
+ Er moet ingelogd zijn als een gebruiker met de juiste rechten om aanpassingen te kunnen doen.\\
+ \hline
+
+ Postcondities & 
+ 
+ De vorige koppeling tussen verzekering en voertuig mag niet terug te vinden zijn in de databank en de aanpassing moet direct zichtbaar zijn wanneer een overzicht wordt opgevraagd. Wanneer de historiek wordt opgevraagd, moet dit eveneens zichtbaar zijn. \\
+ \hline
+ 
+ Actoren & 
+ 
+ Verzekeringsmakelaar\\
+  \hline
+
+ 
+ Normale flow &
+ \begin{enumerate}
+ \item Het systeem geeft een waarschuwing of dit de gewenste actie is.
+ \item De gebruiker bevestigt zijn aanpassing.
+ \item Het verwijderen wordt beëindigd.
+ \end{enumerate}  \\ 
+ \hline
+ 
+ Alternatieve flow & 
+ \textbf{2A~:} De gebruiker annuleert de aanpassing.
+ \begin{enumerate}[label=\alph*]
+ \item Het systeem keert terug naar stap 3.
+ \end{enumerate}  \\
+ \hline
+
+\end{tabularx}
+\newpage
+\subsection{Verzekering aanmaken}
+\centering
+\rowcolors[]{1}{white}{lightgray}
+\begin{tabularx}{\textwidth}{ | l | X |} 
+
+\hline
+ \multicolumn{2}{| c |}{Verzekering aanmaken}\\
+
+ 
+ \hline\hline
+ Korte omschrijving & 
+
+ De acties die ondernomen moeten worden om een verzekering aan te maken.\\
+ \hline
+ 
+ Triggers & 
+ 
+De gebruiker geeft aan dat hij een nieuwe verzekering wilt aanmaken.\\
+
+ \hline
+
+ Precondities & 
+
+ Er moet ingelogd zijn als een gebruiker met de juiste rechten om aanpassingen te kunnen doen.\\
+ \hline
+
+ Postcondities & 
+ 
+ De toegevoegde verzekering moet terug te vinden zijn in de databank en de aanpassing moet direct zichtbaar zijn wanneer een overzicht wordt opgevragen. Wanneer de historiek wordt opgevraagd, moet dit eveneens zichtbaar zijn.\\
+ \hline
+ 
+ Actoren & 
+ 
+ Verzekeringsmakelaar\\
+ \hline
+ 
+ Normale flow &
+ \begin{enumerate}
+ \item Het systeem geeft de optie te kiezen van een lege template te vertrekken of van een bestaande verzekering te vertrekken.
+ \item De gebruiker kiest van een lege template te vertrekken.
+ \item Het systeem geeft een scherm met de in te vullen waarden.
+ \item De gebruiker vult de waarden in.
+ \item Het aanmaken van de verzekering wordt beëindigd.
+ \end{enumerate}  \\ 
+ \hline
+ 
+ Alternatieve flow &
+  \textbf{2A~:} De gebruiker kiest om te annuleren.
+ 	\begin{enumerate}[label=\alph*]
+        \item Het systeem keert terug naar stap 5.
+ 	\end{enumerate}
+   \textbf{2A~:} De gebruiker kiest om van een bestaande verzekering te vertrekken.
+ 	\begin{enumerate}[label=\alph*]
+        \item De gebruiker krijgt een reeds ingevulde template.
+        \item Hervat de normale flow vanaf stap 3.
+ 	\end{enumerate}
+ \\ 
+ 
+ \hline
+\end{tabularx}
+\newpage
+\subsection{Verzekering wijzigen}
+\centering
+\rowcolors[]{1}{white}{lightgray}
+\begin{tabularx}{\textwidth}{ | l | X |} 
+
+\hline
+ \multicolumn{2}{| c |}{Verzekering wijzigen}\\
+
+ 
+ \hline\hline
+ Korte omschrijving & 
+
+ De acties die ondernomen moeten worden om een verzekering te wijzigen.\\
+ \hline
+Triggers &
+De gebruiker geeft aan dat hij een verzekering wilt wijzigen van een geselecteerd voertuig.
+\\
+
+ Precondities & 
+
+ Er moet ingelogd zijn als een gebruiker met de juiste rechten om aanpassingen te kunnen doen.\\
+ \hline
+
+ Postcondities & 
+ 
+ De aangepaste verzekering moet terug te vinden zijn in de databank en de aanpassing moet direct zichtbaar zijn wanneer een overzicht wordt opgevragen. Wanneer de historiek wordt opgevraagd, moet dit eveneens zichtbaar zijn.\\
+ \hline
+ 
+ Actoren & 
+ 
+ Verzekeringsmakelaar\\
+ \hline
+ 
+ Normale flow &
+ \begin{enumerate}
+ 
+ \item Het systeem geeft een scherm met de momentele waarden.
+ \item De gebruiker past de te wijzigen velden aan.
+ \item De gebruiker bevestigt de ingevulde waarden.
+ \item Het wijzigen van de verzekering wordt beëindigd.
+ \end{enumerate}  \\ 
+ \hline
+ 
+ Alternatieve flow & 
+ 	\textbf{2A~:} De gebruiker kiest om te annuleren.
+ 	\begin{enumerate}[label=\alph*]
+        \item Het systeem keert terug naar stap 4.
+ 	\end{enumerate}
+ \\ 
+ \hline
+ 
+
+\end{tabularx}
+\newpage
+\subsection{Verzekering verwijderen}
+\centering
+\rowcolors[]{1}{white}{lightgray}
+\begin{tabularx}{\textwidth}{ | l | X |} 
+
+\hline
+ \multicolumn{2}{| c |}{Verzekering verwijderen}\\
+
+ 
+ \hline\hline
+ Korte omschrijving & 
+
+ De acties die ondernomen moeten worden om een verzekering te verwijderen.\\
+ \hline
+ Triggers & 
+ 
+ De gebruiker geeft aan dat hij een geselecteerde verzekering wilt verwijderen.\\
+ \hline
+
+ Precondities & 
+
+ Er moet ingelogd zijn als een gebruiker met de juiste rechten om aanpassingen te kunnen doen.\\
+ \hline
+
+ Postcondities & 
+ 
+ De verzekering mag niet terug te vinden zijn in de databank en de aanpassing moet direct zichtbaar zijn wanneer een overzicht wordt opgevraagd. Wanneer de historiek wordt opgevraagd moet dit eveneens zichtbaar zijn.\\
+ \hline
+ 
+ Actoren & 
+ 
+ Verzekeringsmakelaar\\
+ \hline
+ 
+
+ 
+ Normale flow &
+ \begin{enumerate}
+ \item Het systeem vraagt of de verwijdering mag worden doorgevoerd; wanneer er bepaalde voertuigen gelinkt zijn aan deze verzekering wordt dit opgelijst en is er de mogelijkheid de verzekeringen van deze voertuigen aan te passen.
+ \item De gebruiker bevestigt.
+ \item Het verwijderen van de verzekering wordt beëindigd
+ \end{enumerate}  \\ 
+ \hline
+ 
+ Alternatieve flow & 
+\textbf{1A~:} De gebruiker kiest om te annuleren.
+ 	\begin{enumerate}[label=\alph*]
+        \item Het systeem keert terug naar stap 3.
+ 	\end{enumerate}
+    \textbf{2A~:} De gebruiker kiest selecteert een voertuig om de verzekering daarvan te wijzigen.
+ 	\begin{enumerate}[label=\alph*]
+    	\item Zie use case "Verzekering voertuig wijzigen".
+        \item Het systeem keert terug naar stap 1.
+ 	\end{enumerate}
+ \\ 
+ \hline
+
+ Include & 
+ \begin{enumerate}
+ \item Verzekering voertuig wijzigen
+ \end{enumerate}
+ 
+   \\ 
+ \hline
+\end{tabularx}
+\subsection{Overzicht verzekering opvragen, door verzekeringsmaatschappij}
+\centering
+\rowcolors[]{1}{white}{lightgray}
+\begin{tabularx}{\textwidth}{ | l | X |} 
+\hline
+ \multicolumn{2}{| c |}{Overzicht verzekering opvragen, door verzekeringsmaatschappij}\\
+
+ 
+ \hline\hline
+ Korte omschrijving & 
+
+  De acties die moeten ondernomen worden door een gebruiker bij het opvragen van een overzicht van al de verzekeringen van een verzekeringsmaatschappij.\\
+ \hline
+ 
+ Triggers & 
+
+ De gebruiker geeft aan dat hij een overzicht van de verzekeringen wil opvragen.\\
+ \hline
+
+ Precondities & 
+
+ De verzerkeringsmaatschappij moet minstens één verzekering bezitten.\\
+ \hline
+
+ Postcondities & 
+ 
+ Er is geen data aangepast.\\
+ \hline
+ 
+ Actoren & 
+ 
+ Verzekeringsmaatschappij\\
+ \hline
+ 
+ Normale flow & 
+ 
+ \begin{enumerate}
+    \item Het systeem geeft een overzicht van de verzekeringen. Er wordt ook een premietotaal getoond.
+    \item De gebruiker selecteert een verzekering.
+    \item Het systeem toont gedetailleerde informatie over de verzekering.
+    \item Het opvragen wordt beëindigd.
+ \end{enumerate}\\ 
+ \hline
+ 
+ Alternatieve flow & 
+ 
+ \textbf{2A~:}  De gebruiker annuleert de actie.
+ 	\begin{enumerate}[label=\alph*]
+ 		\item Het systeem vervolgt de normale flow vanaf stap 4.
+ 	\end{enumerate}
+ \\ 
+ \hline
+ 
+\end{tabularx}
+
+\newpage
+\subsection{Overzicht verzekering opvragen, door klant}
+\centering
+\rowcolors[]{1}{white}{lightgray}
+\begin{tabularx}{\textwidth}{ | l | X |} 
+
+\hline
+ \multicolumn{2}{| c |}{Overzicht verzekering opvragen, door klant}\\
+
+ 
+ \hline\hline
+ Korte omschrijving & 
+
+ De acties die moeten ondernomen worden door een gebruiker bij het opvragen van een overzicht van een verzekering van een klant.\\
+ \hline
+
+ Triggers & 
+
+ De gebruiker geeft aan dat hij een overzicht wil van de verzekering van een klant.\\
+ \hline
+
+ Precondities & 
+
+ De klant moet een verzekering hebben.\\
+ \hline
+
+ Postcondities & 
+ 
+ Er is geen data aangepast.\\
+ \hline
+ 
+ Actoren & 
+ 
+ Klant\\
+ \hline
+ 
+ Normale flow & 
+ 
+ \begin{enumerate}
+    \item Het systeem toont een overzicht van alle vloten van de gebruiker, inclusief een aggregatie van de premies.
+    \item De gebruiker selecteert een vloot.
+    \item Het systeem toont een overzicht van de vloot. Bij elke subvloot wordt de premie weergegeven en er wordt ook een aggregratie van de premies getoond.
+    \item De gebruiker selecteert een subvloot.
+    \item Het systeem toont een overzicht van de subvloot. Bij elk voertuig wordt de premie weergegeven en er wordt ook een aggregratie van de premies getoond.
+    \item De gebruiker selecteert een voertuig.
+    \item Het systeem toont de details van de premie van het voertuig.
+    \item De opvraging wordt beëindigd.
+ \end{enumerate}\\ 
+ \hline
+ 
+ Alternatieve flow & 
+ 
+ \textbf{2A/4A/6A~:}  De gebruiker annuleert de actie.
+ 	\begin{enumerate}[label=\alph*]
+ 		\item Het systeem vervolgt de normale flow vanaf stap 8.
+ 	\end{enumerate}
+   \\ 
+ \hline
+
+\end{tabularx}
+
+
+
+\subsection{Factuur opstellen}
+
+\begin{tabularx}{\textwidth}{ | l | X |} 
+
+\hline
+ \multicolumn{2}{| c |}{Factuur opstellen}\\
+
+ 
+ \hline\hline
+ Korte omschrijving & 
+
+ De acties die ondernomen moeten worden door de verzekeringsmakelaar om een factuur op te stellen van een vlootpolis.\\
+ \hline
+
+ Triggers & 
+ 
+ De gebruiker kiest om een factuur op te stellen van een klant.\\
+ \hline
+
+ Precondities & 
+ De gebruiker is ingelogd op de website en heeft beheerdersrechten.\\
+ \hline
+
+ Postcondities & 
+ De gebruiker ontvangt de factuur van de vlootpolis.\newline
+ De uitgevoerde acties zijn terug te vinden in de historiek.\\
+ \hline
+ 
+ Actoren & 
+ Verzekeringsmakelaar, klant\\
+ \hline
+ 
+ Normale flow & 
+ 
+ \begin{enumerate}
+ 	\item De gebruiker selecteert de vlootpolis waarvoor de factuur moet opgesteld worden.
+    \item Het systeem geeft een preview van de factuur.
+ 	\item De gebruiker bevestigt de opgestelde factuur.
+    \item Het systeem genereert een pdf.
+    \item Het opstellen van de factuur wordt beëindigd
+ \end{enumerate} \\ 
+ \hline
+ 
+   Alternatieve flow & 
+ \textbf{3A~:}  De gebruiker annuleert het opstellen.
+ 	\begin{enumerate}[label=\alph*]
+ 		\item Het systeem vervolgt de normale flow vanaf stap 5.
+ 	\end{enumerate}
+ \\ 
+ \hline
+ 
+ 
+\end{tabularx}
+
+\subsection{Betaling bevestigen}
+\begin{tabularx}{\textwidth}{ | l | X |} 
+
+\hline
+ \multicolumn{2}{| c |}{Betaling bevestigen}\\
+
+ 
+ \hline\hline Korte omschrijving  & 
+
+ De acties die ondernomen moeten worden om aan te duiden dat de betaling van een factuur gebeurd is.\\
+ \hline
+
+ Triggers & 
+ De gebruiker selecteert om een factuur te bevestigen.\\
+ \hline
+
+ Precondities & 
+ Een klant heeft een te betalen factuur.
+ \\
+ \hline
+
+ Postcondities & 
+ De factuur is aangeduid als betaald.\newline
+ De uitgevoerde acties zijn terug te vinden in de historiek.\\
+ \hline
+ 
+ Actoren & 
+ Verzekeringsmakelaar\\
+ \hline
+ 
+ Normale flow & 
+ 
+ \begin{enumerate}
+ 	\item Het systeem toont een bevestigingsscherm. 
+ 	\item De gebruikt klikt om de betaling te bevestigen.
+    \item De bevesting wordt beëindigd.
+ \end{enumerate} \\ 
+ \hline
+ 
+ Alternatieve flow & 
+ \textbf{2A~:}  De gebruiker annuleert het bevestigen.
+ 	\begin{enumerate}[label=\alph*]
+ 		\item Het systeem vervolgt de normale flow vanaf stap 3.
+ 	\end{enumerate}
+ \\ 
+ \hline
+\end{tabularx}
+
+\newpage
+\subsection{Historiek opvragen van identiteit}
+
+\begin{tabularx}{\textwidth}{ | l | X |} 
+
+\hline
+ \multicolumn{2}{| c |}{Historiek opvragen van identiteit}\\
+
+ 
+ \hline\hline
+ Korte omschrijving & 
+Beschrijving van de stappen die doorlopen worden om de historiek van een klant op te vragen.\\
+ \hline
+
+ Triggers & 
+ 
+ De gebruiker vraagt om de historiek van een geselecteerde identiteit te bekijken.\\
+ \hline
+
+ Precondities & 
+ De gebruiker is ingelogd op de website en heeft de benodigde rechten om de geselecteerde identiteit zijn historiek op te vragen. \\
+ \hline
+
+ Postcondities & 
+ Er zijn geen wijzigingen in het systeem.\\
+ \hline
+ 
+ Actoren & 
+ Klant/Verzekeringsmakelaar\\
+ \hline
+ 
+ Normale flow & 
+ 
+ \begin{enumerate}
+ 	\item Het systeem geeft een scherm weer met bijvoorbeeld volgende zoekfilters~:
+    \begin{itemize}
+    	\item start- en einddatum waartussen te zoeken
+        \item type acties (verwijdering/toevoeging/wijziging)
+        \item onderwerp acties (voertuig/verzekering/vloot/...)
+    \end{itemize}
+    \item De gebruiker vult de filters in en bevestigt deze.
+    \item Het systeem geeft een lijst weer met de gewenste historiek conform de filters.
+    \item De opvraging wordt beëindigd.
+    
+ \end{enumerate} \\ 
+ \hline
+ Alternatieve flow & 
+ \textbf{2A~:}  De gebruiker annuleert de opvraging.
+ 	\begin{enumerate}[label=\alph*]
+ 		\item Het systeem vervolgt de normale flow vanaf stap 4.
+ 	\end{enumerate}
+ \\ 
+ \hline
+
+\end{tabularx}
+
+
+\newpage
+\subsection{Situatie op datum X bekijken}
+
+\begin{tabularx}{\textwidth}{ | l | X |} 
+
+\hline
+ \multicolumn{2}{| c |}{Situatie op datum X bekijken}\\%TODO\\
+
+ 
+ \hline\hline
+ Korte omschrijving & 
+
+ De acties die ondernomen moeten worden door de gebruiker om een overzicht van zijn verzekeringen en voertuigen te zien op een specifieke datum.\\
+ \hline
+
+ Triggers & 
+ 
+ De gebruiker vraagt om een overzicht van de voertuigen/verzekeringen van een geselecteerde identiteit.\\
+ \hline
+
+ Precondities & 
+ De gebruiker is ingelogd op de website en heeft de benodigde rechten om voertuigen/verzekeringen van de geselecteerde identiteit weer te geven.\\
+ \hline
+
+ Postcondities & 
+ De gebruiker heeft de situatie op de gewenste datum kunnen waarnemen en er is niets gewijzigd in het systeem.\\
+ \hline
+ 
+ Actoren & 
+ Klant/Verzekeringsmakelaar/Verzekeringsmaatschappij\\
+ \hline
+ 
+ Normale flow & 
+ 
+ \begin{enumerate}
+ 	\item Het systeem geeft een lijst weer van de actieve voertuigen op de huidige datum met de volgende filters:
+    \begin{enumerate}
+    \item Datum wijzigen
+    \item Filteren op subvloot
+    \end{enumerate}
+    \item De gebruiker wijzigt de datum.
+    \item Het systeem geeft de lijst weer van voertuigen op de gevraagde datum.
+    \item Het opvragen wordt beëindigd.
+ \end{enumerate} \\ 
+ \hline
+ 
+ Alternatieve flow & 
+ \textbf{2A~:} De gebruiker annuleert de actie.
+ 	\begin{enumerate}
+ 		\item De filter wordt toegepast.
+        \item Het systeem keert terug naar stap 4.
+ 	\end{enumerate}
+ \textbf{2A~:} De gebruiker kiest te filteren op subvloot.
+ 	\begin{enumerate}
+ 		\item De filter wordt toegepast.
+        \item Het systeem keert terug naar stap 3.
+ 	\end{enumerate}
+ 	\textbf{4A~:} De gebruiker selecteert een voertuig.
+ 	\begin{enumerate}
+ 		\item Het systeem geeft alle info over dit voertuig op de gegeven datum.
+        \item De gebruiker kiest om terug te keren.
+        \item Het systeem keert terug naar stap 4.
+ 	\end{enumerate}
+    
+    
+ \\ 
+ \hline
+
+ 
+ 
+\end{tabularx}
+
+
+\newpage
+
+\subsection{Excel opladen}
+\centering
+\rowcolors[]{1}{white}{lightgray}
+\begin{tabularx}{\textwidth}{ | l | X |} 
+
+\hline
+ \multicolumn{2}{| c |}{Excel opladen}\\
+ 
+ \hline\hline
+ Korte omschrijving & 
+
+De acties die ondernomen moeten worden om voertuigdata te importeren om een subvloot te kunnen aanmaken. \\
+ \hline
+
+Triggers &
+De gebruiker kiest ervoor om data te importeren om de subvloot aan te maken.\\
+\hline
+
+ Precondities & 
+
+De gebruiker beschikt over een databestand van de voertuigen in CSV formaat.\\
+ \hline
+
+ Postcondities & 
+ 
+ Succesvol inladen  van de data die gebruikt wordt om een subvloot aan te maken. De actie is ook terug te vinden in de historiek.\\
+ \hline
+ 
+ Actoren & 
+ 
+ Verzekeringsmakelaar\\
+ \hline
+ 
+ Normale flow & 
+ 
+ \begin{enumerate}
+ 		\item De gebruiker kiest om de data van de voertuigen te importeren via een databestand.
+		\item De gebruiker kiest het juiste bestand.
+        \item De gebruiker stuurt het bestand door naar het systeem.
+		\item Het bestand wordt in het systeem ingeladen.
+		\item Het systeem geeft een overzicht van de ingeladen voertuigen.
+        \item Het opladen wordt beëindigd.
+ 	
+ \end{enumerate}\\ 
+ \hline
+ 
+ Alternatieve flow & 
+ 
+ 	\textbf{2A/3A~:} Het proces wordt geannuleerd.
+ 	\begin{enumerate}[label=\alph*]
+		\item De normale flow wordt hervat vanaf stap 6.
+ 	\end{enumerate}
+    
+  	\textbf{5A~:} Het geïmporteerde bestand is geen geldig CSV bestand.
+ 	\begin{enumerate}[label=\alph*]
+ 		\item Het systeem genereert een boodschap die aangeeft dat het gekozen bestand niet geldig is en dat er een nieuw bestand dient gekozen te worden.
+		\item De normale flow wordt hervat vanaf stap 2.
+ 	\end{enumerate}
+ 
+ 	  	\textbf{6A~:} Het gekozen bestand bevat data over het verkeerde voertuigtype.
+ 	\begin{enumerate}[label=\alph*]
+ 	\item Het systeem genereert een booschap die aangeeft dat het gekozen bestand verkeerde data bevat en dat er een nieuw bestand dient gekozen te worden.
+		\item De normale flow wordt hervat vanaf stap 2.
+ 	\end{enumerate}
+ 
+ 
+
+ \\ 
+ \hline
+
+ \end{tabularx}
+ 
+ \newpage
+\subsection{Excel downloaden}
+\centering
+\rowcolors[]{1}{white}{lightgray}
+\begin{tabularx}{\textwidth}{ | l | X |} 
+
+\hline
+ \multicolumn{2}{| c |}{Excel downloaden}\\
+
+ 
+ \hline\hline
+ Korte omschrijving & 
+De acties die ondernomen moeten worden om een databestand van een (sub)vloot in CSV formaat te genereren en aan te bieden aan de klant.\\
+ \hline
+
+Triggers &
+De klant vraagt om een voorstelling van de (sub)vloot in CSV formaat.\\
+\hline
+
+ Precondities & 
+
+De klant beschikt over een subvloot.\\
+ \hline
+
+ Postcondities & 
+ 
+  Een datavoorstelling van een door de klant gekozen (sub)vloot in CSV formaat. De actie is ook terug te vinden in de historiek.\\
+ \hline
+ 
+ Actoren & 
+ 
+ Klant\\
+ \hline
+ 
+ Normale flow & 
+ 
+ \begin{enumerate}
+		\item De gebruiker kiest de juiste (sub)vloot.
+		\item Het systeem geneert een databestand van alle voertuigen en hun verzekeringen.
+		\item Het databestand wordt door het systeem aangeboden aan de klant via de webapplicatie.
+		\item De klant kiest ervoor om het databestand te downloaden via de webapplicatie.
+        \item Het downloaden wordt beëindigd.
+ 	
+ \end{enumerate}\\ 
+ \hline
+ 
+ Alternatieve flow & 
+ 	\textbf{2A~:} De gekozen (sub)vloot is leeg.
+ 	\begin{enumerate}[label=\alph*]
+ 		\item Het systeem genereert een boodschap die aangeeft dat de (sub)vloot leeg is en er geen datavoorstelling gemaakt kan worden.
+ 	\end{enumerate}
+    \textbf{2A/4A~:} De gebruiker annuleert de actie.
+ 	\begin{enumerate}[label=\alph*]
+ 		\item Het systeem hervat vanaf stap 5.
+ 	\end{enumerate}
+ \\ 
+ \hline
+ 
+
+\end{tabularx}
+
+\end{document}
