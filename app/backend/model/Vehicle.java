@@ -1,6 +1,6 @@
 package model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Vehicle {
 
@@ -12,7 +12,7 @@ public class Vehicle {
 
     private String licensePlate;
 
-    private Date productionDate;
+    private LocalDate productionDate;
 
     private String chassisNumber;
 
@@ -22,7 +22,7 @@ public class Vehicle {
     // Also known as "kilometerstand" in Dutch
     private int mileage;
 
-    public Vehicle(int id, String brand, String model, String licensePlate, Date productionDate, String chassisNumber, int value, int mileage) {
+    public Vehicle(int id, String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int value, int mileage) {
         this.id = id;
         this.brand = brand;
         this.model = model;
@@ -61,11 +61,11 @@ public class Vehicle {
         this.licensePlate = licensePlate;
     }
 
-    public Date getProductionDate() {
+    public LocalDate getProductionDate() {
         return productionDate;
     }
 
-    public void setProductionDate(Date productionDate) {
+    public void setProductionDate(LocalDate productionDate) {
         this.productionDate = productionDate;
     }
 
@@ -107,5 +107,19 @@ public class Vehicle {
     @Override
     public int hashCode() {
         return id;
+    }
+
+    @Override
+    public String toString() {
+        return "Vehicle{" +
+                "id=" + id +
+                ", brand='" + brand + '\'' +
+                ", model='" + model + '\'' +
+                ", licensePlate='" + licensePlate + '\'' +
+                ", productionDate=" + productionDate +
+                ", chassisNumber='" + chassisNumber + '\'' +
+                ", value=" + value +
+                ", mileage=" + mileage +
+                '}';
     }
 }
