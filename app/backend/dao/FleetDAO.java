@@ -1,14 +1,22 @@
 package dao;
 
+import model.Customer;
 import model.Fleet;
+import model.Subfleet;
 
 import java.util.Collection;
 
-/**
- * Created by sam on 2/26/17.
- */
 public interface FleetDAO {
 
-    Collection<Fleet> listFiltered(Filter... filters);
+    Fleet create(Collection<Subfleet> subfleets, Customer owner);
 
+    Fleet create(Customer owner);
+
+    Fleet get(int id);
+
+    boolean remove(int id);
+
+    boolean update(Fleet fleet);
+
+    Collection<Fleet> listFiltered(Filter... filters);
 }

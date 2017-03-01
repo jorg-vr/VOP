@@ -4,26 +4,23 @@ import model.Insurance;
 import model.Subfleet;
 import model.Vehicle;
 
-/**
- * Created by sam on 2/26/17.
- */
 public interface DAOProvider extends AutoCloseable {
 
-    //Only one allowed
-    public DAOProvider getInstance();
+    // Only one allowed
+    DAOProvider getInstance();
 
-    public InsuranceDAO getInsuranceDao();
+    InsuranceDAO getInsuranceDao();
 
-    public VehicleDAO getVehicleDao();
+    VehicleDAO getVehicleDao();
 
-    public SubfleetDAO getSubfleetDao();
+    SubfleetDAO getSubfleetDao();
 
-    public HistoryDAO<Vehicle> getVehicleHistoryDAO();
+    HistoryDAO<Vehicle> getVehicleHistoryDAO();
 
-    public HistoryDAO<Insurance> getInsuranceHistoryDAO();
+    HistoryDAO<Insurance> getInsuranceHistoryDAO();
 
-    public HistoryDAO<Subfleet> getSubfleetHistoryDAO();
+    HistoryDAO<Subfleet> getSubfleetHistoryDAO();
 
     @Override
-    public void close();
+    void close();
 }
