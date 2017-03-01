@@ -6,17 +6,9 @@ import model.VehicleType;
 
 import java.util.Collection;
 
-public interface SubfleetDAO {
+public interface SubfleetDAO extends DAO<Subfleet> {
 
     Subfleet create(VehicleType type);
 
     Subfleet create(VehicleType type, Collection<Vehicle> vehicles);
-
-    boolean get(int id);
-
-    boolean remove(int id);
-
-    boolean update(Subfleet subfleet);
-
-    Collection<Subfleet> listFiltered(Filter... filters);
 }

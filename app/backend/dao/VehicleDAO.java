@@ -1,21 +1,11 @@
 package dao;
 
-import model.Insurance;
 import model.Vehicle;
 
-import java.util.Collection;
-import java.util.Date;
+import java.time.LocalDate;
 
-public interface VehicleDAO {
+public interface VehicleDAO extends DAO<Vehicle> {
 
-    Vehicle create(String brand, String model, String licensePlate, Date productionDate,
+    Vehicle create(String brand, String model, String licensePlate, LocalDate productionDate,
                    String chassisNumber, int value, int mileage);
-
-    Vehicle get(int id);
-
-    boolean remove(int id);
-
-    boolean update(Vehicle vehicle);
-
-    Collection<Vehicle> listFiltered(Filter... filters);
 }

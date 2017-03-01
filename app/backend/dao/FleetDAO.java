@@ -6,17 +6,9 @@ import model.Subfleet;
 
 import java.util.Collection;
 
-public interface FleetDAO {
+public interface FleetDAO extends DAO<Fleet> {
 
     Fleet create(Collection<Subfleet> subfleets, Customer owner);
 
     Fleet create(Customer owner);
-
-    Fleet get(int id);
-
-    boolean remove(int id);
-
-    boolean update(Fleet fleet);
-
-    Collection<Fleet> listFiltered(Filter... filters);
 }

@@ -2,7 +2,6 @@ package dao;
 
 import java.util.Collection;
 
-public interface HistoryDAO<T> {
+public interface HistoryDAO<T> extends DAO<T> {
 
-    Collection<T> listFiltered(Filter... filters);
 }
