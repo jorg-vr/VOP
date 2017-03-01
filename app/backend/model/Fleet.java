@@ -8,20 +8,20 @@ public class Fleet {
 
     private int id;
 
-    private Collection<Subfleet> subfleets;
-
     private Customer owner;
 
-    public Fleet(int id, Collection<Subfleet> subfleets, Customer owner) {
+    private Collection<Subfleet> subfleets;
+
+    public Fleet(int id, Customer owner, Collection<Subfleet> subfleets) {
         this.id = id;
-        this.subfleets = subfleets;
         this.owner = owner;
+        this.subfleets = subfleets;
     }
 
     public Fleet(int id, Customer owner) {
         this.id = id;
-        this.subfleets = new HashSet<>();
         this.owner = owner;
+        this.subfleets = new HashSet<>();
     }
 
     public int getId() {
@@ -32,7 +32,8 @@ public class Fleet {
      * Adds the Subfleet to the Fleet.
      * If the Subfleet is already present in the Fleet, nothing will happen.
      * DEVELOPER NOTE:  We can't be sure that subfleets is a HashSet (because the Constructor accepts a Collection)
-     *                  so we can't shorten this function to 1 line.
+     * so we can't shorten this function to 1 line.
+     *
      * @return true if the Subfleet was added
      */
     public boolean add(Subfleet subfleet) {
@@ -47,7 +48,8 @@ public class Fleet {
      * Removes the Subfleet from the Fleet.
      * If the Subfleet is not present in the Fleet, nothing will happen.
      * DEVELOPER NOTE:  We can't be sure that vehicles is a HashSet (because the Constructor accepts a Collection)
-     *                  so we can't shorten this function to 1 line.
+     * so we can't shorten this function to 1 line.
+     *
      * @return true if the Subfleet was removed
      */
     public boolean remove(Subfleet subfleet) {

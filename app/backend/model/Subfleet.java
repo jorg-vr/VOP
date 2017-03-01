@@ -2,7 +2,6 @@ package model;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
 
 public class Subfleet {
 
@@ -36,11 +35,12 @@ public class Subfleet {
      * Adds the vehicle to the Subfleet.
      * If the vehicle is already present in the Subfleet, nothing will happen.
      * DEVELOPER NOTE:  We can't be sure that vehicles is a HashSet (because the Constructor accepts a Collection)
-     *                  so we can't shorten this function to 1 line.
+     * so we can't shorten this function to 1 line.
+     *
      * @return true if the Vehicle was added
      */
     public boolean add(Vehicle vehicle) {
-        if (!vehicles.contains(vehicle)) {
+        if (vehicles.contains(vehicle)) {
             return false;
         }
         vehicles.add(vehicle);
@@ -51,7 +51,8 @@ public class Subfleet {
      * Removes the Vehicle from the Subfleet.
      * If the Vehicle is not present in the Subfleet, nothing will happen.
      * DEVELOPER NOTE:  We can't be sure that vehicles is a HashSet (because the Constructor accepts a Collection)
-     *                  so we can't shorten this function to 1 line.
+     * so we can't shorten this function to 1 line.
+     *
      * @return true if the Vehicle was removed
      */
     public boolean remove(Vehicle vehicle) {
