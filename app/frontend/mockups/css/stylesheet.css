@@ -1,13 +1,22 @@
+body {
+    background: rgb(245, 250, 255);
+}
+
+input {
+    background-color: rgb(245, 250, 255);
+}
+
 #sidebar-wrapper {
 
     height: 100%; /* 100% Full-height */
     width: 250px; /* 0 width - change this with JavaScript */
     position: fixed; /* Stay in place */
-    z-index: 1; /* Stay on top */
+    z-index: 1000; /* Stay on top */
     top: 0;
     left: 0;
     background: linear-gradient(69deg, rgba(74,144,226,0.8), rgba(57,148,255,0.8) 12%, rgba(63,150,253,0.8) 19%, rgba(86,158,242,0.8) 49%, rgba(19,110,216,0.8));
     overflow-x: hidden; /* Disable horizontal scroll */
+    overflow-y: auto;
     padding-top: 30px; /* Place content 60px from the top */
     padding-right: 30px;
     transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
@@ -39,4 +48,10 @@
     display: block;
     text-decoration: none;
     color: rgba(255,255,255,0.5);
+}
+
+#page-content-wrapper {
+
+    padding: 15px;
+    margin-left: 250px;
 }
