@@ -1,11 +1,25 @@
 body {
-    background: rgb(245, 250, 255);
+    font-family: 'Roboto', sans-serif;
 }
 
-input {
-    background-color: rgb(245, 250, 255);
+
+h1 {
+    color: #338cf2;
+    font-weight: 100;
 }
 
+.btn-default {
+    float: right;
+    background-color: #0759BC;
+    border-color: #0759BC;
+    color: white;
+}
+.btn-default:hover {
+    float: right;
+    background-color: #0759BC;
+    border-color: #0759BC;
+    color: white;
+}
 #sidebar-wrapper {
 
     height: 100%; /* 100% Full-height */
@@ -35,7 +49,7 @@ input {
     line-height: 40px;
 }
 .sidebar-nav > .sidebar-brand {
-    font-family: 'Lato', serif;
+    font-family: 'Roboto', sans-serif;
     text-align: right;
     color: #ecf0f1;
     height: 65px;
@@ -43,7 +57,7 @@ input {
     line-height: 60px;
 }
 .sidebar-nav li a {
-    font-family: 'Lato', serif;
+    font-family: 'Roboto', sans-serif;
     font-size: 15px;
     display: block;
     text-decoration: none;
@@ -52,6 +66,9 @@ input {
 
 #page-content-wrapper {
 
-    padding: 15px;
+    padding-right: 15px;
+    padding-left: 15px;
+    padding-bottom: 15px;
     margin-left: 250px;
 }
+
