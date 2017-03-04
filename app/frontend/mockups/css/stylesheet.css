@@ -72,3 +72,10 @@ h1 {
     margin-left: 250px;
 }
 
+.edit-fleet-page button {
+    margin-top: 20px;
+}
+
+.main-fleet-page button {
+    margin-bottom: 20px;
+}
