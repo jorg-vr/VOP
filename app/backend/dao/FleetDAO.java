@@ -1,6 +1,6 @@
 package dao;
 
-import model.Customer;
+import model.identity.Customer;
 import model.Fleet;
 import model.Subfleet;
 
