@@ -79,3 +79,11 @@ h1 {
 .main-fleet-page button {
     margin-bottom: 20px;
 }
+
+.new-subfleet input {
+    width: auto;
+}
+
+.new-subfleet .row {
+    margin-bottom: 20px;
+}
