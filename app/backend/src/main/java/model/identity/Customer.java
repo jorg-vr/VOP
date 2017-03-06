@@ -15,8 +15,12 @@ public class Customer extends Company implements java.io.Serializable {
         super(id, address, email, phoneNumber, name, btwNumber, bankAccountNumber, companyType);
     }
 
-    public void addFleet(Fleet fleet){
-
+    public boolean addFleet(Fleet fleet){
+        if(fleets.contains(fleet)){
+            return false;
+        }
+        fleets.add(fleet);
+        return true;
     }
 
     public Collection<Fleet> getFleets() {

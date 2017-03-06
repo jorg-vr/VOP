@@ -1,6 +1,6 @@
-package dao;
+package src.main.java.dao;
 
-import model.fleet.Vehicle;
+import src.main.java.model.fleet.Vehicle;
 
 import java.time.LocalDate;
 

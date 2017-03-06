@@ -1,4 +1,4 @@
-package dao;
+package src.main.java.dao;
 
 
 import java.util.Collection;

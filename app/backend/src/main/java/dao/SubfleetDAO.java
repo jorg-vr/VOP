@@ -1,8 +1,8 @@
-package dao;
+package src.main.java.dao;
 
-import model.fleet.Subfleet;
-import model.fleet.Vehicle;
-import model.fleet.VehicleType;
+import src.main.java.model.fleet.Subfleet;
+import src.main.java.model.fleet.Vehicle;
+import src.main.java.model.fleet.VehicleType;
 
 import java.util.Collection;
 

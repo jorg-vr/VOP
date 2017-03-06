@@ -16,8 +16,12 @@ public class InsuranceCompany extends Company implements java.io.Serializable {
         super(id, address, email, phoneNumber, name, btwNumber, bankAccountNumber, companyType);
     }
 
-    public void addInsurance(Insurance insurance){
-
+    public boolean addInsurance(Insurance insurance){
+        if(insurances.contains(insurance)){
+            return false;
+        }
+        insurances.add(insurance);
+        return true;
     }
 
     public Collection<Insurance> getInsurances() {
