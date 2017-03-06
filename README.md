@@ -1,73 +1,25 @@
 # Vakoverschrijdend Project van groep 5
 
+### [Website](https://vopro5.ugent.be)
 ### [Persoonlijke timesheets](https://docs.google.com/spreadsheets/d/13IeYrYabPoF_jOV6B7rT37mbyNtSmx6vzdmhjrjOPnA/edit)
-Verslagen van de vergaderingen op de [wiki](https://github.ugent.be/VakOverschrijdendProject/2016-2017-groep-05/wiki/Verslagen)
-
-## Git workflow
-#### [Feature Branch Workflow](https://www.atlassian.com/git/tutorials/comparing-workflows#Feature-Branch-Workflow)
+### [Vergaderingen](https://github.ugent.be/VakOverschrijdendProject/2016-2017-groep-05/wiki/Verslagen)
+### [Opgave](https://github.ugent.be/pages/VakOverschrijdendProject/algemeen/)
+## Git workflow ([Feature Branch Workflow](https://www.atlassian.com/git/tutorials/comparing-workflows#feature-branch-workflow))
 
 * Niet code-gerelateerde zaken op de [wiki](https://github.ugent.be/VakOverschrijdendProject/2016-2017-groep-05/wiki)
     - Use cases
     - Verslagen
     - ...
 * Altijd op een eigen feature branch werken 
+* Geef branches een beschrijvende naam: `frontend_new_vehicle`
 * Wanneer feature klaar is, eerst rebasen en dan pull request indienen
+* Niet wachten maar zo vlug mogelijk een pull request indienen!!
 * Voor mergen naar master moet minstens één persoon goedkeuren
-* Gebruik commit template voor master merges
+* Gebruik commit template voor merges
+    * **Niet:**   `Merge branch 'website' of github.ugent.be:VakOverschrijdendProject/2016-2017-groep-05 into website`
+    * **Wel:**    `Merge branch 'local/website' with 'remote/website'`
 
-
-### [Commit style](https://chris.beams.io/posts/git-commit/)
-1. Separate subject from body with a blank line
-2. Limit the subject line to 50 characters
-3. Capitalize the subject line
-4. Do not end the subject line with a period
-5. Use the imperative mood in the subject line
-6. Wrap the body at 72 characters
-7. Use the body to explain what and why vs. how
-
-**A properly formed Git commit subject line should always be able to complete the following sentence:**
-
-    If applied, this commit will *your subject line here*
-
-For example:
-
-    If applied, this commit will *refactor subsystem X for readability*
-    If applied, this commit will *update getting started documentation*
-    If applied, this commit will *remove deprecated methods*
-
-Notice how this doesn’t work for the other non-imperative forms:
-
-    If applied, this commit will *fixed bug with Y*
-    If applied, this commit will *changing behavior of X*
-    If applied, this commit will *more fixes for broken stuff*
-
-*Remember: Use of the imperative is important only in the subject line. You can relax this restriction when you’re writing the body.*
-
-#### For example:
-    Summarize changes in around 50 characters or less
-
-    Explain the problem that this commit is solving. Focus on why you
-    are making this change as opposed to how (the code explains that).
-    Are there side effects or other unintuitive consequences of this
-    change? Here's the place to explain them.
-
-    Further paragraphs come after blank lines.
-
-    - Bullet points are okay, too
-
-    - Typically a hyphen or asterisk is used for the bullet, preceded
-    by a single space, with blank lines in between, but conventions
-    vary here
-
-    If you use an issue tracker, put references to them at the bottom,
-    like this:
-
-    Resolves: #123
-    See also: #456, #789
-
-[Mastering Github Markdown](https://guides.github.com/features/mastering-markdown/)
-
-### Team
+## Team
 * Jorg:   Teamleider
 * Tomas:  Systeemadministrator
 * Billie: API-beheerder
