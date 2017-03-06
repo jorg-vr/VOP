@@ -10,12 +10,12 @@ public class RESTCompany {
     private String name;
     private String vat_number;
     private int phone_number;
-    private RESTAdress address;
+    private RESTAddress address;
     private String created_at;
     private String last_updated;
     private String url;
 
-    public RESTCompany(int id, String name, String vat_number, int phone_number, RESTAdress address, String created_at, String last_updated, String url) {
+    public RESTCompany(int id, String name, String vat_number, int phone_number, RESTAddress address, String created_at, String last_updated, String url) {
         this.id = id;
         this.name = name;
         this.vat_number = vat_number;
@@ -61,11 +61,11 @@ public class RESTCompany {
         this.phone_number = phone_number;
     }
 
-    public RESTAdress getAddress() {
+    public RESTAddress getAddress() {
         return address;
     }
 
-    public void setAddress(RESTAdress address) {
+    public void setAddress(RESTAddress address) {
         this.address = address;
     }
 
