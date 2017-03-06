@@ -17,6 +17,7 @@ import java.util.UUID;
 
 /**
  * Created by jorg on 3/6/17.
+ * Spring class that implements swagger api for vehicle
  */
 
 
@@ -29,11 +30,22 @@ public class RESTVehicleController {
     @Autowired
     private VehicleController controller;
 
+    /***
+     * Not yet implemented
+     * @param vehicle
+     * @return
+     */
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<?> getAllVehicles(@RequestBody RESTVehicle vehicle) {
         return new ResponseEntity<>("not implemented",HttpStatus.NOT_IMPLEMENTED); //TODO when filters are fixed
     }
 
+    /***
+     * implement post method, see api
+     * @param id
+     * @param vehicle
+     * @return
+     */
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> postVehicles(@PathVariable("id") String id, @RequestBody RESTVehicle vehicle) {
         try {
@@ -44,6 +56,11 @@ public class RESTVehicleController {
         }
     }
 
+    /***
+     * implement get method, see api
+     * @param id
+     * @return
+     */
     @RequestMapping(method = RequestMethod.GET , value = "{id}")
     public ResponseEntity<?> getVehicle(@PathVariable("id") String id) {
 
@@ -55,7 +72,12 @@ public class RESTVehicleController {
         }
     }
 
-
+    /***
+     * implement put method, see api
+     * @param id
+     * @param vehicle
+     * @return
+     */
     @RequestMapping(method = RequestMethod.PUT , value = "{id}")
     public ResponseEntity<?> putVehicle(@PathVariable("id") String id, @RequestBody RESTVehicle vehicle) {
         try {
@@ -72,6 +94,11 @@ public class RESTVehicleController {
 
     }
 
+    /***
+     * implement delete method, see api
+     * @param id
+     * @return
+     */
     @RequestMapping(method = RequestMethod.DELETE , value = "{id}")
     public ResponseEntity<?> deleteVehicle(@PathVariable("id") String id) {
 
@@ -83,6 +110,11 @@ public class RESTVehicleController {
         }
     }
 
+    /***
+     * converts restVehicle to vehicle like implemented in model
+     * @param restVehicle
+     * @return
+     */
     private Vehicle restToModel(RESTVehicle restVehicle){
         return new Vehicle(UUID.fromString(restVehicle.getId()),
                 restVehicle.getBrand(),
@@ -95,6 +127,11 @@ public class RESTVehicleController {
         );
     }
 
+    /***
+     * converts model vehicle to vehicle needed for rest api
+     * @param vehicle
+     * @return
+     */
      private RESTVehicle modelToRest(Vehicle vehicle){
         return new RESTVehicle(vehicle.getId().toString(),
                 vehicle.getLicensePlate(),

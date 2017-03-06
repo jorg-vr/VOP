@@ -2,6 +2,7 @@ package spring.model;
 
 /**
  * Created by jorg on 3/6/17.
+ * bean class implementing swagger api for vehicle
  */
 public class RESTVehicle {
     private String id;
