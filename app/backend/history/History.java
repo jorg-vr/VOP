@@ -28,7 +28,7 @@ public class History {
         return history.get(uuid);
     }
 
-    public  EditEvent getObjectAtDate(UUID uuid, LocalDateTime date){
+    public  EditableObject getObjectAtDate(UUID uuid, LocalDateTime date){
         EditEvent result=null;
         if(getObjectHistory(uuid)!=null) { //TODO use efficient search algoritm
             for(EditEvent e:getObjectHistory(uuid)){
@@ -37,6 +37,6 @@ public class History {
                 }
             }
         }
-        return result;
+        return result.getNewObject();
     }
 }
