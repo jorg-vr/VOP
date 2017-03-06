@@ -1,4 +1,4 @@
-package model.fleet;
+package src.main.java.model.fleet;
 
 
 public class VehicleType {

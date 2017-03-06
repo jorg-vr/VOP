@@ -1,4 +1,4 @@
-package model.identity;
+package src.main.java.model.identity;
 
 import java.awt.*;
 import java.util.Date;

@@ -1,6 +1,6 @@
-package model.account;
-import model.identity.Identity;
-import model.history.EditableObject;
+package src.main.java.model.account;
+import src.main.java.model.identity.Identity;
+import src.main.java.model.history.EditableObject;
 
 import java.util.Random;
 import java.util.UUID;
