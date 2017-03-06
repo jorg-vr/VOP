@@ -1,6 +1,6 @@
-package history;
+package model.history;
 
-import account.Account;
+import model.account.Account;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

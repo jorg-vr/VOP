@@ -35,5 +35,6 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-security')
 	compile('org.springframework.boot:spring-boot-starter-web')
 	providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
+    testCompile('junit:junit:4.12')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }

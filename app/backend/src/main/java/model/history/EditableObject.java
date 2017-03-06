@@ -1,4 +1,4 @@
-package history;
+package model.history;
 
 import java.util.UUID;
 
