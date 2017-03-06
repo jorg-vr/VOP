@@ -1,4 +1,5 @@
 # Vakoverschrijdend Project van groep 5
+[![Build Status](https://vopro5.ugent.be/jenkins/buildStatus/icon?job=Pipeline)](https://vopro5.ugent.be/jenkins/job/Pipeline/)
 
 ### [Website](https://vopro5.ugent.be)
 ### [Persoonlijke timesheets](https://docs.google.com/spreadsheets/d/13IeYrYabPoF_jOV6B7rT37mbyNtSmx6vzdmhjrjOPnA/edit)
