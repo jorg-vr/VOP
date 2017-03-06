@@ -16,7 +16,7 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'war'
 
 war {
-	baseName = 'api'
+	baseName = 'backend'
 	version = '0.0.1-SNAPSHOT'
 }
 
