@@ -1,4 +1,4 @@
-package com.vopro5;
+package main;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,7 +7,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class ApiApplicationTests {
+public class BackendApplicationTests {
 
 	@Test
 	public void contextLoads() {
