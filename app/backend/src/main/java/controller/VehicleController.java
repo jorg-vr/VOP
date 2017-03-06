@@ -1,4 +1,4 @@
-package controler;
+package controller;
 
 import dao.DataAccessException;
 import dao.Filter;
@@ -18,11 +18,11 @@ import java.util.UUID;
  *      history changes
  *      correct authentication
  */
-public class VehicleControler {
+public class VehicleController {
 
     private VehicleDAO vehicleDAO;
 
-    public VehicleControler() {
+    public VehicleController() {
         vehicleDAO=new TestVehicleDAO();//todo use real DAO
     }
 
