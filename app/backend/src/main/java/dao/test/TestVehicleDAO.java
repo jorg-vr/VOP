@@ -3,7 +3,7 @@ package dao.test;
 import dao.DataAccessException;
 import dao.Filter;
 import dao.VehicleDAO;
-import model.Vehicle;
+import model.fleet.Vehicle;
 
 import java.time.LocalDate;
 import java.util.*;

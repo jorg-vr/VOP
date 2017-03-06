@@ -1,6 +1,6 @@
 package model.identity;
 
-import model.Fleet;
+import model.fleet.Fleet;
 
 import java.util.Collection;
 

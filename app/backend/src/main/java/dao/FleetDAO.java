@@ -1,8 +1,8 @@
 package dao;
 
 import model.identity.Customer;
-import model.Fleet;
-import model.Subfleet;
+import model.fleet.Fleet;
+import model.fleet.Subfleet;
 
 import java.util.Collection;
 

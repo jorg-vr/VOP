@@ -1,6 +1,5 @@
 package model.identity;
 
-import model.Fleet;
 import model.Insurance;
 
 import java.util.Collection;

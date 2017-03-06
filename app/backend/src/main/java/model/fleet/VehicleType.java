@@ -1,4 +1,4 @@
-package model;
+package model.fleet;
 
 
 public class VehicleType {

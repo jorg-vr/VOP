@@ -1,8 +1,8 @@
 package dao;
 
-import model.Insurance;
-import model.Subfleet;
-import model.Vehicle;
+import model.insurance.Insurance;
+import model.fleet.Subfleet;
+import model.fleet.Vehicle;
 
 public interface DAOProvider extends AutoCloseable {
 
