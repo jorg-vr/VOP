@@ -1,7 +1,7 @@
 package src.main.java.model.identity;
 
 
-public class Address {
+public class Address implements java.io.Serializable {
 
     private String street;
 
@@ -12,6 +12,9 @@ public class Address {
     private int postalCode;
 
     private String country;
+
+    public Address() {
+    }
 
     public Address(String street, int streetNumber, String town, int postalCode, String country) {
         this.street = street;

@@ -10,10 +10,13 @@ import java.util.UUID;
  * Created by jorg on 3/2/17.
  *
  */
-public class Role implements EditableObject {
+public class Role implements EditableObject, java.io.Serializable {
     private String name;
     private Map<Accessible,AccessLevel>  rights;
     private UUID uuid;
+
+    public Role() {
+    }
 
     public Role(String name) {
         this.name = name;
@@ -25,14 +28,6 @@ public class Role implements EditableObject {
         this.name = name;
         this.rights = rights;
         this.uuid = uuid;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public void setAccess(Accessible ai,AccessLevel al){
@@ -49,9 +44,30 @@ public class Role implements EditableObject {
     public boolean canWrite(Accessible ai){
         return hasAccess(ai,AccessLevel.WRITE);
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Map<Accessible, AccessLevel> getRights() {
+        return rights;
+    }
+
+    public void setRights(Map<Accessible, AccessLevel> rights) {
+        this.rights = rights;
+    }
+
     @Override
-    public UUID getUUID() {
+    public UUID getUuid() {
         return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 
     @Override

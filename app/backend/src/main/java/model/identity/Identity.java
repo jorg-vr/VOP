@@ -1,7 +1,7 @@
 package src.main.java.model.identity;
 
 
-public class Identity {
+public class Identity implements java.io.Serializable {
 
     private int id;
 
@@ -10,6 +10,9 @@ public class Identity {
     private String email;
 
     private int phoneNumber;
+
+    public Identity() {
+    }
 
     public Identity(int id, Address address, String email, int phoneNumber){
         this.id = id;
@@ -20,6 +23,10 @@ public class Identity {
 
     public int getId(){
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Address getAddress() {

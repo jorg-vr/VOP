@@ -6,13 +6,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
-public class Fleet {
+public class Fleet implements java.io.Serializable {
 
     private int id;
 
     private Customer owner;
 
     private Collection<Subfleet> subfleets;
+
+    public Fleet() {
+    }
 
     public Fleet(int id, Customer owner, Collection<Subfleet> subfleets) {
         this.id = id;
@@ -24,10 +27,6 @@ public class Fleet {
         this.id = id;
         this.owner = owner;
         this.subfleets = new HashSet<>();
-    }
-
-    public int getId() {
-        return id;
     }
 
     /**
@@ -62,15 +61,19 @@ public class Fleet {
         return true;
     }
 
-    public Collection<Subfleet> getSubfleets() {
-        return new ArrayList<>(subfleets);
-    }
-
     /**
      * @return The amount of subfleets in this fleet
      */
     public int size() {
         return subfleets.size();
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Customer getOwner() {
@@ -79,6 +82,14 @@ public class Fleet {
 
     public void setOwner(Customer owner) {
         this.owner = owner;
+    }
+
+    public Collection<Subfleet> getSubfleets() {
+        return new ArrayList<>(subfleets);
+    }
+
+    public void setSubfleets(Collection<Subfleet> subfleets) {
+        this.subfleets = subfleets;
     }
 
     @Override

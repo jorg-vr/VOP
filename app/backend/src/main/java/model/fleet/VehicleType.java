@@ -1,7 +1,7 @@
 package src.main.java.model.fleet;
 
 
-public class VehicleType {
+public class VehicleType implements java.io.Serializable {
 
     private int id;
 
@@ -9,6 +9,9 @@ public class VehicleType {
 
     // The tax in %
     private double tax;
+
+    public VehicleType() {
+    }
 
     public VehicleType(int id, String type, double tax) {
         this.id = id;
@@ -20,8 +23,16 @@ public class VehicleType {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getType() {
         return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public double getTax() {

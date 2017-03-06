@@ -3,13 +3,16 @@ package src.main.java.model.fleet;
 import java.util.Collection;
 import java.util.HashSet;
 
-public class Subfleet {
+public class Subfleet implements java.io.Serializable {
 
     private int id;
 
     private VehicleType type;
 
     private Collection<Vehicle> vehicles;
+
+    public Subfleet() {
+    }
 
     public Subfleet(int id, VehicleType type, Collection<Vehicle> vehicles) {
         this.id = id;
@@ -21,14 +24,6 @@ public class Subfleet {
         this.id = id;
         this.type = type;
         this.vehicles = new HashSet<>();
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public VehicleType getType() {
-        return type;
     }
 
     /**
@@ -63,15 +58,39 @@ public class Subfleet {
         return true;
     }
 
-    public Collection<Vehicle> getVehicles() {
-        return new HashSet<>(vehicles);
-    }
-
     /**
      * @return The amount of vehicles in this subfleet
      */
     public int size() {
         return vehicles.size();
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public VehicleType getType() {
+        return type;
+    }
+
+    public void setType(VehicleType type) {
+        this.type = type;
+    }
+
+    //public Collection<Vehicle> getVehicles() {
+    //    return new HashSet<>(vehicles);
+    //}
+
+    public Collection<Vehicle> getVehicles() {
+        return vehicles;
+    }
+
+    public void setVehicles(Collection<Vehicle> vehicles) {
+        this.vehicles = vehicles;
     }
 
     @Override
