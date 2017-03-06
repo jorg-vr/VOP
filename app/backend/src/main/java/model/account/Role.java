@@ -1,6 +1,6 @@
-package account;
+package model.account;
 
-import history.EditableObject;
+import model.history.EditableObject;
 
 import java.util.HashMap;
 import java.util.Map;
