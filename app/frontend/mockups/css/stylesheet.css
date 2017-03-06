@@ -78,4 +78,15 @@ h1 {
 
 .main-fleet-page button {
     margin-bottom: 20px;
+<<<<<<< HEAD
+=======
+}
+
+.new-subfleet input {
+    width: auto;
+}
+
+.new-subfleet .row {
+    margin-bottom: 20px;
+>>>>>>> a34394ccf0089e715de7cc5766a84825e9586d42
 }
