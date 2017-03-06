@@ -11,6 +11,7 @@ import java.util.*;
 public class RESTUserController {
 
     private static Map<Integer, RESTUser> users = new HashMap<>();
+
     static {
         RESTUser u1 = new RESTUser();
         u1.setId("0");
@@ -45,6 +46,7 @@ public class RESTUserController {
         u3.setUrl("TODO");
         users.put(2, u3);
     }
+
     private int counter = users.size();
 
     @RequestMapping(method = RequestMethod.GET)
@@ -61,7 +63,7 @@ public class RESTUserController {
         user.setUpdatedAt(LocalDate.now());
         user.setCreatedAt(LocalDate.now());
 
-        users.put(users.size(), user);
+        users.put(counter, user);
         return user;
     }
 
