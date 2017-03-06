@@ -2,6 +2,7 @@ package spring.controller;
 
 import controler.VehicleControler;
 
+import dao.DataAccessException;
 import model.fleet.Vehicle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,27 +35,51 @@ public class RESTVehicleController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> postVehicles(@PathVariable("id") String id, @RequestBody RESTVehicle vehicle) {
-
-        return vehicle;
+        try {
+            controler.create(vehicle.getBrand(),vehicle.getModel(),vehicle.getLicense_plate(),LocalDate.parse(vehicle.getYear(),yearFormat),vehicle.getChassis_number(),vehicle.getKilometer_count())
+            return new ResponseEntity<>("OK", HttpStatus.valueOf(200));
+        } catch (DataAccessException e) {
+            return new ResponseEntity<>("invalid input, object invalid", HttpStatus.valueOf(400));
+        }
     }
 
     @RequestMapping(method = RequestMethod.GET , value = "{id}")
-    public RESTVehicle getVehicle(@PathVariable("id") String id) {
+    public ResponseEntity<?> getVehicle(@PathVariable("id") String id) {
 
-        return vehicle;
+        try {
+            return new ResponseEntity<>(controler.get(id), HttpStatus.valueOf(200));
+
+        } catch (DataAccessException e) {
+            return new ResponseEntity<>("Resource not found.", HttpStatus.valueOf(404));
+        }
     }
 
 
     @RequestMapping(method = RequestMethod.PUT , value = "{id}")
     public ResponseEntity<?> putVehicle(@PathVariable("id") String id, @RequestBody RESTVehicle vehicle) {
+        try {
+            controler.get(id);
+        } catch (DataAccessException e) {
+            return new ResponseEntity<>("Resource not found.", HttpStatus.valueOf(404));
+        }
+        try {
+            controler.update(restToModel(vehicle));
+            return new ResponseEntity<>("OK", HttpStatus.valueOf(200));
+        } catch (DataAccessException e) {
+            return new ResponseEntity<>("Error in input.", HttpStatus.valueOf(400));
+        }
 
-        return new ResponseEntity<>("Vehicle updated successfully", HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.DELETE , value = "{id}")
     public ResponseEntity<?> deleteVehicle(@PathVariable("id") String id) {
 
-        return new ResponseEntity<>("Vehicle updated successfully",HttpStatus.OK);
+        try {
+            controler.remove(controler.get(id));
+            return new ResponseEntity<>("OK",HttpStatus.valueOf(200));
+        } catch (DataAccessException e) {
+            return new ResponseEntity<>("Resource not found.", HttpStatus.valueOf(404));
+        }
     }
 
     private Vehicle restToModel(RESTVehicle restVehicle){
