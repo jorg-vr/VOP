@@ -12,7 +12,7 @@ import spring.model.RESTVehicle;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
+
 import java.util.UUID;
 
 /**
@@ -25,6 +25,7 @@ import java.util.UUID;
 public class RESTVehicleController {
     private DateTimeFormatter yearFormat=DateTimeFormatter.ofPattern("yyyy");
 
+    //TODO find out if this is usefull
     @Autowired
     private VehicleControler controler;
 
@@ -36,7 +37,7 @@ public class RESTVehicleController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> postVehicles(@PathVariable("id") String id, @RequestBody RESTVehicle vehicle) {
         try {
-            controler.create(vehicle.getBrand(),vehicle.getModel(),vehicle.getLicense_plate(),LocalDate.parse(vehicle.getYear(),yearFormat),vehicle.getChassis_number(),vehicle.getKilometer_count())
+            controler.create(vehicle.getBrand(),vehicle.getModel(),vehicle.getLicense_plate(),LocalDate.parse(vehicle.getYear(),yearFormat),vehicle.getChassis_number(),vehicle.getKilometer_count());
             return new ResponseEntity<>("OK", HttpStatus.valueOf(200));
         } catch (DataAccessException e) {
             return new ResponseEntity<>("invalid input, object invalid", HttpStatus.valueOf(400));
