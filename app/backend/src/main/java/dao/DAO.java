@@ -7,7 +7,7 @@ import java.util.UUID;
 /**
  * 
  */
-public interface DAO<T> {
+public interface DAO<T> extends AutoCloseable{
 
     T get(UUID id) throws DataAccessException;
 
@@ -16,4 +16,7 @@ public interface DAO<T> {
     void remove(T t) throws DataAccessException;
 
     Collection<T> listFiltered(Filter... filters) throws DataAccessException;
+
+    @Override
+    void close();
 }
