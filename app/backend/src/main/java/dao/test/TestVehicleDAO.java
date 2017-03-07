@@ -1,9 +1,9 @@
-package src.main.java.dao.test;
+package dao.test;
 
-import src.main.java.dao.DataAccessException;
-import src.main.java.dao.Filter;
-import src.main.java.dao.VehicleDAO;
-import src.main.java.model.fleet.Vehicle;
+import dao.DataAccessException;
+import dao.Filter;
+import dao.VehicleDAO;
+import model.fleet.Vehicle;
 
 import java.time.LocalDate;
 import java.util.*;

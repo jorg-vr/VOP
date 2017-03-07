@@ -1,8 +1,8 @@
-package src.main.java.dao;
+package dao;
 
-import src.main.java.model.insurance.Insurance;
-import src.main.java.model.fleet.Subfleet;
-import src.main.java.model.fleet.Vehicle;
+import model.insurance.Insurance;
+import model.fleet.Subfleet;
+import model.fleet.Vehicle;
 
 public interface DAOProvider extends AutoCloseable {
 

@@ -1,6 +1,6 @@
-package src.main.java.model.history;
+package model.history;
 
-import src.main.java.model.account.Account;
+import model.account.Account;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

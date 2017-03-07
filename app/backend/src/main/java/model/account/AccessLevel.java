@@ -1,4 +1,4 @@
-package src.main.java.model.account;
+package model.account;
 
 /**
  * Created by jorg on 3/2/17.

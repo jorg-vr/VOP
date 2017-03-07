@@ -1,4 +1,4 @@
-package src.main.java.dao.test;
+package dao.test;
 
 /**
  * Created by jorg on 3/5/17.

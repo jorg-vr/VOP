@@ -1,4 +1,4 @@
-package src.main.java.model.identity;
+package model.identity;
 
 
 public class Company extends Identity implements java.io.Serializable {

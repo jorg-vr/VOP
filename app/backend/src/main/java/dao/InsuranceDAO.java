@@ -1,6 +1,6 @@
-package src.main.java.dao;
+package dao;
 
-import src.main.java.model.insurance.Insurance;
+import model.insurance.Insurance;
 
 import java.util.Collection;
 

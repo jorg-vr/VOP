@@ -1,6 +1,6 @@
-package src.main.java.model.fleet;
+package model.fleet;
 
-import src.main.java.model.identity.Customer;
+import model.identity.Customer;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -1,4 +1,4 @@
-package src.main.java.model.insurance;
+package model.insurance;
 
 
 public class Insurance implements java.io.Serializable {

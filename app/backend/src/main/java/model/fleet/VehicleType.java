@@ -1,4 +1,4 @@
-package src.main.java.model.fleet;
+package model.fleet;
 
 
 public class VehicleType implements java.io.Serializable {

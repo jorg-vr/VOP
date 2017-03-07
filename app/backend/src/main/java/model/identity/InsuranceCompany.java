@@ -1,6 +1,6 @@
-package src.main.java.model.identity;
+package model.identity;
 
-import src.main.java.model.insurance.Insurance;
+import model.insurance.Insurance;
 
 import java.util.Collection;
 

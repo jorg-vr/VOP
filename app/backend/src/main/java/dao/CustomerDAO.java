@@ -1,6 +1,6 @@
-package src.main.java.dao;
+package dao;
 
-import src.main.java.model.identity.Customer;
+import model.identity.Customer;
 
 
 public interface CustomerDAO extends DAO<Customer> {

@@ -1,4 +1,4 @@
-package src.main.java.model.fleet;
+package model.fleet;
 
 import java.time.LocalDate;
 
