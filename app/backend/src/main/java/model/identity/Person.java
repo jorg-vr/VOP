@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.util.Date;
 
 
-public class Person extends Identity {
+public class Person extends Identity implements java.io.Serializable {
 
     private String firstName;
 
@@ -16,6 +16,9 @@ public class Person extends Identity {
     private LocalDate dateOfBirth;
 
     private Function function;
+
+    public Person() {
+    }
 
     public Person(String id, Address address, String email, int phoneNumber, String firstName, String lastName, Image picture, LocalDate dateOfBirth, Function function) {
         super(id, address, email, phoneNumber);
