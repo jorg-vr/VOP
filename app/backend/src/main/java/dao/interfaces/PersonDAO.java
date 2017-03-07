@@ -1,11 +1,9 @@
-package dao;
+package dao.interfaces;
 
 import model.identity.Function;
 import model.identity.Person;
 
-import java.awt.*;
 import java.time.LocalDate;
-import java.util.Date;
 
 /**
  * Created by sam on 3/7/17.
