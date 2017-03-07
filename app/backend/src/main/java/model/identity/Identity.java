@@ -3,7 +3,7 @@ package model.identity;
 
 public class Identity {
 
-    private int id;
+    private String id;
 
     private Address address;
 
@@ -11,14 +11,14 @@ public class Identity {
 
     private int phoneNumber;
 
-    public Identity(int id, Address address, String email, int phoneNumber){
+    public Identity(String id, Address address, String email, int phoneNumber){
         this.id = id;
         this.address = address;
         this.email = email;
         this.phoneNumber = phoneNumber;
     }
 
-    public int getId(){
+    public String getId(){
         return id;
     }
 
@@ -57,6 +57,6 @@ public class Identity {
 
     @Override
     public int hashCode() {
-        return id;
+        return id.hashCode();
     }
 }

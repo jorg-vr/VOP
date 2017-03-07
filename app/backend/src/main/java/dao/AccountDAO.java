@@ -1,7 +1,12 @@
-package dao.test;
+package dao;
+
+import model.account.Account;
+import model.identity.Identity;
 
 /**
  * Created by sam on 3/7/17.
  */
-public class AccountDAO {
+public interface AccountDAO extends DAO<Account> {
+    Filter<Account> bySecurity(String login, String password);
+    Filter<Account> byIdentity(Identity identity);
 }
