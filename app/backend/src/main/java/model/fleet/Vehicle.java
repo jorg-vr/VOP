@@ -23,6 +23,10 @@ public class Vehicle implements java.io.Serializable {
     // Also known as "kilometerstand" in Dutch
     private int mileage;
 
+    public Vehicle() {
+        
+    }
+
     public Vehicle(UUID id, String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int value, int mileage) {
         this.id = id;
         this.brand = brand;
