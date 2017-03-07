@@ -1,10 +1,11 @@
 package model.fleet;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 public class Vehicle implements java.io.Serializable {
 
-    private int id;
+    private UUID id;
 
     private String brand;
 
@@ -22,10 +23,7 @@ public class Vehicle implements java.io.Serializable {
     // Also known as "kilometerstand" in Dutch
     private int mileage;
 
-    public Vehicle() {
-    }
-
-    public Vehicle(int id, String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int value, int mileage) {
+    public Vehicle(UUID id, String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int value, int mileage) {
         this.id = id;
         this.brand = brand;
         this.model = model;
@@ -36,11 +34,11 @@ public class Vehicle implements java.io.Serializable {
         this.mileage = mileage;
     }
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -100,8 +98,6 @@ public class Vehicle implements java.io.Serializable {
         this.mileage = mileage;
     }
 
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -113,10 +109,6 @@ public class Vehicle implements java.io.Serializable {
 
     }
 
-    @Override
-    public int hashCode() {
-        return id;
-    }
 
     @Override
     public String toString() {

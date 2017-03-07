@@ -13,11 +13,13 @@ buildscript {
 apply plugin: 'java'
 apply plugin: 'eclipse-wtp'
 apply plugin: 'org.springframework.boot'
-apply plugin: 'war'
 
-war {
+jar {
 	baseName = 'backend'
 	version = '0.0.1-SNAPSHOT'
+}
+springBoot {
+    executable = true
 }
 
 sourceCompatibility = 1.8

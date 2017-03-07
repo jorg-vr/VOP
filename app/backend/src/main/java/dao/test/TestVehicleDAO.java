@@ -10,24 +10,19 @@ import java.util.*;
 
 public class TestVehicleDAO implements VehicleDAO{
 
-    private static Map<Integer, Vehicle> vehicles = new HashMap<>();
+    private static Map<UUID, Vehicle> vehicles = new HashMap<>();
     static {
-        vehicles.put(0, new Vehicle(1, "Volkswagen", "Beetle", "ABC-123", LocalDate.now(), "abcdefhijk", 1000, 123));
-        vehicles.put(1, new Vehicle(2, "Lamborghini", "Diablo GT", "IAM-007", LocalDate.now(), "abcdefhijk", 3, 123));
+        UUID one=UUID.randomUUID();
+        UUID two=UUID.randomUUID();
+        vehicles.put(one, new Vehicle(one, "Volkswagen", "Beetle", "ABC-123", LocalDate.now(), "abcdefhijk", 1000, 123));
+        vehicles.put(two, new Vehicle(two, "Lamborghini", "Diablo GT", "IAM-007", LocalDate.now(), "abcdefhijk", 3, 123));
     }
 
     private int counter = 2;
 
-    @Override
-    public Vehicle create(String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int value, int mileage) {
-        Vehicle vehicle = new Vehicle(counter, brand, model, licensePlate, productionDate, chassisNumber, value, mileage);
-        vehicles.put(counter, vehicle);
-        counter++;
-        return vehicle;
-    }
 
     @Override
-    public Vehicle get(int id) throws DataAccessException {
+    public Vehicle get(UUID id) throws DataAccessException {
         if (!vehicles.containsKey(id)) {
             throw new DataAccessException();
         }
