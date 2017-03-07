@@ -50,6 +50,11 @@ public class TestVehicleDAO implements VehicleDAO{
     }
 
     @Override
+    public void close() {
+
+    }
+
+    @Override
     public Filter<Vehicle> byBrand(String brandName) {
         return null;
     }
