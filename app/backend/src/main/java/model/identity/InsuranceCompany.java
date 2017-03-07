@@ -12,7 +12,7 @@ public class InsuranceCompany extends Company implements java.io.Serializable {
     public InsuranceCompany() {
     }
 
-    public InsuranceCompany(int id, Address address, String email, int phoneNumber, String name, int btwNumber, int bankAccountNumber, CompanyType companyType) {
+    public InsuranceCompany(String id, Address address, String email, int phoneNumber, String name, String btwNumber, String bankAccountNumber, CompanyType companyType) {
         super(id, address, email, phoneNumber, name, btwNumber, bankAccountNumber, companyType);
     }
 
