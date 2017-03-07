@@ -6,95 +6,93 @@ import spring.model.RESTUser;
 import java.time.LocalDate;
 import java.util.*;
 
+/**
+ * This class is responsible for handling all the HTTP requests of the URL /users
+ * There are 5 different HTTP requests for this URL:
+ * 1) /users GET
+ * 2) /users POST
+ * 3) /users/{id} GET
+ * 4) /users/{id} PUT
+ * 5) /users/{id} DELETE
+ * TODO: exceptions
+ */
 @RestController
 @RequestMapping("/users")
 public class RESTUserController {
 
-    private static Map<Integer, RESTUser> users = new HashMap<>();
-
-    static {
-        RESTUser u1 = new RESTUser();
-        u1.setId("0");
-        u1.setFirstName("Freddy");
-        u1.setLastName("Vandeputte");
-        u1.setEmail("freddy.vandeputte@gmail.com");
-        u1.setUpdatedAt(LocalDate.now());
-        u1.setUpdatedAt(LocalDate.now());
-        u1.setPassword("wachtwoord123");
-        u1.setUrl("TODO");
-        users.put(0, u1);
-
-        RESTUser u2 = new RESTUser();
-        u2.setId("1");
-        u2.setFirstName("Patrick");
-        u2.setLastName("Oostvogels");
-        u2.setEmail("patrick.oostvogels@gmail.com");
-        u2.setUpdatedAt(LocalDate.now());
-        u2.setUpdatedAt(LocalDate.now());
-        u2.setPassword("azerty");
-        u2.setUrl("TODO");
-        users.put(1, u2);
-
-        RESTUser u3 = new RESTUser();
-        u3.setId("2");
-        u3.setFirstName("Sofie");
-        u3.setLastName("Maes");
-        u3.setEmail("sofietje@gmail.com");
-        u3.setUpdatedAt(LocalDate.now());
-        u3.setUpdatedAt(LocalDate.now());
-        u3.setPassword("secret");
-        u3.setUrl("TODO");
-        users.put(2, u3);
-    }
-
-    private int counter = users.size();
-
+    /**
+     * @return a collection of all the users in the system.
+     * If there are no users, an empty collection will be returned.
+     */
     @RequestMapping(method = RequestMethod.GET)
     public Collection<RESTUser> get() {
-        return new ArrayList<>(users.values());
+        // Get the account with login = email
+
+        // Get the person with id = id
+
+        // Merge the 2 objects
+        return null;
     }
 
+    /**
+     * Adds a new user to the system.
+     *
+     * @param user all the fields of this object are required except:
+     *             1) id
+     *             2) createdAt
+     *             3) updatedAt
+     *             4) url
+     *             If there is any information in these fields, it will be ignored.
+     * @return the object will be returned, with valid values for the not required field listed below:
+     * 1) id:          this will be an unique UUID
+     * 2) createdAt:   will be set to the moment when it was created
+     * 3) updatedAt:   will be equal to createdAt
+     * 4) url:         will look like: https//domain.org/users/id
+     */
     @RequestMapping(method = RequestMethod.POST)
     public RESTUser post(@RequestBody RESTUser user) {
-        int id = counter;
-        counter++;
+        // Create the Person
 
-        user.setId(id + "");
-        user.setUpdatedAt(LocalDate.now());
-        user.setCreatedAt(LocalDate.now());
-
-        users.put(counter, user);
-        return user;
+        // Create the Account
+        return null;
     }
 
+    /**
+     * Returns the user associated with the id.
+     *
+     * @param id id of the user
+     * @return the RESTUSer object
+     */
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
     public RESTUser getId(@PathVariable("id") String id) {
-        return users.get(Integer.parseInt(id));
+        return null;
     }
 
+    /**
+     * Attempts to update the user with the given id.
+     *
+     * @param id   id of the user that should be updated
+     * @param user a RESTUser object containing the updated fields.
+     *             The following fields can not be changed:
+     *             1) id
+     *             2) createdAt
+     *             3) updatedAt
+     *             4) url
+     *             Any changes of these fields will be ignored
+     * @return the updated RESTUser object. The updatedAt will be updated.
+     */
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
     public RESTUser putId(@PathVariable("id") String id, @RequestBody RESTUser user) {
-        RESTUser old = users.get(Integer.parseInt(id));
-
-        old.setFirstName(user.getFirstName());
-
-        if (user.getLastName() != null) {
-            old.setLastName(user.getLastName());
-        }
-        if (user.getEmail() != null) {
-            old.setEmail(user.getEmail());
-        }
-        if (user.getPassword() != null) {
-            old.setPassword(user.getPassword());
-        }
-
-        old.setUpdatedAt(LocalDate.now());
-        return old;
+        return null;
     }
 
+    /**
+     * Attempts to archive the user with the given id.
+     *
+     * @param id the id of the user that should be archived
+     */
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
     public void deleteId(@PathVariable("id") String id) {
-        users.remove(Integer.parseInt(id));
     }
 
 }
