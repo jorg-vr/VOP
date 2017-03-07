@@ -25,7 +25,7 @@ public class Identity implements java.io.Serializable {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
