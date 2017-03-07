@@ -1,7 +1,7 @@
 package dao;
 
-public interface Filter {
+public interface Filter<T> {
 
     // Using hibernate, it should be able to use lambda for filtering
-    boolean filter();
+    public boolean filter(T t);
 }

@@ -2,17 +2,21 @@ package dao;
 
 
 import java.util.Collection;
+import java.util.UUID;
 
 /**
- * TODO: should a create(T t) method be added?
+ * 
  */
-public interface DAO<T> {
+public interface DAO<T> extends AutoCloseable{
 
-    T get(int id) throws DataAccessException;
+    T get(UUID id) throws DataAccessException;
 
     void update(T t) throws DataAccessException;
 
     void remove(T t) throws DataAccessException;
 
     Collection<T> listFiltered(Filter... filters) throws DataAccessException;
+
+    @Override
+    void close();
 }
