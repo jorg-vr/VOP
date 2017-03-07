@@ -1,9 +1,9 @@
 package model.identity;
 
 
-public class Identity {
+public class Identity implements java.io.Serializable {
 
-    private int id;
+    private String id;
 
     private Address address;
 
@@ -11,15 +11,22 @@ public class Identity {
 
     private int phoneNumber;
 
-    public Identity(int id, Address address, String email, int phoneNumber){
+    public Identity() {
+    }
+
+    public Identity(String id, Address address, String email, int phoneNumber){
         this.id = id;
         this.address = address;
         this.email = email;
         this.phoneNumber = phoneNumber;
     }
 
-    public int getId(){
+    public String getId(){
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public Address getAddress() {
@@ -57,6 +64,6 @@ public class Identity {
 
     @Override
     public int hashCode() {
-        return id;
+        return id.hashCode();
     }
 }

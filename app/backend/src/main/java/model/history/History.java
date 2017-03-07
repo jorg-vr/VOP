@@ -3,9 +3,7 @@ package model.history;
 import java.time.LocalDateTime;
 import java.util.*;
 
-/**
- * Created by jorg on 3/5/17.
- */
+
 public class History {
     private static History HISTORY;
 
@@ -20,8 +18,8 @@ public class History {
     }
 
     public void addEditEvent(EditEvent e){
-        history.putIfAbsent(e.getOldObject().getUUID(),new ArrayList<>());
-        history.get(e.getOldObject().getUUID()).add(e);
+        history.putIfAbsent(e.getOldObject().getUuid(),new ArrayList<>());
+        history.get(e.getOldObject().getUuid()).add(e);
     }
 
     public List<EditEvent> getObjectHistory(UUID uuid){
