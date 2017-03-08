@@ -1,6 +1,5 @@
-package dao;
+package dao.interfaces;
 
-import model.fleet.Vehicle;
 import model.fleet.VehicleType;
 
 /**

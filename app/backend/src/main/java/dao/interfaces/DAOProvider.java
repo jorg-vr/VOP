@@ -1,4 +1,4 @@
-package dao;
+package dao.interfaces;
 
 import model.insurance.Insurance;
 import model.fleet.Subfleet;

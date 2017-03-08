@@ -1,6 +1,4 @@
-package dao;
-
-import java.util.Collection;
+package dao.interfaces;
 
 public interface HistoryDAO<T> extends DAO<T> {
  //TODO milestone2

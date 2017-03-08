@@ -1,8 +1,8 @@
 package dao.test;
 
-import dao.DataAccessException;
-import dao.Filter;
-import dao.VehicleDAO;
+import dao.interfaces.DataAccessException;
+import dao.interfaces.Filter;
+import dao.interfaces.VehicleDAO;
 import model.fleet.Vehicle;
 import model.fleet.VehicleType;
 
