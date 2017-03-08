@@ -21,8 +21,8 @@ public class Person extends Identity implements java.io.Serializable {
     public Person() {
     }
 
-    public Person(UUID uuid, Address address, String email, int phoneNumber, String firstName, String lastName, Image picture, LocalDate dateOfBirth, Function function) {
-        super(uuid, address, email, phoneNumber);
+    public Person(UUID id, Address address, String email, String phoneNumber, String firstName, String lastName, Image picture, LocalDate dateOfBirth, Function function) {
+        super(id, address, email, phoneNumber);
         this.firstName = firstName;
         this.lastName = lastName;
         this.picture = picture;
