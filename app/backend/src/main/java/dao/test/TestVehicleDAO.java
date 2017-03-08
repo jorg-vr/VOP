@@ -1,9 +1,10 @@
 package dao.test;
 
-import dao.DataAccessException;
-import dao.Filter;
-import dao.VehicleDAO;
+import dao.interfaces.DataAccessException;
+import dao.interfaces.Filter;
+import dao.interfaces.VehicleDAO;
 import model.fleet.Vehicle;
+import model.fleet.VehicleType;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -46,5 +47,55 @@ public class TestVehicleDAO implements VehicleDAO{
     public Collection<Vehicle> listFiltered(Filter... filters) {
         // TODO actually use filters
         return new HashSet<>(vehicles.values());
+    }
+
+    @Override
+    public void close() {
+
+    }
+
+    @Override
+    public Filter<Vehicle> byBrand(String brandName) {
+        return null;
+    }
+
+    @Override
+    public Filter<Vehicle> byModel(String model) {
+        return null;
+    }
+
+    @Override
+    public Filter<Vehicle> byLicensePlate(String licensePlate) {
+        return null;
+    }
+
+    @Override
+    public Filter<Vehicle> atProductionDate(LocalDate productionDate) {
+        return null;
+    }
+
+    @Override
+    public Filter<Vehicle> beforeProductionDate(LocalDate productionDate) {
+        return null;
+    }
+
+    @Override
+    public Filter<Vehicle> afterProductionDate(LocalDate productionDate) {
+        return null;
+    }
+
+    @Override
+    public Filter<Vehicle> atLeastMileage(int mileage) {
+        return null;
+    }
+
+    @Override
+    public Filter<Vehicle> maxMileage(int mileage) {
+        return null;
+    }
+
+    @Override
+    public Filter<Vehicle> byType(VehicleType type) {
+        return null;
     }
 }
