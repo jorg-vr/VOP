@@ -68,6 +68,5 @@ public class Identity implements java.io.Serializable {
     @Override
     public int hashCode() {
         return uuid.hashCode();
-
     }
 }
