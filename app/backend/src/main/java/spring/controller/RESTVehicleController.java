@@ -5,8 +5,6 @@ import controller.VehicleController;
 import dao.interfaces.DataAccessException;
 import model.fleet.Vehicle;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import spring.Exceptions.InvalidInputException;
 import spring.Exceptions.NotFoundException;
@@ -139,7 +137,7 @@ public class RESTVehicleController {
      * @return
      */
      private RESTVehicle modelToRest(Vehicle vehicle){
-        return new RESTVehicle(vehicle.getId().toString(),
+        return new RESTVehicle(vehicle.getUuid().toString(),
                 vehicle.getLicensePlate(),
                 vehicle.getChassisNumber(),
                 vehicle.getBrand(),

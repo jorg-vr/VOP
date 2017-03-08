@@ -1,9 +1,11 @@
 package model.fleet;
 
 
+import java.util.UUID;
+
 public class VehicleType implements java.io.Serializable {
 
-    private int id;
+    private UUID uuid;
 
     private String type;
 
@@ -13,18 +15,18 @@ public class VehicleType implements java.io.Serializable {
     public VehicleType() {
     }
 
-    public VehicleType(int id, String type, double tax) {
-        this.id = id;
+    public VehicleType(UUID uuid, String type, double tax) {
+        this.uuid = uuid;
         this.type = type;
         this.tax = tax;
     }
 
-    public int getId() {
-        return id;
+    public UUID getUuid() {
+        return uuid;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 
     public String getType() {
@@ -50,12 +52,7 @@ public class VehicleType implements java.io.Serializable {
 
         VehicleType that = (VehicleType) o;
 
-        return id == that.id;
+        return uuid == that.uuid;
 
-    }
-
-    @Override
-    public int hashCode() {
-        return id;
     }
 }

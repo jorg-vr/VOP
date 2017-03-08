@@ -2,10 +2,11 @@ package model.fleet;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.UUID;
 
 public class Subfleet implements java.io.Serializable {
 
-    private int id;
+    private UUID uuid;
 
     private VehicleType type;
 
@@ -14,14 +15,14 @@ public class Subfleet implements java.io.Serializable {
     public Subfleet() {
     }
 
-    public Subfleet(int id, VehicleType type, Collection<Vehicle> vehicles) {
-        this.id = id;
+    public Subfleet(UUID uuid, VehicleType type, Collection<Vehicle> vehicles) {
+        this.uuid = uuid;
         this.type = type;
         this.vehicles = vehicles;
     }
 
-    public Subfleet(int id, VehicleType type) {
-        this.id = id;
+    public Subfleet(UUID uuid, VehicleType type) {
+        this.uuid = uuid;
         this.type = type;
         this.vehicles = new HashSet<>();
     }
@@ -65,12 +66,12 @@ public class Subfleet implements java.io.Serializable {
         return vehicles.size();
     }
 
-    public int getId() {
-        return id;
+    public UUID getUuid() {
+        return uuid;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 
     public VehicleType getType() {
@@ -100,12 +101,7 @@ public class Subfleet implements java.io.Serializable {
 
         Subfleet subfleet = (Subfleet) o;
 
-        return id == subfleet.id;
+        return uuid == subfleet.uuid;
 
-    }
-
-    @Override
-    public int hashCode() {
-        return id;
     }
 }
