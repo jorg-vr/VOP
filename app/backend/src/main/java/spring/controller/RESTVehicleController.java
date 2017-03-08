@@ -49,20 +49,20 @@ public class RESTVehicleController {
         if (licensPlate!=null){filters.add(controller.byLicensePlate(licensPlate));}
         if (chassisNumber!=null)//TODO after issue #87
         if (leasingCompany!=null)//TODO after issue #88
-        if (licensPlate!=null){filters.add(controller.byLicensePlate(licensPlate));}
+        if (year!=null){filters.add(controller.atProductionDate(LocalDate.ofYearDay(year,0)));}
         if (company!=null)//TODO after issue #88
         if (licensPlate!=null){filters.add(controller.byLicensePlate(licensPlate));}
 
 
         try {
             Collection<RESTVehicle> result=new ArrayList<>();
-            for(Vehicle vehicle : controller.listFiltered() ){
+            for(Vehicle vehicle : controller.listFiltered( filters.toArray(new Filter[filters.size()]))){
                 result.add(modelToRest(vehicle));
             }
             return result;
         } catch (DataAccessException e) {
             throw new NotFoundException();
-        }//TODO when filters are fixed
+        }
     }
 
     /***
