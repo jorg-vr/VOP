@@ -66,6 +66,7 @@ public class VehicleController{
     }
 
     /***
+     * TODO convert type field to corresponding VehicleType object
      * Create new vehicle and generate id for given parameters
      * @param brand
      * @param model
@@ -76,8 +77,8 @@ public class VehicleController{
      * @return
      * @throws DataAccessException
      */
-    public Vehicle create(String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int mileage) throws DataAccessException {
-        Vehicle vehicle=new Vehicle(UUID.randomUUID(),brand,model,licensePlate,productionDate,chassisNumber,0,mileage); //TODO value
+    public Vehicle create(String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int mileage, String type) throws DataAccessException {
+        Vehicle vehicle=new Vehicle(UUID.randomUUID(),brand,model,licensePlate,productionDate,chassisNumber,0,mileage,null); //TODO value
         vehicleDAO.update(vehicle);
         return vehicle;
     }
