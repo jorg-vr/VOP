@@ -5,8 +5,6 @@ import model.fleet.Vehicle;
 
 public interface DAOProvider extends AutoCloseable {
 
-    // Only one allowed
-    DAOProvider getInstance();
 
     InsuranceDAO getInsuranceDao();
 

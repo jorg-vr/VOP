@@ -12,13 +12,13 @@ public class Identity implements EditableObject, java.io.Serializable {
 
     private String email;
 
-    private int phoneNumber;
+    private String phoneNumber;
 
     public Identity() {
     }
 
-    public Identity(UUID uuid, Address address, String email, int phoneNumber){
-        this.uuid = uuid;
+    public Identity(UUID id, Address address, String email, String phoneNumber){
+        this.uuid = id;
         this.address = address;
         this.email = email;
         this.phoneNumber = phoneNumber;
@@ -48,11 +48,11 @@ public class Identity implements EditableObject, java.io.Serializable {
         this.email = email;
     }
 
-    public int getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
@@ -68,5 +68,10 @@ public class Identity implements EditableObject, java.io.Serializable {
     @Override
     public EditableObject copy() {
         return new Identity(uuid, address, email, phoneNumber);
+    }
+
+    @Override
+    public int hashCode() {
+        return uuid.hashCode();
     }
 }

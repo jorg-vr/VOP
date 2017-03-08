@@ -23,6 +23,7 @@ public class Fleet implements EditableObject, java.io.Serializable {
         this.vehicles = vehicles;
     }
 
+
     public Fleet(UUID uuid, Customer owner) {
         this.uuid = uuid;
         this.owner = owner;
@@ -72,6 +73,7 @@ public class Fleet implements EditableObject, java.io.Serializable {
         return uuid;
     }
 
+
     public void setUuid(UUID uuid) {
         this.uuid = uuid;
     }
@@ -109,4 +111,9 @@ public class Fleet implements EditableObject, java.io.Serializable {
         }
         return new Fleet(uuid,owner, newList);
     }
+    @Override
+    public int hashCode() {
+        return uuid.hashCode();
+    }
+
 }
