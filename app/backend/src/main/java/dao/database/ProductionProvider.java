@@ -73,11 +73,6 @@ public class ProductionProvider implements DAOProvider {
     }
 
     @Override
-    public HistoryDAO<Subfleet> getSubfleetHistoryDAO() {
-        return null;
-    }
-
-    @Override
     public void close() {
         sessionFactory.close();
         StandardServiceRegistryBuilder.destroy(this.registry);
