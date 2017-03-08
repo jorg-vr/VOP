@@ -24,6 +24,7 @@ public class Fleet implements java.io.Serializable {
         this.subfleets = subfleets;
     }
 
+
     public Fleet(UUID uuid, Customer owner) {
         this.uuid = uuid;
         this.owner = owner;
@@ -73,6 +74,7 @@ public class Fleet implements java.io.Serializable {
         return uuid;
     }
 
+
     public void setUuid(UUID uuid) {
         this.uuid = uuid;
     }
@@ -103,4 +105,9 @@ public class Fleet implements java.io.Serializable {
         return uuid == fleet.uuid;
 
     }
+    @Override
+    public int hashCode() {
+        return uuid.hashCode();
+    }
+
 }
