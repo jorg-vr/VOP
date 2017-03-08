@@ -29,8 +29,8 @@ public class RESTVehicleController {
     private DateTimeFormatter yearFormat=DateTimeFormatter.ofPattern("yyyy");
 
     //TODO find out if this is usefull
-    @Autowired
-    private VehicleController controller;
+    //@Autowired
+    private VehicleController controller=new VehicleController();
 
     /***
      * Not yet implemented
