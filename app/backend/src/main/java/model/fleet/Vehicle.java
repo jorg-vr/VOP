@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public class Vehicle implements java.io.Serializable {
 
-    private UUID id;
+    private UUID uuid;
 
     private String brand;
 
@@ -27,8 +27,8 @@ public class Vehicle implements java.io.Serializable {
         
     }
 
-    public Vehicle(UUID id, String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int value, int mileage) {
-        this.id = id;
+    public Vehicle(UUID uuid, String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int value, int mileage) {
+        this.uuid = uuid;
         this.brand = brand;
         this.model = model;
         this.licensePlate = licensePlate;
@@ -38,12 +38,12 @@ public class Vehicle implements java.io.Serializable {
         this.mileage = mileage;
     }
 
-    public UUID getId() {
-        return id;
+    public UUID getUuid() {
+        return uuid;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 
     public String getBrand() {
@@ -109,7 +109,7 @@ public class Vehicle implements java.io.Serializable {
 
         Vehicle vehicle = (Vehicle) o;
 
-        return id == vehicle.id;
+        return uuid == vehicle.uuid;
 
     }
 
@@ -117,7 +117,7 @@ public class Vehicle implements java.io.Serializable {
     @Override
     public String toString() {
         return "Vehicle{" +
-                "id=" + id +
+                "uuid=" + uuid +
                 ", brand='" + brand + '\'' +
                 ", model='" + model + '\'' +
                 ", licensePlate='" + licensePlate + '\'' +

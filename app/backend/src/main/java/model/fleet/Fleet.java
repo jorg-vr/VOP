@@ -5,10 +5,11 @@ import model.identity.Customer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.UUID;
 
 public class Fleet implements java.io.Serializable {
 
-    private int id;
+    private UUID uuid;
 
     private Customer owner;
 
@@ -17,14 +18,14 @@ public class Fleet implements java.io.Serializable {
     public Fleet() {
     }
 
-    public Fleet(int id, Customer owner, Collection<Subfleet> subfleets) {
-        this.id = id;
+    public Fleet(UUID uuid, Customer owner, Collection<Subfleet> subfleets) {
+        this.uuid = uuid;
         this.owner = owner;
         this.subfleets = subfleets;
     }
 
-    public Fleet(int id, Customer owner) {
-        this.id = id;
+    public Fleet(UUID uuid, Customer owner) {
+        this.uuid = uuid;
         this.owner = owner;
         this.subfleets = new HashSet<>();
     }
@@ -68,12 +69,12 @@ public class Fleet implements java.io.Serializable {
         return subfleets.size();
     }
 
-    public int getId() {
-        return id;
+    public UUID getUuid() {
+        return uuid;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 
     public Customer getOwner() {
@@ -99,12 +100,7 @@ public class Fleet implements java.io.Serializable {
 
         Fleet fleet = (Fleet) o;
 
-        return id == fleet.id;
+        return uuid == fleet.uuid;
 
-    }
-
-    @Override
-    public int hashCode() {
-        return id;
     }
 }

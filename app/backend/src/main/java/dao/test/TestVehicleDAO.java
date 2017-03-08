@@ -35,12 +35,12 @@ public class TestVehicleDAO implements VehicleDAO{
         if (!vehicles.containsValue(vehicle)) {
             throw new DataAccessException();
         }
-        vehicles.put(vehicle.getId(), vehicle);
+        vehicles.put(vehicle.getUuid(), vehicle);
     }
 
     @Override
     public void remove(Vehicle vehicle) throws DataAccessException {
-        vehicles.remove(vehicle.getId());
+        vehicles.remove(vehicle.getUuid());
     }
 
     @Override
