@@ -1,25 +1,35 @@
 package model.identity;
 
+import model.history.EditableObject;
 
-public class Identity {
+import java.util.UUID;
 
-    private int id;
+public class Identity implements EditableObject, java.io.Serializable {
+
+    private UUID uuid;
 
     private Address address;
 
     private String email;
 
-    private int phoneNumber;
+    private String phoneNumber;
 
-    public Identity(int id, Address address, String email, int phoneNumber){
-        this.id = id;
+    public Identity() {
+    }
+
+    public Identity(UUID id, Address address, String email, String phoneNumber){
+        this.uuid = id;
         this.address = address;
         this.email = email;
         this.phoneNumber = phoneNumber;
     }
 
-    public int getId(){
-        return id;
+    public UUID getUuid(){
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 
     public Address getAddress() {
@@ -38,11 +48,11 @@ public class Identity {
         this.email = email;
     }
 
-    public int getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
@@ -51,12 +61,17 @@ public class Identity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        return id == ((Identity)o).id;
+        return uuid == ((Identity)o).uuid;
 
     }
 
     @Override
+    public EditableObject copy() {
+        return new Identity(uuid, address, email, phoneNumber);
+    }
+
+    @Override
     public int hashCode() {
-        return id;
+        return uuid.hashCode();
     }
 }

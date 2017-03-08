@@ -1,27 +1,46 @@
 package model.fleet;
 
 
-public class VehicleType {
+import model.history.EditableObject;
 
-    private int id;
+import java.util.UUID;
+
+public class VehicleType implements EditableObject, java.io.Serializable {
+
+    private UUID uuid;
 
     private String type;
 
     // The tax in %
     private double tax;
 
-    public VehicleType(int id, String type, double tax) {
-        this.id = id;
-        this.type = type;
-        this.tax = tax;
+    // vehicle-type id for use by the api
+    private int id;
+
+    public VehicleType() {
     }
 
-    public int getId() {
-        return id;
+    public VehicleType(UUID uuid, String type, double tax, int id) {
+        this.uuid = uuid;
+        this.type = type;
+        this.tax = tax;
+        this.id = id;
+    }
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 
     public String getType() {
         return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public double getTax() {
@@ -32,6 +51,14 @@ public class VehicleType {
         this.tax = tax;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -39,12 +66,12 @@ public class VehicleType {
 
         VehicleType that = (VehicleType) o;
 
-        return id == that.id;
+        return uuid == that.uuid;
 
     }
 
     @Override
-    public int hashCode() {
-        return id;
+    public EditableObject copy() {
+        return new VehicleType(uuid, type, tax, id);
     }
 }

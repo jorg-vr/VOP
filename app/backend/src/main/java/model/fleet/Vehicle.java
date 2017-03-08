@@ -1,11 +1,13 @@
 package model.fleet;
 
+import model.history.EditableObject;
+
 import java.time.LocalDate;
 import java.util.UUID;
 
-public class Vehicle {
+public class Vehicle implements EditableObject, java.io.Serializable {
 
-    private UUID id;
+    private UUID uuid;
 
     private String brand;
 
@@ -23,8 +25,16 @@ public class Vehicle {
     // Also known as "kilometerstand" in Dutch
     private int mileage;
 
-    public Vehicle(UUID id, String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int value, int mileage) {
-        this.id = id;
+    private VehicleType type;
+
+
+
+    public Vehicle() {
+        
+    }
+
+    public Vehicle(UUID uuid, String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int value, int mileage, VehicleType type) {
+        this.uuid = uuid;
         this.brand = brand;
         this.model = model;
         this.licensePlate = licensePlate;
@@ -32,10 +42,15 @@ public class Vehicle {
         this.chassisNumber = chassisNumber;
         this.value = value;
         this.mileage = mileage;
+        this.type = type;
     }
 
-    public UUID getId() {
-        return id;
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 
     public String getBrand() {
@@ -94,22 +109,28 @@ public class Vehicle {
         this.mileage = mileage;
     }
 
+    public VehicleType getType() {
+        return type;
+    }
+
+    public void setType(VehicleType type) {
+        this.type = type;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
+
         if (o == null || getClass() != o.getClass()) return false;
 
-        Vehicle vehicle = (Vehicle) o;
-
-        return id == vehicle.id;
-
+        return uuid == ((Vehicle)o).getUuid();
     }
 
 
     @Override
     public String toString() {
         return "Vehicle{" +
-                "id=" + id +
+                "uuid=" + uuid +
                 ", brand='" + brand + '\'' +
                 ", model='" + model + '\'' +
                 ", licensePlate='" + licensePlate + '\'' +
@@ -117,6 +138,12 @@ public class Vehicle {
                 ", chassisNumber='" + chassisNumber + '\'' +
                 ", value=" + value +
                 ", mileage=" + mileage +
+                ", type=" + type.getType() +
                 '}';
+    }
+
+    @Override
+    public EditableObject copy() {
+        return new Vehicle(uuid, brand, model, licensePlate, productionDate, chassisNumber, value, mileage, (VehicleType)type.copy());
     }
 }

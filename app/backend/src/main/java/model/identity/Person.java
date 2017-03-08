@@ -1,10 +1,12 @@
 package model.identity;
 
 import java.awt.*;
+import java.time.LocalDate;
 import java.util.Date;
+import java.util.UUID;
 
 
-public class Person extends Identity {
+public class Person extends Identity implements java.io.Serializable {
 
     private String firstName;
 
@@ -12,11 +14,14 @@ public class Person extends Identity {
 
     private Image picture;
 
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
 
     private Function function;
 
-    public Person(int id, Address address, String email, int phoneNumber, String firstName, String lastName, Image picture, Date dateOfBirth, Function function) {
+    public Person() {
+    }
+
+    public Person(UUID id, Address address, String email, String phoneNumber, String firstName, String lastName, Image picture, LocalDate dateOfBirth, Function function) {
         super(id, address, email, phoneNumber);
         this.firstName = firstName;
         this.lastName = lastName;
@@ -50,11 +55,11 @@ public class Person extends Identity {
         this.picture = picture;
     }
 
-    public Date getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 

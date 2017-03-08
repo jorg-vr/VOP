@@ -1,24 +1,39 @@
 package model.identity;
 
 
-public class Address {
+import java.util.UUID;
+
+public class Address implements java.io.Serializable {
+
+    private UUID uuid;
 
     private String street;
 
-    private int streetNumber;
+    private String streetNumber;
 
     private String town;
 
-    private int postalCode;
+    private String postalCode;
 
     private String country;
 
-    public Address(String street, int streetNumber, String town, int postalCode, String country) {
+    public Address() {
+    }
+
+    public Address(String street, String streetNumber, String town, String postalCode, String country) {
         this.street = street;
         this.streetNumber = streetNumber;
         this.town = town;
         this.postalCode = postalCode;
         this.country = country;
+    }
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 
     public String getStreet() {
@@ -29,11 +44,11 @@ public class Address {
         this.street = street;
     }
 
-    public int getStreetNumber() {
+    public String getStreetNumber() {
         return streetNumber;
     }
 
-    public void setStreetNumber(int streetNumber) {
+    public void setStreetNumber(String streetNumber) {
         this.streetNumber = streetNumber;
     }
 
@@ -45,11 +60,11 @@ public class Address {
         this.town = town;
     }
 
-    public int getPostalCode() {
+    public String getPostalCode() {
         return postalCode;
     }
 
-    public void setPostalCode(int postalCode) {
+    public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
     }
 
