@@ -27,8 +27,9 @@ public class Identity implements java.io.Serializable {
         return uuid;
     }
 
-    public void setUuid(UUID id) {
-        this.uuid = id;
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
+
     }
 
     public Address getAddress() {
@@ -67,5 +68,6 @@ public class Identity implements java.io.Serializable {
     @Override
     public int hashCode() {
         return uuid.hashCode();
+
     }
 }
