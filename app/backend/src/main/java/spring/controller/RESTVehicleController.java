@@ -2,7 +2,7 @@ package spring.controller;
 
 import controller.VehicleController;
 
-import dao.DataAccessException;
+import dao.interfaces.DataAccessException;
 import model.fleet.Vehicle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

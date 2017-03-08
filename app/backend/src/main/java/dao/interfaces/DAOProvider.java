@@ -1,4 +1,4 @@
-package dao;
+package dao.interfaces;
 
 import model.insurance.Insurance;
 import model.fleet.Subfleet;
@@ -12,8 +12,6 @@ public interface DAOProvider extends AutoCloseable {
     InsuranceDAO getInsuranceDao();
 
     VehicleDAO getVehicleDao();
-
-    SubfleetDAO getSubfleetDao();
 
     HistoryDAO<Vehicle> getVehicleHistoryDAO();
 

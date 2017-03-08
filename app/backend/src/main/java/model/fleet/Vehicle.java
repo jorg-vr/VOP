@@ -3,7 +3,7 @@ package model.fleet;
 import java.time.LocalDate;
 import java.util.UUID;
 
-public class Vehicle {
+public class Vehicle implements java.io.Serializable {
 
     private UUID id;
 
@@ -23,6 +23,10 @@ public class Vehicle {
     // Also known as "kilometerstand" in Dutch
     private int mileage;
 
+    public Vehicle() {
+        
+    }
+
     public Vehicle(UUID id, String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int value, int mileage) {
         this.id = id;
         this.brand = brand;
@@ -36,6 +40,10 @@ public class Vehicle {
 
     public UUID getId() {
         return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public String getBrand() {
