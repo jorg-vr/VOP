@@ -4,7 +4,6 @@ import controller.VehicleController;
 
 import dao.interfaces.DataAccessException;
 import model.fleet.Vehicle;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import spring.Exceptions.InvalidInputException;
 import spring.Exceptions.NotFoundException;
@@ -14,7 +13,9 @@ import spring.model.RESTVehicle;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -34,12 +35,23 @@ public class RESTVehicleController {
 
     /***
      * Not yet implemented
-     * @param vehicle
      * @return
      */
     @RequestMapping(method = RequestMethod.GET)
-    public Collection<RESTVehicle> getAllVehicles(@RequestBody RESTVehicle vehicle) {
-        throw new NotImplementedException(); //TODO when filters are fixed
+    public Collection<RESTVehicle> getAllVehicles(@RequestParam(required=false) String licensPlate,
+                                              @RequestParam(required=false) String chassisNumber,
+                                              @RequestParam(required=false) Integer leasinCompany,
+                                              @RequestParam(required=false) Integer year,
+                                              @RequestParam(required=false) Integer company) {
+        try {
+            Collection<RESTVehicle> result=new ArrayList<>();
+            for(Vehicle vehicle : controller.listFiltered() ){
+                result.add(modelToRest(vehicle));
+            }
+            return result;
+        } catch (DataAccessException e) {
+            throw new NotFoundException();
+        }//TODO when filters are fixed
     }
 
     /***

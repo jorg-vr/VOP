@@ -5,6 +5,7 @@ import dao.interfaces.Filter;
 import dao.interfaces.VehicleDAO;
 import dao.test.TestVehicleDAO;
 import model.fleet.Vehicle;
+import model.fleet.VehicleType;
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -18,7 +19,7 @@ import java.util.UUID;
  *      history changes
  *      correct authentication
  */
-public class VehicleController {
+public class VehicleController{
 
     private VehicleDAO vehicleDAO;
 
@@ -79,5 +80,41 @@ public class VehicleController {
         Vehicle vehicle=new Vehicle(UUID.randomUUID(),brand,model,licensePlate,productionDate,chassisNumber,0,mileage); //TODO value
         vehicleDAO.update(vehicle);
         return vehicle;
+    }
+
+    public Filter<Vehicle> byBrand(String brandName) {
+        return vehicleDAO.byBrand(brandName);
+    }
+
+    public Filter<Vehicle> byModel(String model) {
+        return vehicleDAO.byModel(model);
+    }
+
+    public Filter<Vehicle> byLicensePlate(String licensePlate) {
+        return vehicleDAO.byLicensePlate();
+    }
+
+    public Filter<Vehicle> atProductionDate(LocalDate productionDate) {
+        return vehicleDAO.atProductionDate(productionDate);
+    }
+
+    public Filter<Vehicle> beforeProductionDate(LocalDate productionDate) {
+        return vehicleDAO.beforeProductionDate(productionDate);
+    }
+
+    public Filter<Vehicle> afterProductionDate(LocalDate productionDate) {
+        return vehicleDAO.afterProductionDate(productionDate);
+    }
+
+    public Filter<Vehicle> atLeastMileage(int mileage) {
+        return vehicleDAO.atLeastMileage(mileage)
+    }
+
+    public Filter<Vehicle> maxMileage(int mileage) {
+        return vehicleDAO.maxMileage(mileage);
+    }
+
+    public Filter<Vehicle> byType(VehicleType type) {
+        return vehicleDAO.byType(type);
     }
 }
