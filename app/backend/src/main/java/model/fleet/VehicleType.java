@@ -1,9 +1,11 @@
 package model.fleet;
 
 
+import model.history.EditableObject;
+
 import java.util.UUID;
 
-public class VehicleType implements java.io.Serializable {
+public class VehicleType implements EditableObject, java.io.Serializable {
 
     private UUID uuid;
 
@@ -54,5 +56,10 @@ public class VehicleType implements java.io.Serializable {
 
         return uuid == that.uuid;
 
+    }
+
+    @Override
+    public EditableObject copy() {
+        return null;
     }
 }

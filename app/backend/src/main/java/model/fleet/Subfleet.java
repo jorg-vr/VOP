@@ -1,10 +1,12 @@
 package model.fleet;
 
+import model.history.EditableObject;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.UUID;
 
-public class Subfleet implements java.io.Serializable {
+public class Subfleet implements EditableObject, java.io.Serializable {
 
     private UUID uuid;
 
@@ -103,5 +105,10 @@ public class Subfleet implements java.io.Serializable {
 
         return uuid == subfleet.uuid;
 
+    }
+
+    @Override
+    public EditableObject copy() {
+        return null;
     }
 }

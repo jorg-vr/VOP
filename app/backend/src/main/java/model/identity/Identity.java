@@ -1,9 +1,10 @@
 package model.identity;
 
+import model.history.EditableObject;
 
 import java.util.UUID;
 
-public class Identity implements java.io.Serializable {
+public class Identity implements EditableObject, java.io.Serializable {
 
     private UUID uuid;
 
@@ -62,5 +63,10 @@ public class Identity implements java.io.Serializable {
 
         return uuid == ((Identity)o).uuid;
 
+    }
+
+    @Override
+    public EditableObject copy() {
+        return new Identity(uuid, address, email, phoneNumber);
     }
 }
