@@ -1,5 +1,5 @@
 <template>
-    <h1>Test Remove</h1>
+    <h1>Test New</h1>
 </template>
 <script>
 
