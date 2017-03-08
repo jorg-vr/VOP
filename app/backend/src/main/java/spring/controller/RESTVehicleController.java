@@ -56,7 +56,8 @@ public class RESTVehicleController {
                     vehicle.getLicense_plate(),
                     LocalDate.parse(vehicle.getYear(),yearFormat),
                     vehicle.getChassis_number(),
-                    vehicle.getKilometer_count());
+                    vehicle.getKilometer_count(),
+                    vehicle.getType());
         } catch (DataAccessException e) {
             throw new InvalidInputException();
         }
@@ -115,6 +116,7 @@ public class RESTVehicleController {
     }
 
     /***
+     * TODO convert type field to corresponding VehicleType object
      * converts restVehicle to vehicle like implemented in model
      * @param restVehicle
      * @return
@@ -127,7 +129,8 @@ public class RESTVehicleController {
                 LocalDate.parse(restVehicle.getYear(),yearFormat),
                 restVehicle.getChassis_number(),
                 0,//TODO fix value
-                restVehicle.getKilometer_count()
+                restVehicle.getKilometer_count(),
+                null//TODO String value of type has to be converted to the corresponding VehicleType object
         );
     }
 
