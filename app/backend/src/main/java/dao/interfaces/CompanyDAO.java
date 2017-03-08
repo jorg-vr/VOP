@@ -1,8 +1,6 @@
-package dao;
+package dao.interfaces;
 
-import model.identity.Address;
 import model.identity.Company;
-import model.identity.Customer;
 
 /**
  * Created by sam on 3/7/17.

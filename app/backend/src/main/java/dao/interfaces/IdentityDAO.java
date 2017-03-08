@@ -1,4 +1,4 @@
-package dao;
+package dao.interfaces;
 
 import model.identity.Address;
 import model.identity.Identity;
