@@ -8,11 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import spring.Exceptions.NotImplementedException;
 import spring.model.RESTVehicle;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import java.util.Collection;
 import java.util.UUID;
 
 /**
@@ -36,8 +38,8 @@ public class RESTVehicleController {
      * @return
      */
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<?> getAllVehicles(@RequestBody RESTVehicle vehicle) {
-        return new ResponseEntity<>("not implemented",HttpStatus.NOT_IMPLEMENTED); //TODO when filters are fixed
+    public Collection<RESTVehicle> getAllVehicles(@RequestBody RESTVehicle vehicle) {
+        throw new NotImplementedException(); //TODO when filters are fixed
     }
 
     /***
