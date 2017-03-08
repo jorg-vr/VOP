@@ -5,6 +5,7 @@ import dao.interfaces.Filter;
 import dao.interfaces.VehicleDAO;
 import dao.test.TestVehicleDAO;
 import model.fleet.Vehicle;
+import model.fleet.VehicleType;
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -75,8 +76,8 @@ public class VehicleController {
      * @return
      * @throws DataAccessException
      */
-    public Vehicle create(String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int mileage) throws DataAccessException {
-        Vehicle vehicle=new Vehicle(UUID.randomUUID(),brand,model,licensePlate,productionDate,chassisNumber,0,mileage); //TODO value
+    public Vehicle create(String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int mileage, VehicleType type) throws DataAccessException {
+        Vehicle vehicle=new Vehicle(UUID.randomUUID(),brand,model,licensePlate,productionDate,chassisNumber,0,mileage,type); //TODO value
         vehicleDAO.update(vehicle);
         return vehicle;
     }

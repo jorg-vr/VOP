@@ -25,11 +25,15 @@ public class Vehicle implements EditableObject, java.io.Serializable {
     // Also known as "kilometerstand" in Dutch
     private int mileage;
 
+    private VehicleType type;
+
+
+
     public Vehicle() {
         
     }
 
-    public Vehicle(UUID uuid, String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int value, int mileage) {
+    public Vehicle(UUID uuid, String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int value, int mileage, VehicleType type) {
         this.uuid = uuid;
         this.brand = brand;
         this.model = model;
@@ -38,6 +42,7 @@ public class Vehicle implements EditableObject, java.io.Serializable {
         this.chassisNumber = chassisNumber;
         this.value = value;
         this.mileage = mileage;
+        this.type = type;
     }
 
     public UUID getUuid() {
@@ -104,15 +109,21 @@ public class Vehicle implements EditableObject, java.io.Serializable {
         this.mileage = mileage;
     }
 
+    public VehicleType getType() {
+        return type;
+    }
+
+    public void setType(VehicleType type) {
+        this.type = type;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
+
         if (o == null || getClass() != o.getClass()) return false;
 
-        Vehicle vehicle = (Vehicle) o;
-
-        return uuid == vehicle.uuid;
-
+        return uuid == ((Vehicle)o).getUuid();
     }
 
 
@@ -127,11 +138,12 @@ public class Vehicle implements EditableObject, java.io.Serializable {
                 ", chassisNumber='" + chassisNumber + '\'' +
                 ", value=" + value +
                 ", mileage=" + mileage +
+                ", type=" + type.getType() +
                 '}';
     }
 
     @Override
     public EditableObject copy() {
-        return null;
+        return new Vehicle(uuid, brand, model, licensePlate, productionDate, chassisNumber, value, mileage, (VehicleType)type.copy());
     }
 }

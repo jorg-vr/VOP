@@ -14,13 +14,17 @@ public class VehicleType implements EditableObject, java.io.Serializable {
     // The tax in %
     private double tax;
 
+    // vehicle-type id for use by the api
+    private int id;
+
     public VehicleType() {
     }
 
-    public VehicleType(UUID uuid, String type, double tax) {
+    public VehicleType(UUID uuid, String type, double tax, int id) {
         this.uuid = uuid;
         this.type = type;
         this.tax = tax;
+        this.id = id;
     }
 
     public UUID getUuid() {
@@ -47,6 +51,14 @@ public class VehicleType implements EditableObject, java.io.Serializable {
         this.tax = tax;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -60,6 +72,6 @@ public class VehicleType implements EditableObject, java.io.Serializable {
 
     @Override
     public EditableObject copy() {
-        return null;
+        return new VehicleType(uuid, type, tax, id);
     }
 }
