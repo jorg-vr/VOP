@@ -4,7 +4,6 @@ import dao.interfaces.DAOProvider;
 import dao.interfaces.HistoryDAO;
 import dao.interfaces.InsuranceDAO;
 import dao.interfaces.VehicleDAO;
-import model.fleet.Subfleet;
 import model.fleet.Vehicle;
 import model.identity.Identity;
 import model.insurance.Insurance;
