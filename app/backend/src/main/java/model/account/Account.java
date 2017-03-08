@@ -5,15 +5,18 @@ import model.history.EditableObject;
 import java.util.Random;
 import java.util.UUID;
 
-/**
- * Created by jorg on 3/2/17.
- */
-public class Account implements EditableObject {
+
+public class Account implements EditableObject, java.io.Serializable {
+
     private String login;
+
     private String hashedPassword;
     private Role role;
     private Identity identity;
     private UUID uuid;
+
+    public Account() {
+    }
 
     public Account(String login, String hashedPassword, Role role, Identity identity) {
         this.login = login;
@@ -41,25 +44,45 @@ public class Account implements EditableObject {
         return hashedPassword.equals(password); // TODO also use hashfunction
     }
 
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
     public String getLogin() {
         return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getHashedPassword() {
+        return hashedPassword;
+    }
+
+    public void setHashedPassword(String hashedPassword) {
+        this.hashedPassword = hashedPassword;
     }
 
     public Role getRole() {
         return role;
     }
 
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
     public Identity getIdentity() {
         return identity;
     }
 
+    public void setIdentity(Identity identity) {
+        this.identity = identity;
+    }
+
     @Override
-    public UUID getUUID() {
+    public UUID getUuid() {
         return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 
     @Override

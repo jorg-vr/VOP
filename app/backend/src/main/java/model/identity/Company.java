@@ -1,7 +1,7 @@
 package model.identity;
 
 
-public class Company extends Identity{
+public class Company extends Identity implements java.io.Serializable {
 
     private String name;
 
@@ -10,6 +10,9 @@ public class Company extends Identity{
     private String bankAccountNumber;
 
     private CompanyType companyType;
+
+    public Company() {
+    }
 
     public Company(String id, Address address, String email, int phoneNumber, String name, String btwNumber, String bankAccountNumber, CompanyType companyType) {
         super(id, address, email, phoneNumber);
