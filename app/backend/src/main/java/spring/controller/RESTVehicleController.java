@@ -49,7 +49,12 @@ public class RESTVehicleController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> postVehicles(@PathVariable("id") String id, @RequestBody RESTVehicle vehicle) {
         try {
-            controller.create(vehicle.getBrand(),vehicle.getModel(),vehicle.getLicense_plate(),LocalDate.parse(vehicle.getYear(),yearFormat),vehicle.getChassis_number(),vehicle.getKilometer_count());
+            controller.create(vehicle.getBrand(),
+                    vehicle.getModel(),
+                    vehicle.getLicense_plate(),
+                    LocalDate.parse(vehicle.getYear(),yearFormat),
+                    vehicle.getChassis_number(),
+                    vehicle.getKilometer_count());
             return new ResponseEntity<>("OK", HttpStatus.valueOf(200));
         } catch (DataAccessException e) {
             return new ResponseEntity<>("invalid input, object invalid", HttpStatus.valueOf(400));
