@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import spring.Exceptions.InvalidInputException;
+import spring.Exceptions.NotFoundException;
 import spring.Exceptions.NotImplementedException;
 import spring.model.RESTVehicle;
 
@@ -49,7 +51,7 @@ public class RESTVehicleController {
      * @return
      */
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<?> postVehicles(@PathVariable("id") String id, @RequestBody RESTVehicle vehicle) {
+    public void postVehicles(@PathVariable("id") String id, @RequestBody RESTVehicle vehicle) {
         try {
             controller.create(vehicle.getBrand(),
                     vehicle.getModel(),
@@ -57,9 +59,8 @@ public class RESTVehicleController {
                     LocalDate.parse(vehicle.getYear(),yearFormat),
                     vehicle.getChassis_number(),
                     vehicle.getKilometer_count());
-            return new ResponseEntity<>("OK", HttpStatus.valueOf(200));
         } catch (DataAccessException e) {
-            return new ResponseEntity<>("invalid input, object invalid", HttpStatus.valueOf(400));
+            throw new InvalidInputException();
         }
     }
 
@@ -69,13 +70,13 @@ public class RESTVehicleController {
      * @return
      */
     @RequestMapping(method = RequestMethod.GET , value = "{id}")
-    public ResponseEntity<?> getVehicle(@PathVariable("id") String id) {
+    public RESTVehicle getVehicle(@PathVariable("id") String id) {
 
         try {
-            return new ResponseEntity<>(controller.get(id), HttpStatus.valueOf(200));
+            return modelToRest(controller.get(id));
 
         } catch (DataAccessException e) {
-            return new ResponseEntity<>("Resource not found.", HttpStatus.valueOf(404));
+            throw new NotFoundException();
         }
     }
 
@@ -86,17 +87,16 @@ public class RESTVehicleController {
      * @return
      */
     @RequestMapping(method = RequestMethod.PUT , value = "{id}")
-    public ResponseEntity<?> putVehicle(@PathVariable("id") String id, @RequestBody RESTVehicle vehicle) {
+    public void putVehicle(@PathVariable("id") String id, @RequestBody RESTVehicle vehicle) {
         try {
             controller.get(id);
         } catch (DataAccessException e) {
-            return new ResponseEntity<>("Resource not found.", HttpStatus.valueOf(404));
+            throw new NotFoundException();
         }
         try {
             controller.update(restToModel(vehicle));
-            return new ResponseEntity<>("OK", HttpStatus.valueOf(200));
         } catch (DataAccessException e) {
-            return new ResponseEntity<>("Error in input.", HttpStatus.valueOf(400));
+            throw new InvalidInputException();
         }
 
     }
@@ -107,13 +107,12 @@ public class RESTVehicleController {
      * @return
      */
     @RequestMapping(method = RequestMethod.DELETE , value = "{id}")
-    public ResponseEntity<?> deleteVehicle(@PathVariable("id") String id) {
+    public void deleteVehicle(@PathVariable("id") String id) {
 
         try {
             controller.remove(controller.get(id));
-            return new ResponseEntity<>("OK",HttpStatus.valueOf(200));
         } catch (DataAccessException e) {
-            return new ResponseEntity<>("Resource not found.", HttpStatus.valueOf(404));
+            throw new NotFoundException();
         }
     }
 
