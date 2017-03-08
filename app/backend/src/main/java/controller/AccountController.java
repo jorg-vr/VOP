@@ -1,8 +1,8 @@
 package controller;
 
-import dao.AccountDAO;
-import dao.DAOProvider;
-import dao.DataAccessException;
+import dao.interfaces.AccountDAO;
+import dao.interfaces.DAOProvider;
+import dao.interfaces.DataAccessException;
 import model.account.Account;
 
 /**
