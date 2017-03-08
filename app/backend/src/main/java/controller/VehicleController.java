@@ -91,7 +91,7 @@ public class VehicleController{
     }
 
     public Filter<Vehicle> byLicensePlate(String licensePlate) {
-        return vehicleDAO.byLicensePlate();
+        return vehicleDAO.byLicensePlate(licensePlate);
     }
 
     public Filter<Vehicle> atProductionDate(LocalDate productionDate) {
@@ -107,7 +107,7 @@ public class VehicleController{
     }
 
     public Filter<Vehicle> atLeastMileage(int mileage) {
-        return vehicleDAO.atLeastMileage(mileage)
+        return vehicleDAO.atLeastMileage(mileage);
     }
 
     public Filter<Vehicle> maxMileage(int mileage) {

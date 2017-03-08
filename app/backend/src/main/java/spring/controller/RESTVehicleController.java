@@ -3,6 +3,7 @@ package spring.controller;
 import controller.VehicleController;
 
 import dao.interfaces.DataAccessException;
+import dao.interfaces.Filter;
 import model.fleet.Vehicle;
 import org.springframework.web.bind.annotation.*;
 import spring.Exceptions.InvalidInputException;
@@ -40,9 +41,19 @@ public class RESTVehicleController {
     @RequestMapping(method = RequestMethod.GET)
     public Collection<RESTVehicle> getAllVehicles(@RequestParam(required=false) String licensPlate,
                                               @RequestParam(required=false) String chassisNumber,
-                                              @RequestParam(required=false) Integer leasinCompany,
+                                              @RequestParam(required=false) Integer leasingCompany,
                                               @RequestParam(required=false) Integer year,
                                               @RequestParam(required=false) Integer company) {
+
+        List<Filter<Vehicle>> filters=new ArrayList<>();
+        if (licensPlate!=null){filters.add(controller.byLicensePlate(licensPlate));}
+        if (chassisNumber!=null)//TODO after issue #87
+        if (leasingCompany!=null)//TODO after issue #88
+        if (licensPlate!=null){filters.add(controller.byLicensePlate(licensPlate));}
+        if (company!=null)//TODO after issue #88
+        if (licensPlate!=null){filters.add(controller.byLicensePlate(licensPlate));}
+
+
         try {
             Collection<RESTVehicle> result=new ArrayList<>();
             for(Vehicle vehicle : controller.listFiltered() ){
