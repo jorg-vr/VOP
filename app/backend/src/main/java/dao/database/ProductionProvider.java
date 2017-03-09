@@ -1,11 +1,10 @@
 package dao.database;
 
-import dao.interfaces.DAOProvider;
-import dao.interfaces.HistoryDAO;
-import dao.interfaces.InsuranceDAO;
-import dao.interfaces.VehicleDAO;
+import dao.interfaces.*;
 import model.fleet.Vehicle;
+import model.identity.Company;
 import model.identity.Identity;
+import model.identity.Person;
 import model.insurance.Insurance;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -53,12 +52,22 @@ public class ProductionProvider implements DAOProvider {
     }
 
     @Override
-    public InsuranceDAO getInsuranceDao() {
+    public AccountDAO getAccountDao() {
         return null;
     }
 
     @Override
-    public VehicleDAO getVehicleDao() {
+    public CompanyDAO<Company> getCompanyDAO() {
+        return null;
+    }
+
+    @Override
+    public CustomerDAO getCustomerDAO() {
+        return null;
+    }
+
+    @Override
+    public FleetDAO getFleetDAO() {
         return null;
     }
 
@@ -69,6 +78,31 @@ public class ProductionProvider implements DAOProvider {
 
     @Override
     public HistoryDAO<Insurance> getInsuranceHistoryDAO() {
+        return null;
+    }
+
+    @Override
+    public IdentityDAO<Person> getIdentityDAO() {
+        return null;
+    }
+
+    @Override
+    public InsuranceDAO getInsuranceDAO() {
+        return null;
+    }
+
+    @Override
+    public PersonDAO getPersonDAO() {
+        return null;
+    }
+
+    @Override
+    public VehicleDAO getVehicleDAO() {
+        return null;
+    }
+
+    @Override
+    public VehicleTypeDao getVehicleTypeDAO() {
         return null;
     }
 
