@@ -8,13 +8,11 @@
         <meta attribute="class-description">
             This class contains the vehicletype details.
         </meta>
-        <id name="uuid" type="binary" column="id">
+        <id name="uuid" type="binary" column="uuid">
             <generator class="uuid"/>
         </id>
         <property name="type" column="type" type="string"/>
         <property name="tax" column="tax" type="double"/>
         <property name="id" column="id" type="int"/>
-
-
     </class>
 </hibernate-mapping>

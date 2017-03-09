@@ -14,9 +14,8 @@
 
         <property name="login" column="login" type="string"/>
         <property name="hashedPassword" column="hashed_password" type="string"/>
-        <property name="identity" column="iden" type="string"/>
-        <!--<property name="role" column="iden" type="string"/>-->
-        <many-to-one name="identity" column="identity_id"/>
+        <many-to-one name="identity" column="identity_id" class="model.identity.Identity"/>
+
 
     </class>
 </hibernate-mapping>
