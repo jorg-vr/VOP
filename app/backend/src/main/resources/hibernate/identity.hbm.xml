@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="model.identity.Identity" table="ACCOUNT">
+        <meta attribute="class-description">
+            This class contains the account detail.
+        </meta>
+        <id name="uuid" type="string" column="id">
+            <generator class="uuid"/>
+        </id>
+
+        <many-to-one name="address" column="address_id" class="model.identity.Address"/>
+        <property name="email" column="email" type="string"/>
+        <property name="phoneNumber" column="phonenumber" type="string"/>
+        <joined-subclass name="model.identity.Company" table="COMPANY">
+            <key column="identity_id"/>
+            <property name="name" column="name" type="string"/>
+            <property name="btwNumber" column="btw_number" type="string"/>
+            <property name="bankAccountNumber" column="bank_account_number" type="string"/>
+            <joined-subclass name="model.identity.Customer" table="CUSTOMER">
+                <key column="identity_id"/>
+                <set name="fleets" access="field" table="FLEET" cascade="all"
+                     lazy="true" fetch="select">
+                    <key column="owner_id" not-null="true"/>
+                    <one-to-many class="model.fleet.Fleet" />
+                </set>
+            </joined-subclass>
+        </joined-subclass>
+        <joined-subclass name="model.identity.Person" table="PERSON">
+            <key column="identity_id"/>
+            <property name="firstName" column="first_name" type="string"/>
+            <property name="lastName" column="last_name" type="string"/>
+            <property name="dateOfBirth" column="date_of_birth" type="java.time.LocalDate"/>
+        </joined-subclass>
+
+    </class>
+</hibernate-mapping>

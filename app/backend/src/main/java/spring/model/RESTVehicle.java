@@ -10,33 +10,33 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(value= HttpStatus.OK, reason="OK")
 public class RESTVehicle {
     private String id;
-    private String license_plate;
-    private String chassis_number;
+    private String licensePlate;
+    private String chassisNumber;
     private String brand;
     private String model;
     private String type;
-    private int kilometer_count;
+    private int kilometerCount;
     private String year;
-    private String leasing_company; //id of leasing company
-    private String created_at;
-    private String updated_at;
+    private String leasingCompany; //id of leasing company
+    private String createdAt;
+    private String updatedAt;
     private String url;
 
     public RESTVehicle() {
     }
 
-    public RESTVehicle(String id, String license_plate, String chassis_number, String brand, String model, String type, int kilometer_count, String year, String leasing_company, String created_at, String updated_at, String url) {
+    public RESTVehicle(String id, String licensePlate, String chassisNumber, String brand, String model, String type, int kilometerCount, String year, String leasingCompany, String createdAt, String updatedAt, String url) {
         this.id = id;
-        this.license_plate = license_plate;
-        this.chassis_number = chassis_number;
+        this.licensePlate = licensePlate;
+        this.chassisNumber = chassisNumber;
         this.brand = brand;
         this.model = model;
         this.type = type;
-        this.kilometer_count = kilometer_count;
+        this.kilometerCount = kilometerCount;
         this.year = year;
-        this.leasing_company = leasing_company;
-        this.created_at = created_at;
-        this.updated_at = updated_at;
+        this.leasingCompany = leasingCompany;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
         this.url = url;
     }
 
@@ -48,20 +48,20 @@ public class RESTVehicle {
         this.id = id;
     }
 
-    public String getLicense_plate() {
-        return license_plate;
+    public String getLicensePlate() {
+        return licensePlate;
     }
 
-    public void setLicense_plate(String license_plate) {
-        this.license_plate = license_plate;
+    public void setLicensePlate(String licensePlate) {
+        this.licensePlate = licensePlate;
     }
 
-    public String getChassis_number() {
-        return chassis_number;
+    public String getChassisNumber() {
+        return chassisNumber;
     }
 
-    public void setChassis_number(String chassis_number) {
-        this.chassis_number = chassis_number;
+    public void setChassisNumber(String chassisNumber) {
+        this.chassisNumber = chassisNumber;
     }
 
     public String getBrand() {
@@ -88,12 +88,12 @@ public class RESTVehicle {
         this.type = type;
     }
 
-    public int getKilometer_count() {
-        return kilometer_count;
+    public int getKilometerCount() {
+        return kilometerCount;
     }
 
-    public void setKilometer_count(int kilometer_count) {
-        this.kilometer_count = kilometer_count;
+    public void setKilometerCount(int kilometerCount) {
+        this.kilometerCount = kilometerCount;
     }
 
     public String getYear() {
@@ -104,28 +104,28 @@ public class RESTVehicle {
         this.year = year;
     }
 
-    public String getLeasing_company() {
-        return leasing_company;
+    public String getLeasingCompany() {
+        return leasingCompany;
     }
 
-    public void setLeasing_company(String leasing_company) {
-        this.leasing_company = leasing_company;
+    public void setLeasingCompany(String leasingCompany) {
+        this.leasingCompany = leasingCompany;
     }
 
-    public String getCreated_at() {
-        return created_at;
+    public String getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated_at(String created_at) {
-        this.created_at = created_at;
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public String getUpdated_at() {
-        return updated_at;
+    public String getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void setUpdated_at(String updated_at) {
-        this.updated_at = updated_at;
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public String getUrl() {
