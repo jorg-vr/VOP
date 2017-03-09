@@ -71,6 +71,11 @@ public class VehicleType implements EditableObject, java.io.Serializable {
     }
 
     @Override
+    public int hashCode() {
+        return uuid.hashCode();
+    }
+
+    @Override
     public EditableObject copy() {
         return new VehicleType(uuid, type, tax, id);
     }
