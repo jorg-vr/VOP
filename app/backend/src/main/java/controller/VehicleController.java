@@ -90,10 +90,14 @@ public class VehicleController{
      * @return
      * @throws DataAccessException
      */
-    public Vehicle create(String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int mileage, String type) throws DataAccessException {
-        Vehicle vehicle=new Vehicle(UUID.randomUUID(),brand,model,licensePlate,productionDate,chassisNumber,0,mileage,null); //TODO value
+    public Vehicle create(String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int mileage,  String vehicleType) throws DataAccessException {
+        Vehicle vehicle=new Vehicle(UUID.randomUUID(),brand,model,licensePlate,productionDate,chassisNumber,0,mileage,getVehicleType(vehicleType)); //TODO value
         vehicleDAO.create(vehicle);
         return vehicle;
+    }
+
+    public VehicleType getVehicleType(String vehicleType) throws DataAccessException {
+        return ProductionProvider.getInstance().getVehicleTypeDAO().get(UUID.fromString(vehicleType));
     }
 
 }

@@ -137,16 +137,16 @@ public class RESTVehicleController {
      * @param restVehicle
      * @return
      */
-    private Vehicle restToModel(RESTVehicle restVehicle){
-        return new Vehicle(UUID.fromString(restVehicle.getId()),
+    private Vehicle restToModel(RESTVehicle restVehicle) throws DataAccessException {
+        return new Vehicle(UUID.randomUUID(),
                 restVehicle.getBrand(),
                 restVehicle.getModel(),
                 restVehicle.getLicensePlate(),
-                LocalDate.parse(restVehicle.getYear(),yearFormat),
+                LocalDate.parse(restVehicle.getYear()+"0101",yearFormat),
                 restVehicle.getChassisNumber(),
                 0,//TODO fix value
                 restVehicle.getKilometerCount(),
-                null//TODO String value of type has to be converted to the corresponding VehicleType object
+                controller.getVehicleType(restVehicle.getType())
         );
     }
 
@@ -161,13 +161,13 @@ public class RESTVehicleController {
                 vehicle.getChassisNumber(),
                 vehicle.getBrand(),
                 vehicle.getModel(),
-                null,//TODO fix type
+                vehicle.getType().getUuid().toString(),
                 vehicle.getMileage(),
                 vehicle.getProductionDate().format(yearFormat),
                 null,//TODO search leasing company
                 null,//TODO implement edit dates with history
                 null,
-                null// todo calc URL
+                "/vehicle/"+vehicle.getUuid().toString()
         );
     }
 
