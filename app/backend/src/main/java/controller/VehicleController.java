@@ -1,5 +1,6 @@
 package controller;
 
+import dao.database.ProductionProvider;
 import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
 import dao.interfaces.VehicleDAO;
@@ -24,7 +25,11 @@ public class VehicleController{
     private VehicleDAO vehicleDAO;
 
     public VehicleController() {
-        vehicleDAO=new TestVehicleDAO();//todo use real DAO
+        vehicleDAO= ProductionProvider.getInstance().getVehicleDAO();
+    }
+
+    public VehicleDAO getVehicleDAO() {
+        return vehicleDAO;
     }
 
     /***
@@ -83,39 +88,4 @@ public class VehicleController{
         return vehicle;
     }
 
-    public Filter<Vehicle> byBrand(String brandName) {
-        return vehicleDAO.byBrand(brandName);
-    }
-
-    public Filter<Vehicle> byModel(String model) {
-        return vehicleDAO.byModel(model);
-    }
-
-    public Filter<Vehicle> byLicensePlate(String licensePlate) {
-        return vehicleDAO.byLicensePlate(licensePlate);
-    }
-
-    public Filter<Vehicle> atProductionDate(LocalDate productionDate) {
-        return vehicleDAO.atProductionDate(productionDate);
-    }
-
-    public Filter<Vehicle> beforeProductionDate(LocalDate productionDate) {
-        return vehicleDAO.beforeProductionDate(productionDate);
-    }
-
-    public Filter<Vehicle> afterProductionDate(LocalDate productionDate) {
-        return vehicleDAO.afterProductionDate(productionDate);
-    }
-
-    public Filter<Vehicle> atLeastMileage(int mileage) {
-        return vehicleDAO.atLeastMileage(mileage);
-    }
-
-    public Filter<Vehicle> maxMileage(int mileage) {
-        return vehicleDAO.maxMileage(mileage);
-    }
-
-    public Filter<Vehicle> byType(VehicleType type) {
-        return vehicleDAO.byType(type);
-    }
 }

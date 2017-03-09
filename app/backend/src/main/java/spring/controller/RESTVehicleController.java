@@ -4,6 +4,7 @@ import controller.VehicleController;
 
 import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
+import dao.interfaces.VehicleDAO;
 import model.fleet.Vehicle;
 import org.springframework.web.bind.annotation.*;
 import spring.Exceptions.InvalidInputException;
@@ -45,13 +46,14 @@ public class RESTVehicleController {
                                               @RequestParam(required=false) Integer year,
                                               @RequestParam(required=false) Integer company) {
 
+        VehicleDAO vehicleDAO=controller.getVehicleDAO();
         List<Filter<Vehicle>> filters=new ArrayList<>();
-        if (licensPlate!=null){filters.add(controller.byLicensePlate(licensPlate));}
+        if (licensPlate!=null){filters.add(vehicleDAO.byLicensePlate(licensPlate));}
         if (chassisNumber!=null)//TODO after issue #87
         if (leasingCompany!=null)//TODO after issue #88
-        if (year!=null){filters.add(controller.atProductionDate(LocalDate.ofYearDay(year,0)));}
+        if (year!=null){filters.add(vehicleDAO.atProductionDate(LocalDate.ofYearDay(year,0)));}
         if (company!=null)//TODO after issue #88
-        if (licensPlate!=null){filters.add(controller.byLicensePlate(licensPlate));}
+        if (licensPlate!=null){filters.add(vehicleDAO.byLicensePlate(licensPlate));}
 
         Collection<RESTVehicle> result=new ArrayList<>();
         try {
