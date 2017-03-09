@@ -13,6 +13,5 @@
         </id>
         <property name="type" column="type" type="string"/>
         <property name="tax" column="tax" type="double"/>
-        <property name="id" column="id" type="int"/>
     </class>
 </hibernate-mapping>
