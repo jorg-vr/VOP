@@ -2,7 +2,6 @@ package spring.controller;
 
 import org.springframework.web.bind.annotation.*;
 import spring.model.RESTRole;
-import spring.model.RESTUser;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

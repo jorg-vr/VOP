@@ -1,9 +1,16 @@
 package spring.controller;
 
+import controller.AccountController;
+import controller.PersonController;
+import dao.interfaces.DataAccessException;
+import model.account.Account;
+import model.identity.Person;
 import org.springframework.web.bind.annotation.*;
+import spring.Exceptions.ConflictException;
+import spring.Exceptions.NotFoundException;
 import spring.model.RESTUser;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -14,24 +21,41 @@ import java.util.*;
  * 3) /users/{id} GET
  * 4) /users/{id} PUT
  * 5) /users/{id} DELETE
- * TODO: exceptions
+ * TODO: more more exceptions
  */
 @RestController
 @RequestMapping("/users")
 public class RESTUserController {
 
+    private AccountController accountController = new AccountController(null);
+
+    private PersonController personController = new PersonController(null);
+
+
     /**
      * @return a collection of all the users in the system.
      * If there are no users, an empty collection will be returned.
+     * TODO filters
      */
     @RequestMapping(method = RequestMethod.GET)
     public Collection<RESTUser> get() {
-        // Get the account with login = email
+        Collection<RESTUser> users = new ArrayList<>();
 
-        // Get the person with id = id
+        try {
+            Collection<Person> persons = personController.getAll();
 
-        // Merge the 2 objects
-        return null;
+            for (Person person : persons) {
+
+                Account account = accountController.getAccount(person.getEmail());
+                RESTUser user = merge(person.getUuid(), person, account);
+                users.add(user);
+            }
+        } catch (DataAccessException e) {
+            // This should not happen unless there is something wrong with the database
+            System.err.println("Something is wrong with the database");
+            e.printStackTrace();
+        }
+        return users;
     }
 
     /**
@@ -51,9 +75,20 @@ public class RESTUserController {
      */
     @RequestMapping(method = RequestMethod.POST)
     public RESTUser post(@RequestBody RESTUser user) {
-        // Create the Person
+        try {
 
-        // Create the Account
+            // Check if the account name is still free
+            if (accountController.isTaken(user.getEmail())) {
+                throw new ConflictException();
+            }
+
+            Account account = accountController.createAccount(user.getEmail(), user.getPassword());
+            Person person = personController.createPerson(user.getFirstName(), user.getLastName(), user.getEmail(), null);
+
+            return merge(person.getUuid(), person, account);
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
@@ -65,7 +100,15 @@ public class RESTUserController {
      */
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
     public RESTUser getId(@PathVariable("id") String id) {
-        return null;
+        try {
+            UUID uuid = UUID.fromString(id);
+            Person person = personController.get(uuid);
+            Account account = accountController.getAccount(person.getEmail());
+
+            return merge(person.getUuid(), person, account);
+        } catch (DataAccessException | NumberFormatException e) {
+            throw new NotFoundException();
+        }
     }
 
     /**
@@ -83,7 +126,44 @@ public class RESTUserController {
      */
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
     public RESTUser putId(@PathVariable("id") String id, @RequestBody RESTUser user) {
-        return null;
+        UUID uuid;
+        try {
+            uuid = UUID.fromString(id);
+        } catch (NumberFormatException e) {
+            throw new NotFoundException();
+        }
+        try {
+            Person person = personController.get(uuid);
+            Account account = accountController.getAccount(person.getEmail());
+
+            // TODO dit bespreken met jorg
+            if (user.getFirstName() != null) {
+                person.setFirstName(user.getFirstName());
+            }
+            if (user.getLastName() != null) {
+                person.setLastName(user.getLastName());
+            }
+            if (user.getPassword() != null) {
+                account.setHashedPassword(user.getPassword());
+            }
+
+            String email = user.getEmail();
+            if (email != null) {
+                if (!email.equals(account.getLogin()) && accountController.isTaken(email)) {
+                    throw new ConflictException();
+                }
+                account.setLogin(email);
+            }
+
+            accountController.updateAccount(account);
+            personController.update(person);
+
+            user.setId(person.getUuid() + "");
+            user.setUpdatedAt(LocalDateTime.now()); // TODO editableobject
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+        }
+        return user;
     }
 
     /**
@@ -93,6 +173,27 @@ public class RESTUserController {
      */
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
     public void deleteId(@PathVariable("id") String id) {
+        UUID uuid = UUID.fromString(id);
+        try {
+            Person person = personController.get(uuid);
+
+            accountController.archiveAccount(person.getEmail());
+            personController.archive(person);
+        } catch (DataAccessException e) {
+            throw new NotFoundException();
+        }
     }
 
+    private RESTUser merge(UUID id, Person person, Account account) {
+        RESTUser user = new RESTUser();
+        user.setId(id + "");
+        user.setPassword(account.getHashedPassword());
+        user.setUpdatedAt(LocalDateTime.now()); // TODO needs to be in editable object
+        user.setCreatedAt(LocalDateTime.now());
+        user.setFirstName(person.getFirstName());
+        user.setLastName(person.getLastName());
+        user.setEmail(person.getEmail());
+        user.setUrl("TODO"); // TODO
+        return user;
+    }
 }
