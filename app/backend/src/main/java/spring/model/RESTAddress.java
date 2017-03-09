@@ -7,15 +7,15 @@ public class RESTAddress {
     private String country;
     private String city;
     private String street;
-    private String house_number;
-    private int postal_code;
+    private String houseNumber;
+    private String postalCode;
 
-    public RESTAddress(String country, String city, String street, String house_number, int postal_code) {
+    public RESTAddress(String country, String city, String street, String houseNumber, String postalCode) {
         this.country = country;
         this.city = city;
         this.street = street;
-        this.house_number = house_number;
-        this.postal_code = postal_code;
+        this.houseNumber = houseNumber;
+        this.postalCode = postalCode;
     }
 
     public RESTAddress() {
@@ -45,19 +45,19 @@ public class RESTAddress {
         this.street = street;
     }
 
-    public String getHouse_number() {
-        return house_number;
+    public String getHouseNumber() {
+        return houseNumber;
     }
 
-    public void setHouse_number(String house_number) {
-        this.house_number = house_number;
+    public void setHouseNumber(String houseNumber) {
+        this.houseNumber = houseNumber;
     }
 
-    public int getPostal_code() {
-        return postal_code;
+    public String getPostalCode() {
+        return postalCode;
     }
 
-    public void setPostal_code(int postal_code) {
-        this.postal_code = postal_code;
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
     }
 }

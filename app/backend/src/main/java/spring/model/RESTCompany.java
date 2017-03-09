@@ -6,34 +6,43 @@ package spring.model;
 public class RESTCompany {
 
 
-    private int id;
+    private String id;
     private String name;
-    private String vat_number;
-    private int phone_number;
+    private String vatNumber;
+    private String phoneNumber;
     private RESTAddress address;
-    private String created_at;
-    private String last_updated;
+    private String createdAt;
+    private String lastUpdated;
+    private String lastUpdatedBy;
     private String url;
 
-    public RESTCompany(int id, String name, String vat_number, int phone_number, RESTAddress address, String created_at, String last_updated, String url) {
+    public RESTCompany(String id, String name, String vatNumber, String phoneNumber, RESTAddress address, String createdAt, String lastUpdated, String lastUpdatedBy, String url) {
         this.id = id;
         this.name = name;
-        this.vat_number = vat_number;
-        this.phone_number = phone_number;
+        this.vatNumber = vatNumber;
+        this.phoneNumber = phoneNumber;
         this.address = address;
-        this.created_at = created_at;
-        this.last_updated = last_updated;
+        this.createdAt = createdAt;
+        this.lastUpdated = lastUpdated;
+        this.lastUpdatedBy = lastUpdatedBy;
         this.url = url;
     }
-
     public RESTCompany() {
     }
 
-    public int getId() {
+    public String getLastUpdatedBy() {
+        return lastUpdatedBy;
+    }
+
+    public void setLastUpdatedBy(String lastUpdatedBy) {
+        this.lastUpdatedBy = lastUpdatedBy;
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -45,20 +54,20 @@ public class RESTCompany {
         this.name = name;
     }
 
-    public String getVat_number() {
-        return vat_number;
+    public String getVatNumber() {
+        return vatNumber;
     }
 
-    public void setVat_number(String vat_number) {
-        this.vat_number = vat_number;
+    public void setVatNumber(String vatNumber) {
+        this.vatNumber = vatNumber;
     }
 
-    public int getPhone_number() {
-        return phone_number;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setPhone_number(int phone_number) {
-        this.phone_number = phone_number;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public RESTAddress getAddress() {
@@ -69,20 +78,20 @@ public class RESTCompany {
         this.address = address;
     }
 
-    public String getCreated_at() {
-        return created_at;
+    public String getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated_at(String created_at) {
-        this.created_at = created_at;
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public String getLast_updated() {
-        return last_updated;
+    public String getLastUpdated() {
+        return lastUpdated;
     }
 
-    public void setLast_updated(String last_updated) {
-        this.last_updated = last_updated;
+    public void setLastUpdated(String lastUpdated) {
+        this.lastUpdated = lastUpdated;
     }
 
     public String getUrl() {
