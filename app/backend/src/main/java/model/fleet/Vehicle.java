@@ -73,7 +73,8 @@ public class Vehicle implements EditableObject, java.io.Serializable {
         return licensePlate;
     }
 
-    public void setLicensePlate(String licensePlate) {
+    public void setLicensePlate(String licensePlate) /*throws InvalidInputException*/{
+        //if(!licensePlate.matches(""))
         this.licensePlate = licensePlate;
     }
 
