@@ -8,10 +8,8 @@ import dao.interfaces.VehicleDAO;
 import model.fleet.Vehicle;
 import model.identity.Address;
 import model.identity.Customer;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import spring.Exceptions.InvalidInputException;
 import spring.model.RESTAddress;
 import spring.model.RESTCompany;
 import spring.model.RESTVehicle;
@@ -56,7 +54,17 @@ public class RESTCompanyController {
         return result;
     }
 
-
+    @RequestMapping(method = RequestMethod.POST)
+    public void postCompanies(@RequestBody RESTCompany restCompany) {
+        try {
+            controller.create(RESTToModelAddress(restCompany.getAddress()),
+                    restCompany.getPhoneNumber(),
+                    restCompany.getName(),
+                    restCompany.getVatNumber());
+        } catch (DataAccessException e) {
+            throw new InvalidInputException(e);
+        }
+    }
 
     private RESTCompany modelToRESTCompany(Customer customer){
         return new RESTCompany(customer.getUuid().toString(),
@@ -76,5 +84,13 @@ public class RESTCompanyController {
                 address.getStreet(),
                 address.getStreetNumber(),
                 address.getPostalCode());
+    }
+
+    private  Address RESTToModelAddress(RESTAddress restAddress){
+        return new Address(restAddress.getStreet(),
+                restAddress.getHouseNumber(),
+                restAddress.getCity(),
+                restAddress.getPostalCode(),
+                restAddress.getCountry());
     }
 }

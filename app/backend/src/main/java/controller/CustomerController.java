@@ -22,7 +22,15 @@ public class CustomerController extends AbstractController<Customer>{
         super(ProductionProvider.getInstance().getCustomerDAO());
     }
 
-
+    public Customer create(Address address, String phoneNumber, String name, String btwNumber) throws DataAccessException {
+        Customer customer=new Customer();
+        customer.setAddress(address);
+        customer.setPhoneNumber(phoneNumber);
+        customer.setName(name);
+        customer.setBtwNumber(btwNumber);
+        //TODO add other setValues
+        return getDao().create(customer);
+    }
     public void update(Customer customer) {
 
     }
