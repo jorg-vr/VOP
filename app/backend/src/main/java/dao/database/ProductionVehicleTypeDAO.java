@@ -12,6 +12,12 @@ import java.util.UUID;
  * Created by sam on 3/8/17.
  */
 public class ProductionVehicleTypeDAO implements VehicleTypeDao {
+
+    @Override
+    public VehicleType create(VehicleType vehicleType) throws DataAccessException {
+        return null;
+    }
+
     @Override
     public VehicleType get(UUID id) throws DataAccessException {
         return null;
