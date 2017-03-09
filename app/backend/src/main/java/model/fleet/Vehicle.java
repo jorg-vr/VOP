@@ -126,6 +126,10 @@ public class Vehicle implements EditableObject, java.io.Serializable {
         return uuid == ((Vehicle)o).getUuid();
     }
 
+    @Override
+    public int hashCode() {
+        return uuid.hashCode();
+    }
 
     @Override
     public String toString() {
