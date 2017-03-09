@@ -1,22 +1,26 @@
 <template>
     <div>
         <div class="page-header">
-            <h1> {{message}} </h1>
+            <h1>Vehicles</h1>
         </div>
-        <p>Some text in index</p>
+        <ul>
+            <li v-for="vehicle in getVehicles">
+                <router-link :to="{name: 'vehicle', params: { id: vehicle.id }}">
+                    {{vehicle.license_plate}}
+                </router-link>
+            </li>
+        </ul>
         <router-view></router-view>
     </div>
-
 </template>
 <script>
     export default {
-        data: function () {
-            return {
-                message: this.$i18n.t('vehicle')
+        methods: {
+            getVehicles: function(){
+                this.$http.get('/vehicles').then(response => {
+                        console.log(response.text);
+                })
             }
-        },
-        methods:{
-
         }
     }
 </script>

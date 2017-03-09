@@ -11,11 +11,11 @@ Vue.use(VueRouter);
 Vue.use(VueResource);
 //Language support
 Vue.use(VueI18n);
-
+/*
 Object.keys(locales).forEach(function (lang) {
     Vue.locale(lang, locales[lang])
 });
-
+*/
 const router = new VueRouter({
     mode: 'history',
     routes: routes

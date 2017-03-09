@@ -35,11 +35,11 @@ export default [
             { path: 'fleet/:id/edit', component: EditFleet },
             { path: 'fleet/:id/remove', component: RemoveFleet },
             //Vehicle
-            { path: 'vehicle', component: IndexVehicle },
-            { path: 'vehicle/new', component: NewVehicle },
-            { path: 'vehicle/:id', component: ShowVehicle },
-            { path: 'vehicle/:id/edit', component: EditVehicle },
-            { path: 'vehicle/:id/remove', component: RemoveVehicle }
+            { path: 'vehicle', name: 'vehicles', component: IndexVehicle },
+            { path: 'vehicle/new', name: 'new_vehicle', component: NewVehicle },
+            { path: 'vehicle/:id', name: 'vehicle', component: ShowVehicle },
+            { path: 'vehicle/:id/edit', name: 'edit_vehicle', component: EditVehicle },
+            { path: 'vehicle/:id/remove', name: 'remove_vehicle', component: RemoveVehicle }
         ]
     },
         //TODO: Make a not found page!
