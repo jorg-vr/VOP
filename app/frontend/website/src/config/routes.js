@@ -1,4 +1,4 @@
-import App from '../App.vue'
+import App from '../components/App.vue'
 import New from '../components/identity/New.vue'
 import Edit from '../components/identity/Edit.vue'
 import Index from '../components/identity/Index.vue'
