@@ -4,7 +4,6 @@ import dao.interfaces.DAOProvider;
 import dao.interfaces.HistoryDAO;
 import dao.interfaces.InsuranceDAO;
 import dao.interfaces.VehicleDAO;
-import model.fleet.Subfleet;
 import model.fleet.Vehicle;
 import model.identity.Identity;
 import model.insurance.Insurance;
@@ -70,11 +69,6 @@ public class ProductionProvider implements DAOProvider {
 
     @Override
     public HistoryDAO<Insurance> getInsuranceHistoryDAO() {
-        return null;
-    }
-
-    @Override
-    public HistoryDAO<Subfleet> getSubfleetHistoryDAO() {
         return null;
     }
 
