@@ -18,8 +18,8 @@ public class TestVehicleDAO implements VehicleDAO {
         UUID two = UUID.randomUUID();
         UUID three = UUID.randomUUID();
         UUID four = UUID.randomUUID();
-        VehicleType type1 = new VehicleType(three, "AE - Cabriolet", 210, 5);
-        VehicleType type2 = new VehicleType(four, "AA - Sedan", 530, 3);
+        VehicleType type1 = new VehicleType(three, "AE - Cabriolet", 210);
+        VehicleType type2 = new VehicleType(four, "AA - Sedan", 530);
         vehicles.put(one, new Vehicle(one, "Volkswagen", "Beetle", "ABC-123", LocalDate.now(), "abcdefhijk", 1000, 123, type1));
         vehicles.put(two, new Vehicle(two, "Lamborghini", "Diablo GT", "IAM-007", LocalDate.now(), "abcdefhijk", 3, 123, type2));
     }

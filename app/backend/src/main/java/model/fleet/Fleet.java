@@ -73,7 +73,6 @@ public class Fleet implements EditableObject, java.io.Serializable {
         return uuid;
     }
 
-
     public void setUuid(UUID uuid) {
         this.uuid = uuid;
     }
@@ -87,7 +86,7 @@ public class Fleet implements EditableObject, java.io.Serializable {
     }
 
     public Collection<Vehicle> getVehicles() {
-        return new ArrayList<>(vehicles);
+        return vehicles;
     }
 
     public void setVehicles(Collection<Vehicle> vehicles) {
