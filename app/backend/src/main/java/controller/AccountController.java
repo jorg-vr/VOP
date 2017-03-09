@@ -49,6 +49,10 @@ public class AccountController {
         return dao.get(name);
     }
 
+    public void updateAccount(Account account) throws DataAccessException {
+        dao.update(account);
+    }
+
     /**
      * Attempts to archive the account with the given name
      *
@@ -62,7 +66,7 @@ public class AccountController {
      * @param name the account name
      * @return true if the name is already taken
      */
-    public boolean nameTaken(String name) {
+    public boolean isTaken(String name) {
         boolean taken = true;
         try {
             dao.get(name);

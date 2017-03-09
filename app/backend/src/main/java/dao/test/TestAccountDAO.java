@@ -64,12 +64,18 @@ public class TestAccountDAO implements AccountDAO {
 
     @Override
     public void update(Account account) throws DataAccessException {
-
+        if (!accounts.containsKey(account.getLogin())) {
+            throw new DataAccessException();
+        }
+        accounts.put(account.getLogin(), account);
     }
 
     @Override
     public void remove(Account account) throws DataAccessException {
-
+        if (!accounts.containsKey(account.getLogin())) {
+            throw new DataAccessException();
+        }
+        accounts.remove(account.getLogin(), account);
     }
 
     @Override

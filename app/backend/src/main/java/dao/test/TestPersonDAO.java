@@ -45,7 +45,7 @@ public class TestPersonDAO implements PersonDAO {
 
     @Override
     public Person get(UUID id) throws DataAccessException {
-        if (! persons.containsKey(id)) {
+        if (!persons.containsKey(id)) {
             throw new DataAccessException();
         }
         return persons.get(id);
@@ -53,12 +53,15 @@ public class TestPersonDAO implements PersonDAO {
 
     @Override
     public void update(Person person) throws DataAccessException {
-
+        if (!persons.containsKey(person.getUuid())) {
+            throw new DataAccessException();
+        }
+        persons.put(person.getUuid(), person);
     }
 
     @Override
     public void remove(Person person) throws DataAccessException {
-        if (! persons.containsKey(person.getUuid())) {
+        if (!persons.containsKey(person.getUuid())) {
             throw new IllegalArgumentException();
         }
         persons.remove(person.getUuid());

@@ -1,20 +1,15 @@
 package spring.controller;
 
-import com.sun.javaws.exceptions.InvalidArgumentException;
 import controller.AccountController;
 import controller.PersonController;
 import dao.interfaces.DataAccessException;
 import model.account.Account;
 import model.identity.Person;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import spring.Exceptions.ConflictException;
-import spring.Exceptions.InvalidInputException;
 import spring.Exceptions.NotFoundException;
-import spring.Exceptions.NotImplementedException;
 import spring.model.RESTUser;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -26,7 +21,7 @@ import java.util.*;
  * 3) /users/{id} GET
  * 4) /users/{id} PUT
  * 5) /users/{id} DELETE
- * TODO: more exceptions
+ * TODO: more more exceptions
  */
 @RestController
 @RequestMapping("/users")
@@ -83,7 +78,7 @@ public class RESTUserController {
         try {
 
             // Check if the account name is still free
-            if (accountController.nameTaken(user.getEmail())) {
+            if (accountController.isTaken(user.getEmail())) {
                 throw new ConflictException();
             }
 
@@ -154,16 +149,21 @@ public class RESTUserController {
 
             String email = user.getEmail();
             if (email != null) {
-                if (!email.equals(account.getLogin()) && accountController.nameTaken(email)) {
+                if (!email.equals(account.getLogin()) && accountController.isTaken(email)) {
                     throw new ConflictException();
                 }
                 account.setLogin(email);
             }
 
+            accountController.updateAccount(account);
+            personController.update(person);
+
+            user.setId(person.getUuid() + "");
+            user.setUpdatedAt(LocalDateTime.now()); // TODO editableobject
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
-        return null;
+        return user;
     }
 
     /**

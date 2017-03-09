@@ -27,6 +27,10 @@ public class AbstractController<T> {
 
     }
 
+    public void update(T t) throws DataAccessException {
+        dao.update(t);
+    }
+
     public void archive(T t) throws DataAccessException {
         dao.remove(t);
     }
