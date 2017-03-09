@@ -62,11 +62,10 @@ public class VehicleController{
 
     /***
      *
-     * @param vehicle is removed
      * @throws DataAccessException
      */
-    public void remove(Vehicle vehicle) throws DataAccessException {
-        vehicleDAO.remove(vehicle);
+    public void remove(String id) throws DataAccessException {
+        vehicleDAO.remove(get(id));
     }
 
     /***

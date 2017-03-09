@@ -125,7 +125,7 @@ public class RESTVehicleController {
     public void deleteVehicle(@PathVariable("id") String id) {
 
         try {
-            controller.remove(controller.get(id));
+            controller.remove(id);
         } catch (DataAccessException e) {
             throw new NotFoundException();
         }
