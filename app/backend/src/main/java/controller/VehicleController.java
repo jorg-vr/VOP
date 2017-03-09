@@ -25,7 +25,7 @@ public class VehicleController{
     private VehicleDAO vehicleDAO;
 
     public VehicleController() {
-        vehicleDAO= ProductionProvider.getInstance().getVehicleDAO();
+        vehicleDAO= new TestVehicleDAO(); // TODO ProductionProvider.getInstance().getVehicleDAO();
     }
 
     public VehicleDAO getVehicleDAO() {

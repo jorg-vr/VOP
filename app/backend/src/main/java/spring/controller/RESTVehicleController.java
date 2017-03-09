@@ -9,7 +9,6 @@ import model.fleet.Vehicle;
 import org.springframework.web.bind.annotation.*;
 import spring.Exceptions.InvalidInputException;
 import spring.Exceptions.NotFoundException;
-import spring.Exceptions.NotImplementedException;
 import spring.model.RESTVehicle;
 
 import java.time.LocalDate;
@@ -29,7 +28,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/vehicle")
 public class RESTVehicleController {
-    private DateTimeFormatter yearFormat=DateTimeFormatter.ofPattern("yyyy");
+    private static DateTimeFormatter yearFormat=DateTimeFormatter.ofPattern("yyyy");
 
     //TODO find out if this is usefull
     //@Autowired
@@ -69,19 +68,18 @@ public class RESTVehicleController {
 
     /***
      * implement post method, see api
-     * @param id
      * @param vehicle
      * @return
      */
     @RequestMapping(method = RequestMethod.POST)
-    public void postVehicles(@PathVariable("id") String id, @RequestBody RESTVehicle vehicle) {
+    public void postVehicles(@RequestBody RESTVehicle vehicle) {
         try {
             controller.create(vehicle.getBrand(),
                     vehicle.getModel(),
-                    vehicle.getLicense_plate(),
+                    vehicle.getLicensePlate(),
                     LocalDate.parse(vehicle.getYear(),yearFormat),
-                    vehicle.getChassis_number(),
-                    vehicle.getKilometer_count(),
+                    vehicle.getChassisNumber(),
+                    vehicle.getKilometerCount(),
                     vehicle.getType());
         } catch (DataAccessException e) {
             throw new InvalidInputException();
@@ -150,11 +148,11 @@ public class RESTVehicleController {
         return new Vehicle(UUID.fromString(restVehicle.getId()),
                 restVehicle.getBrand(),
                 restVehicle.getModel(),
-                restVehicle.getLicense_plate(),
+                restVehicle.getLicensePlate(),
                 LocalDate.parse(restVehicle.getYear(),yearFormat),
-                restVehicle.getChassis_number(),
+                restVehicle.getChassisNumber(),
                 0,//TODO fix value
-                restVehicle.getKilometer_count(),
+                restVehicle.getKilometerCount(),
                 null//TODO String value of type has to be converted to the corresponding VehicleType object
         );
     }
