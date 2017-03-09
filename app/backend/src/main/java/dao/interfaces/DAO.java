@@ -5,9 +5,11 @@ import java.util.Collection;
 import java.util.UUID;
 
 /**
- * 
+ *
  */
-public interface DAO<T> extends AutoCloseable{
+public interface DAO<T> extends AutoCloseable {
+
+    T create(T t) throws DataAccessException;
 
     T get(UUID id) throws DataAccessException;
 
