@@ -1,6 +1,7 @@
 package model.fleet;
 
 import model.history.EditableObject;
+import spring.Exceptions.InvalidInputException;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -73,8 +74,15 @@ public class Vehicle implements EditableObject, java.io.Serializable {
         return licensePlate;
     }
 
-    public void setLicensePlate(String licensePlate) /*throws InvalidInputException*/{
-        //if(!licensePlate.matches(""))
+    /**
+     * sets the licensplate of the vehicle
+     * @param licensePlate string representing a licensplate
+     * @throws InvalidInputException throws an exception if the license plate is invalid (contains 0 characters or uses characters that are not alphanumeric)
+     */
+    public void setLicensePlate(String licensePlate) throws InvalidInputException{
+        if(!licensePlate.matches("^[a-zA-Z0-9]+$")){
+            throw new InvalidInputException("License Plate can only use alphanumeric symbols");
+        }
         this.licensePlate = licensePlate;
     }
 
@@ -90,15 +98,32 @@ public class Vehicle implements EditableObject, java.io.Serializable {
         return chassisNumber;
     }
 
-    public void setChassisNumber(String chassisNumber) {
-        this.chassisNumber = chassisNumber;
+    /**
+     * Checks if the given chassis number (VIN-code) has the correct format. Following requirements need to be met:
+     * - length has to be 17 characters
+     * - characters can only be alphanumeric
+     * - the code can not contain the characters I, O, and Q
+     * - the 10th character can not be U, Z or the digit 0
+     * Additionally lowercase characters are converted to uppercase before storing the code.
+     * @param chassisNumber chassinumber or VIN-code
+     * @throws InvalidInputException when the code has the wrong format.
+     */
+    public void setChassisNumber(String chassisNumber) throws InvalidInputException {
+        String VIN = chassisNumber.toUpperCase();
+        if(!VIN.matches("^[A-HJ-NPR-Z0-9]{9}[A-HJ-NPR-TV-Y1-9][A-HJ-NPR-Z0-9]{7}$")){
+            throw new InvalidInputException("VIN code has to be 17 characters long, cannot contain character I, O or Q and the 10th character cannot be U, Z or the digit 0");
+        }
+        this.chassisNumber = VIN;
     }
 
     public int getValue() {
         return value;
     }
 
-    public void setValue(int value) {
+    public void setValue(int value) throws InvalidInputException{
+        if(value < 0){
+            throw new InvalidInputException("Value can not be a negative value");
+        }
         this.value = value;
     }
 
@@ -106,7 +131,10 @@ public class Vehicle implements EditableObject, java.io.Serializable {
         return mileage;
     }
 
-    public void setMileage(int mileage) {
+    public void setMileage(int mileage) throws InvalidInputException{
+        if(mileage < 0){
+            throw new InvalidInputException("Mileage can not be a negative value");
+        }
         this.mileage = mileage;
     }
 
