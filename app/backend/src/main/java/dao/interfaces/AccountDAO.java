@@ -8,7 +8,7 @@ import model.identity.Identity;
  */
 public interface AccountDAO extends DAO<Account> {
 
-    void get(String name) throws DataAccessException;
+    Account get(String name) throws DataAccessException;
 
     void remove(String name) throws DataAccessException;
 
