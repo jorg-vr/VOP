@@ -53,16 +53,16 @@ public class RESTVehicleController {
         if (company!=null)//TODO after issue #88
         if (licensPlate!=null){filters.add(controller.byLicensePlate(licensPlate));}
 
-
+        Collection<RESTVehicle> result=new ArrayList<>();
         try {
-            Collection<RESTVehicle> result=new ArrayList<>();
             for(Vehicle vehicle : controller.listFiltered( filters.toArray(new Filter[filters.size()]))){
                 result.add(modelToRest(vehicle));
             }
-            return result;
+
         } catch (DataAccessException e) {
-            throw new NotFoundException();
+            //API doesn't contain error
         }
+        return result;
     }
 
     /***
