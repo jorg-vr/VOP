@@ -1,79 +1,81 @@
 package model.fleet;
 
+import model.history.EditableObject;
 import model.identity.Customer;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.UUID;
 
-public class Fleet implements java.io.Serializable {
+public class Fleet implements EditableObject, java.io.Serializable {
 
-    private int id;
-
+    private UUID uuid;
     private Customer owner;
-
-    private Collection<Subfleet> subfleets;
+    private Collection<Vehicle> vehicles;
 
     public Fleet() {
     }
 
-    public Fleet(int id, Customer owner, Collection<Subfleet> subfleets) {
-        this.id = id;
+    public Fleet(UUID uuid, Customer owner, Collection<Vehicle> vehicles) {
+        this.uuid = uuid;
         this.owner = owner;
-        this.subfleets = subfleets;
+        this.vehicles = vehicles;
     }
 
-    public Fleet(int id, Customer owner) {
-        this.id = id;
+
+    public Fleet(UUID uuid, Customer owner) {
+        this.uuid = uuid;
         this.owner = owner;
-        this.subfleets = new HashSet<>();
+        this.vehicles = new HashSet<Vehicle>();
     }
 
     /**
-     * Adds the Subfleet to the Fleet.
-     * If the Subfleet is already present in the Fleet, nothing will happen.
-     * DEVELOPER NOTE:  We can't be sure that subfleets is a HashSet (because the Constructor accepts a Collection)
-     * so we can't shorten this function to 1 line.
-     *
-     * @return true if the Subfleet was added
-     */
-    public boolean add(Subfleet subfleet) {
-        if (subfleets.contains(subfleet)) {
-            return false;
-        }
-        subfleets.add(subfleet);
-        return true;
-    }
-
-    /**
-     * Removes the Subfleet from the Fleet.
-     * If the Subfleet is not present in the Fleet, nothing will happen.
+     * Adds the Vehicle to the Fleet.
+     * If the Vehicle is already present in the Fleet, nothing will happen.
      * DEVELOPER NOTE:  We can't be sure that vehicles is a HashSet (because the Constructor accepts a Collection)
      * so we can't shorten this function to 1 line.
      *
-     * @return true if the Subfleet was removed
+     * @return true if the Vehicle was added
      */
-    public boolean remove(Subfleet subfleet) {
-        if (!subfleets.contains(subfleet)) {
+    public boolean add(Vehicle vehicle) {
+        if (vehicles.contains(vehicle)) {
             return false;
         }
-        subfleets.remove(subfleet);
+        vehicles.add(vehicle);
         return true;
     }
 
     /**
-     * @return The amount of subfleets in this fleet
+     * Removes the Vehicle from the Fleet.
+     * If the Vehicle is not present in the Fleet, nothing will happen.
+     * DEVELOPER NOTE:  We can't be sure that vehicles is a HashSet (because the Constructor accepts a Collection)
+     * so we can't shorten this function to 1 line.
+     *
+     * @return true if the Vehicle was removed
+     */
+    public boolean remove(Vehicle vehicle) {
+        if (!vehicles.contains(vehicle)) {
+            return false;
+        }
+        vehicles.remove(vehicle);
+        return true;
+    }
+
+    /**
+     * @return The amount of vehicles in this fleet
      */
     public int size() {
-        return subfleets.size();
+        return vehicles.size();
     }
 
-    public int getId() {
-        return id;
+    public UUID getUuid() {
+        return uuid;
     }
 
-    public void setId(int id) {
-        this.id = id;
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 
     public Customer getOwner() {
@@ -84,12 +86,12 @@ public class Fleet implements java.io.Serializable {
         this.owner = owner;
     }
 
-    public Collection<Subfleet> getSubfleets() {
-        return new ArrayList<>(subfleets);
+    public Collection<Vehicle> getVehicles() {
+        return new ArrayList<>(vehicles);
     }
 
-    public void setSubfleets(Collection<Subfleet> subfleets) {
-        this.subfleets = subfleets;
+    public void setVehicles(Collection<Vehicle> vehicles) {
+        this.vehicles = vehicles;
     }
 
     @Override
@@ -97,14 +99,21 @@ public class Fleet implements java.io.Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Fleet fleet = (Fleet) o;
-
-        return id == fleet.id;
+        return uuid == ((Fleet)o).getUuid();
 
     }
 
     @Override
-    public int hashCode() {
-        return id;
+    public EditableObject copy() {
+        Collection<Vehicle> newList =  new ArrayList<Vehicle>();
+        for(Vehicle v : vehicles){
+            newList.add((Vehicle)v.copy());
+        }
+        return new Fleet(uuid,owner, newList);
     }
+    @Override
+    public int hashCode() {
+        return uuid.hashCode();
+    }
+
 }

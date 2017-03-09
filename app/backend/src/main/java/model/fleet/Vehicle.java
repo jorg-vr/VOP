@@ -1,11 +1,13 @@
 package model.fleet;
 
+import model.history.EditableObject;
+
 import java.time.LocalDate;
 import java.util.UUID;
 
-public class Vehicle implements java.io.Serializable {
+public class Vehicle implements EditableObject, java.io.Serializable {
 
-    private UUID id;
+    private UUID uuid;
 
     private String brand;
 
@@ -23,12 +25,16 @@ public class Vehicle implements java.io.Serializable {
     // Also known as "kilometerstand" in Dutch
     private int mileage;
 
+    private VehicleType type;
+
+
+
     public Vehicle() {
         
     }
 
-    public Vehicle(UUID id, String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int value, int mileage) {
-        this.id = id;
+    public Vehicle(UUID uuid, String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int value, int mileage, VehicleType type) {
+        this.uuid = uuid;
         this.brand = brand;
         this.model = model;
         this.licensePlate = licensePlate;
@@ -36,14 +42,15 @@ public class Vehicle implements java.io.Serializable {
         this.chassisNumber = chassisNumber;
         this.value = value;
         this.mileage = mileage;
+        this.type = type;
     }
 
-    public UUID getId() {
-        return id;
+    public UUID getUuid() {
+        return uuid;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 
     public String getBrand() {
@@ -102,22 +109,32 @@ public class Vehicle implements java.io.Serializable {
         this.mileage = mileage;
     }
 
+    public VehicleType getType() {
+        return type;
+    }
+
+    public void setType(VehicleType type) {
+        this.type = type;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
+
         if (o == null || getClass() != o.getClass()) return false;
 
-        Vehicle vehicle = (Vehicle) o;
-
-        return id == vehicle.id;
-
+        return uuid == ((Vehicle)o).getUuid();
     }
 
+    @Override
+    public int hashCode() {
+        return uuid.hashCode();
+    }
 
     @Override
     public String toString() {
         return "Vehicle{" +
-                "id=" + id +
+                "uuid=" + uuid +
                 ", brand='" + brand + '\'' +
                 ", model='" + model + '\'' +
                 ", licensePlate='" + licensePlate + '\'' +
@@ -125,6 +142,12 @@ public class Vehicle implements java.io.Serializable {
                 ", chassisNumber='" + chassisNumber + '\'' +
                 ", value=" + value +
                 ", mileage=" + mileage +
+                ", type=" + type.getType() +
                 '}';
+    }
+
+    @Override
+    public EditableObject copy() {
+        return new Vehicle(uuid, brand, model, licensePlate, productionDate, chassisNumber, value, mileage, (VehicleType)type.copy());
     }
 }

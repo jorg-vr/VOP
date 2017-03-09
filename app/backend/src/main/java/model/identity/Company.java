@@ -1,6 +1,8 @@
 package model.identity;
 
 
+import java.util.UUID;
+
 public class Company extends Identity implements java.io.Serializable {
 
     private String name;
@@ -14,7 +16,7 @@ public class Company extends Identity implements java.io.Serializable {
     public Company() {
     }
 
-    public Company(String id, Address address, String email, int phoneNumber, String name, String btwNumber, String bankAccountNumber, CompanyType companyType) {
+    public Company(UUID id, Address address, String email, String phoneNumber, String name, String btwNumber, String bankAccountNumber, CompanyType companyType) {
         super(id, address, email, phoneNumber);
         this.name = name;
         this.btwNumber = btwNumber;

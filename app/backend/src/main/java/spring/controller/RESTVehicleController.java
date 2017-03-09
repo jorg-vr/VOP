@@ -5,14 +5,16 @@ import controller.VehicleController;
 import dao.interfaces.DataAccessException;
 import model.fleet.Vehicle;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import spring.Exceptions.InvalidInputException;
+import spring.Exceptions.NotFoundException;
+import spring.Exceptions.NotImplementedException;
 import spring.model.RESTVehicle;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import java.util.Collection;
 import java.util.UUID;
 
 /**
@@ -27,8 +29,8 @@ public class RESTVehicleController {
     private DateTimeFormatter yearFormat=DateTimeFormatter.ofPattern("yyyy");
 
     //TODO find out if this is usefull
-    @Autowired
-    private VehicleController controller;
+    //@Autowired
+    private VehicleController controller=new VehicleController();
 
     /***
      * Not yet implemented
@@ -36,8 +38,8 @@ public class RESTVehicleController {
      * @return
      */
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<?> getAllVehicles(@RequestBody RESTVehicle vehicle) {
-        return new ResponseEntity<>("not implemented",HttpStatus.NOT_IMPLEMENTED); //TODO when filters are fixed
+    public Collection<RESTVehicle> getAllVehicles(@RequestBody RESTVehicle vehicle) {
+        throw new NotImplementedException(); //TODO when filters are fixed
     }
 
     /***
@@ -47,12 +49,17 @@ public class RESTVehicleController {
      * @return
      */
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<?> postVehicles(@PathVariable("id") String id, @RequestBody RESTVehicle vehicle) {
+    public void postVehicles(@PathVariable("id") String id, @RequestBody RESTVehicle vehicle) {
         try {
-            controller.create(vehicle.getBrand(),vehicle.getModel(),vehicle.getLicense_plate(),LocalDate.parse(vehicle.getYear(),yearFormat),vehicle.getChassis_number(),vehicle.getKilometer_count());
-            return new ResponseEntity<>("OK", HttpStatus.valueOf(200));
+            controller.create(vehicle.getBrand(),
+                    vehicle.getModel(),
+                    vehicle.getLicense_plate(),
+                    LocalDate.parse(vehicle.getYear(),yearFormat),
+                    vehicle.getChassis_number(),
+                    vehicle.getKilometer_count(),
+                    vehicle.getType());
         } catch (DataAccessException e) {
-            return new ResponseEntity<>("invalid input, object invalid", HttpStatus.valueOf(400));
+            throw new InvalidInputException();
         }
     }
 
@@ -62,13 +69,13 @@ public class RESTVehicleController {
      * @return
      */
     @RequestMapping(method = RequestMethod.GET , value = "{id}")
-    public ResponseEntity<?> getVehicle(@PathVariable("id") String id) {
+    public RESTVehicle getVehicle(@PathVariable("id") String id) {
 
         try {
-            return new ResponseEntity<>(controller.get(id), HttpStatus.valueOf(200));
+            return modelToRest(controller.get(id));
 
         } catch (DataAccessException e) {
-            return new ResponseEntity<>("Resource not found.", HttpStatus.valueOf(404));
+            throw new NotFoundException();
         }
     }
 
@@ -79,17 +86,16 @@ public class RESTVehicleController {
      * @return
      */
     @RequestMapping(method = RequestMethod.PUT , value = "{id}")
-    public ResponseEntity<?> putVehicle(@PathVariable("id") String id, @RequestBody RESTVehicle vehicle) {
+    public void putVehicle(@PathVariable("id") String id, @RequestBody RESTVehicle vehicle) {
         try {
             controller.get(id);
         } catch (DataAccessException e) {
-            return new ResponseEntity<>("Resource not found.", HttpStatus.valueOf(404));
+            throw new NotFoundException();
         }
         try {
             controller.update(restToModel(vehicle));
-            return new ResponseEntity<>("OK", HttpStatus.valueOf(200));
         } catch (DataAccessException e) {
-            return new ResponseEntity<>("Error in input.", HttpStatus.valueOf(400));
+            throw new InvalidInputException();
         }
 
     }
@@ -100,17 +106,17 @@ public class RESTVehicleController {
      * @return
      */
     @RequestMapping(method = RequestMethod.DELETE , value = "{id}")
-    public ResponseEntity<?> deleteVehicle(@PathVariable("id") String id) {
+    public void deleteVehicle(@PathVariable("id") String id) {
 
         try {
             controller.remove(controller.get(id));
-            return new ResponseEntity<>("OK",HttpStatus.valueOf(200));
         } catch (DataAccessException e) {
-            return new ResponseEntity<>("Resource not found.", HttpStatus.valueOf(404));
+            throw new NotFoundException();
         }
     }
 
     /***
+     * TODO convert type field to corresponding VehicleType object
      * converts restVehicle to vehicle like implemented in model
      * @param restVehicle
      * @return
@@ -123,7 +129,8 @@ public class RESTVehicleController {
                 LocalDate.parse(restVehicle.getYear(),yearFormat),
                 restVehicle.getChassis_number(),
                 0,//TODO fix value
-                restVehicle.getKilometer_count()
+                restVehicle.getKilometer_count(),
+                null//TODO String value of type has to be converted to the corresponding VehicleType object
         );
     }
 
@@ -133,7 +140,7 @@ public class RESTVehicleController {
      * @return
      */
      private RESTVehicle modelToRest(Vehicle vehicle){
-        return new RESTVehicle(vehicle.getId().toString(),
+        return new RESTVehicle(vehicle.getUuid().toString(),
                 vehicle.getLicensePlate(),
                 vehicle.getChassisNumber(),
                 vehicle.getBrand(),
