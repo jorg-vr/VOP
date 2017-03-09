@@ -28,7 +28,8 @@ public class TestVehicleDAO implements VehicleDAO {
 
     @Override
     public Vehicle create(Vehicle vehicle) throws DataAccessException {
-        return null;
+        vehicles.put(vehicle.getUuid(),vehicle);
+        return vehicle;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package controller;
 
+import dao.database.ProductionProvider;
 import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
 import dao.interfaces.VehicleDAO;
@@ -19,12 +20,16 @@ import java.util.UUID;
  *      history changes
  *      correct authentication
  */
-public class VehicleController {
+public class VehicleController{
 
     private VehicleDAO vehicleDAO;
 
     public VehicleController() {
-        vehicleDAO=new TestVehicleDAO();//todo use real DAO
+        vehicleDAO= new TestVehicleDAO(); // TODO ProductionProvider.getInstance().getVehicleDAO();
+    }
+
+    public VehicleDAO getVehicleDAO() {
+        return vehicleDAO;
     }
 
     /***
@@ -42,17 +47,25 @@ public class VehicleController {
      * @param vehicle is inserted or replaces old vehicle with same id
      * @throws DataAccessException
      */
-    public void update(Vehicle vehicle) throws DataAccessException {
-        vehicleDAO.update(vehicle);
+    public void update(String id,Vehicle vehicle) throws DataAccessException {
+        Vehicle modelVehicle = get(id);
+        modelVehicle.setBrand(vehicle.getBrand());
+        modelVehicle.setModel(vehicle.getModel());
+        modelVehicle.setLicensePlate(vehicle.getLicensePlate());
+        modelVehicle.setProductionDate(vehicle.getProductionDate());
+        modelVehicle.setChassisNumber(vehicle.getChassisNumber());
+        modelVehicle.setMileage(vehicle.getMileage());
+        modelVehicle.setType(vehicle.getType());
+        vehicleDAO.update(modelVehicle);
+        //TODO update history
     }
 
     /***
      *
-     * @param vehicle is removed
      * @throws DataAccessException
      */
-    public void remove(Vehicle vehicle) throws DataAccessException {
-        vehicleDAO.remove(vehicle);
+    public void remove(String id) throws DataAccessException {
+        vehicleDAO.remove(get(id));
     }
 
     /***
@@ -77,9 +90,14 @@ public class VehicleController {
      * @return
      * @throws DataAccessException
      */
-    public Vehicle create(String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int mileage, String type) throws DataAccessException {
-        Vehicle vehicle=new Vehicle(UUID.randomUUID(),brand,model,licensePlate,productionDate,chassisNumber,0,mileage,null); //TODO value
-        vehicleDAO.update(vehicle);
+    public Vehicle create(String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int mileage,  String vehicleType) throws DataAccessException {
+        Vehicle vehicle=new Vehicle(UUID.randomUUID(),brand,model,licensePlate,productionDate,chassisNumber,0,mileage,getVehicleType(vehicleType)); //TODO value
+        vehicleDAO.create(vehicle);
         return vehicle;
     }
+
+    public VehicleType getVehicleType(String vehicleType) throws DataAccessException {
+        return ProductionProvider.getInstance().getVehicleTypeDAO().get(UUID.fromString(vehicleType));
+    }
+
 }
