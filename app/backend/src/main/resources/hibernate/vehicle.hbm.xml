@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="model.fleet.Vehicle" table="VEHICLE">
+        <meta attribute="class-description">
+            This class contains the vehicle detail.
+        </meta>
+        <id name="uuid" type="binary" column="id">
+            <generator class="uuid"/>
+        </id>
+        <property name="brand" column="brand" type="string"/>
+        <property name="model" column="model" type="string"/>
+        <property name="chassisNumber" column="chassis_number" type="string"/>
+        <property name="licensePlate" column="license_plate" type="string"/>
+        <property name="value" column="value" type="int"/>
+        <many-to-one name="type" column="type_id" class="model.fleet.VehicleType" />
+
+    </class>
+</hibernate-mapping>
