@@ -80,7 +80,7 @@ public class RESTVehicleController {
                     vehicle.getKilometerCount(),
                     vehicle.getType());
         } catch (DataAccessException e) {
-            throw new InvalidInputException();
+            throw new InvalidInputException(e);
         }
     }
 
@@ -109,14 +109,9 @@ public class RESTVehicleController {
     @RequestMapping(method = RequestMethod.PUT , value = "{id}")
     public void putVehicle(@PathVariable("id") String id, @RequestBody RESTVehicle vehicle) {
         try {
-            controller.get(id);
+            controller.update(id,restToModel(vehicle));
         } catch (DataAccessException e) {
-            throw new NotFoundException();
-        }
-        try {
-            controller.update(restToModel(vehicle));
-        } catch (DataAccessException e) {
-            throw new InvalidInputException();
+            e.printStackTrace();
         }
 
     }

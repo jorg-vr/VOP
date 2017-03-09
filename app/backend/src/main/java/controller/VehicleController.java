@@ -47,8 +47,17 @@ public class VehicleController{
      * @param vehicle is inserted or replaces old vehicle with same id
      * @throws DataAccessException
      */
-    public void update(Vehicle vehicle) throws DataAccessException {
-        vehicleDAO.update(vehicle);
+    public void update(String id,Vehicle vehicle) throws DataAccessException {
+        Vehicle modelVehicle = get(id);
+        modelVehicle.setBrand(vehicle.getBrand());
+        modelVehicle.setModel(vehicle.getModel());
+        modelVehicle.setLicensePlate(vehicle.getLicensePlate());
+        modelVehicle.setProductionDate(vehicle.getProductionDate());
+        modelVehicle.setChassisNumber(vehicle.getChassisNumber());
+        modelVehicle.setMileage(vehicle.getMileage());
+        modelVehicle.setType(vehicle.getType());
+        vehicleDAO.update(modelVehicle);
+        //TODO update history
     }
 
     /***
@@ -84,7 +93,7 @@ public class VehicleController{
      */
     public Vehicle create(String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int mileage, String type) throws DataAccessException {
         Vehicle vehicle=new Vehicle(UUID.randomUUID(),brand,model,licensePlate,productionDate,chassisNumber,0,mileage,null); //TODO value
-        vehicleDAO.update(vehicle);
+        vehicleDAO.create(vehicle);
         return vehicle;
     }
 
