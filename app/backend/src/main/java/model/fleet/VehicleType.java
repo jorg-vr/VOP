@@ -2,6 +2,7 @@ package model.fleet;
 
 
 import model.history.EditableObject;
+import spring.Exceptions.InvalidInputException;
 
 import java.util.UUID;
 
@@ -43,7 +44,15 @@ public class VehicleType implements EditableObject, java.io.Serializable {
         return tax;
     }
 
-    public void setTax(double tax) {
+    /**
+     * set the tax value and checks if it is a valid percentage.
+     * @param tax road tax for the vehicle category
+     * @throws InvalidInputException if the given tax value is a negative value or above 100
+     */
+    public void setTax(double tax) throws InvalidInputException {
+        if (tax < 0 || tax > 100) {
+            throw new InvalidInputException("Tax value has to be a valid percentage from 0 to 100");
+        }
         this.tax = tax;
     }
 
