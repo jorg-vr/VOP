@@ -42,7 +42,7 @@ public class RESTVehicleController {
                                               @RequestParam(required=false) Integer year,
                                               @RequestParam(required=false) Integer company) {
 
-        VehicleDAO vehicleDAO=controller.getVehicleDAO();
+        VehicleDAO vehicleDAO= (VehicleDAO) controller.getDao();
         List<Filter<Vehicle>> filters=new ArrayList<>();
         if (licensPlate!=null){filters.add(vehicleDAO.byLicensePlate(licensPlate));}
         if (chassisNumber!=null)//TODO after issue #87
@@ -53,7 +53,7 @@ public class RESTVehicleController {
 
         Collection<RESTVehicle> result=new ArrayList<>();
         try {
-            for(Vehicle vehicle : controller.listFiltered( filters.toArray(new Filter[filters.size()]))){
+            for(Vehicle vehicle : controller.getAll( filters.toArray(new Filter[filters.size()]))){
                 result.add(modelToRest(vehicle));
             }
 
@@ -93,7 +93,7 @@ public class RESTVehicleController {
     public RESTVehicle getVehicle(@PathVariable("id") String id) {
 
         try {
-            return modelToRest(controller.get(id));
+            return modelToRest(controller.get(UUID.fromString(id)));
 
         } catch (DataAccessException e) {
             throw new NotFoundException();
@@ -109,7 +109,14 @@ public class RESTVehicleController {
     @RequestMapping(method = RequestMethod.PUT , value = "{id}")
     public void putVehicle(@PathVariable("id") String id, @RequestBody RESTVehicle vehicle) {
         try {
-            controller.update(id,restToModel(vehicle));
+            LocalDate year = LocalDate.parse(vehicle.getYear()+"0101", yearFormat);//Fix conversion bug
+            controller.update(UUID.fromString(id),vehicle.getBrand(),
+                    vehicle.getModel(),
+                    vehicle.getLicensePlate(),
+                    year,
+                    vehicle.getChassisNumber(),
+                    vehicle.getKilometerCount(),
+                    vehicle.getType());
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
@@ -125,30 +132,12 @@ public class RESTVehicleController {
     public void deleteVehicle(@PathVariable("id") String id) {
 
         try {
-            controller.remove(id);
+            controller.archive(UUID.fromString(id));
         } catch (DataAccessException e) {
             throw new NotFoundException();
         }
     }
 
-    /***
-     * TODO convert type field to corresponding VehicleType object
-     * converts restVehicle to vehicle like implemented in model
-     * @param restVehicle
-     * @return
-     */
-    private Vehicle restToModel(RESTVehicle restVehicle) throws DataAccessException {
-        return new Vehicle(UUID.randomUUID(),
-                restVehicle.getBrand(),
-                restVehicle.getModel(),
-                restVehicle.getLicensePlate(),
-                LocalDate.parse(restVehicle.getYear()+"0101",yearFormat),
-                restVehicle.getChassisNumber(),
-                0,//TODO fix value
-                restVehicle.getKilometerCount(),
-                controller.getVehicleType(restVehicle.getType())
-        );
-    }
 
     /***
      * converts model vehicle to vehicle needed for rest api
