@@ -4,18 +4,18 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    <class name="model.account.Account" table="ACCOUNT">
+    <class name="model.fleet.Fleet" table="FLEET">
         <meta attribute="class-description">
-            This class contains the account detail.
+            This class contains the fleet detail.
         </meta>
         <id name="uuid" type="binary" column="id">
             <generator class="uuid"/>
         </id>
-
-        <property name="login" column="login" type="string"/>
-        <property name="hashedPassword" column="hashed_password" type="string"/>
-        <many-to-one name="identity" column="identity_id" class="model.identity.Identity"/>
-
+        <bag name="vehicles" access="field" table="VEHICLE" cascade="all"
+             lazy="true" fetch="select">
+            <key column="fleet_id" not-null="true"/>
+            <one-to-many class="model.fleet.Vehicle" />
+        </bag>
 
     </class>
 </hibernate-mapping>
