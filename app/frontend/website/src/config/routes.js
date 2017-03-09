@@ -10,11 +10,18 @@ export default [
         path: '',
         component: App,
         children: [
+            //Identity
             { path: 'identity', component: Index },
             { path: 'identity/new', component: New },
             { path: 'identity/:id', component: Show },
             { path: 'identity/:id/edit', component: Edit},
-            { path: 'identity/:id/remove', component: Remove}
+            { path: 'identity/:id/remove', component: Remove},
+            //Fleet
+            { path: 'fleet', component: Index },
+            { path: 'fleet/new', component: New },
+            { path: 'fleet/:id', component: Show },
+            { path: 'fleet/:id/edit', component: Edit},
+            { path: 'fleet/:id/remove', component: Remove}
         ]
     },
         //TODO: Make a not found page!
