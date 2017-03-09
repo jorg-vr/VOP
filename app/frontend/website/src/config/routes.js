@@ -10,27 +10,13 @@ export default [
         path: '',
         component: App,
         children: [
-            {
-                path: 'identity',
-                component: Index,
-                children: [
-                    { path: 'new', component: New },
-                    {
-                        path: ':id',
-                        component: Show,
-                        children: [
-                            { path: 'edit', component: Edit},
-                            { path: 'remove', component: Remove},
-                        ]
-                    }
-                ]
-            },
-            {
-                path: '/identity/new',
-                component: New
-            }
+            { path: 'identity', component: Index },
+            { path: 'identity/new', component: New },
+            { path: 'identity/:id', component: Show },
+            { path: 'identity/:id/edit', component: Edit},
+            { path: 'identity/:id/remove', component: Remove}
         ]
     },
         //TODO: Make a not found page!
-        { path: '*', redirect: '/'}
+        { path: '*', redirect: ''}
     ];
