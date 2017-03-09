@@ -14,10 +14,7 @@ import spring.model.RESTVehicle;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by jorg on 3/6/17.
@@ -28,7 +25,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/vehicle")
 public class RESTVehicleController {
-    private static DateTimeFormatter yearFormat=DateTimeFormatter.ofPattern("yyyy");
+    private static DateTimeFormatter yearFormat=DateTimeFormatter.ofPattern("yyyyMMdd").withLocale(Locale.forLanguageTag("NL"));
 
     //TODO find out if this is usefull
     //@Autowired
@@ -74,10 +71,11 @@ public class RESTVehicleController {
     @RequestMapping(method = RequestMethod.POST)
     public void postVehicles(@RequestBody RESTVehicle vehicle) {
         try {
+            LocalDate year = LocalDate.parse(vehicle.getYear()+"0101", yearFormat);//Fix conversion bug
             controller.create(vehicle.getBrand(),
                     vehicle.getModel(),
                     vehicle.getLicensePlate(),
-                    LocalDate.parse(vehicle.getYear(),yearFormat),
+                    year,
                     vehicle.getChassisNumber(),
                     vehicle.getKilometerCount(),
                     vehicle.getType());
