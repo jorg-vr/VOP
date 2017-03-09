@@ -1,5 +1,5 @@
 <template>
-    <div id="content-wrapper">
+    <div id="page-content-wrapper">
         <nav-bar></nav-bar>
         <div class="container-fluid">
             <router-view></router-view>
