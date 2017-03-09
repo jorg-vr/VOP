@@ -10,6 +10,7 @@ import model.identity.Address;
 import model.identity.Customer;
 import org.springframework.web.bind.annotation.*;
 import spring.Exceptions.InvalidInputException;
+import spring.Exceptions.NotFoundException;
 import spring.model.RESTAddress;
 import spring.model.RESTCompany;
 import spring.model.RESTVehicle;
@@ -63,6 +64,17 @@ public class RESTCompanyController {
                     restCompany.getVatNumber());
         } catch (DataAccessException e) {
             throw new InvalidInputException(e);
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.GET , value = "{id}")
+    public RESTCompany getCompany(@PathVariable("id") String id) {
+
+        try {
+            return modelToRESTCompany(controller.get(UUID.fromString(id)));
+
+        } catch (DataAccessException e) {
+            throw new NotFoundException();
         }
     }
 
