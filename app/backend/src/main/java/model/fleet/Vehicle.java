@@ -1,6 +1,7 @@
 package model.fleet;
 
 import model.history.EditableObject;
+import model.identity.LeasingCompany;
 import spring.Exceptions.InvalidInputException;
 
 import java.time.LocalDate;
@@ -28,7 +29,7 @@ public class Vehicle implements EditableObject, java.io.Serializable {
 
     private VehicleType type;
 
-
+    private LeasingCompany leasingCompany;
 
     public Vehicle() {
         
@@ -44,6 +45,19 @@ public class Vehicle implements EditableObject, java.io.Serializable {
         this.value = value;
         this.mileage = mileage;
         this.type = type;
+    }
+
+    public Vehicle(UUID uuid, String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int value, int mileage, VehicleType type, LeasingCompany leasingCompany) {
+        this.uuid = uuid;
+        this.brand = brand;
+        this.model = model;
+        this.licensePlate = licensePlate;
+        this.productionDate = productionDate;
+        this.chassisNumber = chassisNumber;
+        this.value = value;
+        this.mileage = mileage;
+        this.type = type;
+        this.leasingCompany = leasingCompany;
     }
 
     public UUID getUuid() {
@@ -144,6 +158,14 @@ public class Vehicle implements EditableObject, java.io.Serializable {
 
     public void setType(VehicleType type) {
         this.type = type;
+    }
+
+    public LeasingCompany getLeasingCompany() {
+        return leasingCompany;
+    }
+
+    public void setLeasingCompany(LeasingCompany leasingCompany) {
+        this.leasingCompany = leasingCompany;
     }
 
     @Override

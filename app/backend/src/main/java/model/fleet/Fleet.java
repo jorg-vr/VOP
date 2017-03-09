@@ -38,8 +38,11 @@ public class Fleet implements EditableObject, java.io.Serializable {
      *
      * @return true if the Vehicle was added
      */
-    public boolean add(Vehicle vehicle) {
-        if (vehicles.contains(vehicle)) {
+    public boolean addVehicle(Vehicle vehicle) {
+        if(vehicles == null){
+            vehicles = new ArrayList<Vehicle>();
+        }
+        else if(vehicle == null || vehicles.contains(vehicle)){
             return false;
         }
         vehicles.add(vehicle);
@@ -54,7 +57,7 @@ public class Fleet implements EditableObject, java.io.Serializable {
      *
      * @return true if the Vehicle was removed
      */
-    public boolean remove(Vehicle vehicle) {
+    public boolean removeVehicle(Vehicle vehicle) {
         if (!vehicles.contains(vehicle)) {
             return false;
         }
