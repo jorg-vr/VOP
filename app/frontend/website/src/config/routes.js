@@ -21,7 +21,13 @@ export default [
             { path: 'fleet/new', component: New },
             { path: 'fleet/:id', component: Show },
             { path: 'fleet/:id/edit', component: Edit},
-            { path: 'fleet/:id/remove', component: Remove}
+            { path: 'fleet/:id/remove', component: Remove},
+            //Vehicle
+            { path: 'vehicle', component: Index },
+            { path: 'vehicle/new', component: New },
+            { path: 'vehicle/:id', component: Show },
+            { path: 'vehicle/:id/edit', component: Edit},
+            { path: 'vehicle/:id/remove', component: Remove}
         ]
     },
         //TODO: Make a not found page!
