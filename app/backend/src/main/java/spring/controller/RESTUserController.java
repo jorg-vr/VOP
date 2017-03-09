@@ -178,7 +178,7 @@ public class RESTUserController {
             Person person = personController.get(uuid);
 
             accountController.archiveAccount(person.getEmail());
-            personController.archive(person);
+            personController.archive(person.getUuid());
         } catch (DataAccessException e) {
             throw new NotFoundException();
         }
