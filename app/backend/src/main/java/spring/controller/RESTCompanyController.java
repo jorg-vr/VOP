@@ -78,6 +78,30 @@ public class RESTCompanyController {
         }
     }
 
+    @RequestMapping(method = RequestMethod.PUT , value = "{id}")
+    public void putCompany(@PathVariable("id") String id, @RequestBody RESTCompany restCompany) {
+        try {
+            controller.update(UUID.fromString(id),
+                    RESTToModelAddress(restCompany.getAddress()),
+                    restCompany.getPhoneNumber(),
+                    restCompany.getName(),
+                    restCompany.getVatNumber());
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE , value = "{id}")
+    public void deleteVehicle(@PathVariable("id") String id) {
+
+        try {
+            controller.archive(UUID.fromString(id));
+        } catch (DataAccessException e) {
+            throw new NotFoundException();
+        }
+    }
+
     private RESTCompany modelToRESTCompany(Customer customer){
         return new RESTCompany(customer.getUuid().toString(),
                 customer.getName(),

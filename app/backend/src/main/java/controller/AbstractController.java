@@ -36,8 +36,8 @@ public abstract class AbstractController<T> {
         dao.update(t);
     }
 
-    public void archive(T t) throws DataAccessException {
-        dao.remove(t);
+    public void archive(UUID uuid) throws DataAccessException {
+        dao.remove(get(uuid));
     }
 
 }

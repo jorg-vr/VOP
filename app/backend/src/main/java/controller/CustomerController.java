@@ -24,14 +24,21 @@ public class CustomerController extends AbstractController<Customer>{
 
     public Customer create(Address address, String phoneNumber, String name, String btwNumber) throws DataAccessException {
         Customer customer=new Customer();
+        setCustomer(customer,address,phoneNumber,name, btwNumber);
+        return getDao().create(customer);
+    }
+
+    public void update(UUID id, Address address, String phoneNumber, String name, String btwNumber) throws DataAccessException {
+        Customer customer=getDao().get(id);
+        setCustomer(customer,address,phoneNumber,name, btwNumber);
+        getDao().update(customer);
+    }
+
+    private void setCustomer(Customer customer, Address address, String phoneNumber, String name, String btwNumber){
         customer.setAddress(address);
         customer.setPhoneNumber(phoneNumber);
         customer.setName(name);
         customer.setBtwNumber(btwNumber);
         //TODO add other setValues
-        return getDao().create(customer);
-    }
-    public void update(Customer customer) {
-
     }
 }
