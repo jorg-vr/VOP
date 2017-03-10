@@ -24,7 +24,7 @@ import java.util.*;
 
 
 @RestController
-@RequestMapping("/vehicle")
+@RequestMapping("/vehicles")
 public class RESTVehicleController {
     private static DateTimeFormatter yearFormat=DateTimeFormatter.ofPattern("yyyyMMdd").withLocale(Locale.forLanguageTag("NL"));
 
@@ -42,27 +42,25 @@ public class RESTVehicleController {
                                               @RequestParam(required=false) Integer leasingCompany,
                                               @RequestParam(required=false) Integer year,
                                               @RequestParam(required=false) Integer company) {
-        throw new AttributeException("test");
+        VehicleDAO vehicleDAO= (VehicleDAO) controller.getDao();
+        List<Filter<Vehicle>> filters=new ArrayList<>();
+        if (licensPlate!=null){filters.add(vehicleDAO.byLicensePlate(licensPlate));}
+        if (chassisNumber!=null)//TODO after issue #87
+        if (leasingCompany!=null)//TODO after issue #88
+        if (year!=null){filters.add(vehicleDAO.atProductionDate(LocalDate.ofYearDay(year,0)));}
+        if (company!=null)//TODO after issue #88
+        if (licensPlate!=null){filters.add(vehicleDAO.byLicensePlate(licensPlate));}
 
-//        VehicleDAO vehicleDAO= (VehicleDAO) controller.getDao();
-//        List<Filter<Vehicle>> filters=new ArrayList<>();
-//        if (licensPlate!=null){filters.add(vehicleDAO.byLicensePlate(licensPlate));}
-//        if (chassisNumber!=null)//TODO after issue #87
-//        if (leasingCompany!=null)//TODO after issue #88
-//        if (year!=null){filters.add(vehicleDAO.atProductionDate(LocalDate.ofYearDay(year,0)));}
-//        if (company!=null)//TODO after issue #88
-//        if (licensPlate!=null){filters.add(vehicleDAO.byLicensePlate(licensPlate));}
-//
-//        Collection<RESTVehicle> result=new ArrayList<>();
-//        try {
-//            for(Vehicle vehicle : controller.getAll( filters.toArray(new Filter[filters.size()]))){
-//                result.add(modelToRest(vehicle));
-//            }
-//
-//        } catch (DataAccessException e) {
-//            //API doesn't contain error
-//        }
-//        return result;
+        Collection<RESTVehicle> result=new ArrayList<>();
+        try {
+            for(Vehicle vehicle : controller.getAll( filters.toArray(new Filter[filters.size()]))){
+                result.add(modelToRest(vehicle));
+            }
+
+        } catch (DataAccessException e) {
+            //API doesn't contain error
+        }
+        return result;
     }
 
     /***
