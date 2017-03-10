@@ -8,7 +8,6 @@ import java.util.UUID;
 
 public class Customer extends Company implements java.io.Serializable {
 
-    // TODO set fleet owner to this customer when added
     private Collection<Fleet> fleets;
 
     public Customer() {
@@ -21,14 +20,14 @@ public class Customer extends Company implements java.io.Serializable {
 
     /**
      * Adds the given fleet to the list of fleets the customer owns and changes the fleet's owner to this customer
+     *
      * @param fleet fleet who's ownership has to be assigned to this customer
      * @return false when a null object is passed or the given fleet is already in the fleets collection, true when the fleet has been succesfully added
      */
-    public boolean addFleet(Fleet fleet){
-        if(fleets == null){
+    public boolean addFleet(Fleet fleet) {
+        if (fleets == null) {
             fleets = new ArrayList<Fleet>();
-        }
-        else if(fleet == null || fleets.contains(fleet)){
+        } else if (fleet == null || fleets.contains(fleet)) {
             return false;
         }
         fleet.setOwner(this);

@@ -2,45 +2,21 @@ package model.fleet;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
- * Created by Tomas on 07/03/2017.
+ * Created by Ponti on 10/03/2017.
  */
 public class FleetTest {
     @Test
-    public void getId() throws Exception {
-        assertTrue(true);
-    }
-
-    @Test
-    public void add() throws Exception {
-
-    }
-
-    @Test
-    public void remove() throws Exception {
-
-    }
-
-    @Test
-    public void getSubfleets() throws Exception {
-
-    }
-
-    @Test
-    public void size() throws Exception {
-
-    }
-
-    @Test
-    public void getOwner() throws Exception {
-
-    }
-
-    @Test
-    public void setOwner() throws Exception {
-
+    public void addAndRemoveVehicle() throws Exception {
+        Fleet fleet = new Fleet();
+        Vehicle vehicle = new Vehicle();
+        assertTrue(fleet.addVehicle(vehicle));
+        assertTrue(fleet.getVehicles().contains(vehicle));
+        assertTrue(fleet.removeVehicle(vehicle));
+        assertFalse(fleet.getVehicles().contains(vehicle));
     }
 
 }
