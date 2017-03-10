@@ -9,22 +9,28 @@ import model.fleet.VehicleType;
 import java.time.LocalDate;
 import java.util.*;
 
-public class TestVehicleDAO implements VehicleDAO{
+public class TestVehicleDAO implements VehicleDAO {
 
     private static Map<UUID, Vehicle> vehicles = new HashMap<>();
+
     static {
-        UUID one=UUID.randomUUID();
-        UUID two=UUID.randomUUID();
-        UUID three=UUID.randomUUID();
-        UUID four=UUID.randomUUID();
-        VehicleType type1 = new VehicleType(three, "AE - Cabriolet", 210, 5);
-        VehicleType type2 = new VehicleType(four, "AA - Sedan", 530, 3);
+        UUID one = UUID.randomUUID();
+        UUID two = UUID.randomUUID();
+        UUID three = UUID.randomUUID();
+        UUID four = UUID.randomUUID();
+        VehicleType type1 = new VehicleType(three, "AE - Cabriolet", 210);
+        VehicleType type2 = new VehicleType(four, "AA - Sedan", 530);
         vehicles.put(one, new Vehicle(one, "Volkswagen", "Beetle", "ABC-123", LocalDate.now(), "abcdefhijk", 1000, 123, type1));
         vehicles.put(two, new Vehicle(two, "Lamborghini", "Diablo GT", "IAM-007", LocalDate.now(), "abcdefhijk", 3, 123, type2));
     }
 
     private int counter = 2;
 
+    @Override
+    public Vehicle create(Vehicle vehicle) throws DataAccessException {
+        vehicles.put(vehicle.getUuid(),vehicle);
+        return vehicle;
+    }
 
     @Override
     public Vehicle get(UUID id) throws DataAccessException {

@@ -3,19 +3,18 @@ package spring.controller;
 import controller.VehicleController;
 
 import dao.interfaces.DataAccessException;
+import dao.interfaces.Filter;
+import dao.interfaces.VehicleDAO;
 import model.fleet.Vehicle;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import spring.Exceptions.InvalidInputException;
 import spring.Exceptions.NotFoundException;
-import spring.Exceptions.NotImplementedException;
 import spring.model.RESTVehicle;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import java.util.Collection;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by jorg on 3/6/17.
@@ -26,7 +25,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/vehicle")
 public class RESTVehicleController {
-    private DateTimeFormatter yearFormat=DateTimeFormatter.ofPattern("yyyy");
+    private static DateTimeFormatter yearFormat=DateTimeFormatter.ofPattern("yyyyMMdd").withLocale(Locale.forLanguageTag("NL"));
 
     //TODO find out if this is usefull
     //@Autowired
@@ -34,32 +33,54 @@ public class RESTVehicleController {
 
     /***
      * Not yet implemented
-     * @param vehicle
      * @return
      */
     @RequestMapping(method = RequestMethod.GET)
-    public Collection<RESTVehicle> getAllVehicles(@RequestBody RESTVehicle vehicle) {
-        throw new NotImplementedException(); //TODO when filters are fixed
+    public Collection<RESTVehicle> getAllVehicles(@RequestParam(required=false) String licensPlate,
+                                              @RequestParam(required=false) String chassisNumber,
+                                              @RequestParam(required=false) Integer leasingCompany,
+                                              @RequestParam(required=false) Integer year,
+                                              @RequestParam(required=false) Integer company) {
+
+        VehicleDAO vehicleDAO= (VehicleDAO) controller.getDao();
+        List<Filter<Vehicle>> filters=new ArrayList<>();
+        if (licensPlate!=null){filters.add(vehicleDAO.byLicensePlate(licensPlate));}
+        if (chassisNumber!=null)//TODO after issue #87
+        if (leasingCompany!=null)//TODO after issue #88
+        if (year!=null){filters.add(vehicleDAO.atProductionDate(LocalDate.ofYearDay(year,0)));}
+        if (company!=null)//TODO after issue #88
+        if (licensPlate!=null){filters.add(vehicleDAO.byLicensePlate(licensPlate));}
+
+        Collection<RESTVehicle> result=new ArrayList<>();
+        try {
+            for(Vehicle vehicle : controller.getAll( filters.toArray(new Filter[filters.size()]))){
+                result.add(modelToRest(vehicle));
+            }
+
+        } catch (DataAccessException e) {
+            //API doesn't contain error
+        }
+        return result;
     }
 
     /***
      * implement post method, see api
-     * @param id
      * @param vehicle
      * @return
      */
     @RequestMapping(method = RequestMethod.POST)
-    public void postVehicles(@PathVariable("id") String id, @RequestBody RESTVehicle vehicle) {
+    public void postVehicles(@RequestBody RESTVehicle vehicle) {
         try {
+            LocalDate year = LocalDate.parse(vehicle.getYear()+"0101", yearFormat);//Fix conversion bug
             controller.create(vehicle.getBrand(),
                     vehicle.getModel(),
-                    vehicle.getLicense_plate(),
-                    LocalDate.parse(vehicle.getYear(),yearFormat),
-                    vehicle.getChassis_number(),
-                    vehicle.getKilometer_count(),
+                    vehicle.getLicensePlate(),
+                    year,
+                    vehicle.getChassisNumber(),
+                    vehicle.getKilometerCount(),
                     vehicle.getType());
         } catch (DataAccessException e) {
-            throw new InvalidInputException();
+            throw new InvalidInputException(e);
         }
     }
 
@@ -72,7 +93,7 @@ public class RESTVehicleController {
     public RESTVehicle getVehicle(@PathVariable("id") String id) {
 
         try {
-            return modelToRest(controller.get(id));
+            return modelToRest(controller.get(UUID.fromString(id)));
 
         } catch (DataAccessException e) {
             throw new NotFoundException();
@@ -88,14 +109,16 @@ public class RESTVehicleController {
     @RequestMapping(method = RequestMethod.PUT , value = "{id}")
     public void putVehicle(@PathVariable("id") String id, @RequestBody RESTVehicle vehicle) {
         try {
-            controller.get(id);
+            LocalDate year = LocalDate.parse(vehicle.getYear()+"0101", yearFormat);//Fix conversion bug
+            controller.update(UUID.fromString(id),vehicle.getBrand(),
+                    vehicle.getModel(),
+                    vehicle.getLicensePlate(),
+                    year,
+                    vehicle.getChassisNumber(),
+                    vehicle.getKilometerCount(),
+                    vehicle.getType());
         } catch (DataAccessException e) {
-            throw new NotFoundException();
-        }
-        try {
-            controller.update(restToModel(vehicle));
-        } catch (DataAccessException e) {
-            throw new InvalidInputException();
+            e.printStackTrace();
         }
 
     }
@@ -109,30 +132,12 @@ public class RESTVehicleController {
     public void deleteVehicle(@PathVariable("id") String id) {
 
         try {
-            controller.remove(controller.get(id));
+            controller.archive(UUID.fromString(id));
         } catch (DataAccessException e) {
             throw new NotFoundException();
         }
     }
 
-    /***
-     * TODO convert type field to corresponding VehicleType object
-     * converts restVehicle to vehicle like implemented in model
-     * @param restVehicle
-     * @return
-     */
-    private Vehicle restToModel(RESTVehicle restVehicle){
-        return new Vehicle(UUID.fromString(restVehicle.getId()),
-                restVehicle.getBrand(),
-                restVehicle.getModel(),
-                restVehicle.getLicense_plate(),
-                LocalDate.parse(restVehicle.getYear(),yearFormat),
-                restVehicle.getChassis_number(),
-                0,//TODO fix value
-                restVehicle.getKilometer_count(),
-                null//TODO String value of type has to be converted to the corresponding VehicleType object
-        );
-    }
 
     /***
      * converts model vehicle to vehicle needed for rest api
@@ -145,13 +150,13 @@ public class RESTVehicleController {
                 vehicle.getChassisNumber(),
                 vehicle.getBrand(),
                 vehicle.getModel(),
-                null,//TODO fix type
+                vehicle.getType().getUuid().toString(),
                 vehicle.getMileage(),
                 vehicle.getProductionDate().format(yearFormat),
                 null,//TODO search leasing company
                 null,//TODO implement edit dates with history
                 null,
-                null// todo calc URL
+                "/vehicle/"+vehicle.getUuid().toString()
         );
     }
 

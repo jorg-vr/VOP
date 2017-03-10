@@ -13,7 +13,7 @@
         </id>
 
         <property name="country" column="country" type="string"/>
-        <property name="postalCode" column="postal_code" type="string"/>
+        <property name="postalCode" column="postalCode" type="string"/>
         <property name="street" column="street" type="string"/>
         <property name="streetNumber" column="street_number" type="string"/>
         <property name="town" column="town" type="string"/>

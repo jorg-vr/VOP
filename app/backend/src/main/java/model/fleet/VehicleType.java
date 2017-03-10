@@ -2,6 +2,7 @@ package model.fleet;
 
 
 import model.history.EditableObject;
+import spring.Exceptions.InvalidInputException;
 
 import java.util.UUID;
 
@@ -14,17 +15,13 @@ public class VehicleType implements EditableObject, java.io.Serializable {
     // The tax in %
     private double tax;
 
-    // vehicle-type id for use by the api
-    private int id;
-
     public VehicleType() {
     }
 
-    public VehicleType(UUID uuid, String type, double tax, int id) {
+    public VehicleType(UUID uuid, String type, double tax) {
         this.uuid = uuid;
         this.type = type;
         this.tax = tax;
-        this.id = id;
     }
 
     public UUID getUuid() {
@@ -47,16 +44,17 @@ public class VehicleType implements EditableObject, java.io.Serializable {
         return tax;
     }
 
-    public void setTax(double tax) {
+    /**
+     * set the tax value and checks if it is a valid percentage.
+     *
+     * @param tax road tax for the vehicle category
+     * @throws InvalidInputException if the given tax value is a negative value
+     */
+    public void setTax(double tax) throws InvalidInputException {
+        if (tax < 0) {
+            throw new InvalidInputException("Tax value has to be a positive percentage");
+        }
         this.tax = tax;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     @Override
@@ -77,6 +75,6 @@ public class VehicleType implements EditableObject, java.io.Serializable {
 
     @Override
     public EditableObject copy() {
-        return new VehicleType(uuid, type, tax, id);
+        return new VehicleType(uuid, type, tax);
     }
 }

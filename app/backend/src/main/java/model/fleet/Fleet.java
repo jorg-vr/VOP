@@ -38,8 +38,10 @@ public class Fleet implements EditableObject, java.io.Serializable {
      *
      * @return true if the Vehicle was added
      */
-    public boolean add(Vehicle vehicle) {
-        if (vehicles.contains(vehicle)) {
+    public boolean addVehicle(Vehicle vehicle) {
+        if (vehicles == null) {
+            vehicles = new ArrayList<Vehicle>();
+        } else if (vehicle == null || vehicles.contains(vehicle)) {
             return false;
         }
         vehicles.add(vehicle);
@@ -54,7 +56,7 @@ public class Fleet implements EditableObject, java.io.Serializable {
      *
      * @return true if the Vehicle was removed
      */
-    public boolean remove(Vehicle vehicle) {
+    public boolean removeVehicle(Vehicle vehicle) {
         if (!vehicles.contains(vehicle)) {
             return false;
         }
@@ -73,7 +75,6 @@ public class Fleet implements EditableObject, java.io.Serializable {
         return uuid;
     }
 
-
     public void setUuid(UUID uuid) {
         this.uuid = uuid;
     }
@@ -87,7 +88,7 @@ public class Fleet implements EditableObject, java.io.Serializable {
     }
 
     public Collection<Vehicle> getVehicles() {
-        return new ArrayList<>(vehicles);
+        return vehicles;
     }
 
     public void setVehicles(Collection<Vehicle> vehicles) {
@@ -99,18 +100,19 @@ public class Fleet implements EditableObject, java.io.Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        return uuid == ((Fleet)o).getUuid();
+        return uuid == ((Fleet) o).getUuid();
 
     }
 
     @Override
     public EditableObject copy() {
-        Collection<Vehicle> newList =  new ArrayList<Vehicle>();
-        for(Vehicle v : vehicles){
-            newList.add((Vehicle)v.copy());
+        Collection<Vehicle> newList = new ArrayList<Vehicle>();
+        for (Vehicle v : vehicles) {
+            newList.add((Vehicle) v.copy());
         }
-        return new Fleet(uuid,owner, newList);
+        return new Fleet(uuid, owner, newList);
     }
+
     @Override
     public int hashCode() {
         return uuid.hashCode();
