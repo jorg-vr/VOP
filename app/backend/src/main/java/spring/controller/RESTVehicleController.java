@@ -7,6 +7,7 @@ import dao.interfaces.Filter;
 import dao.interfaces.VehicleDAO;
 import model.fleet.Vehicle;
 import org.springframework.web.bind.annotation.*;
+import spring.Exceptions.AttributeException;
 import spring.Exceptions.InvalidInputException;
 import spring.Exceptions.NotFoundException;
 import spring.model.RESTVehicle;
@@ -41,26 +42,27 @@ public class RESTVehicleController {
                                               @RequestParam(required=false) Integer leasingCompany,
                                               @RequestParam(required=false) Integer year,
                                               @RequestParam(required=false) Integer company) {
+        throw new AttributeException("test");
 
-        VehicleDAO vehicleDAO= (VehicleDAO) controller.getDao();
-        List<Filter<Vehicle>> filters=new ArrayList<>();
-        if (licensPlate!=null){filters.add(vehicleDAO.byLicensePlate(licensPlate));}
-        if (chassisNumber!=null)//TODO after issue #87
-        if (leasingCompany!=null)//TODO after issue #88
-        if (year!=null){filters.add(vehicleDAO.atProductionDate(LocalDate.ofYearDay(year,0)));}
-        if (company!=null)//TODO after issue #88
-        if (licensPlate!=null){filters.add(vehicleDAO.byLicensePlate(licensPlate));}
-
-        Collection<RESTVehicle> result=new ArrayList<>();
-        try {
-            for(Vehicle vehicle : controller.getAll( filters.toArray(new Filter[filters.size()]))){
-                result.add(modelToRest(vehicle));
-            }
-
-        } catch (DataAccessException e) {
-            //API doesn't contain error
-        }
-        return result;
+//        VehicleDAO vehicleDAO= (VehicleDAO) controller.getDao();
+//        List<Filter<Vehicle>> filters=new ArrayList<>();
+//        if (licensPlate!=null){filters.add(vehicleDAO.byLicensePlate(licensPlate));}
+//        if (chassisNumber!=null)//TODO after issue #87
+//        if (leasingCompany!=null)//TODO after issue #88
+//        if (year!=null){filters.add(vehicleDAO.atProductionDate(LocalDate.ofYearDay(year,0)));}
+//        if (company!=null)//TODO after issue #88
+//        if (licensPlate!=null){filters.add(vehicleDAO.byLicensePlate(licensPlate));}
+//
+//        Collection<RESTVehicle> result=new ArrayList<>();
+//        try {
+//            for(Vehicle vehicle : controller.getAll( filters.toArray(new Filter[filters.size()]))){
+//                result.add(modelToRest(vehicle));
+//            }
+//
+//        } catch (DataAccessException e) {
+//            //API doesn't contain error
+//        }
+//        return result;
     }
 
     /***
