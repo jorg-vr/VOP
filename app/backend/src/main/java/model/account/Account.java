@@ -58,6 +58,21 @@ public class Account implements EditableObject, java.io.Serializable {
         this.hashedPassword = hashedPassword;
     }
 
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
+    }
+
+    public Collection<Function> getFunctions() {
+        return functions;
+    }
+
+    public void setFunctions(Collection<Function> functions) {
+        this.functions = functions;
+    }
 
     @Override
     public UUID getUuid() {
