@@ -18,8 +18,7 @@ public class Fleet implements EditableObject, java.io.Serializable {
     }
 
     public Fleet(UUID uuid, Customer owner, Collection<Vehicle> vehicles) {
-        this.uuid = uuid;
-        this.owner = owner;
+        this(uuid,owner);
         this.vehicles = vehicles;
     }
 
@@ -39,10 +38,9 @@ public class Fleet implements EditableObject, java.io.Serializable {
      * @return true if the Vehicle was added
      */
     public boolean addVehicle(Vehicle vehicle) {
-        if(vehicles == null){
+        if (vehicles == null) {
             vehicles = new ArrayList<Vehicle>();
-        }
-        else if(vehicle == null || vehicles.contains(vehicle)){
+        } else if (vehicle == null || vehicles.contains(vehicle)) {
             return false;
         }
         vehicles.add(vehicle);
@@ -101,18 +99,19 @@ public class Fleet implements EditableObject, java.io.Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        return uuid == ((Fleet)o).getUuid();
+        return uuid == ((Fleet) o).getUuid();
 
     }
 
     @Override
     public EditableObject copy() {
-        Collection<Vehicle> newList =  new ArrayList<Vehicle>();
-        for(Vehicle v : vehicles){
-            newList.add((Vehicle)v.copy());
+        Collection<Vehicle> newList = new ArrayList<Vehicle>();
+        for (Vehicle v : vehicles) {
+            newList.add((Vehicle) v.copy());
         }
-        return new Fleet(uuid,owner, newList);
+        return new Fleet(uuid, owner, newList);
     }
+
     @Override
     public int hashCode() {
         return uuid.hashCode();
