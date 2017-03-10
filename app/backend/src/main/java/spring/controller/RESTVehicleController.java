@@ -156,7 +156,7 @@ public class RESTVehicleController {
                 null,//TODO search leasing company
                 null,//TODO implement edit dates with history
                 null,
-                "/vehicle/"+vehicle.getUuid().toString()
+                "/vehicles/"+vehicle.getUuid().toString()
         );
     }
 

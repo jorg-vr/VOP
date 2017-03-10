@@ -24,6 +24,6 @@ public class MyExceptionHandler {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     protected ResponseEntity<Object> handleBadInput(HttpMessageNotReadableException ex) {
-        return ResponseEntity.badRequest().body(new RESTError(400,"The JSON is malformed. This is a syntax error.",""));
+        return ResponseEntity.badRequest().body(new RESTError(400,"The JSON is malformed. This is a syntax error.",null));
     }
 }
