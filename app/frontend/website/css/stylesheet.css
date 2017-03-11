@@ -102,3 +102,13 @@ h1 {
 .full-width {
     width: 100%
 }
+
+/* form styling */
+
+.form-inline{
+    margin:10px 0 20px 0;
+}
+
+.form-control:focus {
+    border-left: 4px #007893 solid;
+}
