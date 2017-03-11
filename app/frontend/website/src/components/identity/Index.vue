@@ -34,16 +34,16 @@
         methods: {
             // Methods for routing purposes
             add: function () {
-                this.$router.push({path: 'identity/new', query: {type: this.$route.query.type}})
+                this.$router.push({path: 'identities/new', query: {type: this.$route.query.type}})
             },
             edit: function () {
-                this.$router.push({path: 'identity/:id/edit', query: {type: this.$route.query.type}})
+                this.$router.push({path: 'identities/:id/edit', query: {type: this.$route.query.type}})
             },
             remove: function () {
-                this.$router.push({path: 'identity/:id/remove', query: {type: this.$route.query.type}})
+                this.$router.push({path: 'identities/:id/remove', query: {type: this.$route.query.type}})
             },
             list: function () {
-                this.$router.push({path: 'identity/:id', query: {type: this.$route.query.type}})
+                this.$router.push({path: 'identities/:id', query: {type: this.$route.query.type}})
             }
         }
     }

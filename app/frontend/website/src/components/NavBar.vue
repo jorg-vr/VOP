@@ -14,6 +14,7 @@
     </div>
 </template>
 <script>
+    //TODO: Change CSS of currently selected list item
     export default {}
 </script>
 

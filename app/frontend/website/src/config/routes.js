@@ -8,7 +8,6 @@ import ShowIdentity from '../components/identity/Show.vue'
 import NewFleet from '../components/fleet/New.vue'
 import EditFleet from '../components/fleet/Edit.vue'
 import IndexFleet from '../components/fleet/Index.vue'
-import RemoveFleet from '../components/fleet/Remove.vue'
 import ShowFleet from '../components/fleet/Show.vue'
 
 import NewVehicle from '../components/vehicle/New.vue'
@@ -30,10 +29,9 @@ export default [
             { path: 'identities/:id/remove', component: RemoveIdentity },
             //Fleet
             { path: 'fleets', name: 'fleets', component: IndexFleet },
-            { path: 'fleets/new', component: NewFleet },
-            { path: 'fleets/:id', component: ShowFleet },
-            { path: 'fleets/:id/edit', component: EditFleet },
-            { path: 'fleets/:id/remove', component: RemoveFleet },
+            { path: 'fleets/new', name: 'new_fleet', component: NewFleet },
+            { path: 'fleets/:id', name: 'fleet', component: ShowFleet },
+            { path: 'fleets/:id/edit', name: 'edit_fleet', component: EditFleet },
 
             //Vehicle
             { path: 'vehicles', name: 'vehicles', component: IndexVehicle },
