@@ -12,9 +12,8 @@
             <li><a href="#">Contact</a></li>
         </ul>
     </div>
-
-
 </template>
-
-
+<script>
+    export default {}
+</script>
 
