@@ -27,9 +27,9 @@ import java.util.*;
 @RequestMapping("/users")
 public class RESTUserController {
 
-    private AccountController accountController = new AccountController(null);
+    private AccountController accountController = new AccountController();
 
-    private PersonController personController = new PersonController(null);
+    private PersonController personController = new PersonController();
 
 
     /**
@@ -42,13 +42,10 @@ public class RESTUserController {
         Collection<RESTUser> users = new ArrayList<>();
 
         try {
-            Collection<Person> persons = personController.getAll();
-
-            for (Person person : persons) {
-
-                Account account = accountController.getAccount(person.getEmail());
-                RESTUser user = merge(person.getUuid(), person, account);
-                users.add(user);
+            Collection<Account> accounts = accountController.getAll();
+            for (Account account : accounts) {
+                Person person = account.getPerson();
+                users.add(merge(person, account));
             }
         } catch (DataAccessException e) {
             // This should not happen unless there is something wrong with the database
@@ -85,7 +82,7 @@ public class RESTUserController {
             Account account = accountController.createAccount(user.getEmail(), user.getPassword());
             Person person = personController.createPerson(user.getFirstName(), user.getLastName(), user.getEmail(), null);
 
-            return merge(person.getUuid(), person, account);
+            return merge(person, account);
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
@@ -101,11 +98,11 @@ public class RESTUserController {
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
     public RESTUser getId(@PathVariable("id") String id) {
         try {
-            UUID uuid = UUID.fromString(id);
-            Person person = personController.get(uuid);
-            Account account = accountController.getAccount(person.getEmail());
+            UUID uuid = UUIDUtil.toUUID(id);
+            Account account = accountController.get(uuid);
+            Person person = account.getPerson();
 
-            return merge(person.getUuid(), person, account);
+            return merge(person, account);
         } catch (DataAccessException | NumberFormatException e) {
             throw new NotFoundException();
         }
@@ -126,15 +123,15 @@ public class RESTUserController {
      */
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
     public RESTUser putId(@PathVariable("id") String id, @RequestBody RESTUser user) {
-        UUID uuid;
+        UUID uuid = UUIDUtil.toUUID(id);
         try {
             uuid = UUID.fromString(id);
         } catch (NumberFormatException e) {
             throw new NotFoundException();
         }
         try {
-            Person person = personController.get(uuid);
-            Account account = accountController.getAccount(person.getEmail());
+            Account account = accountController.get(uuid);
+            Person person = account.getPerson();
 
             // TODO dit bespreken met jorg
             if (user.getFirstName() != null) {
@@ -155,7 +152,7 @@ public class RESTUserController {
                 account.setLogin(email);
             }
 
-            accountController.updateAccount(account);
+            accountController.update(account);
             personController.update(person);
 
             user.setId(person.getUuid() + "");
@@ -173,23 +170,23 @@ public class RESTUserController {
      */
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
     public void deleteId(@PathVariable("id") String id) {
-        UUID uuid = UUID.fromString(id);
-        try {
-            Person person = personController.get(uuid);
+        UUID uuid = UUIDUtil.toUUID(id);
 
-            accountController.archiveAccount(person.getEmail());
-            personController.archive(person.getUuid());
+        try {
+            Account account = accountController.get(uuid);
+            accountController.archive(account.getUuid());
+            personController.archive(account.getPerson().getUuid());
         } catch (DataAccessException e) {
             throw new NotFoundException();
         }
     }
 
-    private RESTUser merge(UUID id, Person person, Account account) {
+    private RESTUser merge(Person person, Account account) {
         RESTUser user = new RESTUser();
-        user.setId(id + "");
+        user.setId(UUIDUtil.UUIDToNumberString(account.getUuid()));
         user.setPassword(account.getHashedPassword());
-        user.setUpdatedAt(LocalDateTime.now()); // TODO needs to be in editable object
-        user.setCreatedAt(LocalDateTime.now());
+        //user.setUpdatedAt(LocalDateTime.now());
+        //user.setCreatedAt(LocalDateTime.now());
         user.setFirstName(person.getFirstName());
         user.setLastName(person.getLastName());
         user.setEmail(person.getEmail());

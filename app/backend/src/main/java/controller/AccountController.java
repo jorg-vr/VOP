@@ -4,7 +4,10 @@ import dao.interfaces.AccountDAO;
 import dao.interfaces.DAOProvider;
 import dao.interfaces.DataAccessException;
 import dao.test.TestAccountDAO;
+import dao.test.TestDAOProvider;
+import main.BackendApplication;
 import model.account.Account;
+import spring.Exceptions.NotImplementedException;
 
 /**
  * This class acts as a protecting interface of backend model
@@ -13,15 +16,13 @@ import model.account.Account;
  * 2) history changes (not yet implemented) TODO milestone?
  * 3) correct authentication (not yet implemented) TODO milestone?
  */
-public class AccountController {
-
-    private DAOProvider provider;
+public class AccountController extends AbstractController<Account> {
 
     private AccountDAO dao;
 
-    public AccountController(DAOProvider provider) {
-        this.provider = provider;
-        this.dao = new TestAccountDAO(); // TODO get the dao from provider
+    public AccountController() {
+        super(BackendApplication.PROVIDER.getAccountDao());
+        this.dao = BackendApplication.PROVIDER.getAccountDao();
     }
 
     /**
@@ -41,38 +42,10 @@ public class AccountController {
     }
 
     /**
-     * Attempts to get the account with the given name
-     *
-     * @throws DataAccessException there is no account associated with that name
-     */
-    public Account getAccount(String name) throws DataAccessException {
-        return dao.get(name);
-    }
-
-    public void updateAccount(Account account) throws DataAccessException {
-        dao.update(account);
-    }
-
-    /**
-     * Attempts to archive the account with the given name
-     *
-     * @throws DataAccessException there is no account associated with that name
-     */
-    public void archiveAccount(String name) throws DataAccessException {
-        dao.remove(name);
-    }
-
-    /**
      * @param name the account name
      * @return true if the name is already taken
      */
     public boolean isTaken(String name) {
-        boolean taken = true;
-        try {
-            dao.get(name);
-        } catch (DataAccessException e) {
-            taken = false;
-        }
-        return taken;
+        throw new NotImplementedException();
     }
 }
