@@ -44,7 +44,7 @@
             <div class="col-md-8" col-md-offset-6>
                 
                 <div class="list-group">
-                  <li v-for="user in users" class="list-group-item">
+                  <li v-for="user in searchId" class="list-group-item">
                     {{ user.name }}
                     <span class="pull-right">
                       <button type="button" class="btn btn-primary btn-xs btn-primary" v-on:click="edit(user)" id="editButton">
@@ -173,7 +173,28 @@
                 },
         },
         computed: {
-        
+        searchId: function () { 
+            var s=this.search.trim().toLowerCase();;
+            var listID = []
+            if (this.$route.query.type == "Gebruiker"){
+                listID = this.users
+            }
+            else if (this.$route.query.type == "Klant"){
+                listID = this.clients
+            }
+
+            if(!this.search){
+                return listID
+            }
+            else{
+                return this.users.filter(function(number){
+                    if(number.name.toLowerCase().indexOf(s) != -1){
+                        return number
+                    }
+                })
+            }
+
+        },
         appendString : function (){
             var value = [this.$route.query.type + ' zoeken']
             return value
