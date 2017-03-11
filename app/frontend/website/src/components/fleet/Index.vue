@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="page-header">
-            <h1> {{ this.$route.query.type }}  </h1>
+            <h1> Vloten  </h1>
 
         </div>
         <div>
@@ -22,7 +22,7 @@
             <div class="row">
                 <div class="col-md-8">
                     <table class="table">
-                        <fleet-row v-for="fleet in fleets" :fleet="fleet"></fleet-row>
+                        <fleet-row v-for="fleet in fleets" :fleet="fleet" :key="fleet.id"></fleet-row>
                     </table>
                 </div>
             </div>
@@ -53,7 +53,7 @@
                 methods: {
                     removeFleet (fleetID){
                         this.$http.delete('https://vopro5.ugent.be/app/api/fleets/' + fleetID).then(response => {
-                            this.fleets = response.body
+                            //Verwerk response
                         })
                     }
                 }
