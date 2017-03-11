@@ -1,8 +1,10 @@
 <template>
     <div>
         <div class="page-header">
-            <h1>Vehicles</h1>
+            <h1>Voertuigen</h1>
         </div>
+
+
         <ul>
             <li v-for="vehicle in getVehicles">
                 <router-link :to="{name: 'vehicle', params: { id: vehicle.id }}">
@@ -20,7 +22,6 @@
             getVehicles: function(){
                 this.$http.get('https://vopro5.ugent.be/app/api/vehicles').then(response => {
                         //Verwerk response
-
                 })
             }
         }
