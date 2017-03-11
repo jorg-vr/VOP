@@ -1,19 +1,76 @@
 <template>
-    <div>
-        <div class="page-header">
-            <h1>New vehicle</h1>
-            <input v-model="vehicle.brand" placeholder="Merk">
-            <input v-model="vehicle.model" placeholder="Model">
-            <input v-model="vehicle.type" placeholder="Type">
-            <input v-model="vehicle.license_plate" placeholder="Nummerplaat">
-            <input v-model="vehicle.chassis_number" placeholder="Chassis nummer">
-            <input v-model="vehicle.year" placeholder="Productiejaar">
-            <input v-model="vehicle.kilometer_count" placeholder="Kilometerafstand">
-            <input v-model="vehicle.leasing_company" placeholder="Leasing bedrijf">
-            <button v-on:click="addVehicle">Voeg toe</button>
-        </div>
+<div>
+    <div class="page-header">
+        <h1>Voeg een nieuw voertuig toe</h1>
     </div>
+
+    <!-- form -->
+    <form class="form-horizontal col-md-6">
+        <div class="form-group">
+            <label class="col-sm-4 control-label">Merk</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" placeholder="Merk"> 
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label">Model</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" placeholder="Model">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label">Type</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" placeholder="Type">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label">Nummerplaat</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" placeholder="Nummerplaat">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label">Chassisnummer</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" placeholder="Chassisnummer">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label">Productiedatum</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" placeholder="Productiedatum">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label">Waarde</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" placeholder="Waarde">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label">Kilometerafstand</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" placeholder="Kilometerafstand">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label">Bedrijf</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" placeholder="Bedrijf">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label">Leasing bedrijf</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" placeholder="Leasing bedrijf">
+            </div>
+        </div>
+        <button type="submit" class="btn btn-default float-left">Voeg toe</button>
+    </form>
+</div>
 </template>
+
 <script>
     export default {
         data: function(){
