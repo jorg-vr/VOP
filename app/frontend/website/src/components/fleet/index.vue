@@ -10,14 +10,15 @@
                         <div class="input-group col-md-12">
                             <input type="text" class="form-control input-mg" placeholder="Vloot zoeken" />
                             <span class="input-group-btn">
-	                        <button class="btn btn-info btn-mg" type="button">
-	                            <i class="fa fa-search" aria-hidden="true"></i>
-	                        </button>
-	                    </span>
+                                <button class="btn btn-info btn-mg" type="button">
+                                    <i class="fa fa-search" aria-hidden="true"></i>
+                                </button>
+	                        </span>
                         </div>
                     </div>
                 </div>
             </div>
+            <router-link :to="{name: 'new_fleet'}"><button type="button" class="btn btn-primary table-button">Niew vloot</button></router-link>
             <div class="row">
                 <div class="col-md-8">
                     <table class="table">
