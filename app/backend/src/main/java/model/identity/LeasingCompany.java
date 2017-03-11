@@ -32,8 +32,11 @@ public class LeasingCompany extends Company implements java.io.Serializable {
         } else if (vehicle == null || vehicles.contains(vehicle)) {
             return false;
         }
-        vehicle.setLeasingCompany(this);
-        return vehicles.add(vehicle);
+        boolean added = vehicles.add(vehicle);
+        if(added){
+            vehicle.setLeasingCompany(this);
+        }
+        return added;
     }
 
     /**
@@ -43,8 +46,11 @@ public class LeasingCompany extends Company implements java.io.Serializable {
      * @return true if the vehicle was succesfully removed
      */
     public boolean removeVehicle(Vehicle vehicle) {
-        vehicle.setLeasingCompany(null);
-        return vehicles.remove(vehicle);
+        boolean removed = vehicles.remove(vehicle);
+        if(removed){
+            vehicle.setLeasingCompany(null);
+        }
+        return removed;
     }
 
     public Collection<Vehicle> getVehicles() {

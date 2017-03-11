@@ -128,6 +128,11 @@ public class Vehicle implements EditableObject, java.io.Serializable {
         return value;
     }
 
+    /**
+     * sets the Value
+     * @param value
+     * @throws InvalidInputException when trying to set a negative value
+     */
     public void setValue(int value) throws InvalidInputException {
         if (value < 0) {
             throw new InvalidInputException("Value can not be a negative value");
@@ -139,6 +144,11 @@ public class Vehicle implements EditableObject, java.io.Serializable {
         return mileage;
     }
 
+    /**
+     * set mileage
+     * @param mileage
+     * @throws InvalidInputException when trying to set a negative value
+     */
     public void setMileage(int mileage) throws InvalidInputException {
         if (mileage < 0) {
             throw new InvalidInputException("Mileage can not be a negative value");
