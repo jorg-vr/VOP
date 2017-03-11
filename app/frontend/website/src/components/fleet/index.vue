@@ -2,9 +2,8 @@
     <div>
         <div class="page-header">
             <h1> Vloten  </h1>
-
         </div>
-        <div>
+        <div class="test">
             <div class="row">
                 <div class="col-md-6">
                     <div id="search_input">
@@ -21,7 +20,7 @@
             </div>
             <div class="row">
                 <div class="col-md-8">
-                    <table class="table">
+                    <table class="table fleet-table">
                         <fleet-row v-for="fleet in fleets" :fleet="fleet" :key="fleet.id"></fleet-row>
                     </table>
                 </div>
@@ -39,8 +38,8 @@
                 },
                 template: `
                 <tr>
-                <td class="id">{{fleet.id}}</td>
-                <td>{{fleet.company}}</td>
+                <td class="id-column">{{fleet.id}}</td>
+                <td class="full-width">{{fleet.company}}</td>
                 <td><router-link :to="{name: 'fleet', params: { id: fleet.id }}">
                     <button class="btn btn-xs btn-warning"><i class="fa fa-eye" aria-hidden="true"></i></button>
                 </router-link></td>
@@ -81,37 +80,9 @@
         }
     }
 </script>
+
 <style>
-    table {
-        margin-top: 20px;
-    }
-    tr {
-        display: block;
-        padding: 0px 15px;
-        margin-bottom: -1px;
-        background-color: #fff;
-        border: 1px solid #ddd;
-    }
-    tr:hover {
-        background-color: #f5f5f5;
-    }
-    td {
-        padding: 10px 10px;
-    }
-    .id {
+    .id-column {
         border-right: 1px solid #ddd;
-    }
-
-    a {
-        color: #555;
-    }
-
-    a:focus, a:hover {
-        text-decoration: none;
-        color: #555;
-    }
-
-    td:nth-child(2) {
-        width: 100%
     }
 </style>
