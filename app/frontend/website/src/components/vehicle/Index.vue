@@ -9,6 +9,7 @@
                     {{vehicle.license_plate}}
                 </router-link>
             </li>
+            <button v-on:click="getVehicles"></button> <!-- For testing purposes -->
         </ul>
         <router-view></router-view>
     </div>
@@ -17,8 +18,9 @@
     export default {
         methods: {
             getVehicles: function(){
-                this.$http.get('/vehicles').then(response => {
-                        console.log(response.text);
+                this.$http.get('https://vopro5.ugent.be/app/api/vehicles').then(response => {
+                        //Verwerk response
+
                 })
             }
         }

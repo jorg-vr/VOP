@@ -23,23 +23,24 @@ export default [
         component: App,
         children: [
             //Identity
-            { path: 'identity', component: IndexIdentity },
-            { path: 'identity/new', component: NewIdentity },
-            { path: 'identity/:id', component: ShowIdentity },
-            { path: 'identity/:id/edit', component: EditIdentity },
-            { path: 'identity/:id/remove', component: RemoveIdentity },
+            { path: 'identities', name: 'identities', component: IndexIdentity },
+            { path: 'identities/new', component: NewIdentity },
+            { path: 'identities/:id', component: ShowIdentity },
+            { path: 'identities/:id/edit', component: EditIdentity },
+            { path: 'identities/:id/remove', component: RemoveIdentity },
             //Fleet
-            { path: 'fleet', component: IndexFleet },
-            { path: 'fleet/new', component: NewFleet },
-            { path: 'fleet/:id', component: ShowFleet },
-            { path: 'fleet/:id/edit', component: EditFleet },
-            { path: 'fleet/:id/remove', component: RemoveFleet },
+            { path: 'fleets', name: 'fleets', component: IndexFleet },
+            { path: 'fleets/new', component: NewFleet },
+            { path: 'fleets/:id', component: ShowFleet },
+            { path: 'fleets/:id/edit', component: EditFleet },
+            { path: 'fleets/:id/remove', component: RemoveFleet },
+
             //Vehicle
-            { path: 'vehicle', name: 'vehicles', component: IndexVehicle },
-            { path: 'vehicle/new', name: 'new_vehicle', component: NewVehicle },
-            { path: 'vehicle/:id', name: 'vehicle', component: ShowVehicle },
-            { path: 'vehicle/:id/edit', name: 'edit_vehicle', component: EditVehicle },
-            { path: 'vehicle/:id/remove', name: 'remove_vehicle', component: RemoveVehicle }
+            { path: 'vehicles', name: 'vehicles', component: IndexVehicle },
+            { path: 'vehicles/new', name: 'new_vehicle', component: NewVehicle },
+            { path: 'vehicles/:id', name: 'vehicle', component: ShowVehicle },
+            { path: 'vehicles/:id/edit', name: 'edit_vehicle', component: EditVehicle },
+            { path: 'vehicles/:id/remove', name: 'remove_vehicle', component: RemoveVehicle }
         ]
     },
         //TODO: Make a not found page!
