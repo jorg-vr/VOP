@@ -18,8 +18,7 @@ public class Fleet implements EditableObject, java.io.Serializable {
     }
 
     public Fleet(UUID uuid, Customer owner, Collection<Vehicle> vehicles) {
-        this.uuid = uuid;
-        this.owner = owner;
+        this(uuid,owner);
         this.vehicles = vehicles;
     }
 

@@ -48,15 +48,7 @@ public class Vehicle implements EditableObject, java.io.Serializable {
     }
 
     public Vehicle(UUID uuid, String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int value, int mileage, VehicleType type, LeasingCompany leasingCompany) {
-        this.uuid = uuid;
-        this.brand = brand;
-        this.model = model;
-        this.licensePlate = licensePlate;
-        this.productionDate = productionDate;
-        this.chassisNumber = chassisNumber;
-        this.value = value;
-        this.mileage = mileage;
-        this.type = type;
+        this(uuid,brand,model,licensePlate,productionDate,chassisNumber,value,mileage,type);
         this.leasingCompany = leasingCompany;
     }
 

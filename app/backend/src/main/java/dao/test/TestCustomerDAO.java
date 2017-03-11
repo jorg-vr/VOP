@@ -19,7 +19,7 @@ public class TestCustomerDAO implements CustomerDAO {
 
     public TestCustomerDAO() {
         UUID one=UUID.randomUUID();
-        customers.put(one,new Customer(one,new Address(),"tom@mail.com","047777777","tomcompany","123","BE456", CompanyType.TYPE1));
+        customers.put(one,new Customer(one,new Address("mystreet","1","tomtown","9000","tomland"),"tom@mail.com","047777777","tomcompany","123","BE456", CompanyType.TYPE1));
     }
 
     @Override

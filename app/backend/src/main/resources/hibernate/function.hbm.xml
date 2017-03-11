@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="model.account.Function" table="FUNCTION">
+        <meta attribute="class-description">
+            This class contains the function detail.
+        </meta>
+        <id name="uuid" type="binary" column="id">
+            <generator class="uuid"/>
+        </id>
+
+        <property name="startDate" column="start_data" type="date"/>
+        <property name="endDate" column="end_data" type="date"/>
+        <many-to-one name="account" column="account_id"  class="model.account.Account" />
+        <!--<many-to-one name="role" column="role_id"  class="model.account.Role" />-->
+        <many-to-one name="company" column="company_id"  class="model.identity.Company" />
+
+    </class>
+</hibernate-mapping>

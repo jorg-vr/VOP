@@ -7,6 +7,7 @@ import dao.interfaces.Filter;
 import dao.interfaces.VehicleDAO;
 import model.fleet.Vehicle;
 import org.springframework.web.bind.annotation.*;
+import spring.Exceptions.AttributeException;
 import spring.Exceptions.InvalidInputException;
 import spring.Exceptions.NotFoundException;
 import spring.model.RESTVehicle;
@@ -23,7 +24,7 @@ import java.util.*;
 
 
 @RestController
-@RequestMapping("/vehicle")
+@RequestMapping("/vehicles")
 public class RESTVehicleController {
     private static DateTimeFormatter yearFormat=DateTimeFormatter.ofPattern("yyyyMMdd").withLocale(Locale.forLanguageTag("NL"));
 
@@ -41,7 +42,6 @@ public class RESTVehicleController {
                                               @RequestParam(required=false) Integer leasingCompany,
                                               @RequestParam(required=false) Integer year,
                                               @RequestParam(required=false) Integer company) {
-
         VehicleDAO vehicleDAO= (VehicleDAO) controller.getDao();
         List<Filter<Vehicle>> filters=new ArrayList<>();
         if (licensPlate!=null){filters.add(vehicleDAO.byLicensePlate(licensPlate));}
@@ -156,7 +156,7 @@ public class RESTVehicleController {
                 null,//TODO search leasing company
                 null,//TODO implement edit dates with history
                 null,
-                "/vehicle/"+vehicle.getUuid().toString()
+                "/vehicles/"+vehicle.getUuid().toString()
         );
     }
 

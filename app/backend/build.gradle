@@ -35,6 +35,7 @@ repositories {
 }
 
 dependencies {
+	//compile group: 'org.postgresql', name: 'postgresql', version: '9.4-1200-jdbc41'
 	compile('org.springframework.boot:spring-boot-starter-web')
     compile('org.hibernate:hibernate-core:5.2.8.Final')
 	compile ("com.fasterxml.jackson.datatype:jackson-datatype-jsr310") // Used for JSON format of LocalDate

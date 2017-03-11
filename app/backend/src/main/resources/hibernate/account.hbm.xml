@@ -14,8 +14,12 @@
 
         <property name="login" column="login" type="string"/>
         <property name="hashedPassword" column="hashed_password" type="string"/>
-        <many-to-one name="identity" column="identity_id" class="model.identity.Identity"/>
-
+        <many-to-one name="person" column="person_id"  class="model.identity.Person" />
+        <bag name="functions" access="field" table="FUNCTION" cascade="all"
+             inverse="true" lazy="true" fetch="select">
+            <key column="account_id" not-null="true"/>
+            <one-to-many class="model.account.Function" />
+        </bag>
 
     </class>
 </hibernate-mapping>

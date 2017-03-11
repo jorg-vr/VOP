@@ -1,7 +1,9 @@
 package model.account;
 import model.identity.Identity;
 import model.history.EditableObject;
+import model.identity.Person;
 
+import java.util.Collection;
 import java.util.Random;
 import java.util.UUID;
 
@@ -9,28 +11,24 @@ import java.util.UUID;
 public class Account implements EditableObject, java.io.Serializable {
 
     private String login;
-
     private String hashedPassword;
-    private Role role;
-    private Identity identity;
+    private Person person;
     private UUID uuid;
+    private Collection<Function> functions;
 
     public Account() {
     }
 
-    public Account(String login, String hashedPassword, Role role, Identity identity) {
+    public Account(String login, String hashedPassword, Person person, Collection<Function> functions) {
         this.login = login;
         this.hashedPassword = hashedPassword;
-        this.role = role;
-        this.identity = identity;
+        this.person = person;
+        this.functions = functions;
         uuid= UUID.randomUUID();
     }
 
-    private Account(String login, String hashedPassword, Role role, Identity identity, UUID uuid) {
-        this.login = login;
-        this.hashedPassword = hashedPassword;
-        this.role = role;
-        this.identity = identity;
+    private Account(String login, String hashedPassword,  Person person, Collection<Function> functions, UUID uuid) {
+        this(login,hashedPassword,person,functions);
         this.uuid = uuid;
     }
 
@@ -60,20 +58,20 @@ public class Account implements EditableObject, java.io.Serializable {
         this.hashedPassword = hashedPassword;
     }
 
-    public Role getRole() {
-        return role;
+    public Person getPerson() {
+        return person;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setPerson(Person person) {
+        this.person = person;
     }
 
-    public Identity getIdentity() {
-        return identity;
+    public Collection<Function> getFunctions() {
+        return functions;
     }
 
-    public void setIdentity(Identity identity) {
-        this.identity = identity;
+    public void setFunctions(Collection<Function> functions) {
+        this.functions = functions;
     }
 
     @Override
@@ -87,6 +85,6 @@ public class Account implements EditableObject, java.io.Serializable {
 
     @Override
     public EditableObject copy() {
-        return new Account(login,hashedPassword,role,identity,uuid);
+        return new Account(login,hashedPassword,person,functions,uuid);
     }
 }
