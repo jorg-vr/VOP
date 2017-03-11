@@ -5,22 +5,18 @@
     <title>solvas-fleet</title>
     <!-- Font Awesome Icons-->
     <script src="https://use.fontawesome.com/888423906f.js"></script>
-    <link rel="stylesheet" href="css/styles.css?v=1.0">
     <!-- Bootstrap -->
-    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
     <!-- Font -->
     <link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
     <!-- Custom Stylesheet -->
-    <link href="static/css/stylesheet.css" rel="stylesheet">
+    <link href="css/stylesheet.css" rel="stylesheet">
 </head>
 <body>
     <div id="app">
         <!-- router links for navigation, Vue router will try to match component -->
-
         <!-- Vue router will match component and display it in router view -->
-        <div id="page-content-wrapper">
-                <router-view></router-view>
-        </div>
+        <router-view></router-view>
     </div>
     <!-- This script has to be in the end of the body as the DOM has to be loaded first -->
     <script src="/dist/build.js"></script>

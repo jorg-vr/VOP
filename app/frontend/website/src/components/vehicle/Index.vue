@@ -9,6 +9,7 @@
                     {{vehicle.license_plate}}
                 </router-link>
             </li>
+            <button v-on:click="getVehicles"></button>
         </ul>
         <router-view></router-view>
     </div>
