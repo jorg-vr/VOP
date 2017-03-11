@@ -49,7 +49,7 @@
         methods: {
             getVehicles: function(){
                 this.$http.get('/vehicles/' + $route.params.id).then(response => {
-                    //Formatting
+                    //TODO
                     vehicle = response
                 })
             }
