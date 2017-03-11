@@ -1,47 +1,47 @@
 <template>
-    <div id="content-wrapper">
-        <div class="page-header">
-            <h1> {{ this.$route.query.type }} aanmaken </h1>
+        <div id="content-wrapper">
+               <div class="page-header">
+             <h1> {{ this.$route.query.type }} aanmaken </h1>
+        </div>  
+        <form-temp  v-bind:msg=this.$route.query.type></form-temp>
+            <router-view></router-view>
+       <div class="row">
+            <div class="col-md-4 col-md-offset-7">
+                <div id="buttons">
+                <button type="button" class="btn btn-success btn-md" v-on:click="proceed(true)"> <i class="fa fa-check" aria-hidden="true"></i></button>    
+                <button type="button" class="btn btn-danger btn-md" v-on:click="proceed(false)"> <i class="fa fa-times" aria-hidden="true"></i></button>  
+                </div>
+            </div>
         </div>
-        <form-temp></form-temp>
-        <router-view></router-view>
 
-        <button type="button" class="btn btn-primary btn-md" v-on:click="proceed(true)">BEVESTIG</button>
-        <button type="button" class="btn btn-primary btn-md" v-on:click="proceed(false)">ANNULEER</button>
     </div>
+ 
 
 
-
-
+     
 
 </template>
 <script>
     import FormTemp from './Form.vue'
     export default {
-        data(){
-            return {
-                identityType: this.$route.query.type
-            }
+    data(){
+        return {
+         
+        }
         },
         components: { FormTemp},
         methods:{
-            proceed: function (cond) {
-                if(cond){
-                    alert('Gebruiker toegevoegd!')
-                    // AJAX POST REQUEST NAAR API
-                }
-                else{
-                    alert('Geannuleerd!')
-                }
-                this.$router.go(-1)
-            },
-            determineForm: function () {
-                alert('aaaaaaaaaaaaaaaaaaaa')
-            },
-            // call on load
-            mounted() {
-                this.procsdfsd
-            }
+                proceed: function (cond) {
+                            if(cond){
+                                alert('Gebruiker toegevoegd!')
+                                // AJAX POST REQUEST NAAR API
+                            }
+                            else{
+                                alert('Geannuleerd!')
+                            }
+                           this.$router.go(-1)
+                }  
         }
     }
 </script>
+
