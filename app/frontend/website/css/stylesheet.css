@@ -72,44 +72,28 @@ h1 {
     margin-left: 250px;
 }
 
-.edit-fleet-page button {
+.table {
     margin-top: 20px;
 }
-
-.main-fleet-page button {
-    margin-bottom: 20px;
-}
-
-.new-subfleet input {
-    width: auto;
-}
-
-.new-subfleet .row {
-    margin-bottom: 20px;
-}
-
-.fleet-table {
-    margin-top: 20px;
-}
-.fleet-table tr {
+.table tr {
     display: block;
     padding: 0px 15px;
     margin-bottom: -1px;
     background-color: #fff;
     border: 1px solid #ddd;
 }
-.fleet-table tr:hover {
+.table tr:hover {
     background-color: #f5f5f5;
 }
-.fleet-table td {
+.table td {
     padding: 10px 10px;
 }
 
-.fleet-table  a {
+.table a {
     color: #555;
 }
 
-.fleet-table a:focus, a:hover {
+.table a:focus, a:hover {
     text-decoration: none;
     color: #555;
 }

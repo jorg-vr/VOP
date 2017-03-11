@@ -20,7 +20,7 @@
             </div>
             <div class="row">
                 <div class="col-md-8">
-                    <table class="table fleet-table">
+                    <table class="table">
                         <fleet-row v-for="fleet in fleets" :fleet="fleet" :key="fleet.id"></fleet-row>
                     </table>
                 </div>

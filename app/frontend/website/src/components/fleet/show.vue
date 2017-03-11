@@ -8,7 +8,7 @@
 
                 <div v-for="subfleet in subfleets">
                     <h2>{{subfleet.type | capitalize }}</h2>
-                    <table class="table fleet-table">
+                    <table class="table">
                         <subfleet-row v-for="vehicle in subfleet.vehicles" :vehicle="vehicle" :key="vehicle.id"></subfleet-row>
                         <router-link :to="{name: 'new_vehicle'}"><button type="button" class="btn btn-primary table-button">Niew voertuig</button></router-link>
                         <button type="button" class="btn btn-primary table-button">Verwijder subvloot</button>
