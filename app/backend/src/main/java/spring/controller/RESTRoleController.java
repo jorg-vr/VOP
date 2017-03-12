@@ -90,7 +90,7 @@ public class RESTRoleController {
         role.setFunction(function.getRole().getName());
         role.setId(UUIDToNumberString(function.getUuid()));
         role.setUserId(UUIDToNumberString(function.getAccount().getUuid()));
-        // role.setCompanyId(UUIDToNumberString(function.getCompany().getUuid()));
+        role.setCompanyId("TODO");
         role.setStartDate(function.getStartDate());
         role.setEndDate(function.getEndDate());
         //role.setUpdatedAt(); TODO milestone?

@@ -4,6 +4,7 @@ import dao.interfaces.DAO;
 import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
 import model.history.EditableObject;
+import spring.Exceptions.NotImplementedException;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,7 +12,8 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * Created by Billie Devolder on 11/03/2017.
+ * This class contains a generic implementation of the get(id), remove(t) and listFiltered(Filter... filters)
+ * The create has not been implemented because it is deprecated. updated has been implemented but don't use it!
  */
 public abstract class TestDAO<T extends EditableObject> implements DAO<T> {
 
@@ -40,10 +42,13 @@ public abstract class TestDAO<T extends EditableObject> implements DAO<T> {
 
     @Override
     public T create(T t) throws DataAccessException {
-        return null;
+        throw new NotImplementedException();
     }
 
 
+    /**
+     * DEPRECATED DO NOT USE!
+     */
     @Override
     public void update(T t) throws DataAccessException {
         if (!mapping.containsKey(t.getUuid())) {
