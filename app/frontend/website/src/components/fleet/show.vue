@@ -3,9 +3,9 @@
         <div class="page-header">
             <h1>Vloot {{this.$route.params.id}}</h1>
         </div>
+        <router-link :to="{name: 'new_subfleet'}"><button type="button" class="btn btn-primary table-button">Niew subvloot</button></router-link>
         <div class="row">
             <div class="col-md-8">
-
                 <div v-for="subfleet in subfleets">
                     <h2>{{subfleet.type | capitalize }}</h2>
                     <table class="table">
