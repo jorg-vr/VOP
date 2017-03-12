@@ -1,95 +1,55 @@
 <template>
     <div>
         <div class="page-header">
-            <h1>Voeg een nieuw voertuig toe</h1>
+            <h1>Nieuw voertuig</h1>
         </div>
-
-        <!-- form -->
-        <form class="form-horizontal col-md-6">
-            <div class="form-group">
-                <label class="col-sm-4 control-label">Merk</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" placeholder="Merk">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-4 control-label">Model</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" placeholder="Model">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-4 control-label">Type</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" placeholder="Type">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-4 control-label">Nummerplaat</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" placeholder="Nummerplaat">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-4 control-label">Chassisnummer</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" placeholder="Chassisnummer">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-4 control-label">Productiedatum</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" placeholder="Productiedatum">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-4 control-label">Waarde</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" placeholder="Waarde">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-4 control-label">Kilometerafstand</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" placeholder="Kilometerafstand">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-4 control-label">Bedrijf</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" placeholder="Bedrijf">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-4 control-label">Leasing bedrijf</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" placeholder="Leasing bedrijf">
-                </div>
-            </div>
-            <button type="submit" class="btn btn-default float-left">Voeg toe</button>
-        </form>
+        <vehicle-form v-on:formSubmitted="createVehicle" :vehicle="vehicle"></vehicle-form>
     </div>
 </template>
-
 <script>
+    import VehicleForm from './form.vue'
     export default {
         data: function(){
             return {
                 vehicle: {
+                    licensePlate: '',
+                    chassisNumber: '',
                     brand: '',
                     model: '',
                     type: '',
-                    license_plate: '',
-                    chassis_number: '',
+                    mileage: '',
                     year: '',
-                    kilometer_count: '',
-                    leasing_company: ''
+                    leasingCompany: '',
+                    /* TEST VEHICLE
+                    licensePlate: "JAR-096",
+                    chassisNumber: "jarreknock",
+                    brand: "Volvo",
+                    model: "s60 Polestar",
+                    type: "3a252d5b-50325-bd8-b680-7aa810817924",
+                    mileage: 777,
+                    year: "2015",
+                    leasingCompany: 'bedrijf A',
+                    */
                 }
             }
         },
+        components: {
+            VehicleForm
+        },
         methods: {
-            addVehicle: function(){
-                this.$http.post('/vehicles', vehicle)
+            createVehicle(){
+                alert('Not working yet')
+                this.$http.post('https://vopro5.ugent.be/app/api/vehicles' + this.getQuery()).then(response => {
+                    this.vehicle = response.body;
+                    this.$router.push({name: 'vehicle', params: { id: this.vehicle.id }});
+                })
+            },
+            getQuery(){
+                let query = '?';
+                for(const prop in this.vehicle){
+                    query += prop + '=' + this.vehicle[prop] + '&'
+                }
+                return query.replace(/ /g, '+').slice(0, -1);
             }
         }
     }
