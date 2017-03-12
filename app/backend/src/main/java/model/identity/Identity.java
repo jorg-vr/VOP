@@ -56,6 +56,11 @@ public class Identity implements EditableObject, java.io.Serializable {
         this.phoneNumber = phoneNumber;
     }
 
+    /**
+     * Checks if 2 objects are equal to the same identity, based on the UUID.
+     * @param o Identity to compare to
+     * @return true if 2 objects have the same UUID
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

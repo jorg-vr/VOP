@@ -75,6 +75,13 @@ public class ProductionProvider implements DAOProvider {
 
     @Override
     public synchronized HistoryDAO<Vehicle> getVehicleHistoryDAO() {
+
+    public FunctionDAO getFunctionDAO() {
+        return null;
+    }
+
+    @Override
+    public HistoryDAO<Vehicle> getVehicleHistoryDAO() {
         return null;
     }
 
