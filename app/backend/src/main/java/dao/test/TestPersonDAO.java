@@ -46,27 +46,27 @@ public class TestPersonDAO extends TestDAO<Person> implements PersonDAO {
     }
 
     @Override
-    public Person create(Person person) throws DataAccessException {
+    public Person create(String firstName, String lastName, String email) {
+        // TODO email should be unique
+        Person person = new Person();
+        person.setFirstName(firstName);
+        person.setLastName(lastName);
+        person.setEmail(email);
         UUID uuid = UUID.randomUUID();
-        persons.put(uuid, person);
         person.setUuid(uuid);
+        persons.put(uuid, person);
         return person;
     }
 
     @Override
-    public void update(Person person) throws DataAccessException {
-        if (!persons.containsKey(person.getUuid())) {
+    public Person update(UUID id, String firstName, String lastName) throws DataAccessException {
+        if (!persons.containsKey(id)) {
             throw new DataAccessException();
         }
-        persons.put(person.getUuid(), person);
-    }
-
-    @Override
-    public void remove(Person person) throws DataAccessException {
-        if (!persons.containsKey(person.getUuid())) {
-            throw new IllegalArgumentException();
-        }
-        persons.remove(person.getUuid());
+        Person person = persons.get(id);
+        person.setFirstName(firstName);
+        person.setLastName(lastName);
+        return person;
     }
 
     @Override

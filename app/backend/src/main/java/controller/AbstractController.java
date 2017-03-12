@@ -11,7 +11,13 @@ import java.util.Collection;
 import java.util.UUID;
 
 /**
- * Created by Billie Devolder on 9/03/2017.
+ * This class acts as a protecting interface of backend model
+ * methods should in final state take care of:
+ * 1) constraint issues
+ * 2) history changes (not yet implemented) TODO milestone?
+ * 3) correct authentication (not yet implemented) TODO milestone?
+ *
+ * Currently there is a generic implementation for the 4 CRUD methods.
  */
 public abstract class AbstractController<T> {
 

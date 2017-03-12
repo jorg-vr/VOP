@@ -18,6 +18,8 @@ public interface DAOProvider extends AutoCloseable {
 
     FleetDAO getFleetDAO();
 
+    FunctionDAO getFunctionDAO();
+
     HistoryDAO<Vehicle> getVehicleHistoryDAO();
 
     HistoryDAO<Insurance> getInsuranceHistoryDAO();

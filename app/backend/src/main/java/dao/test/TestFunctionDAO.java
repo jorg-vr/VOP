@@ -9,6 +9,7 @@ import model.account.Function;
 import model.account.Role;
 import model.identity.Company;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class TestFunctionDAO extends TestDAO<Function> implements FunctionDAO {
@@ -19,22 +20,36 @@ public class TestFunctionDAO extends TestDAO<Function> implements FunctionDAO {
 
     public TestFunctionDAO() {
         super();
-        this.provider = TestDAOProvider.getInstance();
         this.functions = new HashMap<>();
 
         UUID zero = new UUID(123, 0);
         Function f0 = new Function();
         f0.setUuid(zero);
         f0.setRole(new Role("customer"));
-        try {
-            provider.getAccountDao();
-            f0.setAccount(provider.getAccountDao().get(TestAccountDAO.ACCOUNT_0_ID));
-        } catch (DataAccessException e) {
-            e.printStackTrace();
-        }
+        f0.setAccount(TestAccountDAO.ACCOUNT_0);
+        f0.setStartDate(LocalDateTime.MIN);
+        f0.setEndDate(LocalDateTime.MAX);
         functions.put(zero, f0);
 
         setMapping(functions);
+    }
+
+    @Override
+    public Function create(Company company, Role role, Account account, LocalDateTime startDate, LocalDateTime endDate) throws DataAccessException {
+        // TODO {company, role, account} is an unique key
+        Function function = new Function(company, role, account, startDate, endDate);
+        functions.put(function.getUuid(), function);
+        return function;
+    }
+
+    @Override
+    public Function update(UUID id, LocalDateTime endDate) throws DataAccessException {
+        if (!functions.containsKey(id)) {
+            throw new DataAccessException();
+        }
+        Function function = functions.get(id);
+        function.setEndDate(endDate);
+        return function;
     }
 
     @Override

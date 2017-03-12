@@ -1,6 +1,7 @@
 package dao.test;
 
 import dao.interfaces.*;
+import model.account.Function;
 import model.fleet.Vehicle;
 import model.identity.Company;
 import model.identity.Person;
@@ -23,11 +24,13 @@ public class TestDAOProvider implements DAOProvider {
     private AccountDAO accountDAO;
     private CustomerDAO customerDAO;
     private PersonDAO personDAO;
+    private FunctionDAO functionDAO;
 
     public TestDAOProvider() {
         this.customerDAO = new TestCustomerDAO();
         this.personDAO = new TestPersonDAO();
         this.accountDAO = new TestAccountDAO();
+        this.functionDAO = new TestFunctionDAO();
     }
 
     @Override
@@ -48,6 +51,11 @@ public class TestDAOProvider implements DAOProvider {
     @Override
     public FleetDAO getFleetDAO() {
         return null;
+    }
+
+    @Override
+    public FunctionDAO getFunctionDAO() {
+        return functionDAO;
     }
 
     @Override

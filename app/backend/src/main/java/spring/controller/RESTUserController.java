@@ -7,7 +7,9 @@ import model.account.Account;
 import model.identity.Person;
 import org.springframework.web.bind.annotation.*;
 import spring.Exceptions.ConflictException;
+import spring.Exceptions.InvalidInputException;
 import spring.Exceptions.NotFoundException;
+import spring.Exceptions.NotImplementedException;
 import spring.model.RESTUser;
 
 import java.time.LocalDateTime;
@@ -79,8 +81,8 @@ public class RESTUserController {
                 throw new ConflictException();
             }
 
-            Account account = accountController.createAccount(user.getEmail(), user.getPassword());
-            Person person = personController.createPerson(user.getFirstName(), user.getLastName(), user.getEmail(), null);
+            Person person = personController.createPerson(user.getFirstName(), user.getLastName(), user.getEmail());
+            Account account = accountController.createAccount(user.getEmail(), user.getPassword(), person.getUuid());
 
             return merge(person, account);
         } catch (DataAccessException e) {
@@ -112,55 +114,23 @@ public class RESTUserController {
      * Attempts to update the user with the given id.
      *
      * @param id   id of the user that should be updated
-     * @param user a RESTUser object containing the updated fields.
-     *             The following fields can not be changed:
-     *             1) id
-     *             2) createdAt
-     *             3) updatedAt
-     *             4) url
-     *             Any changes of these fields will be ignored
+     * @param user fields that can be changed:
+     *             1) firstName
+     *             2) lastName
+     *             3) password
      * @return the updated RESTUser object. The updatedAt will be updated.
      */
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
     public RESTUser putId(@PathVariable("id") String id, @RequestBody RESTUser user) {
         UUID uuid = UUIDUtil.toUUID(id);
         try {
-            uuid = UUID.fromString(id);
-        } catch (NumberFormatException e) {
-            throw new NotFoundException();
-        }
-        try {
-            Account account = accountController.get(uuid);
+            Account account = accountController.updateAccount(uuid, user.getPassword());
             Person person = account.getPerson();
-
-            // TODO dit bespreken met jorg
-            if (user.getFirstName() != null) {
-                person.setFirstName(user.getFirstName());
-            }
-            if (user.getLastName() != null) {
-                person.setLastName(user.getLastName());
-            }
-            if (user.getPassword() != null) {
-                account.setHashedPassword(user.getPassword());
-            }
-
-            String email = user.getEmail();
-            if (email != null) {
-                if (!email.equals(account.getLogin()) && accountController.isTaken(email)) {
-                    throw new ConflictException();
-                }
-                account.setLogin(email);
-            }
-
-            accountController.update(account);
-            personController.update(person);
-
-            user.setId(person.getUuid() + "");
-            user.setUpdatedAt(LocalDateTime.now()); // TODO editableobject
+            person = personController.updatePerson(person.getUuid(), user.getFirstName(), user.getLastName());
+            return merge(person, account);
         } catch (DataAccessException e) {
-            e.printStackTrace();
+            throw new InvalidInputException();
         }
-        return user;
     }
 
     /**
@@ -181,6 +151,12 @@ public class RESTUserController {
         }
     }
 
+    /**
+     * Merges a person and account object to 1 RESTUser object
+     * @param person
+     * @param account
+     * @return object that has been created from the values of person and account
+     */
     private RESTUser merge(Person person, Account account) {
         RESTUser user = new RESTUser();
         user.setId(UUIDUtil.UUIDToNumberString(account.getUuid()));
