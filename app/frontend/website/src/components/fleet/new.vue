@@ -5,10 +5,7 @@
         <p>Toon zoekfunctie om klant te zoeken: zie /identities?type=Klant (Dit modulariseren?).
             Voer vervolgens HTTP Post request uit en ga naar pagina van vloot met nieuwe ID.
         </p>
-        <router-link :to="{name: 'fleet', params: { id:1 }}">
-            <button class="btn btn-primary">Bevestig</button>
-        </router-link>
-        <p></p>
+        <button v-on:click="createFleet(1)" class="btn btn-primary">Bevestig</button>
     </div>
 </template>
 <script>
@@ -16,7 +13,14 @@
         data(){
             return {}
         },
-        methods:{
+        methods: {
+            createFleet (clientID){
+                this.$http.post('' + clientID).then(response => {
+                    //Verwerk response
+
+                })
+                this.$router.push({name: 'fleet', params: { id: 1 }})
+            }
         }
     }
 </script>
