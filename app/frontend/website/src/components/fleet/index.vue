@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="page-header">
-            <h1> Vloten  </h1>
+            <h1>Vloten </h1>
         </div>
         <div>
             <fleet-searchbar :fleets="fleets" v-on:fleetsChanged="updateFleetTable"></fleet-searchbar>

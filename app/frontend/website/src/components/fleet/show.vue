@@ -4,6 +4,7 @@
             <h1>Vloot {{this.$route.params.id}}</h1>
         </div>
         <router-link :to="{name: 'new_subfleet'}"><button type="button" class="btn btn-primary table-button">Niew subvloot</button></router-link>
+        <button type="button" class="btn btn-primary table-button" v-on:click="removeFleet">Verwijder vloot</button>
         <div class="row">
             <div class="col-md-8">
                 <div v-for="subfleet in subfleets">
@@ -11,7 +12,7 @@
                     <table class="table">
                         <subfleet-row v-for="vehicle in subfleet.vehicles" :vehicle="vehicle" :key="vehicle.id"></subfleet-row>
                         <router-link :to="{name: 'new_vehicle'}"><button type="button" class="btn btn-primary table-button">Niew voertuig</button></router-link>
-                        <button type="button" class="btn btn-primary table-button">Verwijder subvloot</button>
+                        <button type="button" class="btn btn-primary table-button" v-on:click="removeSubfleet">Verwijder subvloot</button>
                     </table>
                 </div>
             </div>
@@ -73,7 +74,10 @@
                 })
             },
             removeSubfleet(){
-
+                alert('Not yet implemented');
+            },
+            removeFleet(){
+                alert('Not yet implemented');
             }
         },
         filters: {

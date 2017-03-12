@@ -53,9 +53,6 @@
             getSelectedOption: Function
         },
         methods: {
-            add() {
-                alert('meow')
-            },
             search () {
 
             }
