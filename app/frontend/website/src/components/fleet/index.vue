@@ -44,9 +44,6 @@
                 <td><router-link :to="{name: 'fleet', params: { id: fleet.id }}">
                     <button class="btn btn-xs btn-warning"><i class="fa fa-eye" aria-hidden="true"></i></button>
                 </router-link></td>
-                <td><router-link :to="{name: 'edit_fleet', params: {id: fleet.id}}">
-                    <button class="btn btn-xs btn-info"><i class="fa fa-pencil" aria-hidden="true"></i></button>
-                </router-link></td>
                 <td><button v-on:click="removeFleet(fleet.id)" class="btn btn-xs btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button></td>
                 </tr>
                 `,
