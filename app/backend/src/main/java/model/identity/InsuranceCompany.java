@@ -19,6 +19,7 @@ public class InsuranceCompany extends Company implements java.io.Serializable {
 
     }
 
+    //TODO not milestone 1
     public boolean addInsurance(Insurance insurance){
         if(insurances.contains(insurance)){
             return false;

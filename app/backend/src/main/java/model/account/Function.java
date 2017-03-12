@@ -4,6 +4,7 @@ import model.history.EditableObject;
 import model.identity.Company;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
@@ -13,13 +14,13 @@ public class Function implements EditableObject{
     private Company company;
     private Role role;
     private Account account;
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
     private UUID uuid;
 
     public Function(){}
 
-    public Function(Company company, Role role, Account account, LocalDate startDate, LocalDate endDate) {
+    public Function(Company company, Role role, Account account, LocalDateTime startDate, LocalDateTime endDate) {
         this.company = company;
         this.role = role;
         this.account = account;
@@ -28,7 +29,7 @@ public class Function implements EditableObject{
         this.uuid = UUID.randomUUID();
     }
 
-    public Function(Company company, Role role, Account account, LocalDate startDate, LocalDate endDate, UUID uuid) {
+    public Function(Company company, Role role, Account account, LocalDateTime startDate, LocalDateTime endDate, UUID uuid) {
         this(company,role,account,startDate,endDate);
         this.uuid = uuid;
     }
@@ -59,19 +60,19 @@ public class Function implements EditableObject{
         this.account = account;
     }
 
-    public LocalDate getStartDate() {
+    public LocalDateTime getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDate startDate) {
+    public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
     }
 
-    public LocalDate getEndDate() {
+    public LocalDateTime getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDate endDate) {
+    public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
     }
 
