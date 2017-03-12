@@ -72,43 +72,18 @@ h1 {
     margin-left: 250px;
 }
 
-.table {
+.edit-fleet-page button {
     margin-top: 20px;
 }
-.table tr {
-    display: block;
-    padding: 0px 15px;
-    margin-bottom: -1px;
-    background-color: #fff;
-    border: 1px solid #ddd;
-}
-.table tr:hover {
-    background-color: #f5f5f5;
-}
-.table td {
-    padding: 10px 10px;
+
+.main-fleet-page button {
+    margin-bottom: 20px;
+
 }
 
-
-.table a {
-    color: #555;
+.new-subfleet input {
+    width: auto;
 }
 
-.table a:focus, a:hover {
-    text-decoration: none;
-    color: #555;
-}
-
-.full-width {
-    width: 100%
-}
-
-/* form styling */
-
-.form-inline{
-    margin:10px 0 20px 0;
-}
-
-.form-control:focus {
-    border-left: 4px #007893 solid;
-}
+.new-subfleet .row {
+    margin-bottom: 20px;
