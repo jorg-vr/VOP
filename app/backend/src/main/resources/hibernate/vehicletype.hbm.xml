@@ -8,8 +8,8 @@
         <meta attribute="class-description">
             This class contains the vehicletype details.
         </meta>
-        <id name="uuid" type="binary" column="uuid">
-            <generator class="uuid"/>
+        <id name="uuid" type="uuid-binary" column="uuid">
+            <generator class="uuid2"/>
         </id>
         <property name="type" column="type" type="string"/>
         <property name="tax" column="tax" type="double"/>

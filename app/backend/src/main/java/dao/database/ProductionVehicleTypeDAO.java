@@ -4,6 +4,9 @@ import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
 import dao.interfaces.VehicleTypeDao;
 import model.fleet.VehicleType;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
 import java.util.Collection;
 import java.util.UUID;
@@ -13,9 +16,21 @@ import java.util.UUID;
  */
 public class ProductionVehicleTypeDAO implements VehicleTypeDao {
 
+    private final SessionFactory factory;
+
+    public ProductionVehicleTypeDAO(SessionFactory factory) {
+        this.factory = factory;
+    }
+
     @Override
     public VehicleType create(VehicleType vehicleType) throws DataAccessException {
-        return null;
+        Transaction transaction = null;
+        try (Session session = factory.openSession()){
+            transaction = session.beginTransaction();
+            session.save(vehicleType);
+            transaction.commit();
+            return vehicleType;
+        }
     }
 
     @Override

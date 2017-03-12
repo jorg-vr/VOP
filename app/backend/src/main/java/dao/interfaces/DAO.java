@@ -17,7 +17,7 @@ public interface DAO<T> extends AutoCloseable {
 
     void remove(T t) throws DataAccessException;
 
-    Collection<T> listFiltered(Filter... filters) throws DataAccessException;
+    Collection<T> listFiltered(Filter<T>... filters) throws DataAccessException;
 
     @Override
     void close();
