@@ -12,11 +12,9 @@ import ShowFleet from '../components/fleet/show.vue'
 import NewSubfleet from '../components/subfleet/new.vue'
 
 
-import NewVehicle from '../components/vehicle/New.vue'
-import EditVehicle from '../components/vehicle/Edit.vue'
-import IndexVehicle from '../components/vehicle/Index.vue'
-import RemoveVehicle from '../components/vehicle/Remove.vue'
-import ShowVehicle from '../components/vehicle/Show.vue'
+import newVehicle from '../components/vehicle/new.vue'
+import editVehicle from '../components/vehicle/edit.vue'
+import showVehicle from '../components/vehicle/show.vue'
 
 export default [
     {
@@ -37,13 +35,10 @@ export default [
             { path: 'fleets/:id/new', name: 'new_subfleet', component: NewSubfleet},
 
             //Vehicle
-            { path: 'vehicles/', name: 'vehicles', component: IndexVehicle },
-            { path: 'vehicles/new', name: 'new_vehicle', component: NewVehicle },
-            { path: 'vehicles/:id', name: 'vehicle', component: ShowVehicle },
-            { path: 'vehicles/:id/edit', name: 'edit_vehicle', component: EditVehicle },
-            { path: 'vehicles/:id/remove', name: 'remove_vehicle', component: RemoveVehicle }
+            { path: 'vehicles/new', name: 'new_vehicle', component: newVehicle },
+            { path: 'vehicles/:id', name: 'vehicle', component: showVehicle },
+            { path: 'vehicles/:id/edit', name: 'edit_vehicle', component: editVehicle }
 
-            //Subfleet
         ]
     },
         //TODO: Make a not found page!

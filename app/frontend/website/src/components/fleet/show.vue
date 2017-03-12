@@ -39,11 +39,12 @@
                 <td><button v-on:click="removeVehicle(vehicle.id)" class="btn btn-xs btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button></td>
                 </tr>
                 `,
-                    methods: {
+                methods: {
                     removeVehicle (vehicleID){
+                        alert('Not yet implemented');
                         this.$http.delete('https://vopro5.ugent.be/app/api/vehicle/' + vehicleID).then(response => {
                             //Verwerk response
-                        })
+                        });
                     }
                 }
             }
