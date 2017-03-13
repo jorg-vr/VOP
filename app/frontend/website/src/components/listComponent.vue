@@ -1,7 +1,17 @@
 <template>
     <div class="panel panel-default">
         <div class="panel-body">
-            Name here
+            {{ fleet.company }}
         </div>
     </div>
 </template>
+
+<script>
+
+export default {
+    props: {
+        fleet: Object
+    }
+}    
+
+</script>

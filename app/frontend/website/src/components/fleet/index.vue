@@ -4,26 +4,18 @@
             <h1>Vloten </h1>
         </div>
         <div class="row">
-            <info-pane></info-pane>
-            <info-pane></info-pane>
+            <info-pane v-for="fleet in fleets" :fleet="fleet" :key="fleet.id"></info-pane>
         </div>
-        <button type="button" class="btn btn-circle btn-lg"><span class="glyphicon glyphicon-plus"></span></button>
+        <button type="button" class="btn btn-primary btn-circle btn-lg">+</button>
     </div>
 </template>
 
 <script>
+import infoPane from "../listComponent.vue"
 export default {
     components: {
-        infoPane: {
-            template: `
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        {{ fleets }}
-                    </div>
-                </div>
-                `
-        }
-    },
+        'info-pane' : infoPane
+    },   
     data: function() {
         return {
             fleets : [ //dummy fleets
@@ -39,11 +31,15 @@ export default {
 </script>
 <style>
 .btn-circle.btn-lg {
+  position: fixed;
+  left: 230px;
+  bottom: 40px;
   width: 50px;
   height: 50px;
   padding: 10px 16px;
   font-size: 18px;
   line-height: 1.33;
   border-radius: 25px;
+  
 }
 </style>
