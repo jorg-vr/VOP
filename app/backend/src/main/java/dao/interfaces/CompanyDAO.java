@@ -9,5 +9,5 @@ public interface CompanyDAO<T extends Company> extends IdentityDAO<T>{
     Filter<T> byName(String name);
     Filter<T> containsName(String name);
     Filter<T> byVatNumber(String vatNumber);
-    Filter<T> byPhoneNumber(String email);
+    Filter<T> byPhoneNumber(String phoneNumber);
 }

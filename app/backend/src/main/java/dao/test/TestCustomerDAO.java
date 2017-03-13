@@ -71,6 +71,16 @@ public class TestCustomerDAO implements CustomerDAO {
     }
 
     @Override
+    public Customer create(String name, Address address, String email, String phonenumber, String btwNumber, String bankAccountNumber, Collection<Fleet> fleets) throws DataAccessException {
+        return null;
+    }
+
+    @Override
+    public Customer update(UUID id, String name, Address address, String email, String phonenumber, String btwNumber, String bankAccountNumber, Collection<Fleet> fleets) throws DataAccessException {
+        return null;
+    }
+
+    @Override
     public Filter<Customer> containsFleet(Fleet fleet) {
         return (customer -> customer.getFleets().contains(fleet));
     }
