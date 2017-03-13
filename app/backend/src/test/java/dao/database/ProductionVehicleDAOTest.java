@@ -94,6 +94,7 @@ public class ProductionVehicleDAOTest {
 
     }
 
+    @Ignore
     @Test
     public void byModel() throws Exception {
 
