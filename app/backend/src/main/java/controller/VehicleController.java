@@ -5,6 +5,7 @@ import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
 import dao.interfaces.VehicleDAO;
 import dao.test.TestVehicleDAO;
+import model.fleet.Fleet;
 import model.fleet.Vehicle;
 import model.fleet.VehicleType;
 
@@ -34,10 +35,8 @@ public class VehicleController extends AbstractController<Vehicle>{
      *
      * @throws DataAccessException
      */
-    public void update(UUID uuid,String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int mileage,  String vehicleType) throws DataAccessException {
-        Vehicle modelVehicle = get(uuid);
-        setVehicle(modelVehicle,brand,model,licensePlate,productionDate,chassisNumber,mileage,vehicleType);
-        getDao().update(modelVehicle);
+    public Vehicle update(UUID uuid,String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int value,int mileage,  UUID vehicleType,UUID fleet ) throws DataAccessException {
+        return ((VehicleDAO) getDao()).update(uuid,brand,model,chassisNumber,licensePlate,value,mileage,getVehicleType(vehicleType),productionDate);//TODO add fleet
         //TODO update history
     }
 
@@ -55,24 +54,14 @@ public class VehicleController extends AbstractController<Vehicle>{
      * @return
      * @throws DataAccessException
      */
-    public Vehicle create(String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int mileage,  String vehicleType) throws DataAccessException {
-        Vehicle vehicle=new Vehicle();
-        setVehicle(vehicle,brand,model,licensePlate,productionDate,chassisNumber,mileage,vehicleType);//TODO value
-        return getDao().create(vehicle);
+    public Vehicle create(String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int value,int mileage,  UUID vehicleType,UUID fleet ) throws DataAccessException {
+
+        return ((VehicleDAO) getDao()).create(brand,model,chassisNumber,licensePlate,value,mileage,getVehicleType(vehicleType),productionDate);//TODO add fleet
     }
 
-    public VehicleType getVehicleType(String vehicleType) throws DataAccessException {
-        return ProductionProvider.getInstance().getVehicleTypeDAO().get(UUID.fromString(vehicleType));
+    public VehicleType getVehicleType(UUID vehicleType) throws DataAccessException {
+        return ProductionProvider.getInstance().getVehicleTypeDAO().get(vehicleType);
     }
 
 
-    private void setVehicle(Vehicle vehicle,String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int mileage,  String vehicleType) throws DataAccessException {
-        vehicle.setBrand(brand);
-        vehicle.setModel(model);
-        vehicle.setLicensePlate(licensePlate);
-        vehicle.setProductionDate(productionDate);
-        vehicle.setChassisNumber(chassisNumber);
-        vehicle.setMileage(mileage);
-        vehicle.setType(getVehicleType(vehicleType));
-    }
 }
