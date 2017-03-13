@@ -52,6 +52,13 @@
 
     </div>
 
+    <!-- Temp button because server is down -->
+    <button type="button" class="btn btn-primary btn-xs btn-primary" v-on:click="edit(123)" id="editButton">
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                      </button>
+                      <button type="button" class="btn btn-primary btn-xs btn-danger" v-on:click="remove(user.id)" id="removeButton">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+    </button>
 
 </div>
 
@@ -108,14 +115,7 @@
         searchId: function () { 
             var s=this.search.trim().toLowerCase();;
             var listID = []
-
-
-            if (this.$route.query.type == "Gebruiker"){
-                listID = this.users
-            }
-            else if (this.$route.query.type == "Klant"){
-                listID = this.clients
-            }
+            listID = this.users
             if(!this.search){
                 return listID
             }
@@ -137,17 +137,10 @@
         mounted: function () {
             // Make ajax request to server according to type
 
-            if(this.$route.query.type == "Gebruiker"){
                 console.log('Get users object')
                 // GET user objects
                 this.$http.get('https://vopro5.ugent.be/app/api/users').then(response => {
                     this.users = response.body
-                })
-            }
-            else  if(this.$route.query.type == "Klant"){
-                console.log('Get companies object')
-                this.$http.get('https://vopro5.ugent.be/app/api/companies').then(response => {
-                    this.clients = response.body
                 })
             }
             this.loading = true
