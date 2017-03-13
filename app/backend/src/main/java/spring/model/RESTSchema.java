@@ -24,12 +24,14 @@ public class RESTSchema<T> {
     public RESTSchema(Collection<T> data, Integer total, Integer page, Integer limit, String baseString) {
         this.data = data;
         this.total = total;
-        this.offset = page*limit;
-        this.limit = min(total,(page+1)*limit);
-        this.previous = baseString + "page="+max(page-1,0)+"&limit="+limit;
-        this.next = baseString + "page="+min(page+1,total/limit)+"&limit="+limit;
-        this.first = baseString + "page="+0+"&limit="+limit;
-        this.last = baseString + "page="+total/limit+"&limit="+limit;
+        if(page!=null&&limit!=null) {
+            this.offset = page * limit;
+            this.limit = min(total, (page + 1) * limit);
+            this.previous = baseString + "page=" + max(page - 1, 0) + "&limit=" + limit;
+            this.next = baseString + "page=" + min(page + 1, (total / limit-1)) + "&limit=" + limit;
+            this.first = baseString + "page=" + 0 + "&limit=" + limit;
+            this.last = baseString + "page=" + (total / limit-1) + "&limit=" + limit;
+        }
     }
 
     public RESTSchema(Collection<T> data, Integer total, Integer offset, Integer limit, String previous, String next, String first, String last) {

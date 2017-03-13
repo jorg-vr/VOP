@@ -33,7 +33,7 @@ public class RESTVehicleController {
     private VehicleController controller=new VehicleController();
 
     /***
-     * Not yet implemented
+     *
      * @return
      */
     @RequestMapping(method = RequestMethod.GET)
@@ -68,7 +68,7 @@ public class RESTVehicleController {
         if(type!=null){
             baseString+="type="+type;
             try {
-                filters.add(vehicleDAO.byType(controller.getVehicleType(type)));
+                filters.add(vehicleDAO.byType(controller.getVehicleType(UUIDUtil.toUUID(type))));
             } catch (DataAccessException e) {
                 throw new InvalidInputException("Could not find requested type");
             }
@@ -84,7 +84,7 @@ public class RESTVehicleController {
         }
         int total=result.size();
         result.sort((vehicle1,vehicle2)->vehicle1.getId().compareTo(vehicle2.getId()));
-        result=result.subList(page*limit,(page+1)*limit);
+        if(page!=null&&limit!=null){result=result.subList(page*limit,(page+1)*limit);}
 
         return new RESTSchema<>(result,total,page,limit,baseString);
     }
@@ -95,18 +95,22 @@ public class RESTVehicleController {
      * @return
      */
     @RequestMapping(method = RequestMethod.POST)
-    public void postVehicles(@RequestBody RESTVehicle vehicle) {
+    public RESTVehicle postVehicles(@RequestBody RESTVehicle vehicle) {
         try {
             LocalDate year = LocalDate.parse(vehicle.getYear()+"0101", yearFormat);//Fix conversion bug
-            controller.create(vehicle.getBrand(),
-                    vehicle.getModel(),
-                    vehicle.getLicensePlate(),
-                    year,
-                    vehicle.getVin(),
-                    vehicle.getMileage(),
-                    vehicle.getType());
+            return modelToRest(
+                    controller.create(vehicle.getBrand(),
+                            vehicle.getModel(),
+                            vehicle.getLicensePlate(),
+                            year,
+                            vehicle.getVin(),
+                            vehicle.getValue(),
+                            vehicle.getMileage(),
+                            UUIDUtil.toUUID(vehicle.getType()),
+                            UUIDUtil.toUUID(vehicle.getId())));
         } catch (DataAccessException e) {
             throw new InvalidInputException();
+            //TODO update when there are more exceptions
         }
     }
 
@@ -119,7 +123,7 @@ public class RESTVehicleController {
     public RESTVehicle getVehicle(@PathVariable("id") String id) {
 
         try {
-            return modelToRest(controller.get(UUID.fromString(id)));
+            return modelToRest(controller.get(UUIDUtil.toUUID(id)));
 
         } catch (DataAccessException e) {
             throw new NotFoundException();
@@ -133,18 +137,23 @@ public class RESTVehicleController {
      * @return
      */
     @RequestMapping(method = RequestMethod.PUT , value = "{id}")
-    public void putVehicle(@PathVariable("id") String id, @RequestBody RESTVehicle vehicle) {
+    public RESTVehicle putVehicle(@PathVariable("id") String id, @RequestBody RESTVehicle vehicle) {
         try {
             LocalDate year = LocalDate.parse(vehicle.getYear()+"0101", yearFormat);//Fix conversion bug
-            controller.update(UUID.fromString(id),vehicle.getBrand(),
-                    vehicle.getModel(),
-                    vehicle.getLicensePlate(),
-                    year,
-                    vehicle.getVin(),
-                    vehicle.getMileage(),
-                    vehicle.getType());
+            return modelToRest(
+                    controller.update(UUIDUtil.toUUID(id),
+                            vehicle.getBrand(),
+                            vehicle.getModel(),
+                            vehicle.getLicensePlate(),
+                            year,
+                            vehicle.getVin(),
+                            vehicle.getValue(),
+                            vehicle.getMileage(),
+                            UUIDUtil.toUUID(vehicle.getType()),
+                            UUIDUtil.toUUID(vehicle.getId())));
         } catch (DataAccessException e) {
-            e.printStackTrace();
+            throw new InvalidInputException();
+            //TODO update when there are more exceptions
         }
 
     }
@@ -161,6 +170,7 @@ public class RESTVehicleController {
             controller.archive(UUID.fromString(id));
         } catch (DataAccessException e) {
             throw new NotFoundException();
+            //TODO update when there are more exceptions
         }
     }
 
@@ -171,20 +181,22 @@ public class RESTVehicleController {
      * @return
      */
      private RESTVehicle modelToRest(Vehicle vehicle){
+         String leasingCompany=vehicle.getLeasingCompany()!=null?UUIDUtil.UUIDToNumberString(vehicle.getLeasingCompany().getUuid()):null;
         return new RESTVehicle(UUIDUtil.UUIDToNumberString(vehicle.getUuid()),
                 vehicle.getLicensePlate(),
                 vehicle.getChassisNumber(),
                 vehicle.getBrand(),
                 vehicle.getModel(),
                 UUIDUtil.UUIDToNumberString(vehicle.getType().getUuid()),
+                vehicle.getValue(),
                 vehicle.getMileage(),
-                vehicle.getProductionDate().format(yearFormat),
-                UUIDUtil.UUIDToNumberString(vehicle.getLeasingCompany().getUuid()),
+                vehicle.getProductionDate().format(yearFormat).substring(0,4),
+                leasingCompany,
                 UUIDUtil.UUIDToNumberString(vehicle.getFleet().getUuid()),
                 null,//TODO search leasing company
                 null,//TODO implement edit dates with history
                 null,
-                "/vehicles/"+vehicle.getUuid().toString()
+                "/vehicles/"+UUIDUtil.UUIDToNumberString(vehicle.getUuid())
         );
     }
 }

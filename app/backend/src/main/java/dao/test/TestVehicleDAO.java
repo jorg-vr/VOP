@@ -8,12 +8,13 @@ import model.fleet.Vehicle;
 import model.fleet.VehicleType;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class TestVehicleDAO implements VehicleDAO {
 
     private static Map<UUID, Vehicle> vehicles = new HashMap<>();
-
+    private static DateTimeFormatter yearFormat=DateTimeFormatter.ofPattern("yyyyMMdd").withLocale(Locale.forLanguageTag("NL"));
     static {
         UUID one = UUID.randomUUID();
         UUID two = UUID.randomUUID();
@@ -23,8 +24,8 @@ public class TestVehicleDAO implements VehicleDAO {
         VehicleType type1 = new VehicleType(three, "AE - Cabriolet", 210);
         VehicleType type2 = new VehicleType(four, "AA - Sedan", 530);
         Fleet fleet=new Fleet(five,null,"myFirstFleet");//owner=null
-        vehicles.put(one, new Vehicle(one, "Volkswagen", "Beetle", "ABC-123", LocalDate.now(), "abcdefhijk", 1000, 123, type1,fleet));
-        vehicles.put(two, new Vehicle(two, "Lamborghini", "Diablo GT", "IAM-007", LocalDate.now(), "abcdefhijk", 3, 123, type2,fleet));
+        vehicles.put(one, new Vehicle(one, "Volkswagen", "Beetle", "ABC-123", LocalDate.parse("20000101", yearFormat), "abcdefhijk", 1000, 123, type1,fleet));
+        vehicles.put(two, new Vehicle(two, "Lamborghini", "Diablo GT", "IAM-007", LocalDate.parse("19920101", yearFormat), "abcdefhijk", 3, 123, type2,fleet));
         fleet.addVehicle(vehicles.get(one));
         fleet.addVehicle(vehicles.get(two));
     }

@@ -15,6 +15,7 @@ public class RESTVehicle {
     private String brand;
     private String model;
     private String type;
+    private int value;
     private int mileage;
     private String year;
     private String leasingCompany; //id of leasing company
@@ -27,13 +28,14 @@ public class RESTVehicle {
     public RESTVehicle() {
     }
 
-    public RESTVehicle(String id, String licensePlate, String vin, String brand, String model, String type, int mileage, String year, String leasingCompany, String fleet, String createdAt, String updatedAt, String lastUpdatedBy, String url) {
+    public RESTVehicle(String id, String licensePlate, String vin, String brand, String model, String type, int value, int mileage, String year, String leasingCompany, String fleet, String createdAt, String updatedAt, String lastUpdatedBy, String url) {
         this.id = id;
         this.licensePlate = licensePlate;
         this.vin = vin;
         this.brand = brand;
         this.model = model;
         this.type = type;
+        this.value = value;
         this.mileage = mileage;
         this.year = year;
         this.leasingCompany = leasingCompany;
@@ -42,6 +44,14 @@ public class RESTVehicle {
         this.updatedAt = updatedAt;
         this.lastUpdatedBy = lastUpdatedBy;
         this.url = url;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
     }
 
     public String getId() {
