@@ -1,7 +1,7 @@
 
 <script>
     export default {
-        mixins: [require('../SearchBar.vue')],
+        mixins: [require('./searchBar.vue')],
         data() {
             return {}
         },

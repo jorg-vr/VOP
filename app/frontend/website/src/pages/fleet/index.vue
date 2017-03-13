@@ -16,7 +16,7 @@
     </div>
 </template>
 <script>
-    import FleetSearchBar from './FleetSearch.vue'
+    import FleetSearchBar from '../../assets/fleetSearchBar.vue'
     export default {
         components: {
             'fleet-searchbar' : FleetSearchBar,

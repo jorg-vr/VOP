@@ -1,20 +1,20 @@
-import App from '../components/App.vue'
+import App from '../app.vue'
 
-import NewIdentity from '../components/identity/New.vue'
-import EditIdentity from '../components/identity/Edit.vue'
-import IndexIdentity from '../components/identity/Index.vue'
-import RemoveIdentity from '../components/identity/Remove.vue'
-import ShowIdentity from '../components/identity/Show.vue'
+import NewIdentity from '../pages/identity/New.vue'
+import EditIdentity from '../pages/identity/Edit.vue'
+import IndexIdentity from '../pages/identity/Index.vue'
+import RemoveIdentity from '../pages/identity/Remove.vue'
+import ShowIdentity from '../pages/identity/Show.vue'
 
-import NewFleet from '../components/fleet/new.vue'
-import IndexFleet from '../components/fleet/index.vue'
-import ShowFleet from '../components/fleet/show.vue'
-import NewSubfleet from '../components/subfleet/new.vue'
+import NewFleet from '../pages/fleet/new.vue'
+import IndexFleet from '../pages/fleet/index.vue'
+import ShowFleet from '../pages/fleet/show.vue'
+import NewSubfleet from '../pages/subfleet/new.vue'
 
 
-import newVehicle from '../components/vehicle/new.vue'
-import editVehicle from '../components/vehicle/edit.vue'
-import showVehicle from '../components/vehicle/show.vue'
+import newVehicle from '../pages/vehicle/new.vue'
+import editVehicle from '../pages/vehicle/edit.vue'
+import showVehicle from '../pages/vehicle/show.vue'
 
 export default [
     {
