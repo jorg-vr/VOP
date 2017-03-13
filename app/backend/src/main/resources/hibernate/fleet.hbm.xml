@@ -8,8 +8,8 @@
         <meta attribute="class-description">
             This class contains the fleet detail.
         </meta>
-        <id name="uuid" type="binary" column="id">
-            <generator class="uuid"/>
+        <id name="uuid" type="uuid-binary" column="id">
+            <generator class="uuid2"/>
         </id>
         <bag name="vehicles" access="field" table="VEHICLE" cascade="all"
              lazy="true" fetch="select">

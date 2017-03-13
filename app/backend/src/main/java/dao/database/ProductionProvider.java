@@ -30,10 +30,10 @@ public class ProductionProvider implements DAOProvider {
     private SessionFactory sessionFactory;
 
 
-    private ProductionProvider() {
+    private ProductionProvider(String configLocation) {
 
         registry = new StandardServiceRegistryBuilder()
-                .configure("hibernate/hibernate.cfg.xml")
+                .configure(configLocation)
                 .build();
         // Create MetadataSources
         MetadataSources sources = new MetadataSources(registry);
@@ -46,9 +46,16 @@ public class ProductionProvider implements DAOProvider {
 
     }
 
+    public synchronized static void initializeProvider(boolean production) {
+        if (production) {
+            provider = new ProductionProvider("hibernate/hibernatedeployment.cfg.xml");
+        } else {
+            provider = new ProductionProvider("hibernate/hibernate.cfg.xml");
+        }
+    }
+
     public synchronized static DAOProvider getInstance() {
         if (provider == null) {
-            provider = new ProductionProvider();
         }
         return provider;
     }
@@ -123,6 +130,7 @@ public class ProductionProvider implements DAOProvider {
     }
 
     public static void main(String[] args) {
+        ProductionProvider.initializeProvider(false);
         try (DAOProvider daoProvider = ProductionProvider.getInstance()) {
 
             AccountDAO accountDAO = daoProvider.getAccountDao();
