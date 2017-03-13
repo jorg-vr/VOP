@@ -9,6 +9,7 @@ import model.fleet.Vehicle;
 import org.springframework.web.bind.annotation.*;
 import spring.Exceptions.InvalidInputException;
 import spring.Exceptions.NotFoundException;
+import spring.model.RESTSchema;
 import spring.model.RESTVehicle;
 
 import java.time.LocalDate;
@@ -36,33 +37,56 @@ public class RESTVehicleController {
      * @return
      */
     @RequestMapping(method = RequestMethod.GET)
-    public Collection<RESTVehicle> getAllVehicles(@RequestParam(required=false) String licensPlate,
-                                                  @RequestParam(required=false) String chassisNumber,
-                                                  @RequestParam(required=false) String leasingCompany,
-                                                  @RequestParam(required=false) String year,
-                                                  @RequestParam(required=false) String company,
-                                                  @RequestParam(required=false) String type,
-                                                  @RequestParam(required=false) Integer page,
-                                                  @RequestParam(required=false) Integer limit) {
+    public RESTSchema<RESTVehicle> getAllVehicles(@RequestParam(required=false) String licensPlate,
+                                     @RequestParam(required=false) String vin,
+                                     @RequestParam(required=false) String leasingCompany,
+                                     @RequestParam(required=false) String year,
+                                     @RequestParam(required=false) String fleet,
+                                     @RequestParam(required=false) String type,
+                                     @RequestParam(required=false) Integer page,
+                                     @RequestParam(required=false) Integer limit) {
+        String baseString="/vehicles?";
         VehicleDAO vehicleDAO= (VehicleDAO) controller.getDao();
         List<Filter<Vehicle>> filters=new ArrayList<>();
-        if (licensPlate!=null){filters.add(vehicleDAO.byLicensePlate(licensPlate));}
-        if (chassisNumber!=null)//TODO after issue #87
-        if (leasingCompany!=null)//TODO after issue #88
-        if (year!=null){filters.add(vehicleDAO.atProductionDate(LocalDate.parse(year+"0101", yearFormat)));}
-        if (company!=null)//TODO after issue #88
-        if (licensPlate!=null){filters.add(vehicleDAO.byLicensePlate(licensPlate));}
-
-        Collection<RESTVehicle> result=new ArrayList<>();
+        if (licensPlate!=null){
+            baseString+="licensPlate="+licensPlate+"&";
+            filters.add(vehicleDAO.byLicensePlate(licensPlate));
+        }
+        if (vin!=null) {
+            //TODO after issue #87
+        }
+        if (leasingCompany!=null){
+            //TODO after issue #88
+        }
+        if (year!=null) {
+            baseString+="year="+year+"&";
+            filters.add(vehicleDAO.atProductionDate(LocalDate.parse(year+"0101", yearFormat)));
+        }
+        if (fleet!=null){
+            //TODO after issue #88
+        }
+        if(type!=null){
+            baseString+="type="+type;
+            try {
+                filters.add(vehicleDAO.byType(controller.getVehicleType(type)));
+            } catch (DataAccessException e) {
+                throw new InvalidInputException("Could not find requested type");
+            }
+        }
+        List<RESTVehicle> result=new ArrayList<>();
         try {
             for(Vehicle vehicle : controller.getAll( filters.toArray(new Filter[filters.size()]))){
                 result.add(modelToRest(vehicle));
             }
 
         } catch (DataAccessException e) {
-            //API doesn't contain error
+            throw new InvalidInputException("Some parameters where invalid");
         }
-        return result;
+        int total=result.size();
+        result.sort((vehicle1,vehicle2)->vehicle1.getId().compareTo(vehicle2.getId()));
+        result=result.subList(page*limit,(page+1)*limit);
+
+        return new RESTSchema<>(result,total,page,limit,baseString);
     }
 
     /***
