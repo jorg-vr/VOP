@@ -94,6 +94,11 @@ public class TestDAOProvider implements DAOProvider {
     }
 
     @Override
+    public AddressDAO getAddressDao() {
+        return null;
+    }
+
+    @Override
     public void close() {
 
     }

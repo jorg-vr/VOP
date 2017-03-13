@@ -55,7 +55,7 @@ public class ProductionProvider implements DAOProvider {
 
     @Override
     public synchronized AccountDAO getAccountDao() {
-        return null;
+        return new ProductionAccountDAO(sessionFactory);
     }
 
     @Override
@@ -65,19 +65,20 @@ public class ProductionProvider implements DAOProvider {
 
     @Override
     public synchronized CustomerDAO getCustomerDAO() {
-        return null;
+        return new ProductionCustomerDAO(sessionFactory);
     }
 
     @Override
     public synchronized FleetDAO getFleetDAO() {
-        return null;
+        return new ProductionFleetDAO(sessionFactory);
     }
 
     @Override
     public synchronized HistoryDAO<Vehicle> getVehicleHistoryDAO() {return null;}
 
-    public FunctionDAO getFunctionDAO() {
-        return null;
+    @Override
+    public synchronized FunctionDAO getFunctionDAO() {
+        return new ProductionFunctionDAO(sessionFactory);
     }
 
     @Override
@@ -97,7 +98,7 @@ public class ProductionProvider implements DAOProvider {
 
     @Override
     public synchronized PersonDAO getPersonDAO() {
-        return null;
+        return new ProductionPersonDAO(sessionFactory);
     }
 
     @Override
@@ -108,6 +109,11 @@ public class ProductionProvider implements DAOProvider {
     @Override
     public synchronized VehicleTypeDao getVehicleTypeDAO() {
         return new ProductionVehicleTypeDAO(sessionFactory);
+    }
+
+    @Override
+    public AddressDAO getAddressDao() {
+        return new ProductionAddressDAO(sessionFactory);
     }
 
     @Override
