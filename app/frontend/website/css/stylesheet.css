@@ -2,7 +2,6 @@ body {
     font-family: 'Roboto', sans-serif;
 }
 
-
 h1 {
     color: #338cf2;
     font-weight: 100;
@@ -23,7 +22,7 @@ h1 {
 #sidebar-wrapper {
 
     height: 100%; /* 100% Full-height */
-    width: 250px; /* 0 width - change this with JavaScript */
+    width: 200px; 
     position: fixed; /* Stay in place */
     z-index: 1000; /* Stay on top */
     top: 0;
