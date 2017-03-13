@@ -17,7 +17,10 @@ public interface DAO<T> extends AutoCloseable {
     @Deprecated
     void update(T t) throws DataAccessException;
 
+    @Deprecated
     void remove(T t) throws DataAccessException;
+
+    void remove(UUID id) throws DataAccessException;
 
     Collection<T> listFiltered(Filter<T>... filters) throws DataAccessException;
 

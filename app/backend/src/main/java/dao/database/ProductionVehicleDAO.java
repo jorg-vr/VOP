@@ -5,11 +5,9 @@ import dao.interfaces.Filter;
 import dao.interfaces.VehicleDAO;
 import model.fleet.Vehicle;
 import model.fleet.VehicleType;
-import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.criterion.Restrictions;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -37,24 +35,28 @@ public class ProductionVehicleDAO implements VehicleDAO {
 
     @Override
     public Vehicle create(Vehicle vehicle) throws DataAccessException {
-        Transaction transaction = null;
-        try (Session session = factory.openSession()) {
-            transaction = session.beginTransaction();
-            session.save(vehicle);
-            transaction.commit();
-            return vehicle;
-        } catch (Exception e) {
-            e.printStackTrace();
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            throw new DataAccessException();
-        }
+        HibernateUtil.create(factory,vehicle);
+        return vehicle;
+    }
+
+    @Override
+    public Vehicle create(String brand, String model, String chassisNumber, String licenseplate, int value, int mileage, VehicleType type, LocalDate productionDate) throws DataAccessException {
+
+        Vehicle vehicle = new Vehicle();
+        vehicle.setBrand(brand);
+        vehicle.setLicensePlate(licenseplate);
+        vehicle.setModel(model);
+        vehicle.setProductionDate(productionDate);
+        vehicle.setValue(value);
+        vehicle.setMileage(mileage);
+        vehicle.setType(type);
+        vehicle.setChassisNumber(chassisNumber);
+        HibernateUtil.create(factory,vehicle);
+        return vehicle;
     }
 
     @Override
     public Vehicle get(UUID id) throws DataAccessException {
-        Transaction transaction = null;
         try (Session session = factory.openSession()) {
             return session.get(Vehicle.class, id);
         }
@@ -63,32 +65,36 @@ public class ProductionVehicleDAO implements VehicleDAO {
     @Override
     public void update(Vehicle vehicle) throws DataAccessException {
         Transaction tx = null;
-        try (Session session = factory.openSession();) {
-            tx = session.beginTransaction();
-            session.update(vehicle);
-            tx.commit();
-        } catch (Exception e) {
-            if (tx != null) {
-                tx.rollback();
-            }
-            e.printStackTrace();
-        }
+        HibernateUtil.update(factory,vehicle);
     }
+
+    @Override
+    public Vehicle update(UUID uuid, String brand, String model, String chassisNumber, String licenseplate, int value, int mileage, VehicleType type, LocalDate productionDate) throws DataAccessException {
+
+        Vehicle vehicle = new Vehicle();
+        vehicle.setBrand(brand);
+        vehicle.setLicensePlate(licenseplate);
+        vehicle.setModel(model);
+        vehicle.setProductionDate(productionDate);
+        vehicle.setValue(value);
+        vehicle.setMileage(mileage);
+        vehicle.setType(type);
+        vehicle.setChassisNumber(chassisNumber);
+        HibernateUtil.update(factory,vehicle);
+        return vehicle;
+    }
+
+
 
     @Override
     public void remove(Vehicle vehicle) throws DataAccessException {
 
-        Transaction tx = null;
-        try (Session session = factory.openSession();) {
-            tx = session.beginTransaction();
-            session.delete(vehicle);
-            tx.commit();
-        } catch (Exception e) {
-            if (tx != null) {
-                tx.rollback();
-            }
-            e.printStackTrace();
-        }
+        HibernateUtil.remove(factory,vehicle);
+    }
+
+    @Override
+    public void remove(UUID id) throws DataAccessException {
+        HibernateUtil.remove(factory,get(id));
     }
 
     @Override
@@ -123,6 +129,8 @@ public class ProductionVehicleDAO implements VehicleDAO {
     public void close() {
 
     }
+
+
 
     @Override
     public Filter<Vehicle> byBrand(String brandName) {

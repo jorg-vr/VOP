@@ -62,4 +62,8 @@ public class TestFunctionDAO extends TestDAO<Function> implements FunctionDAO {
         return null;
     }
 
+    @Override
+    public void remove(UUID id) throws DataAccessException {
+
+    }
 }

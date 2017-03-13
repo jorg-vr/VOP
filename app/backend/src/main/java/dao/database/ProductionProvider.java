@@ -74,14 +74,9 @@ public class ProductionProvider implements DAOProvider {
     }
 
     @Override
-    public synchronized HistoryDAO<Vehicle> getVehicleHistoryDAO() {
+    public synchronized HistoryDAO<Vehicle> getVehicleHistoryDAO() {return null;}
 
     public FunctionDAO getFunctionDAO() {
-        return null;
-    }
-
-    @Override
-    public HistoryDAO<Vehicle> getVehicleHistoryDAO() {
         return null;
     }
 
@@ -123,27 +118,21 @@ public class ProductionProvider implements DAOProvider {
 
     public static void main(String[] args) {
         try (DAOProvider daoProvider = ProductionProvider.getInstance()) {
-            VehicleDAO vehicleDAO = daoProvider.getVehicleDAO();
+
             VehicleTypeDao vehicleTypeDao = daoProvider.getVehicleTypeDAO();
-            VehicleType type = new VehicleType();
-            type.setTax(2);
-            type.setType("NEN OTO");
+            vehicleTypeDao.create("motor",1);
 
-            Vehicle vehicle1 = new Vehicle();
-            vehicle1.setBrand("Brand1");
-            vehicle1.setLicensePlate("123a123");
-            vehicle1.setModel("Mooi");
-            vehicle1.setProductionDate(LocalDate.now());
-            vehicle1.setValue(1000);
-            vehicle1.setMileage(1);
-            vehicle1.setType(type);
+            vehicleTypeDao.create("vrachtwagen",2);
 
-            vehicleTypeDao.create(type);
-            vehicleDAO.create(vehicle1);
-            for(Vehicle vehicle: vehicleDAO.listFiltered(vehicleDAO.byBrand("Brand1"),vehicleDAO.atLeastMileage(1),vehicleDAO.byType(type),vehicleDAO.atProductionDate(LocalDate.now()))){
-                System.out.println(vehicle);
+            vehicleTypeDao.create("vrachtbus",3);
+
+            vehicleTypeDao.create("auto",4);
+
+            vehicleTypeDao.create("oplegger",5);
+
+            for(VehicleType type : vehicleTypeDao.listFiltered(vehicleTypeDao.nameContains("vracht"))){
+                System.out.println(type);
             }
-
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
