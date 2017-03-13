@@ -3,6 +3,7 @@ package dao.test;
 import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
 import dao.interfaces.VehicleDAO;
+import model.fleet.Fleet;
 import model.fleet.Vehicle;
 import model.fleet.VehicleType;
 
@@ -18,10 +19,14 @@ public class TestVehicleDAO implements VehicleDAO {
         UUID two = UUID.randomUUID();
         UUID three = UUID.randomUUID();
         UUID four = UUID.randomUUID();
+        UUID five = UUID.randomUUID();
         VehicleType type1 = new VehicleType(three, "AE - Cabriolet", 210);
         VehicleType type2 = new VehicleType(four, "AA - Sedan", 530);
-        vehicles.put(one, new Vehicle(one, "Volkswagen", "Beetle", "ABC-123", LocalDate.now(), "abcdefhijk", 1000, 123, type1));
-        vehicles.put(two, new Vehicle(two, "Lamborghini", "Diablo GT", "IAM-007", LocalDate.now(), "abcdefhijk", 3, 123, type2));
+        Fleet fleet=new Fleet(five,null);//owner=null
+        vehicles.put(one, new Vehicle(one, "Volkswagen", "Beetle", "ABC-123", LocalDate.now(), "abcdefhijk", 1000, 123, type1,fleet));
+        vehicles.put(two, new Vehicle(two, "Lamborghini", "Diablo GT", "IAM-007", LocalDate.now(), "abcdefhijk", 3, 123, type2,fleet));
+        fleet.addVehicle(vehicles.get(one));
+        fleet.addVehicle(vehicles.get(two));
     }
 
     private int counter = 2;

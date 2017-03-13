@@ -31,11 +31,13 @@ public class Vehicle implements EditableObject, java.io.Serializable {
 
     private LeasingCompany leasingCompany;
 
+    private Fleet fleet;
+
     public Vehicle() {
 
     }
 
-    public Vehicle(UUID uuid, String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int value, int mileage, VehicleType type) {
+    public Vehicle(UUID uuid, String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int value, int mileage, VehicleType type,Fleet fleet) {
         this.uuid = uuid;
         this.brand = brand;
         this.model = model;
@@ -45,11 +47,20 @@ public class Vehicle implements EditableObject, java.io.Serializable {
         this.value = value;
         this.mileage = mileage;
         this.type = type;
+        this.fleet=fleet;
     }
 
-    public Vehicle(UUID uuid, String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int value, int mileage, VehicleType type, LeasingCompany leasingCompany) {
-        this(uuid, brand, model, licensePlate, productionDate, chassisNumber, value, mileage, type);
+    public Vehicle(UUID uuid, String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int value, int mileage, VehicleType type,Fleet fleet, LeasingCompany leasingCompany) {
+        this(uuid,brand,model,licensePlate,productionDate,chassisNumber,value,mileage,type,fleet);
         this.leasingCompany = leasingCompany;
+    }
+
+    public Fleet getFleet() {
+        return fleet;
+    }
+
+    public void setFleet(Fleet fleet) {
+        this.fleet = fleet;
     }
 
     public UUID getUuid() {
@@ -205,6 +216,6 @@ public class Vehicle implements EditableObject, java.io.Serializable {
 
     @Override
     public EditableObject copy() {
-        return new Vehicle(uuid, brand, model, licensePlate, productionDate, chassisNumber, value, mileage, (VehicleType) type.copy());
+        return new Vehicle(uuid, brand, model, licensePlate, productionDate, chassisNumber, value, mileage, (VehicleType) type.copy(),fleet);
     }
 }
