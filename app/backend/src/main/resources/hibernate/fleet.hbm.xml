@@ -13,7 +13,7 @@
         </id>
         <bag name="vehicles" access="field" table="VEHICLE" cascade="all"
              lazy="true" fetch="select">
-            <key column="fleet_id" not-null="true"/>
+            <key column="fleet_id" not-null="false"/>
             <one-to-many class="model.fleet.Vehicle" />
         </bag>
 

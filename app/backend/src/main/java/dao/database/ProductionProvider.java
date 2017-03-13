@@ -2,6 +2,7 @@ package dao.database;
 
 import dao.interfaces.*;
 import model.fleet.Vehicle;
+import model.fleet.VehicleType;
 import model.identity.Company;
 import model.identity.Identity;
 import model.identity.Person;
@@ -15,7 +16,9 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
+import java.time.LocalDate;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created by sam on 3/8/17.
@@ -27,7 +30,7 @@ public class ProductionProvider implements DAOProvider {
     private SessionFactory sessionFactory;
 
 
-    private ProductionProvider(){
+    private ProductionProvider() {
 
         registry = new StandardServiceRegistryBuilder()
                 .configure("hibernate/hibernate.cfg.xml")
@@ -41,74 +44,70 @@ public class ProductionProvider implements DAOProvider {
         // Create SessionFactory
         sessionFactory = metadata.getSessionFactoryBuilder().build();
 
-
-
     }
-    public static DAOProvider getInstance() {
-        if(provider==null){
+
+    public synchronized static DAOProvider getInstance() {
+        if (provider == null) {
             provider = new ProductionProvider();
         }
         return provider;
     }
 
     @Override
-    public AccountDAO getAccountDao() {
+    public synchronized AccountDAO getAccountDao() {
         return null;
     }
 
     @Override
-    public CompanyDAO<Company> getCompanyDAO() {
+    public synchronized CompanyDAO<Company> getCompanyDAO() {
         return null;
     }
 
     @Override
-    public CustomerDAO getCustomerDAO() {
+    public synchronized CustomerDAO getCustomerDAO() {
         return null;
     }
 
     @Override
-    public FleetDAO getFleetDAO() {
+    public synchronized FleetDAO getFleetDAO() {
         return null;
     }
 
     @Override
+    public synchronized HistoryDAO<Vehicle> getVehicleHistoryDAO() {return null;}
+
     public FunctionDAO getFunctionDAO() {
         return null;
     }
 
     @Override
-    public HistoryDAO<Vehicle> getVehicleHistoryDAO() {
+    public synchronized HistoryDAO<Insurance> getInsuranceHistoryDAO() {
         return null;
     }
 
     @Override
-    public HistoryDAO<Insurance> getInsuranceHistoryDAO() {
+    public synchronized IdentityDAO<Person> getIdentityDAO() {
         return null;
     }
 
     @Override
-    public IdentityDAO<Person> getIdentityDAO() {
+    public synchronized InsuranceDAO getInsuranceDAO() {
         return null;
     }
 
     @Override
-    public InsuranceDAO getInsuranceDAO() {
+    public synchronized PersonDAO getPersonDAO() {
         return null;
     }
 
     @Override
-    public PersonDAO getPersonDAO() {
-        return null;
+    public synchronized VehicleDAO getVehicleDAO() {
+        return new ProductionVehicleDAO(sessionFactory);
     }
 
     @Override
-    public VehicleDAO getVehicleDAO() {
-        return null;
-    }
-
-    @Override
-    public VehicleTypeDao getVehicleTypeDAO() {
-        return null;
+    public synchronized VehicleTypeDao getVehicleTypeDAO() {
+        return new ProductionVehicleTypeDAO(sessionFactory);
     }
 
     @Override
@@ -118,8 +117,24 @@ public class ProductionProvider implements DAOProvider {
     }
 
     public static void main(String[] args) {
-        try(DAOProvider daoProvider = ProductionProvider.getInstance()){
+        try (DAOProvider daoProvider = ProductionProvider.getInstance()) {
 
+            VehicleTypeDao vehicleTypeDao = daoProvider.getVehicleTypeDAO();
+            vehicleTypeDao.create("motor",1);
+
+            vehicleTypeDao.create("vrachtwagen",2);
+
+            vehicleTypeDao.create("vrachtbus",3);
+
+            vehicleTypeDao.create("auto",4);
+
+            vehicleTypeDao.create("oplegger",5);
+
+            for(VehicleType type : vehicleTypeDao.listFiltered(vehicleTypeDao.nameContains("vracht"))){
+                System.out.println(type);
+            }
+        } catch (DataAccessException e) {
+            e.printStackTrace();
         }
 
 

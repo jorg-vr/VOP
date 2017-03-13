@@ -46,6 +46,11 @@ public class TestCustomerDAO implements CustomerDAO {
     }
 
     @Override
+    public void remove(UUID id) throws DataAccessException {
+
+    }
+
+    @Override
     public Collection<Customer> listFiltered(Filter... filters) throws DataAccessException {
         List<Customer> result=new ArrayList<>();
         for(Customer customer:customers.values()){

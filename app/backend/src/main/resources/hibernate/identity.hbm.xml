@@ -33,7 +33,6 @@
             <key column="identity_id"/>
             <property name="firstName" column="first_name" type="string"/>
             <property name="lastName" column="last_name" type="string"/>
-            <property name="dateOfBirth" column="date_of_birth" type="java.time.LocalDate"/>
         </joined-subclass>
 
     </class>

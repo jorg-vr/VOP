@@ -77,4 +77,9 @@ public class TestAccountDAO extends TestDAO<Account> implements AccountDAO {
     public Filter<Account> byIdentity(Identity identity) {
         return null;
     }
+
+    @Override
+    public void remove(UUID id) throws DataAccessException {
+
+    }
 }
