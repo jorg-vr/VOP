@@ -156,12 +156,11 @@ public class RESTVehicleController {
                 vehicle.getMileage(),
                 vehicle.getProductionDate().format(yearFormat),
                 UUIDUtil.UUIDToNumberString(vehicle.getLeasingCompany().getUuid()),
-                UUIDUtil.UUIDToNumberString(vehicle.getLeasingCompany().getUuid()),
+                UUIDUtil.UUIDToNumberString(vehicle.getFleet().getUuid()),
                 null,//TODO search leasing company
                 null,//TODO implement edit dates with history
                 null,
                 "/vehicles/"+vehicle.getUuid().toString()
         );
     }
-    String id, String licensePlate, String vin, String brand, String model, String type, int mileage, String year, String leasingCompany, String fleet, String createdAt, String updatedAt, String lastUpdatedBy, String url) {
-        this.id = id;}
+}
