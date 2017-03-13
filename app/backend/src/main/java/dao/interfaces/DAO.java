@@ -9,6 +9,7 @@ import java.util.UUID;
  */
 public interface DAO<T> extends AutoCloseable {
 
+
     @Deprecated
     T create(T t) throws DataAccessException;
 

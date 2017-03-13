@@ -50,7 +50,7 @@ public class ProductionProvider implements DAOProvider {
         if (production) {
             provider = new ProductionProvider("hibernate/hibernatedeployment.cfg.xml");
         } else {
-            provider = new ProductionProvider("development/hibernate.cfg.xml");
+            provider = new ProductionProvider("hibernate/hibernate.cfg.xml");
         }
     }
 
@@ -130,6 +130,7 @@ public class ProductionProvider implements DAOProvider {
     }
 
     public static void main(String[] args) {
+        ProductionProvider.initializeProvider(false);
         try (DAOProvider daoProvider = ProductionProvider.getInstance()) {
 
             AccountDAO accountDAO = daoProvider.getAccountDao();
