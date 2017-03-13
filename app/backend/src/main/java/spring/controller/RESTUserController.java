@@ -10,6 +10,7 @@ import spring.Exceptions.ConflictException;
 import spring.Exceptions.InvalidInputException;
 import spring.Exceptions.NotFoundException;
 import spring.Exceptions.NotImplementedException;
+import spring.model.RESTSchema;
 import spring.model.RESTUser;
 
 import java.time.LocalDateTime;
@@ -29,6 +30,8 @@ import java.util.*;
 @RequestMapping("/users")
 public class RESTUserController {
 
+    public static final String PATH_USER = "/users";
+
     private AccountController accountController = new AccountController();
 
     private PersonController personController = new PersonController();
@@ -40,7 +43,7 @@ public class RESTUserController {
      * TODO filters
      */
     @RequestMapping(method = RequestMethod.GET)
-    public Collection<RESTUser> get() {
+    public RESTSchema<RESTUser> get(Integer page, Integer limit) {
         Collection<RESTUser> users = new ArrayList<>();
 
         try {
@@ -54,7 +57,7 @@ public class RESTUserController {
             System.err.println("Something is wrong with the database");
             e.printStackTrace();
         }
-        return users;
+        return new RESTSchema<>(users, page, limit, PATH_USER, (a, b) -> a.getId().compareTo(b.getId()));
     }
 
     /**
@@ -153,6 +156,7 @@ public class RESTUserController {
 
     /**
      * Merges a person and account object to 1 RESTUser object
+     *
      * @param person
      * @param account
      * @return object that has been created from the values of person and account

@@ -8,6 +8,7 @@ import spring.Exceptions.InvalidInputException;
 import spring.Exceptions.NotFoundException;
 import spring.Exceptions.NotImplementedException;
 import spring.model.RESTRole;
+import spring.model.RESTSchema;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -18,10 +19,12 @@ import static spring.controller.UUIDUtil.UUIDToNumberString;
 @RequestMapping("/roles")
 public class RESTRoleController {
 
+    public static final String PATH_ROLE = "/role";
+
     private FunctionController controller = new FunctionController();
 
     @RequestMapping(method = RequestMethod.GET)
-    public Collection<RESTRole> get() {
+    public RESTSchema<RESTRole> get(Integer page, Integer limit) {
         Collection<RESTRole> roles = new ArrayList<>();
         try {
             Collection<Function> functions = controller.getAll();
@@ -32,7 +35,7 @@ public class RESTRoleController {
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
-        return roles;
+        return new RESTSchema<>(roles, page, limit, PATH_ROLE, (a, b) -> a.getId().compareTo(b.getId()));
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -82,6 +85,7 @@ public class RESTRoleController {
 
     /**
      * Transforms a function object to a restrole object
+     *
      * @param function
      * @return restroleobject with the fields of the function object
      */
