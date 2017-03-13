@@ -6,11 +6,9 @@ import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
 import dao.interfaces.FleetDAO;
 import model.fleet.Fleet;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import spring.Exceptions.InvalidInputException;
+import spring.Exceptions.NotFoundException;
 import spring.model.RESTFleet;
 import spring.model.RESTSchema;
 
@@ -54,6 +52,47 @@ public class RESTFleetController {
             throw  new InvalidInputException();
         }
 
+    }
+
+    @RequestMapping(method = RequestMethod.GET)
+    public RESTFleet getFleet(@PathVariable("id") String id) {
+        try {
+            return modelToRest(controller.get(UUIDUtil.toUUID(id)));
+
+        } catch (DataAccessException e) {
+            throw new NotFoundException();
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    public RESTFleet createFleet(@RequestBody RESTFleet restFleet){
+        try {
+            return modelToRest(controller.create(UUIDUtil.toUUID( restFleet.getCompany()),restFleet.getName()));
+        } catch (DataAccessException e) {
+            throw new InvalidInputException();
+            //TODO update when there are more exceptions
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.PUT)
+    public RESTFleet updateFleet(@PathVariable("id") String id,@RequestBody RESTFleet restFleet){
+        try {
+            return modelToRest(controller.update(UUIDUtil.toUUID(id),UUIDUtil.toUUID( restFleet.getCompany()),restFleet.getName()));
+        } catch (DataAccessException e) {
+            throw new InvalidInputException();
+            //TODO update when there are more exceptions
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE)
+    public void deleteFleet(@PathVariable("id") String id) {
+        try {
+            return modelToRest(controller.archive(UUIDUtil.UUIDToNumberString(id)););
+
+        } catch (DataAccessException e) {
+            throw new NotFoundException();
+            //TODO update when there are more exceptions
+        }
     }
 
     private RESTFleet modelToRest(Fleet fleet){

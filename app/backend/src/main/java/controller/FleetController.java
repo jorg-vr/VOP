@@ -20,7 +20,7 @@ public class FleetController extends AbstractController<Fleet> {
     public Fleet create(UUID owner,String name) throws DataAccessException {
         return getDao().create(new Fleet(null,customerDAO.get(owner),name));//Todo maybe use customercontroller
     }
-    public void update(UUID Fleet,UUID owner,String name){
-        //TODO
+    public Fleet update(UUID Fleet,UUID owner,String name)throws DataAccessException{
+        return null;//TODO
     }
 }
