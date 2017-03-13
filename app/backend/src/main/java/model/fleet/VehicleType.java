@@ -70,7 +70,7 @@ public class VehicleType implements EditableObject, java.io.Serializable {
 
     @Override
     public int hashCode() {
-        return uuid.hashCode();
+        return uuid .hashCode();
     }
 
     @Override

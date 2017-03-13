@@ -59,6 +59,11 @@ public class TestVehicleDAO implements VehicleDAO {
     }
 
     @Override
+    public void remove(UUID id) throws DataAccessException {
+
+    }
+
+    @Override
     public Collection<Vehicle> listFiltered(Filter... filters) {
         // TODO actually use filters
         return new HashSet<>(vehicles.values());
@@ -67,6 +72,16 @@ public class TestVehicleDAO implements VehicleDAO {
     @Override
     public void close() {
 
+    }
+
+    @Override
+    public Vehicle create(String brand, String model, String chassisNumber, String licenseplate, int value, int mileage, VehicleType type, LocalDate productionDate) throws DataAccessException {
+        return null;
+    }
+
+    @Override
+    public Vehicle update(UUID uuid, String brand, String model, String chassisNumber, String licenseplate, int value, int mileage, VehicleType type, LocalDate productionDate) throws DataAccessException {
+        return null;
     }
 
     @Override
