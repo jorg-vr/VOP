@@ -7,7 +7,7 @@ public class TestRunner {
     public static void main(String[] args){
         Result modelResults = JUnitCore.runClasses(ModelsTestSuite.class);
         Result daoResults = JUnitCore.runClasses(DAOsTestSuite.class);
-        Result controllerResults = JUnitCore.runClasses(ControllersTestSuite.class);
+        //Result controllerResults = JUnitCore.runClasses(ControllersTestSuite.class);
 
         System.out.println("Models unit tests:");
         for (Failure failure : modelResults.getFailures()){

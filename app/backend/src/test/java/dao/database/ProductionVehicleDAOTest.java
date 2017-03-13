@@ -1,20 +1,12 @@
 package dao.database;
 
-import dao.interfaces.DAOProvider;
 import model.fleet.Vehicle;
-import org.hibernate.SessionFactory;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import java.util.ArrayList;
-import java.util.Collection;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 /**
  * Created by tjupo on 13/03/2017.
@@ -36,6 +28,7 @@ public class ProductionVehicleDAOTest {
 
     }
 
+    @Ignore
     @Test
     public void createWithVehicle() throws Exception {
         try{
@@ -47,46 +40,55 @@ public class ProductionVehicleDAOTest {
         }
     }
 
+    @Ignore
     @Test
     public void createWithParams() throws Exception {
 
     }
 
+    @Ignore
     @Test
     public void get() throws Exception {
 
     }
 
+    @Ignore
     @Test
     public void update() throws Exception {
 
     }
 
+    @Ignore
     @Test
     public void update1() throws Exception {
 
     }
 
+    @Ignore
     @Test
     public void remove() throws Exception {
 
     }
 
+    @Ignore
     @Test
     public void remove1() throws Exception {
 
     }
 
+    @Ignore
     @Test
     public void listFiltered() throws Exception {
 
     }
 
+    @Ignore
     @Test
     public void close() throws Exception {
 
     }
 
+    @Ignore
     @Test
     public void byBrand() throws Exception {
 
@@ -97,36 +99,43 @@ public class ProductionVehicleDAOTest {
 
     }
 
+    @Ignore
     @Test
     public void byLicensePlate() throws Exception {
 
     }
 
+    @Ignore
     @Test
     public void atProductionDate() throws Exception {
 
     }
 
+    @Ignore
     @Test
     public void beforeProductionDate() throws Exception {
 
     }
 
+    @Ignore
     @Test
     public void afterProductionDate() throws Exception {
 
     }
 
+    @Ignore
     @Test
     public void atLeastMileage() throws Exception {
 
     }
 
+    @Ignore
     @Test
     public void maxMileage() throws Exception {
 
     }
 
+    @Ignore
     @Test
     public void byType() throws Exception {
 
