@@ -17,7 +17,7 @@ export default {
     data: function() {
         return {
             fleets : [ //dummy fleets
-            {id: 1, text: ['Test company 1'], edit: 'id/edit', show: 'id/show'},
+            {id: 1, text: ['Test company 1'], edit: 'id/edit', show: 'fleets/1'},
             {id: 2, text: ['Test company 2'], edit: 'id/edit'},
             {id: 3, text: ['Test company 3'], edit: 'id/edit'},
             {id: 4, text: ['Test company 4'], edit: 'id/edit'}

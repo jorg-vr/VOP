@@ -1,6 +1,6 @@
 <template>
     <div class="row">
-        <a :href="object.edit">
+        <a :href="object.show">
             <div class="panel panel-default col-sm-10">
                 <div class="panel-body">
                     <table>
