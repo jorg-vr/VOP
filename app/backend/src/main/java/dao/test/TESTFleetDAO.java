@@ -4,6 +4,7 @@ import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
 import dao.interfaces.FleetDAO;
 import model.fleet.Fleet;
+import model.fleet.Vehicle;
 import model.identity.Customer;
 
 import java.util.Collection;
@@ -13,6 +14,16 @@ import java.util.UUID;
  * Created by jorg on 3/13/17.
  */
 public class TESTFleetDAO  implements FleetDAO{
+    @Override
+    public Fleet create(Customer customer, Collection<Vehicle> vehicles) throws DataAccessException {
+        return null;
+    }
+
+    @Override
+    public Fleet update(UUID id, Customer customer, Collection<Vehicle> vehicles) throws DataAccessException {
+        return null;
+    }
+
     @Override
     public Filter<Fleet> byOwner(Customer customer) {
         return null;
