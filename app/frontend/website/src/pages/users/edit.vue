@@ -22,12 +22,16 @@
                 // listen to proceed performed by child component
                 var vm = this
 
-                this.$bus.$on('proceed', function(input){
+                this.$bus.$on('proceedEdit', function(input){
                     console.log(input)
+                    console.log('proceedEdit called')
                     // Determine type
                     console.log("Gebruiker aangepast")
                     // Make post request for user
                     console.log('https://vopro5.ugent.be/app/api/users/'+input)
+                    this.$http.put('https://vopro5.ugent.be/app/api/users/'+this.$route.query.id).then(response => {
+                        
+                    })
                     vm.$router.go(-1)
                 });
 
