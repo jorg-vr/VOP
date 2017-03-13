@@ -115,7 +115,14 @@
         searchId: function () { 
             var s=this.search.trim().toLowerCase();;
             var listID = []
-            listID = this.users
+
+
+            if (this.$route.query.type == "Gebruiker"){
+                listID = this.users
+            }
+            else if (this.$route.query.type == "Klant"){
+                listID = this.clients
+            }
             if(!this.search){
                 return listID
             }
@@ -142,7 +149,7 @@
                 this.$http.get('https://vopro5.ugent.be/app/api/users').then(response => {
                     this.users = response.body
                 })
-            }
+            
             this.loading = true
         },
     }
