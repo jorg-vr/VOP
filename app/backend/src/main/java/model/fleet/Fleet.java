@@ -73,6 +73,14 @@ public class Fleet implements EditableObject, java.io.Serializable {
         return vehicles.size();
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public UUID getUuid() {
         return uuid;
     }
