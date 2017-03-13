@@ -16,7 +16,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by Ponti on 13/03/2017.
  */
-public class ProductionVehicleDAOFiltersTestTest {
+public class ProductionVehicleDAOFiltersTest {
     private ProductionProvider daoProvider;
     private ProductionVehicleDAO vehicleDAO;
     private Vehicle v1, v2, v3;
