@@ -54,7 +54,7 @@ public class RESTFleetController {
 
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET, value = "{id}")
     public RESTFleet getFleet(@PathVariable("id") String id) {
         try {
             return modelToRest(controller.get(UUIDUtil.toUUID(id)));
@@ -74,7 +74,7 @@ public class RESTFleetController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.PUT)
+    @RequestMapping(method = RequestMethod.PUT, value = "{id}")
     public RESTFleet updateFleet(@PathVariable("id") String id,@RequestBody RESTFleet restFleet){
         try {
             return modelToRest(controller.update(UUIDUtil.toUUID(id),UUIDUtil.toUUID( restFleet.getCompany()),restFleet.getName()));
@@ -84,10 +84,10 @@ public class RESTFleetController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.DELETE)
+    @RequestMapping(method = RequestMethod.DELETE, value = "{id}")
     public void deleteFleet(@PathVariable("id") String id) {
         try {
-            return modelToRest(controller.archive(UUIDUtil.UUIDToNumberString(id)););
+            controller.archive(UUIDUtil.toUUID(id));
 
         } catch (DataAccessException e) {
             throw new NotFoundException();
