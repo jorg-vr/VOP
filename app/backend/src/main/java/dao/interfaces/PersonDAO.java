@@ -33,7 +33,7 @@ public interface PersonDAO extends IdentityDAO<Person> {
     //Checks both first and last name
     Filter<Person> nameContains(String name);
 
-    Filter<Person> function(Function function);
+
 
 
 }

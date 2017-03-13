@@ -6,7 +6,6 @@ import dao.interfaces.FunctionDAO;
 import model.account.Account;
 import model.account.Function;
 import model.account.Role;
-import model.fleet.Vehicle;
 import model.identity.Company;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

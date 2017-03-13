@@ -59,6 +59,11 @@ public class TestPersonDAO extends TestDAO<Person> implements PersonDAO {
     }
 
     @Override
+    public Person create(String firstName, String lastName, String email, String phonenumber, Address address) throws DataAccessException {
+        return null;
+    }
+
+    @Override
     public Person update(UUID id, String firstName, String lastName) throws DataAccessException {
         if (!persons.containsKey(id)) {
             throw new DataAccessException();
@@ -70,14 +75,15 @@ public class TestPersonDAO extends TestDAO<Person> implements PersonDAO {
     }
 
     @Override
-    public Filter<Person> nameContains(String name) {
+    public Person update(UUID id, String firstName, String lastName, String email, String phonenumber, Address address) throws DataAccessException {
         return null;
     }
 
     @Override
-    public Filter<Person> function(Function function) {
+    public Filter<Person> nameContains(String name) {
         return null;
     }
+
 
     @Override
     public Filter<Person> byAddress(Address address) {
