@@ -6,6 +6,8 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.util.UUID;
+
 import static org.junit.Assert.fail;
 
 /**
@@ -28,11 +30,15 @@ public class ProductionVehicleDAOTest {
 
     }
 
+    //TODO: check for errors when certain fields are empty
     @Ignore
     @Test
     public void createWithVehicle() throws Exception {
         try{
-            Vehicle vehicle = new Vehicle();
+            UUID id = UUID.randomUUID();
+            String chassisNumber = "UZ0UZABCUKZ12345L";
+            Vehicle vehicle = new Vehicle(id,);
+            vehicle.setUuid(id);
 
         }
         catch (Exception e){
