@@ -22,7 +22,7 @@ public class TestVehicleDAO implements VehicleDAO {
         UUID five = UUID.randomUUID();
         VehicleType type1 = new VehicleType(three, "AE - Cabriolet", 210);
         VehicleType type2 = new VehicleType(four, "AA - Sedan", 530);
-        Fleet fleet=new Fleet(five,null);//owner=null
+        Fleet fleet=new Fleet(five,null,"myFirstFleet");//owner=null
         vehicles.put(one, new Vehicle(one, "Volkswagen", "Beetle", "ABC-123", LocalDate.now(), "abcdefhijk", 1000, 123, type1,fleet));
         vehicles.put(two, new Vehicle(two, "Lamborghini", "Diablo GT", "IAM-007", LocalDate.now(), "abcdefhijk", 3, 123, type2,fleet));
         fleet.addVehicle(vehicles.get(one));

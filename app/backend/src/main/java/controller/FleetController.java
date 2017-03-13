@@ -4,6 +4,7 @@ import dao.interfaces.CustomerDAO;
 import dao.interfaces.DAO;
 import dao.interfaces.DataAccessException;
 import dao.interfaces.IdentityDAO;
+import dao.test.TESTFleetDAO;
 import model.fleet.Fleet;
 
 import java.util.UUID;
@@ -14,10 +15,10 @@ import java.util.UUID;
 public class FleetController extends AbstractController<Fleet> {
     private CustomerDAO customerDAO;//TODO initialize
     public FleetController() {
-        super(dao);//Todo add fleetdao
+        super(new TESTFleetDAO());//Todo add fleetdao
     }
-    public Fleet create(UUID owner) throws DataAccessException {
-        return getDao().create(new Fleet(null,customerDAO.get(owner)));//Todo maybe use customercontroller
+    public Fleet create(UUID owner,String name) throws DataAccessException {
+        return getDao().create(new Fleet(null,customerDAO.get(owner),name));//Todo maybe use customercontroller
     }
     public void update(UUID Fleet,UUID owner,String name){
         //TODO

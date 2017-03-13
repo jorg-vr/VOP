@@ -82,7 +82,7 @@ public class RESTVehicleController {
                     vehicle.getMileage(),
                     vehicle.getType());
         } catch (DataAccessException e) {
-            throw new InvalidInputException(e);
+            throw new InvalidInputException();
         }
     }
 

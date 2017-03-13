@@ -46,9 +46,11 @@ public class RESTFleetController {
             }
             int total=fleets.size();
             fleets.sort((fleet1,fleet2)->fleet1.getName().compareTo(fleet2.getName()));
-            fleets.subList(page*limit,(page+1)*limit);
+            if(limit!=null){
+                fleets=fleets.subList(page*limit,(page+1)*limit);
+            }
             return new RESTSchema<>(fleets,total,page,limit,baseString);
-        } catch (DataAccessException e) {
+        } catch (Exception e) {
             throw  new InvalidInputException();
         }
 
