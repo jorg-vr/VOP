@@ -3,10 +3,7 @@ package dao.database;
 import dao.interfaces.Filter;
 import model.fleet.Vehicle;
 import model.fleet.VehicleType;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.*;
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -17,16 +14,29 @@ import static org.junit.Assert.assertTrue;
  * Created by Ponti on 13/03/2017.
  */
 public class ProductionVehicleDAOFiltersTest {
-    private ProductionProvider daoProvider;
+    private static ProductionProvider daoProvider;
     private ProductionVehicleDAO vehicleDAO;
     private Vehicle v1, v2, v3;
     private VehicleType t1, t2;
     private ProductionVehicleTypeDAO vehicleTypeDAO;
 
+    //TODO: get this to work
+    //Setup before any of the tests are started
+    @BeforeClass
+    public static void initProvider() throws Exception{
+        ProductionProvider.initializeProvider(false);
+        daoProvider = (ProductionProvider) ProductionProvider.getInstance();
+    }
+
+    //Gets executed after all tests have been run
+    @AfterClass
+    public static void closeProvider() throws Exception{
+        daoProvider.close();
+    }
+
 
     @Before
     public void setUp() throws Exception {
-        daoProvider = (ProductionProvider) ProductionProvider.getInstance();
         vehicleDAO = (ProductionVehicleDAO) daoProvider.getVehicleDAO();
         vehicleTypeDAO = (ProductionVehicleTypeDAO) daoProvider.getVehicleTypeDAO();
 

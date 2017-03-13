@@ -20,14 +20,17 @@ public class ProductionVehicleDAOTest {
     private ProductionVehicleTypeDAO vehicleTypeDAO;
     private VehicleType t1;
 
+    //TODO: get this to work
+    //Setup before any of the tests are started
     @BeforeClass
-    public static void initProvider() {
+    public static void initProvider() throws Exception{
         ProductionProvider.initializeProvider(false);
         daoProvider = (ProductionProvider) ProductionProvider.getInstance();
     }
 
+    //Gets executed after all tests have been run
     @AfterClass
-    public static void closeProvider() {
+    public static void closeProvider() throws Exception{
         daoProvider.close();
     }
 
@@ -43,10 +46,9 @@ public class ProductionVehicleDAOTest {
         vehicleTypeDAO.remove(t1.getUuid());
     }
 
-
+    @Ignore
     @Test
     public void createGetRemoveTest() throws Exception {
-        //TODO: change it so new vehicletypes are created with the vehicletype DAO instead of through the vehicletype constructor
         //VehicleType type = new VehicleType(null, "type 1", 2.5);
         Vehicle vehicle1 = null;
         boolean present = false;
