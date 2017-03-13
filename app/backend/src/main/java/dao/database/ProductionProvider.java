@@ -119,20 +119,12 @@ public class ProductionProvider implements DAOProvider {
     public static void main(String[] args) {
         try (DAOProvider daoProvider = ProductionProvider.getInstance()) {
 
-            VehicleTypeDao vehicleTypeDao = daoProvider.getVehicleTypeDAO();
-            vehicleTypeDao.create("motor",1);
-
-            vehicleTypeDao.create("vrachtwagen",2);
-
-            vehicleTypeDao.create("vrachtbus",3);
-
-            vehicleTypeDao.create("auto",4);
-
-            vehicleTypeDao.create("oplegger",5);
-
-            for(VehicleType type : vehicleTypeDao.listFiltered(vehicleTypeDao.nameContains("vracht"))){
-                System.out.println(type);
-            }
+            AccountDAO accountDAO = daoProvider.getAccountDao();
+            PersonDAO personDAO = daoProvider.getPersonDAO();
+            Person sam =  personDAO.create("test","test","test");
+            accountDAO.create("test","hashed",sam);
+            accountDAO.create("test2","hashed",sam);
+            accountDAO.create("test3","hashed",sam);
         } catch (DataAccessException e) {
             e.printStackTrace();
         }

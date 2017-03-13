@@ -1,5 +1,6 @@
 package dao.interfaces;
 
+import model.identity.Address;
 import model.identity.Function;
 import model.identity.Person;
 
@@ -19,6 +20,7 @@ public interface PersonDAO extends IdentityDAO<Person> {
      */
     Person create(String firstName, String lastName, String email) throws DataAccessException;
 
+    Person create(String firstName, String lastName, String email, String phonenumber, Address address) throws DataAccessException;
     /**
      * Creates a new Person
      * @return the Person object with the adjusted fields
@@ -26,13 +28,12 @@ public interface PersonDAO extends IdentityDAO<Person> {
      */
     Person update(UUID id, String firstName, String lastName) throws DataAccessException;
 
+    Person update(UUID id, String firstName, String lastName, String email, String phonenumber, Address address) throws DataAccessException;
+
     //Checks both first and last name
     Filter<Person> nameContains(String name);
 
     Filter<Person> function(Function function);
 
-    Filter<Person> bornBefore(LocalDate date);
-
-    Filter<Person> bornAfter(LocalDate date);
 
 }

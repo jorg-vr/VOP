@@ -80,16 +80,6 @@ public class TestPersonDAO extends TestDAO<Person> implements PersonDAO {
     }
 
     @Override
-    public Filter<Person> bornBefore(LocalDate date) {
-        return null;
-    }
-
-    @Override
-    public Filter<Person> bornAfter(LocalDate date) {
-        return null;
-    }
-
-    @Override
     public Filter<Person> byAddress(Address address) {
         return null;
     }
