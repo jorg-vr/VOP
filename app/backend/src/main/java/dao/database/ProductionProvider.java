@@ -112,6 +112,11 @@ public class ProductionProvider implements DAOProvider {
     }
 
     @Override
+    public AddressDAO getAddressDao() {
+        return new ProductionAddressDAO(sessionFactory);
+    }
+
+    @Override
     public void close() {
         sessionFactory.close();
         StandardServiceRegistryBuilder.destroy(this.registry);
