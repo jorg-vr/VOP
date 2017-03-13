@@ -1,10 +1,14 @@
 import App from '../app.vue'
 
-import NewIdentity from '../pages/identity/New.vue'
-import EditIdentity from '../pages/identity/Edit.vue'
-import IndexIdentity from '../pages/identity/Index.vue'
-import RemoveIdentity from '../pages/identity/Remove.vue'
-import ShowIdentity from '../pages/identity/Show.vue'
+import NewUser from '../pages/users/new.vue'
+import EditUser from '../pages/users/edit.vue'
+import IndexUser from '../pages/users/index.vue'
+
+
+import NewClient from '../pages/clients/new.vue'
+import EditClient from '../pages/clients/edit.vue'
+import IndexClient from '../pages/clients/index.vue'
+
 
 import NewFleet from '../pages/fleet/new.vue'
 import IndexFleet from '../pages/fleet/index.vue'
@@ -21,13 +25,14 @@ export default [
         path: '',
         component: App,
         children: [
-            //Identity
-            { path: 'identities', name: 'identities', component: IndexIdentity },
-            { path: 'identities/new', component: NewIdentity },
-            { path: 'identities/:id', component: ShowIdentity },
-            { path: 'identities/:id/edit', component: EditIdentity },
-            { path: 'identities/:id/remove', component: RemoveIdentity },
-
+            //User
+            { path: 'users', name: 'users', component: IndexUser },
+            { path: 'users/new', component: NewUser },  
+            { path: 'users/:id/edit', component: EditUser },
+            // Clients
+            { path: 'clients', name: 'clients', component: IndexClient },
+            { path: 'clients/new', component: NewClient },
+            { path: 'clients/:id/edit', component: EditClient },
             //Fleet
             { path: 'fleets', name: 'fleets', component: IndexFleet },
             { path: 'fleets/new', name: 'new_fleet', component: NewFleet },
