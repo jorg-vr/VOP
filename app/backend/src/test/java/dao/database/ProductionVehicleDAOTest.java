@@ -2,10 +2,7 @@ package dao.database;
 
 import model.fleet.Vehicle;
 import model.fleet.VehicleType;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.*;
 
 import java.time.LocalDate;
 
@@ -18,18 +15,33 @@ import static org.junit.Assert.fail;
  */
 public class ProductionVehicleDAOTest {
 
-    private ProductionProvider daoProvider;
+    private static ProductionProvider daoProvider;
     private ProductionVehicleDAO vehicleDao;
     private ProductionVehicleTypeDAO vehicleTypeDAO;
     private VehicleType t1;
 
+    @BeforeClass
+    public static void initProvider() {
+        System.out.println("1");
+        ProductionProvider.initializeProvider(false);
+        System.out.println("2");
+        daoProvider = (ProductionProvider) ProductionProvider.getInstance();
+    }
+
+    @AfterClass
+    public static void closeProvider() {
+        daoProvider.close();
+    }
+
     //TODO: add the necessary setup code to be able to work with the database
     @Before
     public void setUp() throws Exception {
-        daoProvider = (ProductionProvider) ProductionProvider.getInstance();
         vehicleDao = (ProductionVehicleDAO) daoProvider.getVehicleDAO();
+        System.out.println("3");
         vehicleTypeDAO = (ProductionVehicleTypeDAO) daoProvider.getVehicleTypeDAO();
+        System.out.println("4");
         t1 = vehicleTypeDAO.create("type 1", 2.5);
+        System.out.println("5");
     }
 
     @After
@@ -37,23 +49,28 @@ public class ProductionVehicleDAOTest {
         vehicleTypeDAO.remove(t1.getUuid());
     }
 
-    @Ignore
+
     @Test
     public void createGetRemoveTest() throws Exception {
+        System.out.println("0");
         //TODO: change it so new vehicletypes are created with the vehicletype DAO instead of through the vehicletype constructor
         //VehicleType type = new VehicleType(null, "type 1", 2.5);
         Vehicle vehicle1 = null;
         boolean present = false;
         boolean removed = false;
+        System.out.println("1");
         //test if a vehicle can be succesfully added to the database
         try {
             vehicle1 = vehicleDao.create("brand 1", "model A", "UZ0UZABCUKZ12345L", "ABC 123", 30000, 2500, t1, LocalDate.now());
+            System.out.println("2");
         } catch (Exception e) {
+            System.out.println("3");
             fail("Failed trying to create a new vehicle");
         }
         //If a vehicle was succesfully added, test if it can be retrieved succesfully
         try {
             if (vehicle1 != null) {
+                System.out.println("4");
                 Vehicle vehicle2 = vehicleDao.get(vehicle1.getUuid());
                 assertEquals("type field not equal", vehicle1.getType(), vehicle2.getType());
                 assertEquals("brand field not equal", vehicle1.getBrand(), vehicle2.getBrand());
@@ -66,20 +83,24 @@ public class ProductionVehicleDAOTest {
                 present = true;
             }
         } catch (Exception e) {
+            System.out.println("5");
             fail("Failed trying to get an existing vehicle from the database");
         }
         //If the vehicle is confirmed to be present in the database, try to remove it
         try {
             if (vehicle1 != null && present) {
+                System.out.println("6");
                 vehicleDao.remove(vehicle1.getUuid());
                 removed = true;
             }
         } catch (Exception e) {
+            System.out.println("7");
             fail("Failed trying to remove a vehicle from the database");
         }
         //Check if the vehicle is effectively removed (if create, get and remove tests passed)
         try {
             if (vehicle1 != null && present && removed) {
+                System.out.println("8");
                 Vehicle vehicle3 = vehicleDao.get(vehicle1.getUuid());
                 //adding this because I'm not sure if the get method returns a null object or an error for a non existing uuid
                 assertNull("Vehicle is still in database after removal", vehicle3);
@@ -87,6 +108,7 @@ public class ProductionVehicleDAOTest {
         }
         //In case the get method returns an exception when given a uuid that's not present in the database.
         catch (Exception e) {
+            System.out.println("9");
             //Nothing because the test passed in this case
         }
     }
