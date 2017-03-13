@@ -2,7 +2,9 @@
     <div id="page-content-wrapper">
         <nav-bar></nav-bar>
         <div class="container-fluid">
-            <router-view></router-view>
+            <div class="row">
+                <router-view></router-view>
+            </div>
         </div>
     </div>
 </template>

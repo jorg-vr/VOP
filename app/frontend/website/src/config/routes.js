@@ -6,17 +6,15 @@ import IndexIdentity from '../components/identity/Index.vue'
 import RemoveIdentity from '../components/identity/Remove.vue'
 import ShowIdentity from '../components/identity/Show.vue'
 
-import NewFleet from '../components/fleet/New.vue'
-import EditFleet from '../components/fleet/Edit.vue'
-import IndexFleet from '../components/fleet/Index.vue'
-import RemoveFleet from '../components/fleet/Remove.vue'
-import ShowFleet from '../components/fleet/Show.vue'
+import NewFleet from '../components/fleet/new.vue'
+import IndexFleet from '../components/fleet/index.vue'
+import ShowFleet from '../components/fleet/show.vue'
+import NewSubfleet from '../components/subfleet/new.vue'
 
-import NewVehicle from '../components/vehicle/New.vue'
-import EditVehicle from '../components/vehicle/Edit.vue'
-import IndexVehicle from '../components/vehicle/Index.vue'
-import RemoveVehicle from '../components/vehicle/Remove.vue'
-import ShowVehicle from '../components/vehicle/Show.vue'
+
+import newVehicle from '../components/vehicle/new.vue'
+import editVehicle from '../components/vehicle/edit.vue'
+import showVehicle from '../components/vehicle/show.vue'
 
 export default [
     {
@@ -32,17 +30,15 @@ export default [
 
             //Fleet
             { path: 'fleets', name: 'fleets', component: IndexFleet },
-            { path: 'fleets/new', component: NewFleet },
-            { path: 'fleets/:id', component: ShowFleet },
-            { path: 'fleets/:id/edit', component: EditFleet },
-            { path: 'fleets/:id/remove', component: RemoveFleet },
+            { path: 'fleets/new', name: 'new_fleet', component: NewFleet },
+            { path: 'fleets/:id', name: 'fleet', component: ShowFleet },
+            { path: 'fleets/:id/new', name: 'new_subfleet', component: NewSubfleet},
 
             //Vehicle
-            { path: 'vehicles/', name: 'vehicles', component: IndexVehicle },
-            { path: 'vehicles/new', name: 'new_vehicle', component: NewVehicle },
-            { path: 'vehicles/:id', name: 'vehicle', component: ShowVehicle },
-            { path: 'vehicles/:id/edit', name: 'edit_vehicle', component: EditVehicle },
-            { path: 'vehicles/:id/remove', name: 'remove_vehicle', component: RemoveVehicle }
+            { path: 'vehicles/new', name: 'new_vehicle', component: newVehicle },
+            { path: 'vehicles/:id', name: 'vehicle', component: showVehicle },
+            { path: 'vehicles/:id/edit', name: 'edit_vehicle', component: editVehicle }
+
         ]
     },
         //TODO: Make a not found page!
