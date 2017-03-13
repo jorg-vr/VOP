@@ -35,6 +35,8 @@ public interface DAOProvider extends AutoCloseable {
 
     VehicleTypeDao getVehicleTypeDAO();
 
+    AddressDAO getAddressDao();
+
     @Override
     void close();
 }

@@ -46,6 +46,11 @@ public class TestCustomerDAO implements CustomerDAO {
     }
 
     @Override
+    public void remove(UUID id) throws DataAccessException {
+
+    }
+
+    @Override
     public Collection<Customer> listFiltered(Filter... filters) throws DataAccessException {
         List<Customer> result=new ArrayList<>();
         for(Customer customer:customers.values()){
@@ -63,6 +68,16 @@ public class TestCustomerDAO implements CustomerDAO {
     @Override
     public void close() {
 
+    }
+
+    @Override
+    public Customer create(String name, Address address, String email, String phonenumber, String btwNumber, String bankAccountNumber, Collection<Fleet> fleets) throws DataAccessException {
+        return null;
+    }
+
+    @Override
+    public Customer update(UUID id, String name, Address address, String email, String phonenumber, String btwNumber, String bankAccountNumber, Collection<Fleet> fleets) throws DataAccessException {
+        return null;
     }
 
     @Override

@@ -10,6 +10,7 @@ import spring.Exceptions.ConflictException;
 import spring.Exceptions.InvalidInputException;
 import spring.Exceptions.NotFoundException;
 import spring.Exceptions.NotImplementedException;
+import spring.model.RESTSchema;
 import spring.model.RESTUser;
 
 import java.time.LocalDateTime;
@@ -29,6 +30,8 @@ import java.util.*;
 @RequestMapping("/users")
 public class RESTUserController {
 
+    public static final String PATH_USER = "/users";
+
     private AccountController accountController = new AccountController();
 
     private PersonController personController = new PersonController();
@@ -40,7 +43,7 @@ public class RESTUserController {
      * TODO filters
      */
     @RequestMapping(method = RequestMethod.GET)
-    public Collection<RESTUser> get() {
+    public RESTSchema<RESTUser> get(Integer page, Integer limit) {
         Collection<RESTUser> users = new ArrayList<>();
 
         try {
@@ -54,7 +57,7 @@ public class RESTUserController {
             System.err.println("Something is wrong with the database");
             e.printStackTrace();
         }
-        return users;
+        return new RESTSchema<>(users, page, limit, PATH_USER, (a, b) -> a.getId().compareTo(b.getId()));
     }
 
     /**
@@ -111,7 +114,7 @@ public class RESTUserController {
     }
 
     /**
-     * Attempts to update the user with the given id.
+     * Attempts to updateId the user with the given id.
      *
      * @param id   id of the user that should be updated
      * @param user fields that can be changed:
@@ -153,20 +156,22 @@ public class RESTUserController {
 
     /**
      * Merges a person and account object to 1 RESTUser object
+     *
      * @param person
      * @param account
      * @return object that has been created from the values of person and account
      */
     private RESTUser merge(Person person, Account account) {
+        String id = UUIDUtil.UUIDToNumberString(account.getUuid());
         RESTUser user = new RESTUser();
-        user.setId(UUIDUtil.UUIDToNumberString(account.getUuid()));
+        user.setId(id);
         user.setPassword(account.getHashedPassword());
         //user.setUpdatedAt(LocalDateTime.now());
         //user.setCreatedAt(LocalDateTime.now());
         user.setFirstName(person.getFirstName());
         user.setLastName(person.getLastName());
         user.setEmail(person.getEmail());
-        user.setUrl("TODO"); // TODO
+        user.setUrl(PATH_USER + "/" + id);
         return user;
     }
 }

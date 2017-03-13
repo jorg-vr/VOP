@@ -9,6 +9,7 @@ import java.util.UUID;
  */
 public interface DAO<T> extends AutoCloseable {
 
+
     @Deprecated
     T create(T t) throws DataAccessException;
 
@@ -17,9 +18,12 @@ public interface DAO<T> extends AutoCloseable {
     @Deprecated
     void update(T t) throws DataAccessException;
 
+    @Deprecated
     void remove(T t) throws DataAccessException;
 
-    Collection<T> listFiltered(Filter... filters) throws DataAccessException;
+    void remove(UUID id) throws DataAccessException;
+
+    Collection<T> listFiltered(Filter<T>... filters) throws DataAccessException;
 
     @Override
     void close();

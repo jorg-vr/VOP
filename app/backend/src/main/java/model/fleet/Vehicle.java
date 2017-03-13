@@ -128,11 +128,13 @@ public class Vehicle implements EditableObject, java.io.Serializable {
      * @throws InvalidInputException when the code has the wrong format.
      */
     public void setChassisNumber(String chassisNumber) throws InvalidInputException {
-        String VIN = chassisNumber.toUpperCase();
-        if (!VIN.matches("^[A-HJ-NPR-Z0-9]{9}[A-HJ-NPR-TV-Y1-9][A-HJ-NPR-Z0-9]{7}$")) {
-            throw new InvalidInputException("VIN code has to be 17 characters long, cannot contain character I, O or Q and the 10th character cannot be U, Z or the digit 0");
+        if (chassisNumber != null) {
+            String VIN = chassisNumber.toUpperCase();
+            if (!VIN.matches("^[A-HJ-NPR-Z0-9]{9}[A-HJ-NPR-TV-Y1-9][A-HJ-NPR-Z0-9]{7}$")) {
+                throw new InvalidInputException("VIN code has to be 17 characters long, cannot contain character I, O or Q and the 10th character cannot be U, Z or the digit 0");
+            }
+            this.chassisNumber = VIN;
         }
-        this.chassisNumber = VIN;
     }
 
     public int getValue() {

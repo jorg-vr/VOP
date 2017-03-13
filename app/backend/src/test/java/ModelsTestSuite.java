@@ -1,5 +1,3 @@
-package model;
-
 import model.fleet.FleetTest;
 import model.fleet.VehicleTest;
 import model.fleet.VehicleTypeTest;

@@ -69,12 +69,22 @@ public class TestAccountDAO extends TestDAO<Account> implements AccountDAO {
     }
 
     @Override
+    public Account update(UUID id, String login, String hashedPassword, Person person) throws DataAccessException {
+        return null;
+    }
+
+    @Override
     public Filter<Account> bySecurity(String login, String password) {
         return null;
     }
 
     @Override
-    public Filter<Account> byIdentity(Identity identity) {
+    public Filter<Account> byPerson(Person identity) {
         return null;
+    }
+
+    @Override
+    public void remove(UUID id) throws DataAccessException {
+
     }
 }

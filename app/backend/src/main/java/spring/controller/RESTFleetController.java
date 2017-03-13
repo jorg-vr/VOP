@@ -1,0 +1,116 @@
+package spring.controller;
+
+import controller.CustomerController;
+import controller.FleetController;
+import dao.interfaces.DataAccessException;
+import dao.interfaces.Filter;
+import dao.interfaces.FleetDAO;
+import model.fleet.Fleet;
+import org.springframework.web.bind.annotation.*;
+import spring.Exceptions.InvalidInputException;
+import spring.Exceptions.NotFoundException;
+import spring.model.RESTFleet;
+import spring.model.RESTSchema;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.UUID;
+
+/**
+ * Created by jorg on 3/13/17.
+ */
+@RestController
+@RequestMapping("/fleets")
+public class RESTFleetController {
+
+    public static final String PATH_FLEETS = "/fleets";
+
+    private FleetController controller = new FleetController();
+    private CustomerController customerController = new CustomerController();
+
+
+    @RequestMapping(method = RequestMethod.GET)
+    private RESTSchema<RESTFleet> get(@RequestParam(required = false) String company,
+                                      @RequestParam(required = false) Integer page,
+                                      @RequestParam(required = false) Integer limit) {
+        FleetDAO fleetDAO = (FleetDAO) controller.getDao();
+        try {
+            String baseString = PATH_FLEETS + "?";
+            List<Filter<Fleet>> filters = new ArrayList<>();
+            if (company != null) {
+                baseString += "company=" + company + "&";
+                filters.add(fleetDAO.byOwner(customerController.get(UUIDUtil.toUUID(company))));
+            }
+            List<RESTFleet> fleets = new ArrayList<>();
+            for (Fleet fleet : controller.getAll(filters.toArray(new Filter[filters.size()]))) {
+                fleets.add(modelToRest(fleet));
+            }
+            fleets.sort((fleet1, fleet2) -> fleet1.getName().compareTo(fleet2.getName()));
+            if (limit != null) {
+                fleets = fleets.subList(page * limit, (page + 1) * limit);
+            }
+            return new RESTSchema<>(fleets, page, limit, baseString, (a, b) -> a.getId().compareTo(b.getId()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new InvalidInputException();
+        }
+
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    public RESTFleet post(@RequestBody RESTFleet restFleet) {
+        UUID companyUuid = UUIDUtil.toUUID(restFleet.getCompany());
+        try {
+            return modelToRest(controller.create(companyUuid, restFleet.getName()));
+        } catch (DataAccessException e) {
+            throw new InvalidInputException();
+            //TODO updateId when there are more exceptions
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "{id}")
+    public RESTFleet getId(@PathVariable("id") String id) {
+        UUID uuid = UUIDUtil.toUUID(id);
+        try {
+            return modelToRest(controller.get(uuid));
+
+        } catch (DataAccessException e) {
+            throw new NotFoundException();
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "{id}")
+    public RESTFleet updateId(@PathVariable("id") String id, @RequestBody RESTFleet restFleet) {
+        UUID uuid = UUIDUtil.toUUID(id);
+        UUID companyUuid = UUIDUtil.toUUID(restFleet.getCompany());
+        try {
+            return modelToRest(controller.update(uuid, companyUuid, restFleet.getName()));
+        } catch (DataAccessException e) {
+            throw new InvalidInputException();
+            //TODO updateId when there are more exceptions
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE, value = "{id}")
+    public void deleteId(@PathVariable("id") String id) {
+        UUID uuid = UUIDUtil.toUUID(id);
+        try {
+            controller.archive(uuid);
+        } catch (DataAccessException e) {
+            throw new NotFoundException();
+            //TODO updateId when there are more exceptions
+        }
+    }
+
+    private RESTFleet modelToRest(Fleet fleet) {
+        String id = UUIDUtil.UUIDToNumberString(fleet.getUuid());
+        return new RESTFleet(id,
+                UUIDUtil.UUIDToNumberString(fleet.getOwner().getUuid()),
+                fleet.getName(),
+                "",
+                "",
+                "",
+                PATH_FLEETS + "/" + id);
+    }
+}

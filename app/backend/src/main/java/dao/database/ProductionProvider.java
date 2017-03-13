@@ -2,6 +2,7 @@ package dao.database;
 
 import dao.interfaces.*;
 import model.fleet.Vehicle;
+import model.fleet.VehicleType;
 import model.identity.Company;
 import model.identity.Identity;
 import model.identity.Person;
@@ -15,7 +16,9 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
+import java.time.LocalDate;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created by sam on 3/8/17.
@@ -27,10 +30,10 @@ public class ProductionProvider implements DAOProvider {
     private SessionFactory sessionFactory;
 
 
-    private ProductionProvider(){
+    private ProductionProvider(String configLocation) {
 
         registry = new StandardServiceRegistryBuilder()
-                .configure("hibernate/hibernate.cfg.xml")
+                .configure(configLocation)
                 .build();
         // Create MetadataSources
         MetadataSources sources = new MetadataSources(registry);
@@ -41,74 +44,83 @@ public class ProductionProvider implements DAOProvider {
         // Create SessionFactory
         sessionFactory = metadata.getSessionFactoryBuilder().build();
 
-
-
     }
-    public static DAOProvider getInstance() {
-        if(provider==null){
-            provider = new ProductionProvider();
+
+    public synchronized static void initializeProvider(boolean production) {
+        if (production) {
+            provider = new ProductionProvider("hibernate/hibernatedeployment.cfg.xml");
+        } else {
+            provider = new ProductionProvider("hibernate/hibernate.cfg.xml");
+        }
+    }
+
+    public synchronized static DAOProvider getInstance() {
+        if (provider == null) {
         }
         return provider;
     }
 
     @Override
-    public AccountDAO getAccountDao() {
+    public synchronized AccountDAO getAccountDao() {
+        return new ProductionAccountDAO(sessionFactory);
+    }
+
+    @Override
+    public synchronized CompanyDAO<Company> getCompanyDAO() {
         return null;
     }
 
     @Override
-    public CompanyDAO<Company> getCompanyDAO() {
+    public synchronized CustomerDAO getCustomerDAO() {
+        return new ProductionCustomerDAO(sessionFactory);
+    }
+
+    @Override
+    public synchronized FleetDAO getFleetDAO() {
+        return new ProductionFleetDAO(sessionFactory);
+    }
+
+    @Override
+    public synchronized HistoryDAO<Vehicle> getVehicleHistoryDAO() {return null;}
+
+    @Override
+    public synchronized FunctionDAO getFunctionDAO() {
+        return new ProductionFunctionDAO(sessionFactory);
+    }
+
+    @Override
+    public synchronized HistoryDAO<Insurance> getInsuranceHistoryDAO() {
         return null;
     }
 
     @Override
-    public CustomerDAO getCustomerDAO() {
+    public synchronized IdentityDAO<Person> getIdentityDAO() {
         return null;
     }
 
     @Override
-    public FleetDAO getFleetDAO() {
+    public synchronized InsuranceDAO getInsuranceDAO() {
         return null;
     }
 
     @Override
-    public FunctionDAO getFunctionDAO() {
-        return null;
+    public synchronized PersonDAO getPersonDAO() {
+        return new ProductionPersonDAO(sessionFactory);
     }
 
     @Override
-    public HistoryDAO<Vehicle> getVehicleHistoryDAO() {
-        return null;
+    public synchronized VehicleDAO getVehicleDAO() {
+        return new ProductionVehicleDAO(sessionFactory);
     }
 
     @Override
-    public HistoryDAO<Insurance> getInsuranceHistoryDAO() {
-        return null;
+    public synchronized VehicleTypeDao getVehicleTypeDAO() {
+        return new ProductionVehicleTypeDAO(sessionFactory);
     }
 
     @Override
-    public IdentityDAO<Person> getIdentityDAO() {
-        return null;
-    }
-
-    @Override
-    public InsuranceDAO getInsuranceDAO() {
-        return null;
-    }
-
-    @Override
-    public PersonDAO getPersonDAO() {
-        return null;
-    }
-
-    @Override
-    public VehicleDAO getVehicleDAO() {
-        return null;
-    }
-
-    @Override
-    public VehicleTypeDao getVehicleTypeDAO() {
-        return null;
+    public AddressDAO getAddressDao() {
+        return new ProductionAddressDAO(sessionFactory);
     }
 
     @Override
@@ -118,8 +130,17 @@ public class ProductionProvider implements DAOProvider {
     }
 
     public static void main(String[] args) {
-        try(DAOProvider daoProvider = ProductionProvider.getInstance()){
+        ProductionProvider.initializeProvider(false);
+        try (DAOProvider daoProvider = ProductionProvider.getInstance()) {
 
+            AccountDAO accountDAO = daoProvider.getAccountDao();
+            PersonDAO personDAO = daoProvider.getPersonDAO();
+            Person sam =  personDAO.create("test","test","test");
+            accountDAO.create("test","hashed",sam);
+            accountDAO.create("test2","hashed",sam);
+            accountDAO.create("test3","hashed",sam);
+        } catch (DataAccessException e) {
+            e.printStackTrace();
         }
 
 

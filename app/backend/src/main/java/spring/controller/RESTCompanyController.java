@@ -13,6 +13,7 @@ import spring.Exceptions.InvalidInputException;
 import spring.Exceptions.NotFoundException;
 import spring.model.RESTAddress;
 import spring.model.RESTCompany;
+import spring.model.RESTSchema;
 import spring.model.RESTVehicle;
 
 import java.time.LocalDate;
@@ -28,35 +29,37 @@ import java.util.UUID;
 @RequestMapping("/companies")
 public class RESTCompanyController {
 
-    private CustomerController controller=new CustomerController();
-    /***
-     * Not yet implemented
-     * @return
-     */
-    @RequestMapping(method = RequestMethod.GET)
-    public Collection<RESTCompany> getAllCompanies(@RequestParam(required=false) String nameContains,
-                                                  @RequestParam(required=false) String country,
-                                                  @RequestParam(required=false) String city,
-                                                  @RequestParam(required=false) String postalCode) {
+    public static final String PATH_COMPANY = "/companies";
 
-        CustomerDAO customerDAO= (CustomerDAO) controller.getDao(); //TODO get rid of cast
-        List<Filter> filters=new ArrayList<>();
-        if (nameContains!=null){filters.add(customerDAO.byName(nameContains));}
-        filters.add(customerDAO.byAddress(new Address(null,null,city,postalCode,country)));
-        Collection<RESTCompany> result=new ArrayList<>();
+    private CustomerController controller = new CustomerController();
+
+    @RequestMapping(method = RequestMethod.GET)
+    public RESTSchema<RESTCompany> get(Integer page, Integer limit,
+                                       @RequestParam(required = false) String nameContains,
+                                       @RequestParam(required = false) String country,
+                                       @RequestParam(required = false) String city,
+                                       @RequestParam(required = false) String postalCode) {
+
+        CustomerDAO customerDAO = (CustomerDAO) controller.getDao(); //TODO getId rid of cast
+        List<Filter> filters = new ArrayList<>();
+        if (nameContains != null) {
+            filters.add(customerDAO.byName(nameContains));
+        }
+        filters.add(customerDAO.byAddress(new Address(null, null, city, postalCode, country)));
+        Collection<RESTCompany> result = new ArrayList<>();
         try {
-            for(Customer customer : controller.getAll( filters.toArray(new Filter[filters.size()]))){
+            for (Customer customer : controller.getAll(filters.toArray(new Filter[filters.size()]))) {
                 result.add(modelToRESTCompany(customer));
             }
 
         } catch (DataAccessException e) {
             //API doesn't contain error
         }
-        return result;
+        return new RESTSchema<>(result, page, limit, PATH_COMPANY, (a, b) -> a.getId().compareTo(b.getId()));
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public void postCompanies(@RequestBody RESTCompany restCompany) {
+    public void post(@RequestBody RESTCompany restCompany) {
         try {
             controller.create(RESTToModelAddress(restCompany.getAddress()),
                     restCompany.getPhoneNumber(),
@@ -67,21 +70,21 @@ public class RESTCompanyController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.GET , value = "{id}")
-    public RESTCompany getCompany(@PathVariable("id") String id) {
-
+    @RequestMapping(method = RequestMethod.GET, value = "{id}")
+    public RESTCompany getId(@PathVariable("id") String id) {
+        UUID uuid = UUIDUtil.toUUID(id);
         try {
-            return modelToRESTCompany(controller.get(UUID.fromString(id)));
-
+            return modelToRESTCompany(controller.get(uuid));
         } catch (DataAccessException e) {
             throw new NotFoundException();
         }
     }
 
-    @RequestMapping(method = RequestMethod.PUT , value = "{id}")
-    public void putCompany(@PathVariable("id") String id, @RequestBody RESTCompany restCompany) {
+    @RequestMapping(method = RequestMethod.PUT, value = "{id}")
+    public void putId(@PathVariable("id") String id, @RequestBody RESTCompany restCompany) {
+        UUID uuid = UUIDUtil.toUUID(id);
         try {
-            controller.update(UUID.fromString(id),
+            controller.update(uuid,
                     RESTToModelAddress(restCompany.getAddress()),
                     restCompany.getPhoneNumber(),
                     restCompany.getName(),
@@ -92,18 +95,19 @@ public class RESTCompanyController {
 
     }
 
-    @RequestMapping(method = RequestMethod.DELETE , value = "{id}")
-    public void deleteVehicle(@PathVariable("id") String id) {
-
+    @RequestMapping(method = RequestMethod.DELETE, value = "{id}")
+    public void deleteId(@PathVariable("id") String id) {
+        UUID uuid = UUIDUtil.toUUID(id);
         try {
-            controller.archive(UUID.fromString(id));
+            controller.archive(uuid);
         } catch (DataAccessException e) {
             throw new NotFoundException();
         }
     }
 
-    private RESTCompany modelToRESTCompany(Customer customer){
-        return new RESTCompany(customer.getUuid().toString(),
+    private RESTCompany modelToRESTCompany(Customer customer) {
+        String id = UUIDUtil.UUIDToNumberString(customer.getUuid());
+        return new RESTCompany(id,
                 customer.getName(),
                 customer.getBtwNumber(),
                 customer.getPhoneNumber(),
@@ -111,10 +115,10 @@ public class RESTCompanyController {
                 null,
                 null,
                 null,
-                "/companies/"+ customer.getUuid().toString());
+                PATH_COMPANY + "/" + id);
     }
 
-    private RESTAddress modelToRESTAddress(Address address){
+    private RESTAddress modelToRESTAddress(Address address) {
         return new RESTAddress(address.getCountry(),
                 address.getTown(),
                 address.getStreet(),
@@ -122,7 +126,7 @@ public class RESTCompanyController {
                 address.getPostalCode());
     }
 
-    private  Address RESTToModelAddress(RESTAddress restAddress){
+    private Address RESTToModelAddress(RESTAddress restAddress) {
         return new Address(restAddress.getStreet(),
                 restAddress.getHouseNumber(),
                 restAddress.getCity(),
