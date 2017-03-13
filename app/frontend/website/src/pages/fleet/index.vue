@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import infoPane from "../listComponent.vue"
+import infoPane from "../../assets/listComponent.vue"
 export default {
     components: {
         'info-pane' : infoPane
