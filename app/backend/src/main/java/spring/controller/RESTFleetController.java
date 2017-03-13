@@ -15,6 +15,7 @@ import spring.model.RESTSchema;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by jorg on 3/13/17.
@@ -30,9 +31,9 @@ public class RESTFleetController {
 
 
     @RequestMapping(method = RequestMethod.GET)
-    private RESTSchema<RESTFleet> getAllFleets(@RequestParam(required = false) String company,
-                                               @RequestParam(required = false) Integer page,
-                                               @RequestParam(required = false) Integer limit) {
+    private RESTSchema<RESTFleet> get(@RequestParam(required = false) String company,
+                                      @RequestParam(required = false) Integer page,
+                                      @RequestParam(required = false) Integer limit) {
         FleetDAO fleetDAO = (FleetDAO) controller.getDao();
         try {
             String baseString = PATH_FLEETS + "?";
@@ -51,60 +52,65 @@ public class RESTFleetController {
             }
             return new RESTSchema<>(fleets, page, limit, baseString, (a, b) -> a.getId().compareTo(b.getId()));
         } catch (Exception e) {
+            e.printStackTrace();
             throw new InvalidInputException();
         }
 
-    }
-
-
-    @RequestMapping(method = RequestMethod.GET, value = "{id}")
-    public RESTFleet getFleet(@PathVariable("id") String id) {
-        try {
-            return modelToRest(controller.get(UUIDUtil.toUUID(id)));
-
-        } catch (DataAccessException e) {
-            throw new NotFoundException();
-        }
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public RESTFleet createFleet(@RequestBody RESTFleet restFleet) {
+    public RESTFleet post(@RequestBody RESTFleet restFleet) {
+        UUID companyUuid = UUIDUtil.toUUID(restFleet.getCompany());
         try {
-            return modelToRest(controller.create(UUIDUtil.toUUID(restFleet.getCompany()), restFleet.getName()));
+            return modelToRest(controller.create(companyUuid, restFleet.getName()));
         } catch (DataAccessException e) {
             throw new InvalidInputException();
-            //TODO update when there are more exceptions
+            //TODO updateId when there are more exceptions
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "{id}")
+    public RESTFleet getId(@PathVariable("id") String id) {
+        UUID uuid = UUIDUtil.toUUID(id);
+        try {
+            return modelToRest(controller.get(uuid));
+
+        } catch (DataAccessException e) {
+            throw new NotFoundException();
         }
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "{id}")
-    public RESTFleet updateFleet(@PathVariable("id") String id, @RequestBody RESTFleet restFleet) {
+    public RESTFleet updateId(@PathVariable("id") String id, @RequestBody RESTFleet restFleet) {
+        UUID uuid = UUIDUtil.toUUID(id);
+        UUID companyUuid = UUIDUtil.toUUID(restFleet.getCompany());
         try {
-            return modelToRest(controller.update(UUIDUtil.toUUID(id), UUIDUtil.toUUID(restFleet.getCompany()), restFleet.getName()));
+            return modelToRest(controller.update(uuid, companyUuid, restFleet.getName()));
         } catch (DataAccessException e) {
             throw new InvalidInputException();
-            //TODO update when there are more exceptions
+            //TODO updateId when there are more exceptions
         }
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "{id}")
-    public void deleteFleet(@PathVariable("id") String id) {
+    public void deleteId(@PathVariable("id") String id) {
+        UUID uuid = UUIDUtil.toUUID(id);
         try {
-            controller.archive(UUIDUtil.toUUID(id));
-
+            controller.archive(uuid);
         } catch (DataAccessException e) {
             throw new NotFoundException();
-            //TODO update when there are more exceptions
+            //TODO updateId when there are more exceptions
         }
     }
 
     private RESTFleet modelToRest(Fleet fleet) {
-        return new RESTFleet(UUIDUtil.UUIDToNumberString(fleet.getUuid()),
+        String id = UUIDUtil.UUIDToNumberString(fleet.getUuid());
+        return new RESTFleet(id,
                 UUIDUtil.UUIDToNumberString(fleet.getOwner().getUuid()),
                 fleet.getName(),
                 "",
                 "",
                 "",
-                "/fleets/" + UUIDUtil.UUIDToNumberString(fleet.getUuid()));
+                PATH_FLEETS + "/" + id);
     }
 }

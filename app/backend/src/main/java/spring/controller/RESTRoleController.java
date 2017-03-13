@@ -19,7 +19,7 @@ import static spring.controller.UUIDUtil.UUIDToNumberString;
 @RequestMapping("/roles")
 public class RESTRoleController {
 
-    public static final String PATH_ROLE = "/role";
+    public static final String PATH_ROLE = "/roles";
 
     private FunctionController controller = new FunctionController();
 
@@ -90,15 +90,18 @@ public class RESTRoleController {
      * @return restroleobject with the fields of the function object
      */
     private RESTRole modelToRest(Function function) {
+        String id = UUIDToNumberString(function.getUuid());
+        String userId = UUIDToNumberString(function.getAccount().getUuid());
         RESTRole role = new RESTRole();
         role.setFunction(function.getRole().getName());
-        role.setId(UUIDToNumberString(function.getUuid()));
-        role.setUserId(UUIDToNumberString(function.getAccount().getUuid()));
+        role.setId(id);
+        role.setUserId(userId);
         role.setCompanyId("TODO");
         role.setStartDate(function.getStartDate());
         role.setEndDate(function.getEndDate());
         //role.setUpdatedAt(); TODO milestone?
         //role.setCreatedAt();
+        role.setUrl(PATH_ROLE + "/" + id);
         return role;
     }
 

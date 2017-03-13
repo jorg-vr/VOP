@@ -114,7 +114,7 @@ public class RESTUserController {
     }
 
     /**
-     * Attempts to update the user with the given id.
+     * Attempts to updateId the user with the given id.
      *
      * @param id   id of the user that should be updated
      * @param user fields that can be changed:
@@ -162,15 +162,16 @@ public class RESTUserController {
      * @return object that has been created from the values of person and account
      */
     private RESTUser merge(Person person, Account account) {
+        String id = UUIDUtil.UUIDToNumberString(account.getUuid());
         RESTUser user = new RESTUser();
-        user.setId(UUIDUtil.UUIDToNumberString(account.getUuid()));
+        user.setId(id);
         user.setPassword(account.getHashedPassword());
         //user.setUpdatedAt(LocalDateTime.now());
         //user.setCreatedAt(LocalDateTime.now());
         user.setFirstName(person.getFirstName());
         user.setLastName(person.getLastName());
         user.setEmail(person.getEmail());
-        user.setUrl("TODO"); // TODO
+        user.setUrl(PATH_USER + "/" + id);
         return user;
     }
 }
