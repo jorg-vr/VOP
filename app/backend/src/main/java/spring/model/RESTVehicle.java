@@ -11,32 +11,36 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class RESTVehicle {
     private String id;
     private String licensePlate;
-    private String chassisNumber;
+    private String vin; //chassisnumber
     private String brand;
     private String model;
     private String type;
-    private int kilometerCount;
+    private int mileage;
     private String year;
     private String leasingCompany; //id of leasing company
+    private String fleet;
     private String createdAt;
     private String updatedAt;
+    private String lastUpdatedBy;
     private String url;
 
     public RESTVehicle() {
     }
 
-    public RESTVehicle(String id, String licensePlate, String chassisNumber, String brand, String model, String type, int kilometerCount, String year, String leasingCompany, String createdAt, String updatedAt, String url) {
+    public RESTVehicle(String id, String licensePlate, String vin, String brand, String model, String type, int mileage, String year, String leasingCompany, String fleet, String createdAt, String updatedAt, String lastUpdatedBy, String url) {
         this.id = id;
         this.licensePlate = licensePlate;
-        this.chassisNumber = chassisNumber;
+        this.vin = vin;
         this.brand = brand;
         this.model = model;
         this.type = type;
-        this.kilometerCount = kilometerCount;
+        this.mileage = mileage;
         this.year = year;
         this.leasingCompany = leasingCompany;
+        this.fleet = fleet;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.lastUpdatedBy = lastUpdatedBy;
         this.url = url;
     }
 
@@ -56,12 +60,12 @@ public class RESTVehicle {
         this.licensePlate = licensePlate;
     }
 
-    public String getChassisNumber() {
-        return chassisNumber;
+    public String getVin() {
+        return vin;
     }
 
-    public void setChassisNumber(String chassisNumber) {
-        this.chassisNumber = chassisNumber;
+    public void setVin(String vin) {
+        this.vin = vin;
     }
 
     public String getBrand() {
@@ -88,12 +92,12 @@ public class RESTVehicle {
         this.type = type;
     }
 
-    public int getKilometerCount() {
-        return kilometerCount;
+    public int getMileage() {
+        return mileage;
     }
 
-    public void setKilometerCount(int kilometerCount) {
-        this.kilometerCount = kilometerCount;
+    public void setMileage(int mileage) {
+        this.mileage = mileage;
     }
 
     public String getYear() {
@@ -112,6 +116,14 @@ public class RESTVehicle {
         this.leasingCompany = leasingCompany;
     }
 
+    public String getFleet() {
+        return fleet;
+    }
+
+    public void setFleet(String fleet) {
+        this.fleet = fleet;
+    }
+
     public String getCreatedAt() {
         return createdAt;
     }
@@ -126,6 +138,14 @@ public class RESTVehicle {
 
     public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public String getLastUpdatedBy() {
+        return lastUpdatedBy;
+    }
+
+    public void setLastUpdatedBy(String lastUpdatedBy) {
+        this.lastUpdatedBy = lastUpdatedBy;
     }
 
     public String getUrl() {

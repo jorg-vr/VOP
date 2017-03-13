@@ -7,7 +7,6 @@ import dao.interfaces.Filter;
 import dao.interfaces.VehicleDAO;
 import model.fleet.Vehicle;
 import org.springframework.web.bind.annotation.*;
-import spring.Exceptions.AttributeException;
 import spring.Exceptions.InvalidInputException;
 import spring.Exceptions.NotFoundException;
 import spring.model.RESTVehicle;
@@ -38,10 +37,13 @@ public class RESTVehicleController {
      */
     @RequestMapping(method = RequestMethod.GET)
     public Collection<RESTVehicle> getAllVehicles(@RequestParam(required=false) String licensPlate,
-                                              @RequestParam(required=false) String chassisNumber,
-                                              @RequestParam(required=false) Integer leasingCompany,
-                                              @RequestParam(required=false) Integer year,
-                                              @RequestParam(required=false) Integer company) {
+                                                  @RequestParam(required=false) String chassisNumber,
+                                                  @RequestParam(required=false) String leasingCompany,
+                                                  @RequestParam(required=false) String year,
+                                                  @RequestParam(required=false) String company,
+                                                  @RequestParam(required=false) String type,
+                                                  @RequestParam(required=false) Integer page,
+                                                  @RequestParam(required=false) Integer limit) {
         VehicleDAO vehicleDAO= (VehicleDAO) controller.getDao();
         List<Filter<Vehicle>> filters=new ArrayList<>();
         if (licensPlate!=null){filters.add(vehicleDAO.byLicensePlate(licensPlate));}
@@ -76,8 +78,8 @@ public class RESTVehicleController {
                     vehicle.getModel(),
                     vehicle.getLicensePlate(),
                     year,
-                    vehicle.getChassisNumber(),
-                    vehicle.getKilometerCount(),
+                    vehicle.getVin(),
+                    vehicle.getMileage(),
                     vehicle.getType());
         } catch (DataAccessException e) {
             throw new InvalidInputException(e);
@@ -114,8 +116,8 @@ public class RESTVehicleController {
                     vehicle.getModel(),
                     vehicle.getLicensePlate(),
                     year,
-                    vehicle.getChassisNumber(),
-                    vehicle.getKilometerCount(),
+                    vehicle.getVin(),
+                    vehicle.getMileage(),
                     vehicle.getType());
         } catch (DataAccessException e) {
             e.printStackTrace();
@@ -145,19 +147,21 @@ public class RESTVehicleController {
      * @return
      */
      private RESTVehicle modelToRest(Vehicle vehicle){
-        return new RESTVehicle(vehicle.getUuid().toString(),
+        return new RESTVehicle(UUIDUtil.UUIDToNumberString(vehicle.getUuid()),
                 vehicle.getLicensePlate(),
                 vehicle.getChassisNumber(),
                 vehicle.getBrand(),
                 vehicle.getModel(),
-                vehicle.getType().getUuid().toString(),
+                UUIDUtil.UUIDToNumberString(vehicle.getType().getUuid()),
                 vehicle.getMileage(),
                 vehicle.getProductionDate().format(yearFormat),
+                UUIDUtil.UUIDToNumberString(vehicle.getLeasingCompany().getUuid()),
+                UUIDUtil.UUIDToNumberString(vehicle.getLeasingCompany().getUuid()),
                 null,//TODO search leasing company
                 null,//TODO implement edit dates with history
                 null,
                 "/vehicles/"+vehicle.getUuid().toString()
         );
     }
-
-}
+    String id, String licensePlate, String vin, String brand, String model, String type, int mileage, String year, String leasingCompany, String fleet, String createdAt, String updatedAt, String lastUpdatedBy, String url) {
+        this.id = id;}
