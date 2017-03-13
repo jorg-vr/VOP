@@ -3,7 +3,7 @@
         <div class="page-header">
             <h1>Vloot {{this.$route.params.id}}</h1>
         </div>
-        <router-link :to="{name: 'new_subfleet'}"><button type="button" class="btn btn-primary table-button">Niew subvloot</button></router-link>
+        <router-link :to="{name: 'new_vehicle'}"><button type="button" class="btn btn-primary table-button">Niew voertuig</button></router-link>
         <button type="button" class="btn btn-primary table-button" v-on:click="removeFleet">Verwijder vloot</button>
         <div class="row">
             <div class="col-md-8">
@@ -11,8 +11,6 @@
                     <h2>{{subfleet.type | capitalize }}</h2>
                     <table class="table">
                         <subfleet-row v-for="vehicle in subfleet.vehicles" :vehicle="vehicle" :key="vehicle.id"></subfleet-row>
-                        <router-link :to="{name: 'new_vehicle'}"><button type="button" class="btn btn-primary table-button">Niew voertuig</button></router-link>
-                        <button type="button" class="btn btn-primary table-button" v-on:click="removeSubfleet">Verwijder subvloot</button>
                     </table>
                 </div>
             </div>
@@ -42,8 +40,8 @@
                 methods: {
                     removeVehicle (vehicleID){
                         alert('Not yet implemented');
-                        this.$http.delete('https://vopro5.ugent.be/app/api/vehicle/' + vehicleID).then(response => {
-                            //Verwerk response
+                        this.$http.delete('https://vopro5.ugent.be/app/api/vehicles/' + vehicleID).then(response => {
+                            //Process response
                         });
                     }
                 }
@@ -73,9 +71,6 @@
                 this.$http.get('TODO').then(response => {
                     this.subfleets = response.body
                 })
-            },
-            removeSubfleet(){
-                alert('Not yet implemented');
             },
             removeFleet(){
                 alert('Not yet implemented');
