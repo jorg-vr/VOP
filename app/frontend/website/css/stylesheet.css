@@ -63,12 +63,19 @@ h1 {
     color: rgba(255,255,255,0.5);
 }
 
+
 #page-content-wrapper {
 
-    padding-right: 15px;
+    padding-right: 50px;
     padding-left: 15px;
     padding-bottom: 15px;
-    margin-left: 250px;
+    margin-left: 230px;
+}
+
+@media (min-width: 880px) {
+    #page-content-wrapper {
+        width: 650px;
+    }
 }
 
 .table {
