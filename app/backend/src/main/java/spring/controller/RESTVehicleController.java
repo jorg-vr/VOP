@@ -168,7 +168,7 @@ public class RESTVehicleController {
     public void deleteId(@PathVariable("id") String id) {
 
         try {
-            controller.archive(UUID.fromString(id));
+            controller.archive(UUIDUtil.toUUID(id));
         } catch (DataAccessException e) {
             throw new NotFoundException();
             //TODO updateId when there are more exceptions
