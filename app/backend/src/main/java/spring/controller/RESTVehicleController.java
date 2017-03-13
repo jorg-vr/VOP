@@ -49,7 +49,7 @@ public class RESTVehicleController {
         if (licensPlate!=null){filters.add(vehicleDAO.byLicensePlate(licensPlate));}
         if (chassisNumber!=null)//TODO after issue #87
         if (leasingCompany!=null)//TODO after issue #88
-        if (year!=null){filters.add(vehicleDAO.atProductionDate(LocalDate.ofYearDay(year,0)));}
+        if (year!=null){filters.add(vehicleDAO.atProductionDate(LocalDate.parse(year+"0101", yearFormat)));}
         if (company!=null)//TODO after issue #88
         if (licensPlate!=null){filters.add(vehicleDAO.byLicensePlate(licensPlate));}
 
