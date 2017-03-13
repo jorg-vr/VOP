@@ -130,6 +130,7 @@ public class ProductionProvider implements DAOProvider {
     }
 
     public static void main(String[] args) {
+        ProductionProvider.initializeProvider(false);
         try (DAOProvider daoProvider = ProductionProvider.getInstance()) {
 
             AccountDAO accountDAO = daoProvider.getAccountDao();

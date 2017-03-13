@@ -8,8 +8,8 @@
         <meta attribute="class-description">
             This class contains the address detail.
         </meta>
-        <id name="uuid" type="binary" column="id">
-            <generator class="uuid"/>
+        <id name="uuid" type="uuid-binary" column="id">
+            <generator class="uuid2"/>
         </id>
 
         <property name="country" column="country" type="string"/>
