@@ -11,21 +11,23 @@ import java.util.UUID;
 public class Fleet implements EditableObject, java.io.Serializable {
 
     private UUID uuid;
+    private String name;
     private Customer owner;
     private Collection<Vehicle> vehicles;
 
     public Fleet() {
     }
 
-    public Fleet(UUID uuid, Customer owner, Collection<Vehicle> vehicles) {
-        this(uuid,owner);
+    public Fleet(UUID uuid, Customer owner,String name, Collection<Vehicle> vehicles) {
+        this(uuid,owner,name);
         this.vehicles = vehicles;
     }
 
 
-    public Fleet(UUID uuid, Customer owner) {
+    public Fleet(UUID uuid, Customer owner,String name) {
         this.uuid = uuid;
         this.owner = owner;
+        this.name=name;
         this.vehicles = new HashSet<Vehicle>();
     }
 
@@ -110,7 +112,7 @@ public class Fleet implements EditableObject, java.io.Serializable {
         for (Vehicle v : vehicles) {
             newList.add((Vehicle) v.copy());
         }
-        return new Fleet(uuid, owner, newList);
+        return new Fleet(uuid, owner,name, newList);
     }
 
     @Override
