@@ -39,14 +39,26 @@
     			return {name:this.field1,vatNumber:this.field9,phoneNumber:this.field8,address:{country:this.field3,city:this.field5,street:this.field3,houseNumber:this.field4,postalCode:this.field6}}
     		},
     		proceed : function (){
+
+    			var dest=''
+
+    			if(this.$route.path == '/users/new'){
+    				console.log('Go to proceed Add')
+    				dest='proceedAdd'
+    			}
+    			else if(this.$route.path == '/users/:id/edit'){
+    				console.log('Go to edit Add')
+    				dest='proceedEdit'
+    			}
+
     			console.log('Child (Form) fired proceed method')
    				if(this.type=="Gebruiker"){
    					var User = this.createUserObject()
-    				this.$bus.$emit('proceed',User)
+    				this.$bus.$emit(dest,User)
     			}
     			else if(this.type=="Klant"){
     				var Company = this.createCompanyObject()
-    				this.$bus.$emit('proceed',Company)
+    				this.$bus.$emit(dest,Company)
     			}
     		},
     		cancel : function (){
