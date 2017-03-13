@@ -72,12 +72,12 @@
         methods:{
                 // Methods for routing purposes 
                 add: function () {
-                        this.$router.push({ path: 'identities/new', query: { type: this.$route.query.type  }})
+                        this.$router.push({ path: 'users/new', query: { type: this.$route.query.type  }})
                 },
                 edit : function (id){
                     alert( ' Edit ' + id)
                     // API CALL DIE GEGEVENS OPVRAAGT van user en springt naar edit page.
-                    this.$router.push({ path: '/identities/:id/edit', query: { type: this.$route.query.type, id: id }})
+                    this.$router.push({ path: '/users/:id/edit', query: { type: this.$route.query.type, id: id }})
                 },
                 remove : function (id){
                      confirm("Wil u doorgaan met het verwijderen?")
