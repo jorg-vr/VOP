@@ -5,6 +5,7 @@ import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
 import dao.interfaces.VehicleDAO;
 import dao.test.TestVehicleDAO;
+import main.BackendApplication;
 import model.fleet.Fleet;
 import model.fleet.Vehicle;
 import model.fleet.VehicleType;
@@ -23,13 +24,9 @@ import java.util.UUID;
  */
 public class VehicleController extends AbstractController<Vehicle>{
 
-
     public VehicleController() {
-        super(new TestVehicleDAO()); // TODO ProductionProvider.getInstance().getVehicleDAO();
+        super(BackendApplication.PROVIDER.getVehicleDAO());
     }
-
-
-
 
     /***
      *

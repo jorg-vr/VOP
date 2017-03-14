@@ -6,6 +6,7 @@ import dao.interfaces.CustomerDAO;
 import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
 import dao.test.TestCustomerDAO;
+import main.BackendApplication;
 import model.fleet.Fleet;
 import model.identity.Address;
 import model.identity.Customer;
@@ -20,7 +21,7 @@ import java.util.UUID;
 public class CustomerController extends AbstractController<Customer>{
 
     public CustomerController() {
-        super(new TestCustomerDAO());
+        super(BackendApplication.PROVIDER.getCustomerDAO());
     }
 
     public Customer create(Address address, String phoneNumber, String name, String btwNumber) throws DataAccessException {
