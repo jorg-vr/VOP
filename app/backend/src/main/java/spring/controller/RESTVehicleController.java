@@ -83,7 +83,7 @@ public class RESTVehicleController {
             throw new InvalidInputException("Some parameters where invalid");
         }
 
-        return new RESTSchema<>(result, page, limit, baseString, (a, b) -> a.getId().compareTo(b.getId()));
+        return new RESTSchema<>(result, page, limit, baseString);
     }
 
     /***

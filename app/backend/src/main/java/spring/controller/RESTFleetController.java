@@ -50,7 +50,7 @@ public class RESTFleetController {
             if (limit != null) {
                 fleets = fleets.subList(page * limit, (page + 1) * limit);
             }
-            return new RESTSchema<>(fleets, page, limit, baseString, (a, b) -> a.getId().compareTo(b.getId()));
+            return new RESTSchema<>(fleets, page, limit, baseString);
         } catch (Exception e) {
             e.printStackTrace();
             throw new InvalidInputException();
