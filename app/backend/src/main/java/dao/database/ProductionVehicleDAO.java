@@ -3,6 +3,7 @@ package dao.database;
 import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
 import dao.interfaces.VehicleDAO;
+import model.fleet.Fleet;
 import model.fleet.Vehicle;
 import model.fleet.VehicleType;
 import org.hibernate.Session;
@@ -167,6 +168,12 @@ public class ProductionVehicleDAO implements VehicleDAO {
     public Filter<Vehicle> byType(VehicleType type) {
         return () ->
             predicates.add(criteriaBuilder.equal(root.get("type"), type));
+    }
+
+    @Override
+    public Filter<Vehicle> byFleet(Fleet fleet) {
+        return () ->
+                predicates.add(criteriaBuilder.equal(root.get("fleet"), fleet));
     }
 
 

@@ -60,9 +60,15 @@ public class RESTSchema<T> {
         // TODO sort
         Collections.sort(list, (a, b) -> a.hashCode() - b.hashCode());
         int start = page * limit;
-        int end = Math.min(start + limit, this.total);
+        int end = min(start + limit, this.total);
 
-        if (start < 0 || start >= list.size() || page < 0 || limit <= 0) {
+        // Deals with empty collections
+        int listSize = list.size();
+        if (listSize == 0) {
+            listSize += 1;
+        }
+
+        if (start < 0 || start >= listSize || page < 0 || limit <= 0) {
             throw new InvalidInputException();
         }
 
@@ -72,7 +78,7 @@ public class RESTSchema<T> {
         this.offset = page * limit;
 
         this.first = makeLink(baseString, 0, limit);
-        int lastPage = ((list.size() - 1) / limit);
+        int lastPage = ((listSize - 1) / limit);
         this.last = makeLink(baseString, lastPage, limit);
 
         if (page > 0) {

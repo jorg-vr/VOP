@@ -183,11 +183,11 @@ public class ProductionVehicleDAOFiltersTest {
         Collection<Vehicle> c1 = vehicleDAO.listFiltered(f1);
         Collection<Vehicle> c2 = vehicleDAO.listFiltered(f2);
         Collection<Vehicle> c3 = vehicleDAO.listFiltered(f3);
-
+        Collection<Vehicle> c4 = vehicleDAO.listFiltered(new Filter[]{});
         assertTrue("Applying multiple filters simultaneously doesn't work correctly", c1.contains(v1) && c1.contains(v5));
         assertTrue("Applying multiple filters simultaneously doesn't work correctly", c2.contains(v2));
         assertTrue("Applying multiple filters simultaneously doesn't work correctly", c3.contains(v3));
-
+        assertTrue("Empty filter",c4.contains(v1) && c4.contains(v2) && c4.contains(v3) && c4.contains(v4) && c4.contains(v5) && c4.contains(v6));
         vehicleDAO.remove(v4.getUuid());
         vehicleDAO.remove(v5.getUuid());
         vehicleDAO.remove(v6.getUuid());
