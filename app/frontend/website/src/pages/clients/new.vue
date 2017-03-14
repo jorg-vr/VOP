@@ -4,9 +4,7 @@
          <h1> Klant aanmaken </h1>
      </div>  
      <form-temp :at=this.data :type=this.type></form-temp>
-
  </div>
-
 </template>
 <script>
     import FormTemp from './clientform.vue'
@@ -27,15 +25,9 @@
                 console.log('proceedAddClient called')
 
                 console.log('https://vopro5.ugent.be/app/api/companies/'+input)
-                this.$http.post('https://vopro5.ugent.be/app/api/companies', input, {
+                // this.$http.post('https://vopro5.ugent.be/app/api/companies', input, {
 
-                })
-                     // Make ajax request to server to create a User object
-                    //this.$http.post('https://vopro5.ugent.be/app/api/users').then(response => {
-                    //        this.clients = response.body
-                    //})
-                    vm.$router.go(-1)
-
+                // })
                 });}
         }  
     </script>
