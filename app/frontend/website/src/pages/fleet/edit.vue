@@ -27,17 +27,26 @@
         methods: {
             //API call to fetch the fleet of this page.
             fetchFleet(){
-                //TODO
+                this.$http.get('https://vopro5.ugent.be/app/api/fleets/' + this.$route.params.id).then(response => {
+                    this.vehicle = response.body;
+                })
             },
             //API call to update the fleet with the new values.
-            updateFleet(userEmail, fleetName){
-                alert('Not yet implemented')
+            updateFleet(fleet){
                 //TODO
-                /*
-                 this.$http.get('https://vopro5.ugent.be/app/api/users?email=' + this.email).then(response => {
-                 //Check if the user is actually a client
-                 //Get ID from query and create new fleet with as parameter the client ID
-                 });*/
+                this.$http.put('https://vopro5.ugent.be/app/api/vehicles', fleet,
+                    {
+                        headers: {
+                            Accept: "application/json",
+                        }
+                    }
+                ).then(response => { //Success
+                        //this.fleet = response.body;
+                        console.log(response.body);
+                    }, response => { //Fail
+                        console.log(response.text())
+                    }
+                )
             }
         }
     }

@@ -45,16 +45,27 @@
             //API call to fetch the fleets from the database.
             fetchFleetList (){
                 this.$http.get('https://vopro5.ugent.be/app/api/fleets').then(response => {
-                    this.fleets = response.body;
+                    const data = response.body.data;
+                    for(let i=0; i<data.length; i++){
+                        this.fleets.push(data[i]);
+                    }
                 })
             },
             //API call to delete a fleet.
             deleteFleet(fleetId){
-                console.log(fleetId)
+                this.$http.delete('https://vopro5.ugent.be/app/api/fleets' + fleetId)
             },
             //API call to create a fleet.
-            createFleet(){
-                //TODO
+            createFleet(fleet){
+                this.$http.post('https://vopro5.ugent.be/app/api/fleets', fleet,
+                    {
+                        headers: {
+                            Accept: "application/json",
+                        }
+                    }
+                ).then(response => {
+                    console.log(response.body);
+                })
             }
         }
     }

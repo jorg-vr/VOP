@@ -44,6 +44,7 @@
             },
             //API call to update this vehicle.
             updateVehicle(vehicle){
+                //TODO: Cfr. new but POST => PUT
                 alert('Not working yet: edit vehicle')
                 this.$http.put('https://vopro5.ugent.be/app/api/vehicles' + '{' + this.getQuery(vehicle) + '}').then(response => {
                     this.vehicle = response.body;

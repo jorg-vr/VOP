@@ -12,25 +12,25 @@
     export default {
         data: function(){
             return {
-                vehicle: {
-                    licensePlate: '',
-                    chassisNumber: '',
-                    brand: '',
-                    model: '',
-                    type: '',
-                    mileage: '',
-                    year: '',
-                    leasingCompany: '',
-                    /* TEST VEHICLE
+                vehicle: {/*
+                 licensePlate: '',
+                 chassisNumber: '',
+                 brand: '',
+                 model: '',
+                 type: '',
+                 mileage: '',
+                 year: '',
+                 leasingCompany: '',
+                 TEST VEHICLE*/
                     licensePlate: "JAR-096",
                     chassisNumber: "jarreknock",
                     brand: "Volvo",
                     model: "s60 Polestar",
-                    type: "3a252d5b-50325-bd8-b680-7aa810817924",
+                    type: "",
                     mileage: 777,
                     year: "2015",
                     leasingCompany: 'bedrijf A',
-                    */
+
                 }
             }
         },
@@ -40,13 +40,31 @@
         methods: {
             //API call to create the given vehicle.
             createVehicle(vehicle){
-                alert('Not working yet: new vehicle')
-                /*
-                this.$http.post('https://vopro5.ugent.be/app/api/vehicles' + '{' + vehicle + '}').then(response => {
-                    this.vehicle = response.body;
-                    this.$router.push({name: 'vehicle', params: { id: this.vehicle.id }});
-                })
-                */
+                //TODO
+                this.$http.post('https://vopro5.ugent.be/app/api/vehicles', vehicle,
+                    /*{
+
+                        licensePlate: "JAR-096",
+                        vin:"BA95D42KLN21SAZ98",
+                        brand: "Volvo",
+                        type: "135562075880719110964268135792105407200",
+                        model: "s60",
+                        mileage: 777,
+                        year: "2015"
+                    },*/
+                    {
+                        headers: {
+                            Accept: "application/json",
+                        }
+                    }
+                ).then(response => { //Success
+                    //this.vehicle = response.body;
+                    console.log(response.body);
+                    //this.$router.push({name: 'vehicle', params: { id: this.vehicle.id }});
+                }, response => { //Fail
+                        console.log(response.text())
+                    }
+                )
             }
         }
     }

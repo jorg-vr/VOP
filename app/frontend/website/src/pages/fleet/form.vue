@@ -7,19 +7,21 @@
         <div class="row">
             <div class="form-group">
                 <input type="text" class="form-control input-sm"
-                       placeholder="E-mail klant" v-model="newEmail">
+                       placeholder="Naam vloot" v-model="fleet.name">
             </div>
         </div>
-        <div class="row">
-            <div class="form-group">
-                <input type="text" class="form-control input-sm"
-                       placeholder="Naam vloot" v-model="newFleetName">
+        <div class="form-group">
+            <label class="col-sm-4 control-label">Leasing bedrijf</label>
+            <div class="col-sm-8">
+                <select class="form-control" v-model="fleet.company">
+                    <option v-for="company in companies" v-bind:value="company.id">{{company.name}}</option>
+                </select>
             </div>
         </div>
         <div class="row">
             <div>
                 <div id="buttons">
-                    <button class="btn btn-success btn-md" v-on:click="submit(newEmail, newFleetName)">
+                    <button class="btn btn-success btn-md" v-on:click="submit(fleet)">
                         <i class="fa fa-check" aria-hidden="true"></i>
                     </button>
                     <router-link :to="{name: 'fleets'}">
@@ -39,8 +41,10 @@
         data() {
             //The values for the fleet.
             return {
-                newEmail: '',
-                newFleetName: ''
+                fleet: {
+                    name: '',
+                    company: ''
+                }
             }
         },
         created(){

@@ -1,0 +1,55 @@
+Structure of website:
+Less important files are left out. 
+|
+|   .babelrc 								| Babel API options 
+|   .gitignore								| Ignored git files
+|   index.html								| Root of website
+|   package.json							| Properties and dependencies of the project
+|   README.md								| Explanation on how to run the project  
+|   webpack.config.js						| Configuration options for webpack
+|   
++---css										| Directory with CSS files
+|     
++---fonts									| Directory with custom fonts 
+|       
++---js
+|       
+\---src										| Directory with all of the code for the website 
+    |   app.vue								| The top-level component
+    |   main.js								| Script which loads Vue and mounts the app
+    |   
+    +---assets								| Directory with assets which can be used in the page components
+    |       fleetSearchBar.vue				| Searchbar usable for searching fleets - Currently not working
+    |       listComponent.vue				| Component for showing an object in a list 
+    |       navBar.vue						| Navigation bar for navigating trough the website 
+    |       searchBar.vue					| Component for searching a objects in a list of objects 
+    |       
+    +---config								| All configuration files used in the source folter
+    |       routes.js						| This file contains all the routes 
+    |       
+    +---docs								| Contains additional documentation of the frontend project
+    +---lang								| Directory with files concerning translations
+    |       locales.js						| Contains a list of strings with translations 
+    |       
+    \---pages								| Directory with all components representing a page
+        +---fleet							| Directory with the CRUD pages for a fleet 
+        |       edit.vue				
+        |       form.vue
+        |       index.vue
+        |       new.vue
+        |       show.vue
+        |       
+        +---identity						| Directory with the CRUD pages for an identity
+        |       Edit.vue
+        |       Form.vue
+        |       Index.vue
+        |       New.vue
+        |       Remove.vue
+        |       Show.vue
+        |       
+        \---vehicle							| Directory with the CRUD pages for a vehicle 
+                edit.vue					 
+                form.vue
+                new.vue
+                show.vue
+                

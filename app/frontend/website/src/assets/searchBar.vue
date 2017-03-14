@@ -1,3 +1,8 @@
+<!--
+    Component to search objects by their keys.
+
+    This does not function properly yet!
+-->
 <template>
     <div class="row">
         <div class="col-md-4">

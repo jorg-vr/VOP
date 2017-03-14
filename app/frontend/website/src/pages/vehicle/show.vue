@@ -23,7 +23,7 @@
                 </tr>
                 <tr>
                     <td>Type</td>
-                    <td>{{vehicle.type}}</td>
+                    <td>{{fetchVehicleType(vehicle.type)}}</td>
                 </tr>
                 <tr>
                     <td>Kilometer count</td>
@@ -63,14 +63,19 @@
             }
         },
         created() {
-            //this.vehicle = fetchVehicle()
+            this.fetchVehicle()
         },
         methods: {
             //API call to fetch the vehicle of this page.
             fetchVehicle: function(){
-                this.$http.get('/vehicles/' + $route.params.id).then(response => {
-                    //TODO
-                    this.vehicle = response
+                this.$http.get('https://vopro5.ugent.be/app/api/vehicles/' + this.$route.params.id).then(response => {
+                    this.vehicle = response.body;
+                })
+            },
+            fetchVehicleType: function(vehicleTypeId){
+                //TODO
+                this.$http.get('https://vopro5.ugent.be/app/api/vehicles/' + vehicleTypeId).then(response => {
+                    return response.body.name;
                 })
             }
         }

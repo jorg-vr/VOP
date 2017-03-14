@@ -20,14 +20,22 @@
         },
         methods: {
             //API call to create a new fleet.
-            createFleet(userEmail, fleetName){
-                alert('Not yet implemented')
-                //TODO
-                /*
-                 this.$http.get('https://vopro5.ugent.be/app/api/users?email=' + this.email).then(response => {
-                 //Check if the user is actually a client
-                 //Get ID from query and create new fleet with as parameter the client ID
-                 });*/
+            createFleet(fleetName, companyId){
+                this.$http.post('https://vopro5.ugent.be/app/api/fleets', fleet,
+                    {
+                        headers: {
+                            Accept: "application/json",
+                        }
+                    }
+                ).then(response => { //Success
+                        //this.fleet = response.body;
+                        console.log('success')
+                        console.log(response.body);
+                    }, response => { //Fail
+                        console.log('fail')
+                        console.log(response.body)
+                    }
+                )
             }
         }
     }

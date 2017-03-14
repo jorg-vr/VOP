@@ -1,3 +1,12 @@
+<!--
+    Component used for showing an object in a list.
+    This component requires the following properties to function correctly:
+    - textValues: An array with the values of the object to be shown.
+    - objectId: The identifier of the object.
+    - show: The name of the link to the show page of this object.
+    - edit: The name of the link to the edit page of this object.
+    - remove: A function which removes this object.
+-->
 <template>
     <div class="row">
         <router-link :to="{name: this.show, params: {id: this.objectId}}">

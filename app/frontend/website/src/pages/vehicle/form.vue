@@ -3,7 +3,7 @@
     The form accepts the old vehicle and an update or create function.
 -->
 <template>
-    <form class="form-horizontal col-md-6">
+    <form class="form-horizontal">
         <div class="form-group">
             <label class="col-sm-4 control-label">Nummerplaat</label>
             <div class="col-sm-8">
@@ -31,7 +31,9 @@
         <div class="form-group">
             <label class="col-sm-4 control-label">Type</label>
             <div class="col-sm-8">
-                <input type="text" class="form-control" placeholder="Type"v-model="vehicle.type">
+                <select class="form-control" v-model="vehicle.type">
+                    <option v-for="vehicleType in vehicleTypes" v-bind:value="vehicleType.id">{{vehicleType.name}}</option>
+                </select>
             </div>
         </div>
         <div class="form-group">
@@ -49,16 +51,43 @@
         <div class="form-group">
             <label class="col-sm-4 control-label">Leasing bedrijf</label>
             <div class="col-sm-8">
-                <input type="text" class="form-control" placeholder="Leasing bedrijf" v-model="vehicle.leasingCompany">
+                <select class="form-control" v-model="vehicle.company">
+                    <option v-for="company in companies" v-bind:value="company.id">{{company.name}}</option>
+                </select>
             </div>
         </div>
-        <button type="button" class="btn btn-default float-left" v-on:click="submit">Voeg toe</button>
+        <button type="button" class="btn btn-default float-left" v-on:click="submit(vehicle)">Voeg toe</button>
     </form>
 </template>
 <script>
     export default {
         data() {
-            return {}
+            return {
+                vehicleTypes: [],
+                companies: []
+            }
+        },
+        created() {
+            this.fetchVehicleTypes();
+            this.fetchCompanies();
+        },
+        methods: {
+            fetchVehicleTypes(){
+                this.$http.get('https://vopro5.ugent.be/app/api/vehicleTypes').then(response => {
+                    const data = response.body.data;
+                    for(let i=0; i<data.length; i++){
+                        this.vehicleTypes.push(data[i]);
+                    }
+                })
+            },
+            fetchCompanies(){
+                this.$http.get('https://vopro5.ugent.be/app/api/companies').then(response => {
+                    const data = response.body.data;
+                    for(let i=0; i<data.length; i++){
+                        this.companies.push(data[i]);
+                    }
+                })
+            }
         },
         props: {
             vehicle: Object, //Vehicle which should be created/updated with this form.
