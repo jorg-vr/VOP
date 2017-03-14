@@ -143,7 +143,7 @@ public class ProductionVehicleDAOFiltersTest {
         Collection<Vehicle> c1 = vehicleDAO.listFiltered(f1);
         Collection<Vehicle> c2 = vehicleDAO.listFiltered(f2);
 
-        assertTrue("maxMileage filter werkt niet", c1.contains(v1) & (c1.size() == 1));
+        assertTrue("maxMileage filter werkt niet", c1.contains(v1));
         assertTrue("maxMileage filter werkt niet", c2.contains(v1) && c2.contains(v2) && c2.contains(v3));
     }
 
