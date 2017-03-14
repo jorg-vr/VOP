@@ -1,17 +1,17 @@
 <template>
     <div class="row">
-        <router-link :to="{name: this.show, params: {id: this.object.id}}">
+        <router-link :to="{name: this.show, params: {id: objectId}}">
             <div class="panel panel-default col-sm-10">
                 <div class="panel-body">
                     <table>
                         <tr>
-                            <td v-for="value in getValues()">{{value}}</td>
+                            <td v-for="text in textValues">{{text}}</td>
                         </tr>
                     </table>
                 </div>
             </div>
         </router-link>
-        <router-link :to="{name: this.edit, params: {id: this.object.id}}">
+        <router-link :to="{name: this.edit, params: {id: objectId}}">
             <button type="button" class="btn btn-md btn-info">
                 <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
             </button>
@@ -26,22 +26,11 @@
 
 export default {
     props: {
-        keys: Array, //Array of properties which have to be shown of the given object.
+        textValues: Array, //Array with text to show
+        objectId: Number,
         show: String, //Name of link to show page of the given object.
         edit: String, //Name of link to edit page of the given object.
         remove: Function, //Function to remove the given object.
-        object: Object //the element to be shown in the list.
-    },
-    methods: {
-        getValues(){
-            let values = [];
-            for(let i=0; i<this.keys.length; i++){
-                if(this.object.hasOwnProperty(this.keys[0])){
-                    values.push(this.object[this.keys[i]]);
-                }
-            }
-            return values;
-        }
     }
 }
 
