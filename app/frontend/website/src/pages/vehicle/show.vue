@@ -46,20 +46,7 @@
     export default {
         data: function(){
             return {
-                vehicle: { //Dummy vehicle
-                    id: "cc5c7659-e3e9-4935-8eaf-19959d78d868",
-                    licensePlate: "IAM-007",
-                    chassisNumber: "abcdefhijk",
-                    brand: "Lamborghini",
-                    model: "Diablo GT",
-                    type: "1f081c6c-4009-4ae4-a680-7aa810817924",
-                    kilometerCount: 123,
-                    year: "20170312",
-                    leasingCompany: null,
-                    createdAt: null,
-                    updatedAt: null,
-                    url: "/vehicles/cc5c7659-e3e9-4935-8eaf-19959d78d868"
-                },
+                vehicle: {},
                 vehicleType: ''
             }
         },

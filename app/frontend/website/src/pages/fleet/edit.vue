@@ -44,7 +44,7 @@
                         //this.fleet = response.body;
                         console.log(response.body);
                     }, response => { //Fail
-                        console.log(response.text())
+                        console.log(response.body)
                     }
                 )
             }
