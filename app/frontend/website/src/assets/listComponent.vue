@@ -1,6 +1,6 @@
 <template>
     <div class="row">
-        <router-link :to="{name: show, params: {id: objectId}}">
+        <router-link :to="{name: this.show, params: {id: this.objectId}}">
             <div class="panel panel-default col-sm-10">
                 <div class="panel-body">
                     <table>

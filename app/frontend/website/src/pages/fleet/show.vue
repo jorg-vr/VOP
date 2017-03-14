@@ -3,7 +3,9 @@
         <div class="page-header">
             <h1>Vloot {{this.$route.params.id}}</h1>
         </div>
-        <router-link :to="{name: 'new_vehicle'}"><button type="button" class="btn btn-primary table-button">Niew voertuig</button></router-link>
+        <router-link :to="{name: 'new_vehicle'}">
+            <button type="button" class="btn btn-primary table-button">Niew voertuig</button>
+        </router-link>
         <button type="button" class="btn btn-primary table-button" v-on:click="removeFleet">Verwijder vloot</button>
         <div class="row">
             <div>

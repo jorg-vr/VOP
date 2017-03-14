@@ -24,21 +24,21 @@ export default [
             //Identity
             { path: 'identities', name: 'identities', component: IndexIdentity },
             { path: 'identities/new', component: NewIdentity },
-            { path: 'identities/(\d)+', component: ShowIdentity },
-            { path: 'identities/(\d)+/edit', component: EditIdentity },
-            { path: 'identities/(\d)+/remove', component: RemoveIdentity },
+            { path: 'identities/:id', component: ShowIdentity },
+            { path: 'identities/:id/edit', component: EditIdentity },
+            { path: 'identities/:id/remove', component: RemoveIdentity },
 
             //Fleet
             { path: 'fleets', name: 'fleets', component: IndexFleet },
-            { path: 'fleets/(\d)+', name: 'fleet', component: ShowFleet },
+            { path: 'fleets/:id', name: 'fleet', component: ShowFleet },
             { path: 'fleets/new', name: 'new_fleet', component: NewFleet },
-            { path: 'fleets/(\d)+/edit', name: 'edit_fleet', component: EditFleet},
+            { path: 'fleets/:id/edit', name: 'edit_fleet', component: EditFleet},
 
 
             //Vehicle
             { path: 'vehicles/new', name: 'new_vehicle', component: newVehicle },
-            { path: 'vehicles/(\d)+', name: 'vehicle', component: showVehicle },
-            { path: 'vehicles/(\d)+/edit', name: 'edit_vehicle', component: editVehicle }
+            { path: 'vehicles/:id', name: 'vehicle', component: showVehicle },
+            { path: 'vehicles/:id/edit', name: 'edit_vehicle', component: editVehicle }
 
         ]
     },

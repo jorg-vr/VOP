@@ -3,19 +3,19 @@
         <div class="row">
             <div class="form-group">
                 <input type="text" class="form-control input-sm"
-                       placeholder="E-mail klant" :value="this.currentEmail" v-model="newEmail">
+                       placeholder="E-mail klant" v-model="newEmail">
             </div>
         </div>
         <div class="row">
             <div class="form-group">
                 <input type="text" class="form-control input-sm"
-                       placeholder="Naam vloot" :value="currentName" v-model="newName">
+                       placeholder="Naam vloot" v-model="newFleetName">
             </div>
         </div>
         <div class="row">
             <div>
                 <div id="buttons">
-                    <button class="btn btn-success btn-md" v-on:click="submit">
+                    <button class="btn btn-success btn-md" v-on:click="submit(newEmail, newFleetName)">
                         <i class="fa fa-check" aria-hidden="true"></i>
                     </button>
                     <router-link :to="{name: 'fleets'}">
@@ -35,17 +35,17 @@
         data() {
             return {
                 newEmail: '',
-                newName: ''
+                newFleetName: ''
             }
+        },
+        created(){
+            this.newEmail = this.email;
+            this.newFleetName = this.fleetName;
         },
         props: {
-            currentEmail: String,
-            currentName: String
-        },
-        methods: {
-            submit(){
-                this.$emit('formSubmitted', newEmail, newName)
-            }
+            email: String, //old email
+            fleetName: String, //old name
+            submit: Function //This function accepts 2 parameters, the e-mail and the name.
         }
     }
 
