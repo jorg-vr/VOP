@@ -30,14 +30,6 @@ public class ProductionAddressDAOTest {
     public static void closeProvider() throws Exception {
     }
 
-    /*@Before
-    public void setUp() throws Exception {
-    }
-
-    @After
-    public void tearDown() throws Exception {
-    }*/
-
     @Test
     public void createGetRemoveTest() throws Exception {
         Address a1 = null;
