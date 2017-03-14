@@ -16,7 +16,7 @@
                 <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
             </button>
         </router-link>
-        <button type="button" class="btn btn-md btn-danger" v-on:click="this.remove">
+        <button type="button" class="btn btn-md btn-danger" v-on:click="remove(objectId)">
             <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
         </button>
     </div>

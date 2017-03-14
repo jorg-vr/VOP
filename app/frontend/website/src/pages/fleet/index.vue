@@ -49,8 +49,8 @@
                 })
             },
             //API call to delete a fleet.
-            deleteFleet(){
-                //TODO
+            deleteFleet(fleetId){
+                console.log(fleetId)
             },
             //API call to create a fleet.
             createFleet(){
