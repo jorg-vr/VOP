@@ -23,7 +23,7 @@ public class ProductionCustomerDAOTest {
 
     @BeforeClass
     public static void init() throws Exception {
-        //ProductionProvider.initializeProvider(true);
+        ProductionProvider.initializeProvider(true);
         daoProvider = ProductionProvider.getInstance();
         customerDAO = daoProvider.getCustomerDAO();
     }
