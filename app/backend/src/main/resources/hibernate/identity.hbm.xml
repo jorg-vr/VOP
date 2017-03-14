@@ -22,11 +22,11 @@
             <property name="bankAccountNumber" column="bank_account_number" type="string"/>
             <joined-subclass name="model.identity.Customer" table="CUSTOMER">
                 <key column="identity_id"/>
-                <set name="fleets" access="field" table="FLEET"
-                     lazy="false" fetch="select">
+                <bag name="fleets" access="field" table="FLEET"
+                     lazy="false" fetch="select" inverse="true">
                     <key column="owner_id" not-null="true"/>
                     <one-to-many class="model.fleet.Fleet" />
-                </set>
+                </bag>
             </joined-subclass>
         </joined-subclass>
         <joined-subclass name="model.identity.Person" table="PERSON">

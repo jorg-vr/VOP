@@ -1,6 +1,7 @@
 package dao.database;
 
 import dao.interfaces.*;
+import model.fleet.Fleet;
 import model.fleet.Vehicle;
 import model.fleet.VehicleType;
 import model.identity.Company;
@@ -129,8 +130,14 @@ public class ProductionProvider implements DAOProvider {
         StandardServiceRegistryBuilder.destroy(this.registry);
     }
 
-    public static void main(String[] args) {
-        System.out.println();
+    public static void main(String[] args) throws DataAccessException {
+        ProductionProvider.initializeProvider(false);
+        DAOProvider provider = ProductionProvider.getInstance();
 
+        FleetDAO dao = provider.getFleetDAO();
+        Fleet test = dao.create("test",null,null);
+
+        dao.remove(test.getUuid());
+        provider.close();
     }
 }
