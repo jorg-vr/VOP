@@ -1,6 +1,6 @@
 <template>
     <div class="row">
-        <router-link :to="{name: this.show, params: {id: objectId}}">
+        <router-link :to="{name: show, params: {id: objectId}}">
             <div class="panel panel-default col-sm-10">
                 <div class="panel-body">
                     <table>
@@ -11,7 +11,7 @@
                 </div>
             </div>
         </router-link>
-        <router-link :to="{name: this.edit, params: {id: objectId}}">
+        <router-link :to="{name: this.edit, params: {id: this.objectId}}">
             <button type="button" class="btn btn-md btn-info">
                 <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
             </button>

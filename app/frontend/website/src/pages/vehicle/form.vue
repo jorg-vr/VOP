@@ -3,7 +3,7 @@
         <div class="form-group">
             <label class="col-sm-4 control-label">Nummerplaat</label>
             <div class="col-sm-8">
-                <input type="text" class="form-control" placeholder="Nummerplaat" v-model="vehicle.licensePlate" value="test_vehicle.licensePlate">
+                <input type="text" class="form-control" placeholder="Nummerplaat" v-model="vehicle.licensePlate"">
             </div>
         </div>
         <div class="form-group">

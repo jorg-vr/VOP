@@ -5,13 +5,15 @@
         </div>
         <info-pane v-for="fleet in fleets"
                    :textValues="new Array(fleet.name, fleet.company)"
-                   :remove="deleteVehicle"
+                   :remove="deleteFleet"
                    :objectId="fleet.id"
                    edit="edit_fleet"
                    show="fleet"
                    :key="fleet.id">
         </info-pane>
-        <button type="button" class="btn btn-primary btn-circle btn-lg">+</button>
+        <router-link :to="{name: 'new_fleet'}">
+            <button type="button" class="btn btn-primary btn-circle btn-lg">+</button>
+        </router-link>
     </div>
 </template>
 
@@ -40,8 +42,11 @@
                     this.fleets = response.body;
                 })
             },
-            deleteVehicle (){
-
+            deleteFleet(){
+                //TODO
+            },
+            createFleet(){
+                //TODO
             }
         }
     }
