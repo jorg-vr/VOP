@@ -184,17 +184,19 @@ public class RESTVehicleController {
      */
     private RESTVehicle modelToRest(Vehicle vehicle) {
         String leasingCompany = vehicle.getLeasingCompany() != null ? UUIDUtil.UUIDToNumberString(vehicle.getLeasingCompany().getUuid()) : null;
+        String fleet=vehicle.getFleet()!=null?UUIDUtil.UUIDToNumberString(vehicle.getFleet().getUuid()):null;
+        String type=vehicle.getType()!=null?UUIDUtil.UUIDToNumberString(vehicle.getType().getUuid()):null;
         return new RESTVehicle(UUIDUtil.UUIDToNumberString(vehicle.getUuid()),
                 vehicle.getLicensePlate(),
                 vehicle.getChassisNumber(),
                 vehicle.getBrand(),
                 vehicle.getModel(),
-                UUIDUtil.UUIDToNumberString(vehicle.getType().getUuid()),
+                type,
                 vehicle.getValue(),
                 vehicle.getMileage(),
                 vehicle.getProductionDate().format(yearFormat).substring(0, 4),
                 leasingCompany,
-                UUIDUtil.UUIDToNumberString(vehicle.getFleet().getUuid()),
+                fleet,
                 null,//TODO search leasing company
                 null,//TODO implement edit dates with history
                 null,
