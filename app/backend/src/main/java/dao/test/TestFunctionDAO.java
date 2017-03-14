@@ -53,6 +53,20 @@ public class TestFunctionDAO extends TestDAO<Function> implements FunctionDAO {
     }
 
     @Override
+    public Function update(UUID id, Company company, Role role, Account account, LocalDateTime startDate, LocalDateTime endDate) throws DataAccessException {
+        if (!functions.containsKey(id)) {
+            throw new DataAccessException();
+        }
+        Function function = functions.get(id);
+        function.setCompany(company);
+        function.setRole(role);
+        function.setAccount(account);
+        function.setStartDate(startDate);
+        function.setEndDate(endDate);
+        return function;
+    }
+
+    @Override
     public Filter<Function> byAccount(Account account) {
         return null;
     }
