@@ -15,8 +15,10 @@ import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.query.Query;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
 
@@ -128,21 +130,5 @@ public class ProductionProvider implements DAOProvider {
         sessionFactory.close();
         StandardServiceRegistryBuilder.destroy(this.registry);
     }
-
-    public static void main(String[] args) {
-        ProductionProvider.initializeProvider(false);
-        try (DAOProvider daoProvider = ProductionProvider.getInstance()) {
-
-            AccountDAO accountDAO = daoProvider.getAccountDao();
-            PersonDAO personDAO = daoProvider.getPersonDAO();
-            Person sam =  personDAO.create("test","test","test");
-            accountDAO.create("test","hashed",sam);
-            accountDAO.create("test2","hashed",sam);
-            accountDAO.create("test3","hashed",sam);
-        } catch (DataAccessException e) {
-            e.printStackTrace();
-        }
-
-
-    }
+    
 }

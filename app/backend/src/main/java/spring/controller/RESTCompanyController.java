@@ -45,7 +45,7 @@ public class RESTCompanyController {
         if (nameContains != null) {
             filters.add(customerDAO.byName(nameContains));
         }
-        filters.add(customerDAO.byAddress(new Address(null, null, city, postalCode, country)));
+        //filters.add(customerDAO.byAddress(new Address(null, null, city, postalCode, country))); TODO fix this
         Collection<RESTCompany> result = new ArrayList<>();
         try {
             for (Customer customer : controller.getAll(filters.toArray(new Filter[filters.size()]))) {
@@ -122,6 +122,9 @@ public class RESTCompanyController {
     }
 
     private RESTAddress modelToRESTAddress(Address address) {
+        if(address==null){
+            return null;
+        }
         return new RESTAddress(address.getCountry(),
                 address.getTown(),
                 address.getStreet(),
@@ -130,6 +133,9 @@ public class RESTCompanyController {
     }
 
     private Address RESTToModelAddress(RESTAddress restAddress) {
+        if(restAddress==null){
+            return null;
+        }
         return new Address(restAddress.getStreet(),
                 restAddress.getHouseNumber(),
                 restAddress.getCity(),
