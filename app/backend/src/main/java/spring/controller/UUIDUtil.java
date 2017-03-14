@@ -13,6 +13,9 @@ public class UUIDUtil {
      * @return
      */
     public static String UUIDToNumberString(UUID uuid) {
+        if(uuid==null){
+            return null;
+        }
         return String.format("%040d", new BigInteger(uuid.toString().replace("-", ""), 16)).replaceAll("^0+", "");
     }
 
@@ -24,6 +27,9 @@ public class UUIDUtil {
      * @return
      */
     public static UUID toUUID(String numberString) {
+        if(numberString==null){
+            return null;
+        }
         String hex = new BigInteger(numberString).toString(16);
         while (hex.length() < 32) {
             hex = "0" + hex;

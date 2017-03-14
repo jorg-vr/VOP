@@ -21,6 +21,17 @@ import java.util.UUID;
  */
 public class ProductionVehicleTypeDAO implements VehicleTypeDao {
 
+    //TODO remove this!!!!!!!!!!
+    static{
+        try {
+            ProductionProvider.getInstance().getVehicleTypeDAO().create("Personenwagen",15);
+            ProductionProvider.getInstance().getVehicleTypeDAO().create("Camion",15);
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     private final SessionFactory factory;
     private CriteriaBuilder criteriaBuilder;
     private CriteriaQuery<VehicleType> criteriaQuery;
