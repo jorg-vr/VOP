@@ -186,7 +186,7 @@ public class Vehicle implements EditableObject, java.io.Serializable {
 
         if (o == null || getClass() != o.getClass()) return false;
 
-        return uuid == ((Vehicle) o).getUuid();
+        return uuid.equals(((Vehicle) o).getUuid());
     }
 
     @Override

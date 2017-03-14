@@ -66,7 +66,7 @@ public class Identity implements EditableObject, java.io.Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        return uuid == ((Identity)o).uuid;
+        return uuid.equals(((Identity)o).uuid);
 
     }
 

@@ -107,7 +107,7 @@ public class Fleet implements EditableObject, java.io.Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        return uuid == ((Fleet) o).getUuid();
+        return uuid.equals(((Fleet) o).getUuid());
 
     }
 

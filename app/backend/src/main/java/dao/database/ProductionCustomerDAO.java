@@ -86,6 +86,7 @@ public class ProductionCustomerDAO implements CustomerDAO {
             this.root = null;
             this.criteriaQuery = null;
             this.criteriaBuilder = null;
+            predicates.clear();
             return customers;
         } catch (Exception e) {
             e.printStackTrace();
