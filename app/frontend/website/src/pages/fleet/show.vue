@@ -6,7 +6,7 @@
         <router-link :to="{name: 'new_subfleet'}"><button type="button" class="btn btn-primary table-button">Niew subvloot</button></router-link>
         <button type="button" class="btn btn-primary table-button" v-on:click="removeFleet">Verwijder vloot</button>
         <div class="row">
-            <div class="col-md-8">
+            <div>
                 <div v-for="subfleet in subfleets">
                     <h2>{{subfleet.type | capitalize }}</h2>
                     <table class="table">

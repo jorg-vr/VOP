@@ -3,60 +3,36 @@
         <div class="page-header">
             <h1>Vloten </h1>
         </div>
-        <div>
-            <fleet-searchbar :fleets="fleets" v-on:fleetsChanged="updateFleetTable"></fleet-searchbar>
-            <div class="row">
-                <div class="col-md-8">
-                    <table class="table">
-                        <fleet-row v-for="fleet in filteredFleets" :fleet="fleet" :key="fleet.id"></fleet-row>
-                    </table>
-                </div>
-            </div>
-        </div>
+        <info-pane v-for="fleet in fleets"
+                   :textValues="new Array(fleet.name, fleet.company)"
+                   :remove="deleteVehicle"
+                   :objectId="fleet.id"
+                   edit="edit_fleet"
+                   show="fleet"
+                   :key="fleet.id">
+        </info-pane>
+        <button type="button" class="btn btn-primary btn-circle btn-lg">+</button>
     </div>
 </template>
+
 <script>
-    import FleetSearchBar from '../../assets/fleetSearchBar.vue'
+    import infoPane from "../../assets/listComponent.vue"
     export default {
         components: {
-            'fleet-searchbar' : FleetSearchBar,
-            FleetRow: {
-                props: {
-                    fleet: Object
-                },
-                template: `
-                <tr>
-                <td class="id-column">{{fleet.id}}</td>
-                <td class="full-width">{{fleet.company}}</td>
-                <td><router-link :to="{name: 'fleet', params: { id: fleet.id }}">
-                    <button class="btn btn-xs btn-warning"><i class="fa fa-eye" aria-hidden="true"></i></button>
-                </router-link></td>
-                <td><button v-on:click="removeFleet(fleet.id)" class="btn btn-xs btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button></td>
-                </tr>
-                `,
-                methods: {
-                    removeFleet (fleetID){
-                        this.$http.delete('https://vopro5.ugent.be/app/api/fleets/' + fleetID).then(response => {
-                            //Verwerk response
-                        })
-                    }
-                }
-            }
+            'info-pane': infoPane
         },
-        data() {
+        data: function () {
             return {
                 fleets : [ //Some test fleets, this will be filled in with the actual fleets
-                    {id: 1, company : 'Test company 1'},
-                    {id: 2, company : 'Test company 2'},
-                    {id: 3, company : 'Test company 3'},
-                    {id: 4, company : 'Test company 4'}
-                ],
-                filteredFleets : []
+                    {id: 1, name: 'Vloot 1', company : '1'},
+                    {id: 2, name: 'Vloot 2', company : '2'},
+                    {id: 3, name: 'Vloot 3', company : '3'},
+                    {id: 4, name: 'Vloot 4', company : '4'}
+                ]
             }
         },
         created() {
             this.fetchFleetList()
-            this.filteredFleets =  this.fleets
         },
         methods: {
             fetchFleetList (){
@@ -64,15 +40,22 @@
                     this.fleets = response.body;
                 })
             },
-            updateFleetTable(fleets){
-                this.filteredFleets = fleets;
+            deleteVehicle (){
+
             }
         }
     }
 </script>
-
 <style>
-    .id-column {
-        border-right: 1px solid #ddd;
+    .btn-circle.btn-lg {
+        position: fixed;
+        left: 230px;
+        bottom: 40px;
+        width: 50px;
+        height: 50px;
+        padding: 10px 16px;
+        font-size: 18px;
+        line-height: 1.33;
+        border-radius: 25px;
     }
 </style>
