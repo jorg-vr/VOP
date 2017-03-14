@@ -1,9 +1,12 @@
+<!--
+    This page is used to edit a vehicle.
+-->
 <template>
     <div>
         <div class="page-header">
             <h1>Wijzig voertuig</h1>
         </div>
-        <vehicle-form v-on:formSubmitted="updateVehicle" :vehicle="vehicle"></vehicle-form>
+        <vehicle-form :submit="updateVehicle" :vehicle="vehicle"></vehicle-form>
     </div>
 </template>
 <script>
@@ -36,19 +39,12 @@
                     this.vehicle = response.body;
                 })
             },
-            updateVehicle(updatedVehicle){
+            updateVehicle(vehicle){
                 alert('Not working yet')
-                this.$http.put('https://vopro5.ugent.be/app/api/vehicles' + this.getQuery(updatedVehicle)).then(response => {
+                this.$http.put('https://vopro5.ugent.be/app/api/vehicles' + '{' + this.getQuery(vehicle) + '}').then(response => {
                     this.vehicle = response.body;
                     this.$router.push({name: 'vehicle', params: { id: this.vehicle.id }});
                 })
-            },
-            getQuery(updatedVehicle){
-                let query = '?';
-                for(const prop in updatedVehicle){
-                    query += prop + '=' + this.vehicle[prop] + '&'
-                }
-                return query.replace(/ /g, '+').slice(0, -1);
             }
         }
     }

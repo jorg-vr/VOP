@@ -3,7 +3,7 @@
         <div class="page-header">
             <h1>Nieuw voertuig</h1>
         </div>
-        <vehicle-form v-on:formSubmitted="createVehicle" :vehicle="vehicle"></vehicle-form>
+        <vehicle-form v-on:submit="createVehicle" :vehicle="vehicle"></vehicle-form>
     </div>
 </template>
 <script>
@@ -37,7 +37,7 @@
             VehicleForm
         },
         methods: {
-            createVehicle(){
+            createVehicle(vehicle){
                 alert('Not working yet')
                 this.$http.post('https://vopro5.ugent.be/app/api/vehicles' + this.getQuery()).then(response => {
                     this.vehicle = response.body;

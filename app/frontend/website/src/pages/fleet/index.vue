@@ -1,8 +1,12 @@
+<!--
+    This page shows all of the fleets in the database.
+-->
 <template>
     <div>
         <div class="page-header">
             <h1>Vloten </h1>
         </div>
+        <!-- Render an info-pane for every fleet -->
         <info-pane v-for="fleet in fleets"
                    :textValues="new Array(fleet.name, fleet.company)"
                    :remove="deleteFleet"
@@ -25,7 +29,7 @@
         },
         data: function () {
             return {
-                fleets : [ //Some test fleets, this will be filled in with the actual fleets
+                fleets : [ //Dummy fleets
                     {id: 1, name: 'Vloot 1', company : '1'},
                     {id: 2, name: 'Vloot 2', company : '2'},
                     {id: 3, name: 'Vloot 3', company : '3'},
@@ -34,17 +38,21 @@
             }
         },
         created() {
+            //Get all the fleets in the database when the page is loaded.
             this.fetchFleetList()
         },
         methods: {
+            //API call to fetch the fleets from the database.
             fetchFleetList (){
                 this.$http.get('https://vopro5.ugent.be/app/api/fleets').then(response => {
                     this.fleets = response.body;
                 })
             },
+            //API call to delete a fleet.
             deleteFleet(){
                 //TODO
             },
+            //API call to create a fleet.
             createFleet(){
                 //TODO
             }

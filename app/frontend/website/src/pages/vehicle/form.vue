@@ -48,7 +48,7 @@
                 <input type="text" class="form-control" placeholder="Leasing bedrijf" v-model="vehicle.leasingCompany">
             </div>
         </div>
-        <button type="button" class="btn btn-default float-left" v-on:click="clicked">Voeg toe</button>
+        <button type="button" class="btn btn-default float-left" v-on:click="submit">Voeg toe</button>
     </form>
 </template>
 <script>
@@ -57,7 +57,8 @@
             return {}
         },
         props: {
-            vehicle: Object
+            vehicle: Object,
+            submit: Function
         },
         methods: {
             clicked(){

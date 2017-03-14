@@ -1,3 +1,7 @@
+<!--
+    This is the form for creating/updating a fleet.
+    The form accepts the old data and an update or create function with 2 arguments.
+-->
 <template>
     <div>
         <div class="row">
@@ -33,19 +37,24 @@
 <script>
     export default {
         data() {
+            //The values for the fleet.
             return {
                 newEmail: '',
                 newFleetName: ''
             }
         },
         created(){
+            //Set the values for the fleet equal to possible old values of the fleet
+            //in case of an update.
             this.newEmail = this.email;
             this.newFleetName = this.fleetName;
         },
         props: {
             email: String, //old email
             fleetName: String, //old name
-            submit: Function //This function accepts 2 parameters, the e-mail and the name.
+            //This function accepts 2 parameters, the e-mail and the name.
+            //It should create or upate a fleet.
+            submit: Function
         }
     }
 

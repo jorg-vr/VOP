@@ -1,9 +1,12 @@
+<!--
+    This page is used to edit a fleet.
+-->
 <template>
     <div>
         <div class="page-header">
             <h1>Wijzig vloot</h1>
         </div>
-        <fleet-form :submit="createFleet"></fleet-form>
+        <fleet-form :submit="updateFleet"></fleet-form>
     </div>
 </template>
 <script>
@@ -18,13 +21,16 @@
             FleetForm
         },
         created() {
+            //Fetch the fleet when the page is created.
             this.fetchFleet()
         },
         methods: {
+            //API call to fetch the fleet of this page.
             fetchFleet(){
                 //TODO
             },
-            createFleet(userEmail, fleetName){
+            //API call to update the fleet with the new values.
+            updateFleet(userEmail, fleetName){
                 alert('Not yet implemented')
                 //TODO
                 /*
