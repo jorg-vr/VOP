@@ -7,32 +7,16 @@ import model.identity.Address;
 import model.identity.Customer;
 import org.junit.*;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.AfterTransaction;
-import org.springframework.test.context.transaction.BeforeTransaction;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 import spring.model.RESTAddress;
 import spring.model.RESTCompany;
-
-import javax.transaction.Transactional;
-
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
 import static org.hamcrest.Matchers.*;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
 
@@ -54,9 +38,8 @@ public class RESTCompanyControllerTest {
         ProductionProvider.initializeProvider(false);
         try {
             //TODO find out why this doesn't work
-            //address= ProductionProvider.getInstance().getAddressDao().create("mystreet","123","lala","12345","land");
-            //address=new Address("mystreet","123","lala","12345","land");
-            customer= new CustomerController().create(null,"04789456123","anita","123456789");
+            address= new Address("mystreet","123","lala","12345","land");
+            customer= new CustomerController().create(address,"04789456123","anita","123456789");
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
@@ -69,7 +52,6 @@ public class RESTCompanyControllerTest {
     public static void afterTransaction() {
         try {
             new CustomerController().archive(customer.getUuid());
-//            ProductionProvider.getInstance().getAddressDao().remove(address.getUuid());
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
@@ -77,7 +59,7 @@ public class RESTCompanyControllerTest {
 
     @Test
     public void get() throws Exception {
-        MvcResult result = mvc.perform(MockMvcRequestBuilders.get("/companies"))
+        mvc.perform(MockMvcRequestBuilders.get("/companies"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath(".data",hasSize(greaterThanOrEqualTo(1))))
                 .andExpect(jsonPath("$.total",greaterThanOrEqualTo(1)))
@@ -88,25 +70,67 @@ public class RESTCompanyControllerTest {
     @Test
     public void post() throws Exception {
         RESTCompany restCompany=new RESTCompany(null,"frank","sinatra","0123456",new RESTAddress("a","b","c","d","e"),null,null,null,null);
-        mvc.perform(MockMvcRequestBuilders.post("/companies").header("Content-Type","application/json").content(TestUtil.convertObjectToJsonBytes(restCompany)))
+        MvcResult result =mvc.perform(MockMvcRequestBuilders.post("/companies").header("Content-Type","application/json").content(TestUtil.convertObjectToJsonBytes(restCompany)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name",equalTo("frank")))
-                .andExpect(jsonPath("$.name",equalTo("frank")));
+                .andExpect(jsonPath("$.vatNumber",equalTo("sinatra")))
+                .andExpect(jsonPath("$.phoneNumber",equalTo("0123456")))
+                .andExpect(jsonPath("$.address.country",equalTo("a")))
+                .andExpect(jsonPath("$.address.city",equalTo("b")))
+                .andExpect(jsonPath("$.address.street",equalTo("c")))
+                .andExpect(jsonPath("$.address.houseNumber",equalTo("d")))
+                .andExpect(jsonPath("$.address.postalCode",equalTo("e"))).andReturn();
+        RESTCompany restCompany1 =  TestUtil.convertJsonBytesToObject(result.getResponse().getContentAsByteArray(),RESTCompany.class);
+        mvc.perform(MockMvcRequestBuilders.delete("/companies/{id}",restCompany1.getId()))
+                .andExpect(status().isOk());
     }
-    @Ignore
+
     @Test
     public void getId() throws Exception {
-
+        mvc.perform(MockMvcRequestBuilders.get("/companies/{id}",UUIDUtil.UUIDToNumberString(customer.getUuid())))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name",equalTo(customer.getName())))
+                .andExpect(jsonPath("$.vatNumber",equalTo(customer.getBtwNumber())))
+                .andExpect(jsonPath("$.phoneNumber",equalTo(customer.getPhoneNumber())))
+                .andExpect(jsonPath("$.address.country",equalTo(address.getCountry())))
+                .andExpect(jsonPath("$.address.city",equalTo(address.getTown())))
+                .andExpect(jsonPath("$.address.street",equalTo(address.getStreet())))
+                .andExpect(jsonPath("$.address.houseNumber",equalTo(address.getStreetNumber())))
+                .andExpect(jsonPath("$.address.postalCode",equalTo(address.getPostalCode()))).andReturn();
     }
-    @Ignore
+    
     @Test
     public void putId() throws Exception {
+        customer.setBtwNumber("new");
+        RESTCompany restCompany=new RESTCompany(UUIDUtil.UUIDToNumberString(customer.getUuid()),
+                customer.getName(),customer.getBtwNumber(),customer.getPhoneNumber(),
+                new RESTAddress(address.getCountry(),address.getTown(),address.getStreet(),address.getStreetNumber(),address.getPostalCode()),
+                null,null,null,null);
 
+        MvcResult result =mvc.perform(MockMvcRequestBuilders.put("/companies/{id}",UUIDUtil.UUIDToNumberString(customer.getUuid()))
+                .header("Content-Type","application/json")
+                .content(TestUtil.convertObjectToJsonBytes(restCompany))
+        )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name",equalTo(customer.getName())))
+                .andExpect(jsonPath("$.vatNumber",equalTo(customer.getBtwNumber())))
+                .andExpect(jsonPath("$.phoneNumber",equalTo(customer.getPhoneNumber())))
+                .andExpect(jsonPath("$.address.country",equalTo(address.getCountry())))
+                .andExpect(jsonPath("$.address.city",equalTo(address.getTown())))
+                .andExpect(jsonPath("$.address.street",equalTo(address.getStreet())))
+                .andExpect(jsonPath("$.address.houseNumber",equalTo(address.getStreetNumber())))
+                .andExpect(jsonPath("$.address.postalCode",equalTo(address.getPostalCode())))
+                .andReturn();
+        //tests if changes ar preserved
+        mvc.perform(MockMvcRequestBuilders.get("/companies/{id}",UUIDUtil.UUIDToNumberString(customer.getUuid())))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name",equalTo(customer.getName())))
+                .andExpect(jsonPath("$.vatNumber",equalTo(customer.getBtwNumber())))
+                .andExpect(jsonPath("$.phoneNumber",equalTo(customer.getPhoneNumber())))
+                .andExpect(jsonPath("$.address.country",equalTo(address.getCountry())))
+                .andExpect(jsonPath("$.address.city",equalTo(address.getTown())))
+                .andExpect(jsonPath("$.address.street",equalTo(address.getStreet())))
+                .andExpect(jsonPath("$.address.houseNumber",equalTo(address.getStreetNumber())))
+                .andExpect(jsonPath("$.address.postalCode",equalTo(address.getPostalCode()))).andReturn();
     }
-    @Ignore
-    @Test
-    public void deleteId() throws Exception {
-
-    }
-
 }
