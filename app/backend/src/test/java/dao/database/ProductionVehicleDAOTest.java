@@ -27,8 +27,7 @@ public class ProductionVehicleDAOTest {
     //Setup before any of the tests are started
     @BeforeClass
     public static void initProvider() throws Exception{
-        //ProductionProvider.initializeProvider(true);
-        //ProductionProvider.initializeProvider(false);
+        ProductionProvider.initializeProvider(true);
         daoProvider = ProductionProvider.getInstance();
         vehicleDao = daoProvider.getVehicleDAO();
         vehicleTypeDAO = daoProvider.getVehicleTypeDAO();
@@ -40,18 +39,6 @@ public class ProductionVehicleDAOTest {
     public static void closeProvider() throws Exception{
         vehicleTypeDAO.remove(t1.getUuid());
     }
-
-    /*@Before
-    public void setUp() throws Exception {
-        vehicleDao = daoProvider.getVehicleDAO();
-        vehicleTypeDAO = daoProvider.getVehicleTypeDAO();
-        t1 = vehicleTypeDAO.create("type 1", 2.5);
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        vehicleTypeDAO.remove(t1.getUuid());
-    }*/
 
     @Test
     public void createGetRemoveTest() throws Exception {

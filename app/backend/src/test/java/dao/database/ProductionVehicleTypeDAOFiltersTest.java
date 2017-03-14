@@ -22,7 +22,6 @@ public class ProductionVehicleTypeDAOFiltersTest {
     @BeforeClass
     public static void initProvider() throws Exception {
         ProductionProvider.initializeProvider(true);
-        //ProductionProvider.initializeProvider(false);
         daoProvider = ProductionProvider.getInstance();
         vehicleTypeDAO = daoProvider.getVehicleTypeDAO();
         t1 = vehicleTypeDAO.create("type 1", 2.5);

@@ -12,30 +12,20 @@ import static org.junit.Assert.*;
  */
 public class ProductionVehicleTypeDAOTest {
     private static DAOProvider daoProvider;
-    private VehicleTypeDao vehicleTypeDAO;
-    private VehicleType t1;
+    private static VehicleTypeDao vehicleTypeDAO;
 
     //TODO: production to false, when local
     //Setup before any of the tests are started
     @BeforeClass
     public static void initProvider() throws Exception {
-        //ProductionProvider.initializeProvider(true);
-        //ProductionProvider.initializeProvider(false);
+        ProductionProvider.initializeProvider(true);
         daoProvider = ProductionProvider.getInstance();
+        vehicleTypeDAO = daoProvider.getVehicleTypeDAO();
     }
 
     //Gets executed after all tests have been run
     @AfterClass
     public static void closeProvider() throws Exception {
-    }
-
-    @Before
-    public void setUp() throws Exception {
-        vehicleTypeDAO = daoProvider.getVehicleTypeDAO();
-    }
-
-    @After
-    public void tearDown() throws Exception {
     }
 
     @Test
