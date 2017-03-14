@@ -46,6 +46,7 @@ public class RESTCompanyControllerTest {
 
     @Before
     public void setup() {
+        ProductionProvider.initializeProvider(true);
         mvc = MockMvcBuilders
                 .webAppContextSetup(context)
                 .build();
@@ -54,8 +55,8 @@ public class RESTCompanyControllerTest {
     @BeforeTransaction
     void beforeTransaction() {
         // logic to be executed before a transaction is started
-        address= ProductionProvider.getInstance().getAddressDao().create("mystreet","123","lala","12345","land";)
         try {
+            address= ProductionProvider.getInstance().getAddressDao().create("mystreet","123","lala","12345","land");
             customer= new CustomerController().create(address,"04789456123","anita","123456789");
         } catch (DataAccessException e) {
             e.printStackTrace();
@@ -74,7 +75,7 @@ public class RESTCompanyControllerTest {
     public void get() throws Exception {
         mvc.perform(MockMvcRequestBuilders.get("/companies"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$"))
+                .andExpect(jsonPath("$",hasSize(8)));
 
     }
 
