@@ -6,6 +6,7 @@ import dao.interfaces.Filter;
 import model.fleet.Fleet;
 import model.identity.Address;
 import model.identity.Customer;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -36,7 +37,10 @@ public class ProductionCustomerDAO implements CustomerDAO {
     @Override
     public Customer get(UUID id) throws DataAccessException {
         try (Session session = factory.openSession()) {
-            return session.get(Customer.class, id);
+            Customer customer=session.get(Customer.class, id);
+            Hibernate.initialize(customer.getAddress());
+            return customer;
+
         }
     }
 
@@ -82,6 +86,9 @@ public class ProductionCustomerDAO implements CustomerDAO {
                 filter.filter();
             }
             Collection<Customer> customers = session.createQuery(criteriaQuery.where(predicates.toArray(new Predicate[predicates.size()]))).getResultList();
+            for(Customer customer:customers){
+                Hibernate.initialize(customer.getAddress());
+            }
             tx.commit();
             this.root = null;
             this.criteriaQuery = null;

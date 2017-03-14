@@ -27,7 +27,6 @@ public class ProductionVehicleDAOFiltersTest {
     @BeforeClass
     public static void initProvider() throws Exception {
         ProductionProvider.initializeProvider(true);
-        //ProductionProvider.initializeProvider(false);
         daoProvider = (ProductionProvider) ProductionProvider.getInstance();
         vehicleDAO = (ProductionVehicleDAO) daoProvider.getVehicleDAO();
         vehicleTypeDAO = (ProductionVehicleTypeDAO) daoProvider.getVehicleTypeDAO();
@@ -48,28 +47,6 @@ public class ProductionVehicleDAOFiltersTest {
         vehicleTypeDAO.remove(t1.getUuid());
         vehicleTypeDAO.remove(t2.getUuid());
     }
-
-
-    /*@Before
-    public void setUp() throws Exception {
-        vehicleDAO = (ProductionVehicleDAO) daoProvider.getVehicleDAO();
-        vehicleTypeDAO = (ProductionVehicleTypeDAO) daoProvider.getVehicleTypeDAO();
-
-        t1 = vehicleTypeDAO.create("type 1", 2.5);
-        t2 = vehicleTypeDAO.create("type 2", 5.7);
-        v1 = vehicleDAO.create("brand 1", "model 1", "AAAAAAAAAAAAAAAAA", "ABC-123", 500, 3000, t1, LocalDate.of(2016, 7, 15));
-        v2 = vehicleDAO.create("brand 1", "model 2", "BBBBBBBBBBBBBBBBB", "DEF-123", 1000, 3500, t2, LocalDate.of(2016, 7, 26));
-        v3 = vehicleDAO.create("brand 2", "model 2", "CCCCCCCCCCCCCCCCC", "DEF-456", 1500, 4000, t1, LocalDate.of(2016, 9, 26));
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        vehicleDAO.remove(v1.getUuid());
-        vehicleDAO.remove(v2.getUuid());
-        vehicleDAO.remove(v3.getUuid());
-        vehicleTypeDAO.remove(t1.getUuid());
-        vehicleTypeDAO.remove(t2.getUuid());
-    }*/
 
 
     @Test
