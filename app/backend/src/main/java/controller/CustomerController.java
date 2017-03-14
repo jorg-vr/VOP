@@ -1,5 +1,6 @@
 package controller;
 
+import dao.database.ProductionProvider;
 import dao.interfaces.CustomerDAO;
 import dao.interfaces.DataAccessException;
 import main.BackendApplication;
@@ -15,8 +16,8 @@ public class CustomerController extends AbstractController<Customer>{
 
     private CustomerDAO dao;
     public CustomerController() {
-        super(BackendApplication.PROVIDER.getCustomerDAO());
-        dao = BackendApplication.PROVIDER.getCustomerDAO();
+        super(ProductionProvider.getInstance().getCustomerDAO());
+        dao = ProductionProvider.getInstance().getCustomerDAO();
     }
 
     public Customer create(Address address, String phoneNumber, String name, String btwNumber) throws DataAccessException {
