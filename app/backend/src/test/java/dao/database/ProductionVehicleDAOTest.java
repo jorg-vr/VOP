@@ -1,5 +1,8 @@
 package dao.database;
 
+import dao.interfaces.DAOProvider;
+import dao.interfaces.VehicleDAO;
+import dao.interfaces.VehicleTypeDao;
 import model.fleet.Vehicle;
 import model.fleet.VehicleType;
 import org.junit.*;
@@ -15,36 +18,40 @@ import static org.junit.Assert.fail;
  */
 public class ProductionVehicleDAOTest {
 
-    private static ProductionProvider daoProvider;
-    private ProductionVehicleDAO vehicleDao;
-    private ProductionVehicleTypeDAO vehicleTypeDAO;
-    private VehicleType t1;
+    private static DAOProvider daoProvider;
+    private static VehicleDAO vehicleDao;
+    private static VehicleTypeDao vehicleTypeDAO;
+    private static VehicleType t1;
 
     //TODO: production to false, when local
     //Setup before any of the tests are started
     @BeforeClass
     public static void initProvider() throws Exception{
         ProductionProvider.initializeProvider(true);
-        daoProvider = (ProductionProvider) ProductionProvider.getInstance();
+        //ProductionProvider.initializeProvider(false);
+        daoProvider = ProductionProvider.getInstance();
+        vehicleDao = daoProvider.getVehicleDAO();
+        vehicleTypeDAO = daoProvider.getVehicleTypeDAO();
+        t1 = vehicleTypeDAO.create("type 1", 2.5);
     }
 
     //Gets executed after all tests have been run
     @AfterClass
     public static void closeProvider() throws Exception{
-//        daoProvider.close();
+        vehicleTypeDAO.remove(t1.getUuid());
     }
 
-    @Before
+    /*@Before
     public void setUp() throws Exception {
-        vehicleDao = (ProductionVehicleDAO) daoProvider.getVehicleDAO();
-        vehicleTypeDAO = (ProductionVehicleTypeDAO) daoProvider.getVehicleTypeDAO();
+        vehicleDao = daoProvider.getVehicleDAO();
+        vehicleTypeDAO = daoProvider.getVehicleTypeDAO();
         t1 = vehicleTypeDAO.create("type 1", 2.5);
     }
 
     @After
     public void tearDown() throws Exception {
-//        vehicleTypeDAO.remove(t1.getUuid());
-    }
+        vehicleTypeDAO.remove(t1.getUuid());
+    }*/
 
     @Test
     public void createGetRemoveTest() throws Exception {
