@@ -43,16 +43,6 @@ public class TestFunctionDAO extends TestDAO<Function> implements FunctionDAO {
     }
 
     @Override
-    public Function update(UUID id, LocalDateTime endDate) throws DataAccessException {
-        if (!functions.containsKey(id)) {
-            throw new DataAccessException();
-        }
-        Function function = functions.get(id);
-        function.setEndDate(endDate);
-        return function;
-    }
-
-    @Override
     public Function update(UUID id, Company company, Role role, Account account, LocalDateTime startDate, LocalDateTime endDate) throws DataAccessException {
         if (!functions.containsKey(id)) {
             throw new DataAccessException();

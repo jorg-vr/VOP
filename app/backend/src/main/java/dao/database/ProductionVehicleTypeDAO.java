@@ -3,7 +3,6 @@ package dao.database;
 import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
 import dao.interfaces.VehicleTypeDao;
-import model.fleet.Vehicle;
 import model.fleet.VehicleType;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -33,12 +32,6 @@ public class ProductionVehicleTypeDAO implements VehicleTypeDao {
     }
 
     @Override
-    public VehicleType create(VehicleType vehicleType) throws DataAccessException {
-        HibernateUtil.create(factory,vehicleType);
-        return vehicleType;
-    }
-
-    @Override
     public VehicleType get(UUID id) throws DataAccessException {
         try (Session session = factory.openSession()) {
             return session.get(VehicleType.class, id);
@@ -64,16 +57,6 @@ public class ProductionVehicleTypeDAO implements VehicleTypeDao {
         return vehicleType;
     }
 
-
-    @Override
-    public void update(VehicleType vehicleType) throws DataAccessException {
-        HibernateUtil.update(factory,vehicleType);
-    }
-
-    @Override
-    public void remove(VehicleType vehicleType) throws DataAccessException {
-        HibernateUtil.remove(factory,vehicleType);
-    }
 
     @Override
     public void remove(UUID id) throws DataAccessException {

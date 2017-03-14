@@ -59,15 +59,17 @@ public class RESTCompanyController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public void post(@RequestBody RESTCompany restCompany) {
+    public RESTCompany post(@RequestBody RESTCompany restCompany) {
         try {
-            controller.create(RESTToModelAddress(restCompany.getAddress()),
+            Customer customer = controller.create(RESTToModelAddress(restCompany.getAddress()),
                     restCompany.getPhoneNumber(),
                     restCompany.getName(),
                     restCompany.getVatNumber());
+            restCompany = modelToRESTCompany(customer);
         } catch (DataAccessException e) {
             throw new InvalidInputException(e);
         }
+        return restCompany;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "{id}")
@@ -81,18 +83,19 @@ public class RESTCompanyController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "{id}")
-    public void putId(@PathVariable("id") String id, @RequestBody RESTCompany restCompany) {
+    public RESTCompany putId(@PathVariable("id") String id, @RequestBody RESTCompany restCompany) {
         UUID uuid = UUIDUtil.toUUID(id);
         try {
-            controller.update(uuid,
+            Customer customer = controller.update(uuid,
                     RESTToModelAddress(restCompany.getAddress()),
                     restCompany.getPhoneNumber(),
                     restCompany.getName(),
                     restCompany.getVatNumber());
+            restCompany = modelToRESTCompany(customer);
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
-
+        return restCompany;
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "{id}")

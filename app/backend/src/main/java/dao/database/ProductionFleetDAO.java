@@ -61,26 +61,10 @@ public class ProductionFleetDAO implements FleetDAO{
         };    }
 
     @Override
-    public Fleet create(Fleet fleet) throws DataAccessException {
-        HibernateUtil.create(factory,fleet);
-        return fleet;
-    }
-
-    @Override
     public Fleet get(UUID id) throws DataAccessException {
         try (Session session = factory.openSession()) {
             return session.get(Fleet.class, id);
         }
-    }
-
-    @Override
-    public void update(Fleet fleet) throws DataAccessException {
-        HibernateUtil.update(factory,fleet);
-    }
-
-    @Override
-    public void remove(Fleet fleet) throws DataAccessException {
-        HibernateUtil.remove(factory,fleet);
     }
 
     @Override

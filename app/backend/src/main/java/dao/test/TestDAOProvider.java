@@ -25,12 +25,14 @@ public class TestDAOProvider implements DAOProvider {
     private CustomerDAO customerDAO;
     private PersonDAO personDAO;
     private FunctionDAO functionDAO;
+    private VehicleDAO vehicleDAO;
 
     public TestDAOProvider() {
         this.customerDAO = new TestCustomerDAO();
         this.personDAO = new TestPersonDAO();
         this.accountDAO = new TestAccountDAO();
         this.functionDAO = new TestFunctionDAO();
+        this.vehicleDAO = new TestVehicleDAO();
     }
 
     @Override
@@ -85,7 +87,7 @@ public class TestDAOProvider implements DAOProvider {
 
     @Override
     public VehicleDAO getVehicleDAO() {
-        return null;
+        return vehicleDAO;
     }
 
     @Override

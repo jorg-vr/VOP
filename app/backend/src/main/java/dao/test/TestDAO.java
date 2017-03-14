@@ -4,7 +4,6 @@ import dao.interfaces.DAO;
 import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
 import model.history.EditableObject;
-import spring.Exceptions.NotImplementedException;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -41,28 +40,11 @@ public abstract class TestDAO<T extends EditableObject> implements DAO<T> {
 
 
     @Override
-    public T create(T t) throws DataAccessException {
-        throw new NotImplementedException();
-    }
-
-
-    /**
-     * DEPRECATED DO NOT USE!
-     */
-    @Override
-    public void update(T t) throws DataAccessException {
-        if (!mapping.containsKey(t.getUuid())) {
+    public void remove(UUID id) throws DataAccessException {
+        if (!mapping.containsKey(id)) {
             throw new DataAccessException();
         }
-        mapping.put(t.getUuid(), t);
-    }
-
-    @Override
-    public void remove(T t) throws DataAccessException {
-        if (!mapping.containsKey(t.getUuid())) {
-            throw new DataAccessException();
-        }
-        mapping.remove(t.getUuid());
+        mapping.remove(id);
     }
 
     @Override

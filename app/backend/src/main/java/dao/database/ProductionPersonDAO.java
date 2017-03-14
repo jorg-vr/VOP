@@ -29,26 +29,10 @@ public class ProductionPersonDAO implements PersonDAO {
     }
 
     @Override
-    public Person create(Person person) throws DataAccessException {
-        HibernateUtil.create(factory,person);
-        return person;
-    }
-
-    @Override
     public Person get(UUID id) throws DataAccessException {
         try (Session session = factory.openSession()) {
             return session.get(Person.class, id);
         }
-    }
-
-    @Override
-    public void update(Person person) throws DataAccessException {
-        HibernateUtil.update(factory,person);
-    }
-
-    @Override
-    public void remove(Person person) throws DataAccessException {
-        HibernateUtil.remove(factory,person);
     }
 
     @Override
@@ -61,7 +45,6 @@ public class ProductionPersonDAO implements PersonDAO {
         return create(firstName,lastName,email,null,null);
     }
 
-    @Override
     public Person create(String firstName, String lastName, String email, String phonenumber, Address address) throws DataAccessException {
         Person person = new Person();
         person.setFirstName(firstName);
@@ -71,11 +54,6 @@ public class ProductionPersonDAO implements PersonDAO {
         person.setAddress(address);
         HibernateUtil.create(factory,person);
         return person;
-    }
-
-    @Override
-    public Person update(UUID id, String firstName, String lastName) throws DataAccessException {
-        return update(id,firstName,lastName,null);
     }
 
     @Override

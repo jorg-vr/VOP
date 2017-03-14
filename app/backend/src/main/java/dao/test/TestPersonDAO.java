@@ -4,10 +4,8 @@ import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
 import dao.interfaces.PersonDAO;
 import model.identity.Address;
-import model.identity.Function;
 import model.identity.Person;
 
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -55,22 +53,6 @@ public class TestPersonDAO extends TestDAO<Person> implements PersonDAO {
         UUID uuid = UUID.randomUUID();
         person.setUuid(uuid);
         persons.put(uuid, person);
-        return person;
-    }
-
-    @Override
-    public Person create(String firstName, String lastName, String email, String phonenumber, Address address) throws DataAccessException {
-        return null;
-    }
-
-    @Override
-    public Person update(UUID id, String firstName, String lastName) throws DataAccessException {
-        if (!persons.containsKey(id)) {
-            throw new DataAccessException();
-        }
-        Person person = persons.get(id);
-        person.setFirstName(firstName);
-        person.setLastName(lastName);
         return person;
     }
 
