@@ -102,5 +102,34 @@ public class ProductionAddressDAO implements AddressDAO {
         return address;
     }
 
-    //TODO add filters
+    @Override
+    public Filter<Address> byStreet(String street) {
+        return () ->
+                predicates.add(criteriaBuilder.equal(root.get("street"), street));
+    }
+
+    @Override
+    public Filter<Address> byStreetNumber(String streetNumber) {
+        return () ->
+                predicates.add(criteriaBuilder.equal(root.get("streetNumber"), streetNumber));
+    }
+
+    @Override
+    public Filter<Address> byTown(String town) {
+        return () ->
+                predicates.add(criteriaBuilder.equal(root.get("town"), town));
+    }
+
+    @Override
+    public Filter<Address> byPostalCode(String postalCode) {
+        return () ->
+                predicates.add(criteriaBuilder.equal(root.get("postalCode"), postalCode));
+    }
+
+    @Override
+    public Filter<Address> byCountry(String country) {
+        return () ->
+                predicates.add(criteriaBuilder.equal(root.get("country"), country));
+    }
+
 }
