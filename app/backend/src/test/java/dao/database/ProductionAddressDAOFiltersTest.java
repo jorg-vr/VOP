@@ -79,4 +79,6 @@ public class ProductionAddressDAOFiltersTest {
         assertTrue("byStreet filter doesn't work", c1.contains(a1) && !c1.contains(a2) && !c1.contains(a3));
         assertTrue("byStreet filter doesn't work", !c2.contains(a1) && c2.contains(a2) && c2.contains(a3));
     }
+
+    //TODO: test multiple filters in 1 request
 }
