@@ -16,8 +16,17 @@ import org.springframework.test.context.transaction.BeforeTransaction;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+
+import static org.hamcrest.Matchers.*;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 
 
 /**
@@ -63,7 +72,10 @@ public class RESTCompanyControllerTest {
     }
     @Test
     public void get() throws Exception {
-        mvc.perform()
+        mvc.perform(MockMvcRequestBuilders.get("/companies"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$"))
+
     }
 
     @Test
