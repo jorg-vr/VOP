@@ -4,15 +4,14 @@ import dao.interfaces.CustomerDAO;
 import dao.interfaces.DAOProvider;
 import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
-import model.fleet.Vehicle;
-import model.fleet.VehicleType;
 import model.identity.Customer;
 import org.junit.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by sam on 3/14/17.

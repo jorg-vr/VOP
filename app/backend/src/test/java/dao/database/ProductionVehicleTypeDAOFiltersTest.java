@@ -22,7 +22,6 @@ public class ProductionVehicleTypeDAOFiltersTest {
     @BeforeClass
     public static void initProvider() throws Exception {
         ProductionProvider.initializeProvider(true);
-        //ProductionProvider.initializeProvider(false);
         daoProvider = ProductionProvider.getInstance();
         vehicleTypeDAO = daoProvider.getVehicleTypeDAO();
         t1 = vehicleTypeDAO.create("type 1", 2.5);
@@ -35,21 +34,6 @@ public class ProductionVehicleTypeDAOFiltersTest {
         vehicleTypeDAO.remove(t1.getUuid());
         vehicleTypeDAO.remove(t2.getUuid());
     }
-
-
-    /*@Before
-    public void setUp() throws Exception {
-        vehicleTypeDAO = daoProvider.getVehicleTypeDAO();
-
-        t1 = vehicleTypeDAO.create("type 1", 2.5);
-        t2 = vehicleTypeDAO.create("type 2", 5.7);
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        vehicleTypeDAO.remove(t1.getUuid());
-        vehicleTypeDAO.remove(t2.getUuid());
-    }*/
 
 
     @Test

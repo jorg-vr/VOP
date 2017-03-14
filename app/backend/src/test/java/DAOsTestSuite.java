@@ -1,7 +1,4 @@
-import dao.database.ProductionVehicleDAOFiltersTest;
-import dao.database.ProductionVehicleDAOTest;
-import dao.database.ProductionVehicleTypeDAOFiltersTest;
-import dao.database.ProductionVehicleTypeDAOTest;
+import dao.database.*;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -16,7 +13,10 @@ import org.junit.runners.Suite;
         ProductionVehicleDAOTest.class,
         ProductionVehicleDAOFiltersTest.class,
         ProductionVehicleTypeDAOTest.class,
-        ProductionVehicleTypeDAOFiltersTest.class
+        ProductionVehicleTypeDAOFiltersTest.class,
+        ProductionCustomerDAOTest.class,
+        ProductionAddressDAOTest.class,
+        ProductionAddressDAOFiltersTest.class
 })
 
 public class DAOsTestSuite {
