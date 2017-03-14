@@ -23,7 +23,7 @@
             <joined-subclass name="model.identity.Customer" table="CUSTOMER">
                 <key column="identity_id"/>
                 <bag name="fleets" access="field" table="FLEET"
-                     lazy="false" fetch="select">
+                     lazy="false" fetch="select" inverse="true">
                     <key column="owner_id" not-null="true"/>
                     <one-to-many class="model.fleet.Fleet" />
                 </bag>

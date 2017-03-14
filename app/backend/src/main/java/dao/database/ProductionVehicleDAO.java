@@ -75,6 +75,39 @@ public class ProductionVehicleDAO implements VehicleDAO {
     }
 
     @Override
+    public Vehicle create(String brand, String model, String chassisNumber, String licenseplate, int value, int mileage, VehicleType type, LocalDate productionDate, Fleet fleet) throws DataAccessException {
+        Vehicle vehicle = new Vehicle();
+        vehicle.setBrand(brand);
+        vehicle.setLicensePlate(licenseplate);
+        vehicle.setModel(model);
+        vehicle.setProductionDate(productionDate);
+        vehicle.setValue(value);
+        vehicle.setMileage(mileage);
+        vehicle.setType(type);
+        vehicle.setChassisNumber(chassisNumber);
+        vehicle.setFleet(fleet);
+        HibernateUtil.create(factory,vehicle);
+        return vehicle;
+    }
+
+    @Override
+    public Vehicle update(UUID uuid, String brand, String model, String chassisNumber, String licenseplate, int value, int mileage, VehicleType type, LocalDate productionDate, Fleet fleet) throws DataAccessException {
+        Vehicle vehicle = new Vehicle();
+        vehicle.setUuid(uuid);
+        vehicle.setBrand(brand);
+        vehicle.setLicensePlate(licenseplate);
+        vehicle.setModel(model);
+        vehicle.setProductionDate(productionDate);
+        vehicle.setValue(value);
+        vehicle.setMileage(mileage);
+        vehicle.setType(type);
+        vehicle.setChassisNumber(chassisNumber);
+        vehicle.setFleet(fleet);
+        HibernateUtil.update(factory,vehicle);
+        return vehicle;
+    }
+
+    @Override
     public void remove(UUID id) throws DataAccessException {
         HibernateUtil.remove(factory,get(id));
     }

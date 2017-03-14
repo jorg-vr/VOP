@@ -11,6 +11,8 @@
         <id name="uuid" type="uuid-binary" column="id">
             <generator class="uuid2"/>
         </id>
+        <property name="name" type="string" column="name"/>
+        <many-to-one name="owner" column="owner_id"  class="model.identity.Customer" />
         <bag name="vehicles" access="field" table="VEHICLE" cascade="all"
              lazy="true" fetch="select">
             <key column="fleet_id" not-null="false"/>
