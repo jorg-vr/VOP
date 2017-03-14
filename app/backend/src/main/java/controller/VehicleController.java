@@ -60,5 +60,13 @@ public class VehicleController extends AbstractController<Vehicle>{
         return ProductionProvider.getInstance().getVehicleTypeDAO().get(vehicleType);
     }
 
+    /***
+     * Gives a collection of all vehicletypes in the database.
+     * @return
+     * @throws DataAccessException
+     */
+    public Collection<VehicleType> getAllVehicleTypes() throws DataAccessException {
+        return ProductionProvider.getInstance().getVehicleTypeDAO().listFiltered();
+    }
 
 }
