@@ -62,7 +62,7 @@ public class RESTSchema<T> {
         int start = page * limit;
         int end = Math.min(start + limit, this.total);
 
-        if (start < 0 || start >= list.size() || page < 0 || limit <= 0) {
+        if (start < 0 || (start >= list.size() && list.size() > 0) || page < 0 || limit <= 0) {
             throw new InvalidInputException();
         }
 
