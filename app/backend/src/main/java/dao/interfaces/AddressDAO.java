@@ -12,5 +12,14 @@ public interface AddressDAO extends DAO<Address> {
 
     Address update(UUID id, String street, String streetNumber, String town, String postalCode, String country) throws DataAccessException;
 
-    //TODO filters
+    Filter<Address> byStreet(String street);
+
+    Filter<Address> byStreetNumber(String streetNumber);
+
+    Filter<Address> byTown(String town);
+
+    Filter<Address> byPostalCode(String postalCode);
+
+    Filter<Address> byCountry(String country);
+
 }
