@@ -31,7 +31,7 @@ public class RESTFleetController {
 
 
     @RequestMapping(method = RequestMethod.GET)
-    private RESTSchema<RESTFleet> get(@RequestParam(required = false) String company,
+    public RESTSchema<RESTFleet> get(@RequestParam(required = false) String company,
                                       @RequestParam(required = false) Integer page,
                                       @RequestParam(required = false) Integer limit) {
         FleetDAO fleetDAO = (FleetDAO) controller.getDao();
@@ -46,10 +46,10 @@ public class RESTFleetController {
             for (Fleet fleet : controller.getAll(filters.toArray(new Filter[filters.size()]))) {
                 fleets.add(modelToRest(fleet));
             }
-            fleets.sort((fleet1, fleet2) -> fleet1.getName().compareTo(fleet2.getName()));
-            if (limit != null) {
-                fleets = fleets.subList(page * limit, (page + 1) * limit);
-            }
+            //fleets.sort((fleet1, fleet2) -> fleet1.getName().compareTo(fleet2.getName()));
+//            if (limit != null) {
+//                fleets = fleets.subList(page * limit, (page + 1) * limit);
+//            }
             return new RESTSchema<>(fleets, page, limit, baseString);
         } catch (Exception e) {
             e.printStackTrace();
@@ -105,8 +105,9 @@ public class RESTFleetController {
 
     private RESTFleet modelToRest(Fleet fleet) {
         String id = UUIDUtil.UUIDToNumberString(fleet.getUuid());
+        String owner=fleet.getOwner()!=null?UUIDUtil.UUIDToNumberString(fleet.getOwner().getUuid()):null;
         return new RESTFleet(id,
-                UUIDUtil.UUIDToNumberString(fleet.getOwner().getUuid()),
+                owner,
                 fleet.getName(),
                 "",
                 "",

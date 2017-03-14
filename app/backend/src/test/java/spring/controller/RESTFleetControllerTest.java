@@ -1,37 +1,41 @@
 package spring.controller;
 
 import controller.CustomerController;
+import controller.FleetController;
 import dao.database.ProductionProvider;
 import dao.interfaces.DataAccessException;
+import model.fleet.Fleet;
 import model.identity.Address;
 import model.identity.Customer;
-import org.junit.*;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import spring.model.RESTAddress;
 import spring.model.RESTCompany;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import static org.hamcrest.Matchers.*;
-
-
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.hasSize;
+import static org.junit.Assert.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * Created by jorg on 3/14/17.
+ * Created by jorg on 3/15/17.
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-public class RESTCompanyControllerTest {
+public class RESTFleetControllerTest {
 
 
-
-    private MockMvc mvc= MockMvcBuilders.standaloneSetup(new RESTCompanyController()).build();
+    private MockMvc mvc= MockMvcBuilders.standaloneSetup(new RESTFleetController()).build();
 
     private static Address address;
     private static Customer customer;
+    private static Fleet fleet;
 
     @BeforeClass
     public static void setup() {
@@ -40,15 +44,15 @@ public class RESTCompanyControllerTest {
             //TODO find out why this doesn't work
             address= new Address("mystreet","123","lala","12345","land");
             customer= new CustomerController().create(address,"04789456123","anita","123456789");
+            fleet=new FleetController().create(customer.getUuid(),"MyFleet");
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
     }
-
-
     @AfterClass
     public static void afterTransaction() {
         try {
+            new FleetController().archive(fleet.getUuid());
             new CustomerController().archive(customer.getUuid());
         } catch (DataAccessException e) {
             e.printStackTrace();
@@ -57,7 +61,7 @@ public class RESTCompanyControllerTest {
 
     @Test
     public void get() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/companies"))
+        mvc.perform(MockMvcRequestBuilders.get("/fleets"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath(".data",hasSize(greaterThanOrEqualTo(1))))
                 .andExpect(jsonPath("$.total",greaterThanOrEqualTo(1)))
