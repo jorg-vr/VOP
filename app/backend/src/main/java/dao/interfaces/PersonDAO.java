@@ -26,6 +26,7 @@ public interface PersonDAO extends IdentityDAO<Person> {
      * @return the Person object with the adjusted fields
      * @throws DataAccessException email already taken or does not exist
      */
+    @Deprecated
     Person update(UUID id, String firstName, String lastName) throws DataAccessException;
 
     Person update(UUID id, String firstName, String lastName, String email, String phonenumber, Address address) throws DataAccessException;
