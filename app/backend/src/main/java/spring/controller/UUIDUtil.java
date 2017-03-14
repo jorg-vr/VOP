@@ -9,11 +9,19 @@ public class UUIDUtil {
      * Transforms a uuid to a string representation of a positive integer
      * Note that uuid == toUUID(UUIDToNumberString(uuid))
      *
-     * @param uuid
-     * @return
+     * @param uuid if null, null will be returned
+     * @return if uuid is null, null will be returned
      */
     public static String UUIDToNumberString(UUID uuid) {
-        return String.format("%040d", new BigInteger(uuid.toString().replace("-", ""), 16)).replaceAll("^0+", "");
+        if(uuid==null){
+            return null;
+        }
+        String string = String.format("%040d", new BigInteger(uuid.toString().replace("-", ""), 16)).replaceAll("^0+", "");
+        // TODO try to do this in regex
+        if (string.equals("")) {
+            string = "0";
+        }
+        return string;
     }
 
     /**
@@ -21,9 +29,12 @@ public class UUIDUtil {
      * Note that uuid == toUUID(UUIDToNumberString(uuid))
      *
      * @param numberString should be a string representation of a positive integer
-     * @return
+     * @return if numberString is null, null will be returned
      */
     public static UUID toUUID(String numberString) {
+        if(numberString==null){
+            return null;
+        }
         String hex = new BigInteger(numberString).toString(16);
         while (hex.length() < 32) {
             hex = "0" + hex;

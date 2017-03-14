@@ -23,7 +23,8 @@ public class TestVehicleDAO implements VehicleDAO {
         UUID five = UUID.randomUUID();
         VehicleType type1 = new VehicleType(three, "AE - Cabriolet", 210);
         VehicleType type2 = new VehicleType(four, "AA - Sedan", 530);
-        Fleet fleet=new Fleet(five,null,"myFirstFleet");//owner=null
+        Fleet fleet=new Fleet();//owner=null
+        fleet.setUuid(five);
         vehicles.put(one, new Vehicle(one, "Volkswagen", "Beetle", "ABC-123", LocalDate.parse("20000101", yearFormat), "abcdefhijk", 1000, 123, type1,fleet));
         vehicles.put(two, new Vehicle(two, "Lamborghini", "Diablo GT", "IAM-007", LocalDate.parse("19920101", yearFormat), "abcdefhijk", 3, 123, type2,fleet));
         fleet.addVehicle(vehicles.get(one));
@@ -33,30 +34,11 @@ public class TestVehicleDAO implements VehicleDAO {
     private int counter = 2;
 
     @Override
-    public Vehicle create(Vehicle vehicle) throws DataAccessException {
-        vehicles.put(vehicle.getUuid(),vehicle);
-        return vehicle;
-    }
-
-    @Override
     public Vehicle get(UUID id) throws DataAccessException {
         if (!vehicles.containsKey(id)) {
             throw new DataAccessException();
         }
         return vehicles.get(id);
-    }
-
-    @Override
-    public void update(Vehicle vehicle) throws DataAccessException {
-        if (!vehicles.containsValue(vehicle)) {
-            throw new DataAccessException();
-        }
-        vehicles.put(vehicle.getUuid(), vehicle);
-    }
-
-    @Override
-    public void remove(Vehicle vehicle) throws DataAccessException {
-        vehicles.remove(vehicle.getUuid());
     }
 
     @Override

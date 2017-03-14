@@ -34,27 +34,12 @@ public class ProductionFunctionDAO implements FunctionDAO {
     public ProductionFunctionDAO(SessionFactory factory){
         this.factory =factory;
     }
-    @Override
-    public Function create(Function function) throws DataAccessException {
-        HibernateUtil.create(factory,function);
-        return function;
-    }
 
     @Override
     public Function get(UUID id) throws DataAccessException {
         try (Session session = factory.openSession()) {
             return session.get(Function.class, id);
         }
-    }
-
-    @Override
-    public void update(Function function) throws DataAccessException {
-        HibernateUtil.update(factory,function);
-    }
-
-    @Override
-    public void remove(Function function) throws DataAccessException {
-        HibernateUtil.remove(factory,function);
     }
 
     @Override
@@ -72,13 +57,14 @@ public class ProductionFunctionDAO implements FunctionDAO {
             this.criteriaQuery = this.criteriaBuilder.createQuery(Function.class);
             this.root = this.criteriaQuery.from(Function.class);
             for (Filter<Function> filter : filters) {
-                filter.filter(null);
+                filter.filter();
             }
             Collection<Function> functions = session.createQuery(criteriaQuery.where(predicates.toArray(new Predicate[predicates.size()]))).getResultList();
             tx.commit();
             this.root = null;
             this.criteriaQuery = null;
             this.criteriaBuilder = null;
+            predicates.clear();
             return functions;
         } catch (Exception e) {
             e.printStackTrace();
@@ -107,8 +93,12 @@ public class ProductionFunctionDAO implements FunctionDAO {
     }
 
     @Override
-    public Function update(UUID id, LocalDateTime endDate) throws DataAccessException {
+    public Function update(UUID id, Company company, Role role, Account account, LocalDateTime startDate, LocalDateTime endDate) throws DataAccessException {
         Function function = get(id);
+        function.setCompany(company);
+        function.setRole(role);
+        function.setAccount(account);
+        function.setStartDate(startDate);
         function.setEndDate(endDate);
         HibernateUtil.update(factory,function);
         return function;
@@ -116,17 +106,13 @@ public class ProductionFunctionDAO implements FunctionDAO {
 
     @Override
     public Filter<Function> byAccount(Account account) {
-        return (o1) -> {
+        return () ->
             predicates.add(criteriaBuilder.equal(root.get("account"), account));
-            return true;
-        };
     }
 
     @Override
     public Filter<Function> byCompany(Company company) {
-        return (o1) -> {
+        return () ->
             predicates.add(criteriaBuilder.equal(root.get("company"), company));
-            return true;
-        };
     }
 }

@@ -3,7 +3,6 @@ package dao.database;
 import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
 import dao.interfaces.VehicleTypeDao;
-import model.fleet.Vehicle;
 import model.fleet.VehicleType;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -22,6 +21,17 @@ import java.util.UUID;
  */
 public class ProductionVehicleTypeDAO implements VehicleTypeDao {
 
+    //TODO remove this!!!!!!!!!!
+    static{
+        try {
+            ProductionProvider.getInstance().getVehicleTypeDAO().create("Personenwagen",15);
+            ProductionProvider.getInstance().getVehicleTypeDAO().create("Camion",15);
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     private final SessionFactory factory;
     private CriteriaBuilder criteriaBuilder;
     private CriteriaQuery<VehicleType> criteriaQuery;
@@ -30,12 +40,6 @@ public class ProductionVehicleTypeDAO implements VehicleTypeDao {
 
     public ProductionVehicleTypeDAO(SessionFactory factory) {
         this.factory = factory;
-    }
-
-    @Override
-    public VehicleType create(VehicleType vehicleType) throws DataAccessException {
-        HibernateUtil.create(factory,vehicleType);
-        return vehicleType;
     }
 
     @Override
@@ -64,17 +68,6 @@ public class ProductionVehicleTypeDAO implements VehicleTypeDao {
         return vehicleType;
     }
 
-
-    @Override
-    public void update(VehicleType vehicleType) throws DataAccessException {
-        HibernateUtil.update(factory,vehicleType);
-    }
-
-    @Override
-    public void remove(VehicleType vehicleType) throws DataAccessException {
-        HibernateUtil.remove(factory,vehicleType);
-    }
-
     @Override
     public void remove(UUID id) throws DataAccessException {
         HibernateUtil.remove(factory,get(id));
@@ -90,13 +83,14 @@ public class ProductionVehicleTypeDAO implements VehicleTypeDao {
             this.criteriaQuery = this.criteriaBuilder.createQuery(VehicleType.class);
             this.root = this.criteriaQuery.from(VehicleType.class);
             for (Filter<VehicleType> filter : filters) {
-                filter.filter(null);
+                filter.filter();
             }
             Collection<VehicleType> types = session.createQuery(criteriaQuery.where(predicates.toArray(new Predicate[predicates.size()]))).getResultList();
             tx.commit();
             this.root = null;
             this.criteriaQuery = null;
             this.criteriaBuilder = null;
+            predicates.clear();
             return types;
         } catch (Exception e) {
             e.printStackTrace();
@@ -115,17 +109,13 @@ public class ProductionVehicleTypeDAO implements VehicleTypeDao {
 
     @Override
     public Filter<VehicleType> byName(String name) {
-        return (o1) -> {
+        return () ->
             predicates.add(criteriaBuilder.equal(root.get("type"), name));
-            return true;
-        };
     }
 
     @Override
     public Filter<VehicleType> nameContains(String name) {
-        return (o1) -> {
+        return () ->
             predicates.add(criteriaBuilder.like(root.get("type"), "%"+ name + "%"));
-            return true;
-        };
     }
 }

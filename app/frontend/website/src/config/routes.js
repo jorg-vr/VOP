@@ -15,7 +15,7 @@ import IndexClient from '../pages/clients/index.vue'
 import NewFleet from '../pages/fleet/new.vue'
 import IndexFleet from '../pages/fleet/index.vue'
 import ShowFleet from '../pages/fleet/show.vue'
-import NewSubfleet from '../pages/subfleet/new.vue'
+import EditFleet from '../pages/fleet/edit.vue'
 
 
 import newVehicle from '../pages/vehicle/new.vue'
@@ -39,9 +39,10 @@ export default [
             { path: 'clients/:id/edit', name: 'edit_client',component: EditClient },
             //Fleet
             { path: 'fleets', name: 'fleets', component: IndexFleet },
-            { path: 'fleets/new', name: 'new_fleet', component: NewFleet },
             { path: 'fleets/:id', name: 'fleet', component: ShowFleet },
-            { path: 'fleets/:id/new', name: 'new_subfleet', component: NewSubfleet},
+            { path: 'fleets/new', name: 'new_fleet', component: NewFleet },
+            { path: 'fleets/:id/edit', name: 'edit_fleet', component: EditFleet},
+
 
             //Vehicle
             { path: 'vehicles/new', name: 'new_vehicle', component: newVehicle },

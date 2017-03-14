@@ -34,18 +34,18 @@ public class RESTCompanyController {
     private CustomerController controller = new CustomerController();
 
     @RequestMapping(method = RequestMethod.GET)
-    public RESTSchema<RESTCompany> getAllCompanies(Integer page, Integer limit,
-                                                   @RequestParam(required = false) String nameContains,
-                                                   @RequestParam(required = false) String country,
-                                                   @RequestParam(required = false) String city,
-                                                   @RequestParam(required = false) String postalCode) {
+    public RESTSchema<RESTCompany> get(Integer page, Integer limit,
+                                       @RequestParam(required = false) String nameContains,
+                                       @RequestParam(required = false) String country,
+                                       @RequestParam(required = false) String city,
+                                       @RequestParam(required = false) String postalCode) {
 
-        CustomerDAO customerDAO = (CustomerDAO) controller.getDao(); //TODO get rid of cast
+        CustomerDAO customerDAO = (CustomerDAO) controller.getDao(); //TODO getId rid of cast
         List<Filter> filters = new ArrayList<>();
         if (nameContains != null) {
             filters.add(customerDAO.byName(nameContains));
         }
-        filters.add(customerDAO.byAddress(new Address(null, null, city, postalCode, country)));
+        //filters.add(customerDAO.byAddress(new Address(null, null, city, postalCode, country))); TODO fix this
         Collection<RESTCompany> result = new ArrayList<>();
         try {
             for (Customer customer : controller.getAll(filters.toArray(new Filter[filters.size()]))) {
@@ -55,58 +55,62 @@ public class RESTCompanyController {
         } catch (DataAccessException e) {
             //API doesn't contain error
         }
-        return new RESTSchema<>(result, page, limit, PATH_COMPANY, (a, b) -> a.getId().compareTo(b.getId()));
+        return new RESTSchema<>(result, page, limit, PATH_COMPANY);
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public void postCompanies(@RequestBody RESTCompany restCompany) {
+    public RESTCompany post(@RequestBody RESTCompany restCompany) {
         try {
-            controller.create(RESTToModelAddress(restCompany.getAddress()),
+            Customer customer = controller.create(RESTToModelAddress(restCompany.getAddress()),
                     restCompany.getPhoneNumber(),
                     restCompany.getName(),
                     restCompany.getVatNumber());
+            restCompany = modelToRESTCompany(customer);
         } catch (DataAccessException e) {
             throw new InvalidInputException(e);
         }
+        return restCompany;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "{id}")
-    public RESTCompany getCompany(@PathVariable("id") String id) {
-
+    public RESTCompany getId(@PathVariable("id") String id) {
+        UUID uuid = UUIDUtil.toUUID(id);
         try {
-            return modelToRESTCompany(controller.get(UUID.fromString(id)));
-
+            return modelToRESTCompany(controller.get(uuid));
         } catch (DataAccessException e) {
             throw new NotFoundException();
         }
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "{id}")
-    public void putCompany(@PathVariable("id") String id, @RequestBody RESTCompany restCompany) {
+    public RESTCompany putId(@PathVariable("id") String id, @RequestBody RESTCompany restCompany) {
+        UUID uuid = UUIDUtil.toUUID(id);
         try {
-            controller.update(UUID.fromString(id),
+            Customer customer = controller.update(uuid,
                     RESTToModelAddress(restCompany.getAddress()),
                     restCompany.getPhoneNumber(),
                     restCompany.getName(),
                     restCompany.getVatNumber());
+            restCompany = modelToRESTCompany(customer);
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
-
+        return restCompany;
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "{id}")
-    public void deleteVehicle(@PathVariable("id") String id) {
-
+    public void deleteId(@PathVariable("id") String id) {
+        UUID uuid = UUIDUtil.toUUID(id);
         try {
-            controller.archive(UUID.fromString(id));
+            controller.archive(uuid);
         } catch (DataAccessException e) {
             throw new NotFoundException();
         }
     }
 
     private RESTCompany modelToRESTCompany(Customer customer) {
-        return new RESTCompany(customer.getUuid().toString(),
+        String id = UUIDUtil.UUIDToNumberString(customer.getUuid());
+        return new RESTCompany(id,
                 customer.getName(),
                 customer.getBtwNumber(),
                 customer.getPhoneNumber(),
@@ -114,10 +118,13 @@ public class RESTCompanyController {
                 null,
                 null,
                 null,
-                "/companies/" + customer.getUuid().toString());
+                PATH_COMPANY + "/" + id);
     }
 
     private RESTAddress modelToRESTAddress(Address address) {
+        if(address==null){
+            return null;
+        }
         return new RESTAddress(address.getCountry(),
                 address.getTown(),
                 address.getStreet(),
@@ -126,6 +133,9 @@ public class RESTCompanyController {
     }
 
     private Address RESTToModelAddress(RESTAddress restAddress) {
+        if(restAddress==null){
+            return null;
+        }
         return new Address(restAddress.getStreet(),
                 restAddress.getHouseNumber(),
                 restAddress.getCity(),

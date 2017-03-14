@@ -37,14 +37,14 @@ public class RESTVehicleController {
      * @return
      */
     @RequestMapping(method = RequestMethod.GET)
-    public RESTSchema<RESTVehicle> getAllVehicles(@RequestParam(required = false) String licensPlate,
-                                                  @RequestParam(required = false) String vin,
-                                                  @RequestParam(required = false) String leasingCompany,
-                                                  @RequestParam(required = false) String year,
-                                                  @RequestParam(required = false) String fleet,
-                                                  @RequestParam(required = false) String type,
-                                                  @RequestParam(required = false) Integer page,
-                                                  @RequestParam(required = false) Integer limit) {
+    public RESTSchema<RESTVehicle> get(@RequestParam(required = false) String licensPlate,
+                                       @RequestParam(required = false) String vin,
+                                       @RequestParam(required = false) String leasingCompany,
+                                       @RequestParam(required = false) String year,
+                                       @RequestParam(required = false) String fleet,
+                                       @RequestParam(required = false) String type,
+                                       @RequestParam(required = false) Integer page,
+                                       @RequestParam(required = false) Integer limit) {
         String baseString = "/vehicles?";
         VehicleDAO vehicleDAO = (VehicleDAO) controller.getDao();
         List<Filter<Vehicle>> filters = new ArrayList<>();
@@ -83,7 +83,7 @@ public class RESTVehicleController {
             throw new InvalidInputException("Some parameters where invalid");
         }
 
-        return new RESTSchema<>(result, page, limit, baseString, (a, b) -> a.getId().compareTo(b.getId()));
+        return new RESTSchema<>(result, page, limit, baseString);
     }
 
     /***
@@ -93,7 +93,7 @@ public class RESTVehicleController {
      * @return
      */
     @RequestMapping(method = RequestMethod.POST)
-    public RESTVehicle postVehicles(@RequestBody RESTVehicle vehicle) {
+    public RESTVehicle post(@RequestBody RESTVehicle vehicle) {
         try {
             LocalDate year = LocalDate.parse(vehicle.getYear() + "0101", yearFormat);//Fix conversion bug
             return modelToRest(
@@ -108,18 +108,18 @@ public class RESTVehicleController {
                             UUIDUtil.toUUID(vehicle.getId())));
         } catch (DataAccessException e) {
             throw new InvalidInputException();
-            //TODO update when there are more exceptions
+            //TODO updateId when there are more exceptions
         }
     }
 
     /***
-     * implement get method, see api
+     * implement getId method, see api
      *
      * @param id
      * @return
      */
     @RequestMapping(method = RequestMethod.GET, value = "{id}")
-    public RESTVehicle getVehicle(@PathVariable("id") String id) {
+    public RESTVehicle getId(@PathVariable("id") String id) {
 
         try {
             return modelToRest(controller.get(UUIDUtil.toUUID(id)));
@@ -137,7 +137,7 @@ public class RESTVehicleController {
      * @return
      */
     @RequestMapping(method = RequestMethod.PUT, value = "{id}")
-    public RESTVehicle putVehicle(@PathVariable("id") String id, @RequestBody RESTVehicle vehicle) {
+    public RESTVehicle putId(@PathVariable("id") String id, @RequestBody RESTVehicle vehicle) {
         try {
             LocalDate year = LocalDate.parse(vehicle.getYear() + "0101", yearFormat);//Fix conversion bug
             return modelToRest(
@@ -153,25 +153,25 @@ public class RESTVehicleController {
                             UUIDUtil.toUUID(vehicle.getId())));
         } catch (DataAccessException e) {
             throw new InvalidInputException();
-            //TODO update when there are more exceptions
+            //TODO updateId when there are more exceptions
         }
 
     }
 
     /***
-     * implement delete method, see api
+     * implement deleteId method, see api
      *
      * @param id
      * @return
      */
     @RequestMapping(method = RequestMethod.DELETE, value = "{id}")
-    public void deleteVehicle(@PathVariable("id") String id) {
+    public void deleteId(@PathVariable("id") String id) {
 
         try {
-            controller.archive(UUID.fromString(id));
+            controller.archive(UUIDUtil.toUUID(id));
         } catch (DataAccessException e) {
             throw new NotFoundException();
-            //TODO update when there are more exceptions
+            //TODO updateId when there are more exceptions
         }
     }
 
@@ -184,21 +184,23 @@ public class RESTVehicleController {
      */
     private RESTVehicle modelToRest(Vehicle vehicle) {
         String leasingCompany = vehicle.getLeasingCompany() != null ? UUIDUtil.UUIDToNumberString(vehicle.getLeasingCompany().getUuid()) : null;
+        String fleet=vehicle.getFleet()!=null?UUIDUtil.UUIDToNumberString(vehicle.getFleet().getUuid()):null;
+        String type=vehicle.getType()!=null?UUIDUtil.UUIDToNumberString(vehicle.getType().getUuid()):null;
         return new RESTVehicle(UUIDUtil.UUIDToNumberString(vehicle.getUuid()),
                 vehicle.getLicensePlate(),
                 vehicle.getChassisNumber(),
                 vehicle.getBrand(),
                 vehicle.getModel(),
-                UUIDUtil.UUIDToNumberString(vehicle.getType().getUuid()),
+                type,
                 vehicle.getValue(),
                 vehicle.getMileage(),
                 vehicle.getProductionDate().format(yearFormat).substring(0, 4),
                 leasingCompany,
-                UUIDUtil.UUIDToNumberString(vehicle.getFleet().getUuid()),
+                fleet,
                 null,//TODO search leasing company
                 null,//TODO implement edit dates with history
                 null,
-                "/vehicles/" + UUIDUtil.UUIDToNumberString(vehicle.getUuid())
+                PATH_VEHICLE + "/" + UUIDUtil.UUIDToNumberString(vehicle.getUuid())
         );
     }
 

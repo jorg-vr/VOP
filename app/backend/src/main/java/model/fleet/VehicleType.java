@@ -64,13 +64,13 @@ public class VehicleType implements EditableObject, java.io.Serializable {
 
         VehicleType that = (VehicleType) o;
 
-        return uuid == that.uuid;
+        return uuid.equals(that.uuid);
 
     }
 
     @Override
     public int hashCode() {
-        return uuid .hashCode();
+        return uuid.hashCode();
     }
 
     @Override

@@ -11,4 +11,6 @@ public interface AddressDAO extends DAO<Address> {
     Address create(String street, String streetNumber, String town, String postalCode, String country) throws DataAccessException;
 
     Address update(UUID id, String street, String streetNumber, String town, String postalCode, String country) throws DataAccessException;
+
+    //TODO filters
 }

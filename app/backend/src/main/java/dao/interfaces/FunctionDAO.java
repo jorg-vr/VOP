@@ -16,7 +16,7 @@ public interface FunctionDAO extends DAO<Function> {
 
     Function create(Company company, Role role, Account account, LocalDateTime startDate, LocalDateTime endDate) throws DataAccessException;
 
-    Function update(UUID id, LocalDateTime endDate) throws DataAccessException;
+    Function update(UUID id, Company company, Role role, Account account, LocalDateTime startDate, LocalDateTime endDate) throws DataAccessException;
 
     Filter<Function> byAccount(Account account);
     Filter<Function> byCompany(Company company);

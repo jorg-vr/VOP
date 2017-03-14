@@ -3,7 +3,6 @@ package dao.database;
 import dao.interfaces.CustomerDAO;
 import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
-import model.account.Function;
 import model.fleet.Fleet;
 import model.identity.Address;
 import model.identity.Customer;
@@ -30,14 +29,8 @@ public class ProductionCustomerDAO implements CustomerDAO {
     private CriteriaQuery<Customer> criteriaQuery;
     private CriteriaBuilder criteriaBuilder;
 
-    public ProductionCustomerDAO(SessionFactory factory){
+    public ProductionCustomerDAO(SessionFactory factory) {
         this.factory = factory;
-    }
-
-    @Override
-    public Customer create(Customer customer) throws DataAccessException {
-        HibernateUtil.create(factory,customer);
-        return customer;
     }
 
     @Override
@@ -48,48 +41,32 @@ public class ProductionCustomerDAO implements CustomerDAO {
     }
 
     @Override
-    public Customer create(String name, Address address, String email, String phonenumber, String btwNumber, String bankAccountNumber, Collection<Fleet> fleets) throws DataAccessException {
+    public Customer create(String name, Address address, String phonenumber, String btwNumber, Collection<Fleet> fleets) throws DataAccessException {
         Customer customer = new Customer();
         customer.setName(name);
         customer.setAddress(address);
-        customer.setEmail(email);
         customer.setPhoneNumber(phonenumber);
-        customer.setBankAccountNumber(bankAccountNumber);
         customer.setBtwNumber(btwNumber);
         customer.setFleets(fleets);
-        HibernateUtil.create(factory,customer);
+        HibernateUtil.create(factory, customer);
         return customer;
     }
 
     @Override
-    public Customer update(UUID id, String name, Address address, String email, String phonenumber, String btwNumber, String bankAccountNumber, Collection<Fleet> fleets) throws DataAccessException {
+    public Customer update(UUID id,String name, Address address, String phonenumber, String btwNumber) throws DataAccessException {
         Customer customer = new Customer();
         customer.setUuid(id);
         customer.setName(name);
         customer.setAddress(address);
-        customer.setEmail(email);
         customer.setPhoneNumber(phonenumber);
-        customer.setBankAccountNumber(bankAccountNumber);
         customer.setBtwNumber(btwNumber);
-        customer.setFleets(fleets);
-        HibernateUtil.update(factory,customer);
+        HibernateUtil.update(factory, customer);
         return customer;
-    }
-
-
-    @Override
-    public void update(Customer customer) throws DataAccessException {
-        HibernateUtil.update(factory,customer);
-    }
-
-    @Override
-    public void remove(Customer customer) throws DataAccessException {
-        HibernateUtil.remove(factory,customer);
     }
 
     @Override
     public void remove(UUID id) throws DataAccessException {
-        HibernateUtil.remove(factory,get(id));
+        HibernateUtil.remove(factory, get(id));
     }
 
     @Override
@@ -102,13 +79,14 @@ public class ProductionCustomerDAO implements CustomerDAO {
             this.criteriaQuery = this.criteriaBuilder.createQuery(Customer.class);
             this.root = this.criteriaQuery.from(Customer.class);
             for (Filter<Customer> filter : filters) {
-                filter.filter(null);
+                filter.filter();
             }
             Collection<Customer> customers = session.createQuery(criteriaQuery.where(predicates.toArray(new Predicate[predicates.size()]))).getResultList();
             tx.commit();
             this.root = null;
             this.criteriaQuery = null;
             this.criteriaBuilder = null;
+            predicates.clear();
             return customers;
         } catch (Exception e) {
             e.printStackTrace();
@@ -132,57 +110,44 @@ public class ProductionCustomerDAO implements CustomerDAO {
 
     @Override
     public Filter<Customer> byName(String name) {
-        return (o1) -> {
-            predicates.add(criteriaBuilder.equal(root.get("name"), name));
-            return true;
-        };
+        return () ->
+                predicates.add(criteriaBuilder.equal(root.get("name"), name));
     }
 
     @Override
     public Filter<Customer> containsName(String name) {
-        return (o1) -> {
+        return () ->
             predicates.add(criteriaBuilder.like(root.get("name"), "%" + name + "%"));
-            return true;
-        };
-    }
 
-    @Override
-    public Filter<Customer> byVatNumber(String vatNumber) {
-        return (o1) -> {
-            predicates.add(criteriaBuilder.equal(root.get("btwNumber"), vatNumber));
-            return true;
-        };
-    }
+        }
 
-    @Override
-    public Filter<Customer> byPhoneNumber(String phoneNumber) {
-        return (o1) -> {
-            predicates.add(criteriaBuilder.equal(root.get("phoneNumber"), phoneNumber));
-            return true;
-        };
-    }
+        @Override
+        public Filter<Customer> byVatNumber (String vatNumber){
+            return () ->
+                predicates.add(criteriaBuilder.equal(root.get("btwNumber"), vatNumber));
+        }
 
-    @Override
-    public Filter<Customer> byAddress(Address address) {
-        return (o1) -> {
-            predicates.add(criteriaBuilder.equal(root.get("address"), address));
-            return true;
-        };
-    }
+        @Override
+        public Filter<Customer> byPhoneNumber (String phoneNumber){
+            return () ->
+                predicates.add(criteriaBuilder.equal(root.get("phoneNumber"), phoneNumber));
+        }
 
-    @Override
-    public Filter<Customer> byBankAccountNummber(String bankAccountNumber) {
-        return (o1) -> {
-            predicates.add(criteriaBuilder.equal(root.get("bankAccountNumber"), bankAccountNumber));
-            return true;
-        };
-    }
+        @Override
+        public Filter<Customer> byAddress (Address address){
+            return () ->
+                predicates.add(criteriaBuilder.equal(root.get("address"), address));
+        }
 
-    @Override
-    public Filter<Customer> byEmail(String email) {
-        return (o1) -> {
-            predicates.add(criteriaBuilder.equal(root.get("email"), email));
-            return true;
-        };
+        @Override
+        public Filter<Customer> byBankAccountNummber (String bankAccountNumber){
+            return () ->
+                predicates.add(criteriaBuilder.equal(root.get("bankAccountNumber"), bankAccountNumber));
+        }
+
+        @Override
+        public Filter<Customer> byEmail (String email){
+            return () ->
+                predicates.add(criteriaBuilder.equal(root.get("email"), email));
+        }
     }
-}

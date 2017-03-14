@@ -11,7 +11,6 @@ public interface DAOProvider extends AutoCloseable {
 
     AccountDAO getAccountDao();
 
-    // TODO other types of companies?
     CompanyDAO<Company> getCompanyDAO();
 
     CustomerDAO getCustomerDAO();
@@ -24,7 +23,6 @@ public interface DAOProvider extends AutoCloseable {
 
     HistoryDAO<Insurance> getInsuranceHistoryDAO();
 
-    // TODO other types of identities?
     IdentityDAO<Person> getIdentityDAO();
 
     InsuranceDAO getInsuranceDAO();

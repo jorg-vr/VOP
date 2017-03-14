@@ -20,16 +20,7 @@ public interface AccountDAO extends DAO<Account> {
      */
     Account create(String login, String hashedPassword, Person person) throws DataAccessException;
 
-    /**
-     *
-     * @param id id of the account that has to be updated
-     * @param hashedPassword the new password
-     * @return account with updated fields
-     * @throws DataAccessException account does not exist
-     */
-    Account update(UUID id, String hashedPassword) throws DataAccessException;
-
-    Account update(UUID id, String login, String hashedPassword, Person person) throws DataAccessException;
+    Account update(UUID id, String login, String hashedPassword) throws DataAccessException;
 
     Filter<Account> bySecurity(String login, String password);
     Filter<Account> byPerson(Person identity);

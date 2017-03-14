@@ -3,7 +3,6 @@ package dao.database;
 import dao.interfaces.AddressDAO;
 import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
-import model.fleet.Fleet;
 import model.identity.Address;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -33,26 +32,10 @@ public class ProductionAddressDAO implements AddressDAO {
     }
 
     @Override
-    public Address create(Address address) throws DataAccessException {
-        HibernateUtil.create(factory,address);
-        return address;
-    }
-
-    @Override
     public Address get(UUID id) throws DataAccessException {
         try (Session session = factory.openSession()) {
             return session.get(Address.class, id);
         }
-    }
-
-    @Override
-    public void update(Address address) throws DataAccessException {
-        HibernateUtil.update(factory,address);
-    }
-
-    @Override
-    public void remove(Address address) throws DataAccessException {
-        HibernateUtil.remove(factory,address);
     }
 
     @Override
@@ -70,13 +53,14 @@ public class ProductionAddressDAO implements AddressDAO {
             this.criteriaQuery = this.criteriaBuilder.createQuery(Address.class);
             this.root = this.criteriaQuery.from(Address.class);
             for (Filter<Address> filter : filters) {
-                filter.filter(null);
+                filter.filter();
             }
             Collection<Address> fleets = session.createQuery(criteriaQuery.where(predicates.toArray(new Predicate[predicates.size()]))).getResultList();
             tx.commit();
             this.root = null;
             this.criteriaQuery = null;
             this.criteriaBuilder = null;
+            predicates.clear();
             return fleets;
         } catch (Exception e) {
             e.printStackTrace();
@@ -117,4 +101,6 @@ public class ProductionAddressDAO implements AddressDAO {
         HibernateUtil.update(factory,address);
         return address;
     }
+
+    //TODO add filters
 }

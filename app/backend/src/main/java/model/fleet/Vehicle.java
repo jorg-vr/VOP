@@ -92,15 +92,10 @@ public class Vehicle implements EditableObject, java.io.Serializable {
     }
 
     /**
-     * sets the licensplate of the vehicle
-     *
-     * @param licensePlate string representing a licensplate
-     * @throws InvalidInputException throws an exception if the license plate is invalid (contains 0 characters or uses characters that are not alphanumeric)
+     * sets the licenseplate of the vehicle
+     * @param licensePlate string representing a licenseplate
      */
-    public void setLicensePlate(String licensePlate) throws InvalidInputException {
-        if (!licensePlate.matches("^[a-zA-Z0-9]+$")) {
-            throw new InvalidInputException("License Plate can only use alphanumeric symbols");
-        }
+    public void setLicensePlate(String licensePlate){
         this.licensePlate = licensePlate;
     }
 
@@ -191,7 +186,7 @@ public class Vehicle implements EditableObject, java.io.Serializable {
 
         if (o == null || getClass() != o.getClass()) return false;
 
-        return uuid == ((Vehicle) o).getUuid();
+        return uuid.equals(((Vehicle) o).getUuid());
     }
 
     @Override
