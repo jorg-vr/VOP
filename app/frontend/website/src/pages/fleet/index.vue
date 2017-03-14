@@ -4,9 +4,9 @@
             <h1>Vloten </h1>
         </div>
         <info-pane v-for="fleet in fleets"
-                   :keys="new Array('name', 'company')"
-                   :object="fleet"
+                   :textValues="new Array('name', 'company')"
                    :remove="deleteVehicle"
+                   :objectId="fleet.id"
                    edit="edit_fleet"
                    show="fleet"
                    :key="fleet.id">
@@ -29,14 +29,6 @@
                     {id: 3, name: 'Vloot 3', company : '3'},
                     {id: 4, name: 'Vloot 4', company : '4'}
                 ]
-                /*
-                fleets: [ //dummy fleets
-                    {id: 1, text: ['Test company 1'], edit: 'id/edit', show: 'fleets/1'},
-                    {id: 2, text: ['Test company 2'], edit: 'id/edit'},
-                    {id: 3, text: ['Test company 3'], edit: 'id/edit'},
-                    {id: 4, text: ['Test company 4'], edit: 'id/edit'}
-                ]
-                */
             }
         },
         created() {
