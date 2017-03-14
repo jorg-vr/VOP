@@ -31,7 +31,7 @@ public class ProductionVehicleDAOTest {
     //Gets executed after all tests have been run
     @AfterClass
     public static void closeProvider() throws Exception{
-        daoProvider.close();
+//        daoProvider.close();
     }
 
     @Before
@@ -43,10 +43,9 @@ public class ProductionVehicleDAOTest {
 
     @After
     public void tearDown() throws Exception {
-        vehicleTypeDAO.remove(t1.getUuid());
+//        vehicleTypeDAO.remove(t1.getUuid());
     }
 
-    @Ignore
     @Test
     public void createGetRemoveTest() throws Exception {
         //VehicleType type = new VehicleType(null, "type 1", 2.5);
@@ -63,6 +62,8 @@ public class ProductionVehicleDAOTest {
         try {
             if (vehicle1 != null) {
                 Vehicle vehicle2 = vehicleDao.get(vehicle1.getUuid());
+                System.out.println(vehicle1.getType().toString() + " " + vehicle2.getType().toString());
+                System.out.println(vehicle1.getType().equals(vehicle2.getType()));
                 assertEquals("type field not equal", vehicle1.getType(), vehicle2.getType());
                 assertEquals("brand field not equal", vehicle1.getBrand(), vehicle2.getBrand());
                 assertEquals("model field not equal", vehicle1.getModel(), vehicle2.getModel());
@@ -99,7 +100,7 @@ public class ProductionVehicleDAOTest {
         }
     }
 
-    @Ignore
+
     @Test
     public void update() throws Exception {
         //add new vehicle to the database

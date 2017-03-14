@@ -130,19 +130,7 @@ public class ProductionProvider implements DAOProvider {
     }
 
     public static void main(String[] args) {
-        ProductionProvider.initializeProvider(false);
-        try (DAOProvider daoProvider = ProductionProvider.getInstance()) {
-
-            AccountDAO accountDAO = daoProvider.getAccountDao();
-            PersonDAO personDAO = daoProvider.getPersonDAO();
-            Person sam =  personDAO.create("test","test","test");
-            accountDAO.create("test","hashed",sam);
-            accountDAO.create("test2","hashed",sam);
-            accountDAO.create("test3","hashed",sam);
-        } catch (DataAccessException e) {
-            e.printStackTrace();
-        }
-
+        System.out.println();
 
     }
 }

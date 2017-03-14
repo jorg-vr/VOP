@@ -87,6 +87,7 @@ public class ProductionFleetDAO implements FleetDAO{
             this.root = null;
             this.criteriaQuery = null;
             this.criteriaBuilder = null;
+            predicates.clear();
             return fleets;
         } catch (Exception e) {
             e.printStackTrace();

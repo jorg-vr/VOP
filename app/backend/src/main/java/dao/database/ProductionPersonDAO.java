@@ -86,6 +86,7 @@ public class ProductionPersonDAO implements PersonDAO {
             this.root = null;
             this.criteriaQuery = null;
             this.criteriaBuilder = null;
+            predicates.clear();
             return persons;
         } catch (Exception e) {
             e.printStackTrace();

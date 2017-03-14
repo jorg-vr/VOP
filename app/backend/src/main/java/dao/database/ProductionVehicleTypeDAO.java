@@ -79,6 +79,7 @@ public class ProductionVehicleTypeDAO implements VehicleTypeDao {
             this.root = null;
             this.criteriaQuery = null;
             this.criteriaBuilder = null;
+            predicates.clear();
             return types;
         } catch (Exception e) {
             e.printStackTrace();
