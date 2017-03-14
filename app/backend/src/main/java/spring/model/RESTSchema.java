@@ -38,13 +38,15 @@ public class RESTSchema<T> {
      * The collection will be sorted based on the UUID of the objects t
      * 2) pagination.previous/pagination.next will be null if there is no previous/next page
      * 2) All other attributes of pagination will contain valid values
+     * <p>
+     * The data will be sorted based on the hashcode
      *
      * @param collection the full collection that has to be paginated
      * @param page       if null data of the pagination will be set to collection
      * @param limit      if null data of the pastination will be set to collection
      * @return
      */
-    public RESTSchema(Collection<T> collection, Integer page, Integer limit, String baseString, Comparator<T> comparator) {
+    public RESTSchema(Collection<T> collection, Integer page, Integer limit, String baseString) {
         this.data = collection;
         List<T> list = new ArrayList<>(collection);
         this.setTotal(list.size());
@@ -56,7 +58,7 @@ public class RESTSchema<T> {
         }
 
         // TODO sort
-        Collections.sort(list, comparator);
+        Collections.sort(list, (a, b) -> a.hashCode() - b.hashCode());
         int start = page * limit;
         int end = Math.min(start + limit, this.total);
 
@@ -83,8 +85,9 @@ public class RESTSchema<T> {
 
     /**
      * Appends page and limit to the query. A ? will be appended to path if required
-     * @param path the query so far
-     * @param page the page number, should not be null
+     *
+     * @param path  the query so far
+     * @param page  the page number, should not be null
      * @param limit the limit, should not be null
      * @return the path where limit and page have been appended to
      */
