@@ -27,14 +27,14 @@ public class FunctionController extends AbstractController<Function> {
     }
 
     public Function create(UUID companyId, String roleString, UUID accountId, LocalDateTime startDate, LocalDateTime endDate) throws DataAccessException {
-        Company company = provider.getCompanyDAO().get(companyId);
+        Company company = provider.getCustomerDAO().get(companyId);
         Role role = new Role(roleString);
         Account account = provider.getAccountDao().get(accountId);
         return functionDAO.create(company, role, account, startDate, endDate);
     }
 
     public Function update(UUID functionId, UUID companyId, String roleString, UUID accountId, LocalDateTime startDate, LocalDateTime endDate) throws DataAccessException {
-        Company company = provider.getCompanyDAO().get(companyId);
+        Company company = provider.getCustomerDAO().get(companyId);
         Role role = new Role(roleString);
         Account account = provider.getAccountDao().get(accountId);
         return functionDAO.update(functionId, company, role, account, startDate, endDate);
