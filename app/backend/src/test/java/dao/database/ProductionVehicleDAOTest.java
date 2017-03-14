@@ -20,7 +20,7 @@ public class ProductionVehicleDAOTest {
     private ProductionVehicleTypeDAO vehicleTypeDAO;
     private VehicleType t1;
 
-    //TODO: get this to work
+    //TODO: production to false, when local
     //Setup before any of the tests are started
     @BeforeClass
     public static void initProvider() throws Exception{
