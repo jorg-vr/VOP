@@ -1,12 +1,13 @@
 package dao.database;
 
 import dao.interfaces.Filter;
+import dao.interfaces.VehicleDAO;
+import dao.interfaces.VehicleTypeDao;
 import model.fleet.Vehicle;
 import model.fleet.VehicleType;
 import org.junit.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Collection;
 
 import static org.junit.Assert.assertTrue;
@@ -16,27 +17,40 @@ import static org.junit.Assert.assertTrue;
  */
 public class ProductionVehicleDAOFiltersTest {
     private static ProductionProvider daoProvider;
-    private ProductionVehicleDAO vehicleDAO;
-    private Vehicle v1, v2, v3;
-    private VehicleType t1, t2;
-    private ProductionVehicleTypeDAO vehicleTypeDAO;
+    private static VehicleDAO vehicleDAO;
+    private static VehicleTypeDao vehicleTypeDAO;
+    private static Vehicle v1, v2, v3;
+    private static VehicleType t1, t2;
 
     //TODO: production to false, when local
     //Setup before any of the tests are started
     @BeforeClass
     public static void initProvider() throws Exception {
         ProductionProvider.initializeProvider(true);
+        //ProductionProvider.initializeProvider(false);
         daoProvider = (ProductionProvider) ProductionProvider.getInstance();
+        vehicleDAO = (ProductionVehicleDAO) daoProvider.getVehicleDAO();
+        vehicleTypeDAO = (ProductionVehicleTypeDAO) daoProvider.getVehicleTypeDAO();
+
+        t1 = vehicleTypeDAO.create("type 1", 2.5);
+        t2 = vehicleTypeDAO.create("type 2", 5.7);
+        v1 = vehicleDAO.create("brand 1", "model 1", "AAAAAAAAAAAAAAAAA", "ABC-123", 500, 3000, t1, LocalDate.of(2016, 7, 15));
+        v2 = vehicleDAO.create("brand 1", "model 2", "BBBBBBBBBBBBBBBBB", "DEF-123", 1000, 3500, t2, LocalDate.of(2016, 7, 26));
+        v3 = vehicleDAO.create("brand 2", "model 2", "CCCCCCCCCCCCCCCCC", "DEF-456", 1500, 4000, t1, LocalDate.of(2016, 9, 26));
     }
 
     //Gets executed after all tests have been run
     @AfterClass
     public static void closeProvider() throws Exception {
-        daoProvider.close();
+        vehicleDAO.remove(v1.getUuid());
+        vehicleDAO.remove(v2.getUuid());
+        vehicleDAO.remove(v3.getUuid());
+        vehicleTypeDAO.remove(t1.getUuid());
+        vehicleTypeDAO.remove(t2.getUuid());
     }
 
 
-    @Before
+    /*@Before
     public void setUp() throws Exception {
         vehicleDAO = (ProductionVehicleDAO) daoProvider.getVehicleDAO();
         vehicleTypeDAO = (ProductionVehicleTypeDAO) daoProvider.getVehicleTypeDAO();
@@ -55,7 +69,7 @@ public class ProductionVehicleDAOFiltersTest {
         vehicleDAO.remove(v3.getUuid());
         vehicleTypeDAO.remove(t1.getUuid());
         vehicleTypeDAO.remove(t2.getUuid());
-    }
+    }*/
 
 
     @Test

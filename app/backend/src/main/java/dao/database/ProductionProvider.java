@@ -15,8 +15,10 @@ import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.query.Query;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
 
@@ -128,9 +130,5 @@ public class ProductionProvider implements DAOProvider {
         sessionFactory.close();
         StandardServiceRegistryBuilder.destroy(this.registry);
     }
-
-    public static void main(String[] args) {
-        System.out.println();
-
-    }
+    
 }
