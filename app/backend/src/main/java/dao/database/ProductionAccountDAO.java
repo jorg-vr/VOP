@@ -4,7 +4,6 @@ import dao.interfaces.AccountDAO;
 import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
 import model.account.Account;
-import model.fleet.VehicleType;
 import model.identity.Person;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -34,26 +33,10 @@ public class ProductionAccountDAO implements AccountDAO {
     }
 
     @Override
-    public Account create(Account account) throws DataAccessException {
-        HibernateUtil.create(factory,account);
-        return account;
-    }
-
-    @Override
     public Account get(UUID id) throws DataAccessException {
         try (Session session = factory.openSession()) {
             return session.get(Account.class, id);
         }
-    }
-
-    @Override
-    public void update(Account account) throws DataAccessException {
-        HibernateUtil.update(factory,account);
-    }
-
-    @Override
-    public void remove(Account account) throws DataAccessException {
-        HibernateUtil.remove(factory,account);
     }
 
     @Override
@@ -101,14 +84,6 @@ public class ProductionAccountDAO implements AccountDAO {
         account.setHashedPassword(hashedPassword);
         account.setPerson(person);
         HibernateUtil.create(factory,account);
-        return account;
-    }
-
-    @Override
-    public Account update(UUID id, String hashedPassword) throws DataAccessException {
-        Account account = get(id);
-        account.setHashedPassword(hashedPassword);
-        HibernateUtil.update(factory,account);
         return account;
     }
 

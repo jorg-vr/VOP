@@ -30,23 +30,8 @@ public class TESTFleetDAO  implements FleetDAO{
     }
 
     @Override
-    public Fleet create(Fleet fleet) throws DataAccessException {
-        return null;
-    }
-
-    @Override
     public Fleet get(UUID id) throws DataAccessException {
         return null;
-    }
-
-    @Override
-    public void update(Fleet fleet) throws DataAccessException {
-
-    }
-
-    @Override
-    public void remove(Fleet fleet) throws DataAccessException {
-
     }
 
     @Override

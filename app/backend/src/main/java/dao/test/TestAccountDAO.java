@@ -4,7 +4,6 @@ import dao.interfaces.AccountDAO;
 import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
 import model.account.Account;
-import model.identity.Identity;
 import model.identity.Person;
 
 import java.util.HashMap;
@@ -55,16 +54,6 @@ public class TestAccountDAO extends TestDAO<Account> implements AccountDAO {
         account.setHashedPassword(hashedPassword);
         account.setPerson(person);
         accountsID.put(uuid, account);
-        return account;
-    }
-
-    @Override
-    public Account update(UUID id, String hashedPassword) throws DataAccessException {
-        if (!accountsID.containsKey(id)) {
-            throw new DataAccessException();
-        }
-        Account account = accountsID.get(id);
-        account.setHashedPassword(hashedPassword);
         return account;
     }
 

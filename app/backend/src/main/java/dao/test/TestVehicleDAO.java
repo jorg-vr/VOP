@@ -33,30 +33,11 @@ public class TestVehicleDAO implements VehicleDAO {
     private int counter = 2;
 
     @Override
-    public Vehicle create(Vehicle vehicle) throws DataAccessException {
-        vehicles.put(vehicle.getUuid(),vehicle);
-        return vehicle;
-    }
-
-    @Override
     public Vehicle get(UUID id) throws DataAccessException {
         if (!vehicles.containsKey(id)) {
             throw new DataAccessException();
         }
         return vehicles.get(id);
-    }
-
-    @Override
-    public void update(Vehicle vehicle) throws DataAccessException {
-        if (!vehicles.containsValue(vehicle)) {
-            throw new DataAccessException();
-        }
-        vehicles.put(vehicle.getUuid(), vehicle);
-    }
-
-    @Override
-    public void remove(Vehicle vehicle) throws DataAccessException {
-        vehicles.remove(vehicle.getUuid());
     }
 
     @Override

@@ -34,27 +34,12 @@ public class ProductionFunctionDAO implements FunctionDAO {
     public ProductionFunctionDAO(SessionFactory factory){
         this.factory =factory;
     }
-    @Override
-    public Function create(Function function) throws DataAccessException {
-        HibernateUtil.create(factory,function);
-        return function;
-    }
 
     @Override
     public Function get(UUID id) throws DataAccessException {
         try (Session session = factory.openSession()) {
             return session.get(Function.class, id);
         }
-    }
-
-    @Override
-    public void update(Function function) throws DataAccessException {
-        HibernateUtil.update(factory,function);
-    }
-
-    @Override
-    public void remove(Function function) throws DataAccessException {
-        HibernateUtil.remove(factory,function);
     }
 
     @Override
@@ -103,14 +88,6 @@ public class ProductionFunctionDAO implements FunctionDAO {
         function.setStartDate(startDate);
         function.setEndDate(endDate);
         HibernateUtil.create(factory,function);
-        return function;
-    }
-
-    @Override
-    public Function update(UUID id, LocalDateTime endDate) throws DataAccessException {
-        Function function = get(id);
-        function.setEndDate(endDate);
-        HibernateUtil.update(factory,function);
         return function;
     }
 

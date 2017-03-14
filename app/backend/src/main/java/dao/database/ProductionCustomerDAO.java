@@ -3,7 +3,6 @@ package dao.database;
 import dao.interfaces.CustomerDAO;
 import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
-import model.account.Function;
 import model.fleet.Fleet;
 import model.identity.Address;
 import model.identity.Customer;
@@ -35,12 +34,6 @@ public class ProductionCustomerDAO implements CustomerDAO {
     }
 
     @Override
-    public Customer create(Customer customer) throws DataAccessException {
-        HibernateUtil.create(factory,customer);
-        return customer;
-    }
-
-    @Override
     public Customer get(UUID id) throws DataAccessException {
         try (Session session = factory.openSession()) {
             return session.get(Customer.class, id);
@@ -48,13 +41,11 @@ public class ProductionCustomerDAO implements CustomerDAO {
     }
 
     @Override
-    public Customer create(String name, Address address, String email, String phonenumber, String btwNumber, String bankAccountNumber, Collection<Fleet> fleets) throws DataAccessException {
+    public Customer create(String name, Address address, String phonenumber, String btwNumber, Collection<Fleet> fleets) throws DataAccessException {
         Customer customer = new Customer();
         customer.setName(name);
         customer.setAddress(address);
-        customer.setEmail(email);
         customer.setPhoneNumber(phonenumber);
-        customer.setBankAccountNumber(bankAccountNumber);
         customer.setBtwNumber(btwNumber);
         customer.setFleets(fleets);
         HibernateUtil.create(factory,customer);
@@ -62,30 +53,17 @@ public class ProductionCustomerDAO implements CustomerDAO {
     }
 
     @Override
-    public Customer update(UUID id, String name, Address address, String email, String phonenumber, String btwNumber, String bankAccountNumber, Collection<Fleet> fleets) throws DataAccessException {
+    public Customer update(UUID id,String name, Address address, String phonenumber, String btwNumber) throws DataAccessException {
         Customer customer = new Customer();
         customer.setUuid(id);
         customer.setName(name);
         customer.setAddress(address);
-        customer.setEmail(email);
         customer.setPhoneNumber(phonenumber);
-        customer.setBankAccountNumber(bankAccountNumber);
         customer.setBtwNumber(btwNumber);
-        customer.setFleets(fleets);
         HibernateUtil.update(factory,customer);
         return customer;
     }
 
-
-    @Override
-    public void update(Customer customer) throws DataAccessException {
-        HibernateUtil.update(factory,customer);
-    }
-
-    @Override
-    public void remove(Customer customer) throws DataAccessException {
-        HibernateUtil.remove(factory,customer);
-    }
 
     @Override
     public void remove(UUID id) throws DataAccessException {
