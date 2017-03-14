@@ -4,38 +4,38 @@
             <h1> Klant </h1>
         </div>
         <div class="col-md-8">
-            <table id="show-vehicle" class="table">
+            <table id="show-client" class="table">
                 <tr>
                     <td>Naam </td>
-                    <td>{{vehicle.name}}</td>
+                    <td>{{client.name}}</td>
                 </tr>
                 <tr>
                     <td> Land </td>
-                    <td>{{vehicle.address.country}}</td>
+                    <td>{{client.address.country}}</td>
                 </tr>
                 <tr>
                     <td> Plaats </td>
-                    <td>{{vehicle.address.city}}</td>
+                    <td>{{client.address.city}}</td>
                 </tr>
                 <tr>
                     <td> Postcode </td>
-                    <td>{{vehicle.address.postalCode}}</td>
+                    <td>{{client.address.postalCode}}</td>
                 </tr>
                 <tr>
                     <td> Straat </td>
-                    <td>{{vehicle.address.street}}</td>
+                    <td>{{client.address.street}}</td>
                 </tr>
                 <tr>
-                    <td> Nummer</td>
-                    <td>{{vehicle.address.houseNumber}}</td>
+                    <td> Nummer</td>    
+                    <td>{{client.address.houseNumber}}</td>
                 </tr>
                 <tr>
                     <td> BTW nummer </td>
-                    <td>{{vehicle.vatNumber}}</td>
+                    <td>{{client.vatNumber}}</td>
                 </tr>
                 <tr>
                     <td> Telefoonnummer</td>
-                    <td>{{vehicle.phoneNumber}}</td>
+                    <td>{{client.phoneNumber}}</td>
                 </tr>
             </table>
         </div>
@@ -46,14 +46,14 @@
     export default {
         data: function(){
             return {
-                vehicle: {
+                client: {
                     name: "Bedrijf",
                     address:{
-                    	country:"Belgium",
-                    	city:" Gent",
-                    	street: "Pintelaan",
-                    	houseNumber: "9",
-                    	postalCode: "9000"
+                        country:"Belgium",
+                        city:" Gent",
+                        street: "Pintelaan",
+                        houseNumber: "9",
+                        postalCode: "9000"
                     },
                     vatNumber: "6549846846",
                     phoneNumber: "0412 34 56 78"
@@ -66,7 +66,7 @@
     }
 </script>
 <style>
-    #show-vehicle td:first-child{
+    #show-client td:first-child{
         font-weight: bold;
     }
 </style>
