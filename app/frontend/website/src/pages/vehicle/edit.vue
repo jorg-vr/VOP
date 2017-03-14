@@ -1,5 +1,6 @@
 <!--
     This page is used to edit a vehicle.
+    It shows the vehicle form with the update vehicle method.
 -->
 <template>
     <div>
@@ -15,7 +16,7 @@
         data: function(){
             return {
                 vehicle: {
-                    licensePlate: 'Test edit',
+                    licensePlate: '',
                     chassisNumber: '',
                     brand: '',
                     model: '',
@@ -29,18 +30,21 @@
         components: {
             VehicleForm
         },
+        //Fetch the vehicle of this page when the page is created.
         created() {
             this.fetchVehicle()
         },
 
         methods: {
+            //API call to fetch the vehicle of this page.
             fetchVehicle(){
                 this.$http.get('https://vopro5.ugent.be/app/api/vehicles/' + this.$route.params.id).then(response => {
                     this.vehicle = response.body;
                 })
             },
+            //API call to update this vehicle.
             updateVehicle(vehicle){
-                alert('Not working yet')
+                alert('Not working yet: edit vehicle')
                 this.$http.put('https://vopro5.ugent.be/app/api/vehicles' + '{' + this.getQuery(vehicle) + '}').then(response => {
                     this.vehicle = response.body;
                     this.$router.push({name: 'vehicle', params: { id: this.vehicle.id }});

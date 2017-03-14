@@ -1,5 +1,5 @@
 <!--
-
+    This page is used to create a new fleet.
 -->
 <template>
     <div>
@@ -19,6 +19,7 @@
             FleetForm
         },
         methods: {
+            //API call to create a new fleet.
             createFleet(userEmail, fleetName){
                 alert('Not yet implemented')
                 //TODO

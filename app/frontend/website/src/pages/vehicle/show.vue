@@ -46,7 +46,7 @@
     export default {
         data: function(){
             return {
-                vehicle: {
+                vehicle: { //Dummy vehicle
                     id: "cc5c7659-e3e9-4935-8eaf-19959d78d868",
                     licensePlate: "IAM-007",
                     chassisNumber: "abcdefhijk",
@@ -62,8 +62,12 @@
                 }
             }
         },
+        created() {
+            //this.vehicle = fetchVehicle()
+        },
         methods: {
-            getVehicles: function(){
+            //API call to fetch the vehicle of this page.
+            fetchVehicle: function(){
                 this.$http.get('/vehicles/' + $route.params.id).then(response => {
                     //TODO
                     this.vehicle = response

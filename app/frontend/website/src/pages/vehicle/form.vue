@@ -1,3 +1,7 @@
+<!--
+    This is the form for creating/updating a vehicle.
+    The form accepts the old vehicle and an update or create function.
+-->
 <template>
     <form class="form-horizontal col-md-6">
         <div class="form-group">
@@ -57,13 +61,8 @@
             return {}
         },
         props: {
-            vehicle: Object,
-            submit: Function
-        },
-        methods: {
-            clicked(){
-                this.$emit('formSubmitted', this.vehicle)
-            }
+            vehicle: Object, //Vehicle which should be created/updated with this form.
+            submit: Function //Submit function to create/update the vehicle.
         }
     }
 

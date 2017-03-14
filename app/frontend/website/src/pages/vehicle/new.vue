@@ -1,9 +1,10 @@
+
 <template>
     <div>
         <div class="page-header">
             <h1>Nieuw voertuig</h1>
         </div>
-        <vehicle-form v-on:submit="createVehicle" :vehicle="vehicle"></vehicle-form>
+        <vehicle-form :submit="createVehicle" :vehicle="vehicle"></vehicle-form>
     </div>
 </template>
 <script>
@@ -37,19 +38,15 @@
             VehicleForm
         },
         methods: {
+            //API call to create the given vehicle.
             createVehicle(vehicle){
-                alert('Not working yet')
-                this.$http.post('https://vopro5.ugent.be/app/api/vehicles' + this.getQuery()).then(response => {
+                alert('Not working yet: new vehicle')
+                /*
+                this.$http.post('https://vopro5.ugent.be/app/api/vehicles' + '{' + vehicle + '}').then(response => {
                     this.vehicle = response.body;
                     this.$router.push({name: 'vehicle', params: { id: this.vehicle.id }});
                 })
-            },
-            getQuery(){
-                let query = '?';
-                for(const prop in this.vehicle){
-                    query += prop + '=' + this.vehicle[prop] + '&'
-                }
-                return query.replace(/ /g, '+').slice(0, -1);
+                */
             }
         }
     }

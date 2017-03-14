@@ -1,6 +1,6 @@
 <!--
     This is the form for creating/updating a fleet.
-    The form accepts the old data and an update or create function with 2 arguments.
+    The form accepts the old data and an update or create function.
 -->
 <template>
     <div>
