@@ -46,10 +46,6 @@ public class RESTFleetController {
             for (Fleet fleet : controller.getAll(filters.toArray(new Filter[filters.size()]))) {
                 fleets.add(modelToRest(fleet));
             }
-            //fleets.sort((fleet1, fleet2) -> fleet1.getName().compareTo(fleet2.getName()));
-//            if (limit != null) {
-//                fleets = fleets.subList(page * limit, (page + 1) * limit);
-//            }
             return new RESTSchema<>(fleets, page, limit, baseString);
         } catch (Exception e) {
             e.printStackTrace();

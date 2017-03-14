@@ -17,6 +17,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import spring.model.RESTAddress;
 import spring.model.RESTCompany;
+import spring.model.RESTFleet;
+import spring.model.RESTVehicle;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
@@ -71,19 +73,13 @@ public class RESTFleetControllerTest {
 
     @Test
     public void post() throws Exception {
-        RESTCompany restCompany=new RESTCompany(null,"frank","sinatra","0123456",new RESTAddress("a","b","c","d","e"),null,null,null,null);
-        MvcResult result =mvc.perform(MockMvcRequestBuilders.post("/companies").header("Content-Type","application/json").content(TestUtil.convertObjectToJsonBytes(restCompany)))
+        RESTFleet restFleet=new RESTFleet(null,UUIDUtil.UUIDToNumberString(customer.getUuid()),"newFleet",null,null,null,null);
+        MvcResult result =mvc.perform(MockMvcRequestBuilders.post("/companies").header("Content-Type","application/json").content(TestUtil.convertObjectToJsonBytes(restFleet)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name",equalTo("frank")))
-                .andExpect(jsonPath("$.vatNumber",equalTo("sinatra")))
-                .andExpect(jsonPath("$.phoneNumber",equalTo("0123456")))
-                .andExpect(jsonPath("$.address.country",equalTo("a")))
-                .andExpect(jsonPath("$.address.city",equalTo("b")))
-                .andExpect(jsonPath("$.address.street",equalTo("c")))
-                .andExpect(jsonPath("$.address.houseNumber",equalTo("d")))
-                .andExpect(jsonPath("$.address.postalCode",equalTo("e"))).andReturn();
-        RESTCompany restCompany1 =  TestUtil.convertJsonBytesToObject(result.getResponse().getContentAsByteArray(),RESTCompany.class);
-        mvc.perform(MockMvcRequestBuilders.delete("/companies/{id}",restCompany1.getId()))
+                .andExpect(jsonPath("$.name",equalTo(restFleet.getName())))
+                .andExpect(jsonPath("$.vatCompany",equalTo(restFleet.getCompany()))).andReturn();
+        RESTFleet restFleet1 =  TestUtil.convertJsonBytesToObject(result.getResponse().getContentAsByteArray(),RESTFleet.class);
+        mvc.perform(MockMvcRequestBuilders.delete("/fleets/{id}",restFleet1.getId()))
                 .andExpect(status().isOk());
     }
 

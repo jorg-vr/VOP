@@ -81,6 +81,8 @@ public class RESTCompanyControllerTest {
         RESTCompany restCompany1 =  TestUtil.convertJsonBytesToObject(result.getResponse().getContentAsByteArray(),RESTCompany.class);
         mvc.perform(MockMvcRequestBuilders.delete("/companies/{id}",restCompany1.getId()))
                 .andExpect(status().isOk());
+        mvc.perform(MockMvcRequestBuilders.get("/companies/{id}",restCompany1.getId()))
+                .andExpect(status().isNotFound());
     }
 
     @Test
