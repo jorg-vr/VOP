@@ -27,9 +27,10 @@ public interface AccountDAO extends DAO<Account> {
      * @return account with updated fields
      * @throws DataAccessException account does not exist
      */
+    @Deprecated
     Account update(UUID id, String hashedPassword) throws DataAccessException;
 
-    Account update(UUID id, String login, String hashedPassword, Person person) throws DataAccessException;
+    Account update(UUID id, String login, String hashedPassword) throws DataAccessException;
 
     Filter<Account> bySecurity(String login, String password);
     Filter<Account> byPerson(Person identity);
