@@ -1,10 +1,9 @@
 package model.account;
-import model.identity.Identity;
+
 import model.history.EditableObject;
 import model.identity.Person;
 
 import java.util.Collection;
-import java.util.Random;
 import java.util.UUID;
 
 
@@ -24,21 +23,21 @@ public class Account implements EditableObject, java.io.Serializable {
         this.hashedPassword = hashedPassword;
         this.person = person;
         this.functions = functions;
-        uuid= UUID.randomUUID();
+        uuid = UUID.randomUUID();
     }
 
-    private Account(String login, String hashedPassword,  Person person, Collection<Function> functions, UUID uuid) {
-        this(login,hashedPassword,person,functions);
+    private Account(String login, String hashedPassword, Person person, Collection<Function> functions, UUID uuid) {
+        this(login, hashedPassword, person, functions);
         this.uuid = uuid;
     }
 
-    public void resetPassword(String oldPassword,String newPassword) {
-        if(validatePassword(oldPassword)) {
+    public void resetPassword(String oldPassword, String newPassword) {
+        if (validatePassword(oldPassword)) {
             this.hashedPassword = newPassword; //TODO hash this extra
         }
     }
 
-    public boolean validatePassword(String password){
+    public boolean validatePassword(String password) {
         return hashedPassword.equals(password); // TODO also use hashfunction
     }
 
@@ -85,6 +84,17 @@ public class Account implements EditableObject, java.io.Serializable {
 
     @Override
     public EditableObject copy() {
-        return new Account(login,hashedPassword,person,functions,uuid);
+        return new Account(login, hashedPassword, person, functions, uuid);
     }
+
+    /*@Override
+    public String toString() {
+        return "Account{" +
+                "uuid= " + getUuid() +
+                ", login= " + login +
+                ", hashedPassword= " + hashedPassword +
+                ", functionCount= " + (functions == null ? 0: functions.size()) +
+                ", person= " + person.toString() +
+                '}';
+    }*/
 }

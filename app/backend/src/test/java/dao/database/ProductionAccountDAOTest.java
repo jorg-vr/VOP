@@ -7,6 +7,7 @@ import model.account.Account;
 import model.identity.Person;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -18,7 +19,7 @@ public class ProductionAccountDAOTest {
     private static DAOProvider daoProvider;
     private static AccountDAO accountDAO;
     private static PersonDAO personDAO;
-    private static Person p1;
+    //private static Person p1;
 
     //TODO: production to false, when local
     //Setup before any of the tests are started
@@ -28,23 +29,28 @@ public class ProductionAccountDAOTest {
         daoProvider = ProductionProvider.getInstance();
         accountDAO = daoProvider.getAccountDao();
         personDAO = daoProvider.getPersonDAO();
-        p1 = personDAO.create("Firstname 1", "Lastname 1", "Email@address1.com");
+        //p1 = personDAO.create("Firstname 1", "Lastname 1", "Email@address1.com");
     }
 
     //Gets executed after all tests have been run
     @AfterClass
     public static void closeProvider() throws Exception {
-        personDAO.remove(p1.getUuid());
+        //personDAO.remove(p1.getUuid());
     }
 
+    @Ignore
     @Test
     public void createGetRemoveTest() throws Exception {
+        Person p1 = null;
         Account a1 = null;
         boolean present = false;
         boolean removed = false;
         //test if a vehicle can be succesfully added to the database
         try {
+            p1 = personDAO.create("Firstname 1", "Lastname 1", "Email@address1.com");
+            assertNotNull("Failed to create a person object", p1);
             a1 = accountDAO.create("login1", "hashedPassword1", p1);
+            assertNotNull("Failed to create an account object", a1);
         } catch (Exception e) {
             fail("Failed trying to create a new account");
         }
@@ -64,6 +70,7 @@ public class ProductionAccountDAOTest {
         try {
             if (a1 != null && present) {
                 accountDAO.remove(a1.getUuid());
+                personDAO.remove(p1.getUuid());
                 removed = true;
             }
         } catch (Exception e) {
@@ -84,8 +91,10 @@ public class ProductionAccountDAOTest {
     }
 
 
+    @Ignore
     @Test
     public void update() throws Exception {
+        Person p1 = personDAO.create("Firstname 1", "Lastname 1", "Email@address1.com");
         Account a1 = accountDAO.create("login1", "hashedPassword1", p1);
         Account a2 = accountDAO.update(a1.getUuid(), "login2", "hashedPassword2");
         Account a3 = accountDAO.get(a1.getUuid());
@@ -94,5 +103,6 @@ public class ProductionAccountDAOTest {
         assertEquals("person field not updated correctly", p1, a3.getPerson());
 
         accountDAO.remove(a1.getUuid());
+        personDAO.remove(p1.getUuid());
     }
 }

@@ -36,4 +36,16 @@ public class Person extends Identity implements java.io.Serializable {
         this.lastName = lastName;
     }
 
+    /*@Override
+    public String toString() {
+        return "Person{" +
+                "uuid= " + getUuid() +
+                ", address= " + getAddress().toString() +
+                ", email= " + getEmail() +
+                ", phoneNumber= " + getPhoneNumber() +
+                ", firstName= " + firstName +
+                ", lastName= " + lastName +
+                '}';
+    }*/
+
 }
