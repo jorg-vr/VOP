@@ -61,6 +61,7 @@ public class ProductionAccountDAO implements AccountDAO {
             this.root = null;
             this.criteriaQuery = null;
             this.criteriaBuilder = null;
+            predicates.clear();
             return types;
         } catch (Exception e) {
             e.printStackTrace();

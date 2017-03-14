@@ -60,6 +60,7 @@ public class ProductionVehicleDAO implements VehicleDAO {
     public Vehicle update(UUID uuid, String brand, String model, String chassisNumber, String licenseplate, int value, int mileage, VehicleType type, LocalDate productionDate) throws DataAccessException {
 
         Vehicle vehicle = new Vehicle();
+        vehicle.setUuid(uuid);
         vehicle.setBrand(brand);
         vehicle.setLicensePlate(licenseplate);
         vehicle.setModel(model);
@@ -94,6 +95,7 @@ public class ProductionVehicleDAO implements VehicleDAO {
             this.root = null;
             this.criteriaQuery = null;
             this.criteriaBuilder = null;
+            predicates.clear();
             return vehicles;
         } catch (Exception e) {
             e.printStackTrace();

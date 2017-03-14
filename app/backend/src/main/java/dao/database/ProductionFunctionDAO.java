@@ -64,6 +64,7 @@ public class ProductionFunctionDAO implements FunctionDAO {
             this.root = null;
             this.criteriaQuery = null;
             this.criteriaBuilder = null;
+            predicates.clear();
             return functions;
         } catch (Exception e) {
             e.printStackTrace();
