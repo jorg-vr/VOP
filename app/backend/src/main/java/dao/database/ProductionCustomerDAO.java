@@ -29,7 +29,7 @@ public class ProductionCustomerDAO implements CustomerDAO {
     private CriteriaQuery<Customer> criteriaQuery;
     private CriteriaBuilder criteriaBuilder;
 
-    public ProductionCustomerDAO(SessionFactory factory){
+    public ProductionCustomerDAO(SessionFactory factory) {
         this.factory = factory;
     }
 
@@ -48,7 +48,7 @@ public class ProductionCustomerDAO implements CustomerDAO {
         customer.setPhoneNumber(phonenumber);
         customer.setBtwNumber(btwNumber);
         customer.setFleets(fleets);
-        HibernateUtil.create(factory,customer);
+        HibernateUtil.create(factory, customer);
         return customer;
     }
 
@@ -60,14 +60,13 @@ public class ProductionCustomerDAO implements CustomerDAO {
         customer.setAddress(address);
         customer.setPhoneNumber(phonenumber);
         customer.setBtwNumber(btwNumber);
-        HibernateUtil.update(factory,customer);
+        HibernateUtil.update(factory, customer);
         return customer;
     }
 
-
     @Override
     public void remove(UUID id) throws DataAccessException {
-        HibernateUtil.remove(factory,get(id));
+        HibernateUtil.remove(factory, get(id));
     }
 
     @Override
@@ -80,7 +79,7 @@ public class ProductionCustomerDAO implements CustomerDAO {
             this.criteriaQuery = this.criteriaBuilder.createQuery(Customer.class);
             this.root = this.criteriaQuery.from(Customer.class);
             for (Filter<Customer> filter : filters) {
-                filter.filter(null);
+                filter.filter();
             }
             Collection<Customer> customers = session.createQuery(criteriaQuery.where(predicates.toArray(new Predicate[predicates.size()]))).getResultList();
             tx.commit();
@@ -110,57 +109,44 @@ public class ProductionCustomerDAO implements CustomerDAO {
 
     @Override
     public Filter<Customer> byName(String name) {
-        return (o1) -> {
-            predicates.add(criteriaBuilder.equal(root.get("name"), name));
-            return true;
-        };
+        return () ->
+                predicates.add(criteriaBuilder.equal(root.get("name"), name));
     }
 
     @Override
     public Filter<Customer> containsName(String name) {
-        return (o1) -> {
+        return () ->
             predicates.add(criteriaBuilder.like(root.get("name"), "%" + name + "%"));
-            return true;
-        };
-    }
 
-    @Override
-    public Filter<Customer> byVatNumber(String vatNumber) {
-        return (o1) -> {
-            predicates.add(criteriaBuilder.equal(root.get("btwNumber"), vatNumber));
-            return true;
-        };
-    }
+        }
 
-    @Override
-    public Filter<Customer> byPhoneNumber(String phoneNumber) {
-        return (o1) -> {
-            predicates.add(criteriaBuilder.equal(root.get("phoneNumber"), phoneNumber));
-            return true;
-        };
-    }
+        @Override
+        public Filter<Customer> byVatNumber (String vatNumber){
+            return () ->
+                predicates.add(criteriaBuilder.equal(root.get("btwNumber"), vatNumber));
+        }
 
-    @Override
-    public Filter<Customer> byAddress(Address address) {
-        return (o1) -> {
-            predicates.add(criteriaBuilder.equal(root.get("address"), address));
-            return true;
-        };
-    }
+        @Override
+        public Filter<Customer> byPhoneNumber (String phoneNumber){
+            return () ->
+                predicates.add(criteriaBuilder.equal(root.get("phoneNumber"), phoneNumber));
+        }
 
-    @Override
-    public Filter<Customer> byBankAccountNummber(String bankAccountNumber) {
-        return (o1) -> {
-            predicates.add(criteriaBuilder.equal(root.get("bankAccountNumber"), bankAccountNumber));
-            return true;
-        };
-    }
+        @Override
+        public Filter<Customer> byAddress (Address address){
+            return () ->
+                predicates.add(criteriaBuilder.equal(root.get("address"), address));
+        }
 
-    @Override
-    public Filter<Customer> byEmail(String email) {
-        return (o1) -> {
-            predicates.add(criteriaBuilder.equal(root.get("email"), email));
-            return true;
-        };
+        @Override
+        public Filter<Customer> byBankAccountNummber (String bankAccountNumber){
+            return () ->
+                predicates.add(criteriaBuilder.equal(root.get("bankAccountNumber"), bankAccountNumber));
+        }
+
+        @Override
+        public Filter<Customer> byEmail (String email){
+            return () ->
+                predicates.add(criteriaBuilder.equal(root.get("email"), email));
+        }
     }
-}

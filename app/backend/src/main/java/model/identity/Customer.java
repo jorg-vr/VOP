@@ -52,9 +52,6 @@ public class Customer extends Company implements java.io.Serializable {
         }
         //makes sure the fleet was succesfully removed before changing it's owner to null
         boolean removed = fleets.remove(fleet);
-        if(removed){
-            fleet.setOwner(null);
-        }
         return removed;
     }
 

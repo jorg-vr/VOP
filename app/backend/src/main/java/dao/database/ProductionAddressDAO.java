@@ -53,7 +53,7 @@ public class ProductionAddressDAO implements AddressDAO {
             this.criteriaQuery = this.criteriaBuilder.createQuery(Address.class);
             this.root = this.criteriaQuery.from(Address.class);
             for (Filter<Address> filter : filters) {
-                filter.filter(null);
+                filter.filter();
             }
             Collection<Address> fleets = session.createQuery(criteriaQuery.where(predicates.toArray(new Predicate[predicates.size()]))).getResultList();
             tx.commit();
@@ -100,4 +100,6 @@ public class ProductionAddressDAO implements AddressDAO {
         HibernateUtil.update(factory,address);
         return address;
     }
+
+    //TODO add filters
 }

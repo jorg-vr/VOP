@@ -47,18 +47,16 @@ public class ProductionFleetDAO implements FleetDAO{
     public Fleet update(UUID id, Customer customer, Collection<Vehicle> vehicles) throws DataAccessException {
         Fleet fleet = new Fleet();
         fleet.setUuid(id);
-        fleet.setVehicles(vehicles);
         fleet.setOwner(customer);
+        fleet.setVehicles(vehicles);
         HibernateUtil.update(factory,fleet);
         return null;
     }
 
     @Override
     public Filter<Fleet> byOwner(Customer customer) {
-        return (o1) -> {
-            predicates.add(criteriaBuilder.equal(root.get("owner"), customer));
-            return true;
-        };    }
+        return null;
+    }
 
     @Override
     public Fleet get(UUID id) throws DataAccessException {
@@ -82,7 +80,7 @@ public class ProductionFleetDAO implements FleetDAO{
             this.criteriaQuery = this.criteriaBuilder.createQuery(Fleet.class);
             this.root = this.criteriaQuery.from(Fleet.class);
             for (Filter<Fleet> filter : filters) {
-                filter.filter(null);
+                filter.filter();
             }
             Collection<Fleet> fleets = session.createQuery(criteriaQuery.where(predicates.toArray(new Predicate[predicates.size()]))).getResultList();
             tx.commit();

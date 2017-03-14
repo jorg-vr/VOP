@@ -14,7 +14,6 @@ public interface CustomerDAO extends CompanyDAO<Customer> {
 
     Customer update(UUID id,String name, Address address, String phonenumber, String btwNumber) throws DataAccessException;
 
-    //TODO Weird filter
-    Filter<Customer> containsFleet(Fleet fleet);
 
+    Filter<Customer> containsFleet(Fleet fleet);
 }

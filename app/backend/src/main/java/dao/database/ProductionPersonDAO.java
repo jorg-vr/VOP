@@ -79,7 +79,7 @@ public class ProductionPersonDAO implements PersonDAO {
             this.criteriaQuery = this.criteriaBuilder.createQuery(Person.class);
             this.root = this.criteriaQuery.from(Person.class);
             for (Filter<Person> filter : filters) {
-                filter.filter(null);
+                filter.filter();
             }
             Collection<Person> persons = session.createQuery(criteriaQuery.where(predicates.toArray(new Predicate[predicates.size()]))).getResultList();
             tx.commit();
@@ -103,37 +103,30 @@ public class ProductionPersonDAO implements PersonDAO {
 
     @Override
     public Filter<Person> byAddress(Address address) {
-        return (o1) -> {
+        return () ->
             predicates.add(criteriaBuilder.equal(root.get("address"), address));
-            return true;
-        };
     }
 
     @Override
     public Filter<Person> byBankAccountNummber(String bankAccountNumber) {
-        return (o1) -> {
+        return () ->
             predicates.add(criteriaBuilder.equal(root.get("bankAccountNumber"), bankAccountNumber));
-            return true;
-        };
     }
 
     @Override
     public Filter<Person> byEmail(String email) {
-        return (o1) -> {
+        return () ->
             predicates.add(criteriaBuilder.equal(root.get("email"), email));
-            return true;
-        };
     }
 
     @Override
     public Filter<Person> nameContains(String name) {
-        return (o1) -> {
+        return () -> {
             Expression<String> exp1 = criteriaBuilder.concat(root.<String>get("firstName"), " ");
             exp1 = criteriaBuilder.concat(exp1, root.<String>get("surname"));
             Expression<String> exp2 = criteriaBuilder.concat(root.<String>get("lastName"), " ");
             exp2 = criteriaBuilder.concat(exp2, root.<String>get("name"));
             predicates.add(criteriaBuilder.or(criteriaBuilder.like(exp1, "%"+ name +"%"), criteriaBuilder.like(exp2, "%"+ name +"%")));
-            return true;
         };
     }
 

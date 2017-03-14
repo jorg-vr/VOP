@@ -41,7 +41,7 @@ public class ProductionAccountDAO implements AccountDAO {
 
     @Override
     public void remove(UUID id) throws DataAccessException {
-        HibernateUtil.remove(factory,get(id));
+        HibernateUtil.remove(factory, get(id));
     }
 
     @Override
@@ -54,7 +54,7 @@ public class ProductionAccountDAO implements AccountDAO {
             this.criteriaQuery = this.criteriaBuilder.createQuery(Account.class);
             this.root = this.criteriaQuery.from(Account.class);
             for (Filter<Account> filter : filters) {
-                filter.filter(null);
+                filter.filter();
             }
             Collection<Account> types = session.createQuery(criteriaQuery.where(predicates.toArray(new Predicate[predicates.size()]))).getResultList();
             tx.commit();
@@ -83,9 +83,10 @@ public class ProductionAccountDAO implements AccountDAO {
         account.setLogin(login);
         account.setHashedPassword(hashedPassword);
         account.setPerson(person);
-        HibernateUtil.create(factory,account);
+        HibernateUtil.create(factory, account);
         return account;
     }
+
 
     @Override
     public Account update(UUID id, String login, String hashedPassword) throws DataAccessException {
@@ -93,25 +94,23 @@ public class ProductionAccountDAO implements AccountDAO {
         account.setUuid(id);
         account.setLogin(login);
         account.setHashedPassword(hashedPassword);
-        HibernateUtil.update(factory,account);
+        HibernateUtil.update(factory, account);
         return account;
     }
 
     @Override
     public Filter<Account> bySecurity(String login, String password) {
-        return (o1) -> {
+        return () -> {
             predicates.add(criteriaBuilder.equal(root.get("login"), login));
-            //TODO unhash password
             predicates.add(criteriaBuilder.equal(root.get("hashedPassword"), password));
-            return true;
+
         };
     }
 
     @Override
     public Filter<Account> byPerson(Person identity) {
-        return (o1) -> {
+        return () -> {
             predicates.add(criteriaBuilder.equal(root.get("person"), identity));
-            return true;
         };
     }
 }

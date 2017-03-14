@@ -20,6 +20,17 @@ public class TestCustomerDAO extends TestDAO<Customer> implements CustomerDAO {
     public TestCustomerDAO() {
         UUID one=UUID.randomUUID();
         customers.put(one,new Customer(one,new Address("mystreet","1","tomtown","9000","tomland"),"tom@mail.com","047777777","tomcompany","123","BE456", CompanyType.TYPE1));
+
+    }
+
+    @Override
+    public Customer get(UUID id) throws DataAccessException {
+        return customers.get(id);
+    }
+
+
+    @Override
+    public void remove(UUID id) throws DataAccessException {
         setMapping(customers);
     }
 
@@ -29,7 +40,6 @@ public class TestCustomerDAO extends TestDAO<Customer> implements CustomerDAO {
         for(Customer customer:customers.values()){
             boolean b=true;
             for(Filter<Customer> f:filters){
-                b&=f.filter(customer);
             }
             if(b){
                 result.add(customer);
@@ -72,17 +82,17 @@ public class TestCustomerDAO extends TestDAO<Customer> implements CustomerDAO {
 
     @Override
     public Filter<Customer> containsFleet(Fleet fleet) {
-        return (customer -> customer.getFleets().contains(fleet));
+        return null;
     }
 
     @Override
     public Filter<Customer> byName(String name) {
-        return (customer->customer.getName().equals(name));
+        return null;
     }
 
     @Override
     public Filter<Customer> containsName(String name) {
-        return customer -> customer.getName().contains(name);
+        return null;
     }
 
     @Override
@@ -97,7 +107,7 @@ public class TestCustomerDAO extends TestDAO<Customer> implements CustomerDAO {
 
     @Override
     public Filter<Customer> byAddress(Address address) {
-        return customer -> true;
+        return null;
     }
 
     @Override
