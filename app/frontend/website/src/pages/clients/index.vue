@@ -3,62 +3,18 @@
     <div class="page-header">
     <h1> Klant </h1>
     </div>
-
-        <div class="row">
-            <div class="col-md-4">
-                <div id="search_input">
-                    <div class="input-group col-md-12 ">
-                        <input type="text" class="form-control input-mg" v-bind:placeholder=appendString v-model="search"/>
-                        <span class="input-group-btn">
-                            <button class="btn btn-primary btn-mg" type="button">
-                                <i class="fa fa-search" aria-hidden="true"></i>
-                            </button>
-                        </span>
-                    </div>
-                </div>
-            </div>
-           
-
-            <div class="col-md-1 " >
-                <span class="input-group-btn">
-                            <button type="button" class="btn btn-primary btn-sm" id="addButton" v-on:click="add">
-                                <i class="fa fa-plus" aria-hidden="true"></i>
-                            </button>
-                </span>
-            </div>
-        </div>
     
 
-    <div class="content" v-show=loading>
-        <div class="row">
-            <div class="col-md-8" col-md-offset-6>
-                
-                <div class="list-group">
-                  <li v-for="client in searchId" class="list-group-item">
-                    {{ client.name }} {{ client.vatNumber }} {{ client.phoneNumber }}
-                    <span class="pull-right">
-                      <button type="button" class="btn btn-primary btn-xs btn-primary" v-on:click="edit(client.id)" id="editButton">
-                        <i class="fa fa-pencil" aria-hidden="true"></i>
-                      </button>
-                      <button type="button" class="btn btn-primary btn-xs btn-danger" v-on:click="remove(client.id)" id="removeButton">
-                        <i class="fa fa-trash" aria-hidden="true"></i>
-                      </button>
-                    </span>
-                  </li>
-                </div>
+        <info-pane v-for="clients in clientList"
+                    :textValues="new Array(clients.name)"
+                   :remove="remove"
+                   :objectId= "clientList.id"
+                   edit="edit_client"
+                   show="clients"
+                   :key="clientList.id">
+        </info-pane>
 
-            </div>
-        </div>
-
-    </div>
-
-    <!-- Temp button because server is down -->
-    <button type="button" class="btn btn-primary btn-xs btn-primary" v-on:click="edit(123)" id="editButton">
-                        <i class="fa fa-pencil" aria-hidden="true"></i>
-                      </button>
-                      <button type="button" class="btn btn-primary btn-xs btn-danger" v-on:click="remove(client.id)" id="removeButton">
-                        <i class="fa fa-trash" aria-hidden="true"></i>
-    </button>
+        <button type="button" class="btn btn-primary btn-circle btn-lg">+</button>
 
 </div>
 
@@ -66,11 +22,20 @@
 
 </template>
 <script>
+import infoPane from "../../assets/listComponent.vue"
     export default {
+        components: {
+            'info-pane': infoPane
+        },
         data(){
         return {
             users: [],
-            clients:{"test":"kkk"},
+            clientList : [ 
+                    {id: 1, name: 'C1'},
+                    {id: 2, name: 'C2'},
+                    {id: 3, name: 'C3'},
+                    {id: 4, name: 'C4'}
+                ],
             search: '',
             loading: false
         }
@@ -141,3 +106,16 @@
         },
     }
 </script>
+
+<style>
+    .btn-circle.btn-lg {
+        position: fixed;
+        left: 230px;
+        bottom: 40px;
+        width: 50px;
+        height: 50px;
+        padding: 10px 16px;
+        font-size: 18px;
+        line-height: 1.33;
+        border-radius: 25px;
+    }
