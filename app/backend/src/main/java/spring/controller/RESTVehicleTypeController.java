@@ -5,11 +5,9 @@ import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
 import model.fleet.Vehicle;
 import model.fleet.VehicleType;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import spring.Exceptions.InvalidInputException;
+import spring.Exceptions.NotFoundException;
 import spring.model.RESTSchema;
 import spring.model.RESTVehicleType;
 
@@ -44,6 +42,17 @@ public class RESTVehicleTypeController {
     }
     private RESTVehicleType modelToREST(VehicleType vehicleType){
         return new RESTVehicleType(UUIDUtil.UUIDToNumberString(vehicleType.getUuid()),vehicleType.getType());
+    }
+
+    @RequestMapping(method = RequestMethod.GET,value = "{id}")
+    public RESTVehicleType getId(@PathVariable("id") String id) {
+
+        try {
+            return modelToREST(new VehicleController().getVehicleType(UUIDUtil.toUUID(id)));
+
+        } catch (DataAccessException e) {
+            throw new NotFoundException();
+        }
     }
 
 
