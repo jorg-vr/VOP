@@ -133,6 +133,9 @@ public class RESTCompanyController {
     }
 
     private Address RESTToModelAddress(RESTAddress restAddress) {
+        if(restAddress==null){
+            return null;
+        }
         return new Address(restAddress.getStreet(),
                 restAddress.getHouseNumber(),
                 restAddress.getCity(),
