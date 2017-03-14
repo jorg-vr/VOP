@@ -4,7 +4,7 @@
             <h1>Vloten </h1>
         </div>
         <info-pane v-for="fleet in fleets"
-                   :textValues="new Array('name', 'company')"
+                   :textValues="new Array(fleet.name, fleet.company)"
                    :remove="deleteVehicle"
                    :objectId="fleet.id"
                    edit="edit_fleet"
