@@ -46,7 +46,7 @@ public class RESTCompanyControllerTest {
 
     @Before
     public void setup() {
-        ProductionProvider.initializeProvider(true);
+        ProductionProvider.initializeProvider(false);
         mvc = MockMvcBuilders
                 .webAppContextSetup(context)
                 .build();
