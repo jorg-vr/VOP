@@ -127,9 +127,9 @@ public class RESTUserController {
     public RESTUser putId(@PathVariable("id") String id, @RequestBody RESTUser user) {
         UUID uuid = UUIDUtil.toUUID(id);
         try {
-            Account account = accountController.updateAccount(uuid, user.getPassword());
+            Account account = accountController.updateAccount(uuid, user.getEmail(), user.getPassword());
             Person person = account.getPerson();
-            person = personController.updatePerson(person.getUuid(), user.getFirstName(), user.getLastName());
+            person = personController.updatePerson(person.getUuid(), user.getFirstName(), user.getLastName(), user.getEmail());
             return merge(person, account);
         } catch (DataAccessException e) {
             throw new InvalidInputException();

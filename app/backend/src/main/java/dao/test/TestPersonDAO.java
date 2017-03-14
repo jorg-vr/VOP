@@ -75,8 +75,15 @@ public class TestPersonDAO extends TestDAO<Person> implements PersonDAO {
     }
 
     @Override
-    public Person update(UUID id, String firstName, String lastName, String email, String phonenumber, Address address) throws DataAccessException {
-        return null;
+    public Person update(UUID id, String firstName, String lastName, String email) throws DataAccessException {
+        if (!persons.containsKey(id)) {
+            throw new DataAccessException();
+        }
+        Person person = persons.get(id);
+        person.setFirstName(firstName);
+        person.setLastName(lastName);
+        person.setEmail(email);
+        return person;
     }
 
     @Override

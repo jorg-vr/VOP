@@ -26,8 +26,8 @@ public class PersonController extends AbstractController<Person> {
         return dao.create(firstName, lastName, email);
     }
 
-    public Person updatePerson(UUID personId, String firstName, String lastName) throws DataAccessException {
-        return dao.update(personId, firstName, lastName);
+    public Person updatePerson(UUID personId, String firstName, String lastName, String email) throws DataAccessException {
+        return dao.update(personId, firstName, lastName, email);
     }
 
 }

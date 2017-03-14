@@ -113,12 +113,11 @@ public class ProductionAccountDAO implements AccountDAO {
     }
 
     @Override
-    public Account update(UUID id, String login, String hashedPassword, Person person) throws DataAccessException {
+    public Account update(UUID id, String login, String hashedPassword) throws DataAccessException {
         Account account = new Account();
         account.setUuid(id);
         account.setLogin(login);
         account.setHashedPassword(hashedPassword);
-        account.setPerson(person);
         HibernateUtil.update(factory,account);
         return account;
     }
