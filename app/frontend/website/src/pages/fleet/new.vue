@@ -6,21 +6,27 @@
         <div class="page-header">
             <h1>Nieuwe vloot</h1>
         </div>
-        <fleet-form :submit="createFleet"></fleet-form>
+        <fleet-form :fleet=fleet :submit="createFleet"></fleet-form>
     </div>
 </template>
 <script>
     import FleetForm from './form.vue'
     export default {
         data(){
-            return {}
+            return {
+                fleet: {
+                    name: '',
+                    company: ''
+                }
+            }
         },
         components: {
             FleetForm
         },
         methods: {
             //API call to create a new fleet.
-            createFleet(fleetName, companyId){
+            createFleet(fleet){
+                //TODO
                 this.$http.post('https://vopro5.ugent.be/app/api/fleets', fleet,
                     {
                         headers: {
@@ -33,7 +39,7 @@
                         console.log(response.body);
                     }, response => { //Fail
                         console.log('fail')
-                        console.log(response.body)
+                        console.log(response)
                     }
                 )
             }

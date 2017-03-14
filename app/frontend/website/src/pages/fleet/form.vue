@@ -41,24 +41,25 @@
         data() {
             //The values for the fleet.
             return {
-                fleet: {
-                    name: '',
-                    company: ''
-                }
+                companies: []
             }
         },
         created(){
-            //Set the values for the fleet equal to possible old values of the fleet
-            //in case of an update.
-            this.newEmail = this.email;
-            this.newFleetName = this.fleetName;
+            this.fetchCompanies()
         },
         props: {
-            email: String, //old email
-            fleetName: String, //old name
-            //This function accepts 2 parameters, the e-mail and the name.
-            //It should create or upate a fleet.
-            submit: Function
+            fleet: Object,
+            submit: Function //Function to create the fleet.
+        },
+        methods: {
+            fetchCompanies(){
+                this.$http.get('https://vopro5.ugent.be/app/api/companies').then(response => {
+                    const data = response.body.data;
+                    for(let i=0; i<data.length; i++){
+                        this.companies.push(data[i]);
+                    }
+                })
+            }
         }
     }
 

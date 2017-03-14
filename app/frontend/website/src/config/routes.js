@@ -30,7 +30,7 @@ export default [
 
             //Fleet
             { path: 'fleets', name: 'fleets', component: IndexFleet },
-            { path: 'fleets/:id', name: 'fleet', component: ShowFleet },
+            { path: 'fleets/(\d+)', name: 'fleet', component: ShowFleet },
             { path: 'fleets/new', name: 'new_fleet', component: NewFleet },
             { path: 'fleets/:id/edit', name: 'edit_fleet', component: EditFleet},
 

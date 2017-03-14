@@ -6,7 +6,7 @@
         <div class="page-header">
             <h1>Wijzig vloot</h1>
         </div>
-        <fleet-form :submit="updateFleet"></fleet-form>
+        <fleet-form :fleet=fleet :submit="updateFleet"></fleet-form>
     </div>
 </template>
 <script>
@@ -14,7 +14,10 @@
     export default {
         data(){
             return {
-                fleet : {}
+                fleet : {
+                    name: '',
+                    company: ''
+                }
             }
         },
         components: {
