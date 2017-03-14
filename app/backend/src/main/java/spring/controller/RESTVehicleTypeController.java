@@ -45,4 +45,7 @@ public class RESTVehicleTypeController {
     private RESTVehicleType modelToREST(VehicleType vehicleType){
         return new RESTVehicleType(UUIDUtil.UUIDToNumberString(vehicleType.getUuid()),vehicleType.getType());
     }
+
+
+
 }
