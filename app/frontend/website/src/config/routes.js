@@ -27,12 +27,12 @@ export default [
         children: [
             //User
             { path: 'users', name: 'users', component: IndexUser },
-            { path: 'users/new', component: NewUser },  
-            { path: 'users/:id/edit', component: EditUser },
+            { path: 'users/new', name: 'new_user',component: NewUser },  
+            { path: 'users/:id/edit', name: 'edit_user    ', component: EditUser },
             // Clients
             { path: 'clients', name: 'clients', component: IndexClient },
-            { path: 'clients/new', component: NewClient },
-            { path: 'clients/:id/edit', component: EditClient },
+            { path: 'clients/new', name: 'new_client',component: NewClient },
+            { path: 'clients/:id/edit', name: 'edit_client',component: EditClient },
             //Fleet
             { path: 'fleets', name: 'fleets', component: IndexFleet },
             { path: 'fleets/new', name: 'new_fleet', component: NewFleet },
