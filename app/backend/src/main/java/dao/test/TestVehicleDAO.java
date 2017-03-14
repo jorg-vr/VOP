@@ -111,4 +111,9 @@ public class TestVehicleDAO implements VehicleDAO {
     public Filter<Vehicle> byType(VehicleType type) {
         return null;
     }
+
+    @Override
+    public Filter<Vehicle> byFleet(Fleet fleet) {
+        return null;
+    }
 }

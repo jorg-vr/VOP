@@ -1,5 +1,6 @@
 package dao.interfaces;
 
+import model.fleet.Fleet;
 import model.fleet.Vehicle;
 import model.fleet.VehicleType;
 
@@ -28,4 +29,6 @@ public interface VehicleDAO extends DAO<Vehicle> {
     Filter<Vehicle> maxMileage(int mileage);
 
     Filter<Vehicle> byType(VehicleType type);
+
+    Filter<Vehicle> byFleet(Fleet fleet);
 }
