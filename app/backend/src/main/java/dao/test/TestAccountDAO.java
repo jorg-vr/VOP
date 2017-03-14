@@ -69,8 +69,14 @@ public class TestAccountDAO extends TestDAO<Account> implements AccountDAO {
     }
 
     @Override
-    public Account update(UUID id, String login, String hashedPassword, Person person) throws DataAccessException {
-        return null;
+    public Account update(UUID id, String login, String hashedPassword) throws DataAccessException {
+        if (!accountsID.containsKey(id)) {
+            throw new DataAccessException();
+        }
+        Account account = accountsID.get(id);
+        account.setLogin(login);
+        account.setHashedPassword(hashedPassword);
+        return account;
     }
 
     @Override

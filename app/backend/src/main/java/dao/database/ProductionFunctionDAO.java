@@ -115,6 +115,18 @@ public class ProductionFunctionDAO implements FunctionDAO {
     }
 
     @Override
+    public Function update(UUID id, Company company, Role role, Account account, LocalDateTime startDate, LocalDateTime endDate) throws DataAccessException {
+        Function function = get(id);
+        function.setCompany(company);
+        function.setRole(role);
+        function.setAccount(account);
+        function.setStartDate(startDate);
+        function.setEndDate(endDate);
+        HibernateUtil.update(factory,function);
+        return function;
+    }
+
+    @Override
     public Filter<Function> byAccount(Account account) {
         return (o1) -> {
             predicates.add(criteriaBuilder.equal(root.get("account"), account));

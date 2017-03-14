@@ -75,18 +75,18 @@ public class ProductionPersonDAO implements PersonDAO {
 
     @Override
     public Person update(UUID id, String firstName, String lastName) throws DataAccessException {
-        return update(id,firstName,lastName,null,null,null);
+        return update(id,firstName,lastName,null);
     }
 
     @Override
-    public Person update(UUID id, String firstName, String lastName, String email, String phonenumber, Address address) throws DataAccessException {
+    public Person update(UUID id, String firstName, String lastName, String email) throws DataAccessException {
         Person person = new Person();
         person.setUuid(id);
         person.setFirstName(firstName);
         person.setLastName(lastName);
         person.setEmail(email);
-        person.setPhoneNumber(phonenumber);
-        person.setAddress(address);
+        person.setPhoneNumber(null);
+        person.setAddress(null);
         HibernateUtil.update(factory,person);
         return person;
     }

@@ -3,7 +3,14 @@
         <div class="page-header">
             <h1>Vloten </h1>
         </div>
-        <info-pane v-for="fleet in fleets" :object="fleet" :key="fleet.id"></info-pane>
+        <info-pane v-for="fleet in fleets"
+                   :textValues="new Array(fleet.name, fleet.company)"
+                   :remove="deleteVehicle"
+                   :objectId="fleet.id"
+                   edit="edit_fleet"
+                   show="fleet"
+                   :key="fleet.id">
+        </info-pane>
         <button type="button" class="btn btn-primary btn-circle btn-lg">+</button>
     </div>
 </template>
@@ -16,11 +23,11 @@
         },
         data: function () {
             return {
-                fleets: [ //dummy fleets
-                    {id: 1, text: ['Test company 1'], edit: 'id/edit', show: 'fleets/1'},
-                    {id: 2, text: ['Test company 2'], edit: 'id/edit'},
-                    {id: 3, text: ['Test company 3'], edit: 'id/edit'},
-                    {id: 4, text: ['Test company 4'], edit: 'id/edit'}
+                fleets : [ //Some test fleets, this will be filled in with the actual fleets
+                    {id: 1, name: 'Vloot 1', company : '1'},
+                    {id: 2, name: 'Vloot 2', company : '2'},
+                    {id: 3, name: 'Vloot 3', company : '3'},
+                    {id: 4, name: 'Vloot 4', company : '4'}
                 ]
             }
         },
@@ -33,6 +40,9 @@
                     this.fleets = response.body;
                 })
             },
+            deleteVehicle (){
+
+            }
         }
     }
 </script>

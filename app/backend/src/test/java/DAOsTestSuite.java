@@ -1,3 +1,4 @@
+import dao.database.ProductionVehicleDAOFiltersTest;
 import dao.database.ProductionVehicleDAOTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -10,7 +11,8 @@ import org.junit.runners.Suite;
 
 //Add DAO test classes whenever a new test class is made.
 @Suite.SuiteClasses({
-        ProductionVehicleDAOTest.class
+        ProductionVehicleDAOTest.class,
+        ProductionVehicleDAOFiltersTest.class
 })
 
 public class DAOsTestSuite {

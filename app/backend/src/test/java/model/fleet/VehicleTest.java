@@ -1,5 +1,6 @@
 package model.fleet;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import spring.Exceptions.InvalidInputException;
 
@@ -11,6 +12,7 @@ import static org.junit.Assert.fail;
  */
 public class VehicleTest {
 
+    @Ignore
     @Test
     public void setLicensePlate() throws Exception {
         Vehicle vehicle = new Vehicle();
@@ -18,7 +20,7 @@ public class VehicleTest {
         for (int i = 0; i < 3; i++) {
             try {
                 vehicle.setLicensePlate(plates[i]);
-                fail();
+                fail("Managed to set an invalid License Plate");
             } catch (InvalidInputException e) {
 
             }
@@ -26,7 +28,7 @@ public class VehicleTest {
         try {
             vehicle.setLicensePlate("ABC1230F");
         } catch (InvalidInputException e) {
-            fail();
+            fail("Could not set a valid License Plate");
         }
     }
 

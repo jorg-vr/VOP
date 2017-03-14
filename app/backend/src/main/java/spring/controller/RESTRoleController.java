@@ -35,7 +35,7 @@ public class RESTRoleController {
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
-        return new RESTSchema<>(roles, page, limit, PATH_ROLE, (a, b) -> a.getId().compareTo(b.getId()));
+        return new RESTSchema<>(roles, page, limit, PATH_ROLE);
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -65,8 +65,15 @@ public class RESTRoleController {
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
     public RESTRole putId(@PathVariable("id") String id, @RequestBody RESTRole role) {
         UUID uuid = UUIDUtil.toUUID(id);
+        UUID companyUuid = UUIDUtil.toUUID(role.getCompanyId());
+        UUID userUuid = UUIDUtil.toUUID(role.getUserId());
         try {
-            Function function = controller.update(uuid, role.getEndDate());
+            Function function = controller.update(uuid,
+                    companyUuid,
+                    role.getFunction(),
+                    userUuid,
+                    role.getStartDate(),
+                    role.getEndDate());
             return modelToRest(function);
         } catch (DataAccessException e) {
             throw new NotFoundException();

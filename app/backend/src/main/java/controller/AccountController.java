@@ -39,8 +39,8 @@ public class AccountController extends AbstractController<Account> {
         return dao.create(name, password, person);
     }
 
-    public Account updateAccount(UUID id, String hashedPassword) throws DataAccessException {
-        return dao.update(id, hashedPassword);
+    public Account updateAccount(UUID id, String login, String hashedPassword) throws DataAccessException {
+        return dao.update(id, login, hashedPassword);
     }
 
     /**

@@ -55,7 +55,7 @@ public class RESTCompanyController {
         } catch (DataAccessException e) {
             //API doesn't contain error
         }
-        return new RESTSchema<>(result, page, limit, PATH_COMPANY, (a, b) -> a.getId().compareTo(b.getId()));
+        return new RESTSchema<>(result, page, limit, PATH_COMPANY);
     }
 
     @RequestMapping(method = RequestMethod.POST)

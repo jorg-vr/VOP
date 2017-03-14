@@ -83,7 +83,7 @@ public class RESTVehicleController {
             throw new InvalidInputException("Some parameters where invalid");
         }
 
-        return new RESTSchema<>(result, page, limit, baseString, (a, b) -> a.getId().compareTo(b.getId()));
+        return new RESTSchema<>(result, page, limit, baseString);
     }
 
     /***
@@ -168,7 +168,7 @@ public class RESTVehicleController {
     public void deleteId(@PathVariable("id") String id) {
 
         try {
-            controller.archive(UUID.fromString(id));
+            controller.archive(UUIDUtil.toUUID(id));
         } catch (DataAccessException e) {
             throw new NotFoundException();
             //TODO updateId when there are more exceptions
