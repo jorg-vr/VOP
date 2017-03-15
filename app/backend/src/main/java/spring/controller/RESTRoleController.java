@@ -64,6 +64,7 @@ public class RESTRoleController {
 
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
     public RESTRole putId(@PathVariable("id") String id, @RequestBody RESTRole role) {
+        System.out.println("ids: "+id+"  "+role.getCompanyId()+"  "+role.getUserId());
         UUID uuid = UUIDUtil.toUUID(id);
         UUID companyUuid = UUIDUtil.toUUID(role.getCompanyId());
         UUID userUuid = UUIDUtil.toUUID(role.getUserId());

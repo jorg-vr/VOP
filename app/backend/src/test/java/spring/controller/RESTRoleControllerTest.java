@@ -42,7 +42,7 @@ public class RESTRoleControllerTest {
 
     @BeforeClass
     public static void setup() {
-        ProductionProvider.initializeProvider(false);
+        ProductionProvider.initializeProvider(true);
         try {
             address= new Address("mystreet","123","lala","12345","land");
             customer= new CustomerController().create(address,"04789456123","anita","123456789");
@@ -101,10 +101,7 @@ public class RESTRoleControllerTest {
     public void getId() throws Exception {
         RESTRole restRole=new RESTRole();
         restRole.setCompanyId(UUIDUtil.UUIDToNumberString(customer.getUuid()));
-        restRole.setFunction(function.getRole().getName());
         restRole.setUserId(UUIDUtil.UUIDToNumberString(account.getUuid()));
-        restRole.setStartDate(function.getStartDate());
-        restRole.setEndDate(function.getEndDate());
 
         mvc.perform(MockMvcRequestBuilders.get("/roles/{id}",UUIDUtil.UUIDToNumberString(function.getUuid())))
                 .andExpect(status().isOk())
@@ -115,15 +112,12 @@ public class RESTRoleControllerTest {
 
     @Test
     public void putId() throws Exception {
-        function.setStartDate(LocalDateTime.now().minusDays(5));
         RESTRole restRole=new RESTRole();
         restRole.setId(UUIDUtil.UUIDToNumberString( function.getUuid()));
         restRole.setCompanyId(UUIDUtil.UUIDToNumberString(customer.getUuid()));
         restRole.setFunction("");
         restRole.setUserId(UUIDUtil.UUIDToNumberString(account.getUuid()));
-        restRole.setStartDate(function.getStartDate());
-        restRole.setEndDate(function.getEndDate());
-        System.out.println(account.getUuid()+" "+customer.getUuid()+" ");
+
         MvcResult result =mvc.perform(MockMvcRequestBuilders.put("/roles/{id}",UUIDUtil.UUIDToNumberString(function.getUuid()))
                 .header("Content-Type","application/json")
                 .content(TestUtil.convertObjectToJsonBytes(restRole))
