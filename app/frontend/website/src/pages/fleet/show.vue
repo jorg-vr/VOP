@@ -1,18 +1,22 @@
+<!--
+    This page shows a certain fleet in detail.
+    TODO: document this page.
+-->
 <template>
     <div>
         <div class="page-header">
             <h1>Vloot {{this.$route.params.id}}</h1>
         </div>
-        <router-link :to="{name: 'new_subfleet'}"><button type="button" class="btn btn-primary table-button">Niew subvloot</button></router-link>
-        <button type="button" class="btn btn-primary table-button" v-on:click="removeFleet">Verwijder vloot</button>
+        <router-link :to="{name: 'new_vehicle'}">
+            <button type="button" class="btn btn-primary table-button">Niew voertuig</button>
+        </router-link>
+        <button type="button" class="btn btn-primary table-button" v-on:click="deleteFleet">Verwijder vloot</button>
         <div class="row">
             <div>
                 <div v-for="subfleet in subfleets">
                     <h2>{{subfleet.type | capitalize }}</h2>
                     <table class="table">
                         <subfleet-row v-for="vehicle in subfleet.vehicles" :vehicle="vehicle" :key="vehicle.id"></subfleet-row>
-                        <router-link :to="{name: 'new_vehicle'}"><button type="button" class="btn btn-primary table-button">Niew voertuig</button></router-link>
-                        <button type="button" class="btn btn-primary table-button" v-on:click="removeSubfleet">Verwijder subvloot</button>
                     </table>
                 </div>
             </div>
@@ -36,15 +40,13 @@
                 <td><router-link :to="{name: 'edit_vehicle', params: {id: vehicle.id}}">
                     <button class="btn btn-xs btn-info"><i class="fa fa-pencil" aria-hidden="true"></i></button>
                 </router-link></td>
-                <td><button v-on:click="removeVehicle(vehicle.id)" class="btn btn-xs btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button></td>
+                <td><button v-on:click="deleteVehicle(vehicle.id)" class="btn btn-xs btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button></td>
                 </tr>
                 `,
                 methods: {
-                    removeVehicle (vehicleID){
-                        alert('Not yet implemented');
-                        this.$http.delete('https://vopro5.ugent.be/app/api/vehicle/' + vehicleID).then(response => {
-                            //Verwerk response
-                        });
+                    //TODO
+                    deleteVehicle (vehicleId){
+                        this.$http.delete('https://vopro5.ugent.be/app/api/vehicles/' + vehicleId);
                     }
                 }
             }
@@ -70,15 +72,14 @@
         },
         methods: {
             fetchSubfleetList (){
+                //TODO:
                 this.$http.get('TODO').then(response => {
                     this.subfleets = response.body
                 })
             },
-            removeSubfleet(){
-                alert('Not yet implemented');
-            },
-            removeFleet(){
-                alert('Not yet implemented');
+            deleteFleet(){
+                this.$http.delete('https://vopro5.ugent.be/app/api/fleets/' + this.$route.params.id);
+
             }
         },
         filters: {

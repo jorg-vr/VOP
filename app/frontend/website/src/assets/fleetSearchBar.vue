@@ -1,4 +1,8 @@
+<!--
+    Component to search fleets by their keys.
 
+    This does not function properly yet!
+-->
 <script>
     export default {
         mixins: [require('./searchBar.vue')],

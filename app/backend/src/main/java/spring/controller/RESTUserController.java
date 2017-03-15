@@ -57,7 +57,7 @@ public class RESTUserController {
             System.err.println("Something is wrong with the database");
             e.printStackTrace();
         }
-        return new RESTSchema<>(users, page, limit, PATH_USER);
+        return new RESTSchema<>(users, page, limit, PATH_USER+"?");
     }
 
     /**

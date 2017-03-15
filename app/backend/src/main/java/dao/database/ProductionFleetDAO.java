@@ -36,13 +36,9 @@ public class ProductionFleetDAO implements FleetDAO{
 
     @Override
     public Fleet create(String name, Customer customer, Collection<Vehicle> vehicles) throws DataAccessException {
-        System.out.println("OWNER = " + customer);
         Fleet fleet = new Fleet();
-        //fleet.setName(name);
+        fleet.setName(name);
         fleet.setOwner(customer);
-        if (vehicles == null) {
-            vehicles = new ArrayList<>();
-        }
         fleet.setVehicles(vehicles);
         HibernateUtil.create(factory,fleet);
         return fleet;
@@ -51,11 +47,11 @@ public class ProductionFleetDAO implements FleetDAO{
     @Override
     public Fleet update(UUID id, String name, Customer customer) throws DataAccessException {
         Fleet fleet = new Fleet();
-        //fleet.setName(name);
+        fleet.setName(name);
         fleet.setUuid(id);
         fleet.setOwner(customer);
         HibernateUtil.update(factory,fleet);
-        return null;
+        return fleet;
     }
 
     @Override

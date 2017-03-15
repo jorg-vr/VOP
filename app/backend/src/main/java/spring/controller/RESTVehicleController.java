@@ -45,7 +45,7 @@ public class RESTVehicleController {
                                        @RequestParam(required = false) String type,
                                        @RequestParam(required = false) Integer page,
                                        @RequestParam(required = false) Integer limit) {
-        String baseString = "/vehicles?";
+        String baseString = PATH_VEHICLE +"?";
         VehicleDAO vehicleDAO = (VehicleDAO) controller.getDao();
         List<Filter<Vehicle>> filters = new ArrayList<>();
         if (licensPlate != null) {
