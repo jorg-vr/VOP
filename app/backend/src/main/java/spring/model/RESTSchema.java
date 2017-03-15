@@ -44,6 +44,7 @@ public class RESTSchema<T> {
      * @param collection the full collection that has to be paginated
      * @param page       if null data of the pagination will be set to collection
      * @param limit      if null data of the pastination will be set to collection
+     * @param baseString Path should end with ? or &
      * @return
      */
     public RESTSchema(Collection<T> collection, Integer page, Integer limit, String baseString) {
@@ -60,9 +61,15 @@ public class RESTSchema<T> {
         // TODO sort
         Collections.sort(list, (a, b) -> a.hashCode() - b.hashCode());
         int start = page * limit;
-        int end = Math.min(start + limit, this.total);
+        int end = min(start + limit, this.total);
 
-        if (start < 0 || start >= list.size() || page < 0 || limit <= 0) {
+        // Deals with empty collections
+        int listSize = list.size();
+        if (listSize == 0) {
+            listSize += 1;
+        }
+
+        if (start < 0 || start >= listSize || page < 0 || limit <= 0) {
             throw new InvalidInputException();
         }
 
@@ -72,7 +79,7 @@ public class RESTSchema<T> {
         this.offset = page * limit;
 
         this.first = makeLink(baseString, 0, limit);
-        int lastPage = ((list.size() - 1) / limit);
+        int lastPage = ((listSize - 1) / limit);
         this.last = makeLink(baseString, lastPage, limit);
 
         if (page > 0) {
@@ -84,7 +91,7 @@ public class RESTSchema<T> {
     }
 
     /**
-     * Appends page and limit to the query. A ? will be appended to path if required
+     * Appends page and limit to the query. Path should end with ? or &
      *
      * @param path  the query so far
      * @param page  the page number, should not be null
@@ -92,9 +99,6 @@ public class RESTSchema<T> {
      * @return the path where limit and page have been appended to
      */
     private String makeLink(String path, Integer page, Integer limit) {
-        if (path.charAt(path.length() - 1) != '?') {
-            path += "?";
-        }
         return path + "page=" + page + "&limit=" + limit;
     }
 

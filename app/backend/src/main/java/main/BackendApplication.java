@@ -2,7 +2,6 @@ package main;
 
 import dao.database.ProductionProvider;
 import dao.interfaces.DAOProvider;
-import dao.test.TestDAOProvider;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;

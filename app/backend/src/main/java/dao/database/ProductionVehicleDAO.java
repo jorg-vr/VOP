@@ -3,6 +3,7 @@ package dao.database;
 import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
 import dao.interfaces.VehicleDAO;
+import model.fleet.Fleet;
 import model.fleet.Vehicle;
 import model.fleet.VehicleType;
 import org.hibernate.Session;
@@ -69,6 +70,39 @@ public class ProductionVehicleDAO implements VehicleDAO {
         vehicle.setMileage(mileage);
         vehicle.setType(type);
         vehicle.setChassisNumber(chassisNumber);
+        HibernateUtil.update(factory,vehicle);
+        return vehicle;
+    }
+
+    @Override
+    public Vehicle create(String brand, String model, String chassisNumber, String licenseplate, int value, int mileage, VehicleType type, LocalDate productionDate, Fleet fleet) throws DataAccessException {
+        Vehicle vehicle = new Vehicle();
+        vehicle.setBrand(brand);
+        vehicle.setLicensePlate(licenseplate);
+        vehicle.setModel(model);
+        vehicle.setProductionDate(productionDate);
+        vehicle.setValue(value);
+        vehicle.setMileage(mileage);
+        vehicle.setType(type);
+        vehicle.setChassisNumber(chassisNumber);
+        vehicle.setFleet(fleet);
+        HibernateUtil.create(factory,vehicle);
+        return vehicle;
+    }
+
+    @Override
+    public Vehicle update(UUID uuid, String brand, String model, String chassisNumber, String licenseplate, int value, int mileage, VehicleType type, LocalDate productionDate, Fleet fleet) throws DataAccessException {
+        Vehicle vehicle = new Vehicle();
+        vehicle.setUuid(uuid);
+        vehicle.setBrand(brand);
+        vehicle.setLicensePlate(licenseplate);
+        vehicle.setModel(model);
+        vehicle.setProductionDate(productionDate);
+        vehicle.setValue(value);
+        vehicle.setMileage(mileage);
+        vehicle.setType(type);
+        vehicle.setChassisNumber(chassisNumber);
+        vehicle.setFleet(fleet);
         HibernateUtil.update(factory,vehicle);
         return vehicle;
     }
@@ -167,6 +201,12 @@ public class ProductionVehicleDAO implements VehicleDAO {
     public Filter<Vehicle> byType(VehicleType type) {
         return () ->
             predicates.add(criteriaBuilder.equal(root.get("type"), type));
+    }
+
+    @Override
+    public Filter<Vehicle> byFleet(Fleet fleet) {
+        return () ->
+                predicates.add(criteriaBuilder.equal(root.get("fleet"), fleet));
     }
 
 

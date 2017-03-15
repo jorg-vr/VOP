@@ -90,4 +90,16 @@ public class Address implements java.io.Serializable {
     public int hashCode() {
         return uuid.hashCode();
     }
+
+    /*@Override
+    public String toString() {
+        return "Address{" +
+                "uuid= " + getUuid() +
+                ", street= " + street +
+                ", streetNumber= " + streetNumber +
+                ", town= " + town +
+                ", postalCode= " + postalCode +
+                ", country= " + country +
+                '}';
+    }*/
 }

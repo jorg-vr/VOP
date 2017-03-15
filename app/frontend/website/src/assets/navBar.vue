@@ -1,3 +1,6 @@
+<!--
+    Navigation bar of the website
+-->
 <template>
     <div id="sidebar-wrapper">
         <ul class="sidebar-nav">
