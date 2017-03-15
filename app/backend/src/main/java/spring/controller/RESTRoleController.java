@@ -35,7 +35,7 @@ public class RESTRoleController {
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
-        return new RESTSchema<>(roles, page, limit, PATH_ROLE);
+        return new RESTSchema<>(roles, page, limit, PATH_ROLE+"?");
     }
 
     @RequestMapping(method = RequestMethod.POST)
