@@ -127,10 +127,10 @@ public class ProductionProvider implements DAOProvider {
         ProductionProvider.initializeProvider(false);
         DAOProvider provider = ProductionProvider.getInstance();
 
-        FunctionDAO dao = provider.getFunctionDAO();
-        Function test = dao.create(null,null,null, LocalDateTime.now(),LocalDateTime.now());
-
-        dao.remove(test.getUuid());
+        VehicleTypeDao dao = provider.getVehicleTypeDAO();
+        dao.create("Vrachtwagen",1);
+        dao.create("Personenwagen",1);
+        dao.create("Oplegger",1);
         provider.close();
     }
 

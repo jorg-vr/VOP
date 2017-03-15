@@ -37,6 +37,7 @@ public class ProductionCustomerDAO implements CustomerDAO {
     @Override
     public Customer get(UUID id) throws DataAccessException {
         try (Session session = factory.openSession()) {
+            System.out.println(id.toString());
             Customer customer=session.get(Customer.class, id);
             if(customer!=null) {
                 Hibernate.initialize(customer.getAddress());
@@ -44,7 +45,6 @@ public class ProductionCustomerDAO implements CustomerDAO {
                 throw new DataAccessException();//Todo use correct exception
             }
             return customer;
-
         }
     }
 

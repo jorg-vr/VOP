@@ -32,15 +32,20 @@ public class RESTFleetController {
 
     @RequestMapping(method = RequestMethod.GET)
     public RESTSchema<RESTFleet> get(@RequestParam(required = false) String company,
-                                      @RequestParam(required = false) Integer page,
-                                      @RequestParam(required = false) Integer limit) {
+                                     @RequestParam(required = false) Integer page,
+                                     @RequestParam(required = false) Integer limit) {
         FleetDAO fleetDAO = (FleetDAO) controller.getDao();
         try {
             String baseString = PATH_FLEETS + "?";
-
-            Collection<Fleet> fleets=customerController.get(UUIDUtil.toUUID(company)).getFleets();
             Collection<RESTFleet> restFleets = new ArrayList<>();
-            for(Fleet f: fleets){
+            Collection<Fleet> fleets;
+            if (company != null) {
+                fleets = customerController.get(UUIDUtil.toUUID(company)).getFleets();
+
+            } else {
+                fleets = controller.getAll();
+            }
+            for (Fleet f : fleets) {
                 restFleets.add(modelToRest(f));
             }
             return new RESTSchema<>(restFleets, page, limit, baseString);
@@ -68,7 +73,7 @@ public class RESTFleetController {
         try {
             return modelToRest(controller.get(uuid));
 
-        } catch (DataAccessException|NullPointerException e) {
+        } catch (DataAccessException | NullPointerException e) {
             throw new NotFoundException();
         }
     }
@@ -98,7 +103,7 @@ public class RESTFleetController {
 
     private RESTFleet modelToRest(Fleet fleet) {
         String id = UUIDUtil.UUIDToNumberString(fleet.getUuid());
-        String owner=fleet.getOwner()!=null?UUIDUtil.UUIDToNumberString(fleet.getOwner().getUuid()):null;
+        String owner = fleet.getOwner() != null ? UUIDUtil.UUIDToNumberString(fleet.getOwner().getUuid()) : null;
         return new RESTFleet(id,
                 owner,
                 fleet.getName(),
