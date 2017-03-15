@@ -20,7 +20,7 @@ public class LeasingCompany extends Company implements java.io.Serializable {
     }
 
     /**
-     * Adds the given vehicle to the list of vehicles the leasing company owns and changes the vehicle's owner to this leasing company
+     * Adds the given vehicle to the list of vehicles the leasing company owns.
      * Nothing will happen if the vehicle is already in the list.
      *
      * @param vehicle vehicle who's ownership has to be assigned to this leasingcompany
@@ -32,25 +32,20 @@ public class LeasingCompany extends Company implements java.io.Serializable {
         } else if (vehicle == null || vehicles.contains(vehicle)) {
             return false;
         }
-        boolean added = vehicles.add(vehicle);
-        if(added){
-            vehicle.setLeasingCompany(this);
-        }
-        return added;
+        return vehicles.add(vehicle);
     }
 
     /**
-     * removes the vehicle from the list of owned vehicles (if it is in the list) and sets the vehicle leasing company to null
+     * removes the vehicle from the list of owned vehicles (if it is in the list)
      *
      * @param vehicle vehicle that needs to be removed
      * @return true if the vehicle was succesfully removed
      */
     public boolean removeVehicle(Vehicle vehicle) {
-        boolean removed = vehicles.remove(vehicle);
-        if(removed){
-            vehicle.setLeasingCompany(null);
+        if(vehicles == null){
+            return false;
         }
-        return removed;
+        return vehicles.remove(vehicle);
     }
 
     public Collection<Vehicle> getVehicles() {
