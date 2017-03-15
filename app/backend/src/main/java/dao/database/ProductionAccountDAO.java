@@ -105,6 +105,7 @@ public class ProductionAccountDAO implements AccountDAO {
         account.setUuid(id);
         account.setLogin(login);
         account.setHashedPassword(hashedPassword);
+        account.setPerson(get(id).getPerson());//TODO evaluate this
         HibernateUtil.update(factory, account);
         return account;
     }

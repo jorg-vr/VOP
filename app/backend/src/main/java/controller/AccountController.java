@@ -1,5 +1,6 @@
 package controller;
 
+import dao.database.ProductionProvider;
 import dao.interfaces.AccountDAO;
 import dao.interfaces.DAOProvider;
 import dao.interfaces.DataAccessException;
@@ -20,8 +21,8 @@ public class AccountController extends AbstractController<Account> {
     private DAOProvider provider;
 
     public AccountController() {
-        super(BackendApplication.PROVIDER.getAccountDao());
-        this.provider = BackendApplication.PROVIDER;
+        super(ProductionProvider.getInstance().getAccountDao());
+        this.provider = ProductionProvider.getInstance();
         this.dao = provider.getAccountDao();
     }
 
