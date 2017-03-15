@@ -38,6 +38,7 @@ public class ProductionAccountDAOTest {
         //personDAO.remove(p1.getUuid());
     }
 
+    //TODO: change person creation when create method in PersonDAO gets changed
     @Ignore
     @Test
     public void createGetRemoveTest() throws Exception {
@@ -49,6 +50,10 @@ public class ProductionAccountDAOTest {
         try {
             p1 = personDAO.create("Firstname 1", "Lastname 1", "Email@address1.com");
             assertNotNull("Failed to create a person object", p1);
+        } catch (Exception e) {
+            fail("Failed trying to create a new person");
+        }
+        try {
             a1 = accountDAO.create("login1", "hashedPassword1", p1);
             assertNotNull("Failed to create an account object", a1);
         } catch (Exception e) {
