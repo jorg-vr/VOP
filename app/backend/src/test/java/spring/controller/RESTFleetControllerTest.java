@@ -43,13 +43,13 @@ public class RESTFleetControllerTest {
     public static void setup() {
         ProductionProvider.initializeProvider(true);
         try {
-            //TODO find out why this doesn't work
             address= new Address("mystreet","123","lala","12345","land");
             customer= new CustomerController().create(address,"04789456123","anita","123456789");
             fleet=new FleetController().create(customer.getUuid(),"MyFleet");
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
+
     }
     @AfterClass
     public static void afterTransaction() {
@@ -59,6 +59,7 @@ public class RESTFleetControllerTest {
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
+        ProductionProvider.getInstance().close();
     }
 
     @Test

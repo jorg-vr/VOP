@@ -16,15 +16,8 @@ public class LeasingCompanyTest {
 
         assertTrue(leasingCompany.addVehicle(vehicle));
         assertTrue(leasingCompany.getVehicles().contains(vehicle));
-        assertEquals(leasingCompany, vehicle.getLeasingCompany());
         assertTrue(leasingCompany.removeVehicle(vehicle));
         assertFalse(leasingCompany.getVehicles().contains(vehicle));
-        assertEquals(null, vehicle.getLeasingCompany());
-    }
-
-    @Test
-    public void removeVehicle() throws Exception {
-
     }
 
 }

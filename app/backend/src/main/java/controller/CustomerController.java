@@ -21,7 +21,7 @@ public class CustomerController extends AbstractController<Customer>{
     }
 
     public Customer create(Address address, String phoneNumber, String name, String btwNumber) throws DataAccessException {
-        return dao.create(name, address, phoneNumber, btwNumber, null);
+        return dao.create(name, address, phoneNumber, btwNumber);
     }
 
     public Customer update(UUID id, Address address, String phoneNumber, String name, String btwNumber) throws DataAccessException {

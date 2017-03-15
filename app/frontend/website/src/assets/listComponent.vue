@@ -22,11 +22,11 @@
         </router-link>
         <router-link :to="{name: this.edit, params: {id: this.objectId}}">
             <button type="button" class="btn btn-md btn-info">
-                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                <i aria-hidden="true" class="fa fa-pencil"></i>
             </button>
         </router-link>
         <button type="button" class="btn btn-md btn-danger" v-on:click="remove(objectId)">
-            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+            <i aria-hidden="true" class="fa fa-trash"></i>
         </button>
     </div>
 </template>

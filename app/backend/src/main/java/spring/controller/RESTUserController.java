@@ -108,7 +108,7 @@ public class RESTUserController {
             Person person = account.getPerson();
 
             return merge(person, account);
-        } catch (DataAccessException | NumberFormatException e) {
+        } catch (DataAccessException | NumberFormatException | NullPointerException e) {
             throw new NotFoundException();
         }
     }
@@ -163,14 +163,17 @@ public class RESTUserController {
      */
     private RESTUser merge(Person person, Account account) {
         String id = UUIDUtil.UUIDToNumberString(account.getUuid());
+        String firstName=person!=null?person.getFirstName():null;
+        String lastName=person!=null?person.getLastName():null;
+        String email=person!=null?person.getEmail():null;
         RESTUser user = new RESTUser();
         user.setId(id);
         user.setPassword(account.getHashedPassword());
         //user.setUpdatedAt(LocalDateTime.now());
         //user.setCreatedAt(LocalDateTime.now());
-        user.setFirstName(person.getFirstName());
-        user.setLastName(person.getLastName());
-        user.setEmail(person.getEmail());
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setEmail(email);
         user.setUrl(PATH_USER + "/" + id);
         return user;
     }
