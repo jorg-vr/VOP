@@ -11,7 +11,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-4 control-label">Leasing bedrijf</label>
+            <label class="col-sm-4 control-label">Bedrijf</label>
             <div class="col-sm-8">
                 <select class="form-control" v-model="fleet.company">
                     <option v-for="company in companies" v-bind:value="company.id">{{company.name}}</option>
