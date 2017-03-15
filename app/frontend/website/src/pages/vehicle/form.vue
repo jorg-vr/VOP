@@ -13,7 +13,7 @@
         <div class="form-group">
             <label class="col-sm-4 control-label">Chassisnummer</label>
             <div class="col-sm-8">
-                <input type="text" class="form-control" placeholder="Chassisnummber" v-model="vehicle.chassisNumber">
+                <input type="text" class="form-control" placeholder="Chassisnummber" v-model="vehicle.vin">
             </div>
         </div>
         <div class="form-group">
