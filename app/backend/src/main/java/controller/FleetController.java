@@ -27,7 +27,7 @@ public class FleetController extends AbstractController<Fleet> {
 
     public Fleet create(UUID owner, String name) throws DataAccessException {
         Customer customer = customerDAO.get(owner);
-        return fleetDAO.create(name, customer, null);
+        return fleetDAO.create(name, customer);
     }
 
     public Fleet update(UUID fleetId, UUID owner, String name) throws DataAccessException {

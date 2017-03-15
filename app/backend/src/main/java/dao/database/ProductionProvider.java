@@ -1,27 +1,18 @@
 package dao.database;
 
 import dao.interfaces.*;
-import model.fleet.Fleet;
+import model.account.Function;
 import model.fleet.Vehicle;
-import model.fleet.VehicleType;
 import model.identity.Company;
-import model.identity.Identity;
 import model.identity.Person;
 import model.insurance.Insurance;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.query.Query;
 
-import java.time.LocalDate;
-import java.util.Collection;
-import java.util.Map;
-import java.util.UUID;
+import java.time.LocalDateTime;
 
 /**
  * Created by sam on 3/8/17.
@@ -136,10 +127,10 @@ public class ProductionProvider implements DAOProvider {
         ProductionProvider.initializeProvider(false);
         DAOProvider provider = ProductionProvider.getInstance();
 
-        FleetDAO dao = provider.getFleetDAO();
-        Fleet test = dao.create("test",null,null);
-
-        dao.remove(test.getUuid());
+        VehicleTypeDao dao = provider.getVehicleTypeDAO();
+        dao.create("Vrachtwagen",1);
+        dao.create("Personenwagen",1);
+        dao.create("Oplegger",1);
         provider.close();
     }
 
