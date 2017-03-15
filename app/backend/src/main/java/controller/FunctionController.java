@@ -29,8 +29,6 @@ public class FunctionController extends AbstractController<Function> {
     }
 
     public Function create(UUID companyId, String roleString, UUID accountId, LocalDateTime startDate, LocalDateTime endDate) throws DataAccessException {
-        System.out.println(companyId);
-        System.out.println(UUIDUtil.UUIDToNumberString(companyId));
         Company company = provider.getCustomerDAO().get(companyId);
 
         Account account = provider.getAccountDao().get(accountId);

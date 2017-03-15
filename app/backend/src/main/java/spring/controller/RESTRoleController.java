@@ -40,7 +40,6 @@ public class RESTRoleController {
 
     @RequestMapping(method = RequestMethod.POST)
     public RESTRole post(@RequestBody RESTRole role) {
-        System.out.println(role.getCompanyId());
         UUID companyUUID = UUIDUtil.toUUID(role.getCompanyId());
         UUID userUUID = UUIDUtil.toUUID(role.getUserId());
         try {
@@ -58,7 +57,7 @@ public class RESTRoleController {
         try {
             Function function = controller.get(uuid);
             return modelToRest(function);
-        } catch (DataAccessException e) {
+        } catch (Exception e) {
             throw new NotFoundException();
         }
     }
@@ -68,6 +67,7 @@ public class RESTRoleController {
         UUID uuid = UUIDUtil.toUUID(id);
         UUID companyUuid = UUIDUtil.toUUID(role.getCompanyId());
         UUID userUuid = UUIDUtil.toUUID(role.getUserId());
+        System.out.println("ids: "+uuid+"  "+userUuid+"  "+companyUuid);
         try {
             Function function = controller.update(uuid,
                     companyUuid,
@@ -104,7 +104,7 @@ public class RESTRoleController {
         role.setFunction("");
         role.setId(id);
         role.setUserId(userId);
-        role.setCompanyId("TODO");
+        role.setCompanyId(UUIDUtil.UUIDToNumberString(function.getCompany().getUuid()));
         role.setStartDate(function.getStartDate());
         role.setEndDate(function.getEndDate());
         //role.setUpdatedAt(); TODO milestone?
