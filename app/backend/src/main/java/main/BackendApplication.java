@@ -33,6 +33,6 @@ public class BackendApplication {
 
 	@PreDestroy
     public void preDestroy() {
-        System.out.println("---Release resources or perform destruction task---");
+        PROVIDER.close();
     }
 }
