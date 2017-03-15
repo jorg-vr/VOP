@@ -35,7 +35,7 @@ public class RESTCompanyControllerTest {
 
     @BeforeClass
     public static void setup() {
-        ProductionProvider.initializeProvider(false);
+        ProductionProvider.initializeProvider(true);
         try {
             //TODO find out why this doesn't work
             address= new Address("mystreet","123","lala","12345","land");
