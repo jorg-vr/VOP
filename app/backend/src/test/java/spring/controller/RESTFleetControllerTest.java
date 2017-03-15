@@ -74,61 +74,46 @@ public class RESTFleetControllerTest {
     @Test
     public void post() throws Exception {
         RESTFleet restFleet=new RESTFleet(null,UUIDUtil.UUIDToNumberString(customer.getUuid()),"newFleet",null,null,null,null);
-        MvcResult result =mvc.perform(MockMvcRequestBuilders.post("/companies").header("Content-Type","application/json").content(TestUtil.convertObjectToJsonBytes(restFleet)))
+        MvcResult result =mvc.perform(MockMvcRequestBuilders.post("/fleets").header("Content-Type","application/json").content(TestUtil.convertObjectToJsonBytes(restFleet)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name",equalTo(restFleet.getName())))
-                .andExpect(jsonPath("$.vatCompany",equalTo(restFleet.getCompany()))).andReturn();
+                .andExpect(jsonPath("$.company",equalTo(restFleet.getCompany()))).andReturn();
         RESTFleet restFleet1 =  TestUtil.convertJsonBytesToObject(result.getResponse().getContentAsByteArray(),RESTFleet.class);
         mvc.perform(MockMvcRequestBuilders.delete("/fleets/{id}",restFleet1.getId()))
                 .andExpect(status().isOk());
+        mvc.perform(MockMvcRequestBuilders.get("/fleets/{id}",restFleet1.getId()))
+                .andExpect(status().isNotFound());
     }
 
     @Test
     public void getId() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/companies/{id}",UUIDUtil.UUIDToNumberString(customer.getUuid())))
+        mvc.perform(MockMvcRequestBuilders.get("/fleets/{id}",UUIDUtil.UUIDToNumberString(fleet.getUuid())))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name",equalTo(customer.getName())))
-                .andExpect(jsonPath("$.vatNumber",equalTo(customer.getBtwNumber())))
-                .andExpect(jsonPath("$.phoneNumber",equalTo(customer.getPhoneNumber())))
-                .andExpect(jsonPath("$.address.country",equalTo(address.getCountry())))
-                .andExpect(jsonPath("$.address.city",equalTo(address.getTown())))
-                .andExpect(jsonPath("$.address.street",equalTo(address.getStreet())))
-                .andExpect(jsonPath("$.address.houseNumber",equalTo(address.getStreetNumber())))
-                .andExpect(jsonPath("$.address.postalCode",equalTo(address.getPostalCode()))).andReturn();
+                .andExpect(jsonPath("$.name",equalTo(fleet.getName())))
+                .andExpect(jsonPath("$.company",equalTo(UUIDUtil.UUIDToNumberString(fleet.getOwner().getUuid()))))
+                .andReturn();
     }
 
     @Test
     public void putId() throws Exception {
-        customer.setBtwNumber("new");
-        RESTCompany restCompany=new RESTCompany(UUIDUtil.UUIDToNumberString(customer.getUuid()),
-                customer.getName(),customer.getBtwNumber(),customer.getPhoneNumber(),
-                new RESTAddress(address.getCountry(),address.getTown(),address.getStreet(),address.getStreetNumber(),address.getPostalCode()),
-                null,null,null,null);
+        fleet.setName("newName");
+        RESTFleet restFleet=new RESTFleet(UUIDUtil.UUIDToNumberString(fleet.getUuid()),
+                UUIDUtil.UUIDToNumberString(customer.getUuid()),
+                fleet.getName(),null,null,null,null);
 
-        MvcResult result =mvc.perform(MockMvcRequestBuilders.put("/companies/{id}",UUIDUtil.UUIDToNumberString(customer.getUuid()))
+        MvcResult result =mvc.perform(MockMvcRequestBuilders.put("/fleets/{id}",UUIDUtil.UUIDToNumberString(fleet.getUuid()))
                 .header("Content-Type","application/json")
-                .content(TestUtil.convertObjectToJsonBytes(restCompany))
+                .content(TestUtil.convertObjectToJsonBytes(restFleet))
         )
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name",equalTo(customer.getName())))
-                .andExpect(jsonPath("$.vatNumber",equalTo(customer.getBtwNumber())))
-                .andExpect(jsonPath("$.phoneNumber",equalTo(customer.getPhoneNumber())))
-                .andExpect(jsonPath("$.address.country",equalTo(address.getCountry())))
-                .andExpect(jsonPath("$.address.city",equalTo(address.getTown())))
-                .andExpect(jsonPath("$.address.street",equalTo(address.getStreet())))
-                .andExpect(jsonPath("$.address.houseNumber",equalTo(address.getStreetNumber())))
-                .andExpect(jsonPath("$.address.postalCode",equalTo(address.getPostalCode())))
+                .andExpect(jsonPath("$.name",equalTo(restFleet.getName())))
+                .andExpect(jsonPath("$.company",equalTo(restFleet.getCompany())))
                 .andReturn();
         //tests if changes ar preserved
-        mvc.perform(MockMvcRequestBuilders.get("/companies/{id}",UUIDUtil.UUIDToNumberString(customer.getUuid())))
+        mvc.perform(MockMvcRequestBuilders.get("/fleets/{id}",UUIDUtil.UUIDToNumberString(fleet.getUuid())))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name",equalTo(customer.getName())))
-                .andExpect(jsonPath("$.vatNumber",equalTo(customer.getBtwNumber())))
-                .andExpect(jsonPath("$.phoneNumber",equalTo(customer.getPhoneNumber())))
-                .andExpect(jsonPath("$.address.country",equalTo(address.getCountry())))
-                .andExpect(jsonPath("$.address.city",equalTo(address.getTown())))
-                .andExpect(jsonPath("$.address.street",equalTo(address.getStreet())))
-                .andExpect(jsonPath("$.address.houseNumber",equalTo(address.getStreetNumber())))
-                .andExpect(jsonPath("$.address.postalCode",equalTo(address.getPostalCode()))).andReturn();
+                .andExpect(jsonPath("$.name",equalTo(restFleet.getName())))
+                .andExpect(jsonPath("$.company",equalTo(restFleet.getCompany())))
+                .andReturn();
     }
 }

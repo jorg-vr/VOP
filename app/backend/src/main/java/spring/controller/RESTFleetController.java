@@ -71,7 +71,7 @@ public class RESTFleetController {
         try {
             return modelToRest(controller.get(uuid));
 
-        } catch (DataAccessException e) {
+        } catch (DataAccessException|NullPointerException e) {
             throw new NotFoundException();
         }
     }

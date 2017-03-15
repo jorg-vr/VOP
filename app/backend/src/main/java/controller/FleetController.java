@@ -1,5 +1,6 @@
 package controller;
 
+import dao.database.ProductionProvider;
 import dao.interfaces.*;
 import dao.test.TESTFleetDAO;
 import main.BackendApplication;
@@ -18,8 +19,8 @@ public class FleetController extends AbstractController<Fleet> {
     private FleetDAO fleetDAO;
 
     public FleetController() {
-        super(BackendApplication.PROVIDER.getFleetDAO());
-        provider = BackendApplication.PROVIDER;
+        super(ProductionProvider.getInstance().getFleetDAO());
+        provider = ProductionProvider.getInstance();
         customerDAO = provider.getCustomerDAO();
         fleetDAO = provider.getFleetDAO();
     }
