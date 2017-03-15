@@ -126,7 +126,6 @@ public class RESTRoleControllerTest {
                 .andExpect(jsonPath("$.companyId",equalTo(restRole.getCompanyId())))
                 .andExpect(jsonPath("$.userId",equalTo(restRole.getUserId())))
                 .andReturn();
-        System.out.println(result.getResponse().getContentAsString());
 
     }
 }
