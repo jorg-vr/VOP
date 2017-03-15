@@ -1,18 +1,17 @@
 package dao.database;
 
 import dao.interfaces.DAOProvider;
-import dao.interfaces.FleetDAO;
 import dao.interfaces.VehicleDAO;
 import dao.interfaces.VehicleTypeDao;
 import model.fleet.Vehicle;
 import model.fleet.VehicleType;
-import org.junit.*;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import java.time.LocalDate;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 /**
  * Created by tjupo on 13/03/2017.
@@ -22,8 +21,6 @@ public class ProductionVehicleDAOTest {
     private static DAOProvider daoProvider;
     private static VehicleDAO vehicleDao;
     private static VehicleTypeDao vehicleTypeDAO;
-    private static FleetDAO fleetDAO;
-    private static VehicleType t1;
 
     //TODO: production to false, when local
     //Setup before any of the tests are started
@@ -33,14 +30,11 @@ public class ProductionVehicleDAOTest {
         daoProvider = ProductionProvider.getInstance();
         vehicleDao = daoProvider.getVehicleDAO();
         vehicleTypeDAO = daoProvider.getVehicleTypeDAO();
-        fleetDAO = daoProvider.getFleetDAO();
-        t1 = vehicleTypeDAO.create("type 1", 2.5);
     }
 
     //Gets executed after all tests have been run
     @AfterClass
     public static void closeProvider() throws Exception {
-        vehicleTypeDAO.remove(t1.getUuid());
         daoProvider.close();
     }
 
