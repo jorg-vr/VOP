@@ -45,10 +45,11 @@ public class HibernateUtil {
             session.delete(objectToRemove);
             tx.commit();
         } catch (Exception e) {
+
+            e.printStackTrace();
             if (tx != null) {
                 tx.rollback();
             }
-            e.printStackTrace();
         }
     }
 

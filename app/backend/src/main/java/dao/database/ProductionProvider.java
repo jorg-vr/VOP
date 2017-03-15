@@ -3,6 +3,7 @@ package dao.database;
 import dao.interfaces.*;
 import model.account.Function;
 import model.fleet.Vehicle;
+import model.fleet.VehicleType;
 import model.identity.Company;
 import model.identity.Person;
 import model.insurance.Insurance;
@@ -128,9 +129,12 @@ public class ProductionProvider implements DAOProvider {
         DAOProvider provider = ProductionProvider.getInstance();
 
         VehicleTypeDao dao = provider.getVehicleTypeDAO();
-        dao.create("Vrachtwagen",1);
-        dao.create("Personenwagen",1);
-        dao.create("Oplegger",1);
+        VehicleType v1 = dao.create("Vrachtwagen",1);
+        VehicleType v2 = dao.create("Personenwagen",1);
+        VehicleType v3 = dao.create("Oplegger",1);
+        dao.remove(v1.getUuid());
+        dao.remove(v2.getUuid());
+        dao.remove(v3.getUuid());
         provider.close();
     }
 
