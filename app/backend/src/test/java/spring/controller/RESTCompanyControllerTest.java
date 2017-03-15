@@ -52,6 +52,8 @@ public class RESTCompanyControllerTest {
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
+
+        ProductionProvider.getInstance().close();
     }
 
     @Test

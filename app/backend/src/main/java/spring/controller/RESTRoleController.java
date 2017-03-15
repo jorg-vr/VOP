@@ -46,7 +46,7 @@ public class RESTRoleController {
             Function function = controller.create(companyUUID, role.getFunction(), userUUID, role.getStartDate(), role.getEndDate());
             role = modelToRest(function);
         } catch (DataAccessException e) {
-            throw new InvalidInputException();
+            throw new InvalidInputException(e);
         }
         return role;
     }
@@ -100,7 +100,7 @@ public class RESTRoleController {
         String id = UUIDToNumberString(function.getUuid());
         String userId = UUIDToNumberString(function.getAccount().getUuid());
         RESTRole role = new RESTRole();
-        role.setFunction(function.getRole().getName());
+        role.setFunction("");
         role.setId(id);
         role.setUserId(userId);
         role.setCompanyId("TODO");

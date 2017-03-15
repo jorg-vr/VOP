@@ -63,6 +63,8 @@ public class RESTRoleControllerTest {
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
+
+        ProductionProvider.getInstance().close();
     }
 
     @Test
@@ -89,7 +91,6 @@ public class RESTRoleControllerTest {
                 .content(TestUtil.convertObjectToJsonBytes(restRole))
         )
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.function",equalTo(restRole.getFunction())))
                 .andExpect(jsonPath("$.company",equalTo(restRole.getCompanyId())))
                 .andExpect(jsonPath("$.user",equalTo(restRole.getUserId())))
                 .andExpect(jsonPath("$.startDate",equalTo(restRole.getStartDate())))
@@ -112,7 +113,6 @@ public class RESTRoleControllerTest {
 
         mvc.perform(MockMvcRequestBuilders.get("/roles/{id}",UUIDUtil.UUIDToNumberString(function.getUuid())))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.function",equalTo(restRole.getFunction())))
                 .andExpect(jsonPath("$.company",equalTo(restRole.getCompanyId())))
                 .andExpect(jsonPath("$.user",equalTo(restRole.getUserId())))
                 .andExpect(jsonPath("$.startDate",equalTo(restRole.getStartDate())))
@@ -135,7 +135,6 @@ public class RESTRoleControllerTest {
                 .content(TestUtil.convertObjectToJsonBytes(restRole))
         )
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.function",equalTo(restRole.getFunction())))
                 .andExpect(jsonPath("$.company",equalTo(restRole.getCompanyId())))
                 .andExpect(jsonPath("$.user",equalTo(restRole.getUserId())))
                 .andExpect(jsonPath("$.startDate",equalTo(restRole.getStartDate())))
@@ -145,7 +144,6 @@ public class RESTRoleControllerTest {
         //tests if changes ar preserved
         mvc.perform(MockMvcRequestBuilders.get("/roles/{id}",UUIDUtil.UUIDToNumberString(function.getUuid())))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.function",equalTo(restRole.getFunction())))
                 .andExpect(jsonPath("$.company",equalTo(restRole.getCompanyId())))
                 .andExpect(jsonPath("$.user",equalTo(restRole.getUserId())))
                 .andExpect(jsonPath("$.startDate",equalTo(restRole.getStartDate())))

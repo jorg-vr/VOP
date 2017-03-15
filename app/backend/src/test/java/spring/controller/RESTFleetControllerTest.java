@@ -49,6 +49,8 @@ public class RESTFleetControllerTest {
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
+
+        ProductionProvider.getInstance().close();
     }
     @AfterClass
     public static void afterTransaction() {
