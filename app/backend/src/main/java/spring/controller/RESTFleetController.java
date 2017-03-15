@@ -32,21 +32,23 @@ public class RESTFleetController {
 
     @RequestMapping(method = RequestMethod.GET)
     public RESTSchema<RESTFleet> get(@RequestParam(required = false) String company,
-                                      @RequestParam(required = false) Integer page,
-                                      @RequestParam(required = false) Integer limit) {
+                                     @RequestParam(required = false) Integer page,
+                                     @RequestParam(required = false) Integer limit) {
         FleetDAO fleetDAO = (FleetDAO) controller.getDao();
         try {
             String baseString = PATH_FLEETS + "?";
-            List<Filter<Fleet>> filters = new ArrayList<>();
+            Collection<RESTFleet> restFleets = new ArrayList<>();
+            Collection<Fleet> fleets;
             if (company != null) {
-                baseString += "company=" + company + "&";
-                filters.add(fleetDAO.byOwner(customerController.get(UUIDUtil.toUUID(company))));
+                fleets = customerController.get(UUIDUtil.toUUID(company)).getFleets();
+
+            } else {
+                fleets = controller.getAll();
             }
-            List<RESTFleet> fleets = new ArrayList<>();
-            for (Fleet fleet : controller.getAll(filters.toArray(new Filter[filters.size()]))) {
-                fleets.add(modelToRest(fleet));
+            for (Fleet f : fleets) {
+                restFleets.add(modelToRest(f));
             }
-            return new RESTSchema<>(fleets, page, limit, baseString);
+            return new RESTSchema<>(restFleets, page, limit, baseString);
         } catch (Exception e) {
             e.printStackTrace();
             throw new InvalidInputException();
@@ -71,7 +73,7 @@ public class RESTFleetController {
         try {
             return modelToRest(controller.get(uuid));
 
-        } catch (DataAccessException|NullPointerException e) {
+        } catch (DataAccessException | NullPointerException e) {
             throw new NotFoundException();
         }
     }
@@ -101,7 +103,7 @@ public class RESTFleetController {
 
     private RESTFleet modelToRest(Fleet fleet) {
         String id = UUIDUtil.UUIDToNumberString(fleet.getUuid());
-        String owner=fleet.getOwner()!=null?UUIDUtil.UUIDToNumberString(fleet.getOwner().getUuid()):null;
+        String owner = fleet.getOwner() != null ? UUIDUtil.UUIDToNumberString(fleet.getOwner().getUuid()) : null;
         return new RESTFleet(id,
                 owner,
                 fleet.getName(),

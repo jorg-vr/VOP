@@ -109,15 +109,16 @@ public class ProductionPersonDAO implements PersonDAO {
     }
 
     @Override
-    public Filter<Person> byBankAccountNummber(String bankAccountNumber) {
-        return () ->
-            predicates.add(criteriaBuilder.equal(root.get("bankAccountNumber"), bankAccountNumber));
-    }
-
-    @Override
     public Filter<Person> byEmail(String email) {
         return () ->
             predicates.add(criteriaBuilder.equal(root.get("email"), email));
+    }
+
+    @Override
+    public Filter<Person> byPhoneNumber(String phoneNumber) {
+        return () ->
+                predicates.add(criteriaBuilder.equal(root.get("phoneNumber"), phoneNumber));
+
     }
 
     @Override
