@@ -47,12 +47,12 @@ public class ProductionFleetDAOTest {
         boolean removed = false;
         //test if a fleet can be succesfully added to the database
         try {
-            cust1 = customerDAO.create("customername 1", null, "911", "123456789", new ArrayList<>());
+            cust1 = customerDAO.create("customername 1", null, "911", "123456789");
         } catch (Exception e) {
             fail("Failed trying to create a new customer");
         }
         try {
-            fleet1 = fleetDAO.create("fleet 1", cust1, new ArrayList<>());
+            fleet1 = fleetDAO.create("fleet 1", cust1);
         } catch (Exception e) {
             fail("Failed trying to create a new fleet");
         }
@@ -116,11 +116,11 @@ public class ProductionFleetDAOTest {
     @Ignore
     @Test
     public void byOwner() throws Exception{
-        Customer cust1 = customerDAO.create("customername 1", null, "911", "123456789", new ArrayList<>());
-        Customer cust2 = customerDAO.create("customername 2", null, "912", "123456788", new ArrayList<>());
-        Fleet fleet1 = fleetDAO.create("fleet 1", cust1, new ArrayList<>());
-        Fleet fleet2 = fleetDAO.create("fleet 2", cust2, new ArrayList<>());
-        Fleet fleet3 = fleetDAO.create("fleet 3", cust2, new ArrayList<>());
+        Customer cust1 = customerDAO.create("customername 1", null, "911", "123456789");
+        Customer cust2 = customerDAO.create("customername 2", null, "912", "123456788");
+        Fleet fleet1 = fleetDAO.create("fleet 1", cust1);
+        Fleet fleet2 = fleetDAO.create("fleet 2", cust2);
+        Fleet fleet3 = fleetDAO.create("fleet 3", cust2);
 
         Collection<Fleet> c1 = fleetDAO.listFiltered(fleetDAO.byOwner(cust1));
         Collection<Fleet> c2 = fleetDAO.listFiltered(fleetDAO.byOwner(cust2));
