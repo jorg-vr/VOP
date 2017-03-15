@@ -40,6 +40,7 @@ public class RESTRoleController {
 
     @RequestMapping(method = RequestMethod.POST)
     public RESTRole post(@RequestBody RESTRole role) {
+        System.out.println(role.getCompanyId());
         UUID companyUUID = UUIDUtil.toUUID(role.getCompanyId());
         UUID userUUID = UUIDUtil.toUUID(role.getUserId());
         try {

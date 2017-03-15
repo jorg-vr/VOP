@@ -9,6 +9,7 @@ import model.account.Account;
 import model.account.Function;
 import model.account.Role;
 import model.identity.Company;
+import spring.controller.UUIDUtil;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -28,9 +29,13 @@ public class FunctionController extends AbstractController<Function> {
     }
 
     public Function create(UUID companyId, String roleString, UUID accountId, LocalDateTime startDate, LocalDateTime endDate) throws DataAccessException {
+        System.out.println(companyId);
+        System.out.println(UUIDUtil.UUIDToNumberString(companyId));
         Company company = provider.getCustomerDAO().get(companyId);
-        Role role = new Role(roleString);
+
         Account account = provider.getAccountDao().get(accountId);
+
+        Role role = new Role(roleString);
         return functionDAO.create(company, role, account, startDate, endDate);
     }
 
