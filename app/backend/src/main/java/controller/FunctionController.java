@@ -1,5 +1,6 @@
 package controller;
 
+import dao.database.ProductionProvider;
 import dao.interfaces.DAOProvider;
 import dao.interfaces.DataAccessException;
 import dao.interfaces.FunctionDAO;
@@ -21,8 +22,8 @@ public class FunctionController extends AbstractController<Function> {
     private FunctionDAO functionDAO;
 
     public FunctionController() {
-        super(BackendApplication.PROVIDER.getFunctionDAO());
-        provider = BackendApplication.PROVIDER;
+        super(ProductionProvider.getInstance().getFunctionDAO());
+        provider = ProductionProvider.getInstance();
         functionDAO = provider.getFunctionDAO();
     }
 

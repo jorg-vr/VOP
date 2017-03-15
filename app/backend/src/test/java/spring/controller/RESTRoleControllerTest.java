@@ -84,7 +84,10 @@ public class RESTRoleControllerTest {
         restRole.setStartDate(LocalDateTime.now());
         restRole.setEndDate(LocalDateTime.now().plusMonths(24));
 
-        MvcResult result =mvc.perform(MockMvcRequestBuilders.post("/roles").header("Content-Type","application/json").content(TestUtil.convertObjectToJsonBytes(restFleet)))
+        MvcResult result =mvc.perform(MockMvcRequestBuilders.post("/roles")
+                .header("Content-Type","application/json")
+                .content(TestUtil.convertObjectToJsonBytes(restRole))
+        )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.function",equalTo(restRole.getFunction())))
                 .andExpect(jsonPath("$.company",equalTo(restRole.getCompanyId())))
