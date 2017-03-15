@@ -12,11 +12,10 @@ public interface FleetDAO extends DAO<Fleet> {
     /**
      * @param name name of the fleet, can not be null
      * @param customer owner of the fleet
-     * @param vehicles vehicles that belong to the fleet, can be null
      * @return the Fleet object with valid fields
      * @throws DataAccessException
      */
-    Fleet create(String name, Customer customer, Collection<Vehicle> vehicles) throws DataAccessException;
+    Fleet create(String name, Customer customer) throws DataAccessException;
 
     /**
      * @param id id of the fleet that should be updated
@@ -27,5 +26,4 @@ public interface FleetDAO extends DAO<Fleet> {
      */
     Fleet update(UUID id, String name, Customer customer) throws DataAccessException;
 
-    Filter<Fleet> byOwner(Customer customer);
 }

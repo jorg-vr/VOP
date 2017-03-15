@@ -36,9 +36,9 @@ public class ProductionCustomerDAOTest {
     @Before
     public void startUp() throws DataAccessException {
 
-        v1 = customerDAO.create("test1",null,"123","123",new ArrayList<>());
-        v2 = customerDAO.create("test2",null,"234","123",new ArrayList<>());
-        v3 = customerDAO.create("test3",null,"345","12345",new ArrayList<>());
+        v1 = customerDAO.create("test1",null,"123","123");
+        v2 = customerDAO.create("test2",null,"234","123");
+        v3 = customerDAO.create("test3",null,"345","12345");
     }
 
     @After
@@ -67,9 +67,9 @@ public class ProductionCustomerDAOTest {
     @Test
     public void remove() throws Exception {
 
-        Customer v4 = customerDAO.create("test1",null,"123","123",new ArrayList<>());
-        Customer v5 = customerDAO.create("test2",null,"234","123",new ArrayList<>());
-        Customer v6 = customerDAO.create("test3",null,"345","12345",new ArrayList<>());
+        Customer v4 = customerDAO.create("test1",null,"123","123");
+        Customer v5 = customerDAO.create("test2",null,"234","123");
+        Customer v6 = customerDAO.create("test3",null,"345","12345");
         customerDAO.remove(v4.getUuid());
         customerDAO.remove(v5.getUuid());
         customerDAO.remove(v6.getUuid());
