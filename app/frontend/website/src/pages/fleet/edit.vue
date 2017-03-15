@@ -14,10 +14,7 @@
     export default {
         data(){
             return {
-                fleet : {
-                    name: '',
-                    company: ''
-                }
+                fleet : {}
             }
         },
         components: {
@@ -36,31 +33,14 @@
             },
             //API call to update the fleet with the new values.
             updateFleet(fleet){
-                //TODO
-                /*
-                this.$http.put('https://vopro5.ugent.be/app/api/fleets', fleet,
+                this.$http.put('https://vopro5.ugent.be/app/api/fleets/' + fleet.id, fleet,
                     {
                         headers: {
                             Accept: "application/json",
                         }
                     }
                 ).then(response => { //Success
-                        //this.fleet = response.body;
-                        console.log(response.body);
-                    }, response => { //Fail
-                        console.log(response.body)
-                    }
-                )
-                */
-                this.$http.put('https://vopro5.ugent.be/app/api/fleets', fleet,
-                    {
-                        headers: {
-                            Accept: "application/json",
-                        }
-                    }
-                ).then(response => { //Success
-                        this.$router.push({name: 'fleets'})
-
+                        this.$router.push({name: 'fleet', params: {id: response.body.id}})
                     }, response => { //Fail
                         console.log('fail')
                     }

@@ -6,20 +6,12 @@
         <div class="page-header">
             <h1>Nieuwe vloot</h1>
         </div>
-        <fleet-form :fleet=fleet :submit="createFleet"></fleet-form>
+        <fleet-form :fleet={} :submit="createFleet"></fleet-form>
     </div>
 </template>
 <script>
     import FleetForm from './form.vue'
     export default {
-        data(){
-            return {
-                fleet: {
-                    name: '',
-                    company: ''
-                }
-            }
-        },
         components: {
             FleetForm
         },
@@ -33,7 +25,7 @@
                         }
                     }
                 ).then(response => { //Success
-                        this.$router.push({name: 'fleets'})
+                        this.$router.push({name: 'fleet', params: {id: response.body.id}})
                     }, response => { //Fail
                         console.log('fail')
                     }

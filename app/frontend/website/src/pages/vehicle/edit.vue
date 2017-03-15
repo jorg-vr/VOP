@@ -17,7 +17,7 @@
             return {
                 vehicle: {
                     licensePlate: '',
-                    chassisNumber: '',
+                    vin: '',
                     brand: '',
                     model: '',
                     type: '',
