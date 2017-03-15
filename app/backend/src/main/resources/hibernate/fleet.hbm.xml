@@ -12,7 +12,7 @@
             <generator class="uuid2"/>
         </id>
         <property name="name" type="string" column="name"/>
-        <many-to-one name="owner" column="owner_id"  class="model.identity.Customer" />
+        <many-to-one name="owner" column="owner_id"  class="model.identity.Customer" not-null="true" />
         <bag name="vehicles" access="field" table="VEHICLE" cascade="all"
              lazy="true" fetch="select">
             <key column="fleet_id" not-null="false"/>

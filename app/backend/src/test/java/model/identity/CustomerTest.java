@@ -3,7 +3,7 @@ package model.identity;
 import model.fleet.Fleet;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -17,7 +17,9 @@ public class CustomerTest {
         Customer customer = new Customer();
 
         assertTrue(customer.addFleet(fleet));
-        assertEquals(customer, fleet.getOwner());
+        assertTrue(customer.getFleets().contains(fleet));
+        assertTrue(customer.removeFleet(fleet));
+        assertFalse(customer.getFleets().contains(fleet));
     }
 
 }

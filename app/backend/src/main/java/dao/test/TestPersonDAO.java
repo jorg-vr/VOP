@@ -78,14 +78,14 @@ public class TestPersonDAO extends TestDAO<Person> implements PersonDAO {
     public Filter<Person> byAddress(Address address) {
         return null;
     }
-
+    
     @Override
-    public Filter<Person> byBankAccountNummber(String bankAccountNumber) {
+    public Filter<Person> byEmail(String email) {
         return null;
     }
 
     @Override
-    public Filter<Person> byEmail(String email) {
+    public Filter<Person> byPhoneNumber(String phoneNumber) {
         return null;
     }
 
