@@ -5,6 +5,7 @@ import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
 import model.account.Account;
 import model.identity.Person;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -35,7 +36,11 @@ public class ProductionAccountDAO implements AccountDAO {
     @Override
     public Account get(UUID id) throws DataAccessException {
         try (Session session = factory.openSession()) {
-            return session.get(Account.class, id);
+            Account account= session.get(Account.class, id);
+            if (account!=null) {
+                Hibernate.initialize(account.getPerson());
+            }
+            return account;
         }
     }
 
@@ -57,6 +62,11 @@ public class ProductionAccountDAO implements AccountDAO {
                 filter.filter();
             }
             Collection<Account> types = session.createQuery(criteriaQuery.where(predicates.toArray(new Predicate[predicates.size()]))).getResultList();
+            for(Account account:types){
+                if (account!=null) {
+                    Hibernate.initialize(account.getPerson());
+                }
+            }
             tx.commit();
             this.root = null;
             this.criteriaQuery = null;
@@ -95,6 +105,7 @@ public class ProductionAccountDAO implements AccountDAO {
         account.setUuid(id);
         account.setLogin(login);
         account.setHashedPassword(hashedPassword);
+        account.setPerson(get(id).getPerson());//TODO evaluate this
         HibernateUtil.update(factory, account);
         return account;
     }

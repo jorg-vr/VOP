@@ -33,7 +33,7 @@ public class VehicleController extends AbstractController<Vehicle>{
      * @throws DataAccessException
      */
     public Vehicle update(UUID uuid,String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int value,int mileage,  UUID vehicleType,UUID fleet ) throws DataAccessException {
-        return ((VehicleDAO) getDao()).update(uuid,brand,model,chassisNumber,licensePlate,value,mileage,getVehicleType(vehicleType),productionDate);//TODO add fleet
+        return ((VehicleDAO) getDao()).update(uuid,brand,model,chassisNumber,licensePlate,value,mileage,getVehicleType(vehicleType),productionDate,new FleetController().get(fleet));
         //TODO update history
     }
 
@@ -53,7 +53,7 @@ public class VehicleController extends AbstractController<Vehicle>{
      */
     public Vehicle create(String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int value,int mileage,  UUID vehicleType,UUID fleet ) throws DataAccessException {
 
-        return ((VehicleDAO) getDao()).create(brand,model,chassisNumber,licensePlate,value,mileage,getVehicleType(vehicleType),productionDate);//TODO add fleet
+        return ((VehicleDAO) getDao()).create(brand,model,chassisNumber,licensePlate,value,mileage,getVehicleType(vehicleType),productionDate,new FleetController().get(fleet));
     }
 
     public VehicleType getVehicleType(UUID vehicleType) throws DataAccessException {
