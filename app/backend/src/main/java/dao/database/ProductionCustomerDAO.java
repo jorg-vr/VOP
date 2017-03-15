@@ -38,7 +38,11 @@ public class ProductionCustomerDAO implements CustomerDAO {
     public Customer get(UUID id) throws DataAccessException {
         try (Session session = factory.openSession()) {
             Customer customer=session.get(Customer.class, id);
-            Hibernate.initialize(customer.getAddress());
+            if(customer!=null) {
+                Hibernate.initialize(customer.getAddress());
+            }else{
+                throw new DataAccessException();//Todo use correct exception
+            }
             return customer;
 
         }
@@ -87,7 +91,9 @@ public class ProductionCustomerDAO implements CustomerDAO {
             }
             Collection<Customer> customers = session.createQuery(criteriaQuery.where(predicates.toArray(new Predicate[predicates.size()]))).getResultList();
             for(Customer customer:customers){
-                Hibernate.initialize(customer.getAddress());
+                if(customer!=null) {
+                    Hibernate.initialize(customer.getAddress());
+                }
             }
             tx.commit();
             this.root = null;

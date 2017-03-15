@@ -51,7 +51,7 @@ public class ProductionFleetDAO implements FleetDAO{
         fleet.setUuid(id);
         fleet.setOwner(customer);
         HibernateUtil.update(factory,fleet);
-        return null;
+        return fleet;
     }
 
     @Override
