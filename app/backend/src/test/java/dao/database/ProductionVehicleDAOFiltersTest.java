@@ -7,7 +7,6 @@ import model.fleet.VehicleType;
 import model.identity.Customer;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.time.LocalDate;
@@ -44,7 +43,7 @@ public class ProductionVehicleDAOFiltersTest {
         t2 = vehicleTypeDAO.create("type 2", 5.7);
         cust1 = customerDAO.create("customer 1", null, "123", "456");
         fleet1 = fleetDAO.create("name 1", cust1);
-        fleet1 = fleetDAO.create("name 1", cust1);
+        fleet2 = fleetDAO.create("name 2", cust1);
         v1 = vehicleDAO.create("brand 1", "model 1", "AAAAAAAAAAAAAAAAA", "ABC-123", 500, 3000, t1, LocalDate.of(2016, 7, 15), fleet1);
         v2 = vehicleDAO.create("brand 1", "model 2", "BBBBBBBBBBBBBBBBB", "DEF-123", 1000, 3500, t2, LocalDate.of(2016, 7, 26), fleet2);
         v3 = vehicleDAO.create("brand 2", "model 2", "CCCCCCCCCCCCCCCCC", "DEF-456", 1500, 4000, t1, LocalDate.of(2016, 9, 26), fleet2);
@@ -138,7 +137,6 @@ public class ProductionVehicleDAOFiltersTest {
         assertTrue("byType filter werkt niet", !c2.contains(v1) && c2.contains(v2) && !c2.contains(v3));
     }
 
-    @Ignore
     @Test
     public void byFleet() throws Exception {
         Collection<Vehicle> c1 = vehicleDAO.listFiltered(vehicleDAO.byFleet(fleet1));
