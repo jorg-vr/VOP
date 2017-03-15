@@ -1,17 +1,23 @@
+<!--
+    This page shows all of the fleets in the database.
+-->
 <template>
     <div>
         <div class="page-header">
             <h1>Vloten </h1>
         </div>
+        <!-- Render an info-pane for every fleet -->
         <info-pane v-for="fleet in fleets"
-                   :textValues="new Array(fleet.name, fleet.company)"
-                   :remove="deleteVehicle"
+                   :textValues="new Array(fleet.name, fleet.companyName)"
+                   :remove="deleteFleet"
                    :objectId="fleet.id"
                    edit="edit_fleet"
                    show="fleet"
                    :key="fleet.id">
         </info-pane>
-        <button type="button" class="btn btn-primary btn-circle btn-lg">+</button>
+        <router-link :to="{name: 'new_fleet'}">
+            <button type="button" class="btn btn-primary btn-circle btn-lg">+</button>
+        </router-link>
     </div>
 </template>
 
@@ -23,24 +29,57 @@
         },
         data: function () {
             return {
-                fleets : [ //Some test fleets, this will be filled in with the actual fleets
-                    {id: 1, name: 'Vloot 1', company : '1'},
+                fleets : [ //Dummy fleets
+                    /* {id: 1, name: 'Vloot 1', company : '1'},
                     {id: 2, name: 'Vloot 2', company : '2'},
                     {id: 3, name: 'Vloot 3', company : '3'},
-                    {id: 4, name: 'Vloot 4', company : '4'}
+                    {id: 4, name: 'Vloot 4', company : '4'}*/
                 ]
             }
         },
         created() {
+            //Get all the fleets in the database when the page is loaded.
             this.fetchFleetList()
         },
         methods: {
+            //API call to fetch the fleets from the database.
             fetchFleetList (){
                 this.$http.get('https://vopro5.ugent.be/app/api/fleets').then(response => {
-                    this.fleets = response.body;
+                    const data = response.body.data;
+                    for(let i=0; i<data.length; i++){
+                        if(data[i].name == null){
+                            data[i].name = 'Naamloze vloot'
+                        }
+                        this.fleets.push(data[i]);
+                        this.fetchCompanyName(this.fleets[i])
+                    }
                 })
             },
-            deleteVehicle (){
+            //API call to delete a fleet.
+            deleteFleet(fleetId){
+                this.$http.delete('https://vopro5.ugent.be/app/api/fleets' + fleetId)
+            },
+            //API call to create a fleet.
+            createFleet(fleet){
+                this.$http.post('https://vopro5.ugent.be/app/api/fleets', fleet,
+                    {
+                        headers: {
+                            Accept: "application/json",
+                        }
+                    }
+                ).then(response => {
+                    console.log(response.body);
+                })
+            },
+            fetchCompanyName(fleet) {
+                if(fleet.company != null){
+                    this.$http.get('https://vopro5.ugent.be/app/api/companies/' + fleet.company).then(response => {
+                        fleet.companyName = response.body.name;
+                    })
+                }
+                else {
+                    fleet.companyName = 'Geen bedrijf';
+                }
 
             }
         }

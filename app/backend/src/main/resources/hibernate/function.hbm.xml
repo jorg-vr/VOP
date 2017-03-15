@@ -12,8 +12,8 @@
             <generator class="uuid2"/>
         </id>
 
-        <property name="startDate" column="start_data" type="date"/>
-        <property name="endDate" column="end_data" type="date"/>
+        <property name="startDate" column="start_data" type="java.time.LocalDateTime"/>
+        <property name="endDate" column="end_data" type="java.time.LocalDateTime"/>
         <many-to-one name="account" column="account_id"  class="model.account.Account" />
         <!--<many-to-one name="role" column="role_id"  class="model.account.Role" />-->
         <many-to-one name="company" column="company_id"  class="model.identity.Company" />

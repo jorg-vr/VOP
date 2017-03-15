@@ -19,6 +19,10 @@ Object.keys(locales).forEach(function (lang) {
 });
 */
 
+// Add event bus for communication between components
+const bus = new Vue()
+Vue.prototype.$bus = bus
+
 const router = new VueRouter({
     mode: 'history',
     routes: routes
