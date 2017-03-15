@@ -1,6 +1,15 @@
+<!--
+    Component used for showing an object in a list.
+    This component requires the following properties to function correctly:
+    - textValues: An array with the values of the object to be shown.
+    - objectId: The identifier of the object.
+    - show: The name of the link to the show page of this object.
+    - edit: The name of the link to the edit page of this object.
+    - remove: A function which removes this object.
+-->
 <template>
     <div class="row">
-        <router-link :to="{name: this.show, params: {id: objectId}}">
+        <router-link :to="{name: this.show, params: {id: this.objectId}}">
             <div class="panel panel-default col-sm-10">
                 <div class="panel-body">
                     <table>
@@ -11,12 +20,12 @@
                 </div>
             </div>
         </router-link>
-        <router-link :to="{name: this.edit, params: {id: objectId}}">
+        <router-link :to="{name: this.edit, params: {id: this.objectId}}">
             <button type="button" class="btn btn-md btn-info">
                 <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
             </button>
         </router-link>
-        <button type="button" class="btn btn-md btn-danger" v-on:click="this.remove">
+        <button type="button" class="btn btn-md btn-danger" v-on:click="remove(objectId)">
             <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
         </button>
     </div>
@@ -27,7 +36,7 @@
 export default {
     props: {
         textValues: Array, //Array with text to show
-        objectId: Number,
+        objectId: String, //Unique Id of this object
         show: String, //Name of link to show page of the given object.
         edit: String, //Name of link to edit page of the given object.
         remove: Function, //Function to remove the given object.
