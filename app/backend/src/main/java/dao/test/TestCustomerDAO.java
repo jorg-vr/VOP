@@ -54,14 +54,13 @@ public class TestCustomerDAO extends TestDAO<Customer> implements CustomerDAO {
     }
 
     @Override
-    public Customer create(String name, Address address, String phonenumber, String btwNumber, Collection<Fleet> fleets) throws DataAccessException {
+    public Customer create(String name, Address address, String phonenumber, String btwNumber) throws DataAccessException {
         Customer customer = new Customer();
         customer.setUuid(UUID.randomUUID());
         customer.setName(name);
         customer.setAddress(address);
         customer.setPhoneNumber(phonenumber);
         customer.setBtwNumber(btwNumber);
-        customer.setFleets(fleets);
         customers.put(customer.getUuid(), customer);
         return customer;
     }

@@ -37,16 +37,13 @@ public class RESTFleetController {
         FleetDAO fleetDAO = (FleetDAO) controller.getDao();
         try {
             String baseString = PATH_FLEETS + "?";
-            List<Filter<Fleet>> filters = new ArrayList<>();
-            if (company != null) {
-                baseString += "company=" + company + "&";
-                filters.add(fleetDAO.byOwner(customerController.get(UUIDUtil.toUUID(company))));
+
+            Collection<Fleet> fleets=customerController.get(UUIDUtil.toUUID(company)).getFleets();
+            Collection<RESTFleet> restFleets = new ArrayList<>();
+            for(Fleet f: fleets){
+                restFleets.add(modelToRest(f));
             }
-            List<RESTFleet> fleets = new ArrayList<>();
-            for (Fleet fleet : controller.getAll(filters.toArray(new Filter[filters.size()]))) {
-                fleets.add(modelToRest(fleet));
-            }
-            return new RESTSchema<>(fleets, page, limit, baseString);
+            return new RESTSchema<>(restFleets, page, limit, baseString);
         } catch (Exception e) {
             e.printStackTrace();
             throw new InvalidInputException();
