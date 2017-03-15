@@ -34,13 +34,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Created by jorg on 3/15/17.
  */
 public class RESTUserControllerTest {
-    private MockMvc mvc= MockMvcBuilders.standaloneSetup(new RESTRoleController()).build();
+    private MockMvc mvc= MockMvcBuilders.standaloneSetup(new RESTUserController()).build();
 
     private static Person person;
     private static Account account;
     @BeforeClass
     public static void setup() {
-        ProductionProvider.initializeProvider(true);
+        ProductionProvider.initializeProvider(false);
         try {
             person=new PersonController().createPerson("jon","doe","jon.doe@hotmail.com");
             account=new AccountController().createAccount("jon.doe@hotmail.com","054561dfs5f465",person.getUuid());
@@ -73,7 +73,7 @@ public class RESTUserControllerTest {
     @Test
     public void post() throws Exception {
         RESTUser restUser=new RESTUser();
-        restUser.setEmail("Mymail@this.id");
+        restUser.setEmail("Mymail2@this.id");
         restUser.setFirstName("Tim");
         restUser.setLastName("Tom");
         restUser.setPassword("password012345");
@@ -88,10 +88,10 @@ public class RESTUserControllerTest {
                 .andExpect(jsonPath("$.firstName",equalTo(restUser.getFirstName())))
                 .andExpect(jsonPath("$.password",equalTo(restUser.getPassword())))
                 .andReturn();
-        RESTRole restRole1 =  TestUtil.convertJsonBytesToObject(result.getResponse().getContentAsByteArray(),RESTRole.class);
-        mvc.perform(MockMvcRequestBuilders.delete("/users/{id}",restRole1.getId()))
+        RESTUser restUser1 =  TestUtil.convertJsonBytesToObject(result.getResponse().getContentAsByteArray(),RESTUser.class);
+        mvc.perform(MockMvcRequestBuilders.delete("/users/{id}",restUser1.getId()))
                 .andExpect(status().isOk());
-        mvc.perform(MockMvcRequestBuilders.get("/users/{id}",restRole1.getId()))
+        mvc.perform(MockMvcRequestBuilders.get("/users/{id}",restUser1.getId()))
                 .andExpect(status().isNotFound());
     }
 
@@ -117,7 +117,7 @@ public class RESTUserControllerTest {
         restUser.setLastName("Tom");
         restUser.setPassword(account.getHashedPassword());
 
-        MvcResult result =mvc.perform(MockMvcRequestBuilders.put("/roles/{id}",UUIDUtil.UUIDToNumberString(account.getUuid()))
+        MvcResult result =mvc.perform(MockMvcRequestBuilders.put("/users/{id}",UUIDUtil.UUIDToNumberString(account.getUuid()))
                 .header("Content-Type","application/json")
                 .content(TestUtil.convertObjectToJsonBytes(restUser))
         )
