@@ -100,9 +100,9 @@ public class ProductionFleetDAOTest {
     @Ignore
     @Test
     public void update() throws Exception {
-        Customer cust1 = customerDAO.create("customername 1", null, "911", "123456789", new ArrayList<>());
-        Customer cust2 = customerDAO.create("customername 2", null, "912", "123456788", new ArrayList<>());
-        Fleet fleet1 = fleetDAO.create("fleet 1", cust1, new ArrayList<>());
+        Customer cust1 = customerDAO.create("customername 1", null, "911", "123456789");
+        Customer cust2 = customerDAO.create("customername 2", null, "912", "123456788");
+        Fleet fleet1 = fleetDAO.create("fleet 1", cust1);
         Fleet fleet2 = fleetDAO.update(fleet1.getUuid(), "fleet 2", cust2);
         Fleet fleet3 = fleetDAO.get(fleet1.getUuid());
         assertEquals("name field not updated correctly", "customername 2", fleet3.getName());
@@ -113,24 +113,4 @@ public class ProductionFleetDAOTest {
         customerDAO.remove(cust2.getUuid());
     }
 
-    @Ignore
-    @Test
-    public void byOwner() throws Exception{
-        Customer cust1 = customerDAO.create("customername 1", null, "911", "123456789");
-        Customer cust2 = customerDAO.create("customername 2", null, "912", "123456788");
-        Fleet fleet1 = fleetDAO.create("fleet 1", cust1);
-        Fleet fleet2 = fleetDAO.create("fleet 2", cust2);
-        Fleet fleet3 = fleetDAO.create("fleet 3", cust2);
-
-        Collection<Fleet> c1 = fleetDAO.listFiltered(fleetDAO.byOwner(cust1));
-        Collection<Fleet> c2 = fleetDAO.listFiltered(fleetDAO.byOwner(cust2));
-        assertTrue("byOwner filter doesn't work", c1.contains(fleet1) && !c1.contains(fleet2) && !c1.contains(fleet3));
-        assertTrue("byOwner filter doesn't work", !c2.contains(fleet1) && c2.contains(fleet2) && c2.contains(fleet3));
-
-        fleetDAO.remove(fleet1.getUuid());
-        fleetDAO.remove(fleet2.getUuid());
-        fleetDAO.remove(fleet3.getUuid());
-        customerDAO.remove(cust1.getUuid());
-        customerDAO.remove(cust2.getUuid());
-    }
 }
