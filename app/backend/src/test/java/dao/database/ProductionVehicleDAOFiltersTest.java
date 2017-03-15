@@ -46,6 +46,7 @@ public class ProductionVehicleDAOFiltersTest {
         vehicleDAO.remove(v3.getUuid());
         vehicleTypeDAO.remove(t1.getUuid());
         vehicleTypeDAO.remove(t2.getUuid());
+        daoProvider.close();
     }
 
 
