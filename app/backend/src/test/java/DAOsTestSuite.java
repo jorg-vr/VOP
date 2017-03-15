@@ -15,6 +15,8 @@ import org.junit.runners.Suite;
         ProductionAddressDAOFiltersTest.class,
         ProductionAddressDAOTest.class,
         ProductionCustomerDAOTest.class,
+        ProductionFleetDAOTest.class,
+        ProductionFunctionDAOTest.class,
         ProductionVehicleDAOFiltersTest.class,
         ProductionVehicleDAOTest.class,
         ProductionVehicleTypeDAOFiltersTest.class,
