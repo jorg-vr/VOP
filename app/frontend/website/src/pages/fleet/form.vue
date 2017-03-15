@@ -29,7 +29,6 @@
                             <i class="fa fa-times" aria-hidden="true"></i>
                         </button>
                     </router-link>
-
                 </div>
             </div>
         </div>

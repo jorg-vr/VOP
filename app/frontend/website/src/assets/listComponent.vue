@@ -36,7 +36,7 @@
 export default {
     props: {
         textValues: Array, //Array with text to show
-        objectId: Number,
+        objectId: String, //Unique Id of this object
         show: String, //Name of link to show page of the given object.
         edit: String, //Name of link to edit page of the given object.
         remove: Function, //Function to remove the given object.

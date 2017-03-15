@@ -8,7 +8,7 @@
         </div>
         <!-- Render an info-pane for every fleet -->
         <info-pane v-for="fleet in fleets"
-                   :textValues="new Array(fleet.name, fleet.company)"
+                   :textValues="new Array(fleet.name, fleet.companyName)"
                    :remove="deleteFleet"
                    :objectId="fleet.id"
                    edit="edit_fleet"
@@ -30,10 +30,10 @@
         data: function () {
             return {
                 fleets : [ //Dummy fleets
-                    {id: 1, name: 'Vloot 1', company : '1'},
+                    /* {id: 1, name: 'Vloot 1', company : '1'},
                     {id: 2, name: 'Vloot 2', company : '2'},
                     {id: 3, name: 'Vloot 3', company : '3'},
-                    {id: 4, name: 'Vloot 4', company : '4'}
+                    {id: 4, name: 'Vloot 4', company : '4'}*/
                 ]
             }
         },
@@ -47,7 +47,11 @@
                 this.$http.get('https://vopro5.ugent.be/app/api/fleets').then(response => {
                     const data = response.body.data;
                     for(let i=0; i<data.length; i++){
+                        if(data[i].name == null){
+                            data[i].name = 'Naamloze vloot'
+                        }
                         this.fleets.push(data[i]);
+                        this.fetchCompanyName(this.fleets[i])
                     }
                 })
             },
@@ -66,6 +70,17 @@
                 ).then(response => {
                     console.log(response.body);
                 })
+            },
+            fetchCompanyName(fleet) {
+                if(fleet.company != null){
+                    this.$http.get('https://vopro5.ugent.be/app/api/companies/' + fleet.company).then(response => {
+                        fleet.companyName = response.body.name;
+                    })
+                }
+                else {
+                    fleet.companyName = 'Geen bedrijf';
+                }
+
             }
         }
     }
