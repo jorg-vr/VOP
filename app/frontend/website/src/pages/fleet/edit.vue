@@ -52,22 +52,17 @@
                     }
                 )
                 */
-                this.$http.put('https://vopro5.ugent.be/app/api/fleets',
-                    {
-                        name: fleet.name,
-                        company: fleet.company
-                    }
-                    ,
+                this.$http.put('https://vopro5.ugent.be/app/api/fleets', fleet,
                     {
                         headers: {
                             Accept: "application/json",
                         }
                     }
                 ).then(response => { //Success
-                        //this.fleet = response.body;
-                        console.log(response.body);
+                        this.$router.push({name: 'fleets'})
+
                     }, response => { //Fail
-                        console.log(response.body)
+                        console.log('fail')
                     }
                 )
             }

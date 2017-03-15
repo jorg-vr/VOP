@@ -26,7 +26,6 @@
         methods: {
             //API call to create a new fleet.
             createFleet(fleet){
-                //TODO
                 this.$http.post('https://vopro5.ugent.be/app/api/fleets', fleet,
                     {
                         headers: {
@@ -34,12 +33,9 @@
                         }
                     }
                 ).then(response => { //Success
-                        //this.fleet = response.body;
-                        console.log('success')
-                        console.log(response.body);
+                        this.$router.push({name: 'fleets'})
                     }, response => { //Fail
                         console.log('fail')
-                        console.log(response)
                     }
                 )
             }
