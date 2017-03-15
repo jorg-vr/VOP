@@ -6,6 +6,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
+import javax.annotation.PreDestroy;
+
 
 @SpringBootApplication
 @ComponentScan(basePackages = {"spring"})
@@ -27,4 +29,9 @@ public class BackendApplication {
         PROVIDER = ProductionProvider.getInstance();
 		SpringApplication.run(BackendApplication.class, args);
 	}
+
+	@PreDestroy
+    public void preDestroy() {
+        PROVIDER.close();
+    }
 }
