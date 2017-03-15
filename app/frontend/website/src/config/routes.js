@@ -31,7 +31,7 @@ export default [
             { path: 'users', name: 'users', component: IndexUser },
             { path: 'users/new', name: 'new_user',component: NewUser },  
             { path: 'users/:id', name: 'user', component: ShowUser },
-            { path: 'users/:id/edit', name: 'edit_user    ', component: EditUser },
+            { path: 'users/:id/edit', name: 'edit_user', component: EditUser },
             // Clients
             { path: 'clients', name: 'clients', component: IndexClient },
             { path: 'clients/new', name: 'new_client',component: NewClient },

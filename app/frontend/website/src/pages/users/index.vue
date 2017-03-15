@@ -1,12 +1,12 @@
 <template>
-<div>
-    <div class="page-header">
-    <h1> Gebruiker </h1>
-    </div>
-    
+    <div>
+        <div class="page-header">
+            <h1> Gebruiker </h1>
+        </div>
+
 
         <info-pane v-for="users in userList"
-                    :textValues="new Array(users.name)"
+                   :textValues="new Array(users.name)"
                    :remove="remove"
                    :objectId= "users.id"
                    edit="edit_user"
@@ -16,53 +16,53 @@
 
         <button type="button" class="btn btn-primary btn-circle btn-lg" v-on:click="add()">+</button>
 
-</div>
+    </div>
 
 
 
 </template>
 <script>
-import infoPane from "../../assets/listComponent.vue"
+    import infoPane from "../../assets/listComponent.vue"
     export default {
         components: {
             'info-pane': infoPane
         },
         data(){
-        return {
-            userList : [ 
-                    {id: 1, name: 'User1'},
-                    {id: 2, name: 'User2'},
-                    {id: 3, name: 'User3'},
-                    {id: 4, name: 'User4'}
+            return {
+                userList : [
+                    {id: "1", name: 'User1'},
+                    {id: "2", name: 'User2'},
+                    {id: "3", name: 'User3'},
+                    {id: "4", name: 'User4'}
                 ],
-            users:{},
-            search: ''
-        }
+                users:{},
+                search: ''
+            }
         },
         methods:{
-                // Methods for routing purposes 
-                add: function () {
-                        this.$router.push({ path: 'users/new'})
-                },
-                remove : function (id){
-                     confirm("Wil u doorgaan met het verwijderen van?"+id)
-                   
-                    // API CALL VOOR VERWIJDEREN 
-                        console.log('https://vopro5.ugent.be/app/api/users/'+id)
-/*                        this.$http.delete('https://vopro5.ugent.be/app/api/users/'+id).then(response => {
-                                
-                        })
-                    */
+            // Methods for routing purposes
+            add: function () {
+                this.$router.push({ path: 'users/new'})
+            },
+            remove : function (id){
+                confirm("Wil u doorgaan met het verwijderen van?"+id)
 
-                    // remove user in table
-                    // var i = this.users.indexOf(user);
-                    // this.users.splice(i, 1)
-                    
+                // API CALL VOOR VERWIJDEREN
+                console.log('https://vopro5.ugent.be/app/api/users/'+id)
+                /*                        this.$http.delete('https://vopro5.ugent.be/app/api/users/'+id).then(response => {
 
-                },
+                 })
+                 */
+
+                // remove user in table
+                // var i = this.users.indexOf(user);
+                // this.users.splice(i, 1)
+
+
+            },
         },
         computed: {
-            searchId: function () { 
+            searchId: function () {
                 var s=this.search.trim().toLowerCase();;
                 var listID = []
                 listID = this.users
@@ -85,14 +85,12 @@ import infoPane from "../../assets/listComponent.vue"
         },
         mounted: function () {
             // Make ajax request to server according to type
-                console.log('Get User objects')
-
-/*                this.$http.get('https://vopro5.ugent.be/app/api/users').then(response => {
-                    console.log(response.body.data)
-                    console.log(this.userList)
-                    this.userList = response.body.data
-                    console.log(this.userList)
-                })*/
+            this.$http.get('https://vopro5.ugent.be/app/api/users').then(response => {
+                const data = response.body.data;
+                for(let i=0; i<data.length; i++){
+                    this.userList.push(data[i]);
+                }
+            })
         },
     }
 </script>
@@ -108,5 +106,5 @@ import infoPane from "../../assets/listComponent.vue"
         font-size: 18px;
         line-height: 1.33;
         border-radius: 25px;
-}
+    }
 </style>
