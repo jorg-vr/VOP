@@ -40,7 +40,7 @@ public class RESTUserControllerTest {
     private static Account account;
     @BeforeClass
     public static void setup() {
-        ProductionProvider.initializeProvider(false);
+        ProductionProvider.initializeProvider(true);
         try {
             person=new PersonController().createPerson("jon","doe","jon.doe@hotmail.com");
             account=new AccountController().createAccount("jon.doe@hotmail.com","054561dfs5f465",person.getUuid());
