@@ -20,17 +20,6 @@
             }
         },
         components: { FormTemp},
-        methods:{
-            // Function that makes an API call to fetch specific user data to be edited
-            fetchUser : function () {
-                this.$http.get('https://vopro5.ugent.be/app/api/users/' + this.$route.params.id).then(response => {
-                    this.user = response.body;
-                    console.log(this.user)
-                })
-            },
-
-
-        },
         created: function (){
                 // Keep reference to this Vue component 
                 var vm = this

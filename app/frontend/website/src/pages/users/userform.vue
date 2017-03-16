@@ -56,6 +56,15 @@
 
   
             },
+            // Function that makes an API call to fetch specific client data to be edited
+            fetchEditData(){
+                this.$http.get('https://vopro5.ugent.be/app/api/users/' + this.$route.params.id).then(response => {
+                    var User = response.body
+                    this.inputs.push(User.firstName)
+                    this.inputs.push(User.lastName)
+                    this.inputs.push(User.email)
+                })
+            }
 
 
         },
@@ -63,14 +72,7 @@
         created : function(){ 
             // Fill inputs array with received information
             if(this.$route.path != '/users/new'){
-                console.log(this.user)
-                var fname = this.user.firstName
-                var lname = this.user.lastName
-                var email = this.user.email
-                this.inputs.push(fname);
-                this.inputs.push(lname);
-                this.inputs.push(email);
-                console.log(this.inputs)
+                this.fetchEditData()
             }
 
         }
