@@ -1,7 +1,7 @@
 package spring.model;
 
 /**
- * Created by jorg on 3/10/17.
+ * This is a bean class as specified in the API specification
  */
 public class RESTError {
     private int code;
