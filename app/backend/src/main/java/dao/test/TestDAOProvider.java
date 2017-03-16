@@ -40,10 +40,6 @@ public class TestDAOProvider implements DAOProvider {
         return accountDAO;
     }
 
-    @Override
-    public CompanyDAO<Company> getCompanyDAO() {
-        return null;
-    }
 
     @Override
     public CustomerDAO getCustomerDAO() {
@@ -60,25 +56,6 @@ public class TestDAOProvider implements DAOProvider {
         return functionDAO;
     }
 
-    @Override
-    public HistoryDAO<Vehicle> getVehicleHistoryDAO() {
-        return null;
-    }
-
-    @Override
-    public HistoryDAO<Insurance> getInsuranceHistoryDAO() {
-        return null;
-    }
-
-    @Override
-    public IdentityDAO<Person> getIdentityDAO() {
-        return null;
-    }
-
-    @Override
-    public InsuranceDAO getInsuranceDAO() {
-        return null;
-    }
 
     @Override
     public PersonDAO getPersonDAO() {

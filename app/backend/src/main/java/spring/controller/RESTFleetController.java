@@ -18,7 +18,19 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Created by jorg on 3/13/17.
+ * This controller is responsible for handling the HTTP requests of the URL /fleets.
+ * Currently, the following HTTP requests are supported:
+ *  1) GET /fleet
+ *  2) GET /fleets/{id}
+ *  3) POST /fleets
+ *  4) PUT /fleets/{id}
+ *  5) DELETE /fleets/{id}
+ *
+ *  This controller is responsible for translating the RESTModels to the backend specific models and calling the appropriate methods
+ *  of the spring independent controllers,  located in the controller package.
+ *  It is also responsible for translating the backend specific exceptions to HTPP repsonse codes.
+ *
+ *  For more information about what the HTTP requests do, see the API specification
  */
 @RestController
 @RequestMapping("/fleets")
@@ -101,6 +113,10 @@ public class RESTFleetController {
         }
     }
 
+
+    /**
+     * This method translates the Fleet object to a RESTFleet object.
+     */
     private RESTFleet modelToRest(Fleet fleet) {
         String id = UUIDUtil.UUIDToNumberString(fleet.getUuid());
         String owner = fleet.getOwner() != null ? UUIDUtil.UUIDToNumberString(fleet.getOwner().getUuid()) : null;

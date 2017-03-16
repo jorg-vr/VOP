@@ -1,9 +1,7 @@
 package spring.model;
 
-import model.identity.Company;
-
 /**
- * Created by jorg on 3/12/17.
+ * This is a bean class as specified in the API specification
  */
 public class RESTFleet {
     private String id;

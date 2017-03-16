@@ -34,21 +34,6 @@ public class ProductionVehicleDAO implements VehicleDAO {
         this.factory = factory;
     }
 
-    @Override
-    public Vehicle create(String brand, String model, String chassisNumber, String licenseplate, int value, int mileage, VehicleType type, LocalDate productionDate) throws DataAccessException {
-
-        Vehicle vehicle = new Vehicle();
-        vehicle.setBrand(brand);
-        vehicle.setLicensePlate(licenseplate);
-        vehicle.setModel(model);
-        vehicle.setProductionDate(productionDate);
-        vehicle.setValue(value);
-        vehicle.setMileage(mileage);
-        vehicle.setType(type);
-        vehicle.setChassisNumber(chassisNumber);
-        HibernateUtil.create(factory,vehicle);
-        return vehicle;
-    }
 
     @Override
     public Vehicle get(UUID id) throws DataAccessException {
@@ -57,22 +42,6 @@ public class ProductionVehicleDAO implements VehicleDAO {
         }
     }
 
-    @Override
-    public Vehicle update(UUID uuid, String brand, String model, String chassisNumber, String licenseplate, int value, int mileage, VehicleType type, LocalDate productionDate) throws DataAccessException {
-
-        Vehicle vehicle = new Vehicle();
-        vehicle.setUuid(uuid);
-        vehicle.setBrand(brand);
-        vehicle.setLicensePlate(licenseplate);
-        vehicle.setModel(model);
-        vehicle.setProductionDate(productionDate);
-        vehicle.setValue(value);
-        vehicle.setMileage(mileage);
-        vehicle.setType(type);
-        vehicle.setChassisNumber(chassisNumber);
-        HibernateUtil.update(factory,vehicle);
-        return vehicle;
-    }
 
     @Override
     public Vehicle create(String brand, String model, String chassisNumber, String licenseplate, int value, int mileage, VehicleType type, LocalDate productionDate, Fleet fleet) throws DataAccessException {
@@ -86,7 +55,7 @@ public class ProductionVehicleDAO implements VehicleDAO {
         vehicle.setType(type);
         vehicle.setChassisNumber(chassisNumber);
         vehicle.setFleet(fleet);
-        HibernateUtil.create(factory,vehicle);
+        HibernateUtil.create(factory, vehicle);
         return vehicle;
     }
 
@@ -103,13 +72,13 @@ public class ProductionVehicleDAO implements VehicleDAO {
         vehicle.setType(type);
         vehicle.setChassisNumber(chassisNumber);
         vehicle.setFleet(fleet);
-        HibernateUtil.update(factory,vehicle);
+        HibernateUtil.update(factory, vehicle);
         return vehicle;
     }
 
     @Override
     public void remove(UUID id) throws DataAccessException {
-        HibernateUtil.remove(factory,get(id));
+        HibernateUtil.remove(factory, get(id));
     }
 
     @Override
@@ -141,66 +110,60 @@ public class ProductionVehicleDAO implements VehicleDAO {
         return null;
     }
 
-    @Override
-    public void close() {
-
-    }
-
-
 
     @Override
     public Filter<Vehicle> byBrand(String brandName) {
         return () ->
-            predicates.add(criteriaBuilder.equal(root.get("brand"), brandName));
+                predicates.add(criteriaBuilder.equal(root.get("brand"), brandName));
     }
 
     @Override
     public Filter<Vehicle> byModel(String model) {
         return () ->
-            predicates.add(criteriaBuilder.equal(root.get("model"), model));
+                predicates.add(criteriaBuilder.equal(root.get("model"), model));
     }
 
     @Override
     public Filter<Vehicle> byLicensePlate(String licensePlate) {
         return () ->
-            predicates.add(criteriaBuilder.equal(root.get("licensePlate"), licensePlate));
+                predicates.add(criteriaBuilder.equal(root.get("licensePlate"), licensePlate));
     }
 
     @Override
     public Filter<Vehicle> atProductionDate(LocalDate productionDate) {
         return () ->
-            predicates.add(criteriaBuilder.equal(root.<LocalDate>get("productionDate"), productionDate));
+                predicates.add(criteriaBuilder.equal(root.<LocalDate>get("productionDate"), productionDate));
     }
 
     @Override
     public Filter<Vehicle> beforeProductionDate(LocalDate productionDate) {
         return () ->
-            predicates.add(criteriaBuilder.lessThanOrEqualTo(root.<LocalDate>get("productionDate"), productionDate));
+                predicates.add(criteriaBuilder.lessThanOrEqualTo(root.<LocalDate>get("productionDate"), productionDate));
     }
 
     @Override
     public Filter<Vehicle> afterProductionDate(LocalDate productionDate) {
         return () ->
-            predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.<LocalDate>get("productionDate"), productionDate));
+                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.<LocalDate>get("productionDate"), productionDate));
     }
 
     @Override
     public Filter<Vehicle> atLeastMileage(int mileage) {
         return () ->
-            predicates.add(criteriaBuilder.ge(root.get("mileage"), mileage));
+                predicates.add(criteriaBuilder.ge(root.get("mileage"), mileage));
     }
 
     @Override
     public Filter<Vehicle> maxMileage(int mileage) {
         return () ->
-            predicates.add(criteriaBuilder.le(root.get("mileage"), mileage));
+                predicates.add(criteriaBuilder.le(root.get("mileage"), mileage));
 
     }
 
     @Override
     public Filter<Vehicle> byType(VehicleType type) {
         return () ->
-            predicates.add(criteriaBuilder.equal(root.get("type"), type));
+                predicates.add(criteriaBuilder.equal(root.get("type"), type));
     }
 
     @Override

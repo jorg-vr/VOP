@@ -94,8 +94,4 @@ public class ProductionFleetDAO implements FleetDAO{
         return null;
     }
 
-    @Override
-    public void close() {
-
-    }
 }

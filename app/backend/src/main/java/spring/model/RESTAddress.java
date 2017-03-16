@@ -1,7 +1,7 @@
 package spring.model;
 
 /**
- * Created by jorg on 3/6/17.
+ * This is a bean class as specified in the API specification
  */
 public class RESTAddress {
     private String country;
