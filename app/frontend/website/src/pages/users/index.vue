@@ -33,7 +33,7 @@
         data(){
             return {
                 userList : [],
-                users:{},
+                users: {},
                 search: ''
             }
         },
@@ -45,18 +45,23 @@
             },
             // Function to remove a user 
             remove : function (id){
-                confirm("Wil u doorgaan met het verwijderen van?")
                 // API call to remove user from database
                 this.$http.delete('https://vopro5.ugent.be/app/api/users/'+id)
+                let newUsers = this.userList.filter(user => user.id !== id);
+                this.userList = newUsers
             },
             // Function to fetch list of users from database
             fetchUserList(){
                 this.$http.get('https://vopro5.ugent.be/app/api/users').then(response => {
-                    const data = response.body.data;
-                    for(let i=0; i<data.length; i++){
-                        this.userList.push(data[i]);
+                        const data = response.body.data;
+                        for (let i = 0; i < data.length; i++) {
+                            this.userList.push(data[i]);
+                            console.log(data[i]);
+                        }
+                    }, response => {
+                        console.log(response.body);
                     }
-                 })
+                 )
             }
         },
         computed: {

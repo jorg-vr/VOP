@@ -47,8 +47,9 @@
                             Accept: "application/json",
                         }
                     }
-                    ).then(response => { //Succes 
-                    }, response => { //Fail
+                    ).then(response => { //Succes
+                            this.$router.push({name: 'user', params: {id: response.body.id}});
+                        }, response => { //Fail
                         console.log('fail')
                     }
                     )
