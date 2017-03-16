@@ -14,7 +14,7 @@
             return {
                 vehicle: {/*
                  licensePlate: '',
-                 chassisNumber: '',
+                 vin: '',
                  brand: '',
                  model: '',
                  type: '',
@@ -23,9 +23,10 @@
                  leasingCompany: '',
                  TEST VEHICLE*/
                     licensePlate: "JAR-096",
-                    chassisNumber: "jarreknock",
+                    vin: "BA95D42KLN21SAZ98",
                     brand: "Volvo",
-                    model: "s60 Polestar",
+                    model: "s60",
+                    fleet: '160914146855851706481713813080589660473',
                     type: "",
                     mileage: 777,
                     year: "2015",
@@ -37,32 +38,24 @@
         components: {
             VehicleForm
         },
+        created() {
+            if(this.$route.params.fleet_id){
+                this.vehicle.fleet = this.$route.params.fleet_id;
+            }
+        },
         methods: {
             //API call to create the given vehicle.
             createVehicle(vehicle){
-                //TODO
                 this.$http.post('https://vopro5.ugent.be/app/api/vehicles', vehicle,
-                    /*{
-
-                        licensePlate: "JAR-096",
-                        vin:"BA95D42KLN21SAZ98",
-                        brand: "Volvo",
-                        type: "135562075880719110964268135792105407200",
-                        model: "s60",
-                        mileage: 777,
-                        year: "2015"
-                    },*/
                     {
                         headers: {
                             Accept: "application/json",
                         }
                     }
                 ).then(response => { //Success
-                    //this.vehicle = response.body;
-                    console.log(response.body);
-                    //this.$router.push({name: 'vehicle', params: { id: this.vehicle.id }});
-                }, response => { //Fail
-                        console.log(response.text())
+                        this.$router.push({name: 'vehicle', params: { id: response.body.id }});
+                    }, response => { //Fail
+                        console.log(response.body)
                     }
                 )
             }
