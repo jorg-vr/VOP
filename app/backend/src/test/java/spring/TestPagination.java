@@ -41,7 +41,7 @@ public class TestPagination {
     }
 
     private void testNullParametersHelp(Integer page, Integer limit) {
-        RESTSchema<Integer> result = new RESTSchema<>(collection, page, limit, "/int");
+        RESTSchema<Integer> result = new RESTSchema<>(collection, page, limit, "/int?");
         assertEquals(SIZE, result.getTotal());
         assertNull(result.getFirst());
         assertNull(result.getLast());
@@ -55,7 +55,7 @@ public class TestPagination {
     public void testSizeIsLimit() throws Exception {
         Integer page = 0;
         Integer limit = SIZE;
-        RESTSchema<Integer> result = new RESTSchema<>(collection, page, limit, "/int");
+        RESTSchema<Integer> result = new RESTSchema<>(collection, page, limit, "/int?");
         assertEquals(SIZE, result.getTotal());
         assertEquals(limit, result.getLimit());
         assertEquals(new Integer((page * limit)), result.getOffset());
@@ -72,7 +72,7 @@ public class TestPagination {
         int[] sizes = new int[]{limit + 1, limit + limit / 2, 2 * limit};
         for (int size : sizes) {
             Collection<Integer> col = createCollection(size);
-            RESTSchema<Integer> result = new RESTSchema<>(col, 0, limit, "/int");
+            RESTSchema<Integer> result = new RESTSchema<>(col, 0, limit, "/int?");
 
             assertEquals("/int?page=1&limit=" + limit, result.getNext());
             assertNull(result.getPrevious());

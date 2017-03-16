@@ -1,5 +1,6 @@
 package controller;
 
+import dao.database.ProductionProvider;
 import dao.interfaces.DAOProvider;
 import dao.interfaces.DataAccessException;
 import dao.interfaces.PersonDAO;
@@ -17,8 +18,8 @@ public class PersonController extends AbstractController<Person> {
     private PersonDAO dao;
 
     public PersonController() {
-        super(BackendApplication.PROVIDER.getPersonDAO());
-        provider = BackendApplication.PROVIDER;
+        super(ProductionProvider.getInstance().getPersonDAO());
+        provider = ProductionProvider.getInstance();
         this.dao = provider.getPersonDAO();
     }
 

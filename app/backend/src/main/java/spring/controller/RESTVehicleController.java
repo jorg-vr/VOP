@@ -1,10 +1,12 @@
 package spring.controller;
 
+import controller.FleetController;
 import controller.VehicleController;
 
 import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
 import dao.interfaces.VehicleDAO;
+import model.fleet.Fleet;
 import model.fleet.Vehicle;
 import org.springframework.web.bind.annotation.*;
 import spring.Exceptions.InvalidInputException;
@@ -45,7 +47,7 @@ public class RESTVehicleController {
                                        @RequestParam(required = false) String type,
                                        @RequestParam(required = false) Integer page,
                                        @RequestParam(required = false) Integer limit) {
-        String baseString = "/vehicles?";
+        String baseString = PATH_VEHICLE +"?";
         VehicleDAO vehicleDAO = (VehicleDAO) controller.getDao();
         List<Filter<Vehicle>> filters = new ArrayList<>();
         if (licensPlate != null) {
@@ -63,7 +65,14 @@ public class RESTVehicleController {
             filters.add(vehicleDAO.atProductionDate(LocalDate.parse(year + "0101", yearFormat)));
         }
         if (fleet != null) {
-            //TODO after issue #88
+            baseString += "fleet=" + fleet + "&";
+            Fleet fl;
+            try {
+                fl = new FleetController().get(UUIDUtil.toUUID(fleet));
+            } catch (DataAccessException e) {
+                throw new InvalidInputException("Something went wrong when getting the fleet from the database");
+            }
+            filters.add(vehicleDAO.byFleet(fl));
         }
         if (type != null) {
             baseString += "type=" + type;
@@ -105,7 +114,7 @@ public class RESTVehicleController {
                             vehicle.getValue(),
                             vehicle.getMileage(),
                             UUIDUtil.toUUID(vehicle.getType()),
-                            UUIDUtil.toUUID(vehicle.getId())));
+                            UUIDUtil.toUUID(vehicle.getFleet())));
         } catch (DataAccessException e) {
             throw new InvalidInputException();
             //TODO updateId when there are more exceptions
@@ -184,17 +193,19 @@ public class RESTVehicleController {
      */
     private RESTVehicle modelToRest(Vehicle vehicle) {
         String leasingCompany = vehicle.getLeasingCompany() != null ? UUIDUtil.UUIDToNumberString(vehicle.getLeasingCompany().getUuid()) : null;
+        String fleet=vehicle.getFleet()!=null?UUIDUtil.UUIDToNumberString(vehicle.getFleet().getUuid()):null;
+        String type=vehicle.getType()!=null?UUIDUtil.UUIDToNumberString(vehicle.getType().getUuid()):null;
         return new RESTVehicle(UUIDUtil.UUIDToNumberString(vehicle.getUuid()),
                 vehicle.getLicensePlate(),
                 vehicle.getChassisNumber(),
                 vehicle.getBrand(),
                 vehicle.getModel(),
-                UUIDUtil.UUIDToNumberString(vehicle.getType().getUuid()),
+                type,
                 vehicle.getValue(),
                 vehicle.getMileage(),
                 vehicle.getProductionDate().format(yearFormat).substring(0, 4),
                 leasingCompany,
-                UUIDUtil.UUIDToNumberString(vehicle.getFleet().getUuid()),
+                fleet,
                 null,//TODO search leasing company
                 null,//TODO implement edit dates with history
                 null,

@@ -1,24 +1,19 @@
 package dao.database;
 
 import dao.interfaces.*;
+import model.account.Function;
 import model.fleet.Vehicle;
 import model.fleet.VehicleType;
 import model.identity.Company;
-import model.identity.Identity;
 import model.identity.Person;
 import model.insurance.Insurance;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
-import java.time.LocalDate;
-import java.util.Map;
-import java.util.UUID;
+import java.time.LocalDateTime;
 
 /**
  * Created by sam on 3/8/17.
@@ -129,20 +124,17 @@ public class ProductionProvider implements DAOProvider {
         StandardServiceRegistryBuilder.destroy(this.registry);
     }
 
-    public static void main(String[] args) {
-        ProductionProvider.initializeProvider(false);
-        try (DAOProvider daoProvider = ProductionProvider.getInstance()) {
+    public static void main(String[] args) throws DataAccessException {
+        ProductionProvider.initializeProvider(true);
+        DAOProvider provider = ProductionProvider.getInstance();
 
-            AccountDAO accountDAO = daoProvider.getAccountDao();
-            PersonDAO personDAO = daoProvider.getPersonDAO();
-            Person sam =  personDAO.create("test","test","test");
-            accountDAO.create("test","hashed",sam);
-            accountDAO.create("test2","hashed",sam);
-            accountDAO.create("test3","hashed",sam);
-        } catch (DataAccessException e) {
-            e.printStackTrace();
-        }
+        VehicleTypeDao dao = provider.getVehicleTypeDAO();
+        VehicleType v2 = dao.create("Personenwagen",1);
+        VehicleType v4 = dao.create("Lichte vrachtwagen",1);
+        VehicleType v1 = dao.create("Vrachtauto",1);
+        VehicleType v3 = dao.create("Vrachtauto (+12)",1);
 
-
+        provider.close();
     }
+
 }

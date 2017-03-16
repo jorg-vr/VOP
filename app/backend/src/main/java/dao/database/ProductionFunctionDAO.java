@@ -57,13 +57,14 @@ public class ProductionFunctionDAO implements FunctionDAO {
             this.criteriaQuery = this.criteriaBuilder.createQuery(Function.class);
             this.root = this.criteriaQuery.from(Function.class);
             for (Filter<Function> filter : filters) {
-                filter.filter(null);
+                filter.filter();
             }
             Collection<Function> functions = session.createQuery(criteriaQuery.where(predicates.toArray(new Predicate[predicates.size()]))).getResultList();
             tx.commit();
             this.root = null;
             this.criteriaQuery = null;
             this.criteriaBuilder = null;
+            predicates.clear();
             return functions;
         } catch (Exception e) {
             e.printStackTrace();
@@ -105,17 +106,13 @@ public class ProductionFunctionDAO implements FunctionDAO {
 
     @Override
     public Filter<Function> byAccount(Account account) {
-        return (o1) -> {
+        return () ->
             predicates.add(criteriaBuilder.equal(root.get("account"), account));
-            return true;
-        };
     }
 
     @Override
     public Filter<Function> byCompany(Company company) {
-        return (o1) -> {
+        return () ->
             predicates.add(criteriaBuilder.equal(root.get("company"), company));
-            return true;
-        };
     }
 }

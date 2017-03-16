@@ -8,6 +8,6 @@ import model.identity.Identity;
  */
 public interface IdentityDAO<T extends Identity> extends DAO<T> {
     Filter<T> byAddress(Address address);
-    Filter<T> byBankAccountNummber(String bankAccountNumber);
     Filter<T> byEmail(String email);
+    Filter<T> byPhoneNumber(String phoneNumber);
 }

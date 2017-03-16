@@ -13,23 +13,20 @@ public class Fleet implements EditableObject, java.io.Serializable {
     private UUID uuid;
     private String name;
     private Customer owner;
+
     private Collection<Vehicle> vehicles;
 
     public Fleet() {
     }
 
-    public Fleet(UUID uuid, Customer owner,String name, Collection<Vehicle> vehicles) {
-        this(uuid,owner,name);
+    public Fleet(UUID uuid, Collection<Vehicle> vehicles) {
+        this.uuid= uuid;
+
         this.vehicles = vehicles;
     }
 
 
-    public Fleet(UUID uuid, Customer owner,String name) {
-        this.uuid = uuid;
-        this.owner = owner;
-        this.name=name;
-        this.vehicles = new HashSet<Vehicle>();
-    }
+
 
     /**
      * Adds the Vehicle to the Fleet.
@@ -73,6 +70,14 @@ public class Fleet implements EditableObject, java.io.Serializable {
         return vehicles.size();
     }
 
+    public Customer getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Customer owner) {
+        this.owner = owner;
+    }
+
     public String getName() {
         return name;
     }
@@ -89,14 +94,6 @@ public class Fleet implements EditableObject, java.io.Serializable {
         this.uuid = uuid;
     }
 
-    public Customer getOwner() {
-        return owner;
-    }
-
-    public void setOwner(Customer owner) {
-        this.owner = owner;
-    }
-
     public Collection<Vehicle> getVehicles() {
         return vehicles;
     }
@@ -110,7 +107,7 @@ public class Fleet implements EditableObject, java.io.Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        return uuid == ((Fleet) o).getUuid();
+        return uuid.equals(((Fleet) o).getUuid());
 
     }
 
@@ -120,7 +117,7 @@ public class Fleet implements EditableObject, java.io.Serializable {
         for (Vehicle v : vehicles) {
             newList.add((Vehicle) v.copy());
         }
-        return new Fleet(uuid, owner,name, newList);
+        return new Fleet(uuid, newList);
     }
 
     @Override

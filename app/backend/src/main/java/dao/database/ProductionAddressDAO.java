@@ -53,13 +53,14 @@ public class ProductionAddressDAO implements AddressDAO {
             this.criteriaQuery = this.criteriaBuilder.createQuery(Address.class);
             this.root = this.criteriaQuery.from(Address.class);
             for (Filter<Address> filter : filters) {
-                filter.filter(null);
+                filter.filter();
             }
             Collection<Address> fleets = session.createQuery(criteriaQuery.where(predicates.toArray(new Predicate[predicates.size()]))).getResultList();
             tx.commit();
             this.root = null;
             this.criteriaQuery = null;
             this.criteriaBuilder = null;
+            predicates.clear();
             return fleets;
         } catch (Exception e) {
             e.printStackTrace();
@@ -100,4 +101,35 @@ public class ProductionAddressDAO implements AddressDAO {
         HibernateUtil.update(factory,address);
         return address;
     }
+
+    @Override
+    public Filter<Address> byStreet(String street) {
+        return () ->
+                predicates.add(criteriaBuilder.equal(root.get("street"), street));
+    }
+
+    @Override
+    public Filter<Address> byStreetNumber(String streetNumber) {
+        return () ->
+                predicates.add(criteriaBuilder.equal(root.get("streetNumber"), streetNumber));
+    }
+
+    @Override
+    public Filter<Address> byTown(String town) {
+        return () ->
+                predicates.add(criteriaBuilder.equal(root.get("town"), town));
+    }
+
+    @Override
+    public Filter<Address> byPostalCode(String postalCode) {
+        return () ->
+                predicates.add(criteriaBuilder.equal(root.get("postalCode"), postalCode));
+    }
+
+    @Override
+    public Filter<Address> byCountry(String country) {
+        return () ->
+                predicates.add(criteriaBuilder.equal(root.get("country"), country));
+    }
+
 }

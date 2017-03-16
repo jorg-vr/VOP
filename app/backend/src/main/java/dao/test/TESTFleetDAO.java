@@ -15,17 +15,12 @@ import java.util.UUID;
  */
 public class TESTFleetDAO  implements FleetDAO{
     @Override
-    public Fleet create(Customer customer, Collection<Vehicle> vehicles) throws DataAccessException {
+    public Fleet create(String name, Customer customer) throws DataAccessException {
         return null;
     }
 
     @Override
-    public Fleet update(UUID id, Customer customer, Collection<Vehicle> vehicles) throws DataAccessException {
-        return null;
-    }
-
-    @Override
-    public Filter<Fleet> byOwner(Customer customer) {
+    public Fleet update(UUID id, String name, Customer customer) throws DataAccessException {
         return null;
     }
 
