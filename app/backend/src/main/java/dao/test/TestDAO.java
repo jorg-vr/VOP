@@ -47,8 +47,4 @@ public abstract class TestDAO<T extends EditableObject> implements DAO<T> {
         mapping.remove(id);
     }
 
-    @Override
-    public void close() {
-
-    }
 }

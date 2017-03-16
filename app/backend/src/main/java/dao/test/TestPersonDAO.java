@@ -93,9 +93,4 @@ public class TestPersonDAO extends TestDAO<Person> implements PersonDAO {
     public void remove(UUID id) throws DataAccessException {
 
     }
-
-    @Override
-    public void close() {
-
-    }
 }

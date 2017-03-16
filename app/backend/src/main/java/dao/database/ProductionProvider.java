@@ -41,6 +41,11 @@ public class ProductionProvider implements DAOProvider {
 
     }
 
+    /**
+     * SHOULD BE CALLED BEFORE getInstance()
+     * initializes the provider with the right hibernate configuration
+     * @param production should it run on production or development
+     */
     public synchronized static void initializeProvider(boolean production) {
         if (production) {
             provider = new ProductionProvider("hibernate/hibernatedeployment.cfg.xml");
@@ -49,6 +54,9 @@ public class ProductionProvider implements DAOProvider {
         }
     }
 
+    /**
+     * @return the DAOProvider
+     */
     public synchronized static DAOProvider getInstance() {
         if (provider == null) {
         }
@@ -58,11 +66,6 @@ public class ProductionProvider implements DAOProvider {
     @Override
     public synchronized AccountDAO getAccountDao() {
         return new ProductionAccountDAO(sessionFactory);
-    }
-
-    @Override
-    public synchronized CompanyDAO<Company> getCompanyDAO() {
-        return null;
     }
 
     @Override
@@ -76,26 +79,8 @@ public class ProductionProvider implements DAOProvider {
     }
 
     @Override
-    public synchronized HistoryDAO<Vehicle> getVehicleHistoryDAO() {return null;}
-
-    @Override
     public synchronized FunctionDAO getFunctionDAO() {
         return new ProductionFunctionDAO(sessionFactory);
-    }
-
-    @Override
-    public synchronized HistoryDAO<Insurance> getInsuranceHistoryDAO() {
-        return null;
-    }
-
-    @Override
-    public synchronized IdentityDAO<Person> getIdentityDAO() {
-        return null;
-    }
-
-    @Override
-    public synchronized InsuranceDAO getInsuranceDAO() {
-        return null;
     }
 
     @Override

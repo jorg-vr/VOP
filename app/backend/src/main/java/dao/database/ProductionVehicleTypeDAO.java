@@ -91,10 +91,6 @@ public class ProductionVehicleTypeDAO implements VehicleTypeDao {
         return null;
     }
 
-    @Override
-    public void close() {
-
-    }
 
     @Override
     public Filter<VehicleType> byName(String name) {

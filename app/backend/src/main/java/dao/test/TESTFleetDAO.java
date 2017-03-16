@@ -39,8 +39,5 @@ public class TESTFleetDAO  implements FleetDAO{
         return null;
     }
 
-    @Override
-    public void close() {
 
-    }
 }
