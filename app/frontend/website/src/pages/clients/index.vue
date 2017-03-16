@@ -45,9 +45,12 @@ import infoPane from "../../assets/listComponent.vue"
             },
             // Function to remove a client 
             remove : function (id){
-                confirm("Wil u doorgaan met het verwijderen?")
+                console.log(id);
                 // API call to remove client from database
-                 this.$http.delete('https://vopro5.ugent.be/app/api/companies/'+id)
+                this.$http.delete('https://vopro5.ugent.be/app/api/companies/'+id)
+                // API call to remove user from database
+                let newClients = this.clientList.filter(client => client.id !== id);
+                this.clientList = newClients
             },
             // Function to fetch list of clients from database
             fetchClientList(){

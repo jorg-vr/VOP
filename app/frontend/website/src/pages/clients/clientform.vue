@@ -14,10 +14,8 @@
             <div class="row">
                 <div class="col-md-4 col-md-offset-7">
                     <div id="buttons">
-                        <router-link :to="{name: 'clients'}">  
-                        <button type="button" class="btn btn-success btn-md" v-on:click="proceed()"> <i class="fa fa-check" aria-hidden="true"></i></button> 
-                        </router-link>
-                        <router-link :to="{name: 'clients'}">   
+                        <button type="button" class="btn btn-success btn-md" v-on:click="proceed()"> <i class="fa fa-check" aria-hidden="true"></i></button>
+                        <router-link :to="{name: 'clients'}">
                           <button type="button" class="btn btn-danger btn-md"> <i class="fa fa-times" aria-hidden="true"></i></button>  
                         </router-link>
                     </div>

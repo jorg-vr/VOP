@@ -7,6 +7,9 @@
         <div class="page-header">
             <h1>Vloot: {{fleet.name}} </h1>
         </div>
+        <router-link :to="{name: 'fleets'}">
+            <button type="button" class="btn btn-primary table-button">Terug</button>
+        </router-link>
         <router-link :to="{name: 'new_vehicle', params: {fleet_id: fleet.id}}">
             <button type="button" class="btn btn-primary table-button">Nieuw voertuig</button>
         </router-link>
