@@ -20,17 +20,6 @@
             }
         },
         components: { FormTemp},
-        methods:{
-            // Function that makes an API call to fetch specific client data to be edited
-            fetchClient : function () {
-                this.$http.get('https://vopro5.ugent.be/app/api/companies/' + this.$route.params.id).then(response => {
-                    this.client = response.body;
-                    console.log(this.client)
-                })
-            },
-
-
-        },
         created: function (){
                 // listen to proceed performed by child component
                 var vm = this

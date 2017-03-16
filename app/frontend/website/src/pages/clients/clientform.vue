@@ -53,18 +53,27 @@
                     dest='proceedEditClient'
                     this.$bus.$emit(dest,Company)
                 }
+            },
+            fetchEditData(){
+                this.$http.get('https://vopro5.ugent.be/app/api/companies/' + this.$route.params.id).then(response => {
+                    var Client = response.body
+                    var ad = Client.address
+                    this.inputs.push(Client.name)
+                    this.inputs.push(ad.country)
+                    this.inputs.push(ad.city)
+                    this.inputs.push(ad.postalCode)
+                    this.inputs.push(ad.street)
+                    this.inputs.push(ad.houseNumber)
+                    this.inputs.push(Client.vatNumber)
+                    this.inputs.push(Client.phoneNumber)
+                })
             }
         },
         // Lifecycle hook called when this component is created
         created : function(){ 
             // Fill inputs array with received information
             if(this.$route.path != '/clients/new'){
-                var name = this.client.name
-                var address = this.client.address
-                var vatNr = this.client.vatNumber
-                var phoneNr = this.client.phoneNumber
-                this.inputs.push(name);
-
+                this.fetchEditData()
             }
         }
     }
