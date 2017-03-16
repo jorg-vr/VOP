@@ -125,16 +125,15 @@ public class ProductionProvider implements DAOProvider {
     }
 
     public static void main(String[] args) throws DataAccessException {
-        ProductionProvider.initializeProvider(false);
+        ProductionProvider.initializeProvider(true);
         DAOProvider provider = ProductionProvider.getInstance();
 
         VehicleTypeDao dao = provider.getVehicleTypeDAO();
-        VehicleType v1 = dao.create("Vrachtwagen",1);
         VehicleType v2 = dao.create("Personenwagen",1);
-        VehicleType v3 = dao.create("Oplegger",1);
-        dao.remove(v1.getUuid());
-        dao.remove(v2.getUuid());
-        dao.remove(v3.getUuid());
+        VehicleType v4 = dao.create("Lichte vrachtwagen",1);
+        VehicleType v1 = dao.create("Vrachtauto",1);
+        VehicleType v3 = dao.create("Vrachtauto (+12)",1);
+
         provider.close();
     }
 
