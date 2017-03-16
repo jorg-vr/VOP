@@ -6,15 +6,15 @@
         <div class="col-md-8">
             <table id="show-vehicle" class="table">
                 <tr>
-                    <td>License plate</td>
+                    <td>Nummerplaat</td>
                     <td>{{vehicle.licensePlate}}</td>
                 </tr>
                 <tr>
-                    <td>Chassis number</td>
+                    <td>Chassisnummer</td>
                     <td>{{vehicle.vin}}</td>
                 </tr>
                 <tr>
-                    <td>Brand</td>
+                    <td>Merk</td>
                     <td>{{vehicle.brand}}</td>
                 </tr>
                 <tr>
@@ -26,15 +26,15 @@
                     <td>{{vehicleType}}</td>
                 </tr>
                 <tr>
-                    <td>Kilometer count</td>
+                    <td>Kilometerstand</td>
                     <td>{{vehicle.mileage}}</td>
                 </tr>
                 <tr>
-                    <td>Year</td>
+                    <td>Jaar</td>
                     <td>{{vehicle.year}}</td>
                 </tr>
                 <tr>
-                    <td>Leasing company</td>
+                    <td>Leasing bedrijf</td>
                     <td>{{vehicle.model}}</td>
                 </tr>
             </table>
