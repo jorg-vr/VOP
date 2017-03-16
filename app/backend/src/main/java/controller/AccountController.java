@@ -21,8 +21,8 @@ public class AccountController extends AbstractController<Account> {
     private DAOProvider provider;
 
     public AccountController() {
-        super(ProductionProvider.getInstance().getAccountDao());
-        this.provider = ProductionProvider.getInstance();
+        super(BackendApplication.getProvider().getAccountDao());
+        this.provider = BackendApplication.getProvider();
         this.dao = provider.getAccountDao();
     }
 

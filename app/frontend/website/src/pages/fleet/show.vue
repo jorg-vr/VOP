@@ -4,20 +4,17 @@
 <template>
     <div>
         <div class="page-header">
-            <h1>Vloot: {{fleet.name}} </h1>
+            <h1>Vloot {{fleet.name}} </h1>
         </div>
-        <router-link :to="{name: 'fleets'}">
-            <button type="button" class="btn btn-primary table-button">Terug</button>
-        </router-link>
         <router-link :to="{name: 'new_vehicle', params: {fleet_id: fleet.id}}">
             <button type="button" class="btn btn-primary table-button">Nieuw voertuig</button>
         </router-link>
-        <button type="button" class="btn btn-primary table-button" v-on:click="deleteFleet">Verwijder vloot</button>
+        <button type="button" class="btn btn-danger table-button" v-on:click="deleteFleet">Verwijder vloot</button>
         <div class="row">
             <div>
                 <div v-for="subfleet in subfleets">
                     <div v-if="subfleet.vehicles.length > 0">
-                        <h2>{{subfleet.type.name | capitalize }}</h2>
+                        <h3>{{subfleet.type.name | capitalize }}</h3>
                         <table class="table">
                             <subfleet-row v-for="vehicle in subfleet.vehicles"
                                           :vehicle="vehicle" :fleet_id="fleet.id" :deleteVehicle="deleteVehicle" :key="vehicle.id">
@@ -40,6 +37,8 @@
                 },
                 template: `
                 <tr>
+                <td>{{vehicle.brand}}</td>
+                <td>{{vehicle.model}}</td>
                 <td class="full-width">{{vehicle.licensePlate}}</td>
                 <td><router-link :to="{name: 'vehicle', params: {fleet_id: fleet_id, id: vehicle.id }}">
                     <button class="btn btn-xs btn-warning"><i class="fa fa-eye" aria-hidden="true"></i></button>
@@ -141,6 +140,9 @@
     .table-button {
         margin-top: 20px;
         margin-right: 10px;
+    }
+    h3 {
+        margin-top: 40px;
     }
 
 </style>
