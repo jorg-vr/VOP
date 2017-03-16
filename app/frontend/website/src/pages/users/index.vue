@@ -1,12 +1,15 @@
+<!--
+    This page shows all users in the database.
+    From this page a new user can be added or an existing user can be edited or removed.
+-->
 <template>
     <div>
         <div class="page-header">
             <h1> Gebruiker </h1>
         </div>
-
-
+        <!-- Render an info-pane for every user -->
         <info-pane v-for="users in userList"
-                   :textValues="new Array(users.name)"
+                   :textValues="new Array(users.firstName,users.lastName)"
                    :remove="remove"
                    :objectId= "users.id"
                    edit="edit_user"
@@ -29,39 +32,35 @@
         },
         data(){
             return {
-                userList : [
-                    {id: "1", name: 'User1'},
-                    {id: "2", name: 'User2'},
-                    {id: "3", name: 'User3'},
-                    {id: "4", name: 'User4'}
-                ],
+                userList : [],
                 users:{},
                 search: ''
             }
         },
         methods:{
             // Methods for routing purposes
+            // Route to adding a new user
             add: function () {
                 this.$router.push({ path: 'users/new'})
             },
+            // Function to remove a user 
             remove : function (id){
-                confirm("Wil u doorgaan met het verwijderen van?"+id)
-
-                // API CALL VOOR VERWIJDEREN
-                console.log('https://vopro5.ugent.be/app/api/users/'+id)
-                /*                        this.$http.delete('https://vopro5.ugent.be/app/api/users/'+id).then(response => {
-
-                 })
-                 */
-
-                // remove user in table
-                // var i = this.users.indexOf(user);
-                // this.users.splice(i, 1)
-
-
+                confirm("Wil u doorgaan met het verwijderen van?")
+                // API call to remove user from database
+                this.$http.delete('https://vopro5.ugent.be/app/api/users/'+id)
             },
+            // Function to fetch list of users from database
+            fetchUserList(){
+                this.$http.get('https://vopro5.ugent.be/app/api/users').then(response => {
+                    const data = response.body.data;
+                    for(let i=0; i<data.length; i++){
+                        this.userList.push(data[i]);
+                    }
+                 })
+            }
         },
         computed: {
+            // Computed property used for searching
             searchId: function () {
                 var s=this.search.trim().toLowerCase();;
                 var listID = []
@@ -78,23 +77,19 @@
                     })
                 }
             },
+            // Computed property used as a placeholder in the searchbar
             appendString : function (){
                 var value = 'Gebruiker zoeken'
                 return value
             },
         },
-        mounted: function () {
-            // Make ajax request to server according to type
-            this.$http.get('https://vopro5.ugent.be/app/api/users').then(response => {
-                const data = response.body.data;
-                for(let i=0; i<data.length; i++){
-                    this.userList.push(data[i]);
-                }
-            })
+        // Lifecycle hook called when this component is created
+        created: function () {
+            this.fetchUserList()
+         
         },
     }
 </script>
-
 <style>
     .btn-circle.btn-lg {
         position: fixed;
