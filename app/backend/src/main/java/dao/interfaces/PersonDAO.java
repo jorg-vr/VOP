@@ -1,10 +1,7 @@
 package dao.interfaces;
 
-import model.identity.Address;
-import model.identity.Function;
 import model.identity.Person;
 
-import java.time.LocalDate;
 import java.util.UUID;
 
 /**

@@ -29,12 +29,7 @@
         },
         data: function () {
             return {
-                fleets : [ //Dummy fleets
-                    /* {id: 1, name: 'Vloot 1', company : '1'},
-                    {id: 2, name: 'Vloot 2', company : '2'},
-                    {id: 3, name: 'Vloot 3', company : '3'},
-                    {id: 4, name: 'Vloot 4', company : '4'}*/
-                ]
+                fleets : []
             }
         },
         created() {
@@ -57,7 +52,10 @@
             },
             //API call to delete a fleet.
             deleteFleet(fleetId){
-                this.$http.delete('https://vopro5.ugent.be/app/api/fleets' + fleetId)
+                this.$http.delete('https://vopro5.ugent.be/app/api/fleets/' + fleetId)
+                //Search for object in local list.
+                let newFleets = this.fleets.filter(fleet => fleet.id !== fleetId);
+                this.fleets = newFleets;
             },
             //API call to create a fleet.
             createFleet(fleet){
