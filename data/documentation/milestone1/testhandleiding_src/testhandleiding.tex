@@ -1,28 +1,22 @@
-\documentclass[12pt,a4paper,twoside]{article}
-\usepackage[dutch]{babel}
-%laad de pakketten nodig om wiskunde weer te geven :
-\usepackage{amsmath,amssymb,amsfonts,textcomp}
-%laad de pakketten voor figuren :
-\usepackage{multirow}
-\usepackage{graphicx}
-\usepackage{float,flafter}
-\usepackage{hyperref}
-\usepackage{inputenc}
-%zet de bladspiegel :
-\setlength\paperwidth{20.999cm}\setlength\paperheight{29.699cm}\setlength\voffset{-1in}\setlength\hoffset{-1in}\setlength\topmargin{1.499cm}\setlength\headheight{12pt}\setlength\headsep{0cm}\setlength\footskip{1.131cm}\setlength\textheight{25cm}\setlength\oddsidemargin{2.499cm}\setlength\textwidth{15.999cm}
-
+\documentclass{article}
+\usepackage[dvipnames, table]{xcolor}
+\usepackage[utf8]{inputenc}
+\usepackage{tabularx}
+\usepackage{ltablex}
+\usepackage{geometry}
+ \geometry{
+ a4paper,
+ total={170mm,257mm},
+ left=27mm,
+ top=20mm,
+ }
+\usepackage{pdfpages}
 \begin{document}
-\noindent
-\begin{center}
-{\bf {\Huge Testhandleiding}}
-\end{center}
-\noindent
-
+\includepdf[pages={1}]{voorblad.pdf}
 
 \section{Lagen}
 \subsection{Presentatielaag}
 Voor de presentatielaag zijn er momenteel geen geautomatiseerde testen en wordt manueel testen toegepast.
-
 
 \subsection{Applicatie laag (controller/creator patterns)}
 De testen voor spring controllers voeren gesimmuleerde HTTP requests uit. Hierbij testen ze of data kan worden opgevraagd, aangepast en verwijderd. Daarbij wordt ook getest of eventuele wijziggingen behouden blijven.
