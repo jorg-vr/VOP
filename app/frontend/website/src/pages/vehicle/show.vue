@@ -27,7 +27,7 @@
                 </tr>
                 <tr>
                     <td>Kilometer count</td>
-                    <td>{{vehicle.kilometerCount}}</td>
+                    <td>{{vehicle.mileage}}</td>
                 </tr>
                 <tr>
                     <td>Year</td>

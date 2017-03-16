@@ -1,6 +1,5 @@
 <!--
     This page shows a certain fleet in detail.
-    TODO: document this page.
 -->
 <template>
     <div>

@@ -48,7 +48,6 @@ export default [
             { path: 'vehicles/new', name: 'new_vehicle', component: newVehicle },
             { path: 'vehicles/:id', name: 'vehicle', component: showVehicle },
             { path: 'vehicles/:id/edit', name: 'edit_vehicle', component: editVehicle }
-
         ]
     },
         //TODO: Make a not found page!
