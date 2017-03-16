@@ -42,13 +42,15 @@ public class RESTRoleController {
     public RESTRole post(@RequestBody RESTRole role) {
         UUID companyUUID = UUIDUtil.toUUID(role.getCompanyId());
         UUID userUUID = UUIDUtil.toUUID(role.getUserId());
+        RESTRole createdRole;
+
         try {
             Function function = controller.create(companyUUID, role.getFunction(), userUUID, role.getStartDate(), role.getEndDate());
-            role = modelToRest(function);
+            createdRole = modelToRest(function);
         } catch (DataAccessException e) {
             throw new InvalidInputException(e);
         }
-        return role;
+        return createdRole;
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET)

@@ -55,21 +55,23 @@ public class RESTCompanyController {
         } catch (DataAccessException e) {
             //API doesn't contain error
         }
-        return new RESTSchema<>(result, page, limit, PATH_COMPANY+"?");
+        return new RESTSchema<>(result, page, limit, PATH_COMPANY + "?");
     }
 
     @RequestMapping(method = RequestMethod.POST)
     public RESTCompany post(@RequestBody RESTCompany restCompany) {
+        RESTCompany updatedCompany;
+
         try {
             Customer customer = controller.create(RESTToModelAddress(restCompany.getAddress()),
                     restCompany.getPhoneNumber(),
                     restCompany.getName(),
                     restCompany.getVatNumber());
-            restCompany = modelToRESTCompany(customer);
+            updatedCompany = modelToRESTCompany(customer);
         } catch (DataAccessException e) {
             throw new InvalidInputException(e);
         }
-        return restCompany;
+        return updatedCompany;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "{id}")
@@ -85,17 +87,19 @@ public class RESTCompanyController {
     @RequestMapping(method = RequestMethod.PUT, value = "{id}")
     public RESTCompany putId(@PathVariable("id") String id, @RequestBody RESTCompany restCompany) {
         UUID uuid = UUIDUtil.toUUID(id);
+        RESTCompany createdCompany;
         try {
             Customer customer = controller.update(uuid,
                     RESTToModelAddress(restCompany.getAddress()),
                     restCompany.getPhoneNumber(),
                     restCompany.getName(),
                     restCompany.getVatNumber());
-            restCompany = modelToRESTCompany(customer);
+            createdCompany = modelToRESTCompany(customer);
         } catch (DataAccessException e) {
             e.printStackTrace();
+            throw new InvalidInputException();
         }
-        return restCompany;
+        return createdCompany;
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "{id}")
@@ -122,7 +126,7 @@ public class RESTCompanyController {
     }
 
     private RESTAddress modelToRESTAddress(Address address) {
-        if(address==null){
+        if (address == null) {
             return null;
         }
         return new RESTAddress(address.getCountry(),
@@ -133,7 +137,7 @@ public class RESTCompanyController {
     }
 
     private Address RESTToModelAddress(RESTAddress restAddress) {
-        if(restAddress==null){
+        if (restAddress == null) {
             return null;
         }
         return new Address(restAddress.getStreet(),
