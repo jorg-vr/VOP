@@ -1,3 +1,6 @@
+<!--
+    This page is used to create a new client based on userinput for a name, an address, a VAT number and a phone number.
+-->
 <template>
     <div id="content-wrapper">
        <div class="page-header">
@@ -11,6 +14,7 @@
     export default {
         data(){
             return {
+                // Data used to fill in form placeholders for a client
                 data: ["Naam","Land","Plaats","Postcode","Straat","Nummer","BTW nummer","Telefoonnummer"],
                 type: "Klant"
             }
@@ -19,16 +23,25 @@
         created: function (){
             // Keep reference to this Vue component 
             var vm = this
-            // Listen to proceed performed by child component (Form.Vue)
+            // Listen to proceedAddClient performed by child component (clientform.Vue)
             this.$bus.$on('proceedAddClient', function(input){
-                console.log(input)
-                console.log('proceedAddClient called')
-
-                console.log('https://vopro5.ugent.be/app/api/companies/'+input)
-                // this.$http.post('https://vopro5.ugent.be/app/api/companies', input, {
-
-                // })
-                });}
-        }  
-    </script>
+                // API call to create a new client in the database.
+                this.$http.post('https://vopro5.ugent.be/app/api/companies', input,
+                    {
+                        headers: {
+                            Accept: "application/json",
+                        }
+                    }
+                ).then(response => { //Success
+                        console.log('success')
+                        console.log(response.body);
+                    }, response => { //Fail
+                        console.log('fail')
+                        console.log(response)
+                    }
+                )
+            });
+        }
+    }  
+</script>
 
