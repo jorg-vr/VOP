@@ -1,0 +1,30 @@
+\documentclass{article}
+
+\usepackage{graphicx}
+\usepackage{rotating}
+
+\graphicspath{{../png/}}
+\renewcommand{\figurename}{Interaction diagram}
+
+\newcommand{\diagram}[2]{
+	\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{#1}
+	\caption{#2}
+}
+
+\newcommand{\hordiagram}[2]{
+	\begin{figure}
+		\diagram{#1}{#2}
+	\end{figure}
+}
+
+
+\newcommand{\vertdiagram}[2]{
+	\begin{sidewaysfigure}
+		\diagram{#1}{#2}
+	\end{sidewaysfigure}
+}
+
+\begin{document}
+	\vertdiagram{ControllerInteractionCreate}{Create}
+	\vertdiagram{ControllerInteractionUpdate}{Update}
+\end{document}

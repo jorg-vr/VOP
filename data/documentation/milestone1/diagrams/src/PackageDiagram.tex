@@ -1,0 +1,27 @@
+\documentclass{article}
+
+\usepackage{graphicx}
+\usepackage{rotating}
+
+\graphicspath{{../png/}}
+
+\newcommand{\diagram}[1]{
+	\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{#1}
+}
+
+\newcommand{\hordiagram}[1]{
+	\begin{figure}
+		\diagram{#1}
+	\end{figure}
+}
+
+
+\newcommand{\vertdiagram}[1]{
+	\begin{sidewaysfigure}
+		\diagram{#1}
+	\end{sidewaysfigure}
+}
+
+\begin{document}
+	\vertdiagram{PackageDiagram}
+\end{document}
