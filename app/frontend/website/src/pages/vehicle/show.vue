@@ -42,6 +42,9 @@
             <router-link v-if="vehicle.fleet" :to="{name: 'fleet', params: {id: vehicle.fleet}}">
                 <button class="btn btn-default">Terug</button>
             </router-link>
+            <router-link v-else="vehicle.fleet" :to="{name: 'fleets'}">
+                <button class="btn btn-default">Terug</button>
+            </router-link>
         </div>
 
     </div>

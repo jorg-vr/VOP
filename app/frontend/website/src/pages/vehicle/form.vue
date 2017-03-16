@@ -4,6 +4,8 @@
 -->
 <template>
     <form class="form-horizontal">
+        <p>{{vehicle.fleet}}</p>
+
         <div class="form-group">
             <label class="col-sm-4 control-label">Nummerplaat</label>
             <div class="col-sm-8">
@@ -56,7 +58,25 @@
                 </select>
             </div>
         </div>
-        <button type="button" class="btn btn-default float-left" v-on:click="submit(vehicle)">Voeg toe</button>
+        <div class="row">
+            <div>
+                <div id="buttons">
+                    <button type="button" class="btn btn-success btn-md" v-on:click="submit(vehicle)">
+                        <i class="fa fa-check" aria-hidden="true"></i>
+                    </button>
+                    <router-link v-if="vehicle.fleet != null" :to="{name: 'fleet', params: {id: vehicle.fleet}}">
+                        <button type="button" class="btn btn-danger btn-md">
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                        </button>
+                    </router-link>
+                    <router-link v-else :to="{name: 'fleets'}">
+                        <button type="button" class="btn btn-danger btn-md">
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                        </button>
+                    </router-link>
+                </div>
+            </div>
+        </div>
     </form>
 </template>
 <script>
