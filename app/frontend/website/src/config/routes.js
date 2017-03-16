@@ -1,15 +1,15 @@
 import App from '../app.vue'
 
-import NewUser from '../pages/users/new.vue'
-import EditUser from '../pages/users/edit.vue'
-import ShowUser from '../pages/users/show.vue'
-import IndexUser from '../pages/users/index.vue'
+import NewUser from '../pages/user/new.vue'
+import EditUser from '../pages/user/edit.vue'
+import ShowUser from '../pages/user/show.vue'
+import IndexUser from '../pages/user/index.vue'
 
 
-import NewClient from '../pages/clients/new.vue'
-import EditClient from '../pages/clients/edit.vue'
-import ShowClient from '../pages/clients/show.vue'
-import IndexClient from '../pages/clients/index.vue'
+import NewClient from '../pages/client/new.vue'
+import EditClient from '../pages/client/edit.vue'
+import ShowClient from '../pages/client/show.vue'
+import IndexClient from '../pages/client/index.vue'
 
 
 import NewFleet from '../pages/fleet/new.vue'
