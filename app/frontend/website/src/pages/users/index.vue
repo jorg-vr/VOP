@@ -5,7 +5,7 @@
 <template>
     <div>
         <div class="page-header">
-            <h1> Gebruiker </h1>
+            <h1>Gebruikers</h1>
         </div>
         <!-- Render an info-pane for every user -->
         <info-pane v-for="users in userList"
@@ -33,7 +33,7 @@
         data(){
             return {
                 userList : [],
-                users:{},
+                users: {},
                 search: ''
             }
         },
@@ -45,18 +45,22 @@
             },
             // Function to remove a user 
             remove : function (id){
-                confirm("Wil u doorgaan met het verwijderen van?")
                 // API call to remove user from database
                 this.$http.delete('https://vopro5.ugent.be/app/api/users/'+id)
+                let newUsers = this.userList.filter(user => user.id !== id);
+                this.userList = newUsers
             },
             // Function to fetch list of users from database
             fetchUserList(){
                 this.$http.get('https://vopro5.ugent.be/app/api/users').then(response => {
-                    const data = response.body.data;
-                    for(let i=0; i<data.length; i++){
-                        this.userList.push(data[i]);
+                        const data = response.body.data;
+                        for (let i = 0; i < data.length; i++) {
+                            this.userList.push(data[i]);
+                        }
+                    }, response => {
+                        console.log('fail');
                     }
-                 })
+                 )
             }
         },
         computed: {
