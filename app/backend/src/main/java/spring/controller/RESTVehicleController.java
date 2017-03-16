@@ -1,10 +1,12 @@
 package spring.controller;
 
+import controller.FleetController;
 import controller.VehicleController;
 
 import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
 import dao.interfaces.VehicleDAO;
+import model.fleet.Fleet;
 import model.fleet.Vehicle;
 import org.springframework.web.bind.annotation.*;
 import spring.Exceptions.InvalidInputException;
@@ -63,7 +65,14 @@ public class RESTVehicleController {
             filters.add(vehicleDAO.atProductionDate(LocalDate.parse(year + "0101", yearFormat)));
         }
         if (fleet != null) {
-            //TODO after issue #88
+            baseString += "fleet=" + fleet + "&";
+            Fleet fl;
+            try {
+                fl = new FleetController().get(UUIDUtil.toUUID(fleet));
+            } catch (DataAccessException e) {
+                throw new InvalidInputException("Something went wrong when getting the fleet from the database");
+            }
+            filters.add(vehicleDAO.byFleet(fl));
         }
         if (type != null) {
             baseString += "type=" + type;
