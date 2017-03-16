@@ -18,8 +18,8 @@ public class PersonController extends AbstractController<Person> {
     private PersonDAO dao;
 
     public PersonController() {
-        super(ProductionProvider.getInstance().getPersonDAO());
-        provider = ProductionProvider.getInstance();
+        super(BackendApplication.getProvider().getPersonDAO());
+        provider = BackendApplication.getProvider();
         this.dao = provider.getPersonDAO();
     }
 

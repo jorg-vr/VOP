@@ -12,27 +12,7 @@
     export default {
         data: function(){
             return {
-                vehicle: {/*
-                 licensePlate: '',
-                 vin: '',
-                 brand: '',
-                 model: '',
-                 type: '',
-                 mileage: '',
-                 year: '',
-                 leasingCompany: '',
-                 TEST VEHICLE*/
-                    licensePlate: "JAR-096",
-                    vin: "BA95D42KLN21SAZ98",
-                    brand: "Volvo",
-                    model: "s60",
-                    fleet: '160914146855851706481713813080589660473',
-                    type: "",
-                    mileage: 777,
-                    year: "2015",
-                    leasingCompany: 'bedrijf A',
-
-                }
+                vehicle: {}
             }
         },
         components: {

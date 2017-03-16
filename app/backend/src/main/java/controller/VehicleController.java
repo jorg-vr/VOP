@@ -25,7 +25,7 @@ import java.util.UUID;
 public class VehicleController extends AbstractController<Vehicle>{
 
     public VehicleController() {
-        super(BackendApplication.PROVIDER.getVehicleDAO());
+        super(BackendApplication.getProvider().getVehicleDAO());
     }
 
     /***

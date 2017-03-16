@@ -129,10 +129,10 @@ public class ProductionProvider implements DAOProvider {
         DAOProvider provider = ProductionProvider.getInstance();
 
         VehicleTypeDao dao = provider.getVehicleTypeDAO();
-        VehicleType v2 = dao.create("Personenwagen",1);
-        VehicleType v4 = dao.create("Lichte vrachtwagen",1);
-        VehicleType v1 = dao.create("Vrachtauto",1);
-        VehicleType v3 = dao.create("Vrachtauto (+12)",1);
+        for(VehicleType type : dao.listFiltered(dao.nameContains("type"))){
+            dao.remove(type.getUuid());
+        }
+
 
         provider.close();
     }

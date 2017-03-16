@@ -39,14 +39,20 @@ Less important files are left out.
         |       new.vue
         |       show.vue
         |       
-        +---identity						| Directory with the CRUD pages for an identity
-        |       Edit.vue
-        |       Form.vue
-        |       Index.vue
-        |       New.vue
-        |       Remove.vue
-        |       Show.vue
-        |       
+        +--- client 						| Directory with the CRUD pages for a client
+        |       edit.vue
+        |       form.vue
+        |       index.vue
+        |       new.vue
+        |       show.vue
+        |  
+		+--- user							| Directory with the CRUD pages for a user
+        |       edit.vue
+        |       form.vue
+        |       index.vue
+        |       new.vue
+        |       show.vue
+        | 		
         \---vehicle							| Directory with the CRUD pages for a vehicle 
                 edit.vue					 
                 form.vue
