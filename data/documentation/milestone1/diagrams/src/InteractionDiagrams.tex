@@ -4,7 +4,7 @@
 \usepackage{rotating}
 
 \graphicspath{{png/}}
-\renewcommand{\figurename}{Diagram}
+\renewcommand{\figurename}{Interaction diagram}
 
 \newcommand{\diagram}[2]{
 	\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{#1}
@@ -25,10 +25,9 @@
 }
 
 \begin{document}
-	\vertdiagram{Klassediagram}{Algemeen klassendiagram}
-	\vertdiagram{ClassDiagramAccount}{Account}
-	\vertdiagram{ClassDiagramDAO}{DAO}
-	\vertdiagram{ClassDiagramFleet}{Vloot}
-	\vertdiagram{ClassDiagramIdentity}{Identiteit}
-	\vertdiagram{HistoryClassDiagram}{Geschiedenis}
+	\title{Interaction Diagrams}
+	\date{}
+	\maketitle
+	\vertdiagram{ControllerInteractionCreate}{Create}
+	\vertdiagram{ControllerInteractionUpdate}{Update}
 \end{document}
