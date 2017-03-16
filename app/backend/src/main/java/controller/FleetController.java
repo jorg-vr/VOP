@@ -19,8 +19,8 @@ public class FleetController extends AbstractController<Fleet> {
     private FleetDAO fleetDAO;
 
     public FleetController() {
-        super(ProductionProvider.getInstance().getFleetDAO());
-        provider = ProductionProvider.getInstance();
+        super(BackendApplication.getProvider().getFleetDAO());
+        provider = BackendApplication.getProvider();
         customerDAO = provider.getCustomerDAO();
         fleetDAO = provider.getFleetDAO();
     }

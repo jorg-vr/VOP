@@ -16,8 +16,8 @@ public class CustomerController extends AbstractController<Customer>{
 
     private CustomerDAO dao;
     public CustomerController() {
-        super(ProductionProvider.getInstance().getCustomerDAO());
-        dao = ProductionProvider.getInstance().getCustomerDAO();
+        super(BackendApplication.getProvider().getCustomerDAO());
+        dao = BackendApplication.getProvider().getCustomerDAO();
     }
 
     public Customer create(Address address, String phoneNumber, String name, String btwNumber) throws DataAccessException {
