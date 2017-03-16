@@ -15,6 +15,9 @@ import java.util.Collection;
 import java.util.UUID;
 
 
+/**
+ * For more information of what this class does, see AbstractController
+ */
 public class AccountController extends AbstractController<Account> {
 
     private AccountDAO dao;

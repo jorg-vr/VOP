@@ -11,6 +11,9 @@ import model.identity.Person;
 
 import java.util.UUID;
 
+/**
+ * For more information of what this class does, see AbstractController
+ */
 public class PersonController extends AbstractController<Person> {
 
     private DAOProvider provider;

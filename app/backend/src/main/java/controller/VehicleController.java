@@ -15,12 +15,7 @@ import java.util.Collection;
 import java.util.UUID;
 
 /**
- * Created by jorg on 3/6/17.
- * class Acts as protecting interface of backend model
- * methods should in final state take care of:
- *      constraint issues
- *      history changes
- *      correct authentication
+ * For more information of what this class does, see AbstractController
  */
 public class VehicleController extends AbstractController<Vehicle>{
 

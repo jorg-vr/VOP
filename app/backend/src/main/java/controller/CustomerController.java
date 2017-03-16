@@ -10,7 +10,7 @@ import model.identity.Customer;
 import java.util.UUID;
 
 /**
- * Created by jorg on 3/9/17.
+ * For more information of what this class does, see AbstractController
  */
 public class CustomerController extends AbstractController<Customer>{
 
