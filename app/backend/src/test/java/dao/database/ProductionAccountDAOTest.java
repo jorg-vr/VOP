@@ -39,7 +39,7 @@ public class ProductionAccountDAOTest {
     }
 
     //TODO: change person creation when create method in PersonDAO gets changed
-    @Ignore
+
     @Test
     public void createGetRemoveTest() throws Exception {
         Person p1 = null;
@@ -96,7 +96,6 @@ public class ProductionAccountDAOTest {
     }
 
 
-    @Ignore
     @Test
     public void update() throws Exception {
         Person p1 = personDAO.create("Firstname 1", "Lastname 1", "Email@address1.com");

@@ -3,6 +3,7 @@ package dao.database;
 import dao.interfaces.*;
 import model.account.Function;
 import model.fleet.Vehicle;
+import model.fleet.VehicleType;
 import model.identity.Company;
 import model.identity.Person;
 import model.insurance.Insurance;
@@ -124,13 +125,15 @@ public class ProductionProvider implements DAOProvider {
     }
 
     public static void main(String[] args) throws DataAccessException {
-        ProductionProvider.initializeProvider(false);
+        ProductionProvider.initializeProvider(true);
         DAOProvider provider = ProductionProvider.getInstance();
 
         VehicleTypeDao dao = provider.getVehicleTypeDAO();
-        dao.create("Vrachtwagen",1);
-        dao.create("Personenwagen",1);
-        dao.create("Oplegger",1);
+        VehicleType v2 = dao.create("Personenwagen",1);
+        VehicleType v4 = dao.create("Lichte vrachtwagen",1);
+        VehicleType v1 = dao.create("Vrachtauto",1);
+        VehicleType v3 = dao.create("Vrachtauto (+12)",1);
+
         provider.close();
     }
 

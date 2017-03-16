@@ -1,10 +1,13 @@
+<!--
+    This page shows all clients in the database.
+    From this page a new client can be added or an existing client can be edited or removed.
+-->
 <template>
 <div>
     <div class="page-header">
     <h1> Klant </h1>
     </div>
-    
-
+    <!-- Render an info-pane for every clients -->
         <info-pane v-for="clients in clientList"
                     :textValues="new Array(clients.name)"
                    :remove="remove"
@@ -29,40 +32,35 @@ import infoPane from "../../assets/listComponent.vue"
         },
         data(){
         return {
-            users: [],
-            clientList : [ 
-                    {id: 1, name: 'Client1'},
-                    {id: 2, name: 'Client2'},
-                    {id: 3, name: 'Client3'},
-                    {id: 4, name: 'Client4'}
-                ],
+            clientList : [],
             clients:{},
             search: ''
         }
         },
         methods:{
-                // Methods for routing purposes 
-                add: function () {
-                        this.$router.push({ path: 'clients/new'})
-                },
-                remove : function (id){
-                     confirm("Wil u doorgaan met het verwijderen?")
-                   
-                    // API CALL VOOR VERWIJDEREN 
-                        console.log('https://vopro5.ugent.be/app/api/clients/'+id)
-/*                        this.$http.delete('https://vopro5.ugent.be/app/api/clients/'+id).then(response => {
-                                
-                        })
-                    */
-
-                    // remove user in table
-                    // var i = this.users.indexOf(user);
-                    // this.users.splice(i, 1)
-                    
-
-                },
+            // Methods for routing purposes
+            // Route to adding a new client
+            add: function () {
+                this.$router.push({ path: 'clients/new'})
+            },
+            // Function to remove a client 
+            remove : function (id){
+                confirm("Wil u doorgaan met het verwijderen?")
+                // API call to remove client from database
+                 this.$http.delete('https://vopro5.ugent.be/app/api/companies/'+id)
+            },
+            // Function to fetch list of clients from database
+            fetchClientList(){
+                this.$http.get('https://vopro5.ugent.be/app/api/companies').then(response => {
+                    const data = response.body.data;
+                    for(let i=0; i<data.length; i++){
+                        this.clientList.push(data[i]);
+                    }
+                 })
+            }
         },
         computed: {
+            // Computed property used for searching
             searchId: function () { 
                 var s=this.search.trim().toLowerCase();;
                 var listID = []
@@ -79,21 +77,15 @@ import infoPane from "../../assets/listComponent.vue"
                     })
                 }
             },
+            // Computed property used as a placeholder in the searchbar
             appendString : function (){
                 var value = 'Klant zoeken'
                 return value
             },
         },
-        mounted: function () {
-            // Make ajax request to server according to type
-                console.log('Get companies objects')
-
-/*                this.$http.get('https://vopro5.ugent.be/app/api/companies').then(response => {
-                    console.log(response.body.data)
-                    console.log(this.clientList)
-                    this.clientList = response.body.data
-                    console.log(this.clientList)
-                })*/
+        // Lifecycle hook called when this component is created
+        created: function () {
+            this.fetchClientList()
         },
     }
 </script>
