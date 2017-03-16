@@ -1,3 +1,7 @@
+<!--
+    This page shows a certain client in detail. 
+    Name,address,vatnumber and phonenubmer for the client are displayed.
+-->
 <template>
     <div>
         <div class="page-header">
@@ -11,23 +15,23 @@
                 </tr>
                 <tr>
                     <td> Land </td>
-                    <td>{{client.address.country}}</td>
+                    <td>{{address.country}}</td>
                 </tr>
                 <tr>
                     <td> Plaats </td>
-                    <td>{{client.address.city}}</td>
+                    <td>{{address.city}}</td>
                 </tr>
                 <tr>
                     <td> Postcode </td>
-                    <td>{{client.address.postalCode}}</td>
+                    <td>{{address.postalCode}}</td>
                 </tr>
                 <tr>
                     <td> Straat </td>
-                    <td>{{client.address.street}}</td>
+                    <td>{{address.street}}</td>
                 </tr>
                 <tr>
                     <td> Nummer</td>    
-                    <td>{{client.address.houseNumber}}</td>
+                    <td>{{address.houseNumber}}</td>
                 </tr>
                 <tr>
                     <td> BTW nummer </td>
@@ -38,30 +42,31 @@
                     <td>{{client.phoneNumber}}</td>
                 </tr>
             </table>
+            <router-link :to="{name: 'clients'}"><button class="btn btn-default pull-left">Terug</button></router-link>
         </div>
-
     </div>
 </template>
 <script>
     export default {
         data: function(){
             return {
-                client: {
-                    name: "Bedrijf",
-                    address:{
-                        country:"Belgium",
-                        city:" Gent",
-                        street: "Pintelaan",
-                        houseNumber: "9",
-                        postalCode: "9000"
-                    },
-                    vatNumber: "6549846846",
-                    phoneNumber: "0412 34 56 78"
-                }
+                client: {},
+                address: {}
             }
         },
-        created: function (){
-            console.log('SHOWED')
+        methods:{
+            // Function that makes an API call to fetch specific information for a certain client
+            fetchClientInformation(){
+                var id = this.$route.params.id
+                this.$http.get('https://vopro5.ugent.be/app/api/companies/'+id).then(response => {
+                    this.client = response.body
+                    this.address=this.client.address
+                 })
+            }
+        },
+        // Lifecycle hook called when this component is created
+        created : function (){
+            this.fetchClientInformation()
         }
     }
 </script>

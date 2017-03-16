@@ -1,53 +1,58 @@
+<!--
+    This page is used to edit a certain client.
+-->
 <template>
     <div id="content-wrapper">
-     <div class="page-header">    
-     <h1> Klant aanpassen ({{this.$route.params.id}}) </h1>
-   </div>  
-   <form-temp :at=this.data :type=this.type></form-temp>
-</div>
+        <div class="page-header">
+            <h1> Klant aanpassen </h1>
+        </div>
+        <form-temp :at=this.data :type=this.type :client=this.client></form-temp>
+    </div>
 </template>
 <script>
     import FormTemp from './clientform.vue'
     export default {
         data(){
             return {
-                user:{},
+                client:{},
                 data: ["Naam","Land","Plaats","Postcode","Straat","Nummer","BTW nummer","Telefoonnummer"],
                 type: "Klant"
             }
         },
         components: { FormTemp},
-        created: function (){
-                console.log('creating edit.vue')
-                // listen to proceed performed by child component
-                var vm = this
-                var id = this.$route.params.id
-                console.log(id)
-                
-                this.$bus.$on('proceedEditClient', function(input){
-                    console.log(input)
-                    console.log('proceedEditClient called')
-                    // Determine type
-                    console.log("Klant aangepast")
-                    // Make post request for user
-                    console.log('https://vopro5.ugent.be/app/api/companies/'+input)
-/*                    this.$http.put('https://vopro5.ugent.be/app/api/companies/'+id).then(response => {
-                        
-                    })  */
-                });
-
-
-                // get specific data to edit identity
-        
-                console.log('https://vopro5.ugent.be/app/api/companies/'+id )
-/*                this.$http.get('https://vopro5.ugent.be/app/api/companies/'+id).then(response => {
-                        // fire event that will send specific data to child component (Form)
-                        this.$bus.$emit('getEditInfo',response.body,"Klant")
-                })*/
+        methods:{
+            // Function that makes an API call to fetch specific client data to be edited
+            fetchClient : function () {
+                this.$http.get('https://vopro5.ugent.be/app/api/companies/' + this.$route.params.id).then(response => {
+                    this.client = response.body;
+                    console.log(this.client)
+                })
+            },
+            editUser(user){
+                this.$http.put('https://vopro5.ugent.be/app/api/companies/' + this.$route.params.id, user,
+                    {
+                        headers: {
+                            Accept: "application/json",
+                        }
+                    }
+                ).then(response => { //Succes
+                        this.$router.push({name: 'client', params: {id: response.body.id}});
+                    }, response => { //Fail
+                        console.log('fail')
+                    }
+                )
             }
+
+
+        },
+        created: function (){
+            this.fetchClient()
+            // Listen to proceedEdit performed by child component (clientform.vue)
+            this.$bus.$on('proceedEditClient', input => this.editUser(input));
         }
+    }
 
-                
 
-            
+
+
 </script>
