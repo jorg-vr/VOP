@@ -49,11 +49,6 @@ public class TestCustomerDAO extends TestDAO<Customer> implements CustomerDAO {
     }
 
     @Override
-    public void close() {
-
-    }
-
-    @Override
     public Customer create(String name, Address address, String phonenumber, String btwNumber) throws DataAccessException {
         Customer customer = new Customer();
         customer.setUuid(UUID.randomUUID());

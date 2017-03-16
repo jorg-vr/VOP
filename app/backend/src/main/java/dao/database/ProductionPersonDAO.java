@@ -98,11 +98,6 @@ public class ProductionPersonDAO implements PersonDAO {
     }
 
     @Override
-    public void close() {
-
-    }
-
-    @Override
     public Filter<Person> byAddress(Address address) {
         return () ->
             predicates.add(criteriaBuilder.equal(root.get("address"), address));

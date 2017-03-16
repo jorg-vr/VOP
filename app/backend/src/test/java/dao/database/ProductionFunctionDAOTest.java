@@ -36,7 +36,7 @@ public class ProductionFunctionDAOTest {
         ProductionProvider.initializeProvider(true);
         daoProvider = ProductionProvider.getInstance();
         functionDAO = daoProvider.getFunctionDAO();
-        companyDAO = daoProvider.getCompanyDAO();
+        //companyDAO = daoProvider.getCompanyDAO();
         //addressDAO = daoProvider.getAddressDao();
         personDAO = daoProvider.getPersonDAO();
         accountDAO = daoProvider.getAccountDao();

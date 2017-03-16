@@ -52,20 +52,7 @@ public class TestVehicleDAO implements VehicleDAO {
         return new HashSet<>(vehicles.values());
     }
 
-    @Override
-    public void close() {
 
-    }
-
-    @Override
-    public Vehicle create(String brand, String model, String chassisNumber, String licenseplate, int value, int mileage, VehicleType type, LocalDate productionDate) throws DataAccessException {
-        return null;
-    }
-
-    @Override
-    public Vehicle update(UUID uuid, String brand, String model, String chassisNumber, String licenseplate, int value, int mileage, VehicleType type, LocalDate productionDate) throws DataAccessException {
-        return null;
-    }
 
     @Override
     public Vehicle create(String brand, String model, String chassisNumber, String licenseplate, int value, int mileage, VehicleType type, LocalDate productionDate, Fleet fleet) throws DataAccessException {

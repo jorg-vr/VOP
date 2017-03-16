@@ -73,11 +73,6 @@ public class ProductionAddressDAO implements AddressDAO {
     }
 
     @Override
-    public void close() {
-
-    }
-
-    @Override
     public Address create(String street, String streetNumber, String town, String postalCode, String country) throws DataAccessException {
         Address address = new Address();
         address.setStreet(street);

@@ -84,11 +84,6 @@ public class ProductionAccountDAO implements AccountDAO {
     }
 
     @Override
-    public void close() {
-
-    }
-
-    @Override
     public Account create(String login, String hashedPassword, Person person) throws DataAccessException {
         Account account = new Account();
         account.setLogin(login);
