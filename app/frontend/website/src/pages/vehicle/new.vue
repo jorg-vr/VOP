@@ -21,7 +21,6 @@
         created() {
             if(this.$route.params.fleet_id){
                 this.vehicle.fleet = this.$route.params.fleet_id;
-                
             }
         },
         methods: {
