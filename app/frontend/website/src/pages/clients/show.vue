@@ -42,8 +42,8 @@
                     <td>{{client.phoneNumber}}</td>
                 </tr>
             </table>
+            <router-link :to="{name: 'clients'}"><button class="btn btn-default pull-left">Terug</button></router-link>
         </div>
-
     </div>
 </template>
 <script>

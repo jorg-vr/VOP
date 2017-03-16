@@ -20,27 +20,26 @@
             }
         },
         components: { FormTemp},
-        created: function (){
-            // Keep reference to this Vue component 
-            var vm = this
-            // Listen to proceedAddClient performed by child component (clientform.Vue)
-            this.$bus.$on('proceedAddClient', function(input){
-                // API call to create a new client in the database.
-                this.$http.post('https://vopro5.ugent.be/app/api/companies', input,
+        methods: {
+            createClient(client){
+                this.$http.post('https://vopro5.ugent.be/app/api/companies', client,
                     {
                         headers: {
                             Accept: "application/json",
                         }
                     }
                 ).then(response => { //Success
-                        console.log('success')
-                        console.log(response.body);
+                        this.$router.push({name: 'client', params: {id: response.body.id}});
                     }, response => { //Fail
                         console.log('fail')
                         console.log(response)
                     }
                 )
-            });
+            }
+        },
+        created: function (){
+            // Listen to proceedAddClient performed by child component (clientform.Vue)
+            this.$bus.$on('proceedAddClient', input => this.createClient(input));
         }
     }  
 </script>

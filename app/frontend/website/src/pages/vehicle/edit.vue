@@ -43,7 +43,7 @@
                         }
                     }
                 ).then(response => { //Success
-                        console.log(response.body);
+                        //console.log(response.body);
                         this.$router.push({name: 'vehicle', params: { id: response.body.id }});
                     }, response => { //Fail
                         console.log(response.body)
