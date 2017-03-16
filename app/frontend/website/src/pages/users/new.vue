@@ -3,11 +3,11 @@
 -->
 <template>
     <div id="content-wrapper">
-       <div class="page-header">
-         <h1> Gebruiker aanmaken </h1>
-     </div>  
-     <form-temp :at=this.data :type=this.type></form-temp>
- </div>
+        <div class="page-header">
+            <h1> Gebruiker aanmaken </h1>
+        </div>
+        <form-temp :at=this.data :type=this.type></form-temp>
+    </div>
 </template>
 <script>
     import FormTemp from './userform.vue'
@@ -24,24 +24,25 @@
             // Keep reference to this Vue component 
             var vm = this
             // Listen to proceed performed by child component (userform.Vue)
-            this.$bus.$on('proceedAdd', function(input){
-                // API call to create a new user in the database.
-                this.$http.post('https://vopro5.ugent.be/app/api/users', input,
+            this.$bus.$on('proceedAdd', input => this.createUser(input));
+            // API call to create a new user in the database.
+        },
+        methods: {
+            createUser(user){
+                this.$http.post('https://vopro5.ugent.be/app/api/users', user,
                     {
                         headers: {
                             Accept: "application/json",
                         }
                     }
                 ).then(response => { //Success
-                        console.log('success')
-                        console.log(response.body);
+                        this.$router.push({name: 'user', params: {id: response.body.id}});
                     }, response => { //Fail
                         console.log('fail')
-                        console.log(response)
                     }
-                )
-                });
+                );
+            }
         }
-    }  
+    }
 </script>
 
