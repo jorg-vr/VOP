@@ -1,6 +1,7 @@
 package main;
 
 import dao.database.ProductionProvider;
+import dao.interfaces.DAO;
 import dao.interfaces.DAOProvider;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,8 +18,6 @@ import javax.annotation.PreDestroy;
 @ComponentScan(basePackages = {"spring"})
 public class BackendApplication {
 
-	public static DAOProvider PROVIDER;
-
 	public static void main(String[] args) {
 
         if (args.length == 1) {
@@ -30,7 +29,7 @@ public class BackendApplication {
         } else {
             return;
         }
-        PROVIDER = ProductionProvider.getInstance();
+        // PROVIDER = ProductionProvider.getInstance(); would be nice to have this, but doesn't work for tests
         SpringApplication.run(BackendApplication.class, args);
     }
 
@@ -45,8 +44,12 @@ public class BackendApplication {
         };
 	}
 
+    public static DAOProvider getProvider() {
+        return ProductionProvider.getInstance();
+    }
+
 	@PreDestroy
     public void preDestroy() {
-        PROVIDER.close();
+        ProductionProvider.getInstance().close();
     }
 }

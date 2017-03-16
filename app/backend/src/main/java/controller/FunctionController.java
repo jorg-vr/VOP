@@ -23,8 +23,8 @@ public class FunctionController extends AbstractController<Function> {
     private FunctionDAO functionDAO;
 
     public FunctionController() {
-        super(ProductionProvider.getInstance().getFunctionDAO());
-        provider = ProductionProvider.getInstance();
+        super(BackendApplication.getProvider().getFunctionDAO());
+        provider = BackendApplication.getProvider();
         functionDAO = provider.getFunctionDAO();
     }
 
