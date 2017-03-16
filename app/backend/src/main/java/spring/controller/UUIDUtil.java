@@ -3,6 +3,9 @@ package spring.controller;
 import java.math.BigInteger;
 import java.util.UUID;
 
+/**
+ * This class offers some static methods that can be used to translate UUIDs to a string that represents a positive integer.
+ */
 public class UUIDUtil {
 
     /**

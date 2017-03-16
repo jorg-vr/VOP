@@ -57,12 +57,12 @@ export default {
 
 .panel table  {
     /* Create columns with equal width */
+    width: 100%;
     table-layout: fixed;
 }
 a td {
     color: black;
     /* Trigger columns with equal width */
-    width: 2%;
 }
 a div.panel:hover {
     background-color: #eee;

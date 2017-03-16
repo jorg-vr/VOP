@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
- * Created by Billie Devolder on 11/03/2017.
+ * For more information of what this class does, see AbstractController
  */
 public class FunctionController extends AbstractController<Function> {
 
@@ -23,8 +23,8 @@ public class FunctionController extends AbstractController<Function> {
     private FunctionDAO functionDAO;
 
     public FunctionController() {
-        super(ProductionProvider.getInstance().getFunctionDAO());
-        provider = ProductionProvider.getInstance();
+        super(BackendApplication.getProvider().getFunctionDAO());
+        provider = BackendApplication.getProvider();
         functionDAO = provider.getFunctionDAO();
     }
 

@@ -11,6 +11,9 @@ import model.identity.Person;
 
 import java.util.UUID;
 
+/**
+ * For more information of what this class does, see AbstractController
+ */
 public class PersonController extends AbstractController<Person> {
 
     private DAOProvider provider;
@@ -18,8 +21,8 @@ public class PersonController extends AbstractController<Person> {
     private PersonDAO dao;
 
     public PersonController() {
-        super(ProductionProvider.getInstance().getPersonDAO());
-        provider = ProductionProvider.getInstance();
+        super(BackendApplication.getProvider().getPersonDAO());
+        provider = BackendApplication.getProvider();
         this.dao = provider.getPersonDAO();
     }
 

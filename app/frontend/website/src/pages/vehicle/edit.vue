@@ -1,6 +1,6 @@
 <!--
     This page is used to edit a vehicle.
-    It shows the vehicle form with the update vehicle method.
+    It shows the vehicle form.vue with the update vehicle method.
 -->
 <template>
     <div>
@@ -43,7 +43,7 @@
                         }
                     }
                 ).then(response => { //Success
-                        console.log(response.body);
+                        //console.log(response.body);
                         this.$router.push({name: 'vehicle', params: { id: response.body.id }});
                     }, response => { //Fail
                         console.log(response.body)

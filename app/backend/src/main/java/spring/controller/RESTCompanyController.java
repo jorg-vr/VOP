@@ -23,7 +23,19 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Created by jorg on 3/6/17.
+ * This controller is responsible for handling the HTTP requests of the URL /companies.
+ * Currently, the following HTTP requests are supported:
+ *  1) GET /companies
+ *  2) GET /companies/{id}
+ *  3) POST /companies
+ *  4) PUT /companies/{id}
+ *  5) DELETE /companies/{id}
+ *
+ *  This controller is responsible for translating the RESTModels to the backend specific models and calling the appropriate methods
+ *  of the spring independent controllers,  located in the controller package.
+ *  It is also responsible for translating the backend specific exceptions to HTPP repsonse codes.
+ *
+ *  For more information about what the HTTP requests do, see the API specification
  */
 @RestController
 @RequestMapping("/companies")
@@ -55,21 +67,23 @@ public class RESTCompanyController {
         } catch (DataAccessException e) {
             //API doesn't contain error
         }
-        return new RESTSchema<>(result, page, limit, PATH_COMPANY+"?");
+        return new RESTSchema<>(result, page, limit, PATH_COMPANY + "?");
     }
 
     @RequestMapping(method = RequestMethod.POST)
     public RESTCompany post(@RequestBody RESTCompany restCompany) {
+        RESTCompany updatedCompany;
+
         try {
             Customer customer = controller.create(RESTToModelAddress(restCompany.getAddress()),
                     restCompany.getPhoneNumber(),
                     restCompany.getName(),
                     restCompany.getVatNumber());
-            restCompany = modelToRESTCompany(customer);
+            updatedCompany = modelToRESTCompany(customer);
         } catch (DataAccessException e) {
             throw new InvalidInputException(e);
         }
-        return restCompany;
+        return updatedCompany;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "{id}")
@@ -85,17 +99,19 @@ public class RESTCompanyController {
     @RequestMapping(method = RequestMethod.PUT, value = "{id}")
     public RESTCompany putId(@PathVariable("id") String id, @RequestBody RESTCompany restCompany) {
         UUID uuid = UUIDUtil.toUUID(id);
+        RESTCompany createdCompany;
         try {
             Customer customer = controller.update(uuid,
                     RESTToModelAddress(restCompany.getAddress()),
                     restCompany.getPhoneNumber(),
                     restCompany.getName(),
                     restCompany.getVatNumber());
-            restCompany = modelToRESTCompany(customer);
+            createdCompany = modelToRESTCompany(customer);
         } catch (DataAccessException e) {
             e.printStackTrace();
+            throw new InvalidInputException();
         }
-        return restCompany;
+        return createdCompany;
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "{id}")
@@ -108,6 +124,10 @@ public class RESTCompanyController {
         }
     }
 
+    /**
+     * This method translates the Customer object to a RESTCompany object.
+     * @param customer should not be null
+     */
     private RESTCompany modelToRESTCompany(Customer customer) {
         String id = UUIDUtil.UUIDToNumberString(customer.getUuid());
         return new RESTCompany(id,
@@ -121,8 +141,12 @@ public class RESTCompanyController {
                 PATH_COMPANY + "/" + id);
     }
 
+    /**
+     * This method translates the RESTAddress object to an Address object.
+     * @return if address is null, null will be returned
+     */
     private RESTAddress modelToRESTAddress(Address address) {
-        if(address==null){
+        if (address == null) {
             return null;
         }
         return new RESTAddress(address.getCountry(),
@@ -132,8 +156,12 @@ public class RESTCompanyController {
                 address.getPostalCode());
     }
 
+    /**
+     * This method translates the Addres object to a RESTAddress object.
+     * @return if address is null, null will be returned
+     */
     private Address RESTToModelAddress(RESTAddress restAddress) {
-        if(restAddress==null){
+        if (restAddress == null) {
             return null;
         }
         return new Address(restAddress.getStreet(),

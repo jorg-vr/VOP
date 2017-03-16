@@ -20,11 +20,20 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
- * Created by jorg on 3/6/17.
- * Spring class that implements swagger api for vehicle
+ * This controller is responsible for handling the HTTP requests of the URL /vehicles.
+ * Currently, the following HTTP requests are supported:
+ *  1) GET /vehicles
+ *  2) GET /vehicles/{id}
+ *  3) POST /vehicles
+ *  4) PUT /vehicles/{id}
+ *  5) DELETE /vehicles/{id}
+ *
+ *  This controller is responsible for translating the RESTModels to the backend specific models and calling the appropriate methods
+ *  of the spring independent controllers,  located in the controller package.
+ *  It is also responsible for translating the backend specific exceptions to HTPP repsonse codes.
+ *
+ *  For more information about what the HTTP requests do, see the API specification
  */
-
-
 @RestController
 @RequestMapping("/vehicles")
 public class RESTVehicleController {
@@ -159,7 +168,7 @@ public class RESTVehicleController {
                             vehicle.getValue(),
                             vehicle.getMileage(),
                             UUIDUtil.toUUID(vehicle.getType()),
-                            UUIDUtil.toUUID(vehicle.getId())));
+                            UUIDUtil.toUUID(vehicle.getFleet())));
         } catch (DataAccessException e) {
             throw new InvalidInputException();
             //TODO updateId when there are more exceptions

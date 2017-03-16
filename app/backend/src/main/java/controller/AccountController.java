@@ -15,14 +15,17 @@ import java.util.Collection;
 import java.util.UUID;
 
 
+/**
+ * For more information of what this class does, see AbstractController
+ */
 public class AccountController extends AbstractController<Account> {
 
     private AccountDAO dao;
     private DAOProvider provider;
 
     public AccountController() {
-        super(ProductionProvider.getInstance().getAccountDao());
-        this.provider = ProductionProvider.getInstance();
+        super(BackendApplication.getProvider().getAccountDao());
+        this.provider = BackendApplication.getProvider();
         this.dao = provider.getAccountDao();
     }
 

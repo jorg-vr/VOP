@@ -10,7 +10,7 @@ import model.identity.Customer;
 import java.util.UUID;
 
 /**
- * Created by jorg on 3/13/17.
+ * For more information of what this class does, see AbstractController
  */
 public class FleetController extends AbstractController<Fleet> {
 
@@ -19,8 +19,8 @@ public class FleetController extends AbstractController<Fleet> {
     private FleetDAO fleetDAO;
 
     public FleetController() {
-        super(ProductionProvider.getInstance().getFleetDAO());
-        provider = ProductionProvider.getInstance();
+        super(BackendApplication.getProvider().getFleetDAO());
+        provider = BackendApplication.getProvider();
         customerDAO = provider.getCustomerDAO();
         fleetDAO = provider.getFleetDAO();
     }

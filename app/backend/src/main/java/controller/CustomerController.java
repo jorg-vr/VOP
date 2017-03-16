@@ -10,14 +10,14 @@ import model.identity.Customer;
 import java.util.UUID;
 
 /**
- * Created by jorg on 3/9/17.
+ * For more information of what this class does, see AbstractController
  */
 public class CustomerController extends AbstractController<Customer>{
 
     private CustomerDAO dao;
     public CustomerController() {
-        super(ProductionProvider.getInstance().getCustomerDAO());
-        dao = ProductionProvider.getInstance().getCustomerDAO();
+        super(BackendApplication.getProvider().getCustomerDAO());
+        dao = BackendApplication.getProvider().getCustomerDAO();
     }
 
     public Customer create(Address address, String phoneNumber, String name, String btwNumber) throws DataAccessException {
