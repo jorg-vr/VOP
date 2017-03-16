@@ -1,4 +1,5 @@
 \documentclass[12pt,a4paper,twoside]{article}
+:q
 \usepackage[dutch]{babel}
 %laad de pakketten nodig om wiskunde weer te geven :
 \usepackage{amsmath,amssymb,amsfonts,textcomp}
@@ -8,10 +9,9 @@
 \usepackage{float,flafter}
 \usepackage{hyperref}
 \usepackage{inputenc}
-%zet de bladspiegel :
-\setlength\paperwidth{20.999cm}\setlength\paperheight{29.699cm}\setlength\voffset{-1in}\setlength\hoffset{-1in}\setlength\topmargin{1.499cm}\setlength\headheight{12pt}\setlength\headsep{0cm}\setlength\footskip{1.131cm}\setlength\textheight{25cm}\setlength\oddsidemargin{2.499cm}\setlength\textwidth{15.999cm}
-
+\usepackage{pdfpages}
 \begin{document}
+\includepdf[pages={1}]{voorblad.pdf}
 \noindent
 \begin{center}
 {\bf {\Huge Testhandleiding}}
