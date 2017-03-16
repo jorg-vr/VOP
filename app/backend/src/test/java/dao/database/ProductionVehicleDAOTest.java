@@ -95,6 +95,7 @@ public class ProductionVehicleDAOTest {
         catch (Exception e) {
             //Nothing because the test passed in this case
         }
+        vehicleTypeDAO.remove(t1.getUuid());
     }
 
 
