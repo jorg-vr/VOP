@@ -11,6 +11,27 @@
 \usepackage{multirow}
 \usepackage{fancyhdr}
 \usepackage{blindtext}
+\usepackage{graphicx}
+\usepackage{rotating}
+
+\graphicspath{{../png/}}
+
+\newcommand{\diagram}[1]{
+	\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{#1}
+}
+
+\newcommand{\hordiagram}[1]{
+	\begin{figure}
+		\diagram{#1}
+	\end{figure}
+}
+
+
+\newcommand{\vertdiagram}[1]{
+	\begin{sidewaysfigure}
+		\diagram{#1}
+	\end{sidewaysfigure}
+}
 
 \begin{document}
 	\section{Frontend}
@@ -30,4 +51,6 @@
 	\section{Database}
 	\subsection{Data service}
 	Deze service is verantwoordelijk voor het beheren en aanbieden van de effectieve data in onze applicatie. Als database maken we gebruik van PostgreSQL. Deze service bevindt zich op de persistentielaag en communiceert met de DAO service.
+	
+	\vertdiagram{ComponentModule}
 \end{document}
