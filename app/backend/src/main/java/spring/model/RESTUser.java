@@ -5,6 +5,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+/**
+ * This is a bean class as specified in the API specification
+ */
 public class RESTUser {
 
     private String id;

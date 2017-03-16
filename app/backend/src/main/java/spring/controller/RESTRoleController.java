@@ -15,6 +15,21 @@ import java.util.*;
 
 import static spring.controller.UUIDUtil.UUIDToNumberString;
 
+/**
+ * This controller is responsible for handling the HTTP requests of the URL /roles.
+ * Currently, the following HTTP requests are supported:
+ *  1) GET /roles
+ *  2) GET /roles/{id}
+ *  3) POST /roles
+ *  4) PUT /roles/{id}
+ *  5) DELETE /roles/{id}
+ *
+ *  This controller is responsible for translating the RESTModels to the backend specific models and calling the appropriate methods
+ *  of the spring independent controllers,  located in the controller package.
+ *  It is also responsible for translating the backend specific exceptions to HTPP repsonse codes.
+ *
+ *  For more information about what the HTTP requests do, see the API specification
+ */
 @RestController
 @RequestMapping("/roles")
 public class RESTRoleController {

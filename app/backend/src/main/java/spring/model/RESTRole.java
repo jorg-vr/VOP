@@ -1,9 +1,11 @@
 package spring.model;
 
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+/**
+ * This is a bean class as specified in the API specification
+ */
 public class RESTRole {
 
     private String id;

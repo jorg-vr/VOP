@@ -1,15 +1,16 @@
 package spring.model;
 
-import model.history.EditableObject;
 import spring.Exceptions.InvalidInputException;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
-import static java.lang.Integer.max;
 import static java.lang.Integer.min;
 
 /**
- * Created by jorg on 3/13/17.
+ * This represents a pagination object of generic type T
  */
 public class RESTSchema<T> {
     private Collection<T> data;
@@ -28,12 +29,12 @@ public class RESTSchema<T> {
      * Creates a pagination object for the collection
      * <p>
      * if either page or limit is null:
-     * 1) the data field of pagination will be set to a copy of the collection
-     * 2) pagination.data will be equal to the size of the collection
+     * 1) the data field of the schema will be set to a copy of the collection
+     * 2) schema.data will be equal to the size of the collection
      * 3) all the other fields will be null
      * <p>
      * if both page and limit are not null:
-     * 1) pagination.data will contain the sublist [page*limit, page*limit + limit[.
+     * 1) schema.data will contain the sublist [page*limit, page*limit + limit[.
      * This is a copy of the collection.
      * The collection will be sorted based on the UUID of the objects t
      * 2) pagination.previous/pagination.next will be null if there is no previous/next page
@@ -52,13 +53,12 @@ public class RESTSchema<T> {
         List<T> list = new ArrayList<>(collection);
         this.setTotal(list.size());
 
-        // queries are 0 => give back the full collection
+        // queries are null => give back the full collection
         if (page == null || limit == null) {
             setData(list);
             return;
         }
 
-        // TODO sort
         Collections.sort(list, (a, b) -> a.hashCode() - b.hashCode());
         int start = page * limit;
         int end = min(start + limit, this.total);

@@ -23,7 +23,19 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Created by jorg on 3/6/17.
+ * This controller is responsible for handling the HTTP requests of the URL /companies.
+ * Currently, the following HTTP requests are supported:
+ *  1) GET /companies
+ *  2) GET /companies/{id}
+ *  3) POST /companies
+ *  4) PUT /companies/{id}
+ *  5) DELETE /companies/{id}
+ *
+ *  This controller is responsible for translating the RESTModels to the backend specific models and calling the appropriate methods
+ *  of the spring independent controllers,  located in the controller package.
+ *  It is also responsible for translating the backend specific exceptions to HTPP repsonse codes.
+ *
+ *  For more information about what the HTTP requests do, see the API specification
  */
 @RestController
 @RequestMapping("/companies")
@@ -112,6 +124,10 @@ public class RESTCompanyController {
         }
     }
 
+    /**
+     * This method translates the Customer object to a RESTCompany object.
+     * @param customer should not be null
+     */
     private RESTCompany modelToRESTCompany(Customer customer) {
         String id = UUIDUtil.UUIDToNumberString(customer.getUuid());
         return new RESTCompany(id,
@@ -125,6 +141,10 @@ public class RESTCompanyController {
                 PATH_COMPANY + "/" + id);
     }
 
+    /**
+     * This method translates the RESTAddress object to an Address object.
+     * @return if address is null, null will be returned
+     */
     private RESTAddress modelToRESTAddress(Address address) {
         if (address == null) {
             return null;
@@ -136,6 +156,10 @@ public class RESTCompanyController {
                 address.getPostalCode());
     }
 
+    /**
+     * This method translates the Addres object to a RESTAddress object.
+     * @return if address is null, null will be returned
+     */
     private Address RESTToModelAddress(RESTAddress restAddress) {
         if (restAddress == null) {
             return null;

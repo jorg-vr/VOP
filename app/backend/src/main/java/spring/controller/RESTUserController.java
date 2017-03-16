@@ -17,14 +17,19 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 /**
- * This class is responsible for handling all the HTTP requests of the URL /users
- * There are 5 different HTTP requests for this URL:
- * 1) /users GET
- * 2) /users POST
- * 3) /users/{id} GET
- * 4) /users/{id} PUT
- * 5) /users/{id} DELETE
- * TODO: more more exceptions
+ * This controller is responsible for handling the HTTP requests of the URL /user.
+ * Currently, the following HTTP requests are supported:
+ *  1) GET /user
+ *  2) GET /user/{id}
+ *  3) POST /user
+ *  4) PUT /user/{id}
+ *  5) DELETE /user/{id}
+ *
+ *  This controller is responsible for translating the RESTModels to the backend specific models and calling the appropriate methods
+ *  of the spring independent controllers,  located in the controller package.
+ *  It is also responsible for translating the backend specific exceptions to HTPP repsonse codes.
+ *
+ *  For more information about what the HTTP requests do, see the API specification
  */
 @RestController
 @RequestMapping("/users")
