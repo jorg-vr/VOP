@@ -12,6 +12,8 @@ import model.identity.Person;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -32,6 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Created by jorg on 3/15/17.
  *
  */
+@RunWith(SpringJUnit4ClassRunner.class)
 public class RESTRoleControllerTest {
     private MockMvc mvc= MockMvcBuilders.standaloneSetup(new RESTRoleController()).build();
 
