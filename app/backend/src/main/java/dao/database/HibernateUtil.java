@@ -40,15 +40,17 @@ public class HibernateUtil {
      */
     public synchronized static void remove(SessionFactory factory, Object objectToRemove) throws DataAccessException {
         Transaction tx = null;
+        System.out.println(objectToRemove);
         try (Session session = factory.openSession();) {
             tx = session.beginTransaction();
             session.delete(objectToRemove);
             tx.commit();
         } catch (Exception e) {
+
+            e.printStackTrace();
             if (tx != null) {
                 tx.rollback();
             }
-            e.printStackTrace();
         }
     }
 

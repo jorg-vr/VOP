@@ -36,9 +36,9 @@ public class ProductionFleetDAOTest {
     //Gets executed after all tests have been run
     @AfterClass
     public static void closeProvider() throws Exception {
+        daoProvider.close();
     }
 
-    @Ignore
     @Test
     public void createGetRemoveTest() throws Exception {
         Fleet fleet1 = null;
@@ -62,10 +62,11 @@ public class ProductionFleetDAOTest {
                 Fleet fleet2 = fleetDAO.get(fleet1.getUuid());
                 assertEquals("name field not created correctly", fleet1.getName(), fleet2.getName());
                 assertEquals("customer field not created correctly", fleet1.getOwner(), fleet2.getOwner());
-                assertEquals("vehicles field not created correctly", fleet1.getVehicles(), fleet2.getVehicles());
+                assertTrue("vehicles field not created correctly", fleet2.size()== 0);
                 present = true;
             }
         } catch (Exception e) {
+            e.printStackTrace();
             fail("Failed trying to get an existing fleet from the database");
         }
         //If the fleet is confirmed to be present in the database, try to remove it
@@ -89,15 +90,12 @@ public class ProductionFleetDAOTest {
         catch (Exception e) {
             //Nothing because the test passed in this case
         }
-        if (fleet1 != null) {
-            fleetDAO.remove(fleet1.getUuid());
-        }
+
         if (cust1 != null) {
             customerDAO.remove(cust1.getUuid());
         }
     }
 
-    @Ignore
     @Test
     public void update() throws Exception {
         Customer cust1 = customerDAO.create("customername 1", null, "911", "123456789");
@@ -105,7 +103,7 @@ public class ProductionFleetDAOTest {
         Fleet fleet1 = fleetDAO.create("fleet 1", cust1);
         Fleet fleet2 = fleetDAO.update(fleet1.getUuid(), "fleet 2", cust2);
         Fleet fleet3 = fleetDAO.get(fleet1.getUuid());
-        assertEquals("name field not updated correctly", "customername 2", fleet3.getName());
+        assertEquals("name field not updated correctly", "fleet 2", fleet3.getName());
         assertEquals("customer field not updated correctly", cust2, fleet3.getOwner());
 
         fleetDAO.remove(fleet1.getUuid());
