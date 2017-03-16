@@ -39,7 +39,6 @@
             VehicleForm
         },
         created() {
-            console.log(this.$route.params.fleet_id);
             if(this.$route.params.fleet_id){
                 this.vehicle.fleet = this.$route.params.fleet_id;
             }
@@ -47,7 +46,6 @@
         methods: {
             //API call to create the given vehicle.
             createVehicle(vehicle){
-                //TODO
                 this.$http.post('https://vopro5.ugent.be/app/api/vehicles', vehicle,
                     {
                         headers: {
@@ -55,8 +53,8 @@
                         }
                     }
                 ).then(response => { //Success
-                    this.$router.push({name: 'vehicle', params: { id: response.body.id }});
-                }, response => { //Fail
+                        this.$router.push({name: 'vehicle', params: { id: response.body.id }});
+                    }, response => { //Fail
                         console.log(response.body)
                     }
                 )
