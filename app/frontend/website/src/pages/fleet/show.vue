@@ -8,7 +8,7 @@
             <h1>Vloot: {{fleet.name}} </h1>
         </div>
         <router-link :to="{name: 'new_vehicle', params: {fleet_id: fleet.id}}">
-            <button type="button" class="btn btn-primary table-button">Niew voertuig</button>
+            <button type="button" class="btn btn-primary table-button">Nieuw voertuig</button>
         </router-link>
         <button type="button" class="btn btn-primary table-button" v-on:click="deleteFleet">Verwijder vloot</button>
         <div class="row">

@@ -5,7 +5,7 @@
 <template>
     <div>
         <div class="page-header">
-            <h1> Gebruiker </h1>
+            <h1>Gebruikers</h1>
         </div>
         <!-- Render an info-pane for every user -->
         <info-pane v-for="users in userList"
@@ -56,10 +56,9 @@
                         const data = response.body.data;
                         for (let i = 0; i < data.length; i++) {
                             this.userList.push(data[i]);
-                            console.log(data[i]);
                         }
                     }, response => {
-                        console.log(response.body);
+                        console.log('fail');
                     }
                  )
             }

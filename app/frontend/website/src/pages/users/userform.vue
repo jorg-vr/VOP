@@ -14,17 +14,15 @@
             <div class="row">
                 <div class="col-md-4 col-md-offset-7">
                     <div id="buttons">
-                        <router-link :to="{name: 'users'}">  
-                        <button type="button" class="btn btn-success btn-md" v-on:click="proceed()"> <i class="fa fa-check" aria-hidden="true"></i></button> 
-                        </router-link>
-                        <router-link :to="{name: 'users'}">   
-                          <button type="button" class="btn btn-danger btn-md"> <i class="fa fa-times" aria-hidden="true"></i></button>  
+                        <button type="button" class="btn btn-success btn-md" v-on:click="proceed()"> <i class="fa fa-check" aria-hidden="true"></i></button>
+                        <router-link :to="{name: 'users'}">
+
+                          <button type="button" class="btn btn-danger btn-md"> <i class="fa fa-times" aria-hidden="true"></i></button>
                         </router-link>
                     </div>
                 </div>
             </div>
         </form>
-
     </div>
 </template>
 <script>
@@ -63,14 +61,12 @@
         created : function(){ 
             // Fill inputs array with received information
             if(this.$route.path != '/users/new'){
-                console.log(this.user)
                 var fname = this.user.firstName
                 var lname = this.user.lastName
                 var email = this.user.email
                 this.inputs.push(fname);
                 this.inputs.push(lname);
                 this.inputs.push(email);
-                console.log(this.inputs)
             }
 
         }

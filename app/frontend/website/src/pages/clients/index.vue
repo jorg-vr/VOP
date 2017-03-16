@@ -5,7 +5,7 @@
 <template>
 <div>
     <div class="page-header">
-    <h1> Klant </h1>
+    <h1>Klanten</h1>
     </div>
     <!-- Render an info-pane for every clients -->
         <info-pane v-for="clients in clientList"
