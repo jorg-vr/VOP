@@ -30,6 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 /**
  * Created by jorg on 3/15/17.
+ *
  */
 public class RESTRoleControllerTest {
     private MockMvc mvc= MockMvcBuilders.standaloneSetup(new RESTRoleController()).build();
