@@ -19,7 +19,7 @@ public class Customer extends Company implements java.io.Serializable {
     }
 
     /**
-     * Adds the given fleet to the list of fleets the customer owns and changes the fleet's owner to this customer
+     * Adds the given fleet to the list of fleets the customer owns
      *
      * @param fleet fleet who's ownership has to be assigned to this customer
      * @return true when the fleet has been succesfully added
@@ -30,12 +30,7 @@ public class Customer extends Company implements java.io.Serializable {
         } else if (fleet == null || fleets.contains(fleet)) {
             return false;
         }
-        //makes sure the fleet was added before setting it's owner to this customer
-        boolean added = fleets.add(fleet);
-        if(added){
-            fleet.setOwner(this);
-        }
-        return added;
+        return fleets.add(fleet);
     }
 
     /**
@@ -50,12 +45,7 @@ public class Customer extends Company implements java.io.Serializable {
         if(fleet == null || !fleets.contains(fleet)){
             return false;
         }
-        //makes sure the fleet was succesfully removed before changing it's owner to null
-        boolean removed = fleets.remove(fleet);
-        if(removed){
-            fleet.setOwner(null);
-        }
-        return removed;
+        return fleets.remove(fleet);
     }
 
     public Collection<Fleet> getFleets() {

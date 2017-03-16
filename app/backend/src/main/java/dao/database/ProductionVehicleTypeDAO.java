@@ -57,7 +57,6 @@ public class ProductionVehicleTypeDAO implements VehicleTypeDao {
         return vehicleType;
     }
 
-
     @Override
     public void remove(UUID id) throws DataAccessException {
         HibernateUtil.remove(factory,get(id));
@@ -73,13 +72,14 @@ public class ProductionVehicleTypeDAO implements VehicleTypeDao {
             this.criteriaQuery = this.criteriaBuilder.createQuery(VehicleType.class);
             this.root = this.criteriaQuery.from(VehicleType.class);
             for (Filter<VehicleType> filter : filters) {
-                filter.filter(null);
+                filter.filter();
             }
             Collection<VehicleType> types = session.createQuery(criteriaQuery.where(predicates.toArray(new Predicate[predicates.size()]))).getResultList();
             tx.commit();
             this.root = null;
             this.criteriaQuery = null;
             this.criteriaBuilder = null;
+            predicates.clear();
             return types;
         } catch (Exception e) {
             e.printStackTrace();
@@ -98,17 +98,13 @@ public class ProductionVehicleTypeDAO implements VehicleTypeDao {
 
     @Override
     public Filter<VehicleType> byName(String name) {
-        return (o1) -> {
+        return () ->
             predicates.add(criteriaBuilder.equal(root.get("type"), name));
-            return true;
-        };
     }
 
     @Override
     public Filter<VehicleType> nameContains(String name) {
-        return (o1) -> {
+        return () ->
             predicates.add(criteriaBuilder.like(root.get("type"), "%"+ name + "%"));
-            return true;
-        };
     }
 }

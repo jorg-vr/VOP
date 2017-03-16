@@ -12,7 +12,7 @@
             <generator class="uuid2"/>
         </id>
 
-        <many-to-one name="address" column="address_id" class="model.identity.Address" cascade="all"/>
+        <many-to-one name="address" column="address_id" class="model.identity.Address" cascade="all" lazy="false"/>
         <property name="email" column="email" type="string"/>
         <property name="phoneNumber" column="phonenumber" type="string"/>
         <joined-subclass name="model.identity.Company" table="COMPANY">
@@ -22,11 +22,11 @@
             <property name="bankAccountNumber" column="bank_account_number" type="string"/>
             <joined-subclass name="model.identity.Customer" table="CUSTOMER">
                 <key column="identity_id"/>
-                <set name="fleets" access="field" table="FLEET"
-                     lazy="false" fetch="select">
+                <bag name="fleets" access="field" table="FLEET"
+                     lazy="false" fetch="select" inverse="true">
                     <key column="owner_id" not-null="true"/>
                     <one-to-many class="model.fleet.Fleet" />
-                </set>
+                </bag>
             </joined-subclass>
         </joined-subclass>
         <joined-subclass name="model.identity.Person" table="PERSON">

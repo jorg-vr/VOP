@@ -35,30 +35,23 @@ public class ProductionFleetDAO implements FleetDAO{
     }
 
     @Override
-    public Fleet create(Customer customer, Collection<Vehicle> vehicles) throws DataAccessException {
+    public Fleet create(String name, Customer customer) throws DataAccessException {
         Fleet fleet = new Fleet();
+        fleet.setName(name);
         fleet.setOwner(customer);
-        fleet.setVehicles(vehicles);
         HibernateUtil.create(factory,fleet);
         return fleet;
     }
 
     @Override
-    public Fleet update(UUID id, Customer customer, Collection<Vehicle> vehicles) throws DataAccessException {
+    public Fleet update(UUID id, String name, Customer customer) throws DataAccessException {
         Fleet fleet = new Fleet();
+        fleet.setName(name);
         fleet.setUuid(id);
-        fleet.setVehicles(vehicles);
         fleet.setOwner(customer);
         HibernateUtil.update(factory,fleet);
-        return null;
+        return fleet;
     }
-
-    @Override
-    public Filter<Fleet> byOwner(Customer customer) {
-        return (o1) -> {
-            predicates.add(criteriaBuilder.equal(root.get("owner"), customer));
-            return true;
-        };    }
 
     @Override
     public Fleet get(UUID id) throws DataAccessException {
@@ -82,13 +75,14 @@ public class ProductionFleetDAO implements FleetDAO{
             this.criteriaQuery = this.criteriaBuilder.createQuery(Fleet.class);
             this.root = this.criteriaQuery.from(Fleet.class);
             for (Filter<Fleet> filter : filters) {
-                filter.filter(null);
+                filter.filter();
             }
             Collection<Fleet> fleets = session.createQuery(criteriaQuery.where(predicates.toArray(new Predicate[predicates.size()]))).getResultList();
             tx.commit();
             this.root = null;
             this.criteriaQuery = null;
             this.criteriaBuilder = null;
+            predicates.clear();
             return fleets;
         } catch (Exception e) {
             e.printStackTrace();

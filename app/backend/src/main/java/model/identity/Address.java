@@ -75,4 +75,31 @@ public class Address implements java.io.Serializable {
     public void setCountry(String country) {
         this.country = country;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Address address = (Address) o;
+
+        return getUuid().equals(((Address) o).getUuid());
+    }
+
+    @Override
+    public int hashCode() {
+        return uuid.hashCode();
+    }
+
+    /*@Override
+    public String toString() {
+        return "Address{" +
+                "uuid= " + getUuid() +
+                ", street= " + street +
+                ", streetNumber= " + streetNumber +
+                ", town= " + town +
+                ", postalCode= " + postalCode +
+                ", country= " + country +
+                '}';
+    }*/
 }

@@ -3,14 +3,13 @@ package model.account;
 import model.history.EditableObject;
 import model.identity.Company;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
  * Created by sam on 3/10/17.
  */
-public class Function implements EditableObject{
+public class Function implements EditableObject, java.io.Serializable {
     private Company company;
     private Role role;
     private Account account;
@@ -18,7 +17,8 @@ public class Function implements EditableObject{
     private LocalDateTime endDate;
     private UUID uuid;
 
-    public Function(){}
+    public Function() {
+    }
 
     public Function(Company company, Role role, Account account, LocalDateTime startDate, LocalDateTime endDate) {
         this.company = company;
@@ -30,10 +30,9 @@ public class Function implements EditableObject{
     }
 
     public Function(Company company, Role role, Account account, LocalDateTime startDate, LocalDateTime endDate, UUID uuid) {
-        this(company,role,account,startDate,endDate);
+        this(company, role, account, startDate, endDate);
         this.uuid = uuid;
     }
-
 
 
     public Company getCompany() {

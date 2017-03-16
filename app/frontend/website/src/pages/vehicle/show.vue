@@ -11,7 +11,7 @@
                 </tr>
                 <tr>
                     <td>Chassis number</td>
-                    <td>{{vehicle.chassisNumber}}</td>
+                    <td>{{vehicle.vin}}</td>
                 </tr>
                 <tr>
                     <td>Brand</td>
@@ -23,7 +23,7 @@
                 </tr>
                 <tr>
                     <td>Type</td>
-                    <td>{{vehicle.type}}</td>
+                    <td>{{vehicleType}}</td>
                 </tr>
                 <tr>
                     <td>Kilometer count</td>
@@ -38,6 +38,13 @@
                     <td>{{vehicle.model}}</td>
                 </tr>
             </table>
+
+            <router-link v-if="vehicle.fleet" :to="{name: 'fleet', params: {id: vehicle.fleet}}">
+                <button class="btn btn-default">Terug</button>
+            </router-link>
+            <router-link v-else="vehicle.fleet" :to="{name: 'fleets'}">
+                <button class="btn btn-default">Terug</button>
+            </router-link>
         </div>
 
     </div>
@@ -46,27 +53,25 @@
     export default {
         data: function(){
             return {
-                vehicle: {
-                    id: "cc5c7659-e3e9-4935-8eaf-19959d78d868",
-                    licensePlate: "IAM-007",
-                    chassisNumber: "abcdefhijk",
-                    brand: "Lamborghini",
-                    model: "Diablo GT",
-                    type: "1f081c6c-4009-4ae4-a680-7aa810817924",
-                    kilometerCount: 123,
-                    year: "20170312",
-                    leasingCompany: null,
-                    createdAt: null,
-                    updatedAt: null,
-                    url: "/vehicles/cc5c7659-e3e9-4935-8eaf-19959d78d868"
-                }
+                vehicle: {},
+                vehicleType: ''
             }
         },
+        created() {
+            this.fetchVehicle()
+        },
         methods: {
-            getVehicles: function(){
-                this.$http.get('/vehicles/' + $route.params.id).then(response => {
-                    //TODO
-                    this.vehicle = response
+            //API call to fetch the vehicle of this page.
+            fetchVehicle: function(){
+                this.$http.get('https://vopro5.ugent.be/app/api/vehicles/' + this.$route.params.id).then(response => {
+                    this.vehicle = response.body;
+                    this.fetchVehicleType(this.vehicle.type)
+                })
+            },
+            //API call to fetch the type of the vehicle
+            fetchVehicleType: function(vehicleTypeId){
+                this.$http.get('https://vopro5.ugent.be/app/api/vehicleTypes/' + vehicleTypeId).then(response => {
+                    this.vehicleType = response.body.name
                 })
             }
         }

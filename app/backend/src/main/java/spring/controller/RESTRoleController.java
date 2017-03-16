@@ -35,7 +35,7 @@ public class RESTRoleController {
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
-        return new RESTSchema<>(roles, page, limit, PATH_ROLE);
+        return new RESTSchema<>(roles, page, limit, PATH_ROLE+"?");
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -46,7 +46,7 @@ public class RESTRoleController {
             Function function = controller.create(companyUUID, role.getFunction(), userUUID, role.getStartDate(), role.getEndDate());
             role = modelToRest(function);
         } catch (DataAccessException e) {
-            throw new InvalidInputException();
+            throw new InvalidInputException(e);
         }
         return role;
     }
@@ -57,16 +57,18 @@ public class RESTRoleController {
         try {
             Function function = controller.get(uuid);
             return modelToRest(function);
-        } catch (DataAccessException e) {
+        } catch (Exception e) {
             throw new NotFoundException();
         }
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
     public RESTRole putId(@PathVariable("id") String id, @RequestBody RESTRole role) {
+        System.out.println("ids: "+id+"  "+role.getCompanyId()+"  "+role.getUserId());
         UUID uuid = UUIDUtil.toUUID(id);
         UUID companyUuid = UUIDUtil.toUUID(role.getCompanyId());
         UUID userUuid = UUIDUtil.toUUID(role.getUserId());
+        System.out.println("ids: "+uuid+"  "+userUuid+"  "+companyUuid);
         try {
             Function function = controller.update(uuid,
                     companyUuid,
@@ -100,10 +102,10 @@ public class RESTRoleController {
         String id = UUIDToNumberString(function.getUuid());
         String userId = UUIDToNumberString(function.getAccount().getUuid());
         RESTRole role = new RESTRole();
-        role.setFunction(function.getRole().getName());
+        role.setFunction("");
         role.setId(id);
         role.setUserId(userId);
-        role.setCompanyId("TODO");
+        role.setCompanyId(UUIDUtil.UUIDToNumberString(function.getCompany().getUuid()));
         role.setStartDate(function.getStartDate());
         role.setEndDate(function.getEndDate());
         //role.setUpdatedAt(); TODO milestone?
