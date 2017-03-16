@@ -6,17 +6,15 @@
         <div class="page-header">
             <h1> Gebruiker aanpassen </h1>
         </div>
-        <form-temp :at=this.data :type=this.type :user=this.user></form-temp>
+        <form-temp :user="user" :submit="editUser"></form-temp>
     </div>
 </template>
 <script>
-    import FormTemp from './userform.vue'
+    import FormTemp from './form.vue'
     export default {
         data(){
             return {
-                user:{},
-                data: ["Voornaam","Achternaam","Email"],
-                type: "Gebruiker"
+                user:{}
             }
         },
         components: { FormTemp},
@@ -47,7 +45,7 @@
         created: function (){
             // Keep reference to this Vue component
             this.fetchUser()
-            // Listen to proceedEdit performed by child component (userform.vue)
+            // Listen to proceedEdit performed by child component (form.vue)
             this.$bus.$on('proceedEdit', input => this.editUser(input));
         }
     }

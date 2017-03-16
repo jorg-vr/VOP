@@ -6,29 +6,20 @@
         <div class="page-header">
             <h1> Gebruiker aanmaken </h1>
         </div>
-        <form-temp :at=this.data :type=this.type></form-temp>
+        <form-temp :user="{}" :submit=createUser></form-temp>
     </div>
 </template>
 <script>
-    import FormTemp from './userform.vue'
+    import FormTemp from './form.vue'
+
     export default {
         data(){
-            return {
-                // Data used to fill in form placeholders for a user
-                data: ["Voornaam","Achternaam","Email"],
-                type: "Gebruiker"
-            }
+            return {}
         },
         components: { FormTemp},
-        created: function (){
-            // Keep reference to this Vue component 
-            var vm = this
-            // Listen to proceed performed by child component (userform.Vue)
-            this.$bus.$on('proceedAdd', input => this.createUser(input));
-            // API call to create a new user in the database.
-        },
         methods: {
             createUser(user){
+                console.log('check')
                 this.$http.post('https://vopro5.ugent.be/app/api/users', user,
                     {
                         headers: {

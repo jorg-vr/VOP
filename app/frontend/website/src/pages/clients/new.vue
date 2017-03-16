@@ -10,7 +10,8 @@
  </div>
 </template>
 <script>
-    import FormTemp from './clientform.vue'
+    import FormTemp from './form.vue'
+
     export default {
         data(){
             return {}
