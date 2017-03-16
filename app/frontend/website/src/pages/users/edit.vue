@@ -1,10 +1,13 @@
+<!--
+    This page is used to edit a certain user.
+-->
 <template>
     <div id="content-wrapper">
-     <div class="page-header">    
-     <h1> Gebruiker aanpassen ({{this.$route.params.id}}) </h1>
-   </div>  
-   <form-temp :at=this.data :type=this.type></form-temp>
-</div>
+       <div class="page-header">    
+           <h1> Gebruiker aanpassen </h1>
+       </div>  
+       <form-temp :at=this.data :type=this.type :user=this.user></form-temp>
+   </div>
 </template>
 <script>
     import FormTemp from './userform.vue'
@@ -17,37 +20,45 @@
             }
         },
         components: { FormTemp},
+        methods:{
+            // Function that makes an API call to fetch specific user data to be edited
+            fetchUser : function () {
+                this.$http.get('https://vopro5.ugent.be/app/api/users/' + this.$route.params.id).then(response => {
+                    this.user = response.body;
+                    console.log(this.user)
+                })
+            },
+
+
+        },
         created: function (){
-                console.log('creating edit.vue')
-                // listen to proceed performed by child component
+                // Keep reference to this Vue component 
                 var vm = this
                 var id = this.$route.params.id
-                console.log(id)
+
+                this.fetchUser()
                 
+                // Listen to proceedEdit performed by child component (userform.vue)
                 this.$bus.$on('proceedEdit', function(input){
-                    console.log(input)
-                    console.log('proceedEdit called')
-                    // Determine type
-                    console.log("Gebruiker aangepast")
-                    // Make post request for user
-                    console.log('https://vopro5.ugent.be/app/api/users/'+input)
-/*                    this.$http.put('https://vopro5.ugent.be/app/api/users/'+id).then(response => {
-                        
-                    })  */
+                    // API call to update information for a user
+                    this.$http.put('https://vopro5.ugent.be/app/api/users/' + id, input,
+                    {
+                        headers: {
+                            Accept: "application/json",
+                        }
+                    }
+                    ).then(response => { //Succes 
+                    }, response => { //Fail
+                        console.log('fail')
+                    }
+                    )
+                    
                 });
 
-
-                // get specific data to edit identity
-        
-                console.log('https://vopro5.ugent.be/app/api/users/'+id )
-/*                this.$http.get('https://vopro5.ugent.be/app/api/users/'+id).then(response => {
-                        // fire event that will send specific data to child component (Form)
-                        this.$bus.$emit('getEditInfo',response.body,"Gebruiker")
-                })*/
             }
         }
 
-                
 
-            
-</script>
+
+
+    </script>

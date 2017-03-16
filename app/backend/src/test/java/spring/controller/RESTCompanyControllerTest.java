@@ -37,7 +37,6 @@ public class RESTCompanyControllerTest {
     public static void setup() {
         ProductionProvider.initializeProvider(true);
         try {
-            //TODO find out why this doesn't work
             address= new Address("mystreet","123","lala","12345","land");
             customer= new CustomerController().create(address,"04789456123","anita","123456789");
         } catch (DataAccessException e) {
@@ -53,6 +52,8 @@ public class RESTCompanyControllerTest {
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
+
+        ProductionProvider.getInstance().close();
     }
 
     @Test

@@ -27,7 +27,7 @@ public class ProductionFleetDAOTest {
     //Setup before any of the tests are started
     @BeforeClass
     public static void initProvider() throws Exception {
-        ProductionProvider.initializeProvider(false);
+        ProductionProvider.initializeProvider(true);
         daoProvider = ProductionProvider.getInstance();
         fleetDAO = daoProvider.getFleetDAO();
         customerDAO = daoProvider.getCustomerDAO();
@@ -90,9 +90,7 @@ public class ProductionFleetDAOTest {
         catch (Exception e) {
             //Nothing because the test passed in this case
         }
-        if (fleet1 != null) {
-            fleetDAO.remove(fleet1.getUuid());
-        }
+
         if (cust1 != null) {
             customerDAO.remove(cust1.getUuid());
         }
@@ -105,7 +103,7 @@ public class ProductionFleetDAOTest {
         Fleet fleet1 = fleetDAO.create("fleet 1", cust1);
         Fleet fleet2 = fleetDAO.update(fleet1.getUuid(), "fleet 2", cust2);
         Fleet fleet3 = fleetDAO.get(fleet1.getUuid());
-        assertEquals("name field not updated correctly", "customername 2", fleet3.getName());
+        assertEquals("name field not updated correctly", "fleet 2", fleet3.getName());
         assertEquals("customer field not updated correctly", cust2, fleet3.getOwner());
 
         fleetDAO.remove(fleet1.getUuid());

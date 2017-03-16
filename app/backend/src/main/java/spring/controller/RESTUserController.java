@@ -108,7 +108,7 @@ public class RESTUserController {
             Person person = account.getPerson();
 
             return merge(person, account);
-        } catch (DataAccessException | NumberFormatException e) {
+        } catch (DataAccessException | NumberFormatException | NullPointerException e) {
             throw new NotFoundException();
         }
     }

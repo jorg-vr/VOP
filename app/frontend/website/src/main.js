@@ -25,6 +25,7 @@ Vue.prototype.$bus = bus
 
 const router = new VueRouter({
     mode: 'history',
+    base: '/app/',
     routes: routes
 });
 

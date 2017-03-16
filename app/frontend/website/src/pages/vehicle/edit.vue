@@ -15,16 +15,7 @@
     export default {
         data: function(){
             return {
-                vehicle: {
-                    licensePlate: '',
-                    chassisNumber: '',
-                    brand: '',
-                    model: '',
-                    type: '',
-                    mileage: '',
-                    year: '',
-                    leasingCompany: '',
-                }
+                vehicle: {}
             }
         },
         components: {
@@ -43,13 +34,21 @@
                 })
             },
             //API call to update this vehicle.
+
             updateVehicle(vehicle){
-                //TODO: Cfr. new but POST => PUT
-                alert('Not working yet: edit vehicle')
-                this.$http.put('https://vopro5.ugent.be/app/api/vehicles' + '{' + this.getQuery(vehicle) + '}').then(response => {
-                    this.vehicle = response.body;
-                    this.$router.push({name: 'vehicle', params: { id: this.vehicle.id }});
-                })
+                this.$http.put('https://vopro5.ugent.be/app/api/vehicles/' + vehicle.id , vehicle,
+                    {
+                        headers: {
+                            Accept: "application/json",
+                        }
+                    }
+                ).then(response => { //Success
+                        console.log(response.body);
+                        this.$router.push({name: 'vehicle', params: { id: response.body.id }});
+                    }, response => { //Fail
+                        console.log(response.body)
+                    }
+                )
             }
         }
     }
