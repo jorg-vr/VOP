@@ -168,7 +168,7 @@ public class RESTVehicleController {
                             vehicle.getValue(),
                             vehicle.getMileage(),
                             UUIDUtil.toUUID(vehicle.getType()),
-                            UUIDUtil.toUUID(vehicle.getId())));
+                            UUIDUtil.toUUID(vehicle.getFleet())));
         } catch (DataAccessException e) {
             throw new InvalidInputException();
             //TODO updateId when there are more exceptions
