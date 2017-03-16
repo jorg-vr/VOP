@@ -6,22 +6,20 @@
        <div class="page-header">
          <h1> Klant aanmaken </h1>
      </div>  
-     <form-temp :at=this.data :type=this.type></form-temp>
+     <form-temp :client={address:{}} :submit="createClient"></form-temp>
  </div>
 </template>
 <script>
-    import FormTemp from './clientform.vue'
+    import FormTemp from './form.vue'
+
     export default {
         data(){
-            return {
-                // Data used to fill in form placeholders for a client
-                data: ["Naam","Land","Plaats","Postcode","Straat","Nummer","BTW nummer","Telefoonnummer"],
-                type: "Klant"
-            }
+            return {}
         },
         components: { FormTemp},
         methods: {
             createClient(client){
+                console.log(client);
                 this.$http.post('https://vopro5.ugent.be/app/api/companies', client,
                     {
                         headers: {
@@ -36,10 +34,6 @@
                     }
                 )
             }
-        },
-        created: function (){
-            // Listen to proceedAddClient performed by child component (clientform.Vue)
-            this.$bus.$on('proceedAddClient', input => this.createClient(input));
         }
     }  
 </script>

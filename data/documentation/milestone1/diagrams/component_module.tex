@@ -1,0 +1,33 @@
+\documentclass[11pt,openany]{article}
+\usepackage[dutch]{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage[center]{caption}
+\usepackage{a4wide}
+\setcounter{tocdepth}{1}
+\setlength{\parindent}{0pt}
+\usepackage{multirow}
+\usepackage{fancyhdr}
+\usepackage{blindtext}
+
+\begin{document}
+	\section{Frontend}
+	\subsection{Web UI}
+	De web UI service is ontworpen als een SPA (Single Page Application). Hiervoor maken we gebruik van het JavaScript framework Vue.js. Om dit te verwezenlijken, maken we gebruik van verschillende, aparte Vue componenten die door Vue Loader worden opgehaald en samengebracht tot een geheel. Om de gegevens te kunnen opvragen of te manipuleren worden er API calls uitgevoerd met behulp van Vue resource. Tenslotte wordt er gebruik gemaakt van Bootstrap om de userinterface vorm te geven. De web UI service bevindt zich in de presentatielaag en is ook de enige service waarmee de gebruiker rechtstreeks in contact komt. Van alle andere services in ons ontwerp, is de API service de enige die door de web UI service wordt gebruikt. De samenwerking met de API service gebeurt via API calls waarin de data in zowel de request als responses wordt voorgesteld in JSON formaat.
+	\section{API}
+	\subsection{API service}
+	Deze service is verantwoordelijk om het front end gedeelte van onze applicatie toegang te geven tot de data in de database. Om dit mogelijk te maken, wordt aan het front end gedeelte een RESTFUL API aangeboden, aangemaakt met behulp van het webapplicatie framework Spring. De data access service beschikt zelf niet over de data maar zal hiervoor de services in de domeinlaag van ons ontwerp aanspreken. De API service bevindt zich in de interfacelaag. 
+	\subsection{Controller service}
+	Om de API calls om te zetten naar ons domein model maken we gebruik van REST controllers. Deze controllers hebben de verantwoordelijkheid een vlotte samenwerking te garanderen tussen ons domeinmodel en de RESTFUL API en zijn geprogrammeerd in Spring. Op deze manier communiceert deze service met zowel de API service als de domein service en bevindt zich op de interfacelaag.
+	\newpage
+	\section{Backend}.
+	\subsection{Domein service}
+	Deze service is de kern service van onze applicatie. De service is verantwoordelijk om een goede werking van onze applicatie te kunnen garanderen. Verder bevindt deze service zich op de domeinlaag en ligt tussen de controller service en de DAO service. De domein service communiceert met deze beide lagen.
+	\subsection{DAO service}
+	Deze service is verantwoordelijk om te database op een correcte manier te kunnen aanspreken. Hiervoor zullen alle database request worden omgezet naar de persistentielaag. De DAO service bevindt zicht in de data access laag. Verder communiceert hij met zowel de domein service als de data service.
+	\section{Database}
+	\subsection{Data service}
+	Deze service is verantwoordelijk voor het beheren en aanbieden van de effectieve data in onze applicatie. Als database maken we gebruik van PostgreSQL. Deze service bevindt zich op de persistentielaag en communiceert met de DAO service.
+\end{document}

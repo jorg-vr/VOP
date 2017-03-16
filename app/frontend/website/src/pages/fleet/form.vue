@@ -1,6 +1,6 @@
 <!--
-    This is the form for creating/updating a fleet.
-    The form accepts the old data and an update or create function.
+    This is the form.vue for creating/updating a fleet.
+    The form.vue accepts the old data and an update or create function.
 -->
 <template>
     <div>

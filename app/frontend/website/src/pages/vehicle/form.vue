@@ -1,21 +1,19 @@
 <!--
-    This is the form for creating/updating a vehicle.
-    The form accepts the old vehicle and an update or create function.
+    This is the form.vue for creating/updating a vehicle.
+    The form.vue accepts the old vehicle and an update or create function.
 -->
 <template>
     <form class="form-horizontal">
-        <p>{{vehicle.fleet}}</p>
-
         <div class="form-group">
             <label class="col-sm-4 control-label">Nummerplaat</label>
             <div class="col-sm-8">
-                <input type="text" class="form-control" placeholder="Nummerplaat" v-model="vehicle.licensePlate"">
+                <input type="text" class="form-control" placeholder="Nummerplaat" v-model="vehicle.licensePlate">
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-4 control-label">Chassisnummer</label>
             <div class="col-sm-8">
-                <input type="text" class="form-control" placeholder="Chassisnummber" v-model="vehicle.vin">
+                <input type="text" class="form-control" placeholder="Chassisnummer" v-model="vehicle.vin">
             </div>
         </div>
         <div class="form-group">
@@ -110,7 +108,7 @@
             }
         },
         props: {
-            vehicle: Object, //Vehicle which should be created/updated with this form.
+            vehicle: Object, //Vehicle which should be created/updated with this form.vue.
             submit: Function //Submit function to create/update the vehicle.
         }
     }
