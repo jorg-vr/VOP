@@ -6,7 +6,7 @@
         <div class="page-header">
             <h1> Klant aanpassen </h1>
         </div>
-        <form-temp :at=this.data :type=this.type :client=this.client></form-temp>
+        <form-temp :client=client :submit="updateClient"></form-temp>
     </div>
 </template>
 <script>
@@ -14,9 +14,7 @@
     export default {
         data(){
             return {
-                client:{},
-                data: ["Naam","Land","Plaats","Postcode","Straat","Nummer","BTW nummer","Telefoonnummer"],
-                type: "Klant"
+                client:{}
             }
         },
         components: { FormTemp},
@@ -28,8 +26,8 @@
                     console.log(this.client)
                 })
             },
-            editUser(user){
-                this.$http.put('https://vopro5.ugent.be/app/api/companies/' + this.$route.params.id, user,
+            updateClient(client){
+                this.$http.put('https://vopro5.ugent.be/app/api/companies/' + this.$route.params.id, client,
                     {
                         headers: {
                             Accept: "application/json",
@@ -47,8 +45,6 @@
         },
         created: function (){
             this.fetchClient()
-            // Listen to proceedEdit performed by child component (clientform.vue)
-            this.$bus.$on('proceedEditClient', input => this.editUser(input));
         }
     }
 
