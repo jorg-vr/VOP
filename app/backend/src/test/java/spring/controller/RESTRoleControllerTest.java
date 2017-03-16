@@ -5,7 +5,6 @@ import dao.database.ProductionProvider;
 import dao.interfaces.DataAccessException;
 import model.account.Account;
 import model.account.Function;
-import model.fleet.Fleet;
 import model.identity.Address;
 import model.identity.Customer;
 import model.identity.Person;
@@ -18,7 +17,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import spring.model.RESTFleet;
 import spring.model.RESTRole;
 
 import java.time.LocalDateTime;
@@ -26,7 +24,6 @@ import java.time.LocalDateTime;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
