@@ -1,9 +1,83 @@
 export default
 {
     en : {
-        vehicle: 'vehicle'
+        vehicle: {
+            vehicle: 'vehicle | vehicles',
+            licensePlate: 'license plate',
+            chassisnumber: 'chassis number',
+            brand: 'brand',
+            model: 'model',
+            type: 'type',
+            mileage: 'mileage',
+            year: 'year',
+            leasingCompany:  'leasing company'
+        },
+        fleet: {
+            fleet: 'fleet | fleets'
+        },
+        users: {
+            user: 'user | users',
+            firstName: 'first name',
+            lastName: 'last name',
+            email: 'email'
+        },
+        client: {
+            client: 'client | clients',
+            name: 'name',
+            country: 'country',
+            vatNumber: 'VAT number',
+            phoneNumber: 'phone number',
+            address: 'address',
+            city: 'city',
+            street: 'street',
+            postalCode: 'postal code',
+            houseNumber: 'house number'
+        },
+        common: {
+            new: 'new',
+            remove: 'remove',
+            edit: 'edit',
+            back: 'back'
+        }
     },
     nl : {
-        vehicle: 'voertuig'
+        vehicle: {
+            vehicle: 'voertuig | voertuigen',
+            licensePlate: 'nummerplaat',
+            chassisnumber: 'chassisnummer',
+            brand: 'merk',
+            model: 'model',
+            type: 'type',
+            mileage: 'kilometerstand',
+            year: 'jaar',
+            leasingCompany:  'leasing bedrijf'
+        },
+        fleet: {
+            fleet: 'vloot | vloten'
+        },
+        users: {
+            user: 'gebruiker | gebruikers',
+            firstName: 'voornaam',
+            lastName: 'achternaam',
+            email: 'e-mail'
+        },
+        client: {
+            client: 'klant | klanten',
+            name: 'naam',
+            country: 'land',
+            vatNumber: 'BTW-nummer',
+            phoneNumber: 'telefoonnummer',
+            address: 'adres',
+            city: 'stad',
+            street: 'straat',
+            postalCode: 'postcode',
+            houseNumber: 'huisnummer'
+        },
+        common: {
+            new: 'niew',
+            remove: 'verwijder',
+            edit: 'wijzig',
+            back: 'terug'
+        }
     }
 }

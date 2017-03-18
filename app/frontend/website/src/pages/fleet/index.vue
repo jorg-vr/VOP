@@ -6,8 +6,9 @@
         <div class="page-header">
             <h1>Vloten </h1>
         </div>
-        <!-- Render an info-pane for every fleet -->
-        <info-pane v-for="fleet in fleets"
+        <!-- Render an info-pane for every fleet. Once all the data is loaded, the table will be shown.-->
+        <info-pane v-if="finishedFetching"
+                   v-for="fleet in fleets"
                    :textValues="new Array(fleet.name, fleet.companyName)"
                    :remove="deleteFleet"
                    :objectId="fleet.id"
@@ -23,64 +24,18 @@
 
 <script>
     import infoPane from "../../assets/listComponent.vue"
+    import FleetRequestHandler from '../../api/FleetRequestHandler.vue'
+
     export default {
         components: {
-            'info-pane': infoPane
+            'info-pane': infoPane,
         },
-        data: function () {
-            return {
-                fleets : []
-            }
-        },
+        mixins: [FleetRequestHandler],
         created() {
             //Get all the fleets in the database when the page is loaded.
-            this.fetchFleetList()
+            //this.fetchFleetList();
+            this.fetchFleets(this.addCompanyNameToFleets);
         },
-        methods: {
-            //API call to fetch the fleets from the database.
-            fetchFleetList (){
-                this.$http.get('https://vopro5.ugent.be/app/api/fleets').then(response => {
-                    const data = response.body.data;
-                    for(let i=0; i<data.length; i++){
-                        if(data[i].name == null){
-                            data[i].name = 'Naamloze vloot'
-                        }
-                        this.fleets.push(data[i]);
-                        this.fetchCompanyName(this.fleets[i])
-                    }
-                })
-            },
-            //API call to delete a fleet.
-            deleteFleet(fleetId){
-                this.$http.delete('https://vopro5.ugent.be/app/api/fleets/' + fleetId)
-                //Search for object in local list.
-                let newFleets = this.fleets.filter(fleet => fleet.id !== fleetId);
-                this.fleets = newFleets;
-            },
-            //API call to create a fleet.
-            createFleet(fleet){
-                this.$http.post('https://vopro5.ugent.be/app/api/fleets', fleet,
-                    {
-                        headers: {
-                            Accept: "application/json",
-                        }
-                    }
-                ).then(response => {
-                    console.log(response.body);
-                })
-            },
-            fetchCompanyName(fleet) {
-                if(fleet.company != null){
-                    this.$http.get('https://vopro5.ugent.be/app/api/companies/' + fleet.company).then(response => {
-                        fleet.companyName = response.body.name;
-                    })
-                }
-                else {
-                    fleet.companyName = 'Geen bedrijf';
-                }
-
-            }
-        }
     }
 </script>
 <style>
