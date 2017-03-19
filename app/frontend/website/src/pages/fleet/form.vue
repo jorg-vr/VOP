@@ -4,20 +4,17 @@
 -->
 <template>
     <div>
-        <div class="row">
+        <form class="form-horizontal">
+            <form-input placeholder="Naam vloot" :value="fleet.name"></form-input>
             <div class="form-group">
-                <input type="text" class="form-control input-sm"
-                       placeholder="Naam vloot" v-model="fleet.name">
+                <label class="col-sm-4 control-label">Bedrijf</label>
+                <div class="col-sm-8">
+                    <select class="form-control" v-model="fleet.company">
+                        <option v-for="company in companies" v-bind:value="company.id">{{company.name}}</option>
+                    </select>
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-4 control-label">Bedrijf</label>
-            <div class="col-sm-8">
-                <select class="form-control" v-model="fleet.company">
-                    <option v-for="company in companies" v-bind:value="company.id">{{company.name}}</option>
-                </select>
-            </div>
-        </div>
+        </form>
         <div class="row">
             <div>
                 <div id="buttons">
@@ -36,12 +33,16 @@
 
 </template>
 <script>
+    import formInput from '../../assets/form/formInput.vue'
     export default {
         data() {
             //The values for the fleet.
             return {
                 companies: []
             }
+        },
+        components: {
+            'form-input': formInput
         },
         created(){
             this.fetchCompanies()

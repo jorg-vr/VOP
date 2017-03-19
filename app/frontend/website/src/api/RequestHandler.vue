@@ -13,19 +13,13 @@
                 return this.$http.get(this.base_url + url, this.headers)
             },
             post(url, object){
-                this.$http.post(this.base_url + url, object, this.headers).then(response => {
-                    return response;
-                })
+                return this.$http.post(this.base_url + url, object, this.headers)
             },
             put(url, object){
-                this.$http.put(this.base_url + url, object, this.headers).then(response => {
-                    return response;
-                })
+                return this.$http.put(this.base_url + url, object, this.headers)
             },
             delete(url, object){
-                this.$http.delete(this.base_url + url, object, this.headers).then(response => {
-                    return response;
-                })
+                return this.$http.delete(this.base_url + url, this.headers)
             }
         }
     }

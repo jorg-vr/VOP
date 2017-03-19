@@ -11,26 +11,12 @@
 </template>
 <script>
     import FleetForm from './form.vue'
+    import FleetRequestHandler from '../../api/FleetRequestHandler.vue'
+
     export default {
         components: {
             FleetForm
         },
-        methods: {
-            //API call to create a new fleet.
-            createFleet(fleet){
-                this.$http.post('https://vopro5.ugent.be/app/api/fleets', fleet,
-                    {
-                        headers: {
-                            Accept: "application/json",
-                        }
-                    }
-                ).then(response => { //Success
-                        this.$router.push({name: 'fleet', params: {id: response.body.id}})
-                    }, response => { //Fail
-                        console.log('fail')
-                    }
-                )
-            }
-        }
+        mixins: [FleetRequestHandler]
     }
 </script>

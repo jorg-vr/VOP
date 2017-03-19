@@ -6,94 +6,56 @@
         <div class="page-header">
             <h1>Vloot {{fleet.name}} </h1>
         </div>
-        <router-link :to="{name: 'new_vehicle', params: {fleet_id: fleet.id}}">
-            <button type="button" class="btn btn-primary table-button">Nieuw voertuig</button>
-        </router-link>
-        <button type="button" class="btn btn-danger table-button" v-on:click="deleteFleet">Verwijder vloot</button>
-        <div class="row">
-            <div>
-                <div v-for="subfleet in subfleets">
-                    <div v-if="subfleet.vehicles.length > 0">
-                        <h3>{{subfleet.type.name | capitalize }}</h3>
-                        <table class="table">
-                            <subfleet-row v-for="vehicle in subfleet.vehicles"
-                                          :vehicle="vehicle" :fleet_id="fleet.id" :deleteVehicle="deleteVehicle" :key="vehicle.id">
-                            </subfleet-row>
-                        </table>
-                    </div>
-                </div>
+        <div v-for="subfleet in subfleets">
+            <div v-if="subfleet.vehicles.length > 0">
+                <h3>{{subfleet.type.name | capitalize }}</h3>
+                <info-pane v-for="vehicle in subfleet.vehicles"
+                           :textValues="new Array(vehicle.brand, vehicle.model, vehicle.licensePlate)"
+                           :remove="deleteVehicle"
+                           :objectId="vehicle.id"
+                           edit="edit_vehicle"
+                           show="vehicle"
+                           :key="vehicle.id">
+                </info-pane>
             </div>
         </div>
+        <router-link :to="{name: 'new_vehicle'}">
+            <button type="button" class="btn btn-primary btn-circle btn-lg">+</button>
+        </router-link>
     </div>
 </template>
 <script>
+    import infoPane from "../../assets/listComponent.vue"
+    import FleetRequestHandler from '../../api/FleetRequestHandler.vue'
+    import VehicleRequestHandler from '../../api/VehicleRequestHandler.vue'
+
+
     export default {
-        components: {
-            SubfleetRow: {
-                props: {
-                    vehicle: Object,
-                    fleet_id: String,
-                    deleteVehicle: Function
-                },
-                template: `
-                <tr>
-                <td>{{vehicle.brand}}</td>
-                <td>{{vehicle.model}}</td>
-                <td class="full-width">{{vehicle.licensePlate}}</td>
-                <td><router-link :to="{name: 'vehicle', params: {fleet_id: fleet_id, id: vehicle.id }}">
-                    <button class="btn btn-xs btn-warning"><i class="fa fa-eye" aria-hidden="true"></i></button>
-                </router-link></td>
-                <td><router-link :to="{name: 'edit_vehicle', params: {fleet_id: fleet_id, id: vehicle.id}}">
-                    <button class="btn btn-xs btn-info"><i class="fa fa-pencil" aria-hidden="true"></i></button>
-                </router-link></td>
-                <td><button v-on:click="deleteVehicle(vehicle)" class="btn btn-xs btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button></td>
-                </tr>
-                `
-            }
-        },
-        data() {
+        data(){
             return {
-                subfleets:  [],
-                vehicles: [],
-                vehicleTypes: [],
-                fleet: {},
-                finishedFetchingTypes: false, //Dirty temporary method to check if http requests are finished.
-                finishedFetchingVehicles: false
+                fleetId: null,
+                subfleets: []
             }
         },
+        components: {
+            'info-pane': infoPane
+        },
+        mixins: [FleetRequestHandler, VehicleRequestHandler],
         created() {
-            this.fetchData(); //This will recursively call all fetch functions.
-            //This is a temporary fix as the calls have to be synchronous. The calls run asynchronous by standard.
+            this.fleetId = this.$route.params.id;
+            this.fetchFleet(this.fleetId);
+            this.$on('finished', this.createSubfleets);
+            this.fetchVehicles('fleet=' + this.fleetId, this.checkIfFinished);
+            this.fetchVehicleTypes(this.checkIfFinished);
+        },
+        filters: {
+            capitalize: function (value) {
+                if (!value) return ''
+                value = value.toString()
+                return value.charAt(0).toUpperCase() + value.slice(1)
+            }
         },
         methods: {
-            fetchData(){
-                this.$http.get('https://vopro5.ugent.be/app/api/fleets/' + this.$route.params.id).then(response => {
-                    this.fleet = response.body;
-                    this.fetchVehicles();
-                });
-            },
-            fetchVehicles(){
-                this.$http.get('https://vopro5.ugent.be/app/api/vehicles?fleet=' + this.fleet.id).then(response => {
-                    const data = response.body.data;
-                    for(let i=0; i<data.length; i++){
-                        this.vehicles.push(data[i]);
-                    }
-                    this.fetchVehicleTypes()
-                });
-            },
-            fetchVehicleTypes(){
-                this.$http.get('https://vopro5.ugent.be/app/api/vehicleTypes').then(response => {
-                    const data = response.body.data;
-                    for(let i=0; i<data.length; i++){
-                        this.vehicleTypes.push(data[i]);
-                    }
-                    this.createSubfleets()
-                });
-            },
-            deleteFleet(){
-                this.$http.delete('https://vopro5.ugent.be/app/api/fleets/' + this.fleet.id);
-                this.$router.push({name: 'fleets'});
-            },
             createSubfleets(){
                 for(let i=0; i<this.vehicles.length; i++) {
                     let vehicle = this.vehicles[i];
@@ -116,22 +78,10 @@
                     }
                 }
             },
-            deleteVehicle (vehicle){
-                this.$http.delete('https://vopro5.ugent.be/app/api/vehicles/' + vehicle.id);
-                for(let i=0; i<this.subfleets.length; i++){
-                    if(this.subfleets[i].type.id === vehicle.type){
-                        let newVehicles = this.subfleets[i].vehicles.filter(obj => obj.id !== vehicle.id)
-                        this.subfleets[i].vehicles = newVehicles;
-                    }
+            checkIfFinished(){
+                if(this.fetchedVehicles && this.fetchedTypes){
+                    this.$emit('finished');
                 }
-            }
-
-        },
-        filters: {
-            capitalize: function (value) {
-                if (!value) return ''
-                value = value.toString()
-                return value.charAt(0).toUpperCase() + value.slice(1)
             }
         }
     }

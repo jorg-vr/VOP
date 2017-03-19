@@ -7,8 +7,7 @@
             <h1>Vloten </h1>
         </div>
         <!-- Render an info-pane for every fleet. Once all the data is loaded, the table will be shown.-->
-        <info-pane v-if="finishedFetching"
-                   v-for="fleet in fleets"
+        <info-pane v-if="fleets.length>0 && finishedFetchingFleets" v-for="fleet in fleets"
                    :textValues="new Array(fleet.name, fleet.companyName)"
                    :remove="deleteFleet"
                    :objectId="fleet.id"
@@ -33,7 +32,6 @@
         mixins: [FleetRequestHandler],
         created() {
             //Get all the fleets in the database when the page is loaded.
-            //this.fetchFleetList();
             this.fetchFleets(this.addCompanyNameToFleets);
         },
     }
