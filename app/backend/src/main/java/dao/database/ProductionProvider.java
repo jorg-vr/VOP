@@ -46,12 +46,15 @@ public class ProductionProvider implements DAOProvider {
      * initializes the provider with the right hibernate configuration
      * @param production should it run on production or development
      */
-    public synchronized static void initializeProvider(boolean production) {
-        if (production) {
-            provider = new ProductionProvider("hibernate/hibernatedeployment.cfg.xml");
-        } else {
-            provider = new ProductionProvider("hibernate/hibernate.cfg.xml");
+    public synchronized static void initializeProvider(String environment) {
+        if (environment.equals("production")) {
+            provider = new ProductionProvider("hibernate/deployment.cfg.xml");
+        } else if (environment.equals("localtest")) {
+            provider = new ProductionProvider("hibernate/localtest.cfg.xml");
+        } else if (environment.equals("test")) {
+            provider = new ProductionProvider("hibernate/test.cfg.xml");
         }
+
     }
 
     /**
