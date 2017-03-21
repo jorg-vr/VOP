@@ -8,9 +8,7 @@ import java.util.Collection;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by Billie Devolder on 12/03/2017.
- */
+
 public class TestPagination {
 
     private static final Integer SIZE = 10;
@@ -61,7 +59,7 @@ public class TestPagination {
         assertEquals(new Integer((page * limit)), result.getOffset());
         assertNull(result.getPrevious());
         assertNull(result.getNext());
-        String first =  "/int?page=0&limit=" + limit;
+        String first = "/int?page=0&limit=" + limit;
         assertEquals(first, result.getFirst());
         assertEquals(first, result.getLast());
     }

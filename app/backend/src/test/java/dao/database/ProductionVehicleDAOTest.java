@@ -13,9 +13,7 @@ import java.time.LocalDate;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by tjupo on 13/03/2017.
- */
+
 public class ProductionVehicleDAOTest {
 
     private static DAOProvider daoProvider;
@@ -26,7 +24,7 @@ public class ProductionVehicleDAOTest {
     //Setup before any of the tests are started
     @BeforeClass
     public static void initProvider() throws Exception {
-        ProductionProvider.initializeProvider(true);
+        //ProductionProvider.initializeProvider("test");
         daoProvider = ProductionProvider.getInstance();
         vehicleDao = daoProvider.getVehicleDAO();
         vehicleTypeDAO = daoProvider.getVehicleTypeDAO();
@@ -35,7 +33,7 @@ public class ProductionVehicleDAOTest {
     //Gets executed after all tests have been run
     @AfterClass
     public static void closeProvider() throws Exception {
-        daoProvider.close();
+        //daoProvider.close();
     }
 
     @Test
@@ -51,7 +49,7 @@ public class ProductionVehicleDAOTest {
             fail("Failed trying to create a new vehicleType");
         }
         try {
-            vehicle1 = vehicleDao.create("brand 1", "model A", "UZ0UZABCUKZ12345L", "ABC 123", 30000, 2500, t1, LocalDate.now(),null);
+            vehicle1 = vehicleDao.create("brand 1", "model A", "UZ0UZABCUKZ12345L", "ABC 123", 30000, 2500, t1, LocalDate.now(), null);
         } catch (Exception e) {
             fail("Failed trying to create a new vehicle");
         }
@@ -104,9 +102,9 @@ public class ProductionVehicleDAOTest {
         VehicleType t1 = vehicleTypeDAO.create("type 1", 2.5);
         VehicleType t2 = vehicleTypeDAO.create("type 2", 3.5);
         //add new vehicle to the database
-        Vehicle v1 = vehicleDao.create("brand 2", "model A", "AZ0UZABCUKZ12345L", "ABR 569", 36000, 4900, t1, LocalDate.of(2015,6,17),null);
+        Vehicle v1 = vehicleDao.create("brand 2", "model A", "AZ0UZABCUKZ12345L", "ABR 569", 36000, 4900, t1, LocalDate.of(2015, 6, 17), null);
         //try to update the vehicle's brand field in the database
-        Vehicle v2 = vehicleDao.update(v1.getUuid(), "brand 3", "model B", "AZ0UZABCUKZ12345A", "ABR 600", 37000, 5900, t2, LocalDate.of(2016,7,18),null);
+        Vehicle v2 = vehicleDao.update(v1.getUuid(), "brand 3", "model B", "AZ0UZABCUKZ12345A", "ABR 600", 37000, 5900, t2, LocalDate.of(2016, 7, 18), null);
         Vehicle v3 = vehicleDao.get(v1.getUuid());
         assertEquals("brand field not updated correctly", "brand 3", v3.getBrand());
         assertEquals("model field not updated correctly", "model B", v3.getModel());
@@ -115,7 +113,7 @@ public class ProductionVehicleDAOTest {
         assertEquals("value field not updated correctly", 37000, v3.getValue());
         assertEquals("mileage field not updated correctly", 5900, v3.getMileage());
         assertEquals("type field not updated correctly", t2, v3.getType());
-        assertEquals("productionDate field not updated correctly", LocalDate.of(2016,7,18), v3.getProductionDate());
+        assertEquals("productionDate field not updated correctly", LocalDate.of(2016, 7, 18), v3.getProductionDate());
         //clean up database for new other tests
         vehicleDao.remove(v1.getUuid());
         vehicleTypeDAO.remove(t1.getUuid());

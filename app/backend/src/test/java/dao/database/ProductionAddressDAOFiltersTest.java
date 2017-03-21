@@ -11,9 +11,7 @@ import java.util.Collection;
 
 import static org.junit.Assert.assertTrue;
 
-/**
- * Created by Ponti on 14/03/2017.
- */
+
 public class ProductionAddressDAOFiltersTest {
     private static DAOProvider daoProvider;
     private static AddressDAO addressDAO;
@@ -23,7 +21,7 @@ public class ProductionAddressDAOFiltersTest {
     //Setup before any of the tests are started
     @BeforeClass
     public static void initProvider() throws Exception {
-        ProductionProvider.initializeProvider(true);
+        //ProductionProvider.initializeProvider("test");
         daoProvider = ProductionProvider.getInstance();
         addressDAO = daoProvider.getAddressDao();
 
@@ -38,6 +36,7 @@ public class ProductionAddressDAOFiltersTest {
         addressDAO.remove(a1.getUuid());
         addressDAO.remove(a2.getUuid());
         addressDAO.remove(a3.getUuid());
+        //daoProvider.close();
     }
 
     @Test
