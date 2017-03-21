@@ -9,11 +9,9 @@ import org.springframework.web.bind.annotation.*;
 import spring.Exceptions.ConflictException;
 import spring.Exceptions.InvalidInputException;
 import spring.Exceptions.NotFoundException;
-import spring.Exceptions.NotImplementedException;
 import spring.model.RESTSchema;
 import spring.model.RESTUser;
 
-import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -45,7 +43,6 @@ public class RESTUserController {
     /**
      * @return a collection of all the users in the system.
      * If there are no users, an empty collection will be returned.
-     * TODO filters
      */
     @RequestMapping(method = RequestMethod.GET)
     public RESTSchema<RESTUser> get(String email,
@@ -59,7 +56,7 @@ public class RESTUserController {
             Collection<Account> accounts = accountController.getAll();
             for (Account account : accounts) {
                 Person person = account.getPerson();
-                if (shouldAdd(person, email, firstName, lastName)) {
+                if (passesFilters(person, email, firstName, lastName)) {
                     users.add(merge(person, account));
                 }
             }
@@ -80,10 +77,19 @@ public class RESTUserController {
      * @param email     can be null
      * @return whether the person passes the filters or not
      */
-    private boolean shouldAdd(Person person, String email, String firstName, String lastName) {
-        return (firstName == null || person.getFirstName().toLowerCase().contains(firstName.toLowerCase()))
-                && (lastName == null || person.getLastName().toLowerCase().contains(lastName.toLowerCase()))
-                && (email == null || person.getEmail().toLowerCase().contains(email.toLowerCase()));
+    private boolean passesFilters(Person person, String email, String firstName, String lastName) {
+        return containsLowerCase(person.getEmail(), email)
+                && containsLowerCase(person.getFirstName(), firstName)
+                && containsLowerCase(person.getLastName(), lastName);
+    }
+
+    /**
+     * @param toCheck the string that should be tested
+     * @param filter  if null, true will be returned
+     * @return returns true if toCheck contains filter (case insensitive) or true if filter is null
+     */
+    private boolean containsLowerCase(String toCheck, String filter) {
+        return filter == null || toCheck.toLowerCase().contains(filter.toLowerCase());
     }
 
     /**
