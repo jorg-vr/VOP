@@ -1,6 +1,7 @@
 package spring.controller;
 
 import controller.CustomerController;
+import dao.database.ProductionProvider;
 import dao.interfaces.DataAccessException;
 import model.identity.Address;
 import model.identity.Customer;
@@ -15,6 +16,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import spring.model.RESTAddress;
 import spring.model.RESTCompany;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -37,6 +39,7 @@ public class RESTCompanyControllerTest {
 
     @BeforeClass
     public static void setup() {
+        ProductionProvider.initializeProvider("test");
         //ProductionProvider.initializeProvider(false);
         try {
             address= new Address("mystreet","123","lala","12345","land");

@@ -43,6 +43,7 @@ public class RESTRoleControllerTest {
 
     @BeforeClass
     public static void setup() {
+        ProductionProvider.initializeProvider("test");
         //ProductionProvider.initializeProvider(false);
         try {
             address= new Address("mystreet","123","lala","12345","land");

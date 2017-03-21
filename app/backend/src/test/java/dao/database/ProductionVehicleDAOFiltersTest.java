@@ -30,6 +30,7 @@ public class ProductionVehicleDAOFiltersTest {
     //Setup before any of the tests are started
     @BeforeClass
     public static void initProvider() throws Exception {
+        ProductionProvider.initializeProvider("test");
         //ProductionProvider.initializeProvider(false);
         daoProvider = ProductionProvider.getInstance();
         vehicleDAO = daoProvider.getVehicleDAO();

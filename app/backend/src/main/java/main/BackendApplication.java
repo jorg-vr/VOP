@@ -21,11 +21,7 @@ public class BackendApplication {
 	public static void main(String[] args) {
 
         if (args.length == 1) {
-            if (args[0].equals("production")) {
-                ProductionProvider.initializeProvider(true);
-            } else if (args[0].equals("development")) {
-                ProductionProvider.initializeProvider(false);
-            }
+            ProductionProvider.initializeProvider(args[0]);
         } else {
             return;
         }

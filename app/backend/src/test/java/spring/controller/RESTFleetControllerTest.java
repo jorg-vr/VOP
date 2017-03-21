@@ -2,6 +2,7 @@ package spring.controller;
 
 import controller.CustomerController;
 import controller.FleetController;
+import dao.database.ProductionProvider;
 import dao.interfaces.DataAccessException;
 import model.fleet.Fleet;
 import model.identity.Address;
@@ -36,6 +37,7 @@ public class RESTFleetControllerTest {
 
     @BeforeClass
     public static void setup() {
+        ProductionProvider.initializeProvider("test");
         //ProductionProvider.initializeProvider(false);
         try {
             address= new Address("mystreet","123","lala","12345","land");
