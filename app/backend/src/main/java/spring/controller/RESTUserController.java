@@ -19,17 +19,17 @@ import java.util.*;
 /**
  * This controller is responsible for handling the HTTP requests of the URL /user.
  * Currently, the following HTTP requests are supported:
- *  1) GET /user
- *  2) GET /user/{id}
- *  3) POST /user
- *  4) PUT /user/{id}
- *  5) DELETE /user/{id}
- *
- *  This controller is responsible for translating the RESTModels to the backend specific models and calling the appropriate methods
- *  of the spring independent controllers,  located in the controller package.
- *  It is also responsible for translating the backend specific exceptions to HTPP repsonse codes.
- *
- *  For more information about what the HTTP requests do, see the API specification
+ * 1) GET /user
+ * 2) GET /user/{id}
+ * 3) POST /user
+ * 4) PUT /user/{id}
+ * 5) DELETE /user/{id}
+ * <p>
+ * This controller is responsible for translating the RESTModels to the backend specific models and calling the appropriate methods
+ * of the spring independent controllers,  located in the controller package.
+ * It is also responsible for translating the backend specific exceptions to HTPP repsonse codes.
+ * <p>
+ * For more information about what the HTTP requests do, see the API specification
  */
 @RestController
 @RequestMapping("/users")
@@ -48,21 +48,42 @@ public class RESTUserController {
      * TODO filters
      */
     @RequestMapping(method = RequestMethod.GET)
-    public RESTSchema<RESTUser> get(Integer page, Integer limit) {
+    public RESTSchema<RESTUser> get(String email,
+                                    String firstName,
+                                    String lastName,
+                                    Integer page,
+                                    Integer limit) {
         Collection<RESTUser> users = new ArrayList<>();
 
         try {
             Collection<Account> accounts = accountController.getAll();
             for (Account account : accounts) {
                 Person person = account.getPerson();
-                users.add(merge(person, account));
+                if (shouldAdd(person, email, firstName, lastName)) {
+                    users.add(merge(person, account));
+                }
             }
         } catch (DataAccessException e) {
             // This should not happen unless there is something wrong with the database
             System.err.println("Something is wrong with the database");
             e.printStackTrace();
         }
-        return new RESTSchema<>(users, page, limit, PATH_USER+"?");
+        return new RESTSchema<>(users, page, limit, PATH_USER + "?");
+    }
+
+    /**
+     * This method checks if the person passes the filters.
+     *
+     * @param person    the person that should be checked
+     * @param firstName can be null
+     * @param lastName  can be null
+     * @param email     can be null
+     * @return whether the person passes the filters or not
+     */
+    private boolean shouldAdd(Person person, String email, String firstName, String lastName) {
+        return (firstName == null || person.getFirstName().toLowerCase().contains(firstName.toLowerCase()))
+                && (lastName == null || person.getLastName().toLowerCase().contains(lastName.toLowerCase()))
+                && (email == null || person.getEmail().toLowerCase().contains(email.toLowerCase()));
     }
 
     /**
@@ -168,9 +189,9 @@ public class RESTUserController {
      */
     private RESTUser merge(Person person, Account account) {
         String id = UUIDUtil.UUIDToNumberString(account.getUuid());
-        String firstName=person!=null?person.getFirstName():null;
-        String lastName=person!=null?person.getLastName():null;
-        String email=person!=null?person.getEmail():null;
+        String firstName = person != null ? person.getFirstName() : null;
+        String lastName = person != null ? person.getLastName() : null;
+        String email = person != null ? person.getEmail() : null;
         RESTUser user = new RESTUser();
         user.setId(id);
         user.setPassword(account.getHashedPassword());
