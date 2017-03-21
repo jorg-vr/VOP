@@ -7,11 +7,7 @@ import model.fleet.Fleet;
 import model.identity.Customer;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.Collection;
 
 import static org.junit.Assert.*;
 
@@ -27,7 +23,7 @@ public class ProductionFleetDAOTest {
     //Setup before any of the tests are started
     @BeforeClass
     public static void initProvider() throws Exception {
-        ProductionProvider.initializeProvider(true);
+        //ProductionProvider.initializeProvider(false);
         daoProvider = ProductionProvider.getInstance();
         fleetDAO = daoProvider.getFleetDAO();
         customerDAO = daoProvider.getCustomerDAO();
@@ -36,7 +32,7 @@ public class ProductionFleetDAOTest {
     //Gets executed after all tests have been run
     @AfterClass
     public static void closeProvider() throws Exception {
-        daoProvider.close();
+        //daoProvider.close();
     }
 
     @Test

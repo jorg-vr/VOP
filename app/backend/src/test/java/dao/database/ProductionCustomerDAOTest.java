@@ -7,7 +7,6 @@ import dao.interfaces.Filter;
 import model.identity.Customer;
 import org.junit.*;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import static org.junit.Assert.assertEquals;
@@ -23,14 +22,14 @@ public class ProductionCustomerDAOTest {
 
     @BeforeClass
     public static void init() throws Exception {
-        ProductionProvider.initializeProvider(true);
+        //ProductionProvider.initializeProvider(false);
         daoProvider = ProductionProvider.getInstance();
         customerDAO = daoProvider.getCustomerDAO();
     }
 
     @AfterClass
     public static void end() throws Exception {
-        daoProvider.close();
+        //daoProvider.close();
     }
 
     @Before

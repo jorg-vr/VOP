@@ -26,7 +26,7 @@ public class ProductionVehicleDAOTest {
     //Setup before any of the tests are started
     @BeforeClass
     public static void initProvider() throws Exception {
-        ProductionProvider.initializeProvider(true);
+        //ProductionProvider.initializeProvider(false);
         daoProvider = ProductionProvider.getInstance();
         vehicleDao = daoProvider.getVehicleDAO();
         vehicleTypeDAO = daoProvider.getVehicleTypeDAO();
@@ -35,7 +35,7 @@ public class ProductionVehicleDAOTest {
     //Gets executed after all tests have been run
     @AfterClass
     public static void closeProvider() throws Exception {
-        daoProvider.close();
+        //daoProvider.close();
     }
 
     @Test

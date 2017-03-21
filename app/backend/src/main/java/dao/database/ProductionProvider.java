@@ -1,19 +1,12 @@
 package dao.database;
 
 import dao.interfaces.*;
-import model.account.Function;
-import model.fleet.Vehicle;
 import model.fleet.VehicleType;
-import model.identity.Company;
-import model.identity.Person;
-import model.insurance.Insurance;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-
-import java.time.LocalDateTime;
 
 /**
  * Created by sam on 3/8/17.
@@ -59,6 +52,7 @@ public class ProductionProvider implements DAOProvider {
      */
     public synchronized static DAOProvider getInstance() {
         if (provider == null) {
+            initializeProvider(true);
         }
         return provider;
     }

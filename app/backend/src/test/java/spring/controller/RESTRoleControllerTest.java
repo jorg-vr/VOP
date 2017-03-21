@@ -1,7 +1,9 @@
 package spring.controller;
 
-import controller.*;
-import dao.database.ProductionProvider;
+import controller.AccountController;
+import controller.CustomerController;
+import controller.FunctionController;
+import controller.PersonController;
 import dao.interfaces.DataAccessException;
 import model.account.Account;
 import model.account.Function;
@@ -21,9 +23,7 @@ import spring.model.RESTRole;
 
 import java.time.LocalDateTime;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
-import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -43,7 +43,7 @@ public class RESTRoleControllerTest {
 
     @BeforeClass
     public static void setup() {
-        ProductionProvider.initializeProvider(true);
+        //ProductionProvider.initializeProvider(false);
         try {
             address= new Address("mystreet","123","lala","12345","land");
             customer= new CustomerController().create(address,"04789456123","anita","123456789");
@@ -65,7 +65,7 @@ public class RESTRoleControllerTest {
             e.printStackTrace();
         }
 
-        ProductionProvider.getInstance().close();
+        //ProductionProvider.getInstance().close();
     }
 
     @Test

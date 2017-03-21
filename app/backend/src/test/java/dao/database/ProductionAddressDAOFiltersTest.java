@@ -23,7 +23,7 @@ public class ProductionAddressDAOFiltersTest {
     //Setup before any of the tests are started
     @BeforeClass
     public static void initProvider() throws Exception {
-        ProductionProvider.initializeProvider(true);
+        //ProductionProvider.initializeProvider(false);
         daoProvider = ProductionProvider.getInstance();
         addressDAO = daoProvider.getAddressDao();
 
@@ -38,6 +38,7 @@ public class ProductionAddressDAOFiltersTest {
         addressDAO.remove(a1.getUuid());
         addressDAO.remove(a2.getUuid());
         addressDAO.remove(a3.getUuid());
+        //daoProvider.close();
     }
 
     @Test

@@ -20,7 +20,7 @@ public class ProductionAddressDAOTest {
     //Setup before any of the tests are started
     @BeforeClass
     public static void initProvider() throws Exception {
-        ProductionProvider.initializeProvider(true);
+        //ProductionProvider.initializeProvider(false);
         daoProvider = ProductionProvider.getInstance();
         addressDAO = daoProvider.getAddressDao();
     }
@@ -28,6 +28,7 @@ public class ProductionAddressDAOTest {
     //Gets executed after all tests have been run
     @AfterClass
     public static void closeProvider() throws Exception {
+        //daoProvider.close();
     }
 
     @Test

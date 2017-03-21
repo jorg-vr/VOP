@@ -2,7 +2,6 @@ package spring.controller;
 
 import controller.AccountController;
 import controller.PersonController;
-import dao.database.ProductionProvider;
 import dao.interfaces.DataAccessException;
 import model.account.Account;
 import model.identity.Person;
@@ -17,9 +16,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import spring.model.RESTUser;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
-import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -34,7 +31,7 @@ public class RESTUserControllerTest {
     private static Account account;
     @BeforeClass
     public static void setup() {
-        ProductionProvider.initializeProvider(true);
+        //ProductionProvider.initializeProvider(false);
         try {
             person=new PersonController().createPerson("jon","doe","jon.doe@hotmail.com");
             account=new AccountController().createAccount("jon.doe@hotmail.com","054561dfs5f465",person.getUuid());
@@ -51,7 +48,7 @@ public class RESTUserControllerTest {
             e.printStackTrace();
         }
 
-        ProductionProvider.getInstance().close();
+        //ProductionProvider.getInstance().close();
     }
 
     @Test

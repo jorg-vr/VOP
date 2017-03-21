@@ -32,7 +32,7 @@ public class ProductionVehicleDAOFiltersTest {
     //Setup before any of the tests are started
     @BeforeClass
     public static void initProvider() throws Exception {
-        ProductionProvider.initializeProvider(true);
+        //ProductionProvider.initializeProvider(false);
         daoProvider = ProductionProvider.getInstance();
         vehicleDAO = daoProvider.getVehicleDAO();
         vehicleTypeDAO = daoProvider.getVehicleTypeDAO();
@@ -60,7 +60,7 @@ public class ProductionVehicleDAOFiltersTest {
         customerDAO.remove(cust1.getUuid());
         vehicleTypeDAO.remove(t1.getUuid());
         vehicleTypeDAO.remove(t2.getUuid());
-        daoProvider.close();
+        //daoProvider.close();
     }
 
 

@@ -28,7 +28,7 @@ public class ProductionAccountDAOFiltersTest {
     //Setup before any of the tests are started
     @BeforeClass
     public static void initProvider() throws Exception {
-        ProductionProvider.initializeProvider(true);
+        //ProductionProvider.initializeProvider(false);
         daoProvider = ProductionProvider.getInstance();
         accountDAO = daoProvider.getAccountDao();
         personDAO = daoProvider.getPersonDAO();
@@ -48,6 +48,7 @@ public class ProductionAccountDAOFiltersTest {
         accountDAO.remove(a3.getUuid());
         personDAO.remove(p1.getUuid());
         personDAO.remove(p2.getUuid());
+        //daoProvider.close();
     }
 
     @Ignore

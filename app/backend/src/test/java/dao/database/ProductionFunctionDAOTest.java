@@ -33,7 +33,7 @@ public class ProductionFunctionDAOTest {
     //Setup before any of the tests are started
     @BeforeClass
     public static void initProvider() throws Exception {
-        ProductionProvider.initializeProvider(true);
+        //ProductionProvider.initializeProvider(false);
         daoProvider = ProductionProvider.getInstance();
         functionDAO = daoProvider.getFunctionDAO();
         //companyDAO = daoProvider.getCompanyDAO();
@@ -46,6 +46,7 @@ public class ProductionFunctionDAOTest {
     //Gets executed after all tests have been run
     @AfterClass
     public static void closeProvider() throws Exception {
+        //daoProvider.close();
     }
 
     //TODO: change person creation when create method in PersonDAO gets changed
