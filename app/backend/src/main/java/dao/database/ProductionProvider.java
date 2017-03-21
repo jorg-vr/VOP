@@ -36,7 +36,7 @@ public class ProductionProvider implements DAOProvider {
      * SHOULD BE CALLED BEFORE getInstance()
      * initializes the provider with the right hibernate configuration
      *
-     * @param production should it run on production or development
+     * @param environment should it run on production or development
      */
     public synchronized static void initializeProvider(String environment) {
         if (environment.equals("production")) {
@@ -54,7 +54,7 @@ public class ProductionProvider implements DAOProvider {
      */
     public synchronized static DAOProvider getInstance() {
         if (provider == null) {
-            initializeProvider(true);
+            initializeProvider("production");
         }
         return provider;
     }

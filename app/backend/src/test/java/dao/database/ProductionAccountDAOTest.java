@@ -7,7 +7,6 @@ import model.account.Account;
 import model.identity.Person;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -23,8 +22,7 @@ public class ProductionAccountDAOTest {
     //Setup before any of the tests are started
     @BeforeClass
     public static void initProvider() throws Exception {
-        ProductionProvider.initializeProvider("test");
-        //ProductionProvider.initializeProvider(false);
+        //ProductionProvider.initializeProvider("test");
         daoProvider = ProductionProvider.getInstance();
         accountDAO = daoProvider.getAccountDao();
         personDAO = daoProvider.getPersonDAO();
