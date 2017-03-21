@@ -7,9 +7,7 @@ import org.junit.*;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by Ponti on 14/03/2017.
- */
+
 public class ProductionVehicleTypeDAOTest {
     private static DAOProvider daoProvider;
     private static VehicleTypeDao vehicleTypeDAO;

@@ -8,9 +8,7 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
-/**
- * Created by sam on 3/8/17.
- */
+
 public class ProductionProvider implements DAOProvider {
 
     private static ProductionProvider provider = null;
@@ -37,6 +35,7 @@ public class ProductionProvider implements DAOProvider {
     /**
      * SHOULD BE CALLED BEFORE getInstance()
      * initializes the provider with the right hibernate configuration
+     *
      * @param production should it run on production or development
      */
     public synchronized static void initializeProvider(boolean production) {
@@ -108,7 +107,7 @@ public class ProductionProvider implements DAOProvider {
         DAOProvider provider = ProductionProvider.getInstance();
 
         VehicleTypeDao dao = provider.getVehicleTypeDAO();
-        for(VehicleType type : dao.listFiltered(dao.nameContains("type"))){
+        for (VehicleType type : dao.listFiltered(dao.nameContains("type"))) {
             dao.remove(type.getUuid());
         }
 

@@ -9,9 +9,7 @@ import java.util.Collection;
 
 import static org.junit.Assert.assertTrue;
 
-/**
- * Created by Ponti on 14/03/2017.
- */
+
 public class ProductionVehicleTypeDAOFiltersTest {
     private static DAOProvider daoProvider;
     private static VehicleTypeDao vehicleTypeDAO;

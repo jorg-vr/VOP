@@ -14,9 +14,7 @@ import java.util.Collection;
 
 import static org.junit.Assert.assertTrue;
 
-/**
- * Created by Ponti on 13/03/2017.
- */
+
 public class ProductionVehicleDAOFiltersTest {
     private static DAOProvider daoProvider;
     private static VehicleDAO vehicleDAO;

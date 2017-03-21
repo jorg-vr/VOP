@@ -9,9 +9,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by Ponti on 14/03/2017.
- */
+
 public class ProductionAddressDAOTest {
     private static DAOProvider daoProvider;
     private static AddressDAO addressDAO;
@@ -38,7 +36,7 @@ public class ProductionAddressDAOTest {
         boolean removed = false;
         //test if a vehicle can be succesfully added to the database
         try {
-            a1 = addressDAO.create("streettest n1","59","town 1","9999","country 1");
+            a1 = addressDAO.create("streettest n1", "59", "town 1", "9999", "country 1");
         } catch (Exception e) {
             fail("Failed trying to create a new address");
         }
@@ -46,11 +44,11 @@ public class ProductionAddressDAOTest {
         try {
             if (a1 != null) {
                 Address a2 = addressDAO.get(a1.getUuid());
-                assertEquals("street field not created correctly",a1.getStreet() ,a2.getStreet() );
-                assertEquals("streetNumber field not created correctly",a1.getStreetNumber() ,a2.getStreetNumber() );
-                assertEquals("town field not created correctly",a1.getTown() ,a2.getTown() );
-                assertEquals("postalCode field not created correctly",a1.getPostalCode() ,a2.getPostalCode() );
-                assertEquals("country field not created correctly",a1.getCountry() ,a2.getCountry() );
+                assertEquals("street field not created correctly", a1.getStreet(), a2.getStreet());
+                assertEquals("streetNumber field not created correctly", a1.getStreetNumber(), a2.getStreetNumber());
+                assertEquals("town field not created correctly", a1.getTown(), a2.getTown());
+                assertEquals("postalCode field not created correctly", a1.getPostalCode(), a2.getPostalCode());
+                assertEquals("country field not created correctly", a1.getCountry(), a2.getCountry());
                 present = true;
             }
         } catch (Exception e) {
@@ -82,14 +80,14 @@ public class ProductionAddressDAOTest {
 
     @Test
     public void update() throws Exception {
-        Address a1 = addressDAO.create("streettest n1","59","town 1","9999","country 1");
-        Address a2 = addressDAO.update(a1.getUuid(), "streettest n2","60","town 2","99999","country 2");
+        Address a1 = addressDAO.create("streettest n1", "59", "town 1", "9999", "country 1");
+        Address a2 = addressDAO.update(a1.getUuid(), "streettest n2", "60", "town 2", "99999", "country 2");
         Address a3 = addressDAO.get(a1.getUuid());
-        assertEquals("street field not updated correctly","streettest n2" ,a3.getStreet() );
-        assertEquals("streetNumber field not updated correctly","60" ,a3.getStreetNumber() );
-        assertEquals("town field not updated correctly","town 2" ,a3.getTown() );
-        assertEquals("postalCode field not updated correctly","99999" ,a3.getPostalCode() );
-        assertEquals("country field not updated correctly","country 2" ,a3.getCountry() );
+        assertEquals("street field not updated correctly", "streettest n2", a3.getStreet());
+        assertEquals("streetNumber field not updated correctly", "60", a3.getStreetNumber());
+        assertEquals("town field not updated correctly", "town 2", a3.getTown());
+        assertEquals("postalCode field not updated correctly", "99999", a3.getPostalCode());
+        assertEquals("country field not updated correctly", "country 2", a3.getCountry());
 
         addressDAO.remove(a1.getUuid());
     }

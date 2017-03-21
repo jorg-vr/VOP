@@ -11,9 +11,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by Ponti on 15/03/2017.
- */
+
 public class ProductionFleetDAOTest {
     private static DAOProvider daoProvider;
     private static FleetDAO fleetDAO;
@@ -58,7 +56,7 @@ public class ProductionFleetDAOTest {
                 Fleet fleet2 = fleetDAO.get(fleet1.getUuid());
                 assertEquals("name field not created correctly", fleet1.getName(), fleet2.getName());
                 assertEquals("customer field not created correctly", fleet1.getOwner(), fleet2.getOwner());
-                assertTrue("vehicles field not created correctly", fleet2.size()== 0);
+                assertTrue("vehicles field not created correctly", fleet2.size() == 0);
                 present = true;
             }
         } catch (Exception e) {
