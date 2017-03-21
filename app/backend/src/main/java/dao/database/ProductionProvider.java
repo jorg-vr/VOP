@@ -113,7 +113,7 @@ public class ProductionProvider implements DAOProvider {
     }
 
     public static void main(String[] args) throws DataAccessException {
-        ProductionProvider.initializeProvider(true);
+        ProductionProvider.initializeProvider("production");
         DAOProvider provider = ProductionProvider.getInstance();
 
         VehicleTypeDao dao = provider.getVehicleTypeDAO();
