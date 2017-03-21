@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="model.account.Account" table="ACCOUNT">
+        <meta attribute="class-description">
+            This class contains the account detail.
+        </meta>
+        <id name="uuid" type="uuid-binary" column="id">
+            <generator class="uuid2"/>
+        </id>
+
+        <property name="login" column="login" type="string"/>
+        <property name="hashedPassword" column="hashed_password" type="string"/>
+        <many-to-one name="person" column="person_id"  class="model.identity.Person" lazy="false"/>
+        <bag name="functions" access="field" table="FUNCTION" cascade="all"
+             inverse="true" lazy="false" fetch="select">
+            <key column="account_id" not-null="true"/>
+            <one-to-many class="model.account.Function" />
+        </bag>
+
+    </class>
+</hibernate-mapping>

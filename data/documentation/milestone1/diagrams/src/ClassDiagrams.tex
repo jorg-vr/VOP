@@ -1,0 +1,37 @@
+\documentclass{article}
+
+\usepackage{graphicx}
+\usepackage{rotating}
+
+\graphicspath{{../png/}}
+\renewcommand{\figurename}{Class diagram}
+
+\newcommand{\diagram}[2]{
+	\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{#1}
+	\caption{#2}
+}
+
+\newcommand{\hordiagram}[2]{
+	\begin{figure}
+		\diagram{#1}{#2}
+	\end{figure}
+}
+
+
+\newcommand{\vertdiagram}[2]{
+	\begin{sidewaysfigure}
+		\diagram{#1}{#2}
+	\end{sidewaysfigure}
+}
+
+\begin{document}
+	\title{Class diagrams}
+	\date{}
+	\maketitle
+	\vertdiagram{ClassDiagramAccount}{Account}
+	\vertdiagram{ClassDiagramDAO}{DAO}
+	\vertdiagram{ClassDiagramFleet}{Fleet}
+	\vertdiagram{ClassDiagramIdentity}{Identity}
+	\vertdiagram{ClassDiagramHistory}{History}
+	\vertdiagram{ClassDiagramModels}{Models}
+\end{document}

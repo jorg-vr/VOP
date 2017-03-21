@@ -1,76 +1,73 @@
 package model.fleet;
 
+import model.history.EditableObject;
 import model.identity.Customer;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.UUID;
 
-public class Fleet {
+public class Fleet implements EditableObject, java.io.Serializable {
 
-    private int id;
-
+    private UUID uuid;
+    private String name;
     private Customer owner;
 
-    private Collection<Subfleet> subfleets;
+    private Collection<Vehicle> vehicles;
 
-    public Fleet(int id, Customer owner, Collection<Subfleet> subfleets) {
-        this.id = id;
-        this.owner = owner;
-        this.subfleets = subfleets;
+    public Fleet() {
     }
 
-    public Fleet(int id, Customer owner) {
-        this.id = id;
-        this.owner = owner;
-        this.subfleets = new HashSet<>();
+    public Fleet(UUID uuid, Collection<Vehicle> vehicles) {
+        this.uuid= uuid;
+
+        this.vehicles = vehicles;
     }
 
-    public int getId() {
-        return id;
-    }
+
+
 
     /**
-     * Adds the Subfleet to the Fleet.
-     * If the Subfleet is already present in the Fleet, nothing will happen.
-     * DEVELOPER NOTE:  We can't be sure that subfleets is a HashSet (because the Constructor accepts a Collection)
-     * so we can't shorten this function to 1 line.
-     *
-     * @return true if the Subfleet was added
-     */
-    public boolean add(Subfleet subfleet) {
-        if (subfleets.contains(subfleet)) {
-            return false;
-        }
-        subfleets.add(subfleet);
-        return true;
-    }
-
-    /**
-     * Removes the Subfleet from the Fleet.
-     * If the Subfleet is not present in the Fleet, nothing will happen.
+     * Adds the Vehicle to the Fleet.
+     * If the Vehicle is already present in the Fleet, nothing will happen.
      * DEVELOPER NOTE:  We can't be sure that vehicles is a HashSet (because the Constructor accepts a Collection)
      * so we can't shorten this function to 1 line.
      *
-     * @return true if the Subfleet was removed
+     * @return true if the Vehicle was added
      */
-    public boolean remove(Subfleet subfleet) {
-        if (!subfleets.contains(subfleet)) {
+    public boolean addVehicle(Vehicle vehicle) {
+        if (vehicles == null) {
+            vehicles = new ArrayList<Vehicle>();
+        } else if (vehicle == null || vehicles.contains(vehicle)) {
             return false;
         }
-        subfleets.remove(subfleet);
-        return true;
-    }
-
-    public Collection<Subfleet> getSubfleets() {
-        return new ArrayList<>(subfleets);
+        return vehicles.add(vehicle);
     }
 
     /**
-     * @return The amount of subfleets in this fleet
+     * Removes the Vehicle from the Fleet.
+     * If the Vehicle is not present in the Fleet, nothing will happen.
+     * DEVELOPER NOTE:  We can't be sure that vehicles is a HashSet (because the Constructor accepts a Collection)
+     * so we can't shorten this function to 1 line.
+     *
+     * @return true if the Vehicle was removed
+     */
+    public boolean removeVehicle(Vehicle vehicle) {
+        if(vehicles == null){
+            return false;
+        }
+        if (vehicle == null || !vehicles.contains(vehicle)) {
+            return false;
+        }
+        return vehicles.remove(vehicle);
+    }
+
+    /**
+     * @return The amount of vehicles in this fleet
      */
     public int size() {
-        return subfleets.size();
+        return vehicles.size();
     }
 
     public Customer getOwner() {
@@ -81,19 +78,51 @@ public class Fleet {
         this.owner = owner;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
+    }
+
+    public Collection<Vehicle> getVehicles() {
+        return vehicles;
+    }
+
+    public void setVehicles(Collection<Vehicle> vehicles) {
+        this.vehicles = vehicles;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Fleet fleet = (Fleet) o;
-
-        return id == fleet.id;
+        return uuid.equals(((Fleet) o).getUuid());
 
     }
 
     @Override
-    public int hashCode() {
-        return id;
+    public EditableObject copy() {
+        Collection<Vehicle> newList = new ArrayList<Vehicle>();
+        for (Vehicle v : vehicles) {
+            newList.add((Vehicle) v.copy());
+        }
+        return new Fleet(uuid, newList);
     }
+
+    @Override
+    public int hashCode() {
+        return uuid.hashCode();
+    }
+
 }

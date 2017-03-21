@@ -1,39 +1,56 @@
 package spring.model;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
 /**
- * Created by jorg on 3/6/17.
- * bean class implementing swagger api for vehicle
+ * This is a bean class as specified in the API specification
  */
+@ResponseStatus(value= HttpStatus.OK, reason="OK")
 public class RESTVehicle {
     private String id;
-    private String license_plate;
-    private String chassis_number;
+    private String licensePlate;
+    private String vin; //chassisnumber
     private String brand;
     private String model;
     private String type;
-    private int kilometer_count;
+    private int value;
+    private int mileage;
     private String year;
-    private String leasing_company; //id of leasing company
-    private String created_at;
-    private String updated_at;
+    private String leasingCompany; //id of leasing company
+    private String fleet;
+    private String createdAt;
+    private String updatedAt;
+    private String lastUpdatedBy;
     private String url;
 
     public RESTVehicle() {
     }
 
-    public RESTVehicle(String id, String license_plate, String chassis_number, String brand, String model, String type, int kilometer_count, String year, String leasing_company, String created_at, String updated_at, String url) {
+    public RESTVehicle(String id, String licensePlate, String vin, String brand, String model, String type, int value, int mileage, String year, String leasingCompany, String fleet, String createdAt, String updatedAt, String lastUpdatedBy, String url) {
         this.id = id;
-        this.license_plate = license_plate;
-        this.chassis_number = chassis_number;
+        this.licensePlate = licensePlate;
+        this.vin = vin;
         this.brand = brand;
         this.model = model;
         this.type = type;
-        this.kilometer_count = kilometer_count;
+        this.value = value;
+        this.mileage = mileage;
         this.year = year;
-        this.leasing_company = leasing_company;
-        this.created_at = created_at;
-        this.updated_at = updated_at;
+        this.leasingCompany = leasingCompany;
+        this.fleet = fleet;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.lastUpdatedBy = lastUpdatedBy;
         this.url = url;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
     }
 
     public String getId() {
@@ -44,20 +61,20 @@ public class RESTVehicle {
         this.id = id;
     }
 
-    public String getLicense_plate() {
-        return license_plate;
+    public String getLicensePlate() {
+        return licensePlate;
     }
 
-    public void setLicense_plate(String license_plate) {
-        this.license_plate = license_plate;
+    public void setLicensePlate(String licensePlate) {
+        this.licensePlate = licensePlate;
     }
 
-    public String getChassis_number() {
-        return chassis_number;
+    public String getVin() {
+        return vin;
     }
 
-    public void setChassis_number(String chassis_number) {
-        this.chassis_number = chassis_number;
+    public void setVin(String vin) {
+        this.vin = vin;
     }
 
     public String getBrand() {
@@ -84,12 +101,12 @@ public class RESTVehicle {
         this.type = type;
     }
 
-    public int getKilometer_count() {
-        return kilometer_count;
+    public int getMileage() {
+        return mileage;
     }
 
-    public void setKilometer_count(int kilometer_count) {
-        this.kilometer_count = kilometer_count;
+    public void setMileage(int mileage) {
+        this.mileage = mileage;
     }
 
     public String getYear() {
@@ -100,28 +117,44 @@ public class RESTVehicle {
         this.year = year;
     }
 
-    public String getLeasing_company() {
-        return leasing_company;
+    public String getLeasingCompany() {
+        return leasingCompany;
     }
 
-    public void setLeasing_company(String leasing_company) {
-        this.leasing_company = leasing_company;
+    public void setLeasingCompany(String leasingCompany) {
+        this.leasingCompany = leasingCompany;
     }
 
-    public String getCreated_at() {
-        return created_at;
+    public String getFleet() {
+        return fleet;
     }
 
-    public void setCreated_at(String created_at) {
-        this.created_at = created_at;
+    public void setFleet(String fleet) {
+        this.fleet = fleet;
     }
 
-    public String getUpdated_at() {
-        return updated_at;
+    public String getCreatedAt() {
+        return createdAt;
     }
 
-    public void setUpdated_at(String updated_at) {
-        this.updated_at = updated_at;
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public String getLastUpdatedBy() {
+        return lastUpdatedBy;
+    }
+
+    public void setLastUpdatedBy(String lastUpdatedBy) {
+        this.lastUpdatedBy = lastUpdatedBy;
     }
 
     public String getUrl() {
@@ -130,5 +163,21 @@ public class RESTVehicle {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        RESTVehicle that = (RESTVehicle) o;
+
+        return id.equals(that.id);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
     }
 }

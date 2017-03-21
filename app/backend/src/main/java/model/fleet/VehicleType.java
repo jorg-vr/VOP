@@ -1,34 +1,59 @@
 package model.fleet;
 
 
-public class VehicleType {
+import model.history.EditableObject;
+import spring.Exceptions.InvalidInputException;
 
-    private int id;
+import java.util.UUID;
+
+public class VehicleType implements EditableObject, java.io.Serializable {
+
+    private UUID uuid;
 
     private String type;
 
     // The tax in %
     private double tax;
 
-    public VehicleType(int id, String type, double tax) {
-        this.id = id;
+    public VehicleType() {
+    }
+
+    public VehicleType(UUID uuid, String type, double tax) {
+        this.uuid = uuid;
         this.type = type;
         this.tax = tax;
     }
 
-    public int getId() {
-        return id;
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 
     public String getType() {
         return type;
     }
 
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public double getTax() {
         return tax;
     }
 
-    public void setTax(double tax) {
+    /**
+     * set the tax value and checks if it is a valid percentage.
+     *
+     * @param tax road tax for the vehicle category
+     * @throws InvalidInputException if the given tax value is a negative value
+     */
+    public void setTax(double tax) throws InvalidInputException {
+        if (tax < 0) {
+            throw new InvalidInputException("Tax value has to be a positive percentage");
+        }
         this.tax = tax;
     }
 
@@ -39,12 +64,17 @@ public class VehicleType {
 
         VehicleType that = (VehicleType) o;
 
-        return id == that.id;
+        return uuid.equals(that.uuid);
 
     }
 
     @Override
     public int hashCode() {
-        return id;
+        return uuid.hashCode();
+    }
+
+    @Override
+    public EditableObject copy() {
+        return new VehicleType(uuid, type, tax);
     }
 }
