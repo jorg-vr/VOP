@@ -1,11 +1,18 @@
+import RequestHandler from './RequestHandler'
+
+const url = 'fleets/';
 
 export default {
-    methods:{
-        fetchFleets(){
-            var RequestHandler = require('./RequestHandler.js')
-            RequestHandler.get('test').then(response => {
-                console.log(response.body.data);
-            })
-        }
+    getFleetsRequest(process){
+        RequestHandler.getRequest(url).then(response => {
+            process(response.body.data)
+        })
+    },
+
+    deleteFleetRequest(process, fleetId){
+        RequestHandler.deleteRequest(url + fleetId).then(response => {
+            process()
+        })
     }
 }
+

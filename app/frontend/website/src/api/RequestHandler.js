@@ -1,25 +1,25 @@
+import Vue from 'vue'
+
+const base_url = 'https://vopro5.ugent.be/app/api/';
+const headers = {
+    Accept: "application/json"
+};
+
 export default {
-    data(){
-        return {
-            base_url: 'https://vopro5.ugent.be/app/api/',
-            headers: {
-                Accept: "application/json",
-            }
-        }
+    getRequest(url){
+        return Vue.http.get(base_url + url, headers)
     },
-    methods : {
-        get(url) {
-            return this.$http.get(this.base_url + url, this.headers)
-        },
-        post(url, object){
-            return this.$http.post(this.base_url + url, object, this.headers)
-        },
-        put(url, object){
-            return this.$http.put(this.base_url + url, object, this.headers)
-        },
-        delete(url, object){
-            return this.$http.delete(this.base_url + url, this.headers)
-        }
+
+    postRequest(url, object){
+        return Vue.http.post(base_url + url, object, headers)
+    },
+
+    putRequest(url, object){
+        return Vue.http.put(base_url + url, object, headers)
+    },
+
+    deleteRequest(url, object){
+        return Vue.http.delete(base_url + url, headers)
     }
 }
 

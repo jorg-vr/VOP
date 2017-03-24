@@ -9,6 +9,7 @@
     </div>
 </template>
 <script>
+
     import NavBar from './assets/navBar.vue'
     export default {
         components: {
