@@ -7,14 +7,11 @@ import model.account.Account;
 import model.identity.Person;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by Ponti on 14/03/2017.
- */
+
 public class ProductionAccountDAOTest {
     private static DAOProvider daoProvider;
     private static AccountDAO accountDAO;
@@ -25,7 +22,7 @@ public class ProductionAccountDAOTest {
     //Setup before any of the tests are started
     @BeforeClass
     public static void initProvider() throws Exception {
-        ProductionProvider.initializeProvider(true);
+        //ProductionProvider.initializeProvider("test");
         daoProvider = ProductionProvider.getInstance();
         accountDAO = daoProvider.getAccountDao();
         personDAO = daoProvider.getPersonDAO();
@@ -36,6 +33,7 @@ public class ProductionAccountDAOTest {
     @AfterClass
     public static void closeProvider() throws Exception {
         //personDAO.remove(p1.getUuid());
+        //daoProvider.close();
     }
 
     //TODO: change person creation when create method in PersonDAO gets changed

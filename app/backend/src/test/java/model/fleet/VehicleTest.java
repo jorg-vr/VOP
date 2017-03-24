@@ -7,9 +7,7 @@ import spring.Exceptions.InvalidInputException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-/**
- * Created by Ponti on 10/03/2017.
- */
+
 public class VehicleTest {
 
     @Ignore

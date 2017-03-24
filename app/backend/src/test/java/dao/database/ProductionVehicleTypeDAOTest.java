@@ -7,9 +7,7 @@ import org.junit.*;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by Ponti on 14/03/2017.
- */
+
 public class ProductionVehicleTypeDAOTest {
     private static DAOProvider daoProvider;
     private static VehicleTypeDao vehicleTypeDAO;
@@ -18,7 +16,7 @@ public class ProductionVehicleTypeDAOTest {
     //Setup before any of the tests are started
     @BeforeClass
     public static void initProvider() throws Exception {
-        ProductionProvider.initializeProvider(true);
+        //ProductionProvider.initializeProvider("test");
         daoProvider = ProductionProvider.getInstance();
         vehicleTypeDAO = daoProvider.getVehicleTypeDAO();
     }
@@ -26,7 +24,7 @@ public class ProductionVehicleTypeDAOTest {
     //Gets executed after all tests have been run
     @AfterClass
     public static void closeProvider() throws Exception {
-        daoProvider.close();
+        //daoProvider.close();
     }
 
     @Test

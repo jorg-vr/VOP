@@ -7,17 +7,11 @@ import model.fleet.Fleet;
 import model.identity.Customer;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.Collection;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by Ponti on 15/03/2017.
- */
+
 public class ProductionFleetDAOTest {
     private static DAOProvider daoProvider;
     private static FleetDAO fleetDAO;
@@ -27,7 +21,7 @@ public class ProductionFleetDAOTest {
     //Setup before any of the tests are started
     @BeforeClass
     public static void initProvider() throws Exception {
-        ProductionProvider.initializeProvider(true);
+        //ProductionProvider.initializeProvider("test");
         daoProvider = ProductionProvider.getInstance();
         fleetDAO = daoProvider.getFleetDAO();
         customerDAO = daoProvider.getCustomerDAO();
@@ -36,7 +30,7 @@ public class ProductionFleetDAOTest {
     //Gets executed after all tests have been run
     @AfterClass
     public static void closeProvider() throws Exception {
-        daoProvider.close();
+        //daoProvider.close();
     }
 
     @Test
@@ -62,7 +56,7 @@ public class ProductionFleetDAOTest {
                 Fleet fleet2 = fleetDAO.get(fleet1.getUuid());
                 assertEquals("name field not created correctly", fleet1.getName(), fleet2.getName());
                 assertEquals("customer field not created correctly", fleet1.getOwner(), fleet2.getOwner());
-                assertTrue("vehicles field not created correctly", fleet2.size()== 0);
+                assertTrue("vehicles field not created correctly", fleet2.size() == 0);
                 present = true;
             }
         } catch (Exception e) {

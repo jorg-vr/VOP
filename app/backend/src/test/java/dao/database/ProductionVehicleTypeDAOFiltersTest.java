@@ -9,9 +9,7 @@ import java.util.Collection;
 
 import static org.junit.Assert.assertTrue;
 
-/**
- * Created by Ponti on 14/03/2017.
- */
+
 public class ProductionVehicleTypeDAOFiltersTest {
     private static DAOProvider daoProvider;
     private static VehicleTypeDao vehicleTypeDAO;
@@ -21,7 +19,7 @@ public class ProductionVehicleTypeDAOFiltersTest {
     //Setup before any of the tests are started
     @BeforeClass
     public static void initProvider() throws Exception {
-        ProductionProvider.initializeProvider(true);
+        //ProductionProvider.initializeProvider("test");
         daoProvider = ProductionProvider.getInstance();
         vehicleTypeDAO = daoProvider.getVehicleTypeDAO();
         t1 = vehicleTypeDAO.create("type 1", 2.5);
@@ -33,6 +31,7 @@ public class ProductionVehicleTypeDAOFiltersTest {
     public static void closeProvider() throws Exception {
         vehicleTypeDAO.remove(t1.getUuid());
         vehicleTypeDAO.remove(t2.getUuid());
+        //daoProvider.close();
     }
 
 

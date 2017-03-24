@@ -1,23 +1,14 @@
 package dao.database;
 
 import dao.interfaces.*;
-import model.account.Function;
-import model.fleet.Vehicle;
 import model.fleet.VehicleType;
-import model.identity.Company;
-import model.identity.Person;
-import model.insurance.Insurance;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
-import java.time.LocalDateTime;
 
-/**
- * Created by sam on 3/8/17.
- */
 public class ProductionProvider implements DAOProvider {
 
     private static ProductionProvider provider = null;
@@ -44,14 +35,18 @@ public class ProductionProvider implements DAOProvider {
     /**
      * SHOULD BE CALLED BEFORE getInstance()
      * initializes the provider with the right hibernate configuration
-     * @param production should it run on production or development
+     *
+     * @param environment should it run on production or development
      */
-    public synchronized static void initializeProvider(boolean production) {
-        if (production) {
-            provider = new ProductionProvider("hibernate/hibernatedeployment.cfg.xml");
-        } else {
-            provider = new ProductionProvider("hibernate/hibernate.cfg.xml");
+    public synchronized static void initializeProvider(String environment) {
+        if (environment.equals("production")) {
+            provider = new ProductionProvider("hibernate/deployment.cfg.xml");
+        } else if (environment.equals("localtest")) {
+            provider = new ProductionProvider("hibernate/localtest.cfg.xml");
+        } else if (environment.equals("test")) {
+            provider = new ProductionProvider("hibernate/test.cfg.xml");
         }
+
     }
 
     /**
@@ -59,6 +54,7 @@ public class ProductionProvider implements DAOProvider {
      */
     public synchronized static DAOProvider getInstance() {
         if (provider == null) {
+            initializeProvider("production");
         }
         return provider;
     }
@@ -110,11 +106,11 @@ public class ProductionProvider implements DAOProvider {
     }
 
     public static void main(String[] args) throws DataAccessException {
-        ProductionProvider.initializeProvider(true);
+        ProductionProvider.initializeProvider("test");
         DAOProvider provider = ProductionProvider.getInstance();
 
         VehicleTypeDao dao = provider.getVehicleTypeDAO();
-        for(VehicleType type : dao.listFiltered(dao.nameContains("type"))){
+        for (VehicleType type : dao.listFiltered(dao.nameContains("type"))) {
             dao.remove(type.getUuid());
         }
 

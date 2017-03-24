@@ -16,9 +16,7 @@ import java.time.LocalDateTime;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by Ponti on 15/03/2017.
- */
+
 public class ProductionFunctionDAOTest {
     private static DAOProvider daoProvider;
     private static FunctionDAO functionDAO;
@@ -33,7 +31,7 @@ public class ProductionFunctionDAOTest {
     //Setup before any of the tests are started
     @BeforeClass
     public static void initProvider() throws Exception {
-        ProductionProvider.initializeProvider(true);
+        //ProductionProvider.initializeProvider("test");
         daoProvider = ProductionProvider.getInstance();
         functionDAO = daoProvider.getFunctionDAO();
         //companyDAO = daoProvider.getCompanyDAO();
@@ -46,6 +44,7 @@ public class ProductionFunctionDAOTest {
     //Gets executed after all tests have been run
     @AfterClass
     public static void closeProvider() throws Exception {
+        //daoProvider.close();
     }
 
     //TODO: change person creation when create method in PersonDAO gets changed
@@ -67,7 +66,7 @@ public class ProductionFunctionDAOTest {
             fail("Failed trying to create a new company");
         }*/
         try {
-            adr1 = addressDAO.create("streettest n1","59","town 1","9999","country 1");
+            adr1 = addressDAO.create("streettest n1", "59", "town 1", "9999", "country 1");
         } catch (Exception e) {
             fail("Failed trying to create a new address");
         }
@@ -95,11 +94,11 @@ public class ProductionFunctionDAOTest {
         try {
             if (f1 != null) {
                 Function f2 = functionDAO.get(f1.getUuid());
-                assertEquals("company field not created correctly",f1.getCompany() ,f2.getCompany() );
-                assertEquals("role field not created correctly",f1.getRole() ,f2.getRole() );
-                assertEquals("account field not created correctly",f1.getAccount() ,f2.getAccount() );
-                assertEquals("startDate field not created correctly",f1.getStartDate() ,f2.getStartDate() );
-                assertEquals("endDate field not created correctly",f1.getEndDate() ,f2.getEndDate() );
+                assertEquals("company field not created correctly", f1.getCompany(), f2.getCompany());
+                assertEquals("role field not created correctly", f1.getRole(), f2.getRole());
+                assertEquals("account field not created correctly", f1.getAccount(), f2.getAccount());
+                assertEquals("startDate field not created correctly", f1.getStartDate(), f2.getStartDate());
+                assertEquals("endDate field not created correctly", f1.getEndDate(), f2.getEndDate());
                 present = true;
             }
         } catch (Exception e) {
@@ -127,12 +126,22 @@ public class ProductionFunctionDAOTest {
             //Nothing because the test passed in this case
         }
         //make sure everything is removed from the database again
-        if(f1 != null){functionDAO.remove(f1.getUuid());}
+        if (f1 != null) {
+            functionDAO.remove(f1.getUuid());
+        }
         //if(r1 != null){roleDAO.remove(r1.getUuid());}
-        if(acc1 != null){accountDAO.remove(acc1.getUuid());}
-        if(p1 != null){personDAO.remove(p1.getUuid());}
-        if(adr1 != null){addressDAO.remove(adr1.getUuid());}
-        if(comp1 != null){companyDAO.remove(comp1.getUuid());}
+        if (acc1 != null) {
+            accountDAO.remove(acc1.getUuid());
+        }
+        if (p1 != null) {
+            personDAO.remove(p1.getUuid());
+        }
+        if (adr1 != null) {
+            addressDAO.remove(adr1.getUuid());
+        }
+        if (comp1 != null) {
+            companyDAO.remove(comp1.getUuid());
+        }
     }
 
     @Ignore
@@ -140,7 +149,7 @@ public class ProductionFunctionDAOTest {
     public void update() throws Exception {
         Company comp1 = null;
         //Company comp1 = companyDAO.create();
-        Address adr1 = addressDAO.create("streettest n1","59","town 1","9999","country 1");
+        Address adr1 = addressDAO.create("streettest n1", "59", "town 1", "9999", "country 1");
         Person p1 = personDAO.create("Firstname 1", "Lastname 1", "Email@address1.com");
         Account acc1 = accountDAO.create("login1", "hashedPassword1", p1);
         Role r1 = null;
@@ -148,7 +157,7 @@ public class ProductionFunctionDAOTest {
 
         Company comp2 = null;
         //Company comp2 = companyDAO.create();
-        Address adr2 = addressDAO.create("streettest n2","60","town 2","99999","country 2");
+        Address adr2 = addressDAO.create("streettest n2", "60", "town 2", "99999", "country 2");
         Person p2 = personDAO.create("Firstname 2", "Lastname 2", "Email@address2.com");
         Account acc2 = accountDAO.create("login2", "hashedPassword2", p2);
         Role r2 = null;
@@ -159,11 +168,11 @@ public class ProductionFunctionDAOTest {
         Function f1 = functionDAO.create(comp1, r1, acc1, LocalDateTime.of(2016, 7, 15, 0, 0), LocalDateTime.of(2017, 8, 3, 0, 0));
         Function f2 = functionDAO.update(f1.getUuid(), comp2, r2, acc2, t1, t2);
         Function f3 = functionDAO.get(f1.getUuid());
-        assertEquals("company field not updated correctly", comp2,f3.getCompany() );
-        assertEquals("role field not updated correctly", r2,f3.getRole() );
-        assertEquals("account field not updated correctly",acc2 ,f3.getAccount() );
-        assertEquals("startDate field not updated correctly", t1,f3.getStartDate() );
-        assertEquals("endDate field not updated correctly", t2,f3.getEndDate() );
+        assertEquals("company field not updated correctly", comp2, f3.getCompany());
+        assertEquals("role field not updated correctly", r2, f3.getRole());
+        assertEquals("account field not updated correctly", acc2, f3.getAccount());
+        assertEquals("startDate field not updated correctly", t1, f3.getStartDate());
+        assertEquals("endDate field not updated correctly", t2, f3.getEndDate());
 
         functionDAO.remove(f1.getUuid());
         //roleDAO.remove(r1.getUuid());
