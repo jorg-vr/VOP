@@ -1,5 +1,7 @@
-import * as types from '../mutation-types'
-import FleetRequestHandler from '../../api/FleetRequestHandler'
+import * as types from '../mutationTypes'
+import * as locations from '../locations'
+import RequestHandler from '../../api/RequestHandler'
+import Vue from 'vue'
 
 export default {
     state: {
@@ -18,19 +20,33 @@ export default {
         [types.DELETE_FLEET] (state, {fleetId}){
             state.fleets = state.fleets.filter(fleet => fleet.id !== fleetId);
         }
-
     },
     actions: {
-        getFleets({commit}){
-            FleetRequestHandler.getFleetsRequest(fleets => {
-                commit(types.RECEIVE_FLEETS, {fleets})
+        getFleets(context){
+            return new Promise(resolve => {
+                RequestHandler.getObjectsRequest(locations.FLEET).then(fleets => {
+                    context.commit(types.RECEIVE_FLEETS, {fleets})
+                    resolve(fleets)
+                })
             })
         },
         deleteFleet(context, {fleetId}){
-            FleetRequestHandler.deleteFleetRequest(() => {
-                //Only commit in succes scenario
-                context.commit(types.DELETE_FLEET, {fleetId})
-            }, fleetId)
+            return new Promise(() => {
+                RequestHandler.deleteObjectRequest(locations.FLEET, () => {
+                    context.commit(types.DELETE_FLEET, {fleetId})
+                }, fleetId)
+            })
+        },
+        addClientNames(context, {clients}){
+            let fleets = context.state.fleets
+            for(let i=0; i<fleets.length; i++){
+                let fleet = fleets[i];
+                let client = clients.find(obj => obj.id === fleet.company)
+                if(client){
+                    //The key is updated this way so Vue can detect the property change
+                    Vue.set(fleet, 'companyName', client.name)
+                }
+            }
         }
     }
 }

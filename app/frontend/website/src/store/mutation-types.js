@@ -1,2 +1,0 @@
-export const RECEIVE_FLEETS = 'RECEIVE_FLEETS'
-export const DELETE_FLEET = 'DELETE_FLEET'

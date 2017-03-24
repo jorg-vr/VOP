@@ -6,20 +6,32 @@ const headers = {
 };
 
 export default {
-    getRequest(url){
-        return Vue.http.get(base_url + url, headers)
+
+    getObjectsRequest(location){
+        return new Promise(resolve => {
+            Vue.http.get(base_url + location, headers).then(response => {
+                resolve(response.body.data)
+            })
+        })
+
     },
 
-    postRequest(url, object){
-        return Vue.http.post(base_url + url, object, headers)
+    getObjectRequest(location, id){
+
     },
 
-    putRequest(url, object){
-        return Vue.http.put(base_url + url, object, headers)
+    postObjectRequest(location, object){
+        return Vue.http.post(base_url + location, object, headers)
     },
 
-    deleteRequest(url, object){
-        return Vue.http.delete(base_url + url, headers)
-    }
+    putObjectRequest(location, object){
+        return Vue.http.put(base_url + location, object, headers)
+    },
+
+    deleteObjectRequest(location, id){
+        return Vue.http.delete(base_url + location, headers)
+    },
+
+
 }
 
