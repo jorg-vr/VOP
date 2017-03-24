@@ -13,12 +13,11 @@ Vue.use(VueResource);
 //Language support
 Vue.use(VueI18n);
 
-
 Vue.config.lang = 'nl';
 
 Object.keys(locales).forEach(function (lang) {
     Vue.locale(lang, locales[lang])
-})
+});
 
 
 const router = new VueRouter({

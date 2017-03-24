@@ -23,16 +23,15 @@
 
 <script>
     import infoPane from "../../assets/listComponent.vue"
-    import FleetRequestHandler from '../../api/FleetRequestHandler.vue'
 
     export default {
         components: {
             'info-pane': infoPane,
         },
-        mixins: [FleetRequestHandler],
         created() {
+            var FleetRequestHandler = require('../../api/FleetRequestHandler.js')
             //Get all the fleets in the database when the page is loaded.
-            this.fetchFleets(this.addCompanyNameToFleets);
+            FleetRequestHandler.fetchFleets(this.addCompanyNameToFleets);
         },
     }
 </script>

@@ -34,7 +34,6 @@
                 })
             },
             //API call to update this vehicle.
-
             updateVehicle(vehicle){
                 this.$http.put('https://vopro5.ugent.be/app/api/vehicles/' + vehicle.id , vehicle,
                     {
