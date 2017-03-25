@@ -3,18 +3,16 @@ package spring.controller;
 import controller.CustomerController;
 import controller.FleetController;
 import dao.interfaces.DataAccessException;
-import dao.interfaces.Filter;
 import dao.interfaces.FleetDAO;
 import model.fleet.Fleet;
 import org.springframework.web.bind.annotation.*;
-import spring.Exceptions.InvalidInputException;
-import spring.Exceptions.NotFoundException;
+import spring.exceptions.InvalidInputException;
+import spring.exceptions.NotFoundException;
 import spring.model.RESTFleet;
 import spring.model.RESTSchema;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.UUID;
 
 /**

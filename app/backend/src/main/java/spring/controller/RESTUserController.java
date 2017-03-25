@@ -6,9 +6,9 @@ import dao.interfaces.DataAccessException;
 import model.account.Account;
 import model.identity.Person;
 import org.springframework.web.bind.annotation.*;
-import spring.Exceptions.ConflictException;
-import spring.Exceptions.InvalidInputException;
-import spring.Exceptions.NotFoundException;
+import spring.exceptions.ConflictException;
+import spring.exceptions.InvalidInputException;
+import spring.exceptions.NotFoundException;
 import spring.model.RESTSchema;
 import spring.model.RESTUser;
 
