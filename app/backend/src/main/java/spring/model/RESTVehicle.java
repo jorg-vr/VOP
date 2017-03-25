@@ -15,6 +15,8 @@ import java.util.Locale;
 @ResponseStatus(value = HttpStatus.OK, reason = "OK")
 public class RESTVehicle extends RESTAbstractModel {
 
+    private static final String PATH_VEHICLES = "/vehicles";
+
     private static DateTimeFormatter yearFormat = DateTimeFormatter.ofPattern("yyyyMMdd").withLocale(Locale.forLanguageTag("NL"));
 
     private String licensePlate;
@@ -36,7 +38,7 @@ public class RESTVehicle extends RESTAbstractModel {
      * @param vehicle the vehicle that this RESTVehicle is based on
      */
     public RESTVehicle(Vehicle vehicle) {
-        super(vehicle.getUuid(), "/vehicles");
+        super(vehicle.getUuid(), PATH_VEHICLES);
         licensePlate = vehicle.getLicensePlate();
         vin = vehicle.getChassisNumber();
         brand = vehicle.getBrand();
