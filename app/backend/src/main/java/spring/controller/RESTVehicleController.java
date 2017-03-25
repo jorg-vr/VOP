@@ -94,7 +94,7 @@ public class RESTVehicleController {
         List<RESTVehicle> result = new ArrayList<>();
         try {
             for (Vehicle vehicle : controller.getAll(filters.toArray(new Filter[filters.size()]))) {
-                result.add(modelToRest(vehicle));
+                result.add(new RESTVehicle(vehicle));
             }
 
         } catch (DataAccessException e) {
@@ -114,7 +114,7 @@ public class RESTVehicleController {
     public RESTVehicle post(@RequestBody RESTVehicle vehicle) {
         try {
             LocalDate year = LocalDate.parse(vehicle.getYear() + "0101", yearFormat);//Fix conversion bug
-            return modelToRest(
+            return new RESTVehicle(
                     controller.create(vehicle.getBrand(),
                             vehicle.getModel(),
                             vehicle.getLicensePlate(),
@@ -138,10 +138,10 @@ public class RESTVehicleController {
      */
     @RequestMapping(method = RequestMethod.GET, value = "{id}")
     public RESTVehicle getId(@PathVariable("id") String id) {
-
+        UUID uuid = UUIDUtil.toUUID(id);
         try {
-            return modelToRest(controller.get(UUIDUtil.toUUID(id)));
-
+            Vehicle vehicle = controller.get(uuid);
+            return new RESTVehicle(vehicle);
         } catch (DataAccessException e) {
             throw new NotFoundException();
         }
@@ -158,7 +158,7 @@ public class RESTVehicleController {
     public RESTVehicle putId(@PathVariable("id") String id, @RequestBody RESTVehicle vehicle) {
         try {
             LocalDate year = LocalDate.parse(vehicle.getYear() + "0101", yearFormat);//Fix conversion bug
-            return modelToRest(
+            return new RESTVehicle(
                     controller.update(UUIDUtil.toUUID(id),
                             vehicle.getBrand(),
                             vehicle.getModel(),
@@ -192,34 +192,4 @@ public class RESTVehicleController {
             //TODO updateId when there are more exceptions
         }
     }
-
-
-    /***
-     * converts model vehicle to vehicle needed for rest api
-     *
-     * @param vehicle
-     * @return
-     */
-    private RESTVehicle modelToRest(Vehicle vehicle) {
-        String leasingCompany = vehicle.getLeasingCompany() != null ? UUIDUtil.UUIDToNumberString(vehicle.getLeasingCompany().getUuid()) : null;
-        String fleet=vehicle.getFleet()!=null?UUIDUtil.UUIDToNumberString(vehicle.getFleet().getUuid()):null;
-        String type=vehicle.getType()!=null?UUIDUtil.UUIDToNumberString(vehicle.getType().getUuid()):null;
-        return new RESTVehicle(UUIDUtil.UUIDToNumberString(vehicle.getUuid()),
-                vehicle.getLicensePlate(),
-                vehicle.getChassisNumber(),
-                vehicle.getBrand(),
-                vehicle.getModel(),
-                type,
-                vehicle.getValue(),
-                vehicle.getMileage(),
-                vehicle.getProductionDate().format(yearFormat).substring(0, 4),
-                leasingCompany,
-                fleet,
-                null,//TODO search leasing company
-                null,//TODO implement edit dates with history
-                null,
-                PATH_VEHICLE + "/" + UUIDUtil.UUIDToNumberString(vehicle.getUuid())
-        );
-    }
-
 }
