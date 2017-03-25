@@ -1,5 +1,7 @@
 package spring.model;
 
+import model.identity.Address;
+
 /**
  * This is a bean class as specified in the API specification
  */
@@ -19,6 +21,24 @@ public class RESTAddress {
     }
 
     public RESTAddress() {
+    }
+
+    public RESTAddress(Address address) {
+        country = address.getCountry();
+        city  = address.getTown();
+        street = address.getStreet();
+        houseNumber = address.getStreetNumber();
+        postalCode = address.getPostalCode();
+    }
+
+    public Address translate() {
+        Address address = new Address();
+        address.setCountry(country);
+        address.setTown(city);
+        address.setStreet(street);
+        address.setStreetNumber(houseNumber);
+        address.setPostalCode(postalCode);
+        return address;
     }
 
     public String getCountry() {

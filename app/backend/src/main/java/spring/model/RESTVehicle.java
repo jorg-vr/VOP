@@ -28,6 +28,9 @@ public class RESTVehicle extends RESTAbstractModel {
     private String leasingCompany; //id of leasing company
     private String fleet;
 
+    public RESTVehicle() {
+    }
+
     /**
      * Create a new RESTVehicle based on the fields of the vehicle object
      * @param vehicle the vehicle that this RESTVehicle is based on

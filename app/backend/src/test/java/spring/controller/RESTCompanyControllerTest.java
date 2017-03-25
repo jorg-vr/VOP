@@ -1,6 +1,7 @@
 package spring.controller;
 
 import controller.CustomerController;
+import dao.database.ProductionProvider;
 import dao.interfaces.DataAccessException;
 import model.identity.Address;
 import model.identity.Customer;
@@ -37,7 +38,7 @@ public class RESTCompanyControllerTest {
 
     @BeforeClass
     public static void setup() {
-        //ProductionProvider.initializeProvider("test");
+        ProductionProvider.initializeProvider("test");
         try {
             address= new Address("mystreet","123","lala","12345","land");
             customer= new CustomerController().create(address,"04789456123","anita","123456789");
@@ -55,7 +56,7 @@ public class RESTCompanyControllerTest {
             e.printStackTrace();
         }
 
-        //ProductionProvider.getInstance().close();
+        ProductionProvider.getInstance().close();
     }
 
     @Test
@@ -70,7 +71,7 @@ public class RESTCompanyControllerTest {
 
     @Test
     public void post() throws Exception {
-        RESTCompany restCompany=new RESTCompany(null,"frank","sinatra","0123456",new RESTAddress("a","b","c","d","e"),null,null,null,null);
+        RESTCompany restCompany=new RESTCompany(null,"frank","sinatra","0123456",new RESTAddress("a","b","c","d","e"));
         MvcResult result =mvc.perform(MockMvcRequestBuilders.post("/companies").header("Content-Type","application/json").content(TestUtil.convertObjectToJsonBytes(restCompany)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name",equalTo("frank")))
@@ -105,10 +106,7 @@ public class RESTCompanyControllerTest {
     @Test
     public void putId() throws Exception {
         customer.setBtwNumber("new");
-        RESTCompany restCompany=new RESTCompany(UUIDUtil.UUIDToNumberString(customer.getUuid()),
-                customer.getName(),customer.getBtwNumber(),customer.getPhoneNumber(),
-                new RESTAddress(address.getCountry(),address.getTown(),address.getStreet(),address.getStreetNumber(),address.getPostalCode()),
-                null,null,null,null);
+        RESTCompany restCompany=new RESTCompany(customer);
 
         MvcResult result =mvc.perform(MockMvcRequestBuilders.put("/companies/{id}",UUIDUtil.UUIDToNumberString(customer.getUuid()))
                 .header("Content-Type","application/json")

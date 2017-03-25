@@ -13,6 +13,9 @@ public abstract class RESTAbstractModel {
     private LocalDateTime lastUpdated;
     private String url;
 
+    public RESTAbstractModel() {
+    }
+
     public RESTAbstractModel(UUID uuid, EditEvent createdAt, EditEvent lastUpdated, String url) {
         this.id = UUIDUtil.UUIDToNumberString(uuid);
         //this.createdAt = createdAt.getEditTime(); TODO milestone3
