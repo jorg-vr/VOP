@@ -4,10 +4,11 @@
 <template>
     <div>
         <div class="page-header">
-            <h1>Vloten </h1>
+            <h1>{{$t("fleet.fleets") | capitalize}}</h1>
         </div>
         <!-- Render an info-pane for every fleet. Once all the data is loaded, the table will be shown.-->
-        <list-component v-if="fleets.length>0" v-for="fleet in fleets"
+        <list-component v-for="fleet in fleets"
+                        v-if="fleet"
                         :object="fleet"
                         :visibleKeys="new Array('name','companyName')"
                         :remove="deleteFleet"
@@ -15,25 +16,25 @@
                         show="fleet"
                         :key="fleet.id">
         </list-component>
-        <router-link :to="{name: 'new_fleet'}">
-            <button type="button" class="btn btn-primary btn-circle btn-lg">+</button>
-        </router-link>
+        <button-link :route="{name: 'new_fleet'}" buttonClass="btn btn-primary btn-circle btn-lg">+</button-link>
     </div>
 </template>
 
 <script>
     import { mapGetters, mapActions } from 'vuex'
     import listComponent from "../../assets/listComponent.vue"
+    import buttonLink from '../../assets/buttons/buttonLink.vue'
 
     export default {
         components: {
             'list-component': listComponent,
+            'button-link': buttonLink
         },
         created() {
-            let p1 = this.$store.dispatch('getFleets')
-            let p2 = this.$store.dispatch('getClients')
+            let p1 = this.getFleets()
+            let p2 = this.getClients()
             Promise.all([p1, p2]).then(values => {
-                this.$store.dispatch('addClientNames', {clients: values[1]})
+                this.addClientNames({clients: values[1]})
             })
         },
         computed: {
@@ -42,9 +43,12 @@
             ])
         },
         methods: {
-            deleteFleet(fleetId){
-                this.$store.dispatch('deleteFleet', {fleetId: fleetId});
-            }
+            ...mapActions([
+                'getFleets',
+                'deleteFleet',
+                'getClients',
+                'addClientNames'
+            ])
         }
     }
 </script>

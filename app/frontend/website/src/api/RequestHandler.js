@@ -17,19 +17,35 @@ export default {
     },
 
     getObjectRequest(location, id){
-
+        return new Promise(resolve => {
+            Vue.http.get(base_url + location + id, headers).then(response => {
+                resolve(response.body)
+            })
+        })
     },
 
     postObjectRequest(location, object){
-        return Vue.http.post(base_url + location, object, headers)
+        return new Promise(resolve => {
+            Vue.http.post(base_url + location, object, headers).then(response => {
+                resolve(response.body)
+            })
+        })
     },
 
     putObjectRequest(location, object){
-        return Vue.http.put(base_url + location, object, headers)
+        return new Promise(resolve => {
+            Vue.http.post(base_url + location + object.id, object, headers).then(response => {
+                resolve(response.body)
+            })
+        })
     },
 
     deleteObjectRequest(location, id){
-        return Vue.http.delete(base_url + location, headers)
+        return new Promise(resolve => {
+            Vue.http.delete(base_url + location + id, headers).then(() => {
+                resolve()
+            })
+        })
     },
 }
 

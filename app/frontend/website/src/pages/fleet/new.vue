@@ -4,13 +4,13 @@
 <template>
     <div>
         <div class="page-header">
-            <h1>Nieuwe vloot</h1>
+            <h1><h1>{{$t("common.new") | capitalize}} {{$t("fleet.fleet")}}</h1></h1>
         </div>
         <fleet-form :fleet={} :submit="createFleet"></fleet-form>
     </div>
 </template>
 <script>
-    import FleetForm from './form.vue'
+    import FleetForm from '../../assets/form/types/fleetForm.vue'
     import {mapActions} from 'vuex'
 
     export default {

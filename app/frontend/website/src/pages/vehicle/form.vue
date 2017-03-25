@@ -1,6 +1,6 @@
 <!--
-    This is the form.vue for creating/updating a vehicle.
-    The form.vue accepts the old vehicle and an update or create function.
+    This is fleetForm.vue.vue for creating/updating a vehicle.
+    fleetForm.vue.vue accepts the old vehicle and an update or create function.
 -->
 <template>
     <form class="form-horizontal">
@@ -108,7 +108,7 @@
             }
         },
         props: {
-            vehicle: Object, //Vehicle which should be created/updated with this form.vue.
+            vehicle: Object, //Vehicle which should be created/updated with this fleetForm.vue.
             submit: Function //Submit function to create/update the vehicle.
         }
     }

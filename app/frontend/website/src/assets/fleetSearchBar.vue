@@ -37,17 +37,17 @@
                 const searchQuery = this.getSearchQuery;
                 const selected = this.getSelectedOption;
                 let filteredFleets = this.fleets;
-                if(searchQuery != '') {
-                    if(selected == 'fleet_id'){
+                if(searchQuery !== '') {
+                    if(selected === 'fleet_id'){
                         filteredFleets = this.fleets.filter(function (fleet) {
-                            if(fleet.id.indexOf(searchQuery) != -1){
+                            if(fleet.id.indexOf(searchQuery) !== -1){
                                 return fleet;
                             }
                         });
                     }
-                    else if(selected == 'company'){
+                    else if(selected === 'company'){
                         filteredFleets =  this.fleets.filter(function (fleet) {
-                            if(fleet.company.toLowerCase().indexOf(searchQuery) != -1){
+                            if(fleet.company.toLowerCase().indexOf(searchQuery) !== -1){
                                 return fleet;
                             }
                         });

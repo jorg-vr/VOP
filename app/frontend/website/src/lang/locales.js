@@ -2,7 +2,8 @@ export default
 {
     en : {
         vehicle: {
-            vehicle: 'vehicle | vehicles',
+            vehicle: 'vehicles',
+            vehicles: 'vehicles',
             licensePlate: 'license plate',
             chassisnumber: 'chassis number',
             brand: 'brand',
@@ -13,16 +14,19 @@ export default
             leasingCompany:  'leasing company'
         },
         fleet: {
-            fleet: 'fleet | fleets'
+            fleet: 'fleet',
+            fleets: 'fleets'
         },
         users: {
-            user: 'user | users',
+            user: 'user',
+            users: 'users',
             firstName: 'first name',
             lastName: 'last name',
             email: 'email'
         },
         client: {
-            client: 'client | clients',
+            client: 'client',
+            clients: 'clients',
             name: 'name',
             country: 'country',
             vatNumber: 'VAT number',
@@ -42,7 +46,8 @@ export default
     },
     nl : {
         vehicle: {
-            vehicle: 'voertuig | voertuigen',
+            vehicle: 'voertuig',
+            vehicles: 'voertuigen',
             licensePlate: 'nummerplaat',
             chassisnumber: 'chassisnummer',
             brand: 'merk',
@@ -53,16 +58,19 @@ export default
             leasingCompany:  'leasing bedrijf'
         },
         fleet: {
-            fleet: 'vloot | vloten'
+            fleet: 'vloot',
+            fleets: 'vloten'
         },
         users: {
-            user: 'gebruiker | gebruikers',
+            user: 'gebruiker',
+            users: 'gebruikers',
             firstName: 'voornaam',
             lastName: 'achternaam',
             email: 'e-mail'
         },
         client: {
-            client: 'klant | klanten',
+            client: 'klant',
+            clients: 'klanten',
             name: 'naam',
             country: 'land',
             vatNumber: 'BTW-nummer',
@@ -74,7 +82,7 @@ export default
             houseNumber: 'huisnummer'
         },
         common: {
-            new: 'niew',
+            new: 'nieuwe',
             remove: 'verwijder',
             edit: 'wijzig',
             back: 'terug'

@@ -45,7 +45,7 @@
         created: function (){
             // Keep reference to this Vue component
             this.fetchUser()
-            // Listen to proceedEdit performed by child component (form.vue)
+            // Listen to proceedEdit performed by child component (fleetForm.vue)
             this.$bus.$on('proceedEdit', input => this.editUser(input));
         }
     }

@@ -1,6 +1,6 @@
 <!--
     This page is used to edit a vehicle.
-    It shows the vehicle form.vue with the update vehicle method.
+    It shows the vehifleetForm.vue.vue with the update vehicle method.
 -->
 <template>
     <div>

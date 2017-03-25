@@ -20,16 +20,21 @@ Vue.config.lang = 'nl';
 
 Object.keys(locales).forEach(function (lang) {
     Vue.locale(lang, locales[lang])
-});
+})
 
 const router = new VueRouter({
     mode: 'history',
     base: '/app/',
     routes: routes
-});
+})
+
+Vue.filter('capitalize', function(value){
+    value = value.toString()
+    return value.charAt(0).toUpperCase() + value.slice(1)
+})
 
 new Vue({
     store,
     router
-}).$mount('#app');
+}).$mount('#app')
 

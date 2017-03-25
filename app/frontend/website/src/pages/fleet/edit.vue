@@ -4,25 +4,31 @@
 <template>
     <div>
         <div class="page-header">
-            <h1>Wijzig vloot</h1>
+            <h1>{{$t("common.edit") | capitalize}} {{$t("fleet.fleet")}}</h1>
         </div>
         <fleet-form :fleet="fleet" :submit="updateFleet"></fleet-form>
     </div>
 </template>
 <script>
-    import FleetForm from './form.vue'
-
+    import FleetForm from '../../assets/form/types/fleetForm.vue'
+    import {mapGetters, mapActions} from 'vuex'
     export default {
-        data(){
-            return {
-                fleet : {}
-            }
-        },
         components: {
             FleetForm
         },
         created() {
-            //this.fetchFleet()
+            this.getFleet({id: this.$route.params.id})
+        },
+        computed: {
+            ...mapGetters([
+                'fleet'
+            ])
+        },
+        methods: {
+            ...mapActions([
+                'updateFleet',
+                'getFleet'
+            ])
         }
     }
 </script>

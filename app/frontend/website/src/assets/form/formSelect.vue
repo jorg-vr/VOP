@@ -1,16 +1,22 @@
 <template>
     <form-item>
-        <!--$event.target.value is the value of this input item-->
-        <input type="text" class="form-control input-sm" :placeholder="placeholder"
-               :value="value" @input="updateValue($event.target.value)">
+        <select class="form-control" :value="value" @change="updateValue($event.target.value)">
+            <option value="" disabled hidden>Selecteer {{label}}</option>
+            <option :selected="option.id === value" v-for="option in options" :value="option.id">
+                {{option[optionKey]}}
+                    </option>
+        </select>
     </form-item>
+
 </template>
 <script>
     import formItem from './formItem.vue'
     export default {
         props: {
-            placeholder: String,
-            value: String
+            label: String,
+            value: String,
+            options: Array,
+            optionKey: String //Key to show of an object
         },
         components: {
             'form-item': formItem
@@ -18,7 +24,7 @@
         methods: {
             //TODO: With props we can add validation functions for each input item.
             updateValue: function (value) {
-                let formattedValue = value.trim();
+                var formattedValue = value.trim();
                 // If the value was not already normalized,
                 // manually override it to conform
                 if (formattedValue !== value) {

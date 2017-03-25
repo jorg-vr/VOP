@@ -8,7 +8,7 @@
     - remove: A function which removes this object.
 -->
 <template>
-    <div class="row">
+    <div class="row" v-if="object">
         <router-link :to="{name: this.show, params: {id: object.id}}">
             <div class="panel panel-default col-sm-10">
                 <div class="panel-body">
@@ -25,12 +25,11 @@
                 <i aria-hidden="true" class="fa fa-pencil"></i>
             </button>
         </router-link>
-        <button type="button" class="btn btn-md btn-danger" v-on:click="remove(object.id)">
+        <button type="button" class="btn btn-md btn-danger" v-on:click="remove({id: object.id})">
             <i aria-hidden="true" class="fa fa-trash"></i>
         </button>
     </div>
 </template>
-
 <script>
 
 export default {
@@ -40,11 +39,6 @@ export default {
         show: String, //Name of link to show page of the given object.
         edit: String, //Name of link to edit page of the given object.
         remove: Function, //Function to remove the given object.
-    },
-    methods: {
-        showObject() {
-            console.log(this.object.companyName)
-        }
     },
     computed: {
         values() {
