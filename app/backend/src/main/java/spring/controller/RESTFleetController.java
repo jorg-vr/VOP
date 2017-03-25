@@ -20,17 +20,17 @@ import java.util.UUID;
 /**
  * This controller is responsible for handling the HTTP requests of the URL /fleets.
  * Currently, the following HTTP requests are supported:
- *  1) GET /fleet
- *  2) GET /fleets/{id}
- *  3) POST /fleets
- *  4) PUT /fleets/{id}
- *  5) DELETE /fleets/{id}
- *
- *  This controller is responsible for translating the RESTModels to the backend specific models and calling the appropriate methods
- *  of the spring independent controllers,  located in the controller package.
- *  It is also responsible for translating the backend specific exceptions to HTPP repsonse codes.
- *
- *  For more information about what the HTTP requests do, see the API specification
+ * 1) GET /fleet
+ * 2) GET /fleets/{id}
+ * 3) POST /fleets
+ * 4) PUT /fleets/{id}
+ * 5) DELETE /fleets/{id}
+ * <p>
+ * This controller is responsible for translating the RESTModels to the backend specific models and calling the appropriate methods
+ * of the spring independent controllers,  located in the controller package.
+ * It is also responsible for translating the backend specific exceptions to HTPP repsonse codes.
+ * <p>
+ * For more information about what the HTTP requests do, see the API specification
  */
 @RestController
 @RequestMapping("/fleets")
@@ -58,7 +58,7 @@ public class RESTFleetController {
                 fleets = controller.getAll();
             }
             for (Fleet f : fleets) {
-                restFleets.add(modelToRest(f));
+                restFleets.add(new RESTFleet(f));
             }
             return new RESTSchema<>(restFleets, page, limit, baseString);
         } catch (Exception e) {
@@ -72,7 +72,8 @@ public class RESTFleetController {
     public RESTFleet post(@RequestBody RESTFleet restFleet) {
         UUID companyUuid = UUIDUtil.toUUID(restFleet.getCompany());
         try {
-            return modelToRest(controller.create(companyUuid, restFleet.getName()));
+            Fleet fleet = controller.create(companyUuid, restFleet.getName());
+            return new RESTFleet(fleet);
         } catch (DataAccessException e) {
             throw new InvalidInputException();
             //TODO updateId when there are more exceptions
@@ -83,7 +84,8 @@ public class RESTFleetController {
     public RESTFleet getId(@PathVariable("id") String id) {
         UUID uuid = UUIDUtil.toUUID(id);
         try {
-            return modelToRest(controller.get(uuid));
+            Fleet fleet = controller.get(uuid);
+            return new RESTFleet(fleet);
 
         } catch (DataAccessException | NullPointerException e) {
             throw new NotFoundException();
@@ -95,7 +97,8 @@ public class RESTFleetController {
         UUID uuid = UUIDUtil.toUUID(id);
         UUID companyUuid = UUIDUtil.toUUID(restFleet.getCompany());
         try {
-            return modelToRest(controller.update(uuid, companyUuid, restFleet.getName()));
+            Fleet fleet = controller.update(uuid, companyUuid, restFleet.getName());
+            return new RESTFleet(fleet);
         } catch (DataAccessException e) {
             throw new InvalidInputException();
             //TODO updateId when there are more exceptions
@@ -111,21 +114,5 @@ public class RESTFleetController {
             throw new NotFoundException();
             //TODO updateId when there are more exceptions
         }
-    }
-
-
-    /**
-     * This method translates the Fleet object to a RESTFleet object.
-     */
-    private RESTFleet modelToRest(Fleet fleet) {
-        String id = UUIDUtil.UUIDToNumberString(fleet.getUuid());
-        String owner = fleet.getOwner() != null ? UUIDUtil.UUIDToNumberString(fleet.getOwner().getUuid()) : null;
-        return new RESTFleet(id,
-                owner,
-                fleet.getName(),
-                "",
-                "",
-                "",
-                PATH_FLEETS + "/" + id);
     }
 }
