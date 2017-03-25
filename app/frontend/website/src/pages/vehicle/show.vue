@@ -4,7 +4,7 @@
             <h1> {{$t('vehicle.vehicle') | capitalize }} {{vehicle.licensePlate}}</h1>
         </div>
         <div class="col-md-8">
-            <table id="show-vehicle" class="table">
+            <table id="show-vehicle" class="table show-table">
                 <tr>
                     <td>{{$t('vehicle.licensePlate') | capitalize }}</td>
                     <td>{{vehicle.licensePlate}}</td>
@@ -75,8 +75,3 @@
         }
     }
 </script>
-<style>
-    #show-vehicle td:first-child{
-        font-weight: bold;
-    }
-</style>

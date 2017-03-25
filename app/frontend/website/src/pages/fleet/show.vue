@@ -24,7 +24,7 @@
     </div>
 </template>
 <script>
-    import listComponent from '../../assets/listComponent.vue'
+    import listComponent from '../../assets/general/listComponent.vue'
     import buttonLink from '../../assets/buttons/buttonLink.vue'
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
     import {mapGetters, mapActions} from 'vuex'

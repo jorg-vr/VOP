@@ -5,95 +5,47 @@
 <template>
     <div>
         <div class="page-header">
-            <h1>Gebruikers</h1>
+            <h1>{{$t("user.users") | capitalize }}</h1>
         </div>
-        <!-- Render an info-pane for every user -->
-        <info-pane v-for="users in userList"
-                   :textValues="new Array(users.firstName,users.lastName)"
-                   :remove="remove"
-                   :objectId= "users.id"
-                   edit="edit_user"
-                   show="user"
-                   :key="users.id">
-        </info-pane>
-
-        <button type="button" class="btn btn-primary btn-circle btn-lg" v-on:click="add()">+</button>
-
+        <!-- Render an info-pane for every user. Once all the data is loaded, the table will be shown.-->
+        <list-component v-for="user in users"
+                        v-if="user"
+                        :object="user"
+                        :visibleKeys="new Array('firstName', 'lastName')"
+                        :remove="deleteUser"
+                        edit="edit_user"
+                        show="user"
+                        :key="user.id">
+        </list-component>
+        <button-add :route="{name: 'new_user'}"></button-add>
     </div>
-
-
-
 </template>
 <script>
-    import infoPane from "../../assets/listComponent.vue"
+    import { mapGetters, mapActions } from 'vuex'
+    import listComponent from "../../assets/general/listComponent.vue"
+    import buttonAdd from '../../assets/buttons/buttonAdd.vue'
+
     export default {
         components: {
-            'info-pane': infoPane
+            listComponent, buttonAdd
         },
-        data(){
-            return {
-                userList : [],
-                users: {},
-                search: ''
-            }
-        },
-        methods:{
-            // Methods for routing purposes
-            // Route to adding a new user
-            add: function () {
-                this.$router.push({ path: 'users/new'})
-            },
-            // Function to remove a user 
-            remove : function (id){
-                // API call to remove user from database
-                this.$http.delete('https://vopro5.ugent.be/app/api/users/'+id)
-                let newUsers = this.userList.filter(user => user.id !== id);
-                this.userList = newUsers
-            },
-            // Function to fetch list of users from database
-            fetchUserList(){
-                this.$http.get('https://vopro5.ugent.be/app/api/users').then(response => {
-                        const data = response.body.data;
-                        for (let i = 0; i < data.length; i++) {
-                            this.userList.push(data[i]);
-                        }
-                    }, response => {
-                        console.log('fail');
-                    }
-                 )
-            }
+        created() {
+            this.fetchUsers()
         },
         computed: {
-            // Computed property used for searching
-            searchId: function () {
-                var s=this.search.trim().toLowerCase();;
-                var listID = []
-                listID = this.users
-                if(!this.search){
-                    return listID
-                }
-                else{
-                    console.log(listID)
-                    return listID.filter(function(number){
-                        if(number.name.toLowerCase().indexOf(s) != -1){
-                            return number
-                        }
-                    })
-                }
-            },
-            // Computed property used as a placeholder in the searchbar
-            appendString : function (){
-                var value = 'Gebruiker zoeken'
-                return value
-            },
+            ...mapGetters([
+                'users'
+            ])
         },
-        // Lifecycle hook called when this component is created
-        created: function () {
-            this.fetchUserList()
-         
-        },
+        methods: {
+            ...mapActions([
+                'fetchUsers',
+                'deleteUser',
+            ])
+        }
     }
 </script>
+
 <style>
     .btn-circle.btn-lg {
         position: fixed;

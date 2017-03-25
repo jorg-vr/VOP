@@ -7,7 +7,7 @@
             <h1>{{$t("client.client") | capitalize }}</h1>
         </div>
         <div class="col-md-8">
-            <table id="show-client" class="table" v-if="client.address">
+            <table class="table show-table" v-if="client.address">
                 <tr>
                     <td>{{$t('client.name') | capitalize }}</td>
                     <td>{{client.name}}</td>
@@ -67,8 +67,3 @@
         },
     }
 </script>
-<style>
-    #show-client td:first-child{
-        font-weight: bold;
-    }
-</style>

@@ -1,6 +1,6 @@
 <!--
     This is a form for creating/updating a fleet.
-    fleetForm accepts the old data and an update or create function.
+    The form accepts the old data and an update or create function.
 -->
 <template>
     <form-component v-if="fleet">

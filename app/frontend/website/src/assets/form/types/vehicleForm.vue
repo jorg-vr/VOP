@@ -85,7 +85,6 @@
                         this.$router.push({name: 'fleets'})
                     }
                 })
-
             }
         }
     }

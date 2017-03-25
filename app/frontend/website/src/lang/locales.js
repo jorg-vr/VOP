@@ -17,7 +17,7 @@ export default
             fleet: 'fleet',
             fleets: 'fleets'
         },
-        users: {
+        user: {
             user: 'user',
             users: 'users',
             firstName: 'first name',
@@ -72,7 +72,7 @@ export default
             fleet: 'vloot',
             fleets: 'vloten'
         },
-        users: {
+        user: {
             user: 'gebruiker',
             users: 'gebruikers',
             firstName: 'voornaam',

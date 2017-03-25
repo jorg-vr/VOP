@@ -1,5 +1,5 @@
-import * as types from '../mutationTypes'
-import * as locations from '../locations'
+import * as types from '../constants/mutationTypes'
+import * as locations from '../constants/locations'
 import RequestHandler from '../../api/requestHandler'
 import Vue from 'vue'
 

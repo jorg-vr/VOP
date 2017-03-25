@@ -22,7 +22,7 @@
 </template>
 <script>
     import { mapGetters, mapActions } from 'vuex'
-    import listComponent from "../../assets/listComponent.vue"
+    import listComponent from "../../assets/general/listComponent.vue"
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
 
     export default {
