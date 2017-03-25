@@ -4,53 +4,34 @@
 <template>
     <div id="content-wrapper">
         <div class="page-header">
-            <h1> Gebruiker aanpassen </h1>
+            <h1>{{ $t("user.user") | capitalize }} {{$t("actions_plural.edit") }}</h1>
         </div>
-        <form-temp :user="user" :submit="editUser"></form-temp>
+        <user-form :oldUser=user :submit="updateUser"></user-form>
     </div>
 </template>
 <script>
-    import FormTemp from './form.vue'
+    import UserForm from '../../assets/form/types/userForm.vue'
+    import {mapGetters, mapActions} from 'vuex'
+
+
     export default {
-        data(){
-            return {
-                user:{}
-            }
+        components: {
+            UserForm
         },
-        components: { FormTemp},
-        methods:{
-            // Function that makes an API call to fetch specific user data to be edited
-            fetchUser : function () {
-                this.$http.get('https://vopro5.ugent.be/app/api/users/' + this.$route.params.id).then(response => {
-                    this.user = response.body;
-                })
-            },
-            editUser(user) {
-                this.$http.put('https://vopro5.ugent.be/app/api/users/' + this.$route.params.id, user,
-                    {
-                        headers: {
-                            Accept: "application/json",
-                        }
-                    }
-                ).then(response => { //Succes
-                        this.$router.push({name: 'user', params: {id: response.body.id}});
-                    }, response => { //Fail
-                        console.log('fail')
-                    }
-                )
-            }
-
-
+        created(){
+            this.fetchUser({id: this.$route.params.id})
         },
-        created: function (){
-            // Keep reference to this Vue component
-            this.fetchUser()
-            // Listen to proceedEdit performed by child component (form.vue)
-            this.$bus.$on('proceedEdit', input => this.editUser(input));
+        computed: {
+            ...mapGetters([
+                'user'
+            ])
+        },
+        methods: {
+            ...mapActions([
+                'fetchUser',
+                'updateUser'
+            ])
         }
     }
-
-
-
-
 </script>
+

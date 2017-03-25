@@ -30,24 +30,24 @@ export default [
             //User
             { path: 'users', name: 'users', component: IndexUser },
             { path: 'users/new', name: 'new_user',component: NewUser },  
-            { path: 'users/:id', name: 'user', component: ShowUser },
-            { path: 'users/:id/edit', name: 'edit_user', component: EditUser },
+            { path: 'users/:id(\\d+)', name: 'user', component: ShowUser },
+            { path: 'users/:id(\\d+)/edit', name: 'edit_user', component: EditUser },
             // Clients
             { path: 'clients', name: 'clients', component: IndexClient },
             { path: 'clients/new', name: 'new_client',component: NewClient },
-            { path: 'clients/:id', name: 'client', component: ShowClient },
-            { path: 'clients/:id/edit', name: 'edit_client',component: EditClient },
+            { path: 'clients/:id(\\d+)', name: 'client', component: ShowClient },
+            { path: 'clients/:id(\\d+)/edit', name: 'edit_client',component: EditClient },
             //Fleet
             { path: 'fleets', name: 'fleets', component: IndexFleet },
-            { path: 'fleets/:id', name: 'fleet', component: ShowFleet },
+            { path: 'fleets/:id(\\d+)', name: 'fleet', component: ShowFleet },
             { path: 'fleets/new', name: 'new_fleet', component: NewFleet },
-            { path: 'fleets/:id/edit', name: 'edit_fleet', component: EditFleet},
+            { path: 'fleets/:id(\\d+)/edit', name: 'edit_fleet', component: EditFleet},
 
 
             //Vehicle
             { path: 'vehicles/new', name: 'new_vehicle', component: newVehicle },
-            { path: 'vehicles/:id', name: 'vehicle', component: showVehicle },
-            { path: 'vehicles/:id/edit', name: 'edit_vehicle', component: editVehicle }
+            { path: 'vehicles/:id(\\d+)', name: 'vehicle', component: showVehicle },
+            { path: 'vehicles/:id(\\d+)/edit', name: 'edit_vehicle', component: editVehicle }
         ]
     },
         //TODO: Make a not found page!

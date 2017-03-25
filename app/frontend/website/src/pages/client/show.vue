@@ -1,77 +1,69 @@
 <!--
     This page shows a certain client in detail. 
-    Name,address,vatnumber and phonenubmer for the client are displayed.
 -->
 <template>
     <div>
         <div class="page-header">
-            <h1> Klant </h1>
+            <h1>{{$t("client.client") | capitalize }}</h1>
         </div>
         <div class="col-md-8">
-            <table id="show-client" class="table">
+            <table class="table show-table" v-if="client.address">
                 <tr>
-                    <td>Naam </td>
+                    <td>{{$t('client.name') | capitalize }}</td>
                     <td>{{client.name}}</td>
                 </tr>
                 <tr>
-                    <td> Land </td>
-                    <td>{{address.country}}</td>
+                    <td>{{$t('address.country') | capitalize }}</td>
+                    <td>{{client.address.country}}</td>
                 </tr>
                 <tr>
-                    <td> Plaats </td>
-                    <td>{{address.city}}</td>
+                    <td>{{$t('address.city') | capitalize }}</td>
+                    <td>{{client.address.city}}</td>
                 </tr>
                 <tr>
-                    <td> Postcode </td>
-                    <td>{{address.postalCode}}</td>
+                    <td>{{$t('address.postalCode') | capitalize }}</td>
+                    <td>{{client.address.postalCode}}</td>
                 </tr>
                 <tr>
-                    <td> Straat </td>
-                    <td>{{address.street}}</td>
+                    <td>{{$t('address.street') | capitalize }}</td>
+                    <td>{{client.address.street}}</td>
                 </tr>
                 <tr>
-                    <td> Nummer</td>    
-                    <td>{{address.houseNumber}}</td>
+                    <td>{{$t('address.houseNumber') | capitalize }}</td>
+                    <td>{{client.address.houseNumber}}</td>
                 </tr>
                 <tr>
-                    <td> BTW nummer </td>
+                    <td>{{$t('client.vatNumber') | capitalize }}</td>
                     <td>{{client.vatNumber}}</td>
                 </tr>
                 <tr>
-                    <td> Telefoonnummer</td>
+                    <td>{{$t('client.phoneNumber') | capitalize }}</td>
                     <td>{{client.phoneNumber}}</td>
                 </tr>
             </table>
-            <router-link :to="{name: 'clients'}"><button class="btn btn-default pull-left">Terug</button></router-link>
+            <button-back :route="{name: 'clients'}"></button-back>
         </div>
     </div>
 </template>
 <script>
+    import {mapGetters, mapActions} from 'vuex'
+    import buttonBack from '../../assets/buttons/buttonBack.vue'
     export default {
-        data: function(){
-            return {
-                client: {},
-                address: {}
-            }
+        components: {
+            buttonBack
         },
-        methods:{
-            // Function that makes an API call to fetch specific information for a certain client
-            fetchClientInformation(){
-                var id = this.$route.params.id
-                this.$http.get('https://vopro5.ugent.be/app/api/companies/'+id).then(response => {
-                    this.client = response.body
-                    this.address=this.client.address
-                 })
-            }
+        created(){
+            this.fetchClient({id: this.$route.params.id})
         },
-        // Lifecycle hook called when this component is created
-        created : function (){
-            this.fetchClientInformation()
-        }
+        computed: {
+            ...mapGetters([
+                'client'
+            ])
+        },
+        methods: {
+            ...mapActions([
+                'fetchClient'
+            ])
+        },
     }
 </script>
-<style>
-    #show-client td:first-child{
-        font-weight: bold;
-    }
-</style>

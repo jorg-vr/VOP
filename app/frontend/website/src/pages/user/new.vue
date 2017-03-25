@@ -4,35 +4,23 @@
 <template>
     <div id="content-wrapper">
         <div class="page-header">
-            <h1> Gebruiker aanmaken </h1>
+            <h1>{{ $t("user.user") | capitalize }} {{$t("actions_plural.create") }}</h1>
         </div>
-        <form-temp :user="{}" :submit=createUser></form-temp>
+        <user-form :submit="createUser"></user-form>
     </div>
 </template>
 <script>
-    import FormTemp from './form.vue'
+    import UserForm from '../../assets/form/types/userForm.vue'
+    import {mapActions} from 'vuex'
 
     export default {
-        data(){
-            return {}
+        components: {
+            UserForm
         },
-        components: { FormTemp},
         methods: {
-            createUser(user){
-                console.log('check')
-                this.$http.post('https://vopro5.ugent.be/app/api/users', user,
-                    {
-                        headers: {
-                            Accept: "application/json",
-                        }
-                    }
-                ).then(response => { //Success
-                        this.$router.push({name: 'user', params: {id: response.body.id}});
-                    }, response => { //Fail
-                        console.log('fail')
-                    }
-                );
-            }
+            ...mapActions([
+                'createUser'
+            ])
         }
     }
 </script>

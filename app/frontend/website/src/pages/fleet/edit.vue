@@ -4,48 +4,31 @@
 <template>
     <div>
         <div class="page-header">
-            <h1>Wijzig vloot</h1>
+            <h1>{{ $t("fleet.fleet") | capitalize }} {{$t("actions_plural.edit") }}</h1>
         </div>
-        <fleet-form :fleet="fleet" :submit="updateFleet"></fleet-form>
+        <fleet-form :submit="updateFleet" :oldFleet="fleet"></fleet-form>
     </div>
 </template>
 <script>
-    import FleetForm from './form.vue'
+    import FleetForm from '../../assets/form/types/fleetForm.vue'
+    import {mapGetters, mapActions} from 'vuex'
     export default {
-        data(){
-            return {
-                fleet : {}
-            }
-        },
         components: {
             FleetForm
         },
         created() {
-            //Fetch the fleet when the page is created.
-            this.fetchFleet()
+            this.fetchFleet({id: this.$route.params.id})
+        },
+        computed: {
+            ...mapGetters([
+                'fleet'
+            ])
         },
         methods: {
-            //API call to fetch the fleet of this page.
-            fetchFleet(){
-                this.$http.get('https://vopro5.ugent.be/app/api/fleets/' + this.$route.params.id).then(response => {
-                    this.fleet = response.body;
-                })
-            },
-            //API call to update the fleet with the new values.
-            updateFleet(fleet){
-                this.$http.put('https://vopro5.ugent.be/app/api/fleets/' + fleet.id, fleet,
-                    {
-                        headers: {
-                            Accept: "application/json",
-                        }
-                    }
-                ).then(response => { //Success
-                        this.$router.push({name: 'fleet', params: {id: response.body.id}})
-                    }, response => { //Fail
-                        console.log('fail')
-                    }
-                )
-            }
+            ...mapActions([
+                'updateFleet',
+                'fetchFleet'
+            ])
         }
     }
 </script>

@@ -4,82 +4,49 @@
 <template>
     <div>
         <div class="page-header">
-            <h1>Vloten </h1>
+            <h1>{{$t("fleet.fleets") | capitalize}}</h1>
         </div>
-        <!-- Render an info-pane for every fleet -->
-        <info-pane v-for="fleet in fleets"
-                   :textValues="new Array(fleet.name, fleet.companyName)"
-                   :remove="deleteFleet"
-                   :objectId="fleet.id"
-                   edit="edit_fleet"
-                   show="fleet"
-                   :key="fleet.id">
-        </info-pane>
-        <router-link :to="{name: 'new_fleet'}">
-            <button type="button" class="btn btn-primary btn-circle btn-lg">+</button>
-        </router-link>
+        <!-- Render an info-pane for every fleet. Once all the data is loaded, the table will be shown.-->
+        <list-component v-for="fleet in fleets"
+                        v-if="fleet"
+                        :object="fleet"
+                        :visibleKeys="new Array('name','companyName')"
+                        :remove="deleteFleet"
+                        edit="edit_fleet"
+                        show="fleet"
+                        :key="fleet.id">
+        </list-component>
+        <button-add :route="{name: 'new_fleet'}"></button-add>
     </div>
 </template>
-
 <script>
-    import infoPane from "../../assets/listComponent.vue"
+    import { mapGetters, mapActions } from 'vuex'
+    import listComponent from "../../assets/general/listComponent.vue"
+    import buttonAdd from '../../assets/buttons/buttonAdd.vue'
+
     export default {
         components: {
-            'info-pane': infoPane
-        },
-        data: function () {
-            return {
-                fleets : []
-            }
+            listComponent, buttonAdd
         },
         created() {
-            //Get all the fleets in the database when the page is loaded.
-            this.fetchFleetList()
+            let p1 = this.fetchFleets()
+            let p2 = this.fetchClients()
+            Promise.all([p1, p2]).then(values => {
+                this.addClientNames({clients: values[1]})
+            })
+        },
+        computed: {
+            ...mapGetters([
+                'fleets'
+            ])
         },
         methods: {
-            //API call to fetch the fleets from the database.
-            fetchFleetList (){
-                this.$http.get('https://vopro5.ugent.be/app/api/fleets').then(response => {
-                    const data = response.body.data;
-                    for(let i=0; i<data.length; i++){
-                        if(data[i].name == null){
-                            data[i].name = 'Naamloze vloot'
-                        }
-                        this.fleets.push(data[i]);
-                        this.fetchCompanyName(this.fleets[i])
-                    }
-                })
-            },
-            //API call to delete a fleet.
-            deleteFleet(fleetId){
-                this.$http.delete('https://vopro5.ugent.be/app/api/fleets/' + fleetId)
-                //Search for object in local list.
-                let newFleets = this.fleets.filter(fleet => fleet.id !== fleetId);
-                this.fleets = newFleets;
-            },
-            //API call to create a fleet.
-            createFleet(fleet){
-                this.$http.post('https://vopro5.ugent.be/app/api/fleets', fleet,
-                    {
-                        headers: {
-                            Accept: "application/json",
-                        }
-                    }
-                ).then(response => {
-                    console.log(response.body);
-                })
-            },
-            fetchCompanyName(fleet) {
-                if(fleet.company != null){
-                    this.$http.get('https://vopro5.ugent.be/app/api/companies/' + fleet.company).then(response => {
-                        fleet.companyName = response.body.name;
-                    })
-                }
-                else {
-                    fleet.companyName = 'Geen bedrijf';
-                }
-
-            }
+            ...mapActions([
+                'fetchFleets',
+                'deleteFleet',
+                'fetchClients',
+                'addClientNames'
+            ])
         }
     }
 </script>
