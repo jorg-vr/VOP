@@ -6,7 +6,7 @@
         <div class="page-header">
             <h1>{{$t("common.edit") | capitalize}} {{$t("fleet.fleet")}}</h1>
         </div>
-        <fleet-form :fleet="fleet" :submit="updateFleet"></fleet-form>
+        <fleet-form :submit="updateFleet" :fleet="fleet"></fleet-form>
     </div>
 </template>
 <script>
@@ -17,7 +17,7 @@
             FleetForm
         },
         created() {
-            this.getFleet({id: this.$route.params.id})
+            this.fetchFleet({id: this.$route.params.id})
         },
         computed: {
             ...mapGetters([
@@ -27,7 +27,7 @@
         methods: {
             ...mapActions([
                 'updateFleet',
-                'getFleet'
+                'fetchFleet'
             ])
         }
     }

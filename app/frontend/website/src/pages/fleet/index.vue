@@ -27,12 +27,11 @@
 
     export default {
         components: {
-            'list-component': listComponent,
-            'button-link': buttonLink
+            listComponent, buttonLink
         },
         created() {
-            let p1 = this.getFleets()
-            let p2 = this.getClients()
+            let p1 = this.fetchFleets()
+            let p2 = this.fetchClients()
             Promise.all([p1, p2]).then(values => {
                 this.addClientNames({clients: values[1]})
             })
@@ -44,9 +43,9 @@
         },
         methods: {
             ...mapActions([
-                'getFleets',
+                'fetchFleets',
                 'deleteFleet',
-                'getClients',
+                'fetchClients',
                 'addClientNames'
             ])
         }

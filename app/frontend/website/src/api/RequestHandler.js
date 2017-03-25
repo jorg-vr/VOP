@@ -34,7 +34,7 @@ export default {
 
     putObjectRequest(location, object){
         return new Promise(resolve => {
-            Vue.http.post(base_url + location + object.id, object, headers).then(response => {
+            Vue.http.put(base_url + location + object.id, object, headers).then(response => {
                 resolve(response.body)
             })
         })

@@ -39,12 +39,37 @@ export default {
             state.fleets = state.fleets.filter(fleet => fleet.id !== id);
         },
 
-        [types.RECEIVE_SUBFLEETS] (state, {subfleets}){
-            state.subfleets = subfleets
+        [types.CLEAR_SUBFLEETS] (state) {
+            state.subfleets = []
+        },
+
+        [types.CREATE_SUBFLEET] (state, {subfleet}){
+            state.subfleets.push(subfleet)
+        },
+
+        [types.ADD_VEHICLE_TO_SUBFLEETS] (state, {vehicle}){
+            let subfleets = state.subfleets
+            let finished = false
+            for (let i = 0; i < subfleets.length && !finished; i++) {
+                if (vehicle.type === subfleets[i].type.id) {
+                    subfleets[i].vehicles.push(vehicle);
+                    finished = true
+                }
+            }
+        },
+
+        [types.REMOVE_VEHICLE_FROM_SUBFLEETS] (state, {vehicle}){
+            let subfleets = state.subfleets
+            for(let i=0; i<subfleets.length; i++){
+                if(subfleets[i].type.id === vehicle.type){
+                    let newVehicles = subfleets[i].vehicles.filter(obj => obj.id !== vehicle.id)
+                    subfleets[i].vehicles = newVehicles;
+                }
+            }
         }
     },
     actions: {
-        getFleets(context){
+        fetchFleets(context){
             return new Promise(resolve => {
                 RequestHandler.getObjectsRequest(locations.FLEET).then(fleets => {
                     context.commit(types.RECEIVE_FLEETS, {fleets})
@@ -53,7 +78,7 @@ export default {
             })
         },
 
-        getFleet(context, {id}){
+        fetchFleet(context, {id}){
             return new Promise(resolve => {
                 RequestHandler.getObjectRequest(locations.FLEET, id).then(fleet => {
                     context.commit(types.RECEIVE_FLEET, {fleet})
@@ -82,7 +107,7 @@ export default {
         deleteFleet(context, {id}){
             return new Promise(resolve => {
                 RequestHandler.deleteObjectRequest(locations.FLEET, id).then(() => {
-                    context.commit(types.DELETE_FLEET, {id})
+                    context.commit(types.DELETE_FLEET, {id: id})
                     resolve()
                 }, id)
             })
@@ -101,28 +126,13 @@ export default {
         },
 
         getSubfleets(context, {vehicles, vehicleTypes}){
-            let subfleets = []
-            for(let i=0; i< vehicles.length; i++) {
-                let vehicle = vehicles[i];
-                let added = false; //True when the vehicle has been added to a subfleet
-                for (let j = 0; j < subfleets.length && !added; j++) {
-                    if (vehicle.type === subfleets[j].type.id) {
-                        subfleets[j].vehicles.push(vehicle);
-                        added = true;
-                    }
-                }
-                //If a subfleet doesn't exist yet with the current subfleet types.
-                if (!added) { //Create new subfleet
-                    let created = false; //True when the subfleet has been created.
-                    for (let j = 0; j < vehicleTypes.length && !created; j++) { //Search for the vehicleType object
-                        if (vehicle.type === vehicleTypes[j].id) {
-                            subfleets.push({type: vehicleTypes[j], vehicles: [vehicle]})
-                            created = true;
-                        }
-                    }
-                }
+            context.commit(types.CLEAR_SUBFLEETS)
+            for(let i=0; i < vehicleTypes.length; i++){
+                context.commit(types.CREATE_SUBFLEET, {subfleet: {type: vehicleTypes[i], vehicles: []}})
             }
-            context.commit(types.RECEIVE_SUBFLEETS, {subfleets})
+            for(let i=0; i < vehicles.length; i++) {
+                context.commit(types.ADD_VEHICLE_TO_SUBFLEETS, {vehicle: vehicles[i]})
+            }
         }
     }
 }

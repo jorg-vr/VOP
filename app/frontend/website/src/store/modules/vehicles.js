@@ -7,7 +7,8 @@ export default {
     state: {
         vehicles: [],
         vehicle: {},
-        vehicleTypes: []
+        vehicleTypes: [],
+        vehicleType: {}
     },
     getters: {
         vehicles(state) {
@@ -20,6 +21,14 @@ export default {
 
         vehicleTypes(state) {
             return state.vehicleTypes
+        },
+
+        vehicleType(state){
+            return state.vehicleType
+        },
+
+        getVehicleById: (state) => (id) => {
+            return state.vehicles.filter(obj => obj.id === id)[0]
         }
     },
     mutations: {
@@ -41,10 +50,14 @@ export default {
 
         [types.RECEIVE_VEHICLE_TYPES] (state, {vehicleTypes}){
             state.vehicleTypes = vehicleTypes
+        },
+
+        [types.RECEIVE_VEHICLE_TYPE] (state, {vehicleType}){
+            state.vehicleType = vehicleType
         }
     },
     actions: {
-        getVehicles(context, {fleetId}){
+        fetchVehicles(context, {fleetId}){
             return new Promise(resolve => {
                 let query = ''
                 if(fleetId){
@@ -57,7 +70,7 @@ export default {
             })
         },
 
-        getVehicle(context, {id}){
+        fetchVehicle(context, {id}){
             return new Promise(resolve => {
                 RequestHandler.getObjectRequest(locations.VEHICLE, id).then(vehicle => {
                     context.commit(types.RECEIVE_VEHICLE, {vehicle})
@@ -86,17 +99,28 @@ export default {
         deleteVehicle(context, {id}){
             return new Promise(resolve => {
                 RequestHandler.deleteObjectRequest(locations.VEHICLE, id).then(() => {
+                    let vehicle = context.getters.getVehicleById(id)
                     context.commit(types.DELETE_VEHICLE, {id})
+                    context.commit(types.REMOVE_VEHICLE_FROM_SUBFLEETS, {vehicle: vehicle})
                     resolve()
                 }, id)
             })
         },
 
-        getVehicleTypes(context){
+        fetchVehicleTypes(context){
             return new Promise(resolve => {
                 RequestHandler.getObjectsRequest(locations.VEHICLE_TYPES).then(vehicleTypes => {
                     context.commit(types.RECEIVE_VEHICLE_TYPES, {vehicleTypes})
                     resolve(vehicleTypes)
+                })
+            })
+        },
+
+        fetchVehicleType(context, {id}){
+            return new Promise(resolve => {
+                RequestHandler.getObjectRequest(locations.VEHICLE_TYPES, id).then(vehicleType => {
+                    context.commit(types.RECEIVE_VEHICLE_TYPE, {vehicleType})
+                    resolve(vehicleType)
                 })
             })
         }

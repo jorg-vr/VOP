@@ -1,7 +1,8 @@
 <template>
-    <form-item>
+    <form-item :label="label">
         <select class="form-control" :value="value" @change="updateValue($event.target.value)">
-            <option value="" disabled hidden>Selecteer {{label}}</option>
+            <option v-if="hiddenOption" value="" disabled hidden>{{hiddenOption}}</option>
+            <option v-else value="" disabled hidden></option>
             <option :selected="option.id === value" v-for="option in options" :value="option.id">
                 {{option[optionKey]}}
                     </option>
@@ -16,10 +17,11 @@
             label: String,
             value: String,
             options: Array,
+            hiddenOption: String,
             optionKey: String //Key to show of an object
         },
         components: {
-            'form-item': formItem
+            formItem
         },
         methods: {
             //TODO: With props we can add validation functions for each input item.

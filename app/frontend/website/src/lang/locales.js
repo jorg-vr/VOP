@@ -5,13 +5,13 @@ export default
             vehicle: 'vehicles',
             vehicles: 'vehicles',
             licensePlate: 'license plate',
-            chassisnumber: 'chassis number',
+            vin: 'chassis number',
             brand: 'brand',
             model: 'model',
-            type: 'type',
+            vehicleType: 'type',
             mileage: 'mileage',
             year: 'year',
-            leasingCompany:  'leasing company'
+            leasingCompany: 'leasing company'
         },
         fleet: {
             fleet: 'fleet',
@@ -27,9 +27,9 @@ export default
         client: {
             client: 'client',
             clients: 'clients',
+            company: 'company',
             name: 'name',
             country: 'country',
-            vatNumber: 'VAT number',
             phoneNumber: 'phone number',
             address: 'address',
             city: 'city',
@@ -41,7 +41,11 @@ export default
             new: 'new',
             remove: 'remove',
             edit: 'edit',
-            back: 'back'
+            back: 'back',
+            name: 'name'
+        },
+        actions: {
+            select: 'select'
         }
     },
     nl : {
@@ -49,13 +53,13 @@ export default
             vehicle: 'voertuig',
             vehicles: 'voertuigen',
             licensePlate: 'nummerplaat',
-            chassisnumber: 'chassisnummer',
+            vin: 'chassis nummer',
             brand: 'merk',
             model: 'model',
-            type: 'type',
+            vehicleType: 'type',
             mileage: 'kilometerstand',
             year: 'jaar',
-            leasingCompany:  'leasing bedrijf'
+            leasingCompany:  'leasing bedrijf',
         },
         fleet: {
             fleet: 'vloot',
@@ -71,9 +75,9 @@ export default
         client: {
             client: 'klant',
             clients: 'klanten',
+            company: 'bedrijf',
             name: 'naam',
             country: 'land',
-            vatNumber: 'BTW-nummer',
             phoneNumber: 'telefoonnummer',
             address: 'adres',
             city: 'stad',
@@ -82,10 +86,14 @@ export default
             houseNumber: 'huisnummer'
         },
         common: {
-            new: 'nieuwe',
+            new: 'nieuw',
             remove: 'verwijder',
             edit: 'wijzig',
-            back: 'terug'
+            back: 'terug',
+            name: 'naam'
+        },
+        actions: {
+            select: 'selecteer'
         }
     }
 }

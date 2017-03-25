@@ -20,24 +20,24 @@
                 </list-component>
             </div>
         </div>
-        <button-link :route="{name: 'new_vehicle'}" buttonClass="btn btn-primary btn-circle btn-lg">+</button-link>
+        <button-link :route="{name: 'new_fleet'}" buttonClass="btn btn-primary btn-circle btn-lg">+</button-link>
+        <button-link :route="{name: 'new_vehicle', params: {fleet_id: fleet.id}}" buttonClass="btn btn-primary btn-circle btn-lg">+</button-link>
     </div>
 </template>
 <script>
     import listComponent from '../../assets/listComponent.vue'
-    import buttonLink from '../../assets/buttons/buttonAction.vue'
+    import buttonLink from '../../assets/buttons/buttonLink.vue'
     import {mapGetters, mapActions} from 'vuex'
 
     export default {
         components: {
-            'list-component': listComponent,
-            'button-link': buttonLink
+            listComponent, buttonLink
         },
         created() {
             let id = this.$route.params.id
-            this.getFleet({id: id})
-            let p1 = this.getVehicles({fleetId: id})
-            let p2 = this.getVehicleTypes()
+            this.fetchFleet({id: id})
+            let p1 = this.fetchVehicles({fleetId: id})
+            let p2 = this.fetchVehicleTypes()
             Promise.all([p1, p2]).then(values => {
                 this.getSubfleets({
                     vehicles: values[0],
@@ -54,9 +54,9 @@
         methods: {
             ...mapActions([
                 'getSubfleets',
-                'getFleet',
-                'getVehicleTypes',
-                'getVehicles',
+                'fetchFleet',
+                'fetchVehicleTypes',
+                'fetchVehicles',
                 'deleteVehicle'
             ])
         }

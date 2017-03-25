@@ -6,7 +6,7 @@
         <div class="page-header">
             <h1><h1>{{$t("common.new") | capitalize}} {{$t("fleet.fleet")}}</h1></h1>
         </div>
-        <fleet-form :fleet={} :submit="createFleet"></fleet-form>
+        <fleet-form :submit="createFleet" :fleet={}></fleet-form>
     </div>
 </template>
 <script>

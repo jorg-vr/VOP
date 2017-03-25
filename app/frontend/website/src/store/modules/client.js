@@ -17,7 +17,7 @@ export default {
         }
     },
     actions: {
-        getClients(context){
+        fetchClients(context){
             return new Promise(resolve => {
                 RequestHandler.getObjectsRequest(locations.CLIENT).then(clients => {
                     context.commit(types.RECEIVE_CLIENTS, {clients})
