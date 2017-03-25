@@ -13,6 +13,10 @@
             placeholder: String,
             value: String
         },
+        created(){
+            console.log(this.placeholder)
+            console.log(this.value)
+        },
         methods: {
             //TODO: With props we can add validation functions for each input item.
             updateValue: function (value) {

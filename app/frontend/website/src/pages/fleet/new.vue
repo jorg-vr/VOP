@@ -11,12 +11,16 @@
 </template>
 <script>
     import FleetForm from './form.vue'
-    import FleetRequestHandler from '../../api/FleetRequestHandler.vue'
+    import {mapActions} from 'vuex'
 
     export default {
         components: {
             FleetForm
         },
-        mixins: [FleetRequestHandler]
+        methods: {
+            ...mapActions([
+                'createFleet'
+            ])
+        }
     }
 </script>

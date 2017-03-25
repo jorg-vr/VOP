@@ -30,6 +30,15 @@ export default {
                 })
             })
         },
+
+        createFleet(context, {newFleet}){
+            return new Promise(resolve => {
+                RequestHandler.postObjectRequest(locations.FLEET, newFleet).then(fleet => {
+                    resolve(fleet)
+                })
+            })
+        },
+
         deleteFleet(context, {fleetId}){
             return new Promise(() => {
                 RequestHandler.deleteObjectRequest(locations.FLEET, () => {
@@ -37,6 +46,7 @@ export default {
                 }, fleetId)
             })
         },
+
         addClientNames(context, {clients}){
             let fleets = context.state.fleets
             for(let i=0; i<fleets.length; i++){

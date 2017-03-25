@@ -31,7 +31,5 @@ export default {
     deleteObjectRequest(location, id){
         return Vue.http.delete(base_url + location, headers)
     },
-
-
 }
 

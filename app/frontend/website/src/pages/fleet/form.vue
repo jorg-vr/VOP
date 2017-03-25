@@ -45,7 +45,7 @@
             'form-input': formInput
         },
         created(){
-            this.fetchCompanies()
+            //this.fetchCompanies()
         },
         props: {
             fleet: Object,

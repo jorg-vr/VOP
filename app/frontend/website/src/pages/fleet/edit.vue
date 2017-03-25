@@ -11,7 +11,6 @@
 </template>
 <script>
     import FleetForm from './form.vue'
-    import FleetRequestHandler from '../../api/FleetRequestHandler.vue'
 
     export default {
         data(){
@@ -19,12 +18,11 @@
                 fleet : {}
             }
         },
-        mixins: [FleetRequestHandler],
         components: {
             FleetForm
         },
         created() {
-            this.fetchFleet()
+            //this.fetchFleet()
         }
     }
 </script>
