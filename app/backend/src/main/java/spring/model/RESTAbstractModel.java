@@ -6,6 +6,9 @@ import spring.controller.UUIDUtil;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+/**
+ * This abstract class contains some fields that (almost) every RESTModel has.
+ */
 public abstract class RESTAbstractModel {
 
     private String id;
@@ -16,6 +19,13 @@ public abstract class RESTAbstractModel {
     public RESTAbstractModel() {
     }
 
+    /**
+     * @param uuid uuid of the model that the RESTModel is based on, it will be translated to a string in the constructor
+     * @param createdAt
+     * @param lastUpdated
+     * @param url the base URL of the RESTModel.
+     *            Appending the id to the url will be handled in the constructor, so it should NOT be /vehicles/123 for example but /vehicles
+     */
     public RESTAbstractModel(UUID uuid, EditEvent createdAt, EditEvent lastUpdated, String url) {
         this.id = UUIDUtil.UUIDToNumberString(uuid);
         //this.createdAt = createdAt.getEditTime(); TODO milestone3

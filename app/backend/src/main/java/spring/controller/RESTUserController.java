@@ -57,7 +57,7 @@ public class RESTUserController {
             for (Account account : accounts) {
                 Person person = account.getPerson();
                 if (passesFilters(person, email, firstName, lastName)) {
-                    users.add(merge(person, account));
+                    users.add(new RESTUser(account, person));
                 }
             }
         } catch (DataAccessException e) {
@@ -119,7 +119,7 @@ public class RESTUserController {
             Person person = personController.createPerson(user.getFirstName(), user.getLastName(), user.getEmail());
             Account account = accountController.createAccount(user.getEmail(), user.getPassword(), person.getUuid());
 
-            return merge(person, account);
+            return new RESTUser(account, person);
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
@@ -139,7 +139,7 @@ public class RESTUserController {
             Account account = accountController.get(uuid);
             Person person = account.getPerson();
 
-            return merge(person, account);
+            return new RESTUser(account, person);
         } catch (DataAccessException | NumberFormatException | NullPointerException e) {
             throw new NotFoundException();
         }
@@ -162,7 +162,7 @@ public class RESTUserController {
             Account account = accountController.updateAccount(uuid, user.getEmail(), user.getPassword());
             Person person = account.getPerson();
             person = personController.updatePerson(person.getUuid(), user.getFirstName(), user.getLastName(), user.getEmail());
-            return merge(person, account);
+            return new RESTUser(account, person);
         } catch (DataAccessException e) {
             throw new InvalidInputException();
         }
@@ -184,29 +184,5 @@ public class RESTUserController {
         } catch (DataAccessException e) {
             throw new NotFoundException();
         }
-    }
-
-    /**
-     * Merges a person and account object to 1 RESTUser object
-     *
-     * @param person
-     * @param account
-     * @return object that has been created from the values of person and account
-     */
-    private RESTUser merge(Person person, Account account) {
-        String id = UUIDUtil.UUIDToNumberString(account.getUuid());
-        String firstName = person != null ? person.getFirstName() : null;
-        String lastName = person != null ? person.getLastName() : null;
-        String email = person != null ? person.getEmail() : null;
-        RESTUser user = new RESTUser();
-        user.setId(id);
-        user.setPassword(account.getHashedPassword());
-        //user.setUpdatedAt(LocalDateTime.now());
-        //user.setCreatedAt(LocalDateTime.now());
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setEmail(email);
-        user.setUrl(PATH_USER + "/" + id);
-        return user;
     }
 }
