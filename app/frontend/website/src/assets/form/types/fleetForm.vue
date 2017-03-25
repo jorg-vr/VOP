@@ -3,40 +3,51 @@
     fleetForm accepts the old data and an update or create function.
 -->
 <template>
-    <form-component>
+    <form-component v-if="fleet">
         <form-input :placeholder="$t('common.name') + ' ' + $t('fleet.fleet') | capitalize" v-model="fleet.name"></form-input>
         <form-select optionKey="name" :options="clients" v-model="fleet.company"
                      :hiddenOption="$t('actions.select') + ' ' + $t('client.company')| capitalize ">
         </form-select>
         <div class="row">
-            <button-action @click="proceed" buttonClass="btn btn-success btn-md"><i class="fa fa-check"></i></button-action>
-            <button-link :route="{name: 'fleets'}" buttonClass="btn btn-danger btn-md"><i  class="fa fa-times"></i></button-link>
+            <button-success @click="proceed"></button-success>
+            <button-fail :route="{name: 'fleets'}"></button-fail>
         </div>
     </form-component>
 </template>
 <script>
     import formComponent from '../formComponent.vue'
-    import formInput from '../formInput.vue'
-    import formSelect from '../formSelect.vue'
-    import buttonLink from '../../buttons/buttonLink.vue'
-    import buttonAction from '../../buttons/buttonAction.vue'
+    import formInput from '../elements/formInput.vue'
+    import formSelect from '../elements/formSelect.vue'
+    import buttonFail from '../../buttons/buttonFail.vue'
+    import buttonSuccess from '../../buttons/buttonSuccess.vue'
     import {mapGetters, mapActions} from 'vuex'
 
     export default {
         components: {
-            formComponent, formInput, formSelect, buttonLink, buttonAction
+            formComponent, formInput, formSelect, buttonFail, buttonSuccess
         },
         props: {
             submit: Function, //Function to create the fleet.
-            fleet: Object
+            oldFleet: Object
         },
         created(){
+            if(this.fleet === undefined){
+                this.fleet = {}
+            }
             this.fetchClients()
         },
         computed: {
             ...mapGetters([
                 'clients'
-            ])
+            ]),
+            fleet() {
+                if(this.oldFleet===undefined){
+                    return {}
+                }
+                else {
+                    return this.oldFleet
+                }
+            }
         },
         methods: {
             ...mapActions([
@@ -51,5 +62,4 @@
         }
 
     }
-
 </script>

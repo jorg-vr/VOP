@@ -38,24 +38,19 @@
                     <td>{{vehicle.leasingCompany}}</td>
                 </tr>
             </table>
-
-            <button-link v-if="vehicle.fleet" :route="{name: 'fleet', params: {id: vehicle.fleet}}" buttonClass="btn btn-default">
-                Terug
-            </button-link>
-            <button-link v-else :route="{name: 'fleets'}" buttonClass="btn btn-default">
-                Terug
-            </button-link>
+            <button-back v-if="vehicle.fleet" :route="{name: 'fleet', params: {id: vehicle.fleet}}"></button-back>
+            <button-back v-else :route="{name: 'fleets'}"></button-back>
         </div>
 
     </div>
 </template>
 <script>
-    import buttonLink from '../../assets/buttons/buttonLink.vue'
+    import buttonBack from '../../assets/buttons/buttonBack.vue'
     import {mapGetters, mapActions} from 'vuex'
 
     export default {
         components: {
-            'button-link': buttonLink
+            buttonBack
         },
         created() {
             this.fetchVehicle({id: this.$route.params.id}).then(vehicle => {

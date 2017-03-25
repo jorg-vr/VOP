@@ -4,37 +4,24 @@
 <template>
     <div id="content-wrapper">
        <div class="page-header">
-         <h1> Klant aanmaken </h1>
+         <h1>{{ $t("client.client") | capitalize }} {{$t("actions_plural.create") }}</h1>
      </div>  
-     <form-temp :client={address:{}} :submit="createClient"></form-temp>
+     <client-form :submit="createClient"></client-form>
  </div>
 </template>
 <script>
-    import FormTemp from './form.vue'
+    import ClientForm from '../../assets/form/types/clientForm.vue'
+    import {mapActions} from 'vuex'
 
     export default {
-        data(){
-            return {}
+        components: {
+            ClientForm
         },
-        components: { FormTemp},
         methods: {
-            createClient(client){
-                console.log(client);
-                this.$http.post('https://vopro5.ugent.be/app/api/companies', client,
-                    {
-                        headers: {
-                            Accept: "application/json",
-                        }
-                    }
-                ).then(response => { //Success
-                        this.$router.push({name: 'client', params: {id: response.body.id}});
-                    }, response => { //Fail
-                        console.log('fail')
-                        console.log(response)
-                    }
-                )
-            }
+            ...mapActions([
+                'createClient'
+            ])
         }
-    }  
+    }
 </script>
 

@@ -1,6 +1,6 @@
 import * as types from '../mutationTypes'
 import * as locations from '../locations'
-import RequestHandler from '../../api/RequestHandler'
+import RequestHandler from '../../api/requestHandler'
 import Vue from 'vue'
 
 export default {

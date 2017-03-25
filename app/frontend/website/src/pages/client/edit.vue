@@ -4,51 +4,34 @@
 <template>
     <div id="content-wrapper">
         <div class="page-header">
-            <h1> Klant aanpassen </h1>
+            <h1>{{ $t("client.client") | capitalize }} {{$t("actions_plural.edit") }}</h1>
         </div>
-        <form-temp :client=client :submit="updateClient"></form-temp>
+        <client-form :oldClient=client :submit="updateClient"></client-form>
     </div>
 </template>
 <script>
-    import FormTemp from './form.vue'
+    import ClientForm from '../../assets/form/types/clientForm.vue'
+    import {mapGetters, mapActions} from 'vuex'
+
+
     export default {
-        data(){
-            return {
-                client:{}
-            }
+        components: {
+            ClientForm
         },
-        components: { FormTemp},
-        methods:{
-            // Function that makes an API call to fetch specific client data to be edited
-            fetchClient : function () {
-                this.$http.get('https://vopro5.ugent.be/app/api/companies/' + this.$route.params.id).then(response => {
-                    this.client = response.body;
-                    console.log(this.client)
-                })
-            },
-            updateClient(client){
-                this.$http.put('https://vopro5.ugent.be/app/api/companies/' + this.$route.params.id, client,
-                    {
-                        headers: {
-                            Accept: "application/json",
-                        }
-                    }
-                ).then(response => { //Succes
-                        this.$router.push({name: 'client', params: {id: response.body.id}});
-                    }, response => { //Fail
-                        console.log('fail')
-                    }
-                )
-            }
-
-
+        created(){
+            this.fetchClient({id: this.$route.params.id})
         },
-        created: function (){
-            this.fetchClient()
+        computed: {
+            ...mapGetters([
+                'client'
+            ])
+        },
+        methods: {
+            ...mapActions([
+                'fetchClient',
+                'updateClient'
+            ])
         }
     }
-
-
-
-
 </script>
+

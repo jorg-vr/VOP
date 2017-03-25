@@ -2,9 +2,9 @@
 <template>
     <div>
         <div class="page-header">
-            <h1>{{$t("common.new") | capitalize}} {{$t("vehicle.vehicle")}}</h1>
+            <h1>{{ $t("vehicle.vehicle") | capitalize }} {{$t("actions_plural.create") }}</h1>
         </div>
-        <vehicle-form :submit="createVehicle" :vehicle="vehicle"></vehicle-form>
+        <vehicle-form :submit="createVehicle" :fleetId="this.$route.params.fleet_id"></vehicle-form>
     </div>
 </template>
 <script>
@@ -12,18 +12,8 @@
     import {mapActions} from 'vuex'
 
     export default {
-        data(){
-            return {
-                vehicle: {}
-            }
-        },
         components: {
             VehicleForm
-        },
-        created() {
-            if(this.$route.params.fleet_id){
-                this.vehicle.fleet = this.$route.params.fleet_id;
-            }
         },
         methods: {
             ...mapActions([

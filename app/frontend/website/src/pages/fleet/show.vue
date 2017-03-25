@@ -20,18 +20,18 @@
                 </list-component>
             </div>
         </div>
-        <button-link :route="{name: 'new_fleet'}" buttonClass="btn btn-primary btn-circle btn-lg">+</button-link>
-        <button-link :route="{name: 'new_vehicle', params: {fleet_id: fleet.id}}" buttonClass="btn btn-primary btn-circle btn-lg">+</button-link>
+        <button-add :route="{name: 'new_vehicle', params: {fleet_id: fleet.id}}"></button-add>
     </div>
 </template>
 <script>
     import listComponent from '../../assets/listComponent.vue'
     import buttonLink from '../../assets/buttons/buttonLink.vue'
+    import buttonAdd from '../../assets/buttons/buttonAdd.vue'
     import {mapGetters, mapActions} from 'vuex'
 
     export default {
         components: {
-            listComponent, buttonLink
+            listComponent, buttonAdd
         },
         created() {
             let id = this.$route.params.id

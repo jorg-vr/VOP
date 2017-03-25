@@ -5,9 +5,9 @@
 <template>
     <div>
         <div class="page-header">
-            <h1>{{$t("common.edit") | capitalize}} {{$t("vehicle.vehicle")}}</h1>
+            <h1>{{ $t("vehicle.vehicle") | capitalize }} {{$t("actions_plural.edit") }}</h1>
         </div>
-        <vehicle-form :submit="updateVehicle" :vehicle="vehicle"></vehicle-form>
+        <vehicle-form :submit="updateVehicle" :oldVehicle="vehicle"></vehicle-form>
     </div>
 </template>
 <script>

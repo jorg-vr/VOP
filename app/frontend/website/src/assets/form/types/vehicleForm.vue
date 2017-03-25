@@ -3,7 +3,7 @@
     The form accepts the old vehicle and an update or create function.
 -->
 <template>
-    <form-component>
+    <form-component v-if="vehicle">
         <form-input :placeholder="$t('vehicle.licensePlate') | capitalize" :label="$t('vehicle.licensePlate') | capitalize"
                     v-model="vehicle.licensePlate"></form-input>
 
@@ -29,41 +29,46 @@
                      v-model="vehicle.leasingCompany"></form-select>
 
         <div class="row">
-            <button-action @click="proceed" buttonClass="btn btn-success btn-md"><i class="fa fa-check"></i></button-action>
-            <button-link v-if="vehicle.fleet" :route="{name: 'fleet', params: {id: vehicle.fleet}}" buttonClass="btn btn-danger btn-md">
-                <i  class="fa fa-times"></i>
-            </button-link>
-            <button-link v-else :route="{name: 'fleets'}" buttonClass="btn btn-danger btn-md">
-                <i  class="fa fa-times"></i>
-            </button-link>
+            <button-success @click="proceed"></button-success>
+            <button-fail v-if="vehicle.fleet" :route="{name: 'fleet', params: {id: vehicle.fleet}}"></button-fail>
+            <button-fail v-else :route="{name: 'fleets'}"></button-fail>
         </div>
     </form-component>
 </template>
 <script>
     import formComponent from '../formComponent.vue'
-    import formInput from '../formInput.vue'
-    import formSelect from '../formSelect.vue'
-    import buttonLink from '../../buttons/buttonLink.vue'
-    import buttonAction from '../../buttons/buttonAction.vue'
+    import formInput from '../elements/formInput.vue'
+    import formSelect from '../elements/formSelect.vue'
+    import buttonFail from '../../buttons/buttonFail.vue'
+    import buttonSuccess from '../../buttons/buttonSuccess.vue'
     import {mapGetters, mapActions} from 'vuex'
 
     export default {
         components: {
-            formComponent, formInput, formSelect, buttonLink, buttonAction
+            formComponent, formInput, formSelect, buttonFail, buttonSuccess
         },
         props: {
-            vehicle: Object, //Vehicle which should be created/updated with this fleetForm.vue.
-            submit: Function //Submit function to create/update the vehicle.
+            submit: Function, //Submit function to create/update the vehicle.
+            oldVehicle: Object, //Vehicle which should be created/updated with this form
+            fleetId: String
         },
         created() {
-            this.fetchVehicleTypes();
+            this.fetchVehicleTypes()
             this.fetchClients()
         },
         computed: {
             ...mapGetters([
                 'clients',
                 'vehicleTypes'
-            ])
+            ]),
+            vehicle(){
+                if(this.oldVehicle === undefined) {
+                    return {fleet: this.fleetId}
+                }
+                else {
+                    return this.oldVehicle
+                }
+            }
         },
         methods: {
             ...mapActions([
@@ -71,6 +76,7 @@
                 'fetchClients'
             ]),
             proceed(){
+                console.log(this.vehicle)
                 this.submit({vehicle: this.vehicle}).then(vehicle => {
                     if(vehicle.fleet){
                         this.$router.push({name: 'fleet', params: {id: vehicle.fleet}})

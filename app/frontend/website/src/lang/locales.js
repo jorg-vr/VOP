@@ -29,23 +29,30 @@ export default
             clients: 'clients',
             company: 'company',
             name: 'name',
-            country: 'country',
             phoneNumber: 'phone number',
+            vatNumber: 'VAT number'
+        },
+        address: {
+            country: 'country',
             address: 'address',
             city: 'city',
             street: 'street',
             postalCode: 'postal code',
-            houseNumber: 'house number'
+            houseNumber: 'house number',
         },
         common: {
             new: 'new',
             remove: 'remove',
-            edit: 'edit',
             back: 'back',
             name: 'name'
         },
         actions: {
-            select: 'select'
+            select: 'select',
+
+        },
+        actions_plural: {
+            create: 'create',
+            edit: 'edit'
         }
     },
     nl : {
@@ -70,15 +77,18 @@ export default
             users: 'gebruikers',
             firstName: 'voornaam',
             lastName: 'achternaam',
-            email: 'e-mail'
+            email: 'e-mail',
         },
         client: {
             client: 'klant',
             clients: 'klanten',
             company: 'bedrijf',
             name: 'naam',
-            country: 'land',
             phoneNumber: 'telefoonnummer',
+            vatNumber: 'BTW-nummer'
+        },
+        address: {
+            country: 'land',
             address: 'adres',
             city: 'stad',
             street: 'straat',
@@ -93,7 +103,11 @@ export default
             name: 'naam'
         },
         actions: {
-            select: 'selecteer'
+            select: 'selecteer',
+        },
+        actions_plural: {
+            create: 'aanmaken',
+            edit: 'bewerken'
         }
     }
 }

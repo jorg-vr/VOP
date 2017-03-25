@@ -16,18 +16,17 @@
                         show="fleet"
                         :key="fleet.id">
         </list-component>
-        <button-link :route="{name: 'new_fleet'}" buttonClass="btn btn-primary btn-circle btn-lg">+</button-link>
+        <button-add :route="{name: 'new_fleet'}"></button-add>
     </div>
 </template>
-
 <script>
     import { mapGetters, mapActions } from 'vuex'
     import listComponent from "../../assets/listComponent.vue"
-    import buttonLink from '../../assets/buttons/buttonLink.vue'
+    import buttonAdd from '../../assets/buttons/buttonAdd.vue'
 
     export default {
         components: {
-            listComponent, buttonLink
+            listComponent, buttonAdd
         },
         created() {
             let p1 = this.fetchFleets()

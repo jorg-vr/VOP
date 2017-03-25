@@ -3,96 +3,48 @@
     From this page a new client can be added or an existing client can be edited or removed.
 -->
 <template>
-<div>
-    <div class="page-header">
-    <h1>Klanten</h1>
+    <div>
+        <div class="page-header">
+            <h1>{{$t("client.clients") | capitalize }}</h1>
+        </div>
+        <!-- Render an info-pane for every client. Once all the data is loaded, the table will be shown.-->
+        <list-component v-for="client in clients"
+                        v-if="client"
+                        :object="client"
+                        :visibleKeys="new Array('name')"
+                        :remove="deleteClient"
+                        edit="edit_client"
+                        show="client"
+                        :key="client.id">
+        </list-component>
+        <button-add :route="{name: 'new_client'}"></button-add>
     </div>
-    <!-- Render an info-pane for every clients -->
-        <info-pane v-for="clients in clientList"
-                    :textValues="new Array(clients.name)"
-                   :remove="remove"
-                   :objectId= "clients.id"
-                   edit="edit_client"
-                   show="client"
-                   :key="clients.id">
-        </info-pane>
-
-        <button type="button" class="btn btn-primary btn-circle btn-lg" v-on:click="add()">+</button>
-
-</div>
-
-
-
 </template>
 <script>
-import infoPane from "../../assets/listComponent.vue"
+    import { mapGetters, mapActions } from 'vuex'
+    import listComponent from "../../assets/listComponent.vue"
+    import buttonAdd from '../../assets/buttons/buttonAdd.vue'
+
     export default {
         components: {
-            'info-pane': infoPane
+            listComponent, buttonAdd
         },
-        data(){
-        return {
-            clientList : [],
-            clients:{},
-            search: ''
-        }
-        },
-        methods:{
-            // Methods for routing purposes
-            // Route to adding a new client
-            add: function () {
-                this.$router.push({ path: 'clients/new'})
-            },
-            // Function to remove a client 
-            remove : function (id){
-                console.log(id);
-                // API call to remove client from database
-                this.$http.delete('https://vopro5.ugent.be/app/api/companies/'+id)
-                // API call to remove user from database
-                let newClients = this.clientList.filter(client => client.id !== id);
-                this.clientList = newClients
-            },
-            // Function to fetch list of clients from database
-            fetchClientList(){
-                this.$http.get('https://vopro5.ugent.be/app/api/companies').then(response => {
-                    const data = response.body.data;
-                    for(let i=0; i<data.length; i++){
-                        this.clientList.push(data[i]);
-                    }
-                 })
-            }
+        created() {
+            this.fetchClients()
         },
         computed: {
-            // Computed property used for searching
-            searchId: function () { 
-                var s=this.search.trim().toLowerCase();;
-                var listID = []
-                listID = this.clients
-                if(!this.search){
-                    return listID
-                }
-                else{
-                    console.log(listID)
-                    return listID.filter(function(number){
-                        if(number.name.toLowerCase().indexOf(s) != -1){
-                            return number
-                        }
-                    })
-                }
-            },
-            // Computed property used as a placeholder in the searchbar
-            appendString : function (){
-                var value = 'Klant zoeken'
-                return value
-            },
+            ...mapGetters([
+                'clients'
+            ])
         },
-        // Lifecycle hook called when this component is created
-        created: function () {
-            this.fetchClientList()
-        },
+        methods: {
+            ...mapActions([
+                'fetchClients',
+                'deleteClient',
+            ])
+        }
     }
 </script>
-
 <style>
     .btn-circle.btn-lg {
         position: fixed;
@@ -104,5 +56,5 @@ import infoPane from "../../assets/listComponent.vue"
         font-size: 18px;
         line-height: 1.33;
         border-radius: 25px;
-}
+    }
 </style>
