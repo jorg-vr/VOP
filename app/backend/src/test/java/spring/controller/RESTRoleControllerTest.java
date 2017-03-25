@@ -81,16 +81,16 @@ public class RESTRoleControllerTest {
     @Test
     public void post() throws Exception {
         RESTRole restRole=new RESTRole();
-        restRole.setCompanyId(UUIDUtil.UUIDToNumberString(customer.getUuid()));
-        restRole.setUserId(UUIDUtil.UUIDToNumberString(account.getUuid()));
+        restRole.setCompany(UUIDUtil.UUIDToNumberString(customer.getUuid()));
+        restRole.setUser(UUIDUtil.UUIDToNumberString(account.getUuid()));
 
         MvcResult result =mvc.perform(MockMvcRequestBuilders.post("/roles")
                 .header("Content-Type","application/json")
                 .content(TestUtil.convertObjectToJsonBytes(restRole))
         )
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.companyId",equalTo(restRole.getCompanyId())))
-                .andExpect(jsonPath("$.userId",equalTo(restRole.getUserId()))).andReturn();
+                .andExpect(jsonPath("$.companyId",equalTo(restRole.getCompany())))
+                .andExpect(jsonPath("$.userId",equalTo(restRole.getUser()))).andReturn();
         RESTRole restRole1 =  TestUtil.convertJsonBytesToObject(result.getResponse().getContentAsByteArray(),RESTRole.class);
         mvc.perform(MockMvcRequestBuilders.delete("/roles/{id}",restRole1.getId()))
                 .andExpect(status().isOk());
@@ -101,13 +101,13 @@ public class RESTRoleControllerTest {
     @Test
     public void getId() throws Exception {
         RESTRole restRole=new RESTRole();
-        restRole.setCompanyId(UUIDUtil.UUIDToNumberString(customer.getUuid()));
-        restRole.setUserId(UUIDUtil.UUIDToNumberString(account.getUuid()));
+        restRole.setCompany(UUIDUtil.UUIDToNumberString(customer.getUuid()));
+        restRole.setUser(UUIDUtil.UUIDToNumberString(account.getUuid()));
 
         mvc.perform(MockMvcRequestBuilders.get("/roles/{id}",UUIDUtil.UUIDToNumberString(function.getUuid())))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.companyId",equalTo(restRole.getCompanyId())))
-                .andExpect(jsonPath("$.userId",equalTo(restRole.getUserId())))
+                .andExpect(jsonPath("$.companyId",equalTo(restRole.getCompany())))
+                .andExpect(jsonPath("$.userId",equalTo(restRole.getUser())))
                 .andReturn();
     }
 
@@ -115,17 +115,17 @@ public class RESTRoleControllerTest {
     public void putId() throws Exception {
         RESTRole restRole=new RESTRole();
         restRole.setId(UUIDUtil.UUIDToNumberString( function.getUuid()));
-        restRole.setCompanyId(UUIDUtil.UUIDToNumberString(customer.getUuid()));
+        restRole.setCompany(UUIDUtil.UUIDToNumberString(customer.getUuid()));
         restRole.setFunction("");
-        restRole.setUserId(UUIDUtil.UUIDToNumberString(account.getUuid()));
+        restRole.setUser(UUIDUtil.UUIDToNumberString(account.getUuid()));
 
         MvcResult result =mvc.perform(MockMvcRequestBuilders.put("/roles/{id}",UUIDUtil.UUIDToNumberString(function.getUuid()))
                 .header("Content-Type","application/json")
                 .content(TestUtil.convertObjectToJsonBytes(restRole))
         )
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.companyId",equalTo(restRole.getCompanyId())))
-                .andExpect(jsonPath("$.userId",equalTo(restRole.getUserId())))
+                .andExpect(jsonPath("$.companyId",equalTo(restRole.getCompany())))
+                .andExpect(jsonPath("$.userId",equalTo(restRole.getUser())))
                 .andReturn();
 
     }
