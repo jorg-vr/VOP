@@ -3,15 +3,11 @@
     The form accepts the old data and an update or create function.
 -->
 <template>
-    <form-component v-if="fleet">
+    <form-component v-if="fleet" @submit="proceed" :failroute="{name: 'fleets'}">
         <form-input :placeholder="$t('common.name') + ' ' + $t('fleet.fleet') | capitalize" v-model="fleet.name"></form-input>
         <form-select optionKey="name" :options="clients" v-model="fleet.company"
                      :hiddenOption="$t('actions.select') + ' ' + $t('client.company')| capitalize ">
         </form-select>
-        <div class="row">
-            <button-success @click="proceed"></button-success>
-            <button-fail :route="{name: 'fleets'}"></button-fail>
-        </div>
     </form-component>
 </template>
 <script>

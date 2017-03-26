@@ -3,7 +3,8 @@
 -->
 <template>
 
-    <form-component v-if="client && client.address">
+    <form-component v-if="client && client.address" @submit="proceed" :failroute="{name: 'clients'}">
+
         <form-input :placeholder="$t('common.name') | capitalize" :label="$t('common.name') | capitalize"
                     v-model="client.name"></form-input>
 
@@ -27,11 +28,6 @@
 
         <form-input :placeholder="$t('client.phoneNumber') | capitalize" :label="$t('client.phoneNumber') | capitalize"
                     v-model="client.phoneNumber"></form-input>
-
-        <div class="row">
-            <button-success @click="proceed"></button-success>
-            <button-fail :route="{name: 'clients'}"></button-fail>
-        </div>
     </form-component>
 </template>
 <script>
