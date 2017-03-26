@@ -1,5 +1,5 @@
 <template>
-    <button-link :route="route"  buttonClass="btn btn-default pull-left">{{$t('common.back') | capitalize }}</button-link>
+    <button-link :route="route"  buttonClass="btn btn-default pull-left" buttonId="back">{{$t('common.back') | capitalize }}</button-link>
 </template>
 <script>
     import buttonLink from './buttonLink.vue'

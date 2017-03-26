@@ -10,11 +10,11 @@ public class RESTRole {
 
     private String id;
 
-    private String companyId;
+    private String company;
 
     private String function;
 
-    private String userId;
+    private String user;
 
     private LocalDateTime startDate;
 
@@ -34,12 +34,12 @@ public class RESTRole {
         this.id = id;
     }
 
-    public String getCompanyId() {
-        return companyId;
+    public String getCompany() {
+        return company;
     }
 
-    public void setCompanyId(String companyId) {
-        this.companyId = companyId;
+    public void setCompany(String company) {
+        this.company = company;
     }
 
     public String getFunction() {
@@ -50,12 +50,12 @@ public class RESTRole {
         this.function = function;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getUser() {
+        return user;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUser(String user) {
+        this.user = user;
     }
 
     public LocalDateTime getStartDate() {

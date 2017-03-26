@@ -2,7 +2,7 @@ package model.fleet;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import spring.Exceptions.InvalidInputException;
+import spring.exceptions.InvalidInputException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;

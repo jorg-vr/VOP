@@ -1,14 +1,24 @@
 package spring.model;
 
+import model.fleet.Vehicle;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import spring.controller.UUIDUtil;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 /**
  * This is a bean class as specified in the API specification
  */
-@ResponseStatus(value= HttpStatus.OK, reason="OK")
-public class RESTVehicle {
-    private String id;
+@ResponseStatus(value = HttpStatus.OK, reason = "OK")
+public class RESTVehicle extends RESTAbstractModel {
+
+    private static final String PATH_VEHICLES = "/vehicles";
+
+    private static DateTimeFormatter yearFormat = DateTimeFormatter.ofPattern("yyyyMMdd").withLocale(Locale.forLanguageTag("NL"));
+
     private String licensePlate;
     private String vin; //chassisnumber
     private String brand;
@@ -19,30 +29,45 @@ public class RESTVehicle {
     private String year;
     private String leasingCompany; //id of leasing company
     private String fleet;
-    private String createdAt;
-    private String updatedAt;
-    private String lastUpdatedBy;
-    private String url;
 
     public RESTVehicle() {
     }
 
-    public RESTVehicle(String id, String licensePlate, String vin, String brand, String model, String type, int value, int mileage, String year, String leasingCompany, String fleet, String createdAt, String updatedAt, String lastUpdatedBy, String url) {
-        this.id = id;
-        this.licensePlate = licensePlate;
-        this.vin = vin;
-        this.brand = brand;
-        this.model = model;
-        this.type = type;
-        this.value = value;
-        this.mileage = mileage;
-        this.year = year;
-        this.leasingCompany = leasingCompany;
-        this.fleet = fleet;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.lastUpdatedBy = lastUpdatedBy;
-        this.url = url;
+    /**
+     * Create a new RESTVehicle based on the fields of the vehicle object
+     * @param vehicle the vehicle that this RESTVehicle is based on
+     */
+    public RESTVehicle(Vehicle vehicle) {
+        super(vehicle.getUuid(), PATH_VEHICLES);
+        licensePlate = vehicle.getLicensePlate();
+        vin = vehicle.getChassisNumber();
+        brand = vehicle.getBrand();
+        model = vehicle.getModel();
+        type = vehicle.getType() != null ? UUIDUtil.UUIDToNumberString(vehicle.getType().getUuid()) : null;
+        value = vehicle.getValue();
+        mileage = vehicle.getMileage();
+        year = vehicle.getProductionDate().getYear() + "";
+        leasingCompany = vehicle.getLeasingCompany() != null ? UUIDUtil.UUIDToNumberString(vehicle.getLeasingCompany().getUuid()) : null;
+        fleet = vehicle.getFleet() != null ? UUIDUtil.UUIDToNumberString(vehicle.getFleet().getUuid()) : null;
+    }
+
+    /**
+     * @return a new Vehicle object that has fields that are based on this object
+     */
+    public Vehicle translate() {
+        Vehicle vehicle = new Vehicle();
+        vehicle.setUuid(UUIDUtil.toUUID(getId()));
+        vehicle.setBrand(brand);
+        vehicle.setModel(model);
+        vehicle.setLicensePlate(licensePlate);
+        LocalDate year = LocalDate.parse(this.year + "0101", yearFormat);//Fix conversion bug
+        vehicle.setProductionDate(year);
+        vehicle.setChassisNumber(vin);
+        vehicle.setValue(value);
+        vehicle.setMileage(mileage);
+        //vehicle.setType(); TODO create dummy type or get it from DAO?
+        //vehicle.setFleet();
+        return vehicle;
     }
 
     public int getValue() {
@@ -51,14 +76,6 @@ public class RESTVehicle {
 
     public void setValue(int value) {
         this.value = value;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getLicensePlate() {
@@ -133,51 +150,4 @@ public class RESTVehicle {
         this.fleet = fleet;
     }
 
-    public String getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public String getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(String updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public String getLastUpdatedBy() {
-        return lastUpdatedBy;
-    }
-
-    public void setLastUpdatedBy(String lastUpdatedBy) {
-        this.lastUpdatedBy = lastUpdatedBy;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        RESTVehicle that = (RESTVehicle) o;
-
-        return id.equals(that.id);
-
-    }
-
-    @Override
-    public int hashCode() {
-        return id.hashCode();
-    }
 }

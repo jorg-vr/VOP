@@ -1,5 +1,5 @@
 <template>
-    <button type="button" :class="buttonClass" @click="emitClicked">
+    <button type="button" :class="buttonClass" @click="emitClicked" :id="buttonId">
         <slot></slot>
     </button>
 </template>
@@ -8,7 +8,7 @@
         props: {
             action: Function,
             buttonClass: String,
-            htmlClass: String //Class of the button
+            buttonId: String
         },
         methods: {
             emitClicked(){

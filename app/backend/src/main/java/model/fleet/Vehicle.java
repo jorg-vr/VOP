@@ -2,7 +2,7 @@ package model.fleet;
 
 import model.history.EditableObject;
 import model.identity.LeasingCompany;
-import spring.Exceptions.InvalidInputException;
+import spring.exceptions.InvalidInputException;
 
 import java.time.LocalDate;
 import java.util.UUID;
