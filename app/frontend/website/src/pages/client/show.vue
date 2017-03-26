@@ -41,28 +41,43 @@
                     <td>{{client.phoneNumber}}</td>
                 </tr>
             </table>
+            <h2>{{$t("fleet.fleets") | capitalize }}</h2>
+            <list-component v-for="fleet in fleets"
+                            v-if="fleet"
+                            :object="fleet"
+                            :visibleKeys="new Array('name','companyName')"
+                            show="fleet"
+                            :key="fleet.id">
+            </list-component>
             <button-back :route="{name: 'clients'}"></button-back>
         </div>
     </div>
 </template>
 <script>
     import {mapGetters, mapActions} from 'vuex'
+    import listComponent from "../../assets/general/listComponent.vue"
     import buttonBack from '../../assets/buttons/buttonBack.vue'
+
     export default {
         components: {
-            buttonBack
+            buttonBack, listComponent
         },
         created(){
-            this.fetchClient({id: this.$route.params.id})
+            let clientId = this.$route.params.id
+            console.log(this.$route.params.id)
+            this.fetchClient({id: clientId})
+            this.fetchFleetsByClient({clientId: clientId})
         },
         computed: {
             ...mapGetters([
-                'client'
+                'client',
+                'fleets'
             ])
         },
         methods: {
             ...mapActions([
-                'fetchClient'
+                'fetchClient',
+                'fetchFleetsByClient'
             ])
         },
     }

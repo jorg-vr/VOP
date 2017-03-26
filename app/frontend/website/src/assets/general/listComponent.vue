@@ -20,63 +20,62 @@
                 </div>
             </div>
         </router-link>
-        <router-link :to="{name: this.edit, params: {id: object.id}}">
-            <button type="button" class="btn btn-md btn-info">
-                <i aria-hidden="true" class="fa fa-pencil"></i>
-            </button>
-        </router-link>
-        <button type="button" class="btn btn-md btn-danger" v-on:click="remove({id: object.id})">
-            <i aria-hidden="true" class="fa fa-trash"></i>
-        </button>
+        <button-edit v-if="edit" :route="{name: edit, params: {id: object.id}}"></button-edit>
+        <button-remove v-if="remove" @click="remove({id: object.id})"></button-remove>
     </div>
 </template>
 <script>
+    import buttonEdit from '../../assets/buttons/buttonEdit.vue'
+    import buttonRemove from '../../assets/buttons/buttonRemove.vue'
 
-export default {
-    props: {
-        object: Object, //Object with values to show
-        visibleKeys: Array, //Keys of values which have to be shown
-        show: String, //Name of link to show page of the given object.
-        edit: String, //Name of link to edit page of the given object.
-        remove: Function, //Function to remove the given object.
-    },
-    computed: {
-        values() {
-            let values = []
-            for(let i=0; i<this.visibleKeys.length; i++){
-                let key = this.visibleKeys[i]
-                if(this.object[key]){
-                    values.push(this.object[key])
+    export default {
+        props: {
+            object: Object, //Object with values to show
+            visibleKeys: Array, //Keys of values which have to be shown
+            show: String, //Name of link to show page of the given object.
+            edit: String, //Name of link to edit page of the given object.
+            remove: Function, //Function to remove the given object.
+        },
+        components: {
+            buttonEdit, buttonRemove
+        },
+        computed: {
+            values() {
+                let values = []
+                for(let i=0; i<this.visibleKeys.length; i++){
+                    let key = this.visibleKeys[i]
+                    if(this.object[key]){
+                        values.push(this.object[key])
+                    }
                 }
+                return values
             }
-            return values
         }
     }
-}
 
 </script>
 <style>
 
-.btn-md {
-   margin-left: 5px;
-   margin-top: 8px;
-}
+    .btn-md {
+        margin-left: 5px;
+        margin-top: 8px;
+    }
 
-.panel {
-    margin-right: 5px;
-}
+    .panel {
+        margin-right: 5px;
+    }
 
-.panel table  {
-    /* Create columns with equal width */
-    width: 100%;
-    table-layout: fixed;
-}
-a td {
-    color: black;
-    /* Trigger columns with equal width */
-}
-a div.panel:hover {
-    background-color: #eee;
-}
+    .panel table  {
+        /* Create columns with equal width */
+        width: 100%;
+        table-layout: fixed;
+    }
+    a td {
+        color: black;
+        /* Trigger columns with equal width */
+    }
+    a div.panel:hover {
+        background-color: #eee;
+    }
 
 </style>
