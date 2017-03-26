@@ -4,6 +4,7 @@ import controller.AccountController;
 import controller.CustomerController;
 import controller.FunctionController;
 import controller.PersonController;
+import dao.database.ProductionProvider;
 import dao.interfaces.DataAccessException;
 import model.account.Account;
 import model.account.Function;
@@ -43,7 +44,7 @@ public class RESTRoleControllerTest {
 
     @BeforeClass
     public static void setup() {
-        //ProductionProvider.initializeProvider("test");
+        ProductionProvider.initializeProvider("test");
         try {
             address= new Address("mystreet","123","lala","12345","land");
             customer= new CustomerController().create(address,"04789456123","anita","123456789");
@@ -65,7 +66,7 @@ public class RESTRoleControllerTest {
             e.printStackTrace();
         }
 
-        //ProductionProvider.getInstance().close();
+        ProductionProvider.getInstance().close();
     }
 
     @Test
