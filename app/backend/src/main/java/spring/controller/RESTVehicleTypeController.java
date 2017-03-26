@@ -2,12 +2,10 @@ package spring.controller;
 
 import controller.VehicleController;
 import dao.interfaces.DataAccessException;
-import dao.interfaces.Filter;
-import model.fleet.Vehicle;
 import model.fleet.VehicleType;
 import org.springframework.web.bind.annotation.*;
-import spring.Exceptions.InvalidInputException;
-import spring.Exceptions.NotFoundException;
+import spring.exceptions.InvalidInputException;
+import spring.exceptions.NotFoundException;
 import spring.model.RESTSchema;
 import spring.model.RESTVehicleType;
 

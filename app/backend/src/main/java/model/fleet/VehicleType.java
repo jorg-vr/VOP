@@ -2,7 +2,7 @@ package model.fleet;
 
 
 import model.history.EditableObject;
-import spring.Exceptions.InvalidInputException;
+import spring.exceptions.InvalidInputException;
 
 import java.util.UUID;
 

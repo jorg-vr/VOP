@@ -1,6 +1,6 @@
 package spring.model;
 
-import spring.Exceptions.InvalidInputException;
+import spring.exceptions.InvalidInputException;
 
 import java.util.ArrayList;
 import java.util.Collection;
