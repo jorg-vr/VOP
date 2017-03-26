@@ -45,9 +45,8 @@ public class ProductionFleetDAO implements FleetDAO{
 
     @Override
     public Fleet update(UUID id, String name, Customer customer) throws DataAccessException {
-        Fleet fleet = new Fleet();
+        Fleet fleet = get(id);
         fleet.setName(name);
-        fleet.setUuid(id);
         fleet.setOwner(customer);
         HibernateUtil.update(factory,fleet);
         return fleet;
