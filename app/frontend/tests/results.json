@@ -1,1 +1,18 @@
-Feature: My first behave feature # features\tests\first_behave.feature:1
+Feature: Verify add fleet # features/tests/add_fleet.feature:1
+  Objective: To verify that the user is able to add a fleet
+  Scenario: The user adds a fleet          # features/tests/add_fleet.feature:4
+    Given the user is on the fleets page   # features/steps/url_steps.py:6
+    When the user clicks on the add button # features/steps/dom_interaction_steps.py:10
+      Traceback (most recent call last):
+        File "c:\users\jarre\appdata\local\programs\python\python36-32\lib\site-packages\behave\model.py", line 1318, in run
+          match.run(runner.context)
+        File "c:\users\jarre\appdata\local\programs\python\python36-32\lib\site-packages\behave\matchers.py", line 97, in run
+          self.func(context, *args, **kwargs)
+        File "features\steps\dom_interaction_steps.py", line 12, in step_click_button
+          browser_tools.find_web_element(context, type, context.browser.find_by_id).click()
+        File "C:\Users\Jarre\Documents\2016-2017-groep-05\app\frontend\tests\features\steps\code\browser_tools.py", line 14, in find_web_element
+          print(elements[0] + '\n')
+      TypeError: unsupported operand type(s) for +: 'WebDriverElement' and 'str'
+
+    And the user fills in the fleet form   # None
+

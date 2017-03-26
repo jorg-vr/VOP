@@ -3,12 +3,16 @@ from selenium.common.exceptions import TimeoutException
 
 
 def find_web_element(context, key, search_function):
+    print("==============================")
+    print(key)
     elements = search_function(key)
     if len(elements) > 1:
         raise AssertionError('The given key "%s" returns more than one web elements.' % key)
     elif len(elements) == 0:
         raise AssertionError('The given key "%s" returns no web elements.' % key)
     else:
+        print(elements[0] + '\n')
+        print('test')
         return elements[0]
 
 

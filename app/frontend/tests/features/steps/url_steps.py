@@ -7,3 +7,8 @@ from code import browser_tools
 @when('the user visits the {page_description} page')
 def step_visit(context, page_description):
     browser_tools.visit_url(context, links.generate_link(context, page_description))
+
+
+@then(u'the user is on the {page_description} page')
+def step_check_page(context, page_description):
+    browser_tools.check_url(context, links.generate_link(context, page_description))
