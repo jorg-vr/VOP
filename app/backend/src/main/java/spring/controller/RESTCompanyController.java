@@ -38,8 +38,6 @@ import java.util.UUID;
 @RequestMapping("/companies")
 public class RESTCompanyController {
 
-    public static final String PATH_COMPANY = "/companies";
-
     private CustomerController controller = new CustomerController();
 
     @RequestMapping(method = RequestMethod.GET)

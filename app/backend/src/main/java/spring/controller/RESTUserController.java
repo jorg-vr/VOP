@@ -36,12 +36,8 @@ import java.util.*;
 @RequestMapping("/users")
 public class RESTUserController {
 
-    public static final String PATH_USER = "/users";
-
     private AccountController accountController = new AccountController();
-
     private PersonController personController = new PersonController();
-
 
     /**
      * @return a collection of all the users in the system.
@@ -54,7 +50,6 @@ public class RESTUserController {
                                     String lastName,
                                     Integer page,
                                     Integer limit) {
-        System.out.println(URLUtil.getRelativeURL(request));
         Collection<RESTUser> users = new ArrayList<>();
 
         try {

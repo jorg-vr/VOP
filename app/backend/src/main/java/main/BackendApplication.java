@@ -25,7 +25,6 @@ public class BackendApplication {
         } else {
             return;
         }
-        // PROVIDER = ProductionProvider.getInstance(); would be nice to have this, but doesn't work for tests
         SpringApplication.run(BackendApplication.class, args);
     }
 

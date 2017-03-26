@@ -35,11 +35,8 @@ import java.util.UUID;
 @RequestMapping("/fleets")
 public class RESTFleetController {
 
-    public static final String PATH_FLEETS = "/fleets";
-
     private FleetController controller = new FleetController();
     private CustomerController customerController = new CustomerController();
-
 
     @RequestMapping(method = RequestMethod.GET)
     public RESTSchema<RESTFleet> get(HttpServletRequest request,
@@ -48,7 +45,6 @@ public class RESTFleetController {
                                      @RequestParam(required = false) Integer limit) {
         FleetDAO fleetDAO = (FleetDAO) controller.getDao();
         try {
-            String baseString = PATH_FLEETS + "?";
             Collection<RESTFleet> restFleets = new ArrayList<>();
             Collection<Fleet> fleets;
             if (company != null) {
