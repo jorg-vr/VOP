@@ -1,5 +1,5 @@
 <template>
-    <button-action @click="emitClicked" buttonClass="btn btn-md btn-danger">
+    <button-action @click="emitClicked" buttonClass="btn btn-md btn-danger" buttonId="remove">
         <i aria-hidden="true" class="fa fa-trash"></i>
     </button-action>
 </template>
