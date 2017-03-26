@@ -87,6 +87,16 @@ export default {
             })
         },
 
+        fetchFleetsByClient(context, {clientId}){
+            console.log(clientId)
+            return new Promise(resolve => {
+                RequestHandler.getObjectsRequest(locations.FLEET + "?company=" + clientId).then(fleets => {
+                    context.commit(types.RECEIVE_FLEETS, {fleets})
+                    resolve(fleets)
+                })
+            })
+        },
+
         createFleet(context, {fleet}){
             return new Promise(resolve => {
                 RequestHandler.postObjectRequest(locations.FLEET, fleet).then(newFleet => {
