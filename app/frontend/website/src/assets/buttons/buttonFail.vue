@@ -1,5 +1,5 @@
 <template>
-    <button-link :route="route" buttonClass="btn btn-danger btn-md">
+    <button-link :route="route" buttonClass="btn btn-danger btn-md" buttonId="fail">
         <i  class="fa fa-times"></i>
     </button-link>
 </template>
