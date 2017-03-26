@@ -13,6 +13,7 @@ import spring.model.RESTAddress;
 import spring.model.RESTCompany;
 import spring.model.RESTSchema;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -42,7 +43,8 @@ public class RESTCompanyController {
     private CustomerController controller = new CustomerController();
 
     @RequestMapping(method = RequestMethod.GET)
-    public RESTSchema<RESTCompany> get(Integer page, Integer limit,
+    public RESTSchema<RESTCompany> get(HttpServletRequest request,
+                                       Integer page, Integer limit,
                                        @RequestParam(required = false) String nameContains,
                                        @RequestParam(required = false) String country,
                                        @RequestParam(required = false) String city,
@@ -63,7 +65,7 @@ public class RESTCompanyController {
         } catch (DataAccessException e) {
             //API doesn't contain error
         }
-        return new RESTSchema<>(result, page, limit, PATH_COMPANY + "?");
+        return new RESTSchema<>(result, page, limit, request);
     }
 
     @RequestMapping(method = RequestMethod.POST)

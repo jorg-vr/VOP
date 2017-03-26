@@ -14,6 +14,7 @@ import spring.exceptions.NotFoundException;
 import spring.model.RESTSchema;
 import spring.model.RESTVehicle;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -48,7 +49,8 @@ public class RESTVehicleController {
      * @return
      */
     @RequestMapping(method = RequestMethod.GET)
-    public RESTSchema<RESTVehicle> get(@RequestParam(required = false) String licensPlate,
+    public RESTSchema<RESTVehicle> get(HttpServletRequest request,
+                                       @RequestParam(required = false) String licensPlate,
                                        @RequestParam(required = false) String vin,
                                        @RequestParam(required = false) String leasingCompany,
                                        @RequestParam(required = false) String year,
@@ -101,7 +103,7 @@ public class RESTVehicleController {
             throw new InvalidInputException("Some parameters where invalid");
         }
 
-        return new RESTSchema<>(result, page, limit, baseString);
+        return new RESTSchema<>(result, page, limit, request);
     }
 
     /***
