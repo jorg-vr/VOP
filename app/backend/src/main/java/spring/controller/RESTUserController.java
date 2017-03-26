@@ -6,30 +6,28 @@ import dao.interfaces.DataAccessException;
 import model.account.Account;
 import model.identity.Person;
 import org.springframework.web.bind.annotation.*;
-import spring.Exceptions.ConflictException;
-import spring.Exceptions.InvalidInputException;
-import spring.Exceptions.NotFoundException;
-import spring.Exceptions.NotImplementedException;
+import spring.exceptions.ConflictException;
+import spring.exceptions.InvalidInputException;
+import spring.exceptions.NotFoundException;
 import spring.model.RESTSchema;
 import spring.model.RESTUser;
 
-import java.time.LocalDateTime;
 import java.util.*;
 
 /**
  * This controller is responsible for handling the HTTP requests of the URL /user.
  * Currently, the following HTTP requests are supported:
- *  1) GET /user
- *  2) GET /user/{id}
- *  3) POST /user
- *  4) PUT /user/{id}
- *  5) DELETE /user/{id}
- *
- *  This controller is responsible for translating the RESTModels to the backend specific models and calling the appropriate methods
- *  of the spring independent controllers,  located in the controller package.
- *  It is also responsible for translating the backend specific exceptions to HTPP repsonse codes.
- *
- *  For more information about what the HTTP requests do, see the API specification
+ * 1) GET /user
+ * 2) GET /user/{id}
+ * 3) POST /user
+ * 4) PUT /user/{id}
+ * 5) DELETE /user/{id}
+ * <p>
+ * This controller is responsible for translating the RESTModels to the backend specific models and calling the appropriate methods
+ * of the spring independent controllers,  located in the controller package.
+ * It is also responsible for translating the backend specific exceptions to HTPP repsonse codes.
+ * <p>
+ * For more information about what the HTTP requests do, see the API specification
  */
 @RestController
 @RequestMapping("/users")
@@ -45,24 +43,53 @@ public class RESTUserController {
     /**
      * @return a collection of all the users in the system.
      * If there are no users, an empty collection will be returned.
-     * TODO filters
      */
     @RequestMapping(method = RequestMethod.GET)
-    public RESTSchema<RESTUser> get(Integer page, Integer limit) {
+    public RESTSchema<RESTUser> get(String email,
+                                    String firstName,
+                                    String lastName,
+                                    Integer page,
+                                    Integer limit) {
         Collection<RESTUser> users = new ArrayList<>();
 
         try {
             Collection<Account> accounts = accountController.getAll();
             for (Account account : accounts) {
                 Person person = account.getPerson();
-                users.add(merge(person, account));
+                if (passesFilters(person, email, firstName, lastName)) {
+                    users.add(new RESTUser(account, person));
+                }
             }
         } catch (DataAccessException e) {
             // This should not happen unless there is something wrong with the database
             System.err.println("Something is wrong with the database");
             e.printStackTrace();
         }
-        return new RESTSchema<>(users, page, limit, PATH_USER+"?");
+        return new RESTSchema<>(users, page, limit, PATH_USER + "?");
+    }
+
+    /**
+     * This method checks if the person passes the filters.
+     *
+     * @param person    the person that should be checked
+     * @param firstName can be null
+     * @param lastName  can be null
+     * @param email     can be null
+     * @return whether the person passes the filters or not
+     */
+    private boolean passesFilters(Person person, String email, String firstName, String lastName) {
+        return containsLowerCase(person.getEmail(), email)
+                && containsLowerCase(person.getFirstName(), firstName)
+                && containsLowerCase(person.getLastName(), lastName);
+    }
+
+    /**
+     * @param toCheck the string that should be tested
+     * @param filter  if null, true will be returned
+     * @return returns true if toCheck contains filter (case insensitive) or true if filter is null
+     */
+    private boolean containsLowerCase(String toCheck, String filter) {
+        return filter == null || toCheck.toLowerCase().contains(filter.toLowerCase());
     }
 
     /**
@@ -92,7 +119,7 @@ public class RESTUserController {
             Person person = personController.createPerson(user.getFirstName(), user.getLastName(), user.getEmail());
             Account account = accountController.createAccount(user.getEmail(), user.getPassword(), person.getUuid());
 
-            return merge(person, account);
+            return new RESTUser(account, person);
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
@@ -112,7 +139,7 @@ public class RESTUserController {
             Account account = accountController.get(uuid);
             Person person = account.getPerson();
 
-            return merge(person, account);
+            return new RESTUser(account, person);
         } catch (DataAccessException | NumberFormatException | NullPointerException e) {
             throw new NotFoundException();
         }
@@ -135,7 +162,7 @@ public class RESTUserController {
             Account account = accountController.updateAccount(uuid, user.getEmail(), user.getPassword());
             Person person = account.getPerson();
             person = personController.updatePerson(person.getUuid(), user.getFirstName(), user.getLastName(), user.getEmail());
-            return merge(person, account);
+            return new RESTUser(account, person);
         } catch (DataAccessException e) {
             throw new InvalidInputException();
         }
@@ -157,29 +184,5 @@ public class RESTUserController {
         } catch (DataAccessException e) {
             throw new NotFoundException();
         }
-    }
-
-    /**
-     * Merges a person and account object to 1 RESTUser object
-     *
-     * @param person
-     * @param account
-     * @return object that has been created from the values of person and account
-     */
-    private RESTUser merge(Person person, Account account) {
-        String id = UUIDUtil.UUIDToNumberString(account.getUuid());
-        String firstName=person!=null?person.getFirstName():null;
-        String lastName=person!=null?person.getLastName():null;
-        String email=person!=null?person.getEmail():null;
-        RESTUser user = new RESTUser();
-        user.setId(id);
-        user.setPassword(account.getHashedPassword());
-        //user.setUpdatedAt(LocalDateTime.now());
-        //user.setCreatedAt(LocalDateTime.now());
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setEmail(email);
-        user.setUrl(PATH_USER + "/" + id);
-        return user;
     }
 }

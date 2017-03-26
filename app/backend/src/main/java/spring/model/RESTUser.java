@@ -1,6 +1,8 @@
 package spring.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import model.account.Account;
+import model.identity.Person;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -8,32 +10,30 @@ import java.time.LocalDateTime;
 /**
  * This is a bean class as specified in the API specification
  */
-public class RESTUser {
+public class RESTUser extends RESTAbstractModel {
 
-    private String id;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
+    private static final String PATH_USERS = "/users";
 
     private String firstName;
-
     private String lastName;
-
     private String email;
-
     private String password;
 
-    private LocalDateTime createdAt;
+    public RESTUser() {
+    }
 
-    private LocalDateTime updatedAt;
-
-    private String url;
-
+    /**
+     * Created a RESTUser based on the fields of account and pereson
+     * @param account should not not be null
+     * @param person should not be null
+     */
+    public RESTUser(Account account, Person person) {
+        super(account.getUuid(), PATH_USERS);
+        firstName = person.getFirstName();
+        lastName = person.getLastName();
+        email = person.getEmail();
+        password = account.getHashedPassword();
+    }
 
     public String getFirstName() {
         return firstName;
@@ -65,59 +65,5 @@ public class RESTUser {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    @Override
-    public String toString() {
-        return "RESTUser{" +
-                "id='" + id + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                ", url='" + url + '\'' +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        RESTUser that = (RESTUser) o;
-
-        return id.equals(that.id);
-
-    }
-
-    @Override
-    public int hashCode() {
-        return id.hashCode();
     }
 }

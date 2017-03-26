@@ -3,7 +3,7 @@
     The form accepts the old vehicle and an update or create function.
 -->
 <template>
-    <form-component v-if="vehicle">
+    <form-component v-if="vehicle" @submit="proceed" :failroute="{name: 'fleet', params: {id: vehicle.fleet}}">
         <form-input :placeholder="$t('vehicle.licensePlate') | capitalize" :label="$t('vehicle.licensePlate') | capitalize"
                     v-model="vehicle.licensePlate"></form-input>
 
@@ -27,12 +27,6 @@
 
         <form-select optionKey="name" :options="clients" :label="$t('vehicle.leasingCompany') | capitalize "
                      v-model="vehicle.leasingCompany"></form-select>
-
-        <div class="row">
-            <button-success @click="proceed"></button-success>
-            <button-fail v-if="vehicle.fleet" :route="{name: 'fleet', params: {id: vehicle.fleet}}"></button-fail>
-            <button-fail v-else :route="{name: 'fleets'}"></button-fail>
-        </div>
     </form-component>
 </template>
 <script>

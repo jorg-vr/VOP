@@ -1,16 +1,18 @@
 package spring.controller;
 
+import controller.AccountController;
+import controller.CustomerController;
 import controller.FunctionController;
 import dao.interfaces.DataAccessException;
+import model.account.Account;
 import model.account.Function;
+import model.identity.Company;
 import org.springframework.web.bind.annotation.*;
-import spring.Exceptions.InvalidInputException;
-import spring.Exceptions.NotFoundException;
-import spring.Exceptions.NotImplementedException;
+import spring.exceptions.InvalidInputException;
+import spring.exceptions.NotFoundException;
 import spring.model.RESTRole;
 import spring.model.RESTSchema;
 
-import java.time.LocalDate;
 import java.util.*;
 
 import static spring.controller.UUIDUtil.UUIDToNumberString;
@@ -18,17 +20,17 @@ import static spring.controller.UUIDUtil.UUIDToNumberString;
 /**
  * This controller is responsible for handling the HTTP requests of the URL /roles.
  * Currently, the following HTTP requests are supported:
- *  1) GET /roles
- *  2) GET /roles/{id}
- *  3) POST /roles
- *  4) PUT /roles/{id}
- *  5) DELETE /roles/{id}
- *
- *  This controller is responsible for translating the RESTModels to the backend specific models and calling the appropriate methods
- *  of the spring independent controllers,  located in the controller package.
- *  It is also responsible for translating the backend specific exceptions to HTPP repsonse codes.
- *
- *  For more information about what the HTTP requests do, see the API specification
+ * 1) GET /roles
+ * 2) GET /roles/{id}
+ * 3) POST /roles
+ * 4) PUT /roles/{id}
+ * 5) DELETE /roles/{id}
+ * <p>
+ * This controller is responsible for translating the RESTModels to the backend specific models and calling the appropriate methods
+ * of the spring independent controllers,  located in the controller package.
+ * It is also responsible for translating the backend specific exceptions to HTPP repsonse codes.
+ * <p>
+ * For more information about what the HTTP requests do, see the API specification
  */
 @RestController
 @RequestMapping("/roles")
@@ -37,26 +39,39 @@ public class RESTRoleController {
     public static final String PATH_ROLE = "/roles";
 
     private FunctionController controller = new FunctionController();
+    private CustomerController customerController = new CustomerController();
+    private AccountController accountController = new AccountController();
 
     @RequestMapping(method = RequestMethod.GET)
-    public RESTSchema<RESTRole> get(Integer page, Integer limit) {
+    public RESTSchema<RESTRole> get(@RequestParam(required = false) String company,
+                                    @RequestParam(required = false) String user,
+                                    @RequestParam(required = false) Boolean active,
+                                    @RequestParam(required = false) Integer page,
+                                    @RequestParam(required = false) Integer limit) {
         Collection<RESTRole> roles = new ArrayList<>();
         try {
-            Collection<Function> functions = controller.getAll();
+            UUID companyUuid = UUIDUtil.toUUID(company);
+            UUID accountUuid = UUIDUtil.toUUID(user);
+
+            Company customer = companyUuid != null ? customerController.get(companyUuid) : null;
+            Account account = accountUuid != null ? accountController.get(accountUuid) : null;
+
+            Collection<Function> functions = controller.getFiltered(customer, account, active);
             for (Function function : functions) {
                 RESTRole restRole = modelToRest(function);
                 roles.add(restRole);
             }
+
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
-        return new RESTSchema<>(roles, page, limit, PATH_ROLE+"?");
+        return new RESTSchema<>(roles, page, limit, PATH_ROLE + "?");
     }
 
     @RequestMapping(method = RequestMethod.POST)
     public RESTRole post(@RequestBody RESTRole role) {
-        UUID companyUUID = UUIDUtil.toUUID(role.getCompanyId());
-        UUID userUUID = UUIDUtil.toUUID(role.getUserId());
+        UUID companyUUID = UUIDUtil.toUUID(role.getCompany());
+        UUID userUUID = UUIDUtil.toUUID(role.getUser());
         RESTRole createdRole;
 
         try {
@@ -81,11 +96,11 @@ public class RESTRoleController {
 
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
     public RESTRole putId(@PathVariable("id") String id, @RequestBody RESTRole role) {
-        System.out.println("ids: "+id+"  "+role.getCompanyId()+"  "+role.getUserId());
+        System.out.println("ids: " + id + "  " + role.getCompany() + "  " + role.getUser());
         UUID uuid = UUIDUtil.toUUID(id);
-        UUID companyUuid = UUIDUtil.toUUID(role.getCompanyId());
-        UUID userUuid = UUIDUtil.toUUID(role.getUserId());
-        System.out.println("ids: "+uuid+"  "+userUuid+"  "+companyUuid);
+        UUID companyUuid = UUIDUtil.toUUID(role.getCompany());
+        UUID userUuid = UUIDUtil.toUUID(role.getUser());
+        System.out.println("ids: " + uuid + "  " + userUuid + "  " + companyUuid);
         try {
             Function function = controller.update(uuid,
                     companyUuid,
@@ -121,8 +136,8 @@ public class RESTRoleController {
         RESTRole role = new RESTRole();
         role.setFunction("");
         role.setId(id);
-        role.setUserId(userId);
-        role.setCompanyId(UUIDUtil.UUIDToNumberString(function.getCompany().getUuid()));
+        role.setUser(userId);
+        role.setCompany(UUIDUtil.UUIDToNumberString(function.getCompany().getUuid()));
         role.setStartDate(function.getStartDate());
         role.setEndDate(function.getEndDate());
         //role.setUpdatedAt(); TODO milestone?

@@ -8,11 +8,7 @@
         components: {
             buttonAction
         },
-        methods: {
-            emitClicked(){
-                this.$emit('click')
-            }
-        }
+        mixins: [buttonAction]
     }
 </script>
 

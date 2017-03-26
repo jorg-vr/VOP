@@ -1,17 +1,17 @@
 package controller;
 
-import dao.database.ProductionProvider;
-import dao.interfaces.DAOProvider;
-import dao.interfaces.DataAccessException;
-import dao.interfaces.FunctionDAO;
+import dao.interfaces.*;
 import main.BackendApplication;
 import model.account.Account;
 import model.account.Function;
 import model.account.Role;
 import model.identity.Company;
-import spring.controller.UUIDUtil;
+import spring.exceptions.NotImplementedException;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -42,5 +42,30 @@ public class FunctionController extends AbstractController<Function> {
         Role role = new Role(roleString);
         Account account = provider.getAccountDao().get(accountId);
         return functionDAO.update(functionId, company, role, account, startDate, endDate);
+    }
+
+    public Collection<Function> getFiltered(Company company, Account account, Boolean active) {
+        try {
+            List<Filter<Function>> filters = new ArrayList<>();
+
+            if (account != null) {
+                filters.add(functionDAO.byAccount(account));
+            }
+
+            if (company != null) {
+                filters.add(functionDAO.byCompany(company));
+            }
+
+            if (active != null) {
+                // ignore for now
+                throw new NotImplementedException();
+            }
+
+
+            return getAll(filters.toArray(new Filter[filters.size()]));
+        } catch (DataAccessException e) {
+            // return empty list
+            return new ArrayList<>();
+        }
     }
 }

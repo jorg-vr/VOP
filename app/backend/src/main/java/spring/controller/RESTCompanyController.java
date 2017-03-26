@@ -4,19 +4,15 @@ import controller.CustomerController;
 import dao.interfaces.CustomerDAO;
 import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
-import dao.interfaces.VehicleDAO;
-import model.fleet.Vehicle;
 import model.identity.Address;
-import model.identity.Customer;
+import model.identity.Company;
 import org.springframework.web.bind.annotation.*;
-import spring.Exceptions.InvalidInputException;
-import spring.Exceptions.NotFoundException;
+import spring.exceptions.InvalidInputException;
+import spring.exceptions.NotFoundException;
 import spring.model.RESTAddress;
 import spring.model.RESTCompany;
 import spring.model.RESTSchema;
-import spring.model.RESTVehicle;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -60,8 +56,8 @@ public class RESTCompanyController {
         //filters.add(customerDAO.byAddress(new Address(null, null, city, postalCode, country))); TODO fix this
         Collection<RESTCompany> result = new ArrayList<>();
         try {
-            for (Customer customer : controller.getAll(filters.toArray(new Filter[filters.size()]))) {
-                result.add(modelToRESTCompany(customer));
+            for (Company company : controller.getAll(filters.toArray(new Filter[filters.size()]))) {
+                result.add(new RESTCompany(company));
             }
 
         } catch (DataAccessException e) {
@@ -73,13 +69,12 @@ public class RESTCompanyController {
     @RequestMapping(method = RequestMethod.POST)
     public RESTCompany post(@RequestBody RESTCompany restCompany) {
         RESTCompany updatedCompany;
-
         try {
-            Customer customer = controller.create(RESTToModelAddress(restCompany.getAddress()),
+            Company company = controller.create(RESTToModelAddress(restCompany.getAddress()),
                     restCompany.getPhoneNumber(),
                     restCompany.getName(),
                     restCompany.getVatNumber());
-            updatedCompany = modelToRESTCompany(customer);
+            updatedCompany = new RESTCompany(company);
         } catch (DataAccessException e) {
             throw new InvalidInputException(e);
         }
@@ -90,7 +85,7 @@ public class RESTCompanyController {
     public RESTCompany getId(@PathVariable("id") String id) {
         UUID uuid = UUIDUtil.toUUID(id);
         try {
-            return modelToRESTCompany(controller.get(uuid));
+            return new RESTCompany(controller.get(uuid));
         } catch (DataAccessException e) {
             throw new NotFoundException();
         }
@@ -101,12 +96,12 @@ public class RESTCompanyController {
         UUID uuid = UUIDUtil.toUUID(id);
         RESTCompany createdCompany;
         try {
-            Customer customer = controller.update(uuid,
+            Company company = controller.update(uuid,
                     RESTToModelAddress(restCompany.getAddress()),
                     restCompany.getPhoneNumber(),
                     restCompany.getName(),
                     restCompany.getVatNumber());
-            createdCompany = modelToRESTCompany(customer);
+            createdCompany = new RESTCompany(company);
         } catch (DataAccessException e) {
             e.printStackTrace();
             throw new InvalidInputException();
@@ -125,38 +120,6 @@ public class RESTCompanyController {
     }
 
     /**
-     * This method translates the Customer object to a RESTCompany object.
-     * @param customer should not be null
-     */
-    private RESTCompany modelToRESTCompany(Customer customer) {
-        String id = UUIDUtil.UUIDToNumberString(customer.getUuid());
-        return new RESTCompany(id,
-                customer.getName(),
-                customer.getBtwNumber(),
-                customer.getPhoneNumber(),
-                modelToRESTAddress(customer.getAddress()),
-                null,
-                null,
-                null,
-                PATH_COMPANY + "/" + id);
-    }
-
-    /**
-     * This method translates the RESTAddress object to an Address object.
-     * @return if address is null, null will be returned
-     */
-    private RESTAddress modelToRESTAddress(Address address) {
-        if (address == null) {
-            return null;
-        }
-        return new RESTAddress(address.getCountry(),
-                address.getTown(),
-                address.getStreet(),
-                address.getStreetNumber(),
-                address.getPostalCode());
-    }
-
-    /**
      * This method translates the Addres object to a RESTAddress object.
      * @return if address is null, null will be returned
      */
@@ -164,10 +127,6 @@ public class RESTCompanyController {
         if (restAddress == null) {
             return null;
         }
-        return new Address(restAddress.getStreet(),
-                restAddress.getHouseNumber(),
-                restAddress.getCity(),
-                restAddress.getPostalCode(),
-                restAddress.getCountry());
+        return restAddress.translate();
     }
 }

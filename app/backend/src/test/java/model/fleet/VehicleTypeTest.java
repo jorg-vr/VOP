@@ -1,7 +1,7 @@
 package model.fleet;
 
 import org.junit.Test;
-import spring.Exceptions.InvalidInputException;
+import spring.exceptions.InvalidInputException;
 
 
 public class VehicleTypeTest {
