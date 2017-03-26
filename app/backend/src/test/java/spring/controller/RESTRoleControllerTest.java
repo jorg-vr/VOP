@@ -90,8 +90,8 @@ public class RESTRoleControllerTest {
                 .content(TestUtil.convertObjectToJsonBytes(restRole))
         )
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.companyId",equalTo(restRole.getCompany())))
-                .andExpect(jsonPath("$.userId",equalTo(restRole.getUser()))).andReturn();
+                .andExpect(jsonPath("$.company",equalTo(restRole.getCompany())))
+                .andExpect(jsonPath("$.user",equalTo(restRole.getUser()))).andReturn();
         RESTRole restRole1 =  TestUtil.convertJsonBytesToObject(result.getResponse().getContentAsByteArray(),RESTRole.class);
         mvc.perform(MockMvcRequestBuilders.delete("/roles/{id}",restRole1.getId()))
                 .andExpect(status().isOk());
@@ -107,8 +107,8 @@ public class RESTRoleControllerTest {
 
         mvc.perform(MockMvcRequestBuilders.get("/roles/{id}",UUIDUtil.UUIDToNumberString(function.getUuid())))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.companyId",equalTo(restRole.getCompany())))
-                .andExpect(jsonPath("$.userId",equalTo(restRole.getUser())))
+                .andExpect(jsonPath("$.company",equalTo(restRole.getCompany())))
+                .andExpect(jsonPath("$.user",equalTo(restRole.getUser())))
                 .andReturn();
     }
 
@@ -125,8 +125,8 @@ public class RESTRoleControllerTest {
                 .content(TestUtil.convertObjectToJsonBytes(restRole))
         )
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.companyId",equalTo(restRole.getCompany())))
-                .andExpect(jsonPath("$.userId",equalTo(restRole.getUser())))
+                .andExpect(jsonPath("$.company",equalTo(restRole.getCompany())))
+                .andExpect(jsonPath("$.user",equalTo(restRole.getUser())))
                 .andReturn();
 
     }
