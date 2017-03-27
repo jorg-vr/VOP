@@ -20,7 +20,7 @@
                 </list-component>
             </div>
         </div>
-        <button-add :route="{name: 'new_vehicle', params: {fleet_id: fleet.id}}"></button-add>
+        <button-add :route="{name: 'new_vehicle', params: {fleetId: fleet.id}}"></button-add>
     </div>
 </template>
 <script>
@@ -33,8 +33,11 @@
         components: {
             listComponent, buttonAdd
         },
+        props: {
+            id: String
+        },
         created() {
-            let id = this.$route.params.id
+            let id = this.id
             this.fetchFleet({id: id})
             let p1 = this.fetchVehicles({fleetId: id})
             let p2 = this.fetchVehicleTypes()

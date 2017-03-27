@@ -62,9 +62,11 @@
         components: {
             buttonBack, listComponent
         },
+        props: {
+            id: String
+        },
         created(){
-            let clientId = this.$route.params.id
-            console.log(this.$route.params.id)
+            let clientId = this.id
             this.fetchClient({id: clientId})
             this.fetchFleetsByClient({clientId: clientId})
         },

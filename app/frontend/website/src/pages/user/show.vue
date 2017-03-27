@@ -32,8 +32,11 @@
         components: {
             buttonBack
         },
+        props: {
+            id: String
+        },
         created(){
-            this.fetchUser({id: this.$route.params.id})
+            this.fetchUser({id: this.id})
         },
         computed: {
             ...mapGetters([
