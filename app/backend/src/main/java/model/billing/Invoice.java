@@ -9,7 +9,10 @@ import java.util.Collection;
 import java.util.UUID;
 
 /**
- * Created by Ponti on 27/03/2017.
+ * Invoice class that contains the costs for a given billing period.
+ * The costs collection contains all the individual costs for the given billing period and can be used to calculate the total amount that has to be paid.
+ * Costs are separate objects so that it is easy to categorize the types of costs according to personal preference when making a pdf representation
+ * of the invoice for example.
  */
 public class Invoice implements EditableObject, java.io.Serializable {
 
@@ -55,6 +58,9 @@ public class Invoice implements EditableObject, java.io.Serializable {
      */
     private Collection<Cost> costs;
 
+    /**
+     * constructor
+     */
     public Invoice() {
     }
 
