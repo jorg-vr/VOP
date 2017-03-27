@@ -20,6 +20,14 @@ export default {
 
         subfleets(state) {
             return state.subfleets
+        },
+
+        getFleetsByName(name){
+            return state.fleets.filter(fleet => fleet.name === name)
+        },
+
+        getFleetsByClient(client){
+            return state.fleets.filter(fleet => fleet.company = client)
         }
     },
     mutations: {
