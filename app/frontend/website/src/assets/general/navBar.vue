@@ -16,7 +16,7 @@
     </div>
 </template>
 <script>
-    import languageSwitcher from './languageSwitcher.vue'
+    import languageSwitcher from './languagePicker.vue'
     export default {
         components: {
             languageSwitcher
