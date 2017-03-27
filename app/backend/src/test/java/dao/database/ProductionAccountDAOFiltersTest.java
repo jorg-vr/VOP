@@ -22,12 +22,10 @@ public class ProductionAccountDAOFiltersTest {
     private static Account a1, a2, a3;
     private static Person p1, p2;
 
-    //TODO: production to false, when local
     //Setup before any of the tests are started
     @BeforeClass
     public static void initProvider() throws Exception {
-        //ProductionProvider.initializeProvider("test");
-        //ProductionProvider.initializeProvider(false);
+        ProductionProvider.initializeProvider("unittest");
         daoProvider = ProductionProvider.getInstance();
         accountDAO = daoProvider.getAccountDao();
         personDAO = daoProvider.getPersonDAO();
@@ -47,7 +45,7 @@ public class ProductionAccountDAOFiltersTest {
         accountDAO.remove(a3.getUuid());
         personDAO.remove(p1.getUuid());
         personDAO.remove(p2.getUuid());
-        //daoProvider.close();
+        daoProvider.close();
     }
 
     @Ignore
