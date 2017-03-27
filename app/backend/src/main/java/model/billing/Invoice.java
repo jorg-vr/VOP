@@ -1,0 +1,130 @@
+package model.billing;
+
+import model.history.EditableObject;
+import model.identity.Company;
+
+import java.net.URL;
+import java.time.LocalDate;
+import java.util.Collection;
+import java.util.UUID;
+
+/**
+ * Created by Ponti on 27/03/2017.
+ */
+public class Invoice implements EditableObject, java.io.Serializable {
+
+    private UUID uuid;
+
+    /**
+     * Company that has to pay the invoice/is the receiver of the invoice
+     */
+    private Company payer;
+
+    /**
+     * company that the amount has to be paid to (should normally be Solvas but adding this just in case)
+     */
+    private Company beneficiary;
+
+    /**
+     * url to the billing itself
+     */
+    private URL url;
+
+    /**
+     * Type of Invoice. Can be either a billing (monthly payments), a statement at the end of a billing period or a correction invoice
+     */
+    private InvoiceType type;
+
+    /**
+     * indicates whether a bail has been paid for already or is still awaiting payment.
+     */
+    private boolean paid;
+
+    /**
+     * start-date of the billing period the invoice applies to
+     */
+    private LocalDate startDate;
+
+    /**
+     * end-date of the billing period the invoice applies to
+     */
+    private LocalDate endDate;
+
+    /**
+     * collection of the costs that fall in this billing period.
+     */
+    private Collection<Cost> costs;
+
+    public Invoice() {
+    }
+
+    @Override
+    public EditableObject copy() {
+        return null;
+    }
+
+    @Override
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
+    }
+
+    public Company getPayer() {
+        return payer;
+    }
+
+    public void setPayer(Company payer) {
+        this.payer = payer;
+    }
+
+    public Company getBeneficiary() {
+        return beneficiary;
+    }
+
+    public void setBeneficiary(Company beneficiary) {
+        this.beneficiary = beneficiary;
+    }
+
+    public URL getUrl() {
+        return url;
+    }
+
+    public void setUrl(URL url) {
+        this.url = url;
+    }
+
+    public boolean isPaid() {
+        return paid;
+    }
+
+    public void setPaid(boolean paid) {
+        this.paid = paid;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
+    public Collection<Cost> getCosts() {
+        return costs;
+    }
+
+    public void setCosts(Collection<Cost> costs) {
+        this.costs = costs;
+    }
+}
