@@ -70,7 +70,6 @@
                 'fetchClients'
             ]),
             proceed(){
-                console.log(this.vehicle)
                 this.submit({vehicle: this.vehicle}).then(vehicle => {
                     if(vehicle.fleet){
                         this.$router.push({name: 'fleet', params: {id: vehicle.fleet}})
