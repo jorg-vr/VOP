@@ -18,11 +18,15 @@ import javax.annotation.PreDestroy;
 @ComponentScan(basePackages = {"spring"})
 public class BackendApplication {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 
         if (args.length == 1) {
             ProductionProvider.initializeProvider(args[0]);
-        } else {
+        } else if (args.length == 2) {
+            ProductionProvider.initializeProvider(args[1]);
+        }
+        else {
+            System.err.println("Wrong number of arguments");
             return;
         }
         // PROVIDER = ProductionProvider.getInstance(); would be nice to have this, but doesn't work for tests
