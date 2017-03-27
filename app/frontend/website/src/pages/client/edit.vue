@@ -18,8 +18,11 @@
         components: {
             ClientForm
         },
+        props: {
+            id: String
+        },
         created(){
-            this.fetchClient({id: this.$route.params.id})
+            this.fetchClient({id: this.id})
         },
         computed: {
             ...mapGetters([
