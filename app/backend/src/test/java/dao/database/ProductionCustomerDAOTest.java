@@ -20,14 +20,14 @@ public class ProductionCustomerDAOTest {
 
     @BeforeClass
     public static void init() throws Exception {
-        //ProductionProvider.initializeProvider("test");
+        ProductionProvider.initializeProvider("unittest");
         daoProvider = ProductionProvider.getInstance();
         customerDAO = daoProvider.getCustomerDAO();
     }
 
     @AfterClass
     public static void end() throws Exception {
-        //daoProvider.close();
+        daoProvider.close();
     }
 
     @Before

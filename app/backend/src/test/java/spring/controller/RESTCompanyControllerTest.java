@@ -23,9 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 
-/**
- * Created by jorg on 3/14/17.
- */
+
 @RunWith(SpringJUnit4ClassRunner.class)
 public class RESTCompanyControllerTest {
 
@@ -38,7 +36,7 @@ public class RESTCompanyControllerTest {
 
     @BeforeClass
     public static void setup() {
-        //ProductionProvider.initializeProvider("test");
+        ProductionProvider.initializeProvider("unittest");
         try {
             address= new Address("mystreet","123","lala","12345","land");
             customer= new CustomerController().create(address,"04789456123","anita","123456789");
@@ -56,7 +54,7 @@ public class RESTCompanyControllerTest {
             e.printStackTrace();
         }
 
-        //ProductionProvider.getInstance().close();
+        ProductionProvider.getInstance().close();
     }
 
     @Test

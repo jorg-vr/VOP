@@ -27,11 +27,10 @@ public class ProductionFunctionDAOTest {
     //private static RoleDAO roleDAO;
 
 
-    //TODO: production to false, when local
     //Setup before any of the tests are started
     @BeforeClass
     public static void initProvider() throws Exception {
-        //ProductionProvider.initializeProvider("test");
+        ProductionProvider.initializeProvider("unittest");
         daoProvider = ProductionProvider.getInstance();
         functionDAO = daoProvider.getFunctionDAO();
         //companyDAO = daoProvider.getCompanyDAO();
@@ -44,7 +43,7 @@ public class ProductionFunctionDAOTest {
     //Gets executed after all tests have been run
     @AfterClass
     public static void closeProvider() throws Exception {
-        //daoProvider.close();
+        daoProvider.close();
     }
 
     //TODO: change person creation when create method in PersonDAO gets changed
