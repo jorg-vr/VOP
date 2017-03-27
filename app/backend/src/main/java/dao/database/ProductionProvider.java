@@ -54,7 +54,7 @@ public class ProductionProvider implements DAOProvider {
      */
     public synchronized static DAOProvider getInstance() {
         if (provider == null) {
-            initializeProvider("production");
+            initializeProvider("test");
         }
         return provider;
     }
