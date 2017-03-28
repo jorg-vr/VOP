@@ -7,8 +7,9 @@
         <div class="page-header">
             <h1>{{$t("user.users") | capitalize }}</h1>
         </div>
+        <search-bar @search="updateUsers"></search-bar>
         <!-- Render an info-pane for every user. Once all the data is loaded, the table will be shown.-->
-        <list-component v-for="user in users"
+        <list-component v-for="user in visibleUsers"
                         v-if="user"
                         :object="user"
                         :visibleKeys="new Array('firstName', 'lastName')"
@@ -24,24 +25,41 @@
     import { mapGetters, mapActions } from 'vuex'
     import listComponent from "../../assets/general/listComponent.vue"
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
+    import searchBar from '../../assets/general/searchBar.vue'
 
     export default {
+        data(){
+            return {
+                visibleUsers: []
+            }
+        },
         components: {
-            listComponent, buttonAdd
+            listComponent, buttonAdd, searchBar
         },
         created() {
-            this.fetchUsers()
+            this.fetchUsers().then(users => {
+                this.visibleUsers = users
+            })
         },
         computed: {
             ...mapGetters([
-                'users'
+                'users',
+                'getUsersByAll'
             ])
         },
         methods: {
             ...mapActions([
                 'fetchUsers',
-                'deleteUser',
-            ])
+                'deleteUser'
+            ]),
+            updateUsers(value){
+                if(value!==''){
+                    this.visibleUsers = this.getUsersByAll(value)
+                }
+                else {
+                    this.visibleUsers = this.users
+                }
+            }
         }
     }
 </script>
