@@ -1,4 +1,5 @@
 package dao.database;
+//ProductionProvider.initializeProvider("test");
 
 import dao.interfaces.AddressDAO;
 import dao.interfaces.DAOProvider;
@@ -17,11 +18,10 @@ public class ProductionAddressDAOFiltersTest {
     private static AddressDAO addressDAO;
     private static Address a1, a2, a3;
 
-    //TODO: production to false, when local
     //Setup before any of the tests are started
     @BeforeClass
     public static void initProvider() throws Exception {
-        //ProductionProvider.initializeProvider("test");
+        ProductionProvider.initializeProvider("unittest");
         daoProvider = ProductionProvider.getInstance();
         addressDAO = daoProvider.getAddressDao();
 
@@ -36,7 +36,7 @@ public class ProductionAddressDAOFiltersTest {
         addressDAO.remove(a1.getUuid());
         addressDAO.remove(a2.getUuid());
         addressDAO.remove(a3.getUuid());
-        //daoProvider.close();
+        daoProvider.close();
     }
 
     @Test

@@ -18,11 +18,10 @@ public class ProductionAccountDAOTest {
     private static PersonDAO personDAO;
     //private static Person p1;
 
-    //TODO: production to false, when local
     //Setup before any of the tests are started
     @BeforeClass
     public static void initProvider() throws Exception {
-        //ProductionProvider.initializeProvider("test");
+        ProductionProvider.initializeProvider("unittest");
         daoProvider = ProductionProvider.getInstance();
         accountDAO = daoProvider.getAccountDao();
         personDAO = daoProvider.getPersonDAO();
@@ -33,10 +32,9 @@ public class ProductionAccountDAOTest {
     @AfterClass
     public static void closeProvider() throws Exception {
         //personDAO.remove(p1.getUuid());
-        //daoProvider.close();
+        daoProvider.close();
     }
 
-    //TODO: change person creation when create method in PersonDAO gets changed
 
     @Test
     public void createGetRemoveTest() throws Exception {

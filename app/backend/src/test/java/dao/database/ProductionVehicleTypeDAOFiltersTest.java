@@ -15,11 +15,10 @@ public class ProductionVehicleTypeDAOFiltersTest {
     private static VehicleTypeDao vehicleTypeDAO;
     private static VehicleType t1, t2;
 
-    //TODO: production to false, when local
     //Setup before any of the tests are started
     @BeforeClass
     public static void initProvider() throws Exception {
-        //ProductionProvider.initializeProvider("test");
+        ProductionProvider.initializeProvider("unittest");
         daoProvider = ProductionProvider.getInstance();
         vehicleTypeDAO = daoProvider.getVehicleTypeDAO();
         t1 = vehicleTypeDAO.create("type 1", 2.5);
@@ -31,7 +30,7 @@ public class ProductionVehicleTypeDAOFiltersTest {
     public static void closeProvider() throws Exception {
         vehicleTypeDAO.remove(t1.getUuid());
         vehicleTypeDAO.remove(t2.getUuid());
-        //daoProvider.close();
+        daoProvider.close();
     }
 
 

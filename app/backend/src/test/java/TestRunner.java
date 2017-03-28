@@ -1,4 +1,3 @@
-import dao.database.ProductionProvider;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
@@ -16,7 +15,7 @@ public class TestRunner {
         Result controllerResults4 = null;
         Result controllerResults5 = null;
         Result controllerResults6 = null;
-        ProductionProvider.initializeProvider("localtest");
+        //ProductionProvider.initializeProvider("unittest");
 
         if (args.length == 0 || args[0].equals("model")) {
             modelResults = JUnitCore.runClasses(ModelsTestSuite.class);
