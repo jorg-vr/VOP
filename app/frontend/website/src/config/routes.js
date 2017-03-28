@@ -25,7 +25,7 @@ import showVehicle from '../pages/vehicle/show.vue'
 
 export default [
     {
-        path: '',
+        path: '/app',
         component: App,
         children: [
             //User
@@ -50,6 +50,7 @@ export default [
             {path: 'vehicles/:id(\\d+)', name: 'vehicle', component: showVehicle, props: true},
             {path: 'vehicles/:id(\\d+)/edit', name: 'edit_vehicle', component: editVehicle, props: true}
         ],
-    }
+    },
+    {path: '/test/app', component: App, alias: '/app', children: []}
 ];
 

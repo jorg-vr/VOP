@@ -18,13 +18,13 @@ Vue.use(VueResource);
 Vue.use(VueI18n);
 
 Vue.config.lang = 'nl';
+let baseUrl = __dirname
 
 Object.keys(locales).forEach(function (lang) {
     Vue.locale(lang, locales[lang])
 })
 
 const router = new VueRouter({
-    base: rootUrl.path,
     mode: 'history',
     routes: routes,
 })
@@ -34,8 +34,8 @@ Vue.filter('capitalize', function(value){
     return value.charAt(0).toUpperCase() + value.slice(1)
 })
 
-Vue.http.options.root = 'https://vopro5.ugent.be' + rootUrl.path + 'api/'
-
+Vue.http.options.root = baseUrl
+console.log(router.$root)
 new Vue({
     store,
     router
