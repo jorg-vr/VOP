@@ -28,9 +28,6 @@
                 }
                 // Emit the formatted value through the input event
                 this.$emit('input', formattedValue)
-            },
-            emitSubmitted () {
-                this.$emit('submit2')
             }
         }
     }

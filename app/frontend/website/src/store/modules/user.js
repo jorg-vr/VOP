@@ -15,6 +15,10 @@ export default {
 
         user(state) {
             return state.user
+        },
+
+        getUsersByAll: (state, getters) => (value) => {
+            return getters.filterByAll(state.users, value)
         }
     },
     mutations: {

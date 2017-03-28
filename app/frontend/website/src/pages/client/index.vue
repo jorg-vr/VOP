@@ -7,8 +7,9 @@
         <div class="page-header">
             <h1>{{$t("client.clients") | capitalize }}</h1>
         </div>
+        <search-bar @search="updateClients"></search-bar>
         <!-- Render an info-pane for every client. Once all the data is loaded, the table will be shown.-->
-        <list-component v-for="client in clients"
+        <list-component v-for="client in visibleClients"
                         v-if="client"
                         :object="client"
                         :visibleKeys="new Array('name')"
@@ -24,24 +25,41 @@
     import { mapGetters, mapActions } from 'vuex'
     import listComponent from "../../assets/general/listComponent.vue"
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
+    import searchBar from '../../assets/general/searchBar.vue'
 
     export default {
+        data(){
+            return {
+                visibleClients: []
+            }
+        },
         components: {
-            listComponent, buttonAdd
+            listComponent, buttonAdd, searchBar
         },
         created() {
-            this.fetchClients()
+            this.fetchClients().then(clients => {
+                this.visibleClients = clients
+            })
         },
         computed: {
             ...mapGetters([
-                'clients'
+                'clients',
+                'getClientsByAll'
             ])
         },
         methods: {
             ...mapActions([
                 'fetchClients',
                 'deleteClient',
-            ])
+            ]),
+            updateClients(value){
+                if(value!==''){
+                    this.visibleClients = this.getClientsByAll(value)
+                }
+                else {
+                    this.visibleClients = this.clients
+                }
+            }
         }
     }
 </script>

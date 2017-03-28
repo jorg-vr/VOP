@@ -15,6 +15,10 @@ export default {
 
         client(state) {
             return state.client
+        },
+
+        getClientsByAll: (state, getters) => (value) => {
+            return getters.filterByAll(state.clients, value)
         }
     },
     mutations: {
