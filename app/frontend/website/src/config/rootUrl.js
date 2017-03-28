@@ -1,3 +1,3 @@
 export default {
-    path: '/app'
+    path: '/app/'
 }
