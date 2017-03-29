@@ -1,7 +1,7 @@
 <template>
     <form-item :label="label">
         <!--$event.target.value is the value of this input item-->
-        <input type="text" class="form-control input-sm" :placeholder="placeholder"
+        <input type="text" class="form-control" :placeholder="placeholder"
                :value="value" @input="updateValue($event.target.value)" @keyup.enter="emitSubmitted">
     </form-item>
 </template>

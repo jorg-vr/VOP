@@ -16,7 +16,7 @@ export default {
         },
 
         filteredFleets(state){
-
+            return state.filteredFleets
         },
 
         fleet(state) {
@@ -49,6 +49,7 @@ export default {
         },
 
         [types.UPDATE_FILTERED_FLEETS] (state, {fleets}){
+            console.log(fleets)
             state.filteredFleets = fleets
         },
 
