@@ -24,7 +24,6 @@ Object.keys(locales).forEach(function (lang) {
 })
 
 const router = new VueRouter({
-    base: rootUrl.path,
     mode: 'history',
     routes: routes,
 })
@@ -33,8 +32,6 @@ Vue.filter('capitalize', function(value){
     value = value.toString()
     return value.charAt(0).toUpperCase() + value.slice(1)
 })
-
-Vue.http.options.root = 'https://vopro5.ugent.be' + rootUrl.path + 'api/'
 
 new Vue({
     store,
