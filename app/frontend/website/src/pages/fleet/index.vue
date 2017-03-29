@@ -15,7 +15,8 @@
                         :remove="deleteFleet"
                         edit="edit_fleet"
                         show="fleet"
-                        :key="fleet.id">
+                        :key="fleet.id"
+                        rowClass="fleetrow">
         </list-component>
         <button-add :route="{name: 'new_fleet'}"></button-add>
     </div>
