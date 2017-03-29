@@ -24,8 +24,8 @@ Object.keys(locales).forEach(function (lang) {
 })
 
 const router = new VueRouter({
-    base: '/app/',
-    mode: 'history',
+    mode: 'hash',
+    base: window.location.href,
     routes: routes,
 })
 
