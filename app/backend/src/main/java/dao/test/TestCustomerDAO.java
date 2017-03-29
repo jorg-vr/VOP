@@ -24,6 +24,16 @@ public class TestCustomerDAO extends TestDAO<Customer> implements CustomerDAO {
     }
 
     @Override
+    public void create(Customer customer) throws DataAccessException {
+
+    }
+
+    @Override
+    public void update(Customer customer) throws DataAccessException {
+
+    }
+
+    @Override
     public Customer get(UUID id) throws DataAccessException {
         return customers.get(id);
     }
@@ -112,5 +122,10 @@ public class TestCustomerDAO extends TestDAO<Customer> implements CustomerDAO {
     @Override
     public Filter<Customer> byEmail(String email) {
         return null;
+    }
+
+    @Override
+    public void close() throws Exception {
+
     }
 }

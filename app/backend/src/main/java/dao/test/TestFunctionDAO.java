@@ -67,7 +67,22 @@ public class TestFunctionDAO extends TestDAO<Function> implements FunctionDAO {
     }
 
     @Override
+    public void create(Function function) throws DataAccessException {
+
+    }
+
+    @Override
+    public void update(Function function) throws DataAccessException {
+
+    }
+
+    @Override
     public void remove(UUID id) throws DataAccessException {
+
+    }
+
+    @Override
+    public void close() throws Exception {
 
     }
 }

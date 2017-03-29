@@ -79,7 +79,22 @@ public class TestAccountDAO extends TestDAO<Account> implements AccountDAO {
     }
 
     @Override
+    public void create(Account account) throws DataAccessException {
+
+    }
+
+    @Override
+    public void update(Account account) throws DataAccessException {
+
+    }
+
+    @Override
     public void remove(UUID id) throws DataAccessException {
+
+    }
+
+    @Override
+    public void close() throws Exception {
 
     }
 }

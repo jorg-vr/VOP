@@ -19,25 +19,33 @@ import java.util.UUID;
  */
 public class ProductionPersonDAO implements PersonDAO {
 
-    private final SessionFactory factory;
+    private final Session session;
     private Collection<Predicate> predicates = new ArrayList<>();
     private Root<Person> root;
     private CriteriaQuery<Person> criteriaQuery;
     private CriteriaBuilder criteriaBuilder;
-    public ProductionPersonDAO(SessionFactory factory){
-        this.factory = factory;
+    public ProductionPersonDAO(Session session){
+        this.session = session;
+    }
+
+    @Override
+    public void create(Person person) throws DataAccessException {
+        HibernateUtil.create(session,person);
+    }
+
+    @Override
+    public void update(Person person) throws DataAccessException {
+        HibernateUtil.update(session,person);
     }
 
     @Override
     public Person get(UUID id) throws DataAccessException {
-        try (Session session = factory.openSession()) {
             return session.get(Person.class, id);
-        }
     }
 
     @Override
     public void remove(UUID id) throws DataAccessException {
-        HibernateUtil.remove(factory,get(id));
+        HibernateUtil.remove(session,get(id));
     }
 
     @Override
@@ -52,7 +60,7 @@ public class ProductionPersonDAO implements PersonDAO {
         person.setEmail(email);
         person.setPhoneNumber(phonenumber);
         person.setAddress(address);
-        HibernateUtil.create(factory,person);
+        HibernateUtil.create(session,person);
         return person;
     }
 
@@ -65,14 +73,14 @@ public class ProductionPersonDAO implements PersonDAO {
         person.setEmail(email);
         person.setPhoneNumber(null);
         person.setAddress(null);
-        HibernateUtil.update(factory,person);
+        HibernateUtil.update(session,person);
         return person;
     }
 
     @Override
     public Collection<Person> listFiltered(Filter<Person>[] filters) throws DataAccessException {
         Transaction tx = null;
-        try (Session session = factory.openSession()) {
+        try  {
 
             tx = session.beginTransaction();
             this.criteriaBuilder = session.getCriteriaBuilder();
@@ -128,4 +136,8 @@ public class ProductionPersonDAO implements PersonDAO {
     }
 
 
+    @Override
+    public void close() throws Exception {
+        session.close();
+    }
 }

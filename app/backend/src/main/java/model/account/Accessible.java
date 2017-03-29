@@ -10,6 +10,4 @@ public enum Accessible {
     ALL_FLEETS,
     MY_VEHICLES,
     ALL_VEHIVLES
-
-
 }

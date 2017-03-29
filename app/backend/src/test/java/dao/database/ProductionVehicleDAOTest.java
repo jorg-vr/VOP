@@ -24,7 +24,7 @@ public class ProductionVehicleDAOTest {
     //Setup before any of the tests are started
     @BeforeClass
     public static void initProvider() throws Exception {
-        //ProductionProvider.initializeProvider("test");
+        ProductionProvider.initializeProvider("test");
         daoProvider = ProductionProvider.getInstance();
         vehicleDao = daoProvider.getVehicleDAO();
         vehicleTypeDAO = daoProvider.getVehicleTypeDAO();
@@ -57,8 +57,6 @@ public class ProductionVehicleDAOTest {
         try {
             if (vehicle1 != null) {
                 Vehicle vehicle2 = vehicleDao.get(vehicle1.getUuid());
-                System.out.println(vehicle1.getType().toString() + " " + vehicle2.getType().toString());
-                System.out.println(vehicle1.getType().equals(vehicle2.getType()));
                 assertEquals("type field not equal", vehicle1.getType(), vehicle2.getType());
                 assertEquals("brand field not equal", vehicle1.getBrand(), vehicle2.getBrand());
                 assertEquals("model field not equal", vehicle1.getModel(), vehicle2.getModel());
@@ -70,6 +68,7 @@ public class ProductionVehicleDAOTest {
                 present = true;
             }
         } catch (Exception e) {
+            e.printStackTrace();
             fail("Failed trying to get an existing vehicle from the database");
         }
         //If the vehicle is confirmed to be present in the database, try to remove it

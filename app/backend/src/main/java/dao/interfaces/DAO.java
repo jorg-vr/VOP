@@ -8,8 +8,11 @@ import java.util.UUID;
  * DAO interface which all other DAO interfaces should extend
  * Created by sam on 3/7/17.
  */
-public interface DAO<T> {
+public interface DAO<T> extends AutoCloseable {
 
+    void create(T t) throws DataAccessException;
+
+    void update(T t) throws DataAccessException;
     /**
      * Retrieves an object using its unique id
      * @param id the id of the object

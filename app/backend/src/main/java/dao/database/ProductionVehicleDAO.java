@@ -24,22 +24,30 @@ import java.util.UUID;
  */
 public class ProductionVehicleDAO implements VehicleDAO {
 
-    private final SessionFactory factory;
+    private final Session session;
     private CriteriaQuery<Vehicle> criteriaQuery;
     private CriteriaBuilder criteriaBuilder;
     private Root<Vehicle> root;
     private Collection<Predicate> predicates = new ArrayList<>();
 
-    public ProductionVehicleDAO(SessionFactory factory) {
-        this.factory = factory;
+    public ProductionVehicleDAO(Session session) {
+        this.session = session;
     }
 
 
     @Override
+    public void create(Vehicle vehicle) throws DataAccessException{
+        HibernateUtil.create(session,vehicle);
+    }
+
+    @Override
+    public void update(Vehicle vehicle) throws DataAccessException{
+        HibernateUtil.update(session,vehicle);
+    }
+
+    @Override
     public Vehicle get(UUID id) throws DataAccessException {
-        try (Session session = factory.openSession()) {
-            return session.get(Vehicle.class, id);
-        }
+        return session.get(Vehicle.class, id);
     }
 
 
@@ -55,7 +63,7 @@ public class ProductionVehicleDAO implements VehicleDAO {
         vehicle.setType(type);
         vehicle.setChassisNumber(chassisNumber);
         vehicle.setFleet(fleet);
-        HibernateUtil.create(factory, vehicle);
+        HibernateUtil.create(session, vehicle);
         return vehicle;
     }
 
@@ -72,19 +80,19 @@ public class ProductionVehicleDAO implements VehicleDAO {
         vehicle.setType(type);
         vehicle.setChassisNumber(chassisNumber);
         vehicle.setFleet(fleet);
-        HibernateUtil.update(factory, vehicle);
+        HibernateUtil.update(session, vehicle);
         return vehicle;
     }
 
     @Override
     public void remove(UUID id) throws DataAccessException {
-        HibernateUtil.remove(factory, get(id));
+        HibernateUtil.remove(session, get(id));
     }
 
     @Override
     public Collection<Vehicle> listFiltered(Filter<Vehicle>[] filters) throws DataAccessException {
         Transaction tx = null;
-        try (Session session = factory.openSession()) {
+        try {
 
             tx = session.beginTransaction();
             this.criteriaBuilder = session.getCriteriaBuilder();
@@ -173,4 +181,8 @@ public class ProductionVehicleDAO implements VehicleDAO {
     }
 
 
+    @Override
+    public void close() throws Exception {
+        session.close();
+    }
 }

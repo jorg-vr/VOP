@@ -34,6 +34,16 @@ public class TestVehicleDAO implements VehicleDAO {
     private int counter = 2;
 
     @Override
+    public void create(Vehicle vehicle) throws DataAccessException {
+
+    }
+
+    @Override
+    public void update(Vehicle vehicle) throws DataAccessException {
+
+    }
+
+    @Override
     public Vehicle get(UUID id) throws DataAccessException {
         if (!vehicles.containsKey(id)) {
             throw new DataAccessException();
@@ -112,5 +122,10 @@ public class TestVehicleDAO implements VehicleDAO {
     @Override
     public Filter<Vehicle> byFleet(Fleet fleet) {
         return null;
+    }
+
+    @Override
+    public void close() throws Exception {
+
     }
 }

@@ -61,42 +61,42 @@ public class ProductionProvider implements DAOProvider {
 
     @Override
     public synchronized AccountDAO getAccountDao() {
-        return new ProductionAccountDAO(sessionFactory);
+        return new ProductionAccountDAO(sessionFactory.openSession());
     }
 
     @Override
     public synchronized CustomerDAO getCustomerDAO() {
-        return new ProductionCustomerDAO(sessionFactory);
+        return new ProductionCustomerDAO(sessionFactory.openSession());
     }
 
     @Override
     public synchronized FleetDAO getFleetDAO() {
-        return new ProductionFleetDAO(sessionFactory);
+        return new ProductionFleetDAO(sessionFactory.openSession());
     }
 
     @Override
     public synchronized FunctionDAO getFunctionDAO() {
-        return new ProductionFunctionDAO(sessionFactory);
+        return new ProductionFunctionDAO(sessionFactory.openSession());
     }
 
     @Override
     public synchronized PersonDAO getPersonDAO() {
-        return new ProductionPersonDAO(sessionFactory);
+        return new ProductionPersonDAO(sessionFactory.openSession());
     }
 
     @Override
     public synchronized VehicleDAO getVehicleDAO() {
-        return new ProductionVehicleDAO(sessionFactory);
+        return new ProductionVehicleDAO(sessionFactory.openSession());
     }
 
     @Override
     public synchronized VehicleTypeDao getVehicleTypeDAO() {
-        return new ProductionVehicleTypeDAO(sessionFactory);
+        return new ProductionVehicleTypeDAO(sessionFactory.openSession());
     }
 
     @Override
     public AddressDAO getAddressDao() {
-        return new ProductionAddressDAO(sessionFactory);
+        return new ProductionAddressDAO(sessionFactory.openSession());
     }
 
     @Override

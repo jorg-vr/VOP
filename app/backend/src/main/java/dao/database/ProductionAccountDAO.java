@@ -23,36 +23,40 @@ import java.util.UUID;
  */
 public class ProductionAccountDAO implements AccountDAO {
 
-    private final SessionFactory factory;
+    private final Session session;
     private CriteriaBuilder criteriaBuilder;
     private CriteriaQuery<Account> criteriaQuery;
     private Root<Account> root;
     private Collection<Predicate> predicates = new ArrayList<>();
 
-    public ProductionAccountDAO(SessionFactory sessionFactory) {
-        this.factory = sessionFactory;
+    public ProductionAccountDAO(Session session) {
+        this.session = session;
+    }
+
+    @Override
+    public void create(Account account) throws DataAccessException {
+        HibernateUtil.create(session,account);
+    }
+
+    @Override
+    public void update(Account account) throws DataAccessException {
+        HibernateUtil.update(session,account);
     }
 
     @Override
     public Account get(UUID id) throws DataAccessException {
-        try (Session session = factory.openSession()) {
-            Account account= session.get(Account.class, id);
-            if (account!=null) {
-                Hibernate.initialize(account.getPerson());
-            }
-            return account;
-        }
+        return session.get(Account.class, id);
     }
 
     @Override
     public void remove(UUID id) throws DataAccessException {
-        HibernateUtil.remove(factory, get(id));
+        HibernateUtil.remove(session, get(id));
     }
 
     @Override
     public Collection<Account> listFiltered(Filter<Account>[] filters) throws DataAccessException {
         Transaction tx = null;
-        try (Session session = factory.openSession()) {
+        try {
 
             tx = session.beginTransaction();
             this.criteriaBuilder = session.getCriteriaBuilder();
@@ -89,7 +93,7 @@ public class ProductionAccountDAO implements AccountDAO {
         account.setLogin(login);
         account.setHashedPassword(hashedPassword);
         account.setPerson(person);
-        HibernateUtil.create(factory, account);
+        HibernateUtil.create(session, account);
         return account;
     }
 
@@ -101,7 +105,7 @@ public class ProductionAccountDAO implements AccountDAO {
         account.setLogin(login);
         account.setHashedPassword(hashedPassword);
         account.setPerson(get(id).getPerson());//TODO evaluate this
-        HibernateUtil.update(factory, account);
+        HibernateUtil.update(session, account);
         return account;
     }
 
@@ -119,5 +123,10 @@ public class ProductionAccountDAO implements AccountDAO {
         return () -> {
             predicates.add(criteriaBuilder.equal(root.get("person"), identity));
         };
+    }
+
+    @Override
+    public void close() throws Exception {
+        session.close();
     }
 }

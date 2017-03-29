@@ -21,21 +21,31 @@ import java.util.UUID;
  */
 public class ProductionVehicleTypeDAO implements VehicleTypeDao {
 
-    private final SessionFactory factory;
+    private final Session session;
     private CriteriaBuilder criteriaBuilder;
     private CriteriaQuery<VehicleType> criteriaQuery;
     private Root<VehicleType> root;
     private Collection<Predicate> predicates = new ArrayList<>();
 
-    public ProductionVehicleTypeDAO(SessionFactory factory) {
-        this.factory = factory;
+    public ProductionVehicleTypeDAO(Session session) {
+        this.session = session;
+    }
+
+    @Override
+    public void create(VehicleType type) throws DataAccessException {
+        HibernateUtil.create(session, type);
+    }
+
+    @Override
+    public void update(VehicleType type) throws DataAccessException {
+        HibernateUtil.update(session, type);
     }
 
     @Override
     public VehicleType get(UUID id) throws DataAccessException {
-        try (Session session = factory.openSession()) {
-            return session.get(VehicleType.class, id);
-        }
+
+        return session.get(VehicleType.class, id);
+
     }
 
     @Override
@@ -43,7 +53,7 @@ public class ProductionVehicleTypeDAO implements VehicleTypeDao {
         VehicleType vehicleType = new VehicleType();
         vehicleType.setType(type);
         vehicleType.setTax(tax);
-        HibernateUtil.create(factory,vehicleType);
+        HibernateUtil.create(session, vehicleType);
         return vehicleType;
     }
 
@@ -53,19 +63,19 @@ public class ProductionVehicleTypeDAO implements VehicleTypeDao {
         vehicleType.setUuid(uuid);
         vehicleType.setType(type);
         vehicleType.setTax(tax);
-        HibernateUtil.update(factory,vehicleType);
+        HibernateUtil.update(session, vehicleType);
         return vehicleType;
     }
 
     @Override
     public void remove(UUID id) throws DataAccessException {
-        HibernateUtil.remove(factory,get(id));
+        HibernateUtil.remove(session, get(id));
     }
 
     @Override
     public Collection<VehicleType> listFiltered(Filter<VehicleType>[] filters) throws DataAccessException {
         Transaction tx = null;
-        try (Session session = factory.openSession()) {
+        try  {
 
             tx = session.beginTransaction();
             this.criteriaBuilder = session.getCriteriaBuilder();
@@ -95,12 +105,17 @@ public class ProductionVehicleTypeDAO implements VehicleTypeDao {
     @Override
     public Filter<VehicleType> byName(String name) {
         return () ->
-            predicates.add(criteriaBuilder.equal(root.get("type"), name));
+                predicates.add(criteriaBuilder.equal(root.get("type"), name));
     }
 
     @Override
     public Filter<VehicleType> nameContains(String name) {
         return () ->
-            predicates.add(criteriaBuilder.like(root.get("type"), "%"+ name + "%"));
+                predicates.add(criteriaBuilder.like(root.get("type"), "%" + name + "%"));
+    }
+
+    @Override
+    public void close() throws Exception {
+        session.close();
     }
 }

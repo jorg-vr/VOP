@@ -21,17 +21,17 @@ import java.util.UUID;
 /**
  * Created by sam on 3/13/17.
  */
-public class ProductionFleetDAO implements FleetDAO{
+public class ProductionFleetDAO implements FleetDAO {
 
-    private final SessionFactory factory;
+    private final Session session;
     private CriteriaQuery<Fleet> criteriaQuery;
     private CriteriaBuilder criteriaBuilder;
     private Root<Fleet> root;
     private Collection<Predicate> predicates = new ArrayList<>();
 
 
-    public ProductionFleetDAO(SessionFactory factory){
-        this.factory = factory;
+    public ProductionFleetDAO(Session session) {
+        this.session = session;
     }
 
     @Override
@@ -39,7 +39,7 @@ public class ProductionFleetDAO implements FleetDAO{
         Fleet fleet = new Fleet();
         fleet.setName(name);
         fleet.setOwner(customer);
-        HibernateUtil.create(factory,fleet);
+        HibernateUtil.create(session, fleet);
         return fleet;
     }
 
@@ -48,26 +48,34 @@ public class ProductionFleetDAO implements FleetDAO{
         Fleet fleet = get(id);
         fleet.setName(name);
         fleet.setOwner(customer);
-        HibernateUtil.update(factory,fleet);
+        HibernateUtil.update(session, fleet);
         return fleet;
     }
 
     @Override
+    public void create(Fleet fleet) throws DataAccessException {
+        HibernateUtil.create(session, fleet);
+    }
+
+    @Override
+    public void update(Fleet fleet) throws DataAccessException {
+        HibernateUtil.update(session, fleet);
+    }
+
+    @Override
     public Fleet get(UUID id) throws DataAccessException {
-        try (Session session = factory.openSession()) {
-            return session.get(Fleet.class, id);
-        }
+        return session.get(Fleet.class, id);
     }
 
     @Override
     public void remove(UUID id) throws DataAccessException {
-        HibernateUtil.remove(factory,get(id));
+        HibernateUtil.remove(session, get(id));
     }
 
     @Override
     public Collection<Fleet> listFiltered(Filter<Fleet>[] filters) throws DataAccessException {
         Transaction tx = null;
-        try (Session session = factory.openSession()) {
+        try {
 
             tx = session.beginTransaction();
             this.criteriaBuilder = session.getCriteriaBuilder();
@@ -93,4 +101,8 @@ public class ProductionFleetDAO implements FleetDAO{
         return null;
     }
 
+    @Override
+    public void close() throws Exception {
+        session.close();
+    }
 }
