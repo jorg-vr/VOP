@@ -1,6 +1,6 @@
 <template>
     <form-item :label="label">
-        <select class="form-control" :value="value" @change="updateValue($event.target.value)">
+        <select class="form-control" :value="value" @change="updateValue($event.target.value)" :id="inputId">
             <option v-if="hiddenOption" value="" disabled hidden>{{hiddenOption}}</option>
             <option v-else value="" disabled hidden></option>
             <option :selected="option.id === value" v-for="option in options" :value="option.id">
@@ -18,6 +18,7 @@
             value: String,
             options: Array,
             hiddenOption: String,
+            inputId: String,
             optionKey: String //Key to show of an object
         },
         components: {

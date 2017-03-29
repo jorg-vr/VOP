@@ -1,7 +1,7 @@
 <template>
     <form-item :label="label">
         <!--$event.target.value is the value of this input item-->
-        <input type="text" class="form-control input-sm" :placeholder="placeholder"
+        <input type="text" class="form-control input-sm" :placeholder="placeholder" :id="inputId"
                :value="value" @input="updateValue($event.target.value)" @keyup.enter="emitSubmitted">
     </form-item>
 </template>
@@ -11,7 +11,8 @@
         props: {
             placeholder: String,
             label: String,
-            value: [Number, String]
+            value: [Number, String],
+            inputId: String
         },
         components: {
             formItem

@@ -4,8 +4,9 @@
 -->
 <template>
     <form-component v-if="fleet" @submit="proceed" :failroute="{name: 'fleets'}">
-        <form-input :placeholder="$t('common.name') + ' ' + $t('fleet.fleet') | capitalize" v-model="fleet.name"></form-input>
-        <form-select optionKey="name" :options="clients" v-model="fleet.company"
+        <form-input :placeholder="$t('common.name') + ' ' + $t('fleet.fleet') | capitalize"
+                    v-model="fleet.name" inputId="name"></form-input>
+        <form-select optionKey="name" :options="clients" v-model="fleet.company" inputId="company"
                      :hiddenOption="$t('actions.select') + ' ' + $t('client.company')| capitalize ">
         </form-select>
     </form-component>
