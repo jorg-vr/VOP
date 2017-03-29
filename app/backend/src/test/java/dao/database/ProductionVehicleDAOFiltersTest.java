@@ -26,11 +26,10 @@ public class ProductionVehicleDAOFiltersTest {
     private static Fleet fleet1, fleet2;
     private static Customer cust1;
 
-    //TODO: production to false, when local
     //Setup before any of the tests are started
     @BeforeClass
     public static void initProvider() throws Exception {
-        //ProductionProvider.initializeProvider("test");
+        ProductionProvider.initializeProvider("unittest");
         daoProvider = ProductionProvider.getInstance();
         vehicleDAO = daoProvider.getVehicleDAO();
         vehicleTypeDAO = daoProvider.getVehicleTypeDAO();
@@ -58,7 +57,7 @@ public class ProductionVehicleDAOFiltersTest {
         customerDAO.remove(cust1.getUuid());
         vehicleTypeDAO.remove(t1.getUuid());
         vehicleTypeDAO.remove(t2.getUuid());
-        //daoProvider.close();
+        daoProvider.close();
     }
 
 

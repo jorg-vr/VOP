@@ -12,11 +12,10 @@ public class ProductionVehicleTypeDAOTest {
     private static DAOProvider daoProvider;
     private static VehicleTypeDao vehicleTypeDAO;
 
-    //TODO: production to false, when local
     //Setup before any of the tests are started
     @BeforeClass
     public static void initProvider() throws Exception {
-        //ProductionProvider.initializeProvider("test");
+        ProductionProvider.initializeProvider("unittest");
         daoProvider = ProductionProvider.getInstance();
         vehicleTypeDAO = daoProvider.getVehicleTypeDAO();
     }
@@ -24,7 +23,7 @@ public class ProductionVehicleTypeDAOTest {
     //Gets executed after all tests have been run
     @AfterClass
     public static void closeProvider() throws Exception {
-        //daoProvider.close();
+        daoProvider.close();
     }
 
     @Test

@@ -20,6 +20,18 @@ export default {
 
         subfleets(state) {
             return state.subfleets
+        },
+
+        getFleetsByName(name){
+            return state.fleets.filter(fleet => fleet.name === name)
+        },
+
+        getFleetsByClient(client){
+            return state.fleets.filter(fleet => fleet.company = client)
+        },
+
+        getFleetsByAll: (state, getters) => (value) => {
+            return getters.filterByAll(state.fleets, value)
         }
     },
     mutations: {
@@ -143,6 +155,11 @@ export default {
             for(let i=0; i < vehicles.length; i++) {
                 context.commit(types.ADD_VEHICLE_TO_SUBFLEETS, {vehicle: vehicles[i]})
             }
+        },
+
+        //This is an action and not a getter as it needs to access a root action
+        getFleetsByAll({dispatch, state}, {value}){
+            return dispatch('filterByAll', {objects: state.fleets, value: value})
         }
     }
 }

@@ -53,6 +53,10 @@ export default
         actions_plural: {
             create: 'create',
             edit: 'edit'
+        },
+        search_bar: {
+            filter_by: 'Filter by',
+            placeholder: 'Search term...'
         }
     },
     nl : {
@@ -108,6 +112,10 @@ export default
         actions_plural: {
             create: 'aanmaken',
             edit: 'bewerken'
+        },
+        search_bar: {
+            filter_by: 'Zoeken op',
+            placeholder: 'Zoekterm...'
         }
     }
 }

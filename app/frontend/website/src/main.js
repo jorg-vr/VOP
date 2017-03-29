@@ -8,13 +8,14 @@ import routes from './config/routes'
 import locales from './lang/locales'
 import store from './store'
 
+import rootUrl from './config/rootUrl'
+
 //Routing support
 Vue.use(VueRouter);
 //Backend support
 Vue.use(VueResource);
 //Language support
 Vue.use(VueI18n);
-
 
 Vue.config.lang = 'nl';
 
@@ -23,15 +24,17 @@ Object.keys(locales).forEach(function (lang) {
 })
 
 const router = new VueRouter({
+    base: rootUrl.path,
     mode: 'history',
-    base: '/app/',
-    routes: routes
+    routes: routes,
 })
 
 Vue.filter('capitalize', function(value){
     value = value.toString()
     return value.charAt(0).toUpperCase() + value.slice(1)
 })
+
+Vue.http.options.root = 'https://vopro5.ugent.be' + rootUrl.path + 'api/'
 
 new Vue({
     store,

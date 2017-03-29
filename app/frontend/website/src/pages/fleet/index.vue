@@ -6,8 +6,9 @@
         <div class="page-header">
             <h1>{{$t("fleet.fleets") | capitalize}}</h1>
         </div>
+        <search-bar @search="updateFleets"></search-bar>
         <!-- Render an info-pane for every fleet. Once all the data is loaded, the table will be shown.-->
-        <list-component v-for="fleet in fleets"
+        <list-component v-for="fleet in visibleFleets"
                         v-if="fleet"
                         :object="fleet"
                         :visibleKeys="new Array('name','companyName')"
@@ -24,13 +25,22 @@
     import { mapGetters, mapActions } from 'vuex'
     import listComponent from "../../assets/general/listComponent.vue"
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
+    import searchBar from '../../assets/general/searchBar.vue'
+    import Vue from 'vue'
 
     export default {
+        data(){
+            return {
+                visibleFleets: []
+            }
+        },
         components: {
-            listComponent, buttonAdd
+            listComponent, buttonAdd, searchBar
         },
         created() {
-            let p1 = this.fetchFleets()
+            let p1 = this.fetchFleets().then(fleets => {
+                this.visibleFleets = fleets
+            })
             let p2 = this.fetchClients()
             Promise.all([p1, p2]).then(values => {
                 this.addClientNames({clients: values[1]})
@@ -38,7 +48,10 @@
         },
         computed: {
             ...mapGetters([
-                'fleets'
+                'fleets',
+                'getFleetsByName',
+                'getFleetsByClient',
+                'getFleetsByAll'
             ])
         },
         methods: {
@@ -46,8 +59,16 @@
                 'fetchFleets',
                 'deleteFleet',
                 'fetchClients',
-                'addClientNames'
-            ])
+                'addClientNames',
+            ]),
+            updateFleets(value){
+                if(value!==''){
+                    this.visibleFleets = this.getFleetsByAll(value)
+                }
+                else {
+                    this.visibleFleets = this.fleets
+                }
+            }
         }
     }
 </script>
