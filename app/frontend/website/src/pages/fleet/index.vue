@@ -21,7 +21,7 @@
     </div>
 </template>
 <script>
-    import { mapGetters, mapActions } from 'vuex'
+    import { mapGetters, mapActions, mapMutations } from 'vuex'
     import listComponent from "../../assets/general/listComponent.vue"
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
     import searchBar from '../../assets/search/searchBar.vue'
@@ -60,7 +60,11 @@
                 'fetchClients',
                 'addClientNames',
             ]),
+            ...mapMutations([
+                
+            ])
             updateFleets(value){
+                this.$store.commit('')
                 if(value!==''){
                     this.visibleFleets = this.getFleetsByAll(value)
                 }

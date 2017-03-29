@@ -7,11 +7,16 @@ export default {
     state: {
         fleets: [],
         subfleets: [],
+        filteredFleets: [],
         fleet: {}
     },
     getters: {
         fleets(state) {
             return state.fleets
+        },
+
+        filteredFleets(state){
+
         },
 
         fleet(state) {
@@ -43,12 +48,18 @@ export default {
             state.fleet = fleet
         },
 
+        [types.UPDATE_FILTERED_FLEETS] (state, {fleets}){
+            state.filteredFleets = fleets
+        },
+
         [types.CREATE_FLEET] (state, {fleet}){
             state.fleets.push(fleet)
+            state.filteredFleets.push(fleet)
         },
 
         [types.DELETE_FLEET] (state, {id}){
             state.fleets = state.fleets.filter(fleet => fleet.id !== id);
+            state.filteredFleets = state.filteredFleets.filter(fleet => fleet.id !== id);
         },
 
         [types.CLEAR_SUBFLEETS] (state) {
