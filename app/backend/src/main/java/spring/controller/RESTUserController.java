@@ -115,9 +115,10 @@ public class RESTUserController {
             if (accountController.isTaken(user.getEmail())) {
                 throw new ConflictException();
             }
+            Account account=user.translate();
 
-            Person person = personController.createPerson(user.getFirstName(), user.getLastName(), user.getEmail());
-            Account account = accountController.createAccount(user.getEmail(), user.getPassword(), person.getUuid());
+            Person person = personController.create(account.getPerson());
+            account = accountController.create(account);
 
             return new RESTUser(account, person);
         } catch (DataAccessException e) {
@@ -159,9 +160,12 @@ public class RESTUserController {
     public RESTUser putId(@PathVariable("id") String id, @RequestBody RESTUser user) {
         UUID uuid = UUIDUtil.toUUID(id);
         try {
-            Account account = accountController.updateAccount(uuid, user.getEmail(), user.getPassword());
+            Account account = user.translate();
+            account.setUuid(uuid);
+            Account result= accountController.update(account);
             Person person = account.getPerson();
-            person = personController.updatePerson(person.getUuid(), user.getFirstName(), user.getLastName(), user.getEmail());
+            person.setUuid(result.getPerson().getUuid());
+            person = personController.update(person);
             return new RESTUser(account, person);
         } catch (DataAccessException e) {
             throw new InvalidInputException();

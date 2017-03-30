@@ -13,6 +13,7 @@ public class Function implements EditableObject, java.io.Serializable {
     private Company company;
     private Role role;
     private Account account;
+    private String name;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private UUID uuid;
@@ -49,6 +50,14 @@ public class Function implements EditableObject, java.io.Serializable {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Account getAccount() {

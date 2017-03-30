@@ -2,6 +2,8 @@ package spring.model;
 
 import model.identity.Address;
 import model.identity.Company;
+import model.identity.Customer;
+import spring.controller.UUIDUtil;
 
 import java.util.UUID;
 
@@ -40,6 +42,16 @@ public class RESTCompany extends RESTAbstractModel {
         this.vatNumber = vatNumber;
         this.phoneNumber = phoneNumber;
         this.address = address;
+    }
+
+    public Customer translate(){
+        Customer customer= new Customer();
+        customer.setName(getName());
+        customer.setBtwNumber(getVatNumber());
+        customer.setPhoneNumber(getPhoneNumber());
+        customer.setAddress(getAddress().translate());
+        customer.setUuid(UUIDUtil.toUUID(getId()));
+        return customer;
     }
 
     public String getName() {
