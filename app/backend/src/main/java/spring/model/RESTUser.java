@@ -3,6 +3,7 @@ package spring.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import model.account.Account;
 import model.identity.Person;
+import spring.controller.UUIDUtil;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -33,6 +34,27 @@ public class RESTUser extends RESTAbstractModel {
         lastName = person.getLastName();
         email = person.getEmail();
         password = account.getHashedPassword();
+    }
+
+    public RESTUser(Account account) {
+        super(account.getUuid(), PATH_USERS);
+        Person person=account.getPerson();
+        firstName = person.getFirstName();
+        lastName = person.getLastName();
+        email = person.getEmail();
+        password = account.getHashedPassword();
+    }
+
+    public Account translate(){
+        Person person=new Person();
+        person.setEmail(getEmail());
+        person.setFirstName(getFirstName());
+        person.setLastName(getLastName());
+        Account account=new Account();
+        account.setPerson(person);
+        account.setLogin(getEmail());
+        account.setUuid(UUIDUtil.toUUID(getId()));
+        return  account;
     }
 
     public String getFirstName() {
