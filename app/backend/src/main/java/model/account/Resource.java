@@ -8,7 +8,7 @@ public enum Resource {
     FUNCTION,
     ROLE,
     BILLING,
-    VEHCLE,
+    VEHICLE,
     FLEET,
     VEHIVLETYPE,
     COMPANY,
