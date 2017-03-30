@@ -10,7 +10,7 @@ import spring.exceptions.InvalidInputException;
 /**
  * This is a bean class as specified in the API specification
  */
-public class RESTFleet extends RESTAbstractModel {
+public class RESTFleet extends RESTAbstractModel<Fleet> {
 
     private static final String PATH_FLEETS = "/fleets";
 

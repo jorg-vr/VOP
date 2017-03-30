@@ -16,7 +16,7 @@ import static spring.controller.UUIDUtil.UUIDToNumberString;
 /**
  * This is a bean class as specified in the API specification
  */
-public class RESTRole extends RESTAbstractModel {
+public class RESTRole extends RESTAbstractModel<Function> {
 
 
 

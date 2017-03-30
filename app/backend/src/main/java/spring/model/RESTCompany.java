@@ -10,7 +10,7 @@ import java.util.UUID;
 /**
  * This is a bean class as specified in the API specification
  */
-public class RESTCompany extends RESTAbstractModel {
+public class RESTCompany extends RESTAbstractModel<Customer>{
 
     private static final String PATH_COMPANIES = "/companies";
 
@@ -85,6 +85,7 @@ public class RESTCompany extends RESTAbstractModel {
     public void setAddress(RESTAddress address) {
         this.address = address;
     }
+
 }
 
 

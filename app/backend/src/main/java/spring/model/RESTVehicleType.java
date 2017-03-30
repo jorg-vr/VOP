@@ -3,7 +3,7 @@ package spring.model;
 /**
  * Created by jorg on 3/14/17.
  */
-public class RESTVehicleType {
+public class RESTVehicleType  {
     private String id;
     private String name;
 

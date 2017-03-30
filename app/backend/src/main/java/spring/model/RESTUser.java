@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 /**
  * This is a bean class as specified in the API specification
  */
-public class RESTUser extends RESTAbstractModel {
+public class RESTUser extends RESTAbstractModel<Account> {
 
     private static final String PATH_USERS = "/users";
 

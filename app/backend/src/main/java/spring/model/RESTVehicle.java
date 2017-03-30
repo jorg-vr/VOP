@@ -13,7 +13,7 @@ import java.util.Locale;
  * This is a bean class as specified in the API specification
  */
 @ResponseStatus(value = HttpStatus.OK, reason = "OK")
-public class RESTVehicle extends RESTAbstractModel {
+public class RESTVehicle extends RESTAbstractModel<Vehicle> {
 
     private static final String PATH_VEHICLES = "/vehicles";
 
