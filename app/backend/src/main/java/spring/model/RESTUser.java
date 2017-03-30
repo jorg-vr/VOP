@@ -2,6 +2,7 @@ package spring.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import model.account.Account;
+import model.account.Function;
 import model.identity.Person;
 import spring.controller.UUIDUtil;
 
@@ -45,7 +46,7 @@ public class RESTUser extends RESTAbstractModel<Account> {
         password = account.getHashedPassword();
     }
 
-    public Account translate(){
+    public Account translate(Function f){
         Person person=new Person();
         person.setEmail(getEmail());
         person.setFirstName(getFirstName());

@@ -1,5 +1,6 @@
 package spring.model;
 
+import model.account.Function;
 import model.history.EditEvent;
 import model.history.EditableObject;
 import spring.controller.UUIDUtil;
@@ -38,7 +39,7 @@ public abstract class RESTAbstractModel<T extends EditableObject> {
         this(uuid, null, null, url);
     }
 
-    public abstract T translate();
+    public abstract T translate(Function function);
 
     public String getId() {
         return id;

@@ -1,5 +1,6 @@
 package spring.model;
 
+import model.account.Function;
 import model.identity.Address;
 import model.identity.Company;
 import model.identity.Customer;
@@ -44,7 +45,7 @@ public class RESTCompany extends RESTAbstractModel<Customer>{
         this.address = address;
     }
 
-    public Customer translate(){
+    public Customer translate(Function function){
         Customer customer= new Customer();
         customer.setName(getName());
         customer.setBtwNumber(getVatNumber());

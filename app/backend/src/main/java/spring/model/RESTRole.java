@@ -4,10 +4,12 @@ package spring.model;
 import controller.AccountController;
 import controller.CustomerController;
 import controller.RoleController;
+import controller.exceptions.UnAuthorizedException;
 import dao.interfaces.DataAccessException;
 import model.account.Function;
 import spring.controller.UUIDUtil;
 import spring.exceptions.InvalidInputException;
+import spring.exceptions.NotAuthorizedException;
 
 import java.time.LocalDateTime;
 
@@ -54,23 +56,29 @@ public class RESTRole extends RESTAbstractModel<Function> {
          setName(function.getName());
      }
 
-    public Function translate(){
+    public Function translate(Function f){
         Function function=new Function();
         function.setUuid(UUIDUtil.toUUID(getId()));
         try {
-            function.setAccount(new AccountController().get(UUIDUtil.toUUID(getUser())));
+            function.setAccount(new AccountController(f).get(UUIDUtil.toUUID(getUser())));
         } catch (DataAccessException e) {
             throw new InvalidInputException("user");
+        } catch (UnAuthorizedException e) {
+            throw new NotAuthorizedException();
         }
         try {
-            function.setCompany(new CustomerController().get(UUIDUtil.toUUID(getCompany())));
+            function.setCompany(new CustomerController(f).get(UUIDUtil.toUUID(getCompany())));
         } catch (DataAccessException e) {
             throw new InvalidInputException("company");
+        } catch (UnAuthorizedException e) {
+            throw new NotAuthorizedException();
         }
         try {
-            function.setRole(new RoleController().get(UUIDUtil.toUUID(getPermissions())));
+            function.setRole(new RoleController(f).get(UUIDUtil.toUUID(getPermissions())));
         } catch (DataAccessException e) {
             throw new InvalidInputException("name");
+        } catch (UnAuthorizedException e) {
+            throw new NotAuthorizedException();
         }
         function.setName(getName());
         return function;
