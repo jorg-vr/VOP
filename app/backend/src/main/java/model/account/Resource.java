@@ -5,6 +5,8 @@ package model.account;
  */
 public enum Resource {
     ACCOUNT,
+    FUNCTION,
+    ROLE,
     BILLING,
     VEHCLE,
     FLEET,

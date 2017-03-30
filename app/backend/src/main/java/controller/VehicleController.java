@@ -4,6 +4,8 @@ import dao.database.ProductionProvider;
 import dao.interfaces.DataAccessException;
 import dao.interfaces.VehicleDAO;
 import main.BackendApplication;
+import model.account.Function;
+import model.account.Resource;
 import model.fleet.Vehicle;
 import model.fleet.VehicleType;
 
@@ -16,37 +18,12 @@ import java.util.UUID;
  */
 public class VehicleController extends AbstractController<Vehicle>{
 
-    public VehicleController() {
-        super(BackendApplication.getProvider().getVehicleDAO());
-    }
-
-    /***
-     *
-     * @throws DataAccessException
-     */
-    public Vehicle update(UUID uuid,String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int value,int mileage,  UUID vehicleType,UUID fleet ) throws DataAccessException {
-        return ((VehicleDAO) getDao()).update(uuid,brand,model,chassisNumber,licensePlate,value,mileage,getVehicleType(vehicleType),productionDate,new FleetController().get(fleet));
-        //TODO update history
+    public VehicleController(Function function) {
+        super(BackendApplication.getProvider().getVehicleDAO(), Resource.VEHCLE,function);
     }
 
 
 
-    /***
-     *
-     * Create new vehicle and generate id for given parameters
-     * @param brand
-     * @param model
-     * @param licensePlate
-     * @param productionDate
-     * @param chassisNumber
-     * @param mileage
-     * @return
-     * @throws DataAccessException
-     */
-    public Vehicle create(String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int value,int mileage,  UUID vehicleType,UUID fleet ) throws DataAccessException {
-
-        return ((VehicleDAO) getDao()).create(brand,model,chassisNumber,licensePlate,value,mileage,getVehicleType(vehicleType),productionDate,new FleetController().get(fleet));
-    }
 
     public VehicleType getVehicleType(UUID vehicleType) throws DataAccessException {
         return ProductionProvider.getInstance().getVehicleTypeDAO().get(vehicleType);
@@ -61,4 +38,8 @@ public class VehicleController extends AbstractController<Vehicle>{
         return ProductionProvider.getInstance().getVehicleTypeDAO().listFiltered();
     }
 
+    @Override
+    public boolean isOwner(Vehicle vehicle, Function function) {
+        return vehicle.getFleet().getOwner().equals(function.getCompany());
+    }
 }

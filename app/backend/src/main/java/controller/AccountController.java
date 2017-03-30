@@ -5,6 +5,8 @@ import dao.interfaces.DAOProvider;
 import dao.interfaces.DataAccessException;
 import main.BackendApplication;
 import model.account.Account;
+import model.account.Function;
+import model.account.Resource;
 import model.identity.Person;
 import spring.exceptions.NotImplementedException;
 
@@ -19,29 +21,13 @@ public class AccountController extends AbstractController<Account> {
     private AccountDAO dao;
     private DAOProvider provider;
 
-    public AccountController() {
-        super(BackendApplication.getProvider().getAccountDao());
+    public AccountController(Function function) {
+        super(BackendApplication.getProvider().getAccountDao(), Resource.ACCOUNT,function);
         this.provider = BackendApplication.getProvider();
         this.dao = provider.getAccountDao();
     }
 
-    /**
-     * Attempts to create a new account
-     *
-     * @param name
-     * @param password
-     * @param personId UUID of the person associated with this account
-     * @return an account object with all the fields filled in
-     * @throws DataAccessException name is already taken
-     */
-    public Account createAccount(String name, String password, UUID personId) throws DataAccessException {
-        Person person = provider.getPersonDAO().get(personId);
-        return dao.create(name, password, person);
-    }
 
-    public Account updateAccount(UUID id, String login, String hashedPassword) throws DataAccessException {
-        return dao.update(id, login, hashedPassword);
-    }
 
     /**
      * @param name the account name
@@ -54,5 +40,10 @@ public class AccountController extends AbstractController<Account> {
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean isOwner(Account account, Function function) {
+        return function.getAccount().equals(account);
     }
 }

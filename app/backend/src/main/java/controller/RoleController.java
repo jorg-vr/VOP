@@ -3,6 +3,8 @@ package controller;
 import dao.interfaces.DAO;
 import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
+import model.account.Function;
+import model.account.Resource;
 import model.account.Role;
 
 import java.util.Collection;
@@ -13,7 +15,7 @@ import java.util.UUID;
  */
 public class RoleController extends AbstractController<Role> {
 
-    public RoleController() {
+    public RoleController(Function function) {
         //TODO !!
         super(new DAO<Role>() {
             @Override
@@ -40,6 +42,11 @@ public class RoleController extends AbstractController<Role> {
             public Role update(Role role) {
                 return null;
             }
-        });
+        }, Resource.ROLE,function);
+    }
+
+    @Override
+    public boolean isOwner(Role role, Function function) {
+        return false;// Role never has an owner
     }
 }
