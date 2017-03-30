@@ -12,7 +12,7 @@ import java.util.UUID;
  */
 public class Role implements EditableObject, java.io.Serializable {
     private String name;
-    private Map<Accessible,AccessLevel>  rights;
+    private Map<Resource,Action>  rights;
     private UUID uuid;
 
     public Role() {
@@ -24,25 +24,18 @@ public class Role implements EditableObject, java.io.Serializable {
         uuid=UUID.randomUUID();
     }
 
-    private Role(String name, Map<Accessible, AccessLevel> rights, UUID uuid) {
+    private Role(String name, Map<Resource, Action> rights, UUID uuid) {
         this.name = name;
         this.rights = rights;
         this.uuid = uuid;
     }
 
-    public void setAccess(Accessible ai,AccessLevel al){
+    public void setAccess(Resource ai, Action al){
         rights.put(ai,al);
     }
 
-    public boolean hasAccess(Accessible ai,AccessLevel al){
+    public boolean hasAccess(Resource ai, Action al){
         return rights.containsKey(ai) &&rights.get(ai).equals(al);
-    }
-    public boolean canRead(Accessible ai){
-        return hasAccess(ai,AccessLevel.READ);
-    }
-
-    public boolean canWrite(Accessible ai){
-        return hasAccess(ai,AccessLevel.WRITE);
     }
 
     public String getName() {
@@ -53,11 +46,11 @@ public class Role implements EditableObject, java.io.Serializable {
         this.name = name;
     }
 
-    public Map<Accessible, AccessLevel> getRights() {
+    public Map<Resource, Action> getRights() {
         return rights;
     }
 
-    public void setRights(Map<Accessible, AccessLevel> rights) {
+    public void setRights(Map<Resource, Action> rights) {
         this.rights = rights;
     }
 

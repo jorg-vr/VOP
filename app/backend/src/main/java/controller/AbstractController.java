@@ -15,7 +15,7 @@ import java.util.UUID;
  * In their final state, these classes should act as a protecting interface of the backend model.
  * The methods of these classes should in final state take care of:
  * 1) history changes (not yet implemented) TODO milestone?
- * 2) correct authentication (not yet implemented) TODO milestone?
+ * 2) correct authentication (not yet implemented) TODO milestone 2
  * 3) business logic (currently nothing)
  *
  * Currently there is a generic implementation for the get, archive and listFiltered methods.
