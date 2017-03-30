@@ -8,7 +8,7 @@
     - remove: A function which removes this object.
 -->
 <template>
-    <div class="row" v-if="object">
+    <div :class="'row ' + rowClass" v-if="object">
         <router-link :to="{name: this.show, params: {id: object.id}}">
             <div class="panel panel-default col-sm-10">
                 <div class="panel-body">
@@ -35,6 +35,7 @@
             show: String, //Name of link to show page of the given object.
             edit: String, //Name of link to edit page of the given object.
             remove: Function, //Function to remove the given object.
+            rowClass: String //Class for this object.
         },
         components: {
             buttonEdit, buttonRemove

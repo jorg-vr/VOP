@@ -19,10 +19,11 @@
         methods: {
             //TODO: With props we can add validation functions for each input item.
             updateValue (value) {
+                console.log(this.$refs)
                 let formattedValue = value.trim()
                 // If the value was not already normalized,
                 // manually override it to conform
-                if (formattedValue !== value) {
+                if (formattedValue && formattedValue !== value) {
                     this.$refs.input.value = formattedValue
 
                 }

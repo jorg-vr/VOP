@@ -6,7 +6,7 @@
         <div class="page-header">
             <h1>{{$t("fleet.fleets") | capitalize}}</h1>
         </div>
-        <fleet-search-bar @search="updateFleets" :clients="clients"></fleet-search-bar>
+        <fleet-search-bar @search="updateFleets" :clients="clients" @advancedSearch="updateFleetsAdvanced"></fleet-search-bar>
         <!-- Render an info-pane for every fleet. Once all the data is loaded, the table will be shown.-->
         <list-component v-for="fleet in filteredFleets"
                         v-if="fleet"
@@ -15,7 +15,8 @@
                         :remove="deleteFleet"
                         edit="edit_fleet"
                         show="fleet"
-                        :key="fleet.id">
+                        :key="fleet.id"
+                        rowClass="fleetrow">
         </list-component>
         <button-add :route="{name: 'new_fleet'}"></button-add>
     </div>
@@ -69,6 +70,9 @@
                 else {
                     this.updateFilteredFleets({fleets: this.fleets})
                 }
+            },
+            updateFleetsAdvanced(filterFleet){
+                console.log(filterFleet)
             }
         }
     }
