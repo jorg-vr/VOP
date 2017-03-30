@@ -48,7 +48,7 @@ public class RESTAbstractController<R extends RESTAbstractModel<M>,M extends Edi
     @RequestMapping(method = RequestMethod.POST)
     public R post(@RequestBody R rest, @RequestHeader(value="AuthToken") RESTAuthenticationToken token) {
         try(AbstractController<M> controller=controllerFactory.create(verifyToken(token))) {
-            M model = controller.create(rest.translate());
+            M model = controller.create(rest.translate(verifyToken(token)));
             return factory.create(model);
         } catch (DataAccessException e) {
             throw new InvalidInputException(e);
@@ -73,7 +73,7 @@ public class RESTAbstractController<R extends RESTAbstractModel<M>,M extends Edi
     public R putId(@PathVariable("id") String id, @RequestBody R rest, @RequestHeader(value="AuthToken") RESTAuthenticationToken token) {
         try(AbstractController<M> controller=controllerFactory.create(verifyToken(token))) {
             rest.setId(id);
-            M model = rest.translate();
+            M model = rest.translate(verifyToken(token));
             model = controller.update(model);
             return factory.create(model);
         } catch (DataAccessException e) {
