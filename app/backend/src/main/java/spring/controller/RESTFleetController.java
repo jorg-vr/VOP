@@ -68,9 +68,8 @@ public class RESTFleetController {
 
     @RequestMapping(method = RequestMethod.POST)
     public RESTFleet post(@RequestBody RESTFleet restFleet) {
-        UUID companyUuid = UUIDUtil.toUUID(restFleet.getCompany());
         try {
-            Fleet fleet = controller.create(companyUuid, restFleet.getName());
+            Fleet fleet = controller.create(restFleet.translate());
             return new RESTFleet(fleet);
         } catch (DataAccessException e) {
             throw new InvalidInputException();
@@ -93,9 +92,10 @@ public class RESTFleetController {
     @RequestMapping(method = RequestMethod.PUT, value = "{id}")
     public RESTFleet updateId(@PathVariable("id") String id, @RequestBody RESTFleet restFleet) {
         UUID uuid = UUIDUtil.toUUID(id);
-        UUID companyUuid = UUIDUtil.toUUID(restFleet.getCompany());
         try {
-            Fleet fleet = controller.update(uuid, companyUuid, restFleet.getName());
+            Fleet fleet = restFleet.translate();
+            fleet.setUuid(uuid);
+            fleet=controller.update(fleet);
             return new RESTFleet(fleet);
         } catch (DataAccessException e) {
             throw new InvalidInputException();

@@ -1,7 +1,11 @@
 package spring.model;
 
+import controller.CustomerController;
+import dao.interfaces.DataAccessException;
 import model.fleet.Fleet;
+import model.identity.Customer;
 import spring.controller.UUIDUtil;
+import spring.exceptions.InvalidInputException;
 
 /**
  * This is a bean class as specified in the API specification
@@ -26,6 +30,17 @@ public class RESTFleet extends RESTAbstractModel {
         setId(id);
         this.company = company;
         this.name = name;
+    }
+
+    public Fleet translate(){
+        Fleet fleet=new Fleet();
+        fleet.setName(getName());
+        try {
+            fleet.setOwner(new CustomerController().get(UUIDUtil.toUUID(getCompany())));
+        } catch (DataAccessException e) {
+            throw new InvalidInputException("company");
+        }
+        fleet.setUuid(UUIDUtil.toUUID(getId()));
     }
 
     public String getCompany() {
