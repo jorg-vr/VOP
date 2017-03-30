@@ -93,4 +93,14 @@ public class ProductionFleetDAO implements FleetDAO{
         return null;
     }
 
+    @Override
+    public Fleet create(Fleet fleet) {
+        return null;
+    }
+
+    @Override
+    public Fleet update(Fleet fleet) {
+        return null;
+    }
+
 }
