@@ -33,8 +33,8 @@ public interface DAO<T> {
      */
     Collection<T> listFiltered(Filter<T>... filters) throws DataAccessException;
 
-    T create(T t);
+    T create(T t)throws DataAccessException;
 
-    T update(T t);
+    T update(T t)throws DataAccessException;
 
 }

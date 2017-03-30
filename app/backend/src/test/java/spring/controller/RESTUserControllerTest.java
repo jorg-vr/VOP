@@ -34,8 +34,16 @@ public class RESTUserControllerTest {
     public static void setup() {
         ProductionProvider.initializeProvider("unittest");
         try {
-            person=new PersonController().createPerson("jon","doe","jon.doe@hotmail.com");
-            account=new AccountController().createAccount("jon.doe@hotmail.com","054561dfs5f465",person.getUuid());
+            person=new Person();
+            person.setLastName("doe");
+            person.setFirstName("jon");
+            person.setEmail("jon.doe@hotmail.com");
+            person=ProductionProvider.getInstance().getPersonDAO().create(person);
+            account=new Account();
+            account.setPerson(person);
+            account.setLogin("jon.doe@hotmail.com");
+            account.setHashedPassword("054561dfs5f465");
+            account=ProductionProvider.getInstance().getAccountDao().create(account);
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
@@ -43,8 +51,8 @@ public class RESTUserControllerTest {
     @AfterClass
     public static void afterTransaction() {
         try {
-            new AccountController().archive(account.getUuid());
-            new PersonController().archive(person.getUuid());
+            ProductionProvider.getInstance().getAccountDao().remove(account.getUuid());
+            ProductionProvider.getInstance().getPersonDAO().remove(person.getUuid());
         } catch (DataAccessException e) {
             e.printStackTrace();
         }

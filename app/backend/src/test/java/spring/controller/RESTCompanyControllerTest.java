@@ -2,6 +2,7 @@ package spring.controller;
 
 import controller.CustomerController;
 import dao.database.ProductionProvider;
+import dao.interfaces.CustomerDAO;
 import dao.interfaces.DataAccessException;
 import model.identity.Address;
 import model.identity.Customer;
@@ -39,7 +40,12 @@ public class RESTCompanyControllerTest {
         ProductionProvider.initializeProvider("unittest");
         try {
             address= new Address("mystreet","123","lala","12345","land");
-            customer= new CustomerController().create(address,"04789456123","anita","123456789");
+            customer= new Customer();
+            customer.setAddress(address);
+            customer.setName("anita");
+            customer.setPhoneNumber("04789456123");
+            customer.setBtwNumber("123456789");
+            customer= ProductionProvider.getInstance().getCustomerDAO().create(customer);
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
@@ -49,7 +55,7 @@ public class RESTCompanyControllerTest {
     @AfterClass
     public static void afterTransaction() {
         try {
-            new CustomerController().archive(customer.getUuid());
+            ProductionProvider.getInstance().getCustomerDAO().remove(customer.getUuid());
         } catch (DataAccessException e) {
             e.printStackTrace();
         }

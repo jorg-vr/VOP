@@ -41,7 +41,10 @@ public class RESTRole extends RESTAbstractModel {
 
     private String url;
 
-     public RESTRole(Function function){
+    public RESTRole() {
+    }
+
+    public RESTRole(Function function){
          super(function.getUuid(),PATH_ROLE);
          setPermissions(UUIDToNumberString(function.getRole().getUuid()));
          setUser(UUIDToNumberString(function.getAccount().getUuid()));
