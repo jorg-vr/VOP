@@ -1,5 +1,6 @@
 package spring.model;
 
+import model.account.Function;
 import model.fleet.VehicleType;
 import spring.controller.UUIDUtil;
 
@@ -19,7 +20,7 @@ public class RESTVehicleType extends RESTAbstractModel<VehicleType> {
     }
 
     @Override
-    public VehicleType translate() {
+    public VehicleType translate(Function function) {
         VehicleType vehicleType=new VehicleType();
         vehicleType.setUuid(UUIDUtil.toUUID(getId()));
         vehicleType.setType(getName());
