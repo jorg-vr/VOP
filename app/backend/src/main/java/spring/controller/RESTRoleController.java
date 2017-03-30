@@ -16,6 +16,7 @@ import spring.model.RESTSchema;
 import java.util.*;
 
 import static spring.controller.UUIDUtil.UUIDToNumberString;
+import static spring.controller.UUIDUtil.toUUID;
 
 /**
  * This controller is responsible for handling the HTTP requests of the URL /roles.
@@ -58,7 +59,7 @@ public class RESTRoleController {
 
             Collection<Function> functions = controller.getFiltered(customer, account, active);
             for (Function function : functions) {
-                RESTRole restRole = modelToRest(function);
+                RESTRole restRole = new RESTRole(function);
                 roles.add(restRole);
             }
 
@@ -70,17 +71,14 @@ public class RESTRoleController {
 
     @RequestMapping(method = RequestMethod.POST)
     public RESTRole post(@RequestBody RESTRole role) {
-        UUID companyUUID = UUIDUtil.toUUID(role.getCompany());
-        UUID userUUID = UUIDUtil.toUUID(role.getUser());
-        RESTRole createdRole;
 
         try {
-            Function function = controller.create(companyUUID, role.getFunction(), userUUID, role.getStartDate(), role.getEndDate());
-            createdRole = modelToRest(function);
+            Function function = controller.create(role.translate());
+            role = new RESTRole(function);
         } catch (DataAccessException e) {
             throw new InvalidInputException(e);
         }
-        return createdRole;
+        return role;
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
@@ -88,7 +86,7 @@ public class RESTRoleController {
         UUID uuid = UUIDUtil.toUUID(id);
         try {
             Function function = controller.get(uuid);
-            return modelToRest(function);
+            return new RESTRole(function);
         } catch (Exception e) {
             throw new NotFoundException();
         }
@@ -96,19 +94,11 @@ public class RESTRoleController {
 
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
     public RESTRole putId(@PathVariable("id") String id, @RequestBody RESTRole role) {
-        System.out.println("ids: " + id + "  " + role.getCompany() + "  " + role.getUser());
-        UUID uuid = UUIDUtil.toUUID(id);
-        UUID companyUuid = UUIDUtil.toUUID(role.getCompany());
-        UUID userUuid = UUIDUtil.toUUID(role.getUser());
-        System.out.println("ids: " + uuid + "  " + userUuid + "  " + companyUuid);
         try {
-            Function function = controller.update(uuid,
-                    companyUuid,
-                    role.getFunction(),
-                    userUuid,
-                    role.getStartDate(),
-                    role.getEndDate());
-            return modelToRest(function);
+            Function function = role.translate();
+            function.setUuid(toUUID(id));
+            function=controller.update(function);
+            return new RESTRole(function);
         } catch (DataAccessException e) {
             throw new NotFoundException();
         }
@@ -124,26 +114,6 @@ public class RESTRoleController {
         }
     }
 
-    /**
-     * Transforms a function object to a restrole object
-     *
-     * @param function
-     * @return restroleobject with the fields of the function object
-     */
-    private RESTRole modelToRest(Function function) {
-        String id = UUIDToNumberString(function.getUuid());
-        String userId = UUIDToNumberString(function.getAccount().getUuid());
-        RESTRole role = new RESTRole();
-        role.setFunction("");
-        role.setId(id);
-        role.setUser(userId);
-        role.setCompany(UUIDUtil.UUIDToNumberString(function.getCompany().getUuid()));
-        role.setStartDate(function.getStartDate());
-        role.setEndDate(function.getEndDate());
-        //role.setUpdatedAt(); TODO milestone?
-        //role.setCreatedAt();
-        role.setUrl(PATH_ROLE + "/" + id);
-        return role;
-    }
+
 
 }

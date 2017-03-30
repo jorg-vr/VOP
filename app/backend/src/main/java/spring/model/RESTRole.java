@@ -1,18 +1,33 @@
 package spring.model;
 
 
+import controller.AccountController;
+import controller.CustomerController;
+import controller.RoleController;
+import dao.interfaces.DataAccessException;
+import model.account.Function;
+import spring.controller.UUIDUtil;
+import spring.exceptions.InvalidInputException;
+
 import java.time.LocalDateTime;
+
+import static spring.controller.UUIDUtil.UUIDToNumberString;
 
 /**
  * This is a bean class as specified in the API specification
  */
-public class RESTRole {
+public class RESTRole extends RESTAbstractModel {
 
-    private String id;
+
+
+    public static final String PATH_ROLE = "/roles";
+
 
     private String company;
 
-    private String function;
+    private String name;
+
+    private String permissions;
 
     private String user;
 
@@ -26,12 +41,45 @@ public class RESTRole {
 
     private String url;
 
-    public String getId() {
-        return id;
+     public RESTRole(Function function){
+         super(function.getUuid(),PATH_ROLE);
+         setPermissions(UUIDToNumberString(function.getRole().getUuid()));
+         setUser(UUIDToNumberString(function.getAccount().getUuid()));
+         setCompany(UUIDToNumberString(function.getCompany().getUuid()));
+         setStartDate(function.getStartDate());
+         setEndDate(function.getEndDate());
+         setName(function.getName());
+     }
+
+    public Function translate(){
+        Function function=new Function();
+        function.setUuid(UUIDUtil.toUUID(getId()));
+        try {
+            function.setAccount(new AccountController().get(UUIDUtil.toUUID(getUser())));
+        } catch (DataAccessException e) {
+            throw new InvalidInputException("user");
+        }
+        try {
+            function.setCompany(new CustomerController().get(UUIDUtil.toUUID(getCompany())));
+        } catch (DataAccessException e) {
+            throw new InvalidInputException("company");
+        }
+        try {
+            function.setRole(new RoleController().get(UUIDUtil.toUUID(getPermissions())));
+        } catch (DataAccessException e) {
+            throw new InvalidInputException("name");
+        }
+        function.setName(getName());
+        return function;
     }
 
-    public void setId(String id) {
-        this.id = id;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getCompany() {
@@ -42,12 +90,12 @@ public class RESTRole {
         this.company = company;
     }
 
-    public String getFunction() {
-        return function;
+    public String getPermissions() {
+        return permissions;
     }
 
-    public void setFunction(String function) {
-        this.function = function;
+    public void setPermissions(String permissions) {
+        this.permissions = permissions;
     }
 
     public String getUser() {
@@ -98,19 +146,4 @@ public class RESTRole {
         this.url = url;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        RESTRole that = (RESTRole) o;
-
-        return id.equals(that.id);
-
-    }
-
-    @Override
-    public int hashCode() {
-        return id.hashCode();
-    }
 }

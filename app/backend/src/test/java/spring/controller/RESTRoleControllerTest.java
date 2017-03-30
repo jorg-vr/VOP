@@ -117,7 +117,7 @@ public class RESTRoleControllerTest {
         RESTRole restRole=new RESTRole();
         restRole.setId(UUIDUtil.UUIDToNumberString( function.getUuid()));
         restRole.setCompany(UUIDUtil.UUIDToNumberString(customer.getUuid()));
-        restRole.setFunction("");
+        restRole.setPermissions("");
         restRole.setUser(UUIDUtil.UUIDToNumberString(account.getUuid()));
 
         MvcResult result =mvc.perform(MockMvcRequestBuilders.put("/roles/{id}",UUIDUtil.UUIDToNumberString(function.getUuid()))

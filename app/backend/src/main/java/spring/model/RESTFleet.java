@@ -41,6 +41,7 @@ public class RESTFleet extends RESTAbstractModel {
             throw new InvalidInputException("company");
         }
         fleet.setUuid(UUIDUtil.toUUID(getId()));
+        return  fleet;
     }
 
     public String getCompany() {
