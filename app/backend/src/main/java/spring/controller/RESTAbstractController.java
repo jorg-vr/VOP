@@ -1,18 +1,18 @@
 package spring.controller;
 
 import controller.AbstractController;
+import controller.AuthContoller;
 import controller.ControllerFactory;
 import controller.exceptions.UnAuthorizedException;
 import dao.interfaces.DataAccessException;
+import model.account.Function;
 import model.history.EditableObject;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import spring.exceptions.InvalidInputException;
 import spring.exceptions.NotAuthorizedException;
 import spring.exceptions.NotFoundException;
 import spring.model.RESTAbstractModel;
+import spring.model.RESTAuthenticationToken;
 import spring.model.RESTModelFactory;
 
 import java.util.UUID;
@@ -29,9 +29,25 @@ public class RESTAbstractController<R extends RESTAbstractModel<M>,M extends Edi
         this.controllerFactory = controllerFactory;
         this.factory=factory;
     }
-    @RequestMapping(method = RequestMethod.POST)
-    public R post(@RequestBody R rest) {
+
+
+    public Function verifyToken(RESTAuthenticationToken token){
         try {
+            return new AuthContoller().getFunction(token);
+        } catch (DataAccessException e) {
+            throw new InvalidInputException(e);
+        } catch (UnAuthorizedException e) {
+            throw new NotAuthorizedException();
+        }
+    }
+
+    public ControllerFactory<M> getControllerFactory() {
+        return controllerFactory;
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    public R post(@RequestBody R rest, @RequestHeader(value="AuthToken") RESTAuthenticationToken token) {
+        try(AbstractController<M> controller=controllerFactory.create(verifyToken(token))) {
             M model = controller.create(rest.translate());
             return factory.create(model);
         } catch (DataAccessException e) {
@@ -42,9 +58,9 @@ public class RESTAbstractController<R extends RESTAbstractModel<M>,M extends Edi
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "{id}")
-    public R getId(@PathVariable("id") String id) {
+    public R getId(@PathVariable("id") String id, @RequestHeader(value="AuthToken") RESTAuthenticationToken token) {
         UUID uuid = UUIDUtil.toUUID(id);
-        try {
+        try(AbstractController<M> controller=controllerFactory.create(verifyToken(token))) {
             return factory.create(controller.get(uuid));
         } catch (DataAccessException e) {
             throw new NotFoundException();
@@ -54,8 +70,8 @@ public class RESTAbstractController<R extends RESTAbstractModel<M>,M extends Edi
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "{id}")
-    public R putId(@PathVariable("id") String id, @RequestBody R rest) {
-        try {
+    public R putId(@PathVariable("id") String id, @RequestBody R rest, @RequestHeader(value="AuthToken") RESTAuthenticationToken token) {
+        try(AbstractController<M> controller=controllerFactory.create(verifyToken(token))) {
             rest.setId(id);
             M model = rest.translate();
             model = controller.update(model);
@@ -69,9 +85,9 @@ public class RESTAbstractController<R extends RESTAbstractModel<M>,M extends Edi
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "{id}")
-    public void deleteId(@PathVariable("id") String id) {
+    public void deleteId(@PathVariable("id") String id, @RequestHeader(value="AuthToken") RESTAuthenticationToken token) {
         UUID uuid = UUIDUtil.toUUID(id);
-        try {
+        try(AbstractController<M> controller=controllerFactory.create(verifyToken(token))) {
             controller.archive(uuid);
         } catch (DataAccessException e) {
             throw new NotFoundException();

@@ -4,6 +4,7 @@ import controller.AbstractController;
 import controller.FleetController;
 import controller.VehicleController;
 
+import controller.VehicleTypeController;
 import controller.exceptions.UnAuthorizedException;
 import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import spring.exceptions.InvalidInputException;
 import spring.exceptions.NotAuthorizedException;
 import spring.exceptions.NotFoundException;
+import spring.model.RESTAuthenticationToken;
 import spring.model.RESTModelFactory;
 import spring.model.RESTSchema;
 import spring.model.RESTVehicle;
@@ -46,10 +48,8 @@ public class RESTVehicleController extends RESTAbstractController<RESTVehicle,Ve
 
     private static DateTimeFormatter yearFormat = DateTimeFormatter.ofPattern("yyyyMMdd").withLocale(Locale.forLanguageTag("NL"));
 
-    private VehicleController controller = new VehicleController();
-
     public RESTVehicleController() {
-        super(new VehicleController(), RESTVehicle::new);
+        super(VehicleController::new, RESTVehicle::new);
     }
 
     /***
@@ -63,47 +63,54 @@ public class RESTVehicleController extends RESTAbstractController<RESTVehicle,Ve
                                        @RequestParam(required = false) String fleet,
                                        @RequestParam(required = false) String type,
                                        @RequestParam(required = false) Integer page,
-                                       @RequestParam(required = false) Integer limit) {
-        String baseString = PATH_VEHICLE +"?";
-        VehicleDAO vehicleDAO = (VehicleDAO) controller.getDao();
-        List<Filter<Vehicle>> filters = new ArrayList<>();
-        if (licensPlate != null) {
-            baseString += "licensPlate=" + licensPlate + "&";
-            filters.add(vehicleDAO.byLicensePlate(licensPlate));
-        }
-        if (vin != null) {
-            //TODO after issue #87
-        }
-        if (leasingCompany != null) {
-            //TODO after issue #88
-        }
-        if (year != null) {
-            baseString += "year=" + year + "&";
-            filters.add(vehicleDAO.atProductionDate(LocalDate.parse(year + "0101", yearFormat)));
-        }
-        if (fleet != null) {
-            baseString += "fleet=" + fleet + "&";
-            Fleet fl;
-            try {
-                fl = new FleetController().get(UUIDUtil.toUUID(fleet));
-            } catch (DataAccessException e) {
-                throw new InvalidInputException("Something went wrong when getting the fleet from the database");
+                                       @RequestParam(required = false) Integer limit,
+                                       @RequestHeader(value="AuthToken") RESTAuthenticationToken token) {
+
+        try(VehicleController controller=new VehicleController(verifyToken(token))) {
+            String baseString = PATH_VEHICLE +"?";
+            VehicleDAO vehicleDAO = (VehicleDAO) controller.getDao();
+            List<Filter<Vehicle>> filters = new ArrayList<>();
+            if (licensPlate != null) {
+                baseString += "licensPlate=" + licensPlate + "&";
+                filters.add(vehicleDAO.byLicensePlate(licensPlate));
             }
-            filters.add(vehicleDAO.byFleet(fl));
-        }
-        if (type != null) {
-            baseString += "type=" + type;
-            try {
-                filters.add(vehicleDAO.byType(controller.getVehicleType(UUIDUtil.toUUID(type))));
-            } catch (DataAccessException e) {
-                throw new InvalidInputException("Could not find requested type");
+            if (vin != null) {
+                //TODO after issue #87
             }
-        }
-        List<RESTVehicle> result = new ArrayList<>();
-        try {
+            if (leasingCompany != null) {
+                //TODO after issue #88
+            }
+            if (year != null) {
+                baseString += "year=" + year + "&";
+                filters.add(vehicleDAO.atProductionDate(LocalDate.parse(year + "0101", yearFormat)));
+            }
+            if (fleet != null) {
+                baseString += "fleet=" + fleet + "&";
+                Fleet fl;
+                try(FleetController fleetController=new FleetController(verifyToken(token))) {
+                    fl = fleetController.get(UUIDUtil.toUUID(fleet));
+                } catch (DataAccessException e) {
+                    throw new InvalidInputException("Something went wrong when getting the fleet from the database");
+                }catch (UnAuthorizedException e) {
+                    throw new NotAuthorizedException();
+                }
+                filters.add(vehicleDAO.byFleet(fl));
+            }
+            if (type != null) {
+                baseString += "type=" + type;
+                try(VehicleTypeController vehicleTypeController= new VehicleTypeController(verifyToken(token))) {
+                    filters.add(vehicleDAO.byType(vehicleTypeController.get(UUIDUtil.toUUID(type))));
+                } catch (DataAccessException e) {
+                    throw new InvalidInputException("Could not find requested type");
+                }catch (UnAuthorizedException e) {
+                    throw new NotAuthorizedException();
+                }
+            }
+            List<RESTVehicle> result = new ArrayList<>();
             for (Vehicle vehicle : controller.getAll(filters.toArray(new Filter[filters.size()]))) {
                 result.add(new RESTVehicle(vehicle));
             }
+            return new RESTSchema<>(result, page, limit, baseString);
 
         } catch (DataAccessException e) {
             throw new InvalidInputException("Some parameters where invalid");
@@ -111,7 +118,7 @@ public class RESTVehicleController extends RESTAbstractController<RESTVehicle,Ve
             throw new NotAuthorizedException();
         }
 
-        return new RESTSchema<>(result, page, limit, baseString);
+
     }
 
 

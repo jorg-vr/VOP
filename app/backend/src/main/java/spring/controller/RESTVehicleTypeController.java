@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import spring.exceptions.InvalidInputException;
 import spring.exceptions.NotAuthorizedException;
 import spring.exceptions.NotFoundException;
+import spring.model.RESTAuthenticationToken;
 import spring.model.RESTModelFactory;
 import spring.model.RESTSchema;
 import spring.model.RESTVehicleType;
@@ -27,18 +28,17 @@ import java.util.List;
 @RequestMapping("/vehicleTypes")
 public class RESTVehicleTypeController extends RESTAbstractController<RESTVehicleType,VehicleType> {
 
-    VehicleTypeController controller=new VehicleTypeController();
-
     public RESTVehicleTypeController() {
-        super(new VehicleTypeController(), RESTVehicleType::new);
+        super(VehicleTypeController::new, RESTVehicleType::new);
     }
 
     @RequestMapping(method = RequestMethod.GET)
     public RESTSchema<RESTVehicleType> getAllVehileTypes(
             @RequestParam(required = false) Integer page,
-            @RequestParam(required = false) Integer limit){
+            @RequestParam(required = false) Integer limit,
+            @RequestHeader(value="AuthToken") RESTAuthenticationToken token){
         List<RESTVehicleType> restVehicleTypes=new ArrayList<>();
-        try {
+        try(VehicleTypeController controller=new VehicleTypeController(verifyToken(token))) {
             for (VehicleType vehicleType : controller.getAll()) {
                 restVehicleTypes.add(new RESTVehicleType(vehicleType));
             }

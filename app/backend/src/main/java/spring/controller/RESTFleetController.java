@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import spring.exceptions.InvalidInputException;
 import spring.exceptions.NotAuthorizedException;
 import spring.exceptions.NotFoundException;
+import spring.model.RESTAuthenticationToken;
 import spring.model.RESTFleet;
 import spring.model.RESTModelFactory;
 import spring.model.RESTSchema;
@@ -40,26 +41,27 @@ public class RESTFleetController extends RESTAbstractController<RESTFleet,Fleet>
 
     public static final String PATH_FLEETS = "/fleets";
 
-    private FleetController controller = new FleetController();
-    private CustomerController customerController = new CustomerController();
 
     public RESTFleetController() {
-        super(new FleetController(), RESTFleet::new);
+        super(FleetController::new, RESTFleet::new);
     }
 
 
     @RequestMapping(method = RequestMethod.GET)
     public RESTSchema<RESTFleet> get(@RequestParam(required = false) String company,
                                      @RequestParam(required = false) Integer page,
-                                     @RequestParam(required = false) Integer limit) {
-        FleetDAO fleetDAO = (FleetDAO) controller.getDao();
-        try {
+                                     @RequestParam(required = false) Integer limit,
+                                     @RequestHeader(value="AuthToken") RESTAuthenticationToken token) {
+
+        try(FleetController controller= new FleetController(verifyToken(token))) {
+            FleetDAO fleetDAO = (FleetDAO) controller.getDao();
             String baseString = PATH_FLEETS + "?";
             Collection<RESTFleet> restFleets = new ArrayList<>();
             Collection<Fleet> fleets;
             if (company != null) {
-                fleets = customerController.get(UUIDUtil.toUUID(company)).getFleets();
-
+                try(CustomerController customerController= new CustomerController(verifyToken(token))) {
+                    fleets = customerController.get(UUIDUtil.toUUID(company)).getFleets();
+                }
             } else {
                 fleets = controller.getAll();
             }
@@ -70,8 +72,6 @@ public class RESTFleetController extends RESTAbstractController<RESTFleet,Fleet>
         } catch (Exception e) {
             e.printStackTrace();
             throw new InvalidInputException();
-        } catch (UnAuthorizedException e) {
-            throw new NotAuthorizedException();
         }
 
     }

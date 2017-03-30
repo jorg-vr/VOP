@@ -13,10 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import spring.exceptions.InvalidInputException;
 import spring.exceptions.NotAuthorizedException;
 import spring.exceptions.NotFoundException;
-import spring.model.RESTAddress;
-import spring.model.RESTCompany;
-import spring.model.RESTModelFactory;
-import spring.model.RESTSchema;
+import spring.model.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -44,10 +41,9 @@ public class RESTCompanyController extends RESTAbstractController<RESTCompany,Cu
 
     public static final String PATH_COMPANY = "/companies";
 
-    private CustomerController controller = new CustomerController();
 
     public RESTCompanyController() {
-        super( new CustomerController(), RESTCompany::new);
+        super( CustomerController::new, RESTCompany::new);
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -55,26 +51,29 @@ public class RESTCompanyController extends RESTAbstractController<RESTCompany,Cu
                                        @RequestParam(required = false) String nameContains,
                                        @RequestParam(required = false) String country,
                                        @RequestParam(required = false) String city,
-                                       @RequestParam(required = false) String postalCode) {
+                                       @RequestParam(required = false) String postalCode,
+                                       @RequestHeader(value="AuthToken") RESTAuthenticationToken token) {
 
-        CustomerDAO customerDAO = (CustomerDAO) controller.getDao(); //TODO getId rid of cast
-        List<Filter> filters = new ArrayList<>();
-        if (nameContains != null) {
-            filters.add(customerDAO.byName(nameContains));
-        }
-        //filters.add(customerDAO.byAddress(new Address(null, null, city, postalCode, country))); TODO fix this
-        Collection<RESTCompany> result = new ArrayList<>();
-        try {
+
+        try(CustomerController controller= new CustomerController(verifyToken(token))) {
+            CustomerDAO customerDAO = (CustomerDAO) controller.getDao(); //TODO getId rid of cast
+            List<Filter> filters = new ArrayList<>();
+            if (nameContains != null) {
+                filters.add(customerDAO.byName(nameContains));
+            }
+            //filters.add(customerDAO.byAddress(new Address(null, null, city, postalCode, country))); TODO fix this
+            Collection<RESTCompany> result = new ArrayList<>();
             for (Company company : controller.getAll(filters.toArray(new Filter[filters.size()]))) {
                 result.add(new RESTCompany(company));
             }
 
+            return new RESTSchema<>(result, page, limit, PATH_COMPANY + "?");
         } catch (DataAccessException e) {
             //API doesn't contain error
+            throw new RuntimeException(e);
         } catch (UnAuthorizedException e) {
             throw new NotAuthorizedException();
         }
-        return new RESTSchema<>(result, page, limit, PATH_COMPANY + "?");
     }
 
 

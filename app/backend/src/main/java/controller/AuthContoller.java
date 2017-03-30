@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 /**
  * Created by jorg on 3/30/17.
  */
-public class Authcontoller {
+public class AuthContoller {
     public Function getFunction(RESTAuthenticationToken token) throws DataAccessException, UnAuthorizedException {
         Account account= ProductionProvider.getInstance().getAccountDao().get(token.getAcountId());
         Function function= ProductionProvider.getInstance().getFunctionDAO().get(token.getFunctionId());

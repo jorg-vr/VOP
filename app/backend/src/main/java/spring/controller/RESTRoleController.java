@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import spring.exceptions.InvalidInputException;
 import spring.exceptions.NotAuthorizedException;
 import spring.exceptions.NotFoundException;
+import spring.model.RESTAuthenticationToken;
 import spring.model.RESTModelFactory;
 import spring.model.RESTRole;
 import spring.model.RESTSchema;
@@ -43,12 +44,9 @@ public class RESTRoleController extends RESTAbstractController<RESTRole,Function
 
     public static final String PATH_ROLE = "/roles";
 
-    private FunctionController controller = new FunctionController();
-    private CustomerController customerController = new CustomerController();
-    private AccountController accountController = new AccountController();
 
     public RESTRoleController() {
-        super(new FunctionController(), RESTRole::new);
+        super(FunctionController::new, RESTRole::new);
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -56,9 +54,13 @@ public class RESTRoleController extends RESTAbstractController<RESTRole,Function
                                     @RequestParam(required = false) String user,
                                     @RequestParam(required = false) Boolean active,
                                     @RequestParam(required = false) Integer page,
-                                    @RequestParam(required = false) Integer limit) {
+                                    @RequestParam(required = false) Integer limit,
+                                    @RequestHeader(value="AuthToken") RESTAuthenticationToken token) {
         Collection<RESTRole> roles = new ArrayList<>();
-        try {
+        Function function=verifyToken(token);
+        try(FunctionController controller=new FunctionController(function);
+        CustomerController customerController=new CustomerController(function);
+        AccountController accountController=new AccountController(function)) {
             UUID companyUuid = UUIDUtil.toUUID(company);
             UUID accountUuid = UUIDUtil.toUUID(user);
 
@@ -66,8 +68,8 @@ public class RESTRoleController extends RESTAbstractController<RESTRole,Function
             Account account = accountUuid != null ? accountController.get(accountUuid) : null;
 
             Collection<Function> functions = controller.getFiltered(customer, account, active);
-            for (Function function : functions) {
-                RESTRole restRole = new RESTRole(function);
+            for (Function f : functions) {
+                RESTRole restRole = new RESTRole(f);
                 roles.add(restRole);
             }
 
