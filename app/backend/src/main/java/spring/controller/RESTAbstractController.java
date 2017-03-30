@@ -1,6 +1,7 @@
 package spring.controller;
 
 import controller.AbstractController;
+import controller.ControllerFactory;
 import controller.exceptions.UnAuthorizedException;
 import dao.interfaces.DataAccessException;
 import model.history.EditableObject;
@@ -20,12 +21,12 @@ import java.util.UUID;
  * Created by jorg on 3/30/17.
  */
 public class RESTAbstractController<R extends RESTAbstractModel<M>,M extends EditableObject> {
-    private AbstractController<M> controller;
+    private ControllerFactory<M> controllerFactory;
 
     private RESTModelFactory<R,M> factory;
 
-    public RESTAbstractController(AbstractController<M> controller,RESTModelFactory<R,M> factory) {
-        this.controller = controller;
+    public RESTAbstractController(ControllerFactory<M> controllerFactory,RESTModelFactory<R,M> factory) {
+        this.controllerFactory = controllerFactory;
         this.factory=factory;
     }
     @RequestMapping(method = RequestMethod.POST)

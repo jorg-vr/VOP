@@ -25,7 +25,7 @@ import static model.account.Action.*;
  *
  * Currently there is a generic implementation for the get, archive and listFiltered methods.
  */
-public abstract class AbstractController<T extends EditableObject> {
+public abstract class AbstractController<T extends EditableObject> implements AutoCloseable {
 
     private DAO<T> dao;
     private Resource resource;
@@ -100,6 +100,12 @@ public abstract class AbstractController<T extends EditableObject> {
             throw new UnAuthorizedException();
         }
     }
+
+
+    public void close(){
+
+    }
+
 
     public abstract boolean isOwner(T t, Function function);
 
