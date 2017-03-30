@@ -1,27 +1,31 @@
 package spring.model;
 
+import model.fleet.VehicleType;
+import spring.controller.UUIDUtil;
+
 /**
  * Created by jorg on 3/14/17.
  */
-public class RESTVehicleType  {
-    private String id;
+public class RESTVehicleType extends RESTAbstractModel<VehicleType> {
+    private static final String PATH_VEHICLETYPES = "/vehicletypes";
     private String name;
 
     public RESTVehicleType() {
     }
 
-    public RESTVehicleType(String id, String name) {
-        this.id = id;
-        this.name = name;
+    public RESTVehicleType(VehicleType vehicleType){
+        super(vehicleType.getUuid(), PATH_VEHICLETYPES);
+        setName(vehicleType.getType());
     }
 
-    public String getId() {
-        return id;
+    @Override
+    public VehicleType translate() {
+        VehicleType vehicleType=new VehicleType();
+        vehicleType.setUuid(UUIDUtil.toUUID(getId()));
+        vehicleType.setType(getName());
+        return vehicleType;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

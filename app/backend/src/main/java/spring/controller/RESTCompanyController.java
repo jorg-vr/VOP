@@ -1,5 +1,6 @@
 package spring.controller;
 
+import controller.AbstractController;
 import controller.CustomerController;
 import controller.exceptions.UnAuthorizedException;
 import dao.interfaces.CustomerDAO;
@@ -14,6 +15,7 @@ import spring.exceptions.NotAuthorizedException;
 import spring.exceptions.NotFoundException;
 import spring.model.RESTAddress;
 import spring.model.RESTCompany;
+import spring.model.RESTModelFactory;
 import spring.model.RESTSchema;
 
 import java.util.ArrayList;
@@ -38,11 +40,15 @@ import java.util.UUID;
  */
 @RestController
 @RequestMapping("/companies")
-public class RESTCompanyController {
+public class RESTCompanyController extends RESTAbstractController<RESTCompany,Customer> {
 
     public static final String PATH_COMPANY = "/companies";
 
     private CustomerController controller = new CustomerController();
+
+    public RESTCompanyController() {
+        super( new CustomerController(), RESTCompany::new);
+    }
 
     @RequestMapping(method = RequestMethod.GET)
     public RESTSchema<RESTCompany> get(Integer page, Integer limit,
@@ -71,60 +77,6 @@ public class RESTCompanyController {
         return new RESTSchema<>(result, page, limit, PATH_COMPANY + "?");
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public RESTCompany post(@RequestBody RESTCompany restCompany) {
-        RESTCompany updatedCompany;
-        try {
-            Company company = controller.create(restCompany.translate());
-            updatedCompany = new RESTCompany(company);
-        } catch (DataAccessException e) {
-            throw new InvalidInputException(e);
-        } catch (UnAuthorizedException e) {
-            throw new NotAuthorizedException();
-        }
-        return updatedCompany;
-    }
 
-    @RequestMapping(method = RequestMethod.GET, value = "{id}")
-    public RESTCompany getId(@PathVariable("id") String id) {
-        UUID uuid = UUIDUtil.toUUID(id);
-        try {
-            return new RESTCompany(controller.get(uuid));
-        } catch (DataAccessException e) {
-            throw new NotFoundException();
-        } catch (UnAuthorizedException e) {
-            throw new NotAuthorizedException();
-        }
-    }
-
-    @RequestMapping(method = RequestMethod.PUT, value = "{id}")
-    public RESTCompany putId(@PathVariable("id") String id, @RequestBody RESTCompany restCompany) {
-        UUID uuid = UUIDUtil.toUUID(id);
-        RESTCompany createdCompany;
-        try {
-            Customer customer = restCompany.translate();
-            customer.setUuid(uuid);
-            customer = controller.update(customer);
-            createdCompany = new RESTCompany(customer);
-        } catch (DataAccessException e) {
-            e.printStackTrace();
-            throw new InvalidInputException();
-        } catch (UnAuthorizedException e) {
-            throw new NotAuthorizedException();
-        }
-        return createdCompany;
-    }
-
-    @RequestMapping(method = RequestMethod.DELETE, value = "{id}")
-    public void deleteId(@PathVariable("id") String id) {
-        UUID uuid = UUIDUtil.toUUID(id);
-        try {
-            controller.archive(uuid);
-        } catch (DataAccessException e) {
-            throw new NotFoundException();
-        } catch (UnAuthorizedException e) {
-            throw new NotAuthorizedException();
-        }
-    }
 
 }

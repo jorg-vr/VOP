@@ -22,7 +22,6 @@ import java.util.UUID;
 public class RESTAbstractController<R extends RESTAbstractModel<M>,M extends EditableObject> {
     private AbstractController<M> controller;
 
-    //this object is used to fill data from model
     private RESTModelFactory<R,M> factory;
 
     public RESTAbstractController(AbstractController<M> controller,RESTModelFactory<R,M> factory) {

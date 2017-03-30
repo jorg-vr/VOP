@@ -1,5 +1,6 @@
 package spring.controller;
 
+import controller.AbstractController;
 import controller.CustomerController;
 import controller.FleetController;
 import controller.exceptions.UnAuthorizedException;
@@ -11,6 +12,7 @@ import spring.exceptions.InvalidInputException;
 import spring.exceptions.NotAuthorizedException;
 import spring.exceptions.NotFoundException;
 import spring.model.RESTFleet;
+import spring.model.RESTModelFactory;
 import spring.model.RESTSchema;
 
 import java.util.ArrayList;
@@ -34,12 +36,16 @@ import java.util.UUID;
  */
 @RestController
 @RequestMapping("/fleets")
-public class RESTFleetController {
+public class RESTFleetController extends RESTAbstractController<RESTFleet,Fleet>{
 
     public static final String PATH_FLEETS = "/fleets";
 
     private FleetController controller = new FleetController();
     private CustomerController customerController = new CustomerController();
+
+    public RESTFleetController() {
+        super(new FleetController(), RESTFleet::new);
+    }
 
 
     @RequestMapping(method = RequestMethod.GET)
@@ -70,59 +76,4 @@ public class RESTFleetController {
 
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public RESTFleet post(@RequestBody RESTFleet restFleet) {
-        try {
-            Fleet fleet = controller.create(restFleet.translate());
-            return new RESTFleet(fleet);
-        } catch (DataAccessException e) {
-            throw new InvalidInputException();
-            //TODO updateId when there are more exceptions
-        } catch (UnAuthorizedException e) {
-            throw new NotAuthorizedException();
-        }
-    }
-
-    @RequestMapping(method = RequestMethod.GET, value = "{id}")
-    public RESTFleet getId(@PathVariable("id") String id) {
-        UUID uuid = UUIDUtil.toUUID(id);
-        try {
-            Fleet fleet = controller.get(uuid);
-            return new RESTFleet(fleet);
-
-        } catch (DataAccessException | NullPointerException e) {
-            throw new NotFoundException();
-        } catch (UnAuthorizedException e) {
-            throw new NotAuthorizedException();
-        }
-    }
-
-    @RequestMapping(method = RequestMethod.PUT, value = "{id}")
-    public RESTFleet updateId(@PathVariable("id") String id, @RequestBody RESTFleet restFleet) {
-        UUID uuid = UUIDUtil.toUUID(id);
-        try {
-            Fleet fleet = restFleet.translate();
-            fleet.setUuid(uuid);
-            fleet=controller.update(fleet);
-            return new RESTFleet(fleet);
-        } catch (DataAccessException e) {
-            throw new InvalidInputException();
-            //TODO updateId when there are more exceptions
-        } catch (UnAuthorizedException e) {
-            throw new NotAuthorizedException();
-        }
-    }
-
-    @RequestMapping(method = RequestMethod.DELETE, value = "{id}")
-    public void deleteId(@PathVariable("id") String id) {
-        UUID uuid = UUIDUtil.toUUID(id);
-        try {
-            controller.archive(uuid);
-        } catch (DataAccessException e) {
-            throw new NotFoundException();
-            //TODO updateId when there are more exceptions
-        } catch (UnAuthorizedException e) {
-            throw new NotAuthorizedException();
-        }
-    }
 }

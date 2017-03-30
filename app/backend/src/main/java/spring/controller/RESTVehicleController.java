@@ -1,5 +1,6 @@
 package spring.controller;
 
+import controller.AbstractController;
 import controller.FleetController;
 import controller.VehicleController;
 
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import spring.exceptions.InvalidInputException;
 import spring.exceptions.NotAuthorizedException;
 import spring.exceptions.NotFoundException;
+import spring.model.RESTModelFactory;
 import spring.model.RESTSchema;
 import spring.model.RESTVehicle;
 
@@ -38,13 +40,17 @@ import java.util.*;
  */
 @RestController
 @RequestMapping("/vehicles")
-public class RESTVehicleController {
+public class RESTVehicleController extends RESTAbstractController<RESTVehicle,Vehicle> {
 
     public static final String PATH_VEHICLE = "/vehicles";
 
     private static DateTimeFormatter yearFormat = DateTimeFormatter.ofPattern("yyyyMMdd").withLocale(Locale.forLanguageTag("NL"));
 
     private VehicleController controller = new VehicleController();
+
+    public RESTVehicleController() {
+        super(new VehicleController(), RESTVehicle::new);
+    }
 
     /***
      * @return
@@ -108,80 +114,5 @@ public class RESTVehicleController {
         return new RESTSchema<>(result, page, limit, baseString);
     }
 
-    /***
-     * implement post method, see api
-     *
-     * @param vehicle
-     * @return
-     */
-    @RequestMapping(method = RequestMethod.POST)
-    public RESTVehicle post(@RequestBody RESTVehicle vehicle) {
-        try {
-            return new RESTVehicle(controller.create(vehicle.translate()));
-        } catch (DataAccessException e) {
-            throw new InvalidInputException();
-            //TODO updateId when there are more exceptions
-        }catch (UnAuthorizedException e) {
-            throw new NotAuthorizedException();
-        }
-    }
 
-    /***
-     * implement getId method, see api
-     *
-     * @param id
-     * @return
-     */
-    @RequestMapping(method = RequestMethod.GET, value = "{id}")
-    public RESTVehicle getId(@PathVariable("id") String id) {
-        UUID uuid = UUIDUtil.toUUID(id);
-        try {
-            Vehicle vehicle = controller.get(uuid);
-            return new RESTVehicle(vehicle);
-        } catch (DataAccessException e) {
-            throw new NotFoundException();
-        }catch (UnAuthorizedException e) {
-            throw new NotAuthorizedException();
-        }
-    }
-
-    /***
-     * implement put method, see api
-     *
-     * @param id
-     * @param vehicle
-     * @return
-     */
-    @RequestMapping(method = RequestMethod.PUT, value = "{id}")
-    public RESTVehicle putId(@PathVariable("id") String id, @RequestBody RESTVehicle vehicle) {
-        try {
-            LocalDate year = LocalDate.parse(vehicle.getYear() + "0101", yearFormat);//Fix conversion bug
-            return new RESTVehicle(controller.update(vehicle.translate()));
-        } catch (DataAccessException e) {
-            throw new InvalidInputException();
-            //TODO updateId when there are more exceptions
-        }catch (UnAuthorizedException e) {
-            throw new NotAuthorizedException();
-        }
-
-    }
-
-    /***
-     * implement deleteId method, see api
-     *
-     * @param id
-     * @return
-     */
-    @RequestMapping(method = RequestMethod.DELETE, value = "{id}")
-    public void deleteId(@PathVariable("id") String id) {
-
-        try {
-            controller.archive(UUIDUtil.toUUID(id));
-        } catch (DataAccessException e) {
-            throw new NotFoundException();
-            //TODO updateId when there are more exceptions
-        }catch (UnAuthorizedException e) {
-            throw new NotAuthorizedException();
-        }
-    }
 }

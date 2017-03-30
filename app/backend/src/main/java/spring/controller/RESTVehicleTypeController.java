@@ -1,5 +1,6 @@
 package spring.controller;
 
+import controller.AbstractController;
 import controller.VehicleController;
 import controller.VehicleTypeController;
 import controller.exceptions.UnAuthorizedException;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import spring.exceptions.InvalidInputException;
 import spring.exceptions.NotAuthorizedException;
 import spring.exceptions.NotFoundException;
+import spring.model.RESTModelFactory;
 import spring.model.RESTSchema;
 import spring.model.RESTVehicleType;
 
@@ -23,9 +25,14 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/vehicleTypes")
-public class RESTVehicleTypeController {
+public class RESTVehicleTypeController extends RESTAbstractController<RESTVehicleType,VehicleType> {
 
     VehicleTypeController controller=new VehicleTypeController();
+
+    public RESTVehicleTypeController() {
+        super(new VehicleTypeController(), RESTVehicleType::new);
+    }
+
     @RequestMapping(method = RequestMethod.GET)
     public RESTSchema<RESTVehicleType> getAllVehileTypes(
             @RequestParam(required = false) Integer page,
@@ -33,7 +40,7 @@ public class RESTVehicleTypeController {
         List<RESTVehicleType> restVehicleTypes=new ArrayList<>();
         try {
             for (VehicleType vehicleType : controller.getAll()) {
-                restVehicleTypes.add(modelToREST(vehicleType));
+                restVehicleTypes.add(new RESTVehicleType(vehicleType));
             }
 
         } catch (DataAccessException e) {
@@ -44,22 +51,7 @@ public class RESTVehicleTypeController {
 
         return new RESTSchema<>(restVehicleTypes, page, limit, "/vehicleTypes?");
     }
-    private RESTVehicleType modelToREST(VehicleType vehicleType){
-        return new RESTVehicleType(UUIDUtil.UUIDToNumberString(vehicleType.getUuid()),vehicleType.getType());
-    }
 
-    @RequestMapping(method = RequestMethod.GET,value = "{id}")
-    public RESTVehicleType getId(@PathVariable("id") String id) {
-
-        try {
-            return modelToREST(controller.get(UUIDUtil.toUUID(id)));
-
-        } catch (DataAccessException e) {
-            throw new NotFoundException();
-        }catch (UnAuthorizedException e) {
-            throw new NotAuthorizedException();
-        }
-    }
 
 
 

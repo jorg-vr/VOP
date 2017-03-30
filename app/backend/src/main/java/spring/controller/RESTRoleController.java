@@ -1,5 +1,6 @@
 package spring.controller;
 
+import controller.AbstractController;
 import controller.AccountController;
 import controller.CustomerController;
 import controller.FunctionController;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import spring.exceptions.InvalidInputException;
 import spring.exceptions.NotAuthorizedException;
 import spring.exceptions.NotFoundException;
+import spring.model.RESTModelFactory;
 import spring.model.RESTRole;
 import spring.model.RESTSchema;
 
@@ -37,13 +39,17 @@ import static spring.controller.UUIDUtil.toUUID;
  */
 @RestController
 @RequestMapping("/roles")
-public class RESTRoleController {
+public class RESTRoleController extends RESTAbstractController<RESTRole,Function>{
 
     public static final String PATH_ROLE = "/roles";
 
     private FunctionController controller = new FunctionController();
     private CustomerController customerController = new CustomerController();
     private AccountController accountController = new AccountController();
+
+    public RESTRoleController() {
+        super(new FunctionController(), RESTRole::new);
+    }
 
     @RequestMapping(method = RequestMethod.GET)
     public RESTSchema<RESTRole> get(@RequestParam(required = false) String company,
@@ -73,58 +79,7 @@ public class RESTRoleController {
         return new RESTSchema<>(roles, page, limit, PATH_ROLE + "?");
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public RESTRole post(@RequestBody RESTRole role) {
 
-        try {
-            Function function = controller.create(role.translate());
-            role = new RESTRole(function);
-        } catch (DataAccessException e) {
-            throw new InvalidInputException(e);
-        } catch (UnAuthorizedException e) {
-            throw new NotAuthorizedException();
-        }
-        return role;
-    }
-
-    @RequestMapping(value = "{id}", method = RequestMethod.GET)
-    public RESTRole getId(@PathVariable("id") String id) {
-        UUID uuid = UUIDUtil.toUUID(id);
-        try {
-            Function function = controller.get(uuid);
-            return new RESTRole(function);
-        } catch (UnAuthorizedException e) {
-            throw new NotAuthorizedException();
-        }catch (Exception e) {
-            throw new NotFoundException();
-        }
-    }
-
-    @RequestMapping(value = "{id}", method = RequestMethod.PUT)
-    public RESTRole putId(@PathVariable("id") String id, @RequestBody RESTRole role) {
-        try {
-            Function function = role.translate();
-            function.setUuid(toUUID(id));
-            function=controller.update(function);
-            return new RESTRole(function);
-        } catch (DataAccessException e) {
-            throw new NotFoundException();
-        } catch (UnAuthorizedException e) {
-            throw new NotAuthorizedException();
-        }
-    }
-
-    @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
-    public void deleteId(@PathVariable("id") String id) {
-        UUID uuid = UUIDUtil.toUUID(id);
-        try {
-            controller.archive(uuid);
-        } catch (DataAccessException e) {
-            throw new NotFoundException();
-        } catch (UnAuthorizedException e) {
-            throw new NotAuthorizedException();
-        }
-    }
 
 
 
