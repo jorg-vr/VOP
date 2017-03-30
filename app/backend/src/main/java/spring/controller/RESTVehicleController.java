@@ -113,17 +113,7 @@ public class RESTVehicleController {
     @RequestMapping(method = RequestMethod.POST)
     public RESTVehicle post(@RequestBody RESTVehicle vehicle) {
         try {
-            LocalDate year = LocalDate.parse(vehicle.getYear() + "0101", yearFormat);//Fix conversion bug
-            return new RESTVehicle(
-                    controller.create(vehicle.getBrand(),
-                            vehicle.getModel(),
-                            vehicle.getLicensePlate(),
-                            year,
-                            vehicle.getVin(),
-                            vehicle.getValue(),
-                            vehicle.getMileage(),
-                            UUIDUtil.toUUID(vehicle.getType()),
-                            UUIDUtil.toUUID(vehicle.getFleet())));
+            return new RESTVehicle(controller.create(vehicle.translate()));
         } catch (DataAccessException e) {
             throw new InvalidInputException();
             //TODO updateId when there are more exceptions
@@ -158,17 +148,7 @@ public class RESTVehicleController {
     public RESTVehicle putId(@PathVariable("id") String id, @RequestBody RESTVehicle vehicle) {
         try {
             LocalDate year = LocalDate.parse(vehicle.getYear() + "0101", yearFormat);//Fix conversion bug
-            return new RESTVehicle(
-                    controller.update(UUIDUtil.toUUID(id),
-                            vehicle.getBrand(),
-                            vehicle.getModel(),
-                            vehicle.getLicensePlate(),
-                            year,
-                            vehicle.getVin(),
-                            vehicle.getValue(),
-                            vehicle.getMileage(),
-                            UUIDUtil.toUUID(vehicle.getType()),
-                            UUIDUtil.toUUID(vehicle.getFleet())));
+            return new RESTVehicle(controller.update(vehicle.translate()));
         } catch (DataAccessException e) {
             throw new InvalidInputException();
             //TODO updateId when there are more exceptions
