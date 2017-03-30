@@ -6,8 +6,11 @@ package model.account;
 public enum Action {
     READ_MINE,
     READ_ALL,
-    EDIT_MINE,
-    EDIT_ALL,
-    CREATE
+    UPDATE_MINE,
+    UPDATE_ALL,
+    REMOVE_ALL,
+    REMOVE_MINE,
+    CREATE_ALL,
+    CREATE_MINE
 
 }

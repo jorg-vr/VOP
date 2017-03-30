@@ -2,9 +2,7 @@ package model.account;
 
 import model.history.EditableObject;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by jorg on 3/2/17.
@@ -12,10 +10,11 @@ import java.util.UUID;
  */
 public class Role implements EditableObject, java.io.Serializable {
     private String name;
-    private Map<Resource,Action>  rights;
+    private Map<Resource,Set<Action>>  rights;
     private UUID uuid;
 
     public Role() {
+        rights=new HashMap<>();
     }
 
     public Role(String name) {
@@ -24,18 +23,19 @@ public class Role implements EditableObject, java.io.Serializable {
         uuid=UUID.randomUUID();
     }
 
-    private Role(String name, Map<Resource, Action> rights, UUID uuid) {
+    private Role(String name, Map<Resource, Set<Action>> rights, UUID uuid) {
         this.name = name;
         this.rights = rights;
         this.uuid = uuid;
     }
 
-    public void setAccess(Resource ai, Action al){
-        rights.put(ai,al);
+    public void setAccess(Resource resource, Action action){
+        rights.putIfAbsent(resource,new HashSet<>());
+        rights.get(resource).add(action);
     }
 
-    public boolean hasAccess(Resource ai, Action al){
-        return rights.containsKey(ai) &&rights.get(ai).equals(al);
+    public boolean hasAccess(Resource resource, Action action){
+        return rights.containsKey(resource) &&rights.get(resource).contains(action);
     }
 
     public String getName() {
@@ -46,11 +46,11 @@ public class Role implements EditableObject, java.io.Serializable {
         this.name = name;
     }
 
-    public Map<Resource, Action> getRights() {
+    public Map<Resource, Set<Action>> getRights() {
         return rights;
     }
 
-    public void setRights(Map<Resource, Action> rights) {
+    public void setRights(Map<Resource, Set<Action>> rights) {
         this.rights = rights;
     }
 
