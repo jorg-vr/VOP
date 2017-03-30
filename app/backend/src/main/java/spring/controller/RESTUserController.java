@@ -1,6 +1,7 @@
 package spring.controller;
 
 import controller.AccountController;
+import controller.AuthContoller;
 import controller.PersonController;
 import controller.exceptions.UnAuthorizedException;
 import dao.interfaces.DataAccessException;
@@ -11,6 +12,7 @@ import spring.exceptions.ConflictException;
 import spring.exceptions.InvalidInputException;
 import spring.exceptions.NotAuthorizedException;
 import spring.exceptions.NotFoundException;
+import spring.model.RESTAuthenticationToken;
 import spring.model.RESTSchema;
 import spring.model.RESTUser;
 
@@ -37,9 +39,6 @@ public class RESTUserController {
 
     public static final String PATH_USER = "/users";
 
-    private AccountController accountController = new AccountController();
-
-    private PersonController personController = new PersonController();
 
 
     /**
@@ -51,10 +50,11 @@ public class RESTUserController {
                                     String firstName,
                                     String lastName,
                                     Integer page,
-                                    Integer limit) {
+                                    Integer limit,
+                                    @RequestHeader(value="AuthToken") RESTAuthenticationToken token) {
         Collection<RESTUser> users = new ArrayList<>();
 
-        try {
+        try(AccountController accountController=new AccountController(new AuthContoller().getFunction(token))) {
             Collection<Account> accounts = accountController.getAll();
             for (Account account : accounts) {
                 Person person = account.getPerson();
@@ -112,14 +112,16 @@ public class RESTUserController {
      * 4) url:         will look like: https//domain.org/users/id
      */
     @RequestMapping(method = RequestMethod.POST)
-    public RESTUser post(@RequestBody RESTUser user) {
-        try {
+    public RESTUser post(@RequestBody RESTUser user,
+                         @RequestHeader(value="AuthToken") RESTAuthenticationToken token) {
+        try (AccountController accountController=new AccountController(new AuthContoller().getFunction(token));
+        PersonController personController=new PersonController(new AuthContoller().getFunction(token))){
 
             // Check if the account name is still free
             if (accountController.isTaken(user.getEmail())) {
                 throw new ConflictException();
             }
-            Account account=user.translate();
+            Account account=user.translate(new AuthContoller().getFunction(token));
 
             Person person = personController.create(account.getPerson());
             account = accountController.create(account);
@@ -140,8 +142,9 @@ public class RESTUserController {
      * @return the RESTUSer object
      */
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
-    public RESTUser getId(@PathVariable("id") String id) {
-        try {
+    public RESTUser getId(@PathVariable("id") String id,
+                          @RequestHeader(value="AuthToken") RESTAuthenticationToken token) {
+        try(AccountController accountController=new AccountController(new AuthContoller().getFunction(token))) {
             UUID uuid = UUIDUtil.toUUID(id);
             Account account = accountController.get(uuid);
             Person person = account.getPerson();
@@ -165,10 +168,12 @@ public class RESTUserController {
      * @return the updated RESTUser object. The updatedAt will be updated.
      */
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
-    public RESTUser putId(@PathVariable("id") String id, @RequestBody RESTUser user) {
+    public RESTUser putId(@PathVariable("id") String id, @RequestBody RESTUser user,
+                          @RequestHeader(value="AuthToken") RESTAuthenticationToken token) {
         UUID uuid = UUIDUtil.toUUID(id);
-        try {
-            Account account = user.translate();
+        try(AccountController accountController=new AccountController(new AuthContoller().getFunction(token));
+            PersonController personController=new PersonController(new AuthContoller().getFunction(token))) {
+            Account account = user.translate(new AuthContoller().getFunction(token));
             account.setUuid(uuid);
             Account result= accountController.update(account);
             Person person = account.getPerson();
@@ -188,10 +193,12 @@ public class RESTUserController {
      * @param id the id of the user that should be archived
      */
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
-    public void deleteId(@PathVariable("id") String id) {
+    public void deleteId(@PathVariable("id") String id,
+                         @RequestHeader(value="AuthToken") RESTAuthenticationToken token) {
         UUID uuid = UUIDUtil.toUUID(id);
 
-        try {
+        try(AccountController accountController=new AccountController(new AuthContoller().getFunction(token));
+            PersonController personController=new PersonController(new AuthContoller().getFunction(token))) {
             Account account = accountController.get(uuid);
             accountController.archive(account.getUuid());
             personController.archive(account.getPerson().getUuid());
