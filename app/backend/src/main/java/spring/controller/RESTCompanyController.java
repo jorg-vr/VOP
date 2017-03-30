@@ -6,6 +6,7 @@ import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
 import model.identity.Address;
 import model.identity.Company;
+import model.identity.Customer;
 import org.springframework.web.bind.annotation.*;
 import spring.exceptions.InvalidInputException;
 import spring.exceptions.NotFoundException;
@@ -70,10 +71,7 @@ public class RESTCompanyController {
     public RESTCompany post(@RequestBody RESTCompany restCompany) {
         RESTCompany updatedCompany;
         try {
-            Company company = controller.create(RESTToModelAddress(restCompany.getAddress()),
-                    restCompany.getPhoneNumber(),
-                    restCompany.getName(),
-                    restCompany.getVatNumber());
+            Company company = controller.create(restCompany.translate());
             updatedCompany = new RESTCompany(company);
         } catch (DataAccessException e) {
             throw new InvalidInputException(e);
@@ -96,12 +94,10 @@ public class RESTCompanyController {
         UUID uuid = UUIDUtil.toUUID(id);
         RESTCompany createdCompany;
         try {
-            Company company = controller.update(uuid,
-                    RESTToModelAddress(restCompany.getAddress()),
-                    restCompany.getPhoneNumber(),
-                    restCompany.getName(),
-                    restCompany.getVatNumber());
-            createdCompany = new RESTCompany(company);
+            Customer customer = restCompany.translate();
+            customer.setUuid(uuid);
+            customer = controller.update(customer);
+            createdCompany = new RESTCompany(customer);
         } catch (DataAccessException e) {
             e.printStackTrace();
             throw new InvalidInputException();
@@ -119,14 +115,4 @@ public class RESTCompanyController {
         }
     }
 
-    /**
-     * This method translates the Addres object to a RESTAddress object.
-     * @return if address is null, null will be returned
-     */
-    private Address RESTToModelAddress(RESTAddress restAddress) {
-        if (restAddress == null) {
-            return null;
-        }
-        return restAddress.translate();
-    }
 }

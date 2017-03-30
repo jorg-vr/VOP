@@ -45,4 +45,12 @@ public abstract class AbstractController<T> {
         dao.remove(uuid);
     }
 
+    public T create(T t)throws DataAccessException{
+        return dao.create(t);
+    }
+
+    public T update(T t)throws DataAccessException{
+        return dao.update(t);
+    }
+
 }
