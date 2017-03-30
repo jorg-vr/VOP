@@ -110,6 +110,16 @@ public class ProductionVehicleDAO implements VehicleDAO {
         return null;
     }
 
+    @Override
+    public Vehicle create(Vehicle vehicle) {
+        return null;
+    }
+
+    @Override
+    public Vehicle update(Vehicle vehicle) {
+        return null;
+    }
+
 
     @Override
     public Filter<Vehicle> byBrand(String brandName) {
