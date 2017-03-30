@@ -1,6 +1,7 @@
 package spring.controller;
 
 import controller.CustomerController;
+import controller.exceptions.UnAuthorizedException;
 import dao.interfaces.CustomerDAO;
 import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
@@ -9,6 +10,7 @@ import model.identity.Company;
 import model.identity.Customer;
 import org.springframework.web.bind.annotation.*;
 import spring.exceptions.InvalidInputException;
+import spring.exceptions.NotAuthorizedException;
 import spring.exceptions.NotFoundException;
 import spring.model.RESTAddress;
 import spring.model.RESTCompany;
@@ -63,6 +65,8 @@ public class RESTCompanyController {
 
         } catch (DataAccessException e) {
             //API doesn't contain error
+        } catch (UnAuthorizedException e) {
+            throw new NotAuthorizedException();
         }
         return new RESTSchema<>(result, page, limit, PATH_COMPANY + "?");
     }
@@ -75,6 +79,8 @@ public class RESTCompanyController {
             updatedCompany = new RESTCompany(company);
         } catch (DataAccessException e) {
             throw new InvalidInputException(e);
+        } catch (UnAuthorizedException e) {
+            throw new NotAuthorizedException();
         }
         return updatedCompany;
     }
@@ -86,6 +92,8 @@ public class RESTCompanyController {
             return new RESTCompany(controller.get(uuid));
         } catch (DataAccessException e) {
             throw new NotFoundException();
+        } catch (UnAuthorizedException e) {
+            throw new NotAuthorizedException();
         }
     }
 
@@ -101,6 +109,8 @@ public class RESTCompanyController {
         } catch (DataAccessException e) {
             e.printStackTrace();
             throw new InvalidInputException();
+        } catch (UnAuthorizedException e) {
+            throw new NotAuthorizedException();
         }
         return createdCompany;
     }
@@ -112,6 +122,8 @@ public class RESTCompanyController {
             controller.archive(uuid);
         } catch (DataAccessException e) {
             throw new NotFoundException();
+        } catch (UnAuthorizedException e) {
+            throw new NotAuthorizedException();
         }
     }
 

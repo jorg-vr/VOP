@@ -3,6 +3,7 @@ package spring.controller;
 import controller.FleetController;
 import controller.VehicleController;
 
+import controller.exceptions.UnAuthorizedException;
 import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
 import dao.interfaces.VehicleDAO;
@@ -10,6 +11,7 @@ import model.fleet.Fleet;
 import model.fleet.Vehicle;
 import org.springframework.web.bind.annotation.*;
 import spring.exceptions.InvalidInputException;
+import spring.exceptions.NotAuthorizedException;
 import spring.exceptions.NotFoundException;
 import spring.model.RESTSchema;
 import spring.model.RESTVehicle;
@@ -99,6 +101,8 @@ public class RESTVehicleController {
 
         } catch (DataAccessException e) {
             throw new InvalidInputException("Some parameters where invalid");
+        }catch (UnAuthorizedException e) {
+            throw new NotAuthorizedException();
         }
 
         return new RESTSchema<>(result, page, limit, baseString);
@@ -117,6 +121,8 @@ public class RESTVehicleController {
         } catch (DataAccessException e) {
             throw new InvalidInputException();
             //TODO updateId when there are more exceptions
+        }catch (UnAuthorizedException e) {
+            throw new NotAuthorizedException();
         }
     }
 
@@ -134,6 +140,8 @@ public class RESTVehicleController {
             return new RESTVehicle(vehicle);
         } catch (DataAccessException e) {
             throw new NotFoundException();
+        }catch (UnAuthorizedException e) {
+            throw new NotAuthorizedException();
         }
     }
 
@@ -152,6 +160,8 @@ public class RESTVehicleController {
         } catch (DataAccessException e) {
             throw new InvalidInputException();
             //TODO updateId when there are more exceptions
+        }catch (UnAuthorizedException e) {
+            throw new NotAuthorizedException();
         }
 
     }
@@ -170,6 +180,8 @@ public class RESTVehicleController {
         } catch (DataAccessException e) {
             throw new NotFoundException();
             //TODO updateId when there are more exceptions
+        }catch (UnAuthorizedException e) {
+            throw new NotAuthorizedException();
         }
     }
 }

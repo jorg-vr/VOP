@@ -1,10 +1,13 @@
 package spring.controller;
 
 import controller.VehicleController;
+import controller.VehicleTypeController;
+import controller.exceptions.UnAuthorizedException;
 import dao.interfaces.DataAccessException;
 import model.fleet.VehicleType;
 import org.springframework.web.bind.annotation.*;
 import spring.exceptions.InvalidInputException;
+import spring.exceptions.NotAuthorizedException;
 import spring.exceptions.NotFoundException;
 import spring.model.RESTSchema;
 import spring.model.RESTVehicleType;
@@ -22,18 +25,21 @@ import java.util.List;
 @RequestMapping("/vehicleTypes")
 public class RESTVehicleTypeController {
 
+    VehicleTypeController controller=new VehicleTypeController();
     @RequestMapping(method = RequestMethod.GET)
     public RESTSchema<RESTVehicleType> getAllVehileTypes(
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false) Integer limit){
         List<RESTVehicleType> restVehicleTypes=new ArrayList<>();
         try {
-            for (VehicleType vehicleType : new VehicleController().getAllVehicleTypes()) {
+            for (VehicleType vehicleType : controller.getAll()) {
                 restVehicleTypes.add(modelToREST(vehicleType));
             }
 
         } catch (DataAccessException e) {
             throw new InvalidInputException("Some parameters where invalid");
+        }catch (UnAuthorizedException e) {
+            throw new NotAuthorizedException();
         }
 
         return new RESTSchema<>(restVehicleTypes, page, limit, "/vehicleTypes?");
@@ -46,10 +52,12 @@ public class RESTVehicleTypeController {
     public RESTVehicleType getId(@PathVariable("id") String id) {
 
         try {
-            return modelToREST(new VehicleController().getVehicleType(UUIDUtil.toUUID(id)));
+            return modelToREST(controller.get(UUIDUtil.toUUID(id)));
 
         } catch (DataAccessException e) {
             throw new NotFoundException();
+        }catch (UnAuthorizedException e) {
+            throw new NotAuthorizedException();
         }
     }
 

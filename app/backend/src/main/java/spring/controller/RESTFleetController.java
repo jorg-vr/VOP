@@ -2,11 +2,13 @@ package spring.controller;
 
 import controller.CustomerController;
 import controller.FleetController;
+import controller.exceptions.UnAuthorizedException;
 import dao.interfaces.DataAccessException;
 import dao.interfaces.FleetDAO;
 import model.fleet.Fleet;
 import org.springframework.web.bind.annotation.*;
 import spring.exceptions.InvalidInputException;
+import spring.exceptions.NotAuthorizedException;
 import spring.exceptions.NotFoundException;
 import spring.model.RESTFleet;
 import spring.model.RESTSchema;
@@ -62,6 +64,8 @@ public class RESTFleetController {
         } catch (Exception e) {
             e.printStackTrace();
             throw new InvalidInputException();
+        } catch (UnAuthorizedException e) {
+            throw new NotAuthorizedException();
         }
 
     }
@@ -74,6 +78,8 @@ public class RESTFleetController {
         } catch (DataAccessException e) {
             throw new InvalidInputException();
             //TODO updateId when there are more exceptions
+        } catch (UnAuthorizedException e) {
+            throw new NotAuthorizedException();
         }
     }
 
@@ -86,6 +92,8 @@ public class RESTFleetController {
 
         } catch (DataAccessException | NullPointerException e) {
             throw new NotFoundException();
+        } catch (UnAuthorizedException e) {
+            throw new NotAuthorizedException();
         }
     }
 
@@ -100,6 +108,8 @@ public class RESTFleetController {
         } catch (DataAccessException e) {
             throw new InvalidInputException();
             //TODO updateId when there are more exceptions
+        } catch (UnAuthorizedException e) {
+            throw new NotAuthorizedException();
         }
     }
 
@@ -111,6 +121,8 @@ public class RESTFleetController {
         } catch (DataAccessException e) {
             throw new NotFoundException();
             //TODO updateId when there are more exceptions
+        } catch (UnAuthorizedException e) {
+            throw new NotAuthorizedException();
         }
     }
 }

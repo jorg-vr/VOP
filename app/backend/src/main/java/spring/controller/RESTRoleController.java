@@ -3,12 +3,14 @@ package spring.controller;
 import controller.AccountController;
 import controller.CustomerController;
 import controller.FunctionController;
+import controller.exceptions.UnAuthorizedException;
 import dao.interfaces.DataAccessException;
 import model.account.Account;
 import model.account.Function;
 import model.identity.Company;
 import org.springframework.web.bind.annotation.*;
 import spring.exceptions.InvalidInputException;
+import spring.exceptions.NotAuthorizedException;
 import spring.exceptions.NotFoundException;
 import spring.model.RESTRole;
 import spring.model.RESTSchema;
@@ -65,6 +67,8 @@ public class RESTRoleController {
 
         } catch (DataAccessException e) {
             e.printStackTrace();
+        } catch (UnAuthorizedException e) {
+            throw new NotAuthorizedException();
         }
         return new RESTSchema<>(roles, page, limit, PATH_ROLE + "?");
     }
@@ -77,6 +81,8 @@ public class RESTRoleController {
             role = new RESTRole(function);
         } catch (DataAccessException e) {
             throw new InvalidInputException(e);
+        } catch (UnAuthorizedException e) {
+            throw new NotAuthorizedException();
         }
         return role;
     }
@@ -87,7 +93,9 @@ public class RESTRoleController {
         try {
             Function function = controller.get(uuid);
             return new RESTRole(function);
-        } catch (Exception e) {
+        } catch (UnAuthorizedException e) {
+            throw new NotAuthorizedException();
+        }catch (Exception e) {
             throw new NotFoundException();
         }
     }
@@ -101,6 +109,8 @@ public class RESTRoleController {
             return new RESTRole(function);
         } catch (DataAccessException e) {
             throw new NotFoundException();
+        } catch (UnAuthorizedException e) {
+            throw new NotAuthorizedException();
         }
     }
 
@@ -111,6 +121,8 @@ public class RESTRoleController {
             controller.archive(uuid);
         } catch (DataAccessException e) {
             throw new NotFoundException();
+        } catch (UnAuthorizedException e) {
+            throw new NotAuthorizedException();
         }
     }
 

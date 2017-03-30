@@ -2,12 +2,14 @@ package spring.controller;
 
 import controller.AccountController;
 import controller.PersonController;
+import controller.exceptions.UnAuthorizedException;
 import dao.interfaces.DataAccessException;
 import model.account.Account;
 import model.identity.Person;
 import org.springframework.web.bind.annotation.*;
 import spring.exceptions.ConflictException;
 import spring.exceptions.InvalidInputException;
+import spring.exceptions.NotAuthorizedException;
 import spring.exceptions.NotFoundException;
 import spring.model.RESTSchema;
 import spring.model.RESTUser;
@@ -64,6 +66,8 @@ public class RESTUserController {
             // This should not happen unless there is something wrong with the database
             System.err.println("Something is wrong with the database");
             e.printStackTrace();
+        }catch (UnAuthorizedException e) {
+            throw new NotAuthorizedException();
         }
         return new RESTSchema<>(users, page, limit, PATH_USER + "?");
     }
@@ -123,6 +127,8 @@ public class RESTUserController {
             return new RESTUser(account, person);
         } catch (DataAccessException e) {
             e.printStackTrace();
+        }catch (UnAuthorizedException e) {
+            throw new NotAuthorizedException();
         }
         return null;
     }
@@ -143,6 +149,8 @@ public class RESTUserController {
             return new RESTUser(account, person);
         } catch (DataAccessException | NumberFormatException | NullPointerException e) {
             throw new NotFoundException();
+        }catch (UnAuthorizedException e) {
+            throw new NotAuthorizedException();
         }
     }
 
@@ -169,6 +177,8 @@ public class RESTUserController {
             return new RESTUser(account, person);
         } catch (DataAccessException e) {
             throw new InvalidInputException();
+        }catch (UnAuthorizedException e) {
+            throw new NotAuthorizedException();
         }
     }
 
@@ -187,6 +197,8 @@ public class RESTUserController {
             personController.archive(account.getPerson().getUuid());
         } catch (DataAccessException e) {
             throw new NotFoundException();
+        }catch (UnAuthorizedException e) {
+            throw new NotAuthorizedException();
         }
     }
 }
