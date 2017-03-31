@@ -10,14 +10,12 @@ import java.util.UUID;
  */
 public class AuthenticationToken {
     private UUID acountId;
-    private UUID functionId;
     private String hash;
     private LocalDateTime expire;
 
     public AuthenticationToken(String token) {
         String[] tokenparts=token.split(":");
         acountId= UUIDUtil.toUUID(tokenparts[0]);
-        functionId=UUIDUtil.toUUID(tokenparts[1]);
         hash=tokenparts[2];
         expire=LocalDateTime.parse(tokenparts[3]);
     }
@@ -25,7 +23,6 @@ public class AuthenticationToken {
     @Override
     public String toString() {
         return UUIDUtil.UUIDToNumberString(acountId)+":"+
-                UUIDUtil.UUIDToNumberString(functionId)+":"+
                 hash+":"+
                 expire;
     }
@@ -36,14 +33,6 @@ public class AuthenticationToken {
 
     public void setAcountId(UUID acountId) {
         this.acountId = acountId;
-    }
-
-    public UUID getFunctionId() {
-        return functionId;
-    }
-
-    public void setFunctionId(UUID functionId) {
-        this.functionId = functionId;
     }
 
     public String getHash() {

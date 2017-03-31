@@ -31,9 +31,9 @@ public class RESTAbstractController<R extends RESTAbstractModel<M>,M extends Edi
     }
 
 
-    public Function verifyToken(String token){
+    public Function verifyToken(String token,String functiunId){
         try {
-            return new AuthContoller().getFunction(new AuthenticationToken(token));
+            return new AuthContoller().getFunction(new AuthenticationToken(token),UUIDUtil.toUUID(functiunId));
         } catch (DataAccessException e) {
             throw new InvalidInputException(e);
         } catch (UnAuthorizedException e) {
@@ -46,9 +46,10 @@ public class RESTAbstractController<R extends RESTAbstractModel<M>,M extends Edi
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public R post(@RequestBody R rest, @RequestHeader(value="AuthToken") String token) {
-        try(AbstractController<M> controller=controllerFactory.create(verifyToken(token))) {
-            M model = controller.create(rest.translate(verifyToken(token)));
+    public R post(@RequestBody R rest, @RequestHeader(value="AuthToken") String token,
+                  @RequestHeader(value="Function") String function) {
+        try(AbstractController<M> controller=controllerFactory.create(verifyToken(token,function))) {
+            M model = controller.create(rest.translate(verifyToken(token,function)));
             return factory.create(model);
         } catch (DataAccessException e) {
             throw new InvalidInputException(e);
@@ -58,9 +59,10 @@ public class RESTAbstractController<R extends RESTAbstractModel<M>,M extends Edi
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "{id}")
-    public R getId(@PathVariable("id") String id, @RequestHeader(value="AuthToken") String token) {
+    public R getId(@PathVariable("id") String id, @RequestHeader(value="AuthToken") String token,
+                   @RequestHeader(value="Function") String function) {
         UUID uuid = UUIDUtil.toUUID(id);
-        try(AbstractController<M> controller=controllerFactory.create(verifyToken(token))) {
+        try(AbstractController<M> controller=controllerFactory.create(verifyToken(token,function))) {
             return factory.create(controller.get(uuid));
         } catch (DataAccessException e) {
             throw new NotFoundException();
@@ -70,10 +72,11 @@ public class RESTAbstractController<R extends RESTAbstractModel<M>,M extends Edi
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "{id}")
-    public R putId(@PathVariable("id") String id, @RequestBody R rest, @RequestHeader(value="AuthToken") String token) {
-        try(AbstractController<M> controller=controllerFactory.create(verifyToken(token))) {
+    public R putId(@PathVariable("id") String id, @RequestBody R rest, @RequestHeader(value="AuthToken") String token,
+                   @RequestHeader(value="Function") String function) {
+        try(AbstractController<M> controller=controllerFactory.create(verifyToken(token,function))) {
             rest.setId(id);
-            M model = rest.translate(verifyToken(token));
+            M model = rest.translate(verifyToken(token,function));
             model = controller.update(model);
             return factory.create(model);
         } catch (DataAccessException e) {
@@ -85,9 +88,10 @@ public class RESTAbstractController<R extends RESTAbstractModel<M>,M extends Edi
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "{id}")
-    public void deleteId(@PathVariable("id") String id, @RequestHeader(value="AuthToken") String token) {
+    public void deleteId(@PathVariable("id") String id, @RequestHeader(value="AuthToken") String token,
+                         @RequestHeader(value="Function") String function) {
         UUID uuid = UUIDUtil.toUUID(id);
-        try(AbstractController<M> controller=controllerFactory.create(verifyToken(token))) {
+        try(AbstractController<M> controller=controllerFactory.create(verifyToken(token,function))) {
             controller.archive(uuid);
         } catch (DataAccessException e) {
             throw new NotFoundException();

@@ -40,9 +40,9 @@ public class RESTUserController {
 
     public static final String PATH_USER = "/users";
 
-    public Function verifyToken(String token){
+    public Function verifyToken(String token,String functionId){
         try {
-            return new AuthContoller().getFunction(new AuthenticationToken(token));
+            return new AuthContoller().getFunction(new AuthenticationToken(token),UUIDUtil.toUUID(functionId));
         } catch (DataAccessException e) {
             throw new InvalidInputException(e);
         } catch (UnAuthorizedException e) {
@@ -60,10 +60,11 @@ public class RESTUserController {
                                     String lastName,
                                     Integer page,
                                     Integer limit,
-                                    @RequestHeader(value="AuthToken") String token) {
+                                    @RequestHeader(value="AuthToken") String token,
+                                    @RequestHeader(value="Function") String function) {
         Collection<RESTUser> users = new ArrayList<>();
 
-        try(AccountController accountController=new AccountController(verifyToken(token))) {
+        try(AccountController accountController=new AccountController(verifyToken(token,function))) {
             Collection<Account> accounts = accountController.getAll();
             for (Account account : accounts) {
                 Person person = account.getPerson();
@@ -122,15 +123,16 @@ public class RESTUserController {
      */
     @RequestMapping(method = RequestMethod.POST)
     public RESTUser post(@RequestBody RESTUser user,
-                         @RequestHeader(value="AuthToken") String token) {
-        try (AccountController accountController=new AccountController(verifyToken(token));
-        PersonController personController=new PersonController(verifyToken(token))){
+                         @RequestHeader(value="AuthToken") String token,
+                         @RequestHeader(value="Function") String function) {
+        try (AccountController accountController=new AccountController(verifyToken(token,function));
+        PersonController personController=new PersonController(verifyToken(token,function))){
 
             // Check if the account name is still free
             if (accountController.isTaken(user.getEmail())) {
                 throw new ConflictException();
             }
-            Account account=user.translate(verifyToken(token));
+            Account account=user.translate(verifyToken(token,function));
 
             Person person = personController.create(account.getPerson());
             account = accountController.create(account);
@@ -152,8 +154,9 @@ public class RESTUserController {
      */
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
     public RESTUser getId(@PathVariable("id") String id,
-                          @RequestHeader(value="AuthToken") String token) {
-        try(AccountController accountController=new AccountController(verifyToken(token))) {
+                          @RequestHeader(value="AuthToken") String token,
+                          @RequestHeader(value="Function") String function) {
+        try(AccountController accountController=new AccountController(verifyToken(token,function))) {
             UUID uuid = UUIDUtil.toUUID(id);
             Account account = accountController.get(uuid);
             Person person = account.getPerson();
@@ -178,11 +181,12 @@ public class RESTUserController {
      */
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
     public RESTUser putId(@PathVariable("id") String id, @RequestBody RESTUser user,
-                          @RequestHeader(value="AuthToken") String token) {
+                          @RequestHeader(value="AuthToken") String token,
+                          @RequestHeader(value="Function") String function) {
         UUID uuid = UUIDUtil.toUUID(id);
-        try(AccountController accountController=new AccountController(verifyToken(token));
-            PersonController personController=new PersonController(verifyToken(token))) {
-            Account account = user.translate(verifyToken(token));
+        try(AccountController accountController=new AccountController(verifyToken(token,function));
+            PersonController personController=new PersonController(verifyToken(token,function))) {
+            Account account = user.translate(verifyToken(token,function));
             account.setUuid(uuid);
             Account result= accountController.update(account);
             Person person = account.getPerson();
@@ -203,11 +207,12 @@ public class RESTUserController {
      */
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
     public void deleteId(@PathVariable("id") String id,
-                         @RequestHeader(value="AuthToken") String token) {
+                         @RequestHeader(value="AuthToken") String token,
+                         @RequestHeader(value="Function") String function) {
         UUID uuid = UUIDUtil.toUUID(id);
 
-        try(AccountController accountController=new AccountController(verifyToken(token));
-            PersonController personController=new PersonController(verifyToken(token))) {
+        try(AccountController accountController=new AccountController(verifyToken(token,function));
+            PersonController personController=new PersonController(verifyToken(token,function))) {
             Account account = accountController.get(uuid);
             accountController.archive(account.getUuid());
             personController.archive(account.getPerson().getUuid());

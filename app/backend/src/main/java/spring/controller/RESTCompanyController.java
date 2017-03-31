@@ -52,10 +52,11 @@ public class RESTCompanyController extends RESTAbstractController<RESTCompany,Cu
                                        @RequestParam(required = false) String country,
                                        @RequestParam(required = false) String city,
                                        @RequestParam(required = false) String postalCode,
-                                       @RequestHeader(value="AuthToken") String token) {
+                                       @RequestHeader(value="AuthToken") String token,
+                                       @RequestHeader(value="Function") String function) {
 
 
-        try(CustomerController controller= new CustomerController(verifyToken(token))) {
+        try(CustomerController controller= new CustomerController(verifyToken(token,function))) {
             CustomerDAO customerDAO = (CustomerDAO) controller.getDao(); //TODO getId rid of cast
             List<Filter> filters = new ArrayList<>();
             if (nameContains != null) {

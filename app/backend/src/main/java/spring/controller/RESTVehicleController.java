@@ -60,9 +60,10 @@ public class RESTVehicleController extends RESTAbstractController<RESTVehicle,Ve
                                        @RequestParam(required = false) String type,
                                        @RequestParam(required = false) Integer page,
                                        @RequestParam(required = false) Integer limit,
-                                       @RequestHeader(value="AuthToken") String token) {
+                                       @RequestHeader(value="AuthToken") String token,
+                                       @RequestHeader(value="Function") String function) {
 
-        try(VehicleController controller=new VehicleController(verifyToken(token))) {
+        try(VehicleController controller=new VehicleController(verifyToken(token,function))) {
             String baseString = PATH_VEHICLE +"?";
             VehicleDAO vehicleDAO = (VehicleDAO) controller.getDao();
             List<Filter<Vehicle>> filters = new ArrayList<>();
@@ -83,7 +84,7 @@ public class RESTVehicleController extends RESTAbstractController<RESTVehicle,Ve
             if (fleet != null) {
                 baseString += "fleet=" + fleet + "&";
                 Fleet fl;
-                try(FleetController fleetController=new FleetController(verifyToken(token))) {
+                try(FleetController fleetController=new FleetController(verifyToken(token,function))) {
                     fl = fleetController.get(UUIDUtil.toUUID(fleet));
                 } catch (DataAccessException e) {
                     throw new InvalidInputException("Something went wrong when getting the fleet from the database");
@@ -94,7 +95,7 @@ public class RESTVehicleController extends RESTAbstractController<RESTVehicle,Ve
             }
             if (type != null) {
                 baseString += "type=" + type;
-                try(VehicleTypeController vehicleTypeController= new VehicleTypeController(verifyToken(token))) {
+                try(VehicleTypeController vehicleTypeController= new VehicleTypeController(verifyToken(token,function))) {
                     filters.add(vehicleDAO.byType(vehicleTypeController.get(UUIDUtil.toUUID(type))));
                 } catch (DataAccessException e) {
                     throw new InvalidInputException("Could not find requested type");

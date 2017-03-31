@@ -43,15 +43,16 @@ public class RESTFleetController extends RESTAbstractController<RESTFleet,Fleet>
     public RESTSchema<RESTFleet> get(@RequestParam(required = false) String company,
                                      @RequestParam(required = false) Integer page,
                                      @RequestParam(required = false) Integer limit,
-                                     @RequestHeader(value="AuthToken") String token) {
+                                     @RequestHeader(value="AuthToken") String token,
+                                     @RequestHeader(value="Function") String function) {
 
-        try(FleetController controller= new FleetController(verifyToken(token))) {
+        try(FleetController controller= new FleetController(verifyToken(token,function))) {
             FleetDAO fleetDAO = (FleetDAO) controller.getDao();
             String baseString = PATH_FLEETS + "?";
             Collection<RESTFleet> restFleets = new ArrayList<>();
             Collection<Fleet> fleets;
             if (company != null) {
-                try(CustomerController customerController= new CustomerController(verifyToken(token))) {
+                try(CustomerController customerController= new CustomerController(verifyToken(token,function))) {
                     fleets = customerController.get(UUIDUtil.toUUID(company)).getFleets();
                 }
             } else {
