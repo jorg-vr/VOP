@@ -59,22 +59,22 @@ public class RESTRole extends RESTAbstractModel<Function> {
     public Function translate(Function f){
         Function function=new Function();
         function.setUuid(UUIDUtil.toUUID(getId()));
-        try {
-            function.setAccount(new AccountController(f).get(UUIDUtil.toUUID(getUser())));
+        try(AccountController accountController=new AccountController(f)) {
+            function.setAccount(accountController.get(UUIDUtil.toUUID(getUser())));
         } catch (DataAccessException e) {
             throw new InvalidInputException("user");
         } catch (UnAuthorizedException e) {
             throw new NotAuthorizedException();
         }
-        try {
-            function.setCompany(new CustomerController(f).get(UUIDUtil.toUUID(getCompany())));
+        try(CustomerController customerController=new CustomerController(f)) {
+            function.setCompany(customerController.get(UUIDUtil.toUUID(getCompany())));
         } catch (DataAccessException e) {
             throw new InvalidInputException("company");
         } catch (UnAuthorizedException e) {
             throw new NotAuthorizedException();
         }
-        try {
-            function.setRole(new RoleController(f).get(UUIDUtil.toUUID(getPermissions())));
+        try(RoleController roleController=new RoleController(f)) {
+            function.setRole(roleController.get(UUIDUtil.toUUID(getPermissions())));
         } catch (DataAccessException e) {
             throw new InvalidInputException("name");
         } catch (UnAuthorizedException e) {

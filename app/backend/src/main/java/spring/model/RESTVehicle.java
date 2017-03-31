@@ -72,15 +72,15 @@ public class RESTVehicle extends RESTAbstractModel<Vehicle> {
         vehicle.setChassisNumber(vin);
         vehicle.setValue(value);
         vehicle.setMileage(mileage);
-        try {
-            new VehicleTypeController(function).get(UUIDUtil.toUUID(getType()));
+        try(VehicleTypeController vehicleTypeController=new VehicleTypeController(function)) {
+            vehicle.setType( vehicleTypeController.get(UUIDUtil.toUUID(getType())));
         } catch (DataAccessException e) {
             throw new InvalidInputException("type");
         }  catch (UnAuthorizedException e) {
             throw new NotAuthorizedException();
         }
-        try {
-            new FleetController(function).get(UUIDUtil.toUUID(getFleet()));
+        try(FleetController fleetController=new FleetController(function)) {
+            vehicle.setFleet(fleetController.get(UUIDUtil.toUUID(getFleet())));
         }catch (DataAccessException e) {
             throw new InvalidInputException("fleet");
         }  catch (UnAuthorizedException e) {

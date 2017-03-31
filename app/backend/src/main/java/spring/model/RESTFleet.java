@@ -38,8 +38,8 @@ public class RESTFleet extends RESTAbstractModel<Fleet> {
     public Fleet translate(Function function){
         Fleet fleet=new Fleet();
         fleet.setName(getName());
-        try {
-            fleet.setOwner(new CustomerController(function).get(UUIDUtil.toUUID(getCompany())));
+        try (CustomerController customerController=new CustomerController(function)){
+            fleet.setOwner(customerController.get(UUIDUtil.toUUID(getCompany())));
         } catch (DataAccessException e) {
             throw new InvalidInputException("company");
         } catch (UnAuthorizedException e) {
