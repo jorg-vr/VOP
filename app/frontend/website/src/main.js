@@ -34,7 +34,7 @@ Vue.filter('capitalize', function(value){
     return value.charAt(0).toUpperCase() + value.slice(1)
 })
 
-Vue.http.options.root = 'https://vopro5.ugent.be/app/api'
+Vue.http.options.root = 'https://vopro5.ugent.be/app/api/'
 
 new Vue({
     store,
