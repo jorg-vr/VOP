@@ -6,6 +6,7 @@ import controller.PersonController;
 import controller.exceptions.UnAuthorizedException;
 import dao.interfaces.DataAccessException;
 import model.account.Account;
+import model.account.Function;
 import model.identity.Person;
 import org.springframework.web.bind.annotation.*;
 import spring.exceptions.ConflictException;
@@ -39,7 +40,15 @@ public class RESTUserController {
 
     public static final String PATH_USER = "/users";
 
-
+    public Function verifyToken(String token){
+        try {
+            return new AuthContoller().getFunction(new RESTAuthenticationToken(token));
+        } catch (DataAccessException e) {
+            throw new InvalidInputException(e);
+        } catch (UnAuthorizedException e) {
+            throw new NotAuthorizedException();
+        }
+    }
 
     /**
      * @return a collection of all the users in the system.
@@ -54,7 +63,7 @@ public class RESTUserController {
                                     @RequestHeader(value="AuthToken") String token) {
         Collection<RESTUser> users = new ArrayList<>();
 
-        try(AccountController accountController=new AccountController(new AuthContoller().getFunction(new RESTAuthenticationToken(token)))) {
+        try(AccountController accountController=new AccountController(verifyToken(token))) {
             Collection<Account> accounts = accountController.getAll();
             for (Account account : accounts) {
                 Person person = account.getPerson();
@@ -114,14 +123,14 @@ public class RESTUserController {
     @RequestMapping(method = RequestMethod.POST)
     public RESTUser post(@RequestBody RESTUser user,
                          @RequestHeader(value="AuthToken") String token) {
-        try (AccountController accountController=new AccountController(new AuthContoller().getFunction(new RESTAuthenticationToken(token)));
-        PersonController personController=new PersonController(new AuthContoller().getFunction(new RESTAuthenticationToken(token)))){
+        try (AccountController accountController=new AccountController(verifyToken(token));
+        PersonController personController=new PersonController(verifyToken(token))){
 
             // Check if the account name is still free
             if (accountController.isTaken(user.getEmail())) {
                 throw new ConflictException();
             }
-            Account account=user.translate(new AuthContoller().getFunction(new RESTAuthenticationToken(token)));
+            Account account=user.translate(verifyToken(token));
 
             Person person = personController.create(account.getPerson());
             account = accountController.create(account);
@@ -144,7 +153,7 @@ public class RESTUserController {
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
     public RESTUser getId(@PathVariable("id") String id,
                           @RequestHeader(value="AuthToken") String token) {
-        try(AccountController accountController=new AccountController(new AuthContoller().getFunction(new RESTAuthenticationToken(token)))) {
+        try(AccountController accountController=new AccountController(verifyToken(token))) {
             UUID uuid = UUIDUtil.toUUID(id);
             Account account = accountController.get(uuid);
             Person person = account.getPerson();
@@ -171,9 +180,9 @@ public class RESTUserController {
     public RESTUser putId(@PathVariable("id") String id, @RequestBody RESTUser user,
                           @RequestHeader(value="AuthToken") String token) {
         UUID uuid = UUIDUtil.toUUID(id);
-        try(AccountController accountController=new AccountController(new AuthContoller().getFunction(new RESTAuthenticationToken(token)));
-            PersonController personController=new PersonController(new AuthContoller().getFunction(new RESTAuthenticationToken(token)))) {
-            Account account = user.translate(new AuthContoller().getFunction(new RESTAuthenticationToken(token)));
+        try(AccountController accountController=new AccountController(verifyToken(token));
+            PersonController personController=new PersonController(verifyToken(token))) {
+            Account account = user.translate(verifyToken(token));
             account.setUuid(uuid);
             Account result= accountController.update(account);
             Person person = account.getPerson();
@@ -197,8 +206,8 @@ public class RESTUserController {
                          @RequestHeader(value="AuthToken") String token) {
         UUID uuid = UUIDUtil.toUUID(id);
 
-        try(AccountController accountController=new AccountController(new AuthContoller().getFunction(new RESTAuthenticationToken(token)));
-            PersonController personController=new PersonController(new AuthContoller().getFunction(new RESTAuthenticationToken(token)))) {
+        try(AccountController accountController=new AccountController(verifyToken(token));
+            PersonController personController=new PersonController(verifyToken(token))) {
             Account account = accountController.get(uuid);
             accountController.archive(account.getUuid());
             personController.archive(account.getPerson().getUuid());
