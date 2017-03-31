@@ -1,12 +1,13 @@
 <template>
     <form-item :label="label">
-        <select class="form-control" :value="value" @change="updateValue($event.target.value)" :id="inputId">
+        <select class="form-control select-item" :value="value" @change="updateValue($event.target.value)" :id="inputId" ref="select">
             <option v-if="hiddenOption" value="" disabled hidden>{{hiddenOption}}</option>
             <option v-else value="" disabled hidden></option>
             <option :selected="option.id === value" v-for="option in options" :value="option.id">
                 {{option[optionKey]}}
-                    </option>
+            </option>
         </select>
+        <button type="button" id="advanced-search" class="btn btn-xs" @click="reset"><i class="fa fa-times"></i></button>
     </form-item>
 
 </template>
@@ -25,18 +26,25 @@
             formItem
         },
         methods: {
-            //TODO: With props we can add validation functions for each input item.
             updateValue: function (value) {
-                var formattedValue = value.trim();
-                // If the value was not already normalized,
-                // manually override it to conform
-                if (formattedValue !== value) {
-                    this.$refs.input.value = formattedValue;
-
-                }
-                // Emit the formatted value through the input event
-                this.$emit('input', formattedValue);
+                this.$emit('input', value);
+            },
+            reset(){
+                this.updateValue('')
+                this.$refs.select.value = ''
             }
         }
     }
 </script>
+<style>
+    .select-item {
+        width: 95%;
+        float: left;
+    }
+    #advanced-search {
+        width: 5%;
+        float: left;
+        height: 34px;
+        margin: 0px;
+    }
+</style>

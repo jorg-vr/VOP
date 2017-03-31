@@ -55,8 +55,7 @@ export default
             edit: 'edit'
         },
         search_bar: {
-            filter_by: 'Filter by',
-            placeholder: 'Search term...'
+            search_for: 'Search for',
         }
     },
     nl : {
@@ -114,8 +113,7 @@ export default
             edit: 'bewerken'
         },
         search_bar: {
-            filter_by: 'Zoeken op',
-            placeholder: 'Zoekterm...'
+            search_for: 'Zoeken naar',
         }
     }
 }

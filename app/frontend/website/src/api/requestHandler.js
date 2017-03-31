@@ -23,6 +23,22 @@ export default {
         })
     },
 
+    /*
+    filters: an array of objects, each have a filter and its value.
+    This object can look like this: {filter: 'company', value: 'Hertsens'}
+     */
+    getObjectsRequestBy(location, filters){
+        query = ''
+        if(filters.length > 0){
+            query += '?'
+            for(let i=0; i<filters.length; i++){
+                let filter = filters[i]
+                query += filters[i].filter + '=' + filters[i].value
+            }
+        }
+        return getObjectsRequest(location + query)
+    },
+
     postObjectRequest(location, object){
         return new Promise(resolve => {
             Vue.http.post(location, object, headers).then(response => {

@@ -6,9 +6,9 @@
         <div class="page-header">
             <h1>{{$t("fleet.fleets") | capitalize}}</h1>
         </div>
-        <search-bar @search="updateFleets"></search-bar>
+        <fleet-search-bar @search="updateFleets" :clients="clients" @advancedSearch="updateFleetsAdvanced"></fleet-search-bar>
         <!-- Render an info-pane for every fleet. Once all the data is loaded, the table will be shown.-->
-        <list-component v-for="fleet in visibleFleets"
+        <list-component v-for="fleet in filteredFleets"
                         v-if="fleet"
                         :object="fleet"
                         :visibleKeys="new Array('name','companyName')"
@@ -22,24 +22,19 @@
     </div>
 </template>
 <script>
-    import { mapGetters, mapActions } from 'vuex'
+    import { mapGetters, mapActions, mapMutations } from 'vuex'
     import listComponent from "../../assets/general/listComponent.vue"
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
-    import searchBar from '../../assets/general/searchBar.vue'
+    import fleetSearchBar from '../../assets/search/types/fleetSearchBar.vue'
     import Vue from 'vue'
 
     export default {
-        data(){
-            return {
-                visibleFleets: []
-            }
-        },
         components: {
-            listComponent, buttonAdd, searchBar
+            listComponent, buttonAdd, fleetSearchBar
         },
         created() {
             let p1 = this.fetchFleets().then(fleets => {
-                this.visibleFleets = fleets
+                this.updateFilteredFleets({fleets: fleets})
             })
             let p2 = this.fetchClients()
             Promise.all([p1, p2]).then(values => {
@@ -48,10 +43,13 @@
         },
         computed: {
             ...mapGetters([
+                'clients',
                 'fleets',
+                'filteredFleets',
                 'getFleetsByName',
                 'getFleetsByClient',
-                'getFleetsByAll'
+                'getFleetsByAll',
+                'getFleetsByAllAdvanced'
             ])
         },
         methods: {
@@ -61,13 +59,22 @@
                 'fetchClients',
                 'addClientNames',
             ]),
+
+            ...mapMutations({
+                updateFilteredFleets: 'UPDATE_FILTERED_FLEETS'
+            }),
             updateFleets(value){
                 if(value!==''){
-                    this.visibleFleets = this.getFleetsByAll(value)
+                    this.updateFilteredFleets({fleets: this.getFleetsByAll(value)})
                 }
                 else {
-                    this.visibleFleets = this.fleets
+                    this.updateFilteredFleets({fleets: this.fleets})
                 }
+            },
+            updateFleetsAdvanced(filterFleet){
+                this.updateFilteredFleets({fleets: this.getFleetsByAllAdvanced(filterFleet)})
+
+
             }
         }
     }
