@@ -36,7 +36,7 @@ public class RESTVehicleTypeController extends RESTAbstractController<RESTVehicl
     public RESTSchema<RESTVehicleType> getAllVehileTypes(
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false) Integer limit,
-            @RequestHeader(value="AuthToken") RESTAuthenticationToken token){
+            @RequestHeader(value="AuthToken") String token){
         List<RESTVehicleType> restVehicleTypes=new ArrayList<>();
         try(VehicleTypeController controller=new VehicleTypeController(verifyToken(token))) {
             for (VehicleType vehicleType : controller.getAll()) {

@@ -55,7 +55,7 @@ public class RESTRoleController extends RESTAbstractController<RESTRole,Function
                                     @RequestParam(required = false) Boolean active,
                                     @RequestParam(required = false) Integer page,
                                     @RequestParam(required = false) Integer limit,
-                                    @RequestHeader(value="AuthToken") RESTAuthenticationToken token) {
+                                    @RequestHeader(value="AuthToken") String token) {
         Collection<RESTRole> roles = new ArrayList<>();
         Function function=verifyToken(token);
         try(FunctionController controller=new FunctionController(function);

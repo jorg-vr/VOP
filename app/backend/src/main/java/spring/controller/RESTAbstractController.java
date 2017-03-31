@@ -31,9 +31,9 @@ public class RESTAbstractController<R extends RESTAbstractModel<M>,M extends Edi
     }
 
 
-    public Function verifyToken(RESTAuthenticationToken token){
+    public Function verifyToken(String token){
         try {
-            return new AuthContoller().getFunction(token);
+            return new AuthContoller().getFunction(new RESTAuthenticationToken(token));
         } catch (DataAccessException e) {
             throw new InvalidInputException(e);
         } catch (UnAuthorizedException e) {
@@ -46,7 +46,7 @@ public class RESTAbstractController<R extends RESTAbstractModel<M>,M extends Edi
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public R post(@RequestBody R rest, @RequestHeader(value="AuthToken") RESTAuthenticationToken token) {
+    public R post(@RequestBody R rest, @RequestHeader(value="AuthToken") String token) {
         try(AbstractController<M> controller=controllerFactory.create(verifyToken(token))) {
             M model = controller.create(rest.translate(verifyToken(token)));
             return factory.create(model);
@@ -58,7 +58,7 @@ public class RESTAbstractController<R extends RESTAbstractModel<M>,M extends Edi
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "{id}")
-    public R getId(@PathVariable("id") String id, @RequestHeader(value="AuthToken") RESTAuthenticationToken token) {
+    public R getId(@PathVariable("id") String id, @RequestHeader(value="AuthToken") String token) {
         UUID uuid = UUIDUtil.toUUID(id);
         try(AbstractController<M> controller=controllerFactory.create(verifyToken(token))) {
             return factory.create(controller.get(uuid));
@@ -70,7 +70,7 @@ public class RESTAbstractController<R extends RESTAbstractModel<M>,M extends Edi
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "{id}")
-    public R putId(@PathVariable("id") String id, @RequestBody R rest, @RequestHeader(value="AuthToken") RESTAuthenticationToken token) {
+    public R putId(@PathVariable("id") String id, @RequestBody R rest, @RequestHeader(value="AuthToken") String token) {
         try(AbstractController<M> controller=controllerFactory.create(verifyToken(token))) {
             rest.setId(id);
             M model = rest.translate(verifyToken(token));
@@ -85,7 +85,7 @@ public class RESTAbstractController<R extends RESTAbstractModel<M>,M extends Edi
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "{id}")
-    public void deleteId(@PathVariable("id") String id, @RequestHeader(value="AuthToken") RESTAuthenticationToken token) {
+    public void deleteId(@PathVariable("id") String id, @RequestHeader(value="AuthToken") String token) {
         UUID uuid = UUIDUtil.toUUID(id);
         try(AbstractController<M> controller=controllerFactory.create(verifyToken(token))) {
             controller.archive(uuid);

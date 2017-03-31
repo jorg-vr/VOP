@@ -51,7 +51,7 @@ public class RESTFleetController extends RESTAbstractController<RESTFleet,Fleet>
     public RESTSchema<RESTFleet> get(@RequestParam(required = false) String company,
                                      @RequestParam(required = false) Integer page,
                                      @RequestParam(required = false) Integer limit,
-                                     @RequestHeader(value="AuthToken") RESTAuthenticationToken token) {
+                                     @RequestHeader(value="AuthToken") String token) {
 
         try(FleetController controller= new FleetController(verifyToken(token))) {
             FleetDAO fleetDAO = (FleetDAO) controller.getDao();

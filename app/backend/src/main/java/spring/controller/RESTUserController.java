@@ -51,10 +51,10 @@ public class RESTUserController {
                                     String lastName,
                                     Integer page,
                                     Integer limit,
-                                    @RequestHeader(value="AuthToken") RESTAuthenticationToken token) {
+                                    @RequestHeader(value="AuthToken") String token) {
         Collection<RESTUser> users = new ArrayList<>();
 
-        try(AccountController accountController=new AccountController(new AuthContoller().getFunction(token))) {
+        try(AccountController accountController=new AccountController(new AuthContoller().getFunction(new RESTAuthenticationToken(token)))) {
             Collection<Account> accounts = accountController.getAll();
             for (Account account : accounts) {
                 Person person = account.getPerson();
@@ -113,15 +113,15 @@ public class RESTUserController {
      */
     @RequestMapping(method = RequestMethod.POST)
     public RESTUser post(@RequestBody RESTUser user,
-                         @RequestHeader(value="AuthToken") RESTAuthenticationToken token) {
-        try (AccountController accountController=new AccountController(new AuthContoller().getFunction(token));
-        PersonController personController=new PersonController(new AuthContoller().getFunction(token))){
+                         @RequestHeader(value="AuthToken") String token) {
+        try (AccountController accountController=new AccountController(new AuthContoller().getFunction(new RESTAuthenticationToken(token)));
+        PersonController personController=new PersonController(new AuthContoller().getFunction(new RESTAuthenticationToken(token)))){
 
             // Check if the account name is still free
             if (accountController.isTaken(user.getEmail())) {
                 throw new ConflictException();
             }
-            Account account=user.translate(new AuthContoller().getFunction(token));
+            Account account=user.translate(new AuthContoller().getFunction(new RESTAuthenticationToken(token)));
 
             Person person = personController.create(account.getPerson());
             account = accountController.create(account);
@@ -143,8 +143,8 @@ public class RESTUserController {
      */
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
     public RESTUser getId(@PathVariable("id") String id,
-                          @RequestHeader(value="AuthToken") RESTAuthenticationToken token) {
-        try(AccountController accountController=new AccountController(new AuthContoller().getFunction(token))) {
+                          @RequestHeader(value="AuthToken") String token) {
+        try(AccountController accountController=new AccountController(new AuthContoller().getFunction(new RESTAuthenticationToken(token)))) {
             UUID uuid = UUIDUtil.toUUID(id);
             Account account = accountController.get(uuid);
             Person person = account.getPerson();
@@ -169,11 +169,11 @@ public class RESTUserController {
      */
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
     public RESTUser putId(@PathVariable("id") String id, @RequestBody RESTUser user,
-                          @RequestHeader(value="AuthToken") RESTAuthenticationToken token) {
+                          @RequestHeader(value="AuthToken") String token) {
         UUID uuid = UUIDUtil.toUUID(id);
-        try(AccountController accountController=new AccountController(new AuthContoller().getFunction(token));
-            PersonController personController=new PersonController(new AuthContoller().getFunction(token))) {
-            Account account = user.translate(new AuthContoller().getFunction(token));
+        try(AccountController accountController=new AccountController(new AuthContoller().getFunction(new RESTAuthenticationToken(token)));
+            PersonController personController=new PersonController(new AuthContoller().getFunction(new RESTAuthenticationToken(token)))) {
+            Account account = user.translate(new AuthContoller().getFunction(new RESTAuthenticationToken(token)));
             account.setUuid(uuid);
             Account result= accountController.update(account);
             Person person = account.getPerson();
@@ -194,11 +194,11 @@ public class RESTUserController {
      */
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
     public void deleteId(@PathVariable("id") String id,
-                         @RequestHeader(value="AuthToken") RESTAuthenticationToken token) {
+                         @RequestHeader(value="AuthToken") String token) {
         UUID uuid = UUIDUtil.toUUID(id);
 
-        try(AccountController accountController=new AccountController(new AuthContoller().getFunction(token));
-            PersonController personController=new PersonController(new AuthContoller().getFunction(token))) {
+        try(AccountController accountController=new AccountController(new AuthContoller().getFunction(new RESTAuthenticationToken(token)));
+            PersonController personController=new PersonController(new AuthContoller().getFunction(new RESTAuthenticationToken(token)))) {
             Account account = accountController.get(uuid);
             accountController.archive(account.getUuid());
             personController.archive(account.getPerson().getUuid());

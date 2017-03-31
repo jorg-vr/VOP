@@ -64,7 +64,7 @@ public class RESTVehicleController extends RESTAbstractController<RESTVehicle,Ve
                                        @RequestParam(required = false) String type,
                                        @RequestParam(required = false) Integer page,
                                        @RequestParam(required = false) Integer limit,
-                                       @RequestHeader(value="AuthToken") RESTAuthenticationToken token) {
+                                       @RequestHeader(value="AuthToken") String token) {
 
         try(VehicleController controller=new VehicleController(verifyToken(token))) {
             String baseString = PATH_VEHICLE +"?";
