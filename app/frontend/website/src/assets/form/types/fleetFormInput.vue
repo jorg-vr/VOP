@@ -14,7 +14,7 @@
     export default {
         props: {
             clients: Array,
-            fleet: Object,
+            fleet: Object
         },
         components: {
             formInput, formSelect

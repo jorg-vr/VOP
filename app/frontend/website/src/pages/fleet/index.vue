@@ -48,7 +48,8 @@
                 'filteredFleets',
                 'getFleetsByName',
                 'getFleetsByClient',
-                'getFleetsByAll'
+                'getFleetsByAll',
+                'getFleetsByAllAdvanced'
             ])
         },
         methods: {
@@ -63,7 +64,6 @@
                 updateFilteredFleets: 'UPDATE_FILTERED_FLEETS'
             }),
             updateFleets(value){
-                console.log(value)
                 if(value!==''){
                     this.updateFilteredFleets({fleets: this.getFleetsByAll(value)})
                 }
@@ -72,7 +72,9 @@
                 }
             },
             updateFleetsAdvanced(filterFleet){
-                console.log(filterFleet)
+                this.updateFilteredFleets({fleets: this.getFleetsByAllAdvanced(filterFleet)})
+
+
             }
         }
     }

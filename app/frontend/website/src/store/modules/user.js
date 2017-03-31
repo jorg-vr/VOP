@@ -6,12 +6,18 @@ import Vue from 'vue'
 export default {
     state: {
         users: [],
-        user: {}
+        user: {},
+        filteredUsers: []
     },
     getters: {
         users(state) {
             return state.users
         },
+
+        filteredUsers(state){
+            return state.filteredUsers
+        },
+
 
         user(state) {
             return state.user
@@ -19,6 +25,10 @@ export default {
 
         getUsersByAll: (state, getters) => (value) => {
             return getters.filterByAll(state.users, value)
+        },
+
+        getUsersByAllAdvanced: (state, getters) => (user) => {
+            return getters.filterByAllAdvanced(state.users, user)
         }
     },
     mutations: {
@@ -30,12 +40,18 @@ export default {
             state.user = user
         },
 
+        [types.UPDATE_FILTERED_USERS] (state, {users}){
+            state.filteredUsers = users
+        },
+
         [types.CREATE_USER] (state, {user}){
+            state.users.push(user)
             state.users.push(user)
         },
 
         [types.DELETE_USER] (state, {id}){
-            state.users = state.users.filter(user => user.id !== id);
+            state.users = state.users.filter(user => user.id !== id)
+            state.filteredUsers = state.filteredUsers.filter(user => user.id !== id)
         }
     },
     actions: {

@@ -21,9 +21,6 @@
             oldFleet: Object
         },
         created(){
-            if(this.fleet === undefined){
-                this.fleet = {}
-            }
             this.fetchClients()
         },
         computed: {

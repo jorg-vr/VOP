@@ -37,6 +37,10 @@ export default {
 
         getFleetsByAll: (state, getters) => (value) => {
             return getters.filterByAll(state.fleets, value)
+        },
+
+        getFleetsByAllAdvanced: (state, getters) => (fleet) => {
+            return getters.filterByAllAdvanced(state.fleets, fleet)
         }
     },
     mutations: {
@@ -49,7 +53,6 @@ export default {
         },
 
         [types.UPDATE_FILTERED_FLEETS] (state, {fleets}){
-            console.log(fleets)
             state.filteredFleets = fleets
         },
 

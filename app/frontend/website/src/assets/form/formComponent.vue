@@ -15,6 +15,9 @@
         components: {
             buttonFail, buttonSuccess
         },
+        props: {
+            failroute: Object
+        },
         created(){
             document.addEventListener("keyup", e => {
                 if(e.keyCode === 13){

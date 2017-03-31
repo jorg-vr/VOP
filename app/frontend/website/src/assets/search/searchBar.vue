@@ -1,7 +1,7 @@
 <template>
     <div class="row search-bar">
         <div class="input-group">
-            <input type="text" class="form-control" placeholder="Search for snippets" v-model="value" @input="onInput"/>
+            <input type="text" class="form-control" :placeholder="$t('search_bar.search_for') + ' ' + title" v-model="value" @input="onInput"/>
             <div class="input-group-btn">
                 <div class="btn-group" role="group">
                     <div class="dropdown dropdown-lg">
@@ -13,10 +13,15 @@
             </div>
         </div>
         <div class="panel-collapse collapse">
-            <form class="form-horizontal collapse-form" role="form">
+            <form class="form-horizontal collapse-form" @submit.prevent="onSubmit" role="form">
                 <slot></slot>
+                <button type="button" class="btn btn-primary" @click="reset">Reset</button>
+                <button type="button" class="btn btn-primary search-button text-right" @click="onSubmit">
+                    <span class="fa fa-search" aria-hidden="true"></span>
+                </button>
             </form>
         </div>
+
     </div>
 </template>
 
@@ -31,12 +36,8 @@
         components: {
             formInput
         },
-        created() {
-            document.addEventListener("keyup", e => {
-                if(e.keyCode === 13){
-                    this.onSubmit()
-                }
-            })
+        props: {
+            title: String
         },
         methods: {
             onInput(){
@@ -44,6 +45,11 @@
             },
             onSubmit(){
                 this.$emit('submit')
+                $('.collapse').collapse('hide')
+            },
+            reset(){
+                this.$emit('reset')
+                $('.collapse').collapse('hide')
             }
         }
     }
