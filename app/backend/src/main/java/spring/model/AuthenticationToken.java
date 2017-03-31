@@ -8,13 +8,13 @@ import java.util.UUID;
 /**
  * Created by jorg on 3/30/17.
  */
-public class RESTAuthenticationToken {
+public class AuthenticationToken {
     private UUID acountId;
     private UUID functionId;
     private String hash;
     private LocalDateTime expire;
 
-    public RESTAuthenticationToken(String token) {
+    public AuthenticationToken(String token) {
         String[] tokenparts=token.split(":");
         acountId= UUIDUtil.toUUID(tokenparts[0]);
         functionId=UUIDUtil.toUUID(tokenparts[1]);

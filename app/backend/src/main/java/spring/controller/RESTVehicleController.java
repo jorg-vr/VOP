@@ -1,6 +1,5 @@
 package spring.controller;
 
-import controller.AbstractController;
 import controller.FleetController;
 import controller.VehicleController;
 
@@ -14,9 +13,6 @@ import model.fleet.Vehicle;
 import org.springframework.web.bind.annotation.*;
 import spring.exceptions.InvalidInputException;
 import spring.exceptions.NotAuthorizedException;
-import spring.exceptions.NotFoundException;
-import spring.model.RESTAuthenticationToken;
-import spring.model.RESTModelFactory;
 import spring.model.RESTSchema;
 import spring.model.RESTVehicle;
 

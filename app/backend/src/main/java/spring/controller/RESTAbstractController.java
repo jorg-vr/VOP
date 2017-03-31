@@ -12,7 +12,7 @@ import spring.exceptions.InvalidInputException;
 import spring.exceptions.NotAuthorizedException;
 import spring.exceptions.NotFoundException;
 import spring.model.RESTAbstractModel;
-import spring.model.RESTAuthenticationToken;
+import spring.model.AuthenticationToken;
 import spring.model.RESTModelFactory;
 
 import java.util.UUID;
@@ -33,7 +33,7 @@ public class RESTAbstractController<R extends RESTAbstractModel<M>,M extends Edi
 
     public Function verifyToken(String token){
         try {
-            return new AuthContoller().getFunction(new RESTAuthenticationToken(token));
+            return new AuthContoller().getFunction(new AuthenticationToken(token));
         } catch (DataAccessException e) {
             throw new InvalidInputException(e);
         } catch (UnAuthorizedException e) {

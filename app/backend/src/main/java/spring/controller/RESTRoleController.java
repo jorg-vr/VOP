@@ -1,6 +1,5 @@
 package spring.controller;
 
-import controller.AbstractController;
 import controller.AccountController;
 import controller.CustomerController;
 import controller.FunctionController;
@@ -10,18 +9,11 @@ import model.account.Account;
 import model.account.Function;
 import model.identity.Company;
 import org.springframework.web.bind.annotation.*;
-import spring.exceptions.InvalidInputException;
 import spring.exceptions.NotAuthorizedException;
-import spring.exceptions.NotFoundException;
-import spring.model.RESTAuthenticationToken;
-import spring.model.RESTModelFactory;
 import spring.model.RESTRole;
 import spring.model.RESTSchema;
 
 import java.util.*;
-
-import static spring.controller.UUIDUtil.UUIDToNumberString;
-import static spring.controller.UUIDUtil.toUUID;
 
 /**
  * This controller is responsible for handling the HTTP requests of the URL /roles.

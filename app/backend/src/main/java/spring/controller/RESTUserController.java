@@ -13,7 +13,7 @@ import spring.exceptions.ConflictException;
 import spring.exceptions.InvalidInputException;
 import spring.exceptions.NotAuthorizedException;
 import spring.exceptions.NotFoundException;
-import spring.model.RESTAuthenticationToken;
+import spring.model.AuthenticationToken;
 import spring.model.RESTSchema;
 import spring.model.RESTUser;
 
@@ -42,7 +42,7 @@ public class RESTUserController {
 
     public Function verifyToken(String token){
         try {
-            return new AuthContoller().getFunction(new RESTAuthenticationToken(token));
+            return new AuthContoller().getFunction(new AuthenticationToken(token));
         } catch (DataAccessException e) {
             throw new InvalidInputException(e);
         } catch (UnAuthorizedException e) {

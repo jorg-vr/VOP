@@ -1,7 +1,5 @@
 package spring.controller;
 
-import controller.AbstractController;
-import controller.VehicleController;
 import controller.VehicleTypeController;
 import controller.exceptions.UnAuthorizedException;
 import dao.interfaces.DataAccessException;
@@ -9,9 +7,6 @@ import model.fleet.VehicleType;
 import org.springframework.web.bind.annotation.*;
 import spring.exceptions.InvalidInputException;
 import spring.exceptions.NotAuthorizedException;
-import spring.exceptions.NotFoundException;
-import spring.model.RESTAuthenticationToken;
-import spring.model.RESTModelFactory;
 import spring.model.RESTSchema;
 import spring.model.RESTVehicleType;
 

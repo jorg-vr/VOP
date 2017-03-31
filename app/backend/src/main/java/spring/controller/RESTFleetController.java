@@ -1,24 +1,16 @@
 package spring.controller;
 
-import controller.AbstractController;
 import controller.CustomerController;
 import controller.FleetController;
-import controller.exceptions.UnAuthorizedException;
-import dao.interfaces.DataAccessException;
 import dao.interfaces.FleetDAO;
 import model.fleet.Fleet;
 import org.springframework.web.bind.annotation.*;
 import spring.exceptions.InvalidInputException;
-import spring.exceptions.NotAuthorizedException;
-import spring.exceptions.NotFoundException;
-import spring.model.RESTAuthenticationToken;
 import spring.model.RESTFleet;
-import spring.model.RESTModelFactory;
 import spring.model.RESTSchema;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.UUID;
 
 /**
  * This controller is responsible for handling the HTTP requests of the URL /fleets.
