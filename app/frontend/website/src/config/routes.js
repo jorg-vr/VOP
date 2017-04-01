@@ -37,7 +37,7 @@ export default [
             {path: 'clients/:id(\\d+)/edit', name: 'edit_client', component: editClient, props: true},
             //Fleet
             {path: 'fleets', name: 'fleets', component: indexFleet},
-            {path: 'fleets/new', name: 'new_fleet', component: newFleet},
+            {path: 'fleets/new', name: 'new_fleet', component: newFleet, props: true},
             {path: 'fleets/:id(\\d+)', name: 'fleet', component: showFleet, props: true},
             {path: 'fleets/:id(\\d+)/edit', name: 'edit_fleet', component: editFleet, props: true},
 

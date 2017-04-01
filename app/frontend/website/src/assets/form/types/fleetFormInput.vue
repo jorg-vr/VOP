@@ -1,8 +1,8 @@
 <template>
     <div>
         <form-input :placeholder="$t('common.name') + ' ' + $t('fleet.fleet') | capitalize" v-model="fleet.name"></form-input>
-        <form-select optionKey="name" :options="clients" v-model="fleet.company"
-                     :hiddenOption="$t('actions.select') + ' ' + $t('client.company')| capitalize ">
+        <form-select v-if="!fleet.company" optionKey="name" :options="clients" v-model="fleet.company"
+                     :hiddenOption="$t('actions.select') + ' ' + $t('client.client')| capitalize ">
         </form-select>
     </div>
 
@@ -15,6 +15,9 @@
         props: {
             clients: Array,
             fleet: Object
+        },
+        created(){
+            console.log(this.fleet)
         },
         components: {
             formInput, formSelect
