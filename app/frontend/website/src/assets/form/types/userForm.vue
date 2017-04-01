@@ -4,26 +4,17 @@
 <template>
     <div>
         <form-component v-if="user" @submit="proceed" :failroute="{name: 'users'}">
-            <form-input :placeholder="$t('user.firstName') | capitalize" :label="$t('user.firstName') | capitalize"
-                        v-model="user.firstName"></form-input>
-
-            <form-input :placeholder="$t('user.lastName') | capitalize" :label="$t('user.lastName') | capitalize"
-                        v-model="user.lastName"></form-input>
-
-            <form-input :placeholder="$t('user.email') | capitalize" :label="$t('user.email') | capitalize"
-                        v-model="user.email"></form-input>
+            <user-form-input :user="user"></user-form-input>
         </form-component>
     </div>
 </template>
 <script>
     import formComponent from '../formComponent.vue'
-    import formInput from '../elements/formInput.vue'
-    import buttonFail from '../../buttons/buttonFail.vue'
-    import buttonSuccess from '../../buttons/buttonSuccess.vue'
+    import userFormInput from './userFormInput.vue'
 
     export default {
         components: {
-            formComponent, formInput, buttonFail, buttonSuccess
+            formComponent, userFormInput
         },
         props: {
             submit: Function, //Function to create the fleet.

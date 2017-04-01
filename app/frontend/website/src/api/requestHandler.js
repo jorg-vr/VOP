@@ -23,6 +23,19 @@ export default {
         })
     },
 
+    //This function isn't optimised yet for any use case!
+    //For example, some properties can't be filtered, some properties might be nested
+    getObjectsRequestBy(location, filters){
+        let query = '?'
+        for(const filter in filters){
+            if(filters.hasOwnProperty(filter)){
+                query += filter + '=' + filters[filter] + '&'
+            }
+        }
+        query =  query.slice(0, -1)
+        return this.getObjectsRequest(location + query)
+    },
+
     postObjectRequest(location, object){
         return new Promise(resolve => {
             Vue.http.post(location, object, headers).then(response => {

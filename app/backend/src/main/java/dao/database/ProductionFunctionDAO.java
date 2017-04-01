@@ -76,6 +76,16 @@ public class ProductionFunctionDAO implements FunctionDAO {
     }
 
     @Override
+    public Function create(Function function) {
+        return null;
+    }
+
+    @Override
+    public Function update(Function function) {
+        return null;
+    }
+
+    @Override
     public Function create(Company company, Role role, Account account, LocalDateTime startDate, LocalDateTime endDate) throws DataAccessException {
         Function function = new Function();
         function.setCompany(company);

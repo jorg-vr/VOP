@@ -2,11 +2,8 @@ package controller;
 
 import dao.database.ProductionProvider;
 import dao.interfaces.DataAccessException;
-import dao.interfaces.Filter;
 import dao.interfaces.VehicleDAO;
-import dao.test.TestVehicleDAO;
 import main.BackendApplication;
-import model.fleet.Fleet;
 import model.fleet.Vehicle;
 import model.fleet.VehicleType;
 

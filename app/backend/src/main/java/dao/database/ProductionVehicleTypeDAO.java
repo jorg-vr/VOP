@@ -91,6 +91,16 @@ public class ProductionVehicleTypeDAO implements VehicleTypeDao {
         return null;
     }
 
+    @Override
+    public VehicleType create(VehicleType vehicleType) {
+        return null;
+    }
+
+    @Override
+    public VehicleType update(VehicleType vehicleType) {
+        return null;
+    }
+
 
     @Override
     public Filter<VehicleType> byName(String name) {

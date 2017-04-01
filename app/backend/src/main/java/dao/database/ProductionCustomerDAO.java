@@ -108,6 +108,16 @@ public class ProductionCustomerDAO implements CustomerDAO {
         return null;
     }
 
+    @Override
+    public Customer create(Customer customer) {
+        return null;
+    }
+
+    @Override
+    public Customer update(Customer customer) {
+        return null;
+    }
+
 
     @Override
     public Filter<Customer> containsFleet(Fleet fleet) {

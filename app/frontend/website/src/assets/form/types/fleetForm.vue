@@ -4,32 +4,23 @@
 -->
 <template>
     <form-component v-if="fleet" @submit="proceed" :failroute="{name: 'fleets'}">
-        <form-input :placeholder="$t('common.name') + ' ' + $t('fleet.fleet') | capitalize" v-model="fleet.name"></form-input>
-        <form-select optionKey="name" :options="clients" v-model="fleet.company"
-                     :hiddenOption="$t('actions.select') + ' ' + $t('client.company')| capitalize ">
-        </form-select>
+        <fleet-form-input :clients=clients :fleet="fleet"></fleet-form-input>
     </form-component>
 </template>
 <script>
     import formComponent from '../formComponent.vue'
-    import formInput from '../elements/formInput.vue'
-    import formSelect from '../elements/formSelect.vue'
-    import buttonFail from '../../buttons/buttonFail.vue'
-    import buttonSuccess from '../../buttons/buttonSuccess.vue'
+    import fleetFormInput from './fleetFormInput.vue'
     import {mapGetters, mapActions} from 'vuex'
 
     export default {
         components: {
-            formComponent, formInput, formSelect, buttonFail, buttonSuccess
+            formComponent, fleetFormInput
         },
         props: {
             submit: Function, //Function to create the fleet.
             oldFleet: Object
         },
         created(){
-            if(this.fleet === undefined){
-                this.fleet = {}
-            }
             this.fetchClients()
         },
         computed: {
