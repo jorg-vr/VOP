@@ -8,7 +8,7 @@ import routes from './config/routes'
 import locales from './lang/locales'
 import store from './store'
 
-import rootUrl from './config/rootUrl'
+import environments from './config/environments'
 
 //Routing support
 Vue.use(VueRouter);
@@ -19,13 +19,20 @@ Vue.use(VueI18n);
 
 Vue.config.lang = 'nl';
 
+if(process.env.NODE_ENV){
+    Vue.config.env = environments[process.env.NODE_ENV]
+}
+else {
+    Vue.config.env = environments['development']
+}
+
 Object.keys(locales).forEach(function (lang) {
     Vue.locale(lang, locales[lang])
 })
 
 const router = new VueRouter({
-    base: '/app/',
     mode: 'history',
+    base: Vue.config.env.BASE,
     routes: routes,
 })
 
@@ -34,7 +41,7 @@ Vue.filter('capitalize', function(value){
     return value.charAt(0).toUpperCase() + value.slice(1)
 })
 
-Vue.http.options.root = 'https://vopro5.ugent.be/app/api'
+Vue.http.options.root = Vue.config.env.API_KEY
 
 new Vue({
     store,
