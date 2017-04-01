@@ -13,7 +13,7 @@
             </div>
         </div>
         <div class="panel-collapse collapse">
-            <form class="form-horizontal collapse-form" @submit.prevent="onSubmit" role="form">
+            <form class="form-horizontal collapse-form" @submit.prevent="onSubmit" @keyup.enter="onSubmit" role="form">
                 <slot></slot>
                 <button type="button" class="btn btn-primary" @click="reset">Reset</button>
                 <button type="button" class="btn btn-primary search-button text-right" @click="onSubmit">
