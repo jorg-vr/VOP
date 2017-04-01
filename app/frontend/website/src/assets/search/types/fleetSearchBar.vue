@@ -20,7 +20,6 @@
         },
         methods: {
             onSubmit(value){
-                console.log(value)
                 this.$emit('advancedSearch', value)
             }
         }

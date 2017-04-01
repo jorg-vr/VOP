@@ -25,7 +25,6 @@
     import { mapGetters, mapActions, mapMutations } from 'vuex'
     import listComponent from "../../assets/general/listComponent.vue"
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
-    import searchBar from '../../assets/search/searchBar.vue'
     import clientSearchBar from '../../assets/search/types/clientSearchBar.vue'
 
     export default {
