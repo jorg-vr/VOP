@@ -21,18 +21,20 @@
                 </list-component>
             </div>
         </div>
+        <button-back :route="{name: 'fleets'}"></button-back>
         <button-add :route="{name: 'new_vehicle', params: {fleetId: fleet.id}}"></button-add>
     </div>
 </template>
 <script>
     import listComponent from '../../assets/general/listComponent.vue'
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
+    import buttonBack from '../../assets/buttons/buttonBack.vue'
     import vehicleSearchBar from '../../assets/search/types/vehicleSearchBar.vue'
     import {mapGetters, mapActions, mapMutations} from 'vuex'
 
     export default {
         components: {
-            listComponent, buttonAdd, vehicleSearchBar
+            listComponent, buttonAdd, vehicleSearchBar, buttonBack
         },
         props: {
             id: String

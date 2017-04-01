@@ -18,7 +18,8 @@
         },
         props: {
             submit: Function, //Function to create the fleet.
-            oldFleet: Object
+            oldFleet: Object,
+            clientId: String
         },
         created(){
             this.fetchClients()
@@ -29,7 +30,7 @@
             ]),
             fleet() {
                 if(this.oldFleet===undefined){
-                    return {}
+                    return {company: this.clientId}
                 }
                 else {
                     return this.oldFleet
