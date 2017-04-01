@@ -45,7 +45,7 @@ export default {
 
         [types.CREATE_CLIENT] (state, {client}){
             state.clients.push(client)
-            state.clients.push(client)
+            state.filteredClients.push(client)
         },
 
         [types.DELETE_CLIENT] (state, {id}){

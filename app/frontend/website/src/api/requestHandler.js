@@ -23,20 +23,17 @@ export default {
         })
     },
 
-    /*
-    filters: an array of objects, each have a filter and its value.
-    This object can look like this: {filter: 'company', value: 'Hertsens'}
-     */
+    //This function isn't optimised yet for any use case!
+    //For example, some properties can't be filtered, some properties might be nested
     getObjectsRequestBy(location, filters){
-        query = ''
-        if(filters.length > 0){
-            query += '?'
-            for(let i=0; i<filters.length; i++){
-                let filter = filters[i]
-                query += filters[i].filter + '=' + filters[i].value
+        let query = '?'
+        for(const filter in filters){
+            if(filters.hasOwnProperty(filter)){
+                query += filter + '=' + filters[filter] + '&'
             }
         }
-        return getObjectsRequest(location + query)
+        query =  query.slice(0, -1)
+        return this.getObjectsRequest(location + query)
     },
 
     postObjectRequest(location, object){

@@ -8,6 +8,7 @@ export default {
         fleets: [],
         subfleets: [],
         filteredFleets: [],
+        filteredSubfleets: [],
         fleet: {}
     },
     getters: {
@@ -27,6 +28,10 @@ export default {
             return state.subfleets
         },
 
+        filteredSubfleets(state) {
+            return state.filteredSubfleets
+        },
+
         getFleetsByName(name){
             return state.fleets.filter(fleet => fleet.name === name)
         },
@@ -41,6 +46,23 @@ export default {
 
         getFleetsByAllAdvanced: (state, getters) => (fleet) => {
             return getters.filterByAllAdvanced(state.fleets, fleet)
+        },
+
+        //!!! This filters the vehicles of the subfleets
+        getSubfleetsByAll: (state, getters) => (value) => {
+            let filteredSubfleets = []
+            for(let i=0; i<state.subfleets.length; i++){
+                filteredSubfleets.push({type: state.subfleets[i].type, vehicles: getters.filterByAll(state.subfleets[i].vehicles, value)})
+            }
+            return filteredSubfleets
+        },
+
+        getSubfleetsByAllAdvanced: (state, getters) => (value) => {
+            let filteredSubfleets = []
+            for(let i=0; i<state.subfleets.length; i++){
+                filteredSubfleets.push({type: state.subfleets[i].type, vehicles: getters.filterByAllAdvanced(state.subfleets[i].vehicles, value)})
+            }
+            return filteredSubfleets
         }
     },
     mutations: {
@@ -54,6 +76,10 @@ export default {
 
         [types.UPDATE_FILTERED_FLEETS] (state, {fleets}){
             state.filteredFleets = fleets
+        },
+
+        [types.UPDATE_FILTERED_SUBFLEETS] (state, {subfleets}){
+            state.filteredSubfleets = subfleets
         },
 
         [types.CREATE_FLEET] (state, {fleet}){
@@ -75,24 +101,13 @@ export default {
         },
 
         [types.ADD_VEHICLE_TO_SUBFLEETS] (state, {vehicle}){
-            let subfleets = state.subfleets
-            let finished = false
-            for (let i = 0; i < subfleets.length && !finished; i++) {
-                if (vehicle.type === subfleets[i].type.id) {
-                    subfleets[i].vehicles.push(vehicle);
-                    finished = true
-                }
-            }
+            addVehicleToSubfleets(state.subfleets, vehicle)
+            addVehicleToSubfleets(state.filteredSubfleets, vehicle)
         },
 
         [types.REMOVE_VEHICLE_FROM_SUBFLEETS] (state, {vehicle}){
-            let subfleets = state.subfleets
-            for(let i=0; i<subfleets.length; i++){
-                if(subfleets[i].type.id === vehicle.type){
-                    let newVehicles = subfleets[i].vehicles.filter(obj => obj.id !== vehicle.id)
-                    subfleets[i].vehicles = newVehicles;
-                }
-            }
+            removeVehicleFromSubfleets(state.subfleets, vehicle)
+            removeVehicleFromSubfleets(state.filteredSubfleets, vehicle)
         }
     },
     actions: {
@@ -115,7 +130,6 @@ export default {
         },
 
         fetchFleetsByClient(context, {clientId}){
-            console.log(clientId)
             return new Promise(resolve => {
                 RequestHandler.getObjectsRequest(locations.FLEET + "?company=" + clientId).then(fleets => {
                     context.commit(types.RECEIVE_FLEETS, {fleets})
@@ -150,6 +164,10 @@ export default {
             })
         },
 
+        addClientName(context, {client}){
+            Vue.set(context.state.fleet, 'companyName', client.name)
+        },
+
         addClientNames(context, {clients}){
             let fleets = context.state.fleets
             for(let i=0; i<fleets.length; i++){
@@ -171,10 +189,24 @@ export default {
                 context.commit(types.ADD_VEHICLE_TO_SUBFLEETS, {vehicle: vehicles[i]})
             }
         },
+    }
+}
 
-        //This is an action and not a getter as it needs to access a root action
-        getFleetsByAll({dispatch, state}, {value}){
-            return dispatch('filterByAll', {objects: state.fleets, value: value})
+let addVehicleToSubfleets = function(subfleets, vehicle){
+    let finished = false
+    for (let i = 0; i < subfleets.length && !finished; i++) {
+        if (vehicle.type === subfleets[i].type.id) {
+            subfleets[i].vehicles.push(vehicle);
+            finished = true
+        }
+    }
+}
+
+let removeVehicleFromSubfleets = function(subfleets, vehicle){
+    for(let i=0; i<subfleets.length; i++){
+        if(subfleets[i].type.id === vehicle.type){
+            let newVehicles = subfleets[i].vehicles.filter(obj => obj.id !== vehicle.id)
+            subfleets[i].vehicles = newVehicles;
         }
     }
 }
