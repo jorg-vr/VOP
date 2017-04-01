@@ -2,6 +2,7 @@ let nonAcceptedFilters = ['id', 'createdAt', 'lastUpdated', 'url', 'originalObje
 
 export default {
     filterByAll: () => (objects, value) => {
+        console.log(objects)
         let filteredObjects = []
         if(objects.length>0){
             let object = objects[0]

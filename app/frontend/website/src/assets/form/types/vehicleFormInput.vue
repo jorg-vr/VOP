@@ -28,13 +28,35 @@
 </template>
 <script>
     import formInput from '../elements/formInput.vue'
+    import formSelect from '../elements/formSelect.vue'
+    import {mapGetters, mapActions} from 'vuex'
 
     export default {
         props: {
-            vehicle: Object
+            vehicle: Object,
         },
         components: {
-            formInput
+            formInput, formSelect
+        },
+        created(){
+            this.fetchClients()
+            this.fetchVehicleTypes()
+        },
+        computed: {
+            ...mapGetters([
+                'clients',
+                'vehicleTypes'
+            ])
+        },
+        methods: {
+            onSubmit(value){
+                this.$emit('advancedSearch', value)
+            },
+
+            ...mapActions([
+                'fetchClients',
+                'fetchVehicleTypes'
+            ])
         }
     }
 </script>

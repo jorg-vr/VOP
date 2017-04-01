@@ -6,6 +6,7 @@ import Vue from 'vue'
 export default {
     state: {
         vehicles: [],
+        filteredVehicles: [],
         vehicle: {},
         vehicleTypes: [],
         vehicleType: {}
@@ -17,6 +18,10 @@ export default {
 
         vehicle(state) {
             return state.vehicle
+        },
+
+        filteredVehicles(state){
+            return state.filteredVehicles
         },
 
         vehicleTypes(state) {
@@ -40,12 +45,17 @@ export default {
             state.vehicle = vehicle
         },
 
+        [types.UPDATE_FILTERED_VEHICLES] (state, {vehicles}){
+            state.filteredVehicles = vehicles
+        },
+
         [types.CREATE_VEHICLE] (state, {vehicle}){
             state.vehicles.push(vehicle)
         },
 
         [types.DELETE_VEHICLE] (state, {id}){
-            state.vehicles = state.vehicles.filter(vehicle => vehicle.id !== id);
+            state.vehicles = state.vehicles.filter(vehicle => vehicle.id !== id)
+            state.filteredVehicles = state.filteredVehicles.filter(user => user.id !== id)
         },
 
         [types.RECEIVE_VEHICLE_TYPES] (state, {vehicleTypes}){
@@ -77,6 +87,16 @@ export default {
                     resolve(vehicle)
                 })
             })
+        },
+
+        fetchVehiclesBy(context, {vehicle}){
+            return new Promise(resolve => {
+                RequestHandler.getObjectsRequestBy(locations.VEHICLE, vehicle).then(vehicles => {
+                    context.commit(types.UPDATE_FILTERED_VEHICLES, {vehicles})
+                    resolve(vehicles)
+                })
+            })
+
         },
 
         createVehicle(context, {vehicle}){
