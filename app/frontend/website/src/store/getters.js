@@ -1,3 +1,5 @@
+let nonAcceptedFilters = ['id', 'createdAt', 'lastUpdated', 'url', 'originalObject']
+
 export default {
     filterByAll: () => (objects, value) => {
         let filteredObjects = []
@@ -20,9 +22,6 @@ export default {
         return filteredObjects
     }
 }
-
-
-let nonAcceptedFilters = ['id', 'createdAt', 'lastUpdated', 'url', 'originalObject']
 
 Array.prototype.unique = function() {
     var a = this.concat();
