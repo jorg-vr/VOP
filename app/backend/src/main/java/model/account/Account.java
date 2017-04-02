@@ -87,7 +87,21 @@ public class Account implements EditableObject, java.io.Serializable {
         return new Account(login, hashedPassword, person, functions, uuid);
     }
 
-    /*@Override
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || !(o instanceof Account)) return false;
+
+        Account account = (Account) o;
+
+        return getUuid().equals(account.getUuid());
+    }
+
+    @Override
+    public int hashCode() {
+        return getUuid().hashCode();
+    }
+/*@Override
     public String toString() {
         return "Account{" +
                 "uuid= " + getUuid() +
