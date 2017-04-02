@@ -17,6 +17,7 @@ public interface VehicleTypeDao extends DAO<VehicleType> {
      * @return A new VehicleType
      * @throws DataAccessException thrown when type already exists or the object cannot be created.
      */
+    @Deprecated
     VehicleType create(String type, double tax) throws DataAccessException;
 
     /**
@@ -27,6 +28,7 @@ public interface VehicleTypeDao extends DAO<VehicleType> {
      * @return The updated VehicleType
      * @throws DataAccessException thrown when type already exists or the object cannot be updated.
      */
+    @Deprecated
     VehicleType update(UUID uuid, String type, double tax) throws DataAccessException;
 
     /**

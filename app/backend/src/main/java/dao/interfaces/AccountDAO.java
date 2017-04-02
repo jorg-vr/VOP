@@ -21,6 +21,7 @@ public interface AccountDAO extends DAO<Account> {
      * @return account object with valid fields
      * @throws DataAccessException thrown when the given parameters can't be updated
      */
+    @Deprecated
     Account create(String login, String hashedPassword, Person person) throws DataAccessException;
 
     /**
@@ -31,6 +32,7 @@ public interface AccountDAO extends DAO<Account> {
      * @return account object with valid fields
      * @throws DataAccessException thrown when given id not exists or when the given parameters can't be updated
      */
+    @Deprecated
     Account update(UUID id, String login, String hashedPassword) throws DataAccessException;
 
     /**

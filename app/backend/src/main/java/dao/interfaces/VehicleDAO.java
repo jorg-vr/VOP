@@ -29,6 +29,7 @@ public interface VehicleDAO extends DAO<Vehicle> {
      * @return A new Vehicle
      * @throws DataAccessException Thrown when invalid values are given or when the object cannot be created
      */
+    @Deprecated
     Vehicle create(String brand, String model, String chassisNumber, String licenseplate, int value, int mileage, VehicleType type, LocalDate productionDate, Fleet fleet) throws DataAccessException;
 
     /**
@@ -47,6 +48,7 @@ public interface VehicleDAO extends DAO<Vehicle> {
      * @return A new Vehicle
      * @throws DataAccessException Thrown when invalid values are given or when the object cannot be created
      */
+    @Deprecated
     Vehicle update(UUID uuid, String brand, String model, String chassisNumber, String licenseplate, int value, int mileage, VehicleType type, LocalDate productionDate, Fleet fleet) throws DataAccessException;
 
     /**

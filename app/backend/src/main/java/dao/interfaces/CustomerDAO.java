@@ -22,6 +22,7 @@ public interface CustomerDAO extends CompanyDAO<Customer> {
      * @return A new customer with a unique id
      * @throws DataAccessException Thrown when the object can't be created or invalid arguments are given
      */
+    @Deprecated
     Customer create(String name, Address address, String phonenumber, String btwNumber) throws DataAccessException;
 
     /**
@@ -34,6 +35,7 @@ public interface CustomerDAO extends CompanyDAO<Customer> {
      * @return The updated customer
      * @throws DataAccessException Thrown when the object can't be created or invalid arguments are given
      */
+    @Deprecated
     Customer update(UUID id, String name, Address address, String phonenumber, String btwNumber) throws DataAccessException;
 
     /**

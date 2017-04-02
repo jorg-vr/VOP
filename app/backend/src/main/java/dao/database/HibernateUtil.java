@@ -12,13 +12,13 @@ import org.hibernate.Transaction;
 public class HibernateUtil {
     /**
      * Using Hibernate make the given object persistent in the database
-     * @param factory The SessionFactory to use
+     * @param session The Session to use
      * @param objectToSave The object to save
      * @throws DataAccessException Thrown when constraints are violated or session
      */
-    public synchronized static void create(SessionFactory factory, Object objectToSave) throws DataAccessException {
+    public synchronized static void create(Session session, Object objectToSave) throws DataAccessException {
         Transaction transaction = null;
-        try (Session session = factory.openSession()) {
+        try  {
             transaction = session.beginTransaction();
             session.save(objectToSave);
             transaction.commit();
@@ -34,13 +34,13 @@ public class HibernateUtil {
     /**
      * Using Hibernate remove the given object from the database
      *
-     * @param factory        The SessionFactory to use
+     * @param session        The Session to use
      * @param objectToRemove The object to remove
      * @throws DataAccessException Thrown when constraints are violated or session
      */
-    public synchronized static void remove(SessionFactory factory, Object objectToRemove) throws DataAccessException {
+    public synchronized static void remove(Session session, Object objectToRemove) throws DataAccessException {
         Transaction tx = null;
-        try (Session session = factory.openSession();) {
+        try {
             tx = session.beginTransaction();
             session.delete(objectToRemove);
             tx.commit();
@@ -57,15 +57,15 @@ public class HibernateUtil {
     /**
      * Using Hibernate update the given object in the database
      *
-     * @param factory        The SessionFactory to use
+     * @param session       The Session to use
      * @param objectToUpdate The object to update
      * @throws DataAccessException Thrown when constraints are violated or session
      */
-    public synchronized static void update(SessionFactory factory, Object objectToUpdate) throws DataAccessException {
+    public synchronized static void update(Session session, Object objectToUpdate) throws DataAccessException {
         Transaction tx = null;
-        try (Session session = factory.openSession();) {
+        try {
             tx = session.beginTransaction();
-            session.update(objectToUpdate);
+            session.merge(objectToUpdate);
             tx.commit();
         } catch (Exception e) {
             if (tx != null) {

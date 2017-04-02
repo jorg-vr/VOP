@@ -3,6 +3,7 @@ package dao.database;
 import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
 import dao.interfaces.FleetDAO;
+import model.account.Account;
 import model.fleet.Fleet;
 import model.fleet.Vehicle;
 import model.identity.Customer;
@@ -16,22 +17,23 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
  * Created by sam on 3/13/17.
  */
-public class ProductionFleetDAO implements FleetDAO{
+public class ProductionFleetDAO implements FleetDAO {
 
-    private final SessionFactory factory;
+    private final Session session;
     private CriteriaQuery<Fleet> criteriaQuery;
     private CriteriaBuilder criteriaBuilder;
     private Root<Fleet> root;
     private Collection<Predicate> predicates = new ArrayList<>();
 
 
-    public ProductionFleetDAO(SessionFactory factory){
-        this.factory = factory;
+    public ProductionFleetDAO(Session session) {
+        this.session = session;
     }
 
     @Override
@@ -39,7 +41,7 @@ public class ProductionFleetDAO implements FleetDAO{
         Fleet fleet = new Fleet();
         fleet.setName(name);
         fleet.setOwner(customer);
-        HibernateUtil.create(factory,fleet);
+        HibernateUtil.create(session, fleet);
         return fleet;
     }
 
@@ -48,26 +50,36 @@ public class ProductionFleetDAO implements FleetDAO{
         Fleet fleet = get(id);
         fleet.setName(name);
         fleet.setOwner(customer);
-        HibernateUtil.update(factory,fleet);
+        HibernateUtil.update(session, fleet);
+        return fleet;
+    }
+
+    @Override
+    public Fleet create(Fleet fleet) throws DataAccessException {
+        HibernateUtil.create(session, fleet);
+        return fleet;
+    }
+
+    @Override
+    public Fleet update(Fleet fleet) throws DataAccessException {
+        HibernateUtil.update(session, fleet);
         return fleet;
     }
 
     @Override
     public Fleet get(UUID id) throws DataAccessException {
-        try (Session session = factory.openSession()) {
-            return session.get(Fleet.class, id);
-        }
+        return Optional.ofNullable(session.get(Fleet.class, id)).orElseThrow(DataAccessException::new);
     }
 
     @Override
     public void remove(UUID id) throws DataAccessException {
-        HibernateUtil.remove(factory,get(id));
+        HibernateUtil.remove(session, get(id));
     }
 
     @Override
     public Collection<Fleet> listFiltered(Filter<Fleet>[] filters) throws DataAccessException {
         Transaction tx = null;
-        try (Session session = factory.openSession()) {
+        try {
 
             tx = session.beginTransaction();
             this.criteriaBuilder = session.getCriteriaBuilder();
@@ -94,13 +106,8 @@ public class ProductionFleetDAO implements FleetDAO{
     }
 
     @Override
-    public Fleet create(Fleet fleet) {
-        return null;
-    }
-
-    @Override
-    public Fleet update(Fleet fleet) {
-        return null;
+    public void close() throws Exception {
+        session.close();
     }
 
 }

@@ -19,6 +19,7 @@ public interface FleetDAO extends DAO<Fleet> {
      * @return the Fleet object with valid fields
      * @throws DataAccessException
      */
+    @Deprecated
     Fleet create(String name, Customer customer) throws DataAccessException;
 
     /**
@@ -28,6 +29,7 @@ public interface FleetDAO extends DAO<Fleet> {
      * @return the Fleet object with updated values
      * @throws DataAccessException name has been taken or no Fleet associated with that id
      */
+    @Deprecated
     Fleet update(UUID id, String name, Customer customer) throws DataAccessException;
 
 }

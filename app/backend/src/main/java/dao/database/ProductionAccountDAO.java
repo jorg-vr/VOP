@@ -16,6 +16,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -23,36 +24,42 @@ import java.util.UUID;
  */
 public class ProductionAccountDAO implements AccountDAO {
 
-    private final SessionFactory factory;
+    private final Session session;
     private CriteriaBuilder criteriaBuilder;
     private CriteriaQuery<Account> criteriaQuery;
     private Root<Account> root;
     private Collection<Predicate> predicates = new ArrayList<>();
 
-    public ProductionAccountDAO(SessionFactory sessionFactory) {
-        this.factory = sessionFactory;
+    public ProductionAccountDAO(Session session) {
+        this.session = session;
+    }
+
+    @Override
+    public Account create(Account account) throws DataAccessException {
+        HibernateUtil.create(session,account);
+        return account;
+    }
+
+    @Override
+    public Account update(Account account) throws DataAccessException {
+        HibernateUtil.update(session,account);
+        return account;
     }
 
     @Override
     public Account get(UUID id) throws DataAccessException {
-        try (Session session = factory.openSession()) {
-            Account account= session.get(Account.class, id);
-            if (account!=null) {
-                Hibernate.initialize(account.getPerson());
-            }
-            return account;
-        }
+        return Optional.ofNullable(session.get(Account.class, id)).orElseThrow(DataAccessException::new);
     }
 
     @Override
     public void remove(UUID id) throws DataAccessException {
-        HibernateUtil.remove(factory, get(id));
+        HibernateUtil.remove(session, get(id));
     }
 
     @Override
     public Collection<Account> listFiltered(Filter<Account>[] filters) throws DataAccessException {
         Transaction tx = null;
-        try (Session session = factory.openSession()) {
+        try {
 
             tx = session.beginTransaction();
             this.criteriaBuilder = session.getCriteriaBuilder();
@@ -84,22 +91,12 @@ public class ProductionAccountDAO implements AccountDAO {
     }
 
     @Override
-    public Account create(Account account) {
-        return null;
-    }
-
-    @Override
-    public Account update(Account account) {
-        return null;
-    }
-
-    @Override
     public Account create(String login, String hashedPassword, Person person) throws DataAccessException {
         Account account = new Account();
         account.setLogin(login);
         account.setHashedPassword(hashedPassword);
         account.setPerson(person);
-        HibernateUtil.create(factory, account);
+        HibernateUtil.create(session, account);
         return account;
     }
 
@@ -111,7 +108,7 @@ public class ProductionAccountDAO implements AccountDAO {
         account.setLogin(login);
         account.setHashedPassword(hashedPassword);
         account.setPerson(get(id).getPerson());//TODO evaluate this
-        HibernateUtil.update(factory, account);
+        HibernateUtil.update(session, account);
         return account;
     }
 
@@ -129,5 +126,10 @@ public class ProductionAccountDAO implements AccountDAO {
         return () -> {
             predicates.add(criteriaBuilder.equal(root.get("person"), identity));
         };
+    }
+
+    @Override
+    public void close() throws Exception {
+        session.close();
     }
 }
