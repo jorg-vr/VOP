@@ -2,6 +2,7 @@ package spring.controller;
 
 import controller.AccountController;
 import controller.PersonController;
+import dao.database.ProductionProvider;
 import dao.interfaces.DataAccessException;
 import model.account.Account;
 import model.identity.Person;
@@ -31,7 +32,7 @@ public class RESTUserControllerTest {
     private static Account account;
     @BeforeClass
     public static void setup() {
-        //ProductionProvider.initializeProvider("test");
+        ProductionProvider.initializeProvider("unittest");
         try {
             person=new PersonController().createPerson("jon","doe","jon.doe@hotmail.com");
             account=new AccountController().createAccount("jon.doe@hotmail.com","054561dfs5f465",person.getUuid());
@@ -48,7 +49,7 @@ public class RESTUserControllerTest {
             e.printStackTrace();
         }
 
-        //ProductionProvider.getInstance().close();
+        ProductionProvider.getInstance().close();
     }
 
     @Test

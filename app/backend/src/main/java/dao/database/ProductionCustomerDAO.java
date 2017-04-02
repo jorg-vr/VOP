@@ -35,13 +35,15 @@ public class ProductionCustomerDAO implements CustomerDAO {
     }
 
     @Override
-    public void create(Customer customer) throws DataAccessException {
+    public Customer create(Customer customer) throws DataAccessException {
         HibernateUtil.create(session,customer);
+        return customer;
     }
 
     @Override
-    public void update(Customer customer) throws DataAccessException {
+    public Customer update(Customer customer) throws DataAccessException {
         HibernateUtil.update(session,customer);
+        return customer;
     }
 
     @Override
@@ -109,7 +111,6 @@ public class ProductionCustomerDAO implements CustomerDAO {
         }
         return null;
     }
-
 
     @Override
     public Filter<Customer> containsFleet(Fleet fleet) {

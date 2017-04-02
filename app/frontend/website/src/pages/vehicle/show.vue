@@ -52,10 +52,15 @@
         components: {
             buttonBack
         },
+        props: {
+            id: String
+        },
         created() {
-            this.fetchVehicle({id: this.$route.params.id}).then(vehicle => {
+            this.fetchVehicle({id: this.id}).then(vehicle => {
                 this.fetchVehicleType({id: vehicle.type})
-                this.fetchClient({id: vehicle.leasingCompany})
+                if(vehicle.leasingCompany){
+                    this.fetchClient({id: vehicle.leasingCompany})
+                }
             })
         },
         computed: {

@@ -34,13 +34,15 @@ public class ProductionAccountDAO implements AccountDAO {
     }
 
     @Override
-    public void create(Account account) throws DataAccessException {
+    public Account create(Account account) throws DataAccessException {
         HibernateUtil.create(session,account);
+        return account;
     }
 
     @Override
-    public void update(Account account) throws DataAccessException {
+    public Account update(Account account) throws DataAccessException {
         HibernateUtil.update(session,account);
+        return account;
     }
 
     @Override

@@ -36,13 +36,15 @@ public class ProductionFunctionDAO implements FunctionDAO {
     }
 
     @Override
-    public void create(Function function) throws DataAccessException {
+    public Function create(Function function) throws DataAccessException {
         HibernateUtil.create(session,function);
+        return function;
     }
 
     @Override
-    public void update(Function function) throws DataAccessException {
+    public Function update(Function function) throws DataAccessException {
         HibernateUtil.update(session,function);
+        return function;
     }
 
     @Override

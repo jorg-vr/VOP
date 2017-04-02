@@ -33,13 +33,15 @@ public class ProductionAddressDAO implements AddressDAO {
     }
 
     @Override
-    public void create(Address address) throws DataAccessException {
+    public Address create(Address address) throws DataAccessException {
         HibernateUtil.create(session, address);
+        return address;
     }
 
     @Override
-    public void update(Address address) throws DataAccessException {
+    public Address update(Address address) throws DataAccessException {
         HibernateUtil.update(session, address);
+        return address;
     }
 
     @Override
@@ -83,8 +85,7 @@ public class ProductionAddressDAO implements AddressDAO {
     }
 
     @Override
-    public Address create(String street, String streetNumber, String town, String postalCode, String country) throws
-            DataAccessException {
+    public Address create(String street, String streetNumber, String town, String postalCode, String country) throws DataAccessException {
         Address address = new Address();
         address.setStreet(street);
         address.setStreetNumber(streetNumber);

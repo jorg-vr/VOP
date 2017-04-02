@@ -14,11 +14,10 @@ public class ProductionAddressDAOTest {
     private static DAOProvider daoProvider;
     private static AddressDAO addressDAO;
 
-    //TODO: production to false, when local
     //Setup before any of the tests are started
     @BeforeClass
     public static void initProvider() throws Exception {
-        //ProductionProvider.initializeProvider("test");
+        ProductionProvider.initializeProvider("unittest");
         daoProvider = ProductionProvider.getInstance();
         addressDAO = daoProvider.getAddressDao();
     }
@@ -26,7 +25,7 @@ public class ProductionAddressDAOTest {
     //Gets executed after all tests have been run
     @AfterClass
     public static void closeProvider() throws Exception {
-        //daoProvider.close();
+        daoProvider.close();
     }
 
     @Test

@@ -53,6 +53,9 @@ export default
         actions_plural: {
             create: 'create',
             edit: 'edit'
+        },
+        search_bar: {
+            search_for: 'Search for',
         }
     },
     nl : {
@@ -108,6 +111,9 @@ export default
         actions_plural: {
             create: 'aanmaken',
             edit: 'bewerken'
+        },
+        search_bar: {
+            search_for: 'Zoeken naar',
         }
     }
 }

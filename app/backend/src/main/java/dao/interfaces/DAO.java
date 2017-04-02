@@ -10,9 +10,11 @@ import java.util.UUID;
  */
 public interface DAO<T> extends AutoCloseable {
 
-    void create(T t) throws DataAccessException;
+    T create(T t) throws DataAccessException;
 
-    void update(T t) throws DataAccessException;
+    T update(T t) throws DataAccessException;
+
+
     /**
      * Retrieves an object using its unique id
      * @param id the id of the object
@@ -35,5 +37,6 @@ public interface DAO<T> extends AutoCloseable {
      * @throws DataAccessException Thrown when the objects cannot be retrieved
      */
     Collection<T> listFiltered(Filter<T>... filters) throws DataAccessException;
+
 
 }

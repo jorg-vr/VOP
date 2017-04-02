@@ -6,15 +6,28 @@ import Vue from 'vue'
 export default {
     state: {
         clients: [],
-        client: {}
+        client: {},
+        filteredClients: [],
     },
     getters: {
         clients(state) {
             return state.clients
         },
 
+        filteredClients(state){
+            return state.filteredClients
+        },
+
         client(state) {
             return state.client
+        },
+
+        getClientsByAll: (state, getters) => (value) => {
+            return getters.filterByAll(state.clients, value)
+        },
+
+        getClientsByAllAdvanced: (state, getters) => (client) => {
+            return getters.filterByAllAdvanced(state.clients, client)
         }
     },
     mutations: {
@@ -26,12 +39,18 @@ export default {
             state.client = client
         },
 
+        [types.UPDATE_FILTERED_CLIENTS] (state, {clients}){
+            state.filteredClients = clients
+        },
+
         [types.CREATE_CLIENT] (state, {client}){
             state.clients.push(client)
+            state.filteredClients.push(client)
         },
 
         [types.DELETE_CLIENT] (state, {id}){
-            state.clients = state.clients.filter(client => client.id !== id);
+            state.clients = state.clients.filter(client => client.id !== id)
+            state.filteredClients = state.filteredClients.filter(client => client.id !== id)
         }
     },
     actions: {

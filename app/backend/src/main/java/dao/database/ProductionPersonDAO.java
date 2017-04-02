@@ -29,13 +29,15 @@ public class ProductionPersonDAO implements PersonDAO {
     }
 
     @Override
-    public void create(Person person) throws DataAccessException {
+    public Person create(Person person) throws DataAccessException {
         HibernateUtil.create(session,person);
+        return person;
     }
 
     @Override
-    public void update(Person person) throws DataAccessException {
+    public Person update(Person person) throws DataAccessException {
         HibernateUtil.update(session,person);
+        return person;
     }
 
     @Override

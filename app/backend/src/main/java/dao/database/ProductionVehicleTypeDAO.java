@@ -3,6 +3,7 @@ package dao.database;
 import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
 import dao.interfaces.VehicleTypeDao;
+import model.fleet.Vehicle;
 import model.fleet.VehicleType;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -32,13 +33,15 @@ public class ProductionVehicleTypeDAO implements VehicleTypeDao {
     }
 
     @Override
-    public void create(VehicleType type) throws DataAccessException {
+    public VehicleType create(VehicleType type) throws DataAccessException {
         HibernateUtil.create(session, type);
+        return type;
     }
 
     @Override
-    public void update(VehicleType type) throws DataAccessException {
+    public VehicleType update(VehicleType type) throws DataAccessException {
         HibernateUtil.update(session, type);
+        return type;
     }
 
     @Override
@@ -100,7 +103,6 @@ public class ProductionVehicleTypeDAO implements VehicleTypeDao {
         }
         return null;
     }
-
 
     @Override
     public Filter<VehicleType> byName(String name) {

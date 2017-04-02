@@ -36,13 +36,15 @@ public class ProductionVehicleDAO implements VehicleDAO {
 
 
     @Override
-    public void create(Vehicle vehicle) throws DataAccessException{
+    public Vehicle create(Vehicle vehicle) throws DataAccessException{
         HibernateUtil.create(session,vehicle);
+        return vehicle;
     }
 
     @Override
-    public void update(Vehicle vehicle) throws DataAccessException{
+    public Vehicle update(Vehicle vehicle) throws DataAccessException{
         HibernateUtil.update(session,vehicle);
+        return vehicle;
     }
 
     @Override
@@ -117,7 +119,6 @@ public class ProductionVehicleDAO implements VehicleDAO {
         }
         return null;
     }
-
 
     @Override
     public Filter<Vehicle> byBrand(String brandName) {

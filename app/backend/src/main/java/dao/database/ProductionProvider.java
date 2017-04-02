@@ -45,6 +45,8 @@ public class ProductionProvider implements DAOProvider {
             provider = new ProductionProvider("hibernate/localtest.cfg.xml");
         } else if (environment.equals("test")) {
             provider = new ProductionProvider("hibernate/test.cfg.xml");
+        } else if (environment.equals("unittest")) {
+            provider = new ProductionProvider("hibernate/test-in-memory.cfg.xml");
         }
 
     }
@@ -54,7 +56,7 @@ public class ProductionProvider implements DAOProvider {
      */
     public synchronized static DAOProvider getInstance() {
         if (provider == null) {
-            initializeProvider("production");
+            initializeProvider("test");
         }
         return provider;
     }

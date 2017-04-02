@@ -18,9 +18,12 @@
         components: {
             VehicleForm
         },
+        props: {
+            id: String
+        },
         //Fetch the vehicle of this page when the page is created.
         created() {
-            this.fetchVehicle({id: this.$route.params.id})
+            this.fetchVehicle({id: this.id})
         },
         computed: {
             ...mapGetters([

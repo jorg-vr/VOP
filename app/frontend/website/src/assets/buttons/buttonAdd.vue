@@ -1,5 +1,5 @@
 <template>
-    <button-link :route="route"  buttonClass="btn btn-primary btn-circle btn-lg">+</button-link>
+    <button-link :route="route"  buttonClass="btn btn-primary btn-circle btn-lg" buttonId="add">+</button-link>
 </template>
 <script>
     import buttonLink from './buttonLink.vue'

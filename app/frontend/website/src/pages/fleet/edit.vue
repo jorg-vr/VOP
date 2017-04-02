@@ -16,8 +16,11 @@
         components: {
             FleetForm
         },
+        props: {
+            id: String
+        },
         created() {
-            this.fetchFleet({id: this.$route.params.id})
+            this.fetchFleet({id: this.id})
         },
         computed: {
             ...mapGetters([

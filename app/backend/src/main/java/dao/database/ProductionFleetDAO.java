@@ -53,13 +53,15 @@ public class ProductionFleetDAO implements FleetDAO {
     }
 
     @Override
-    public void create(Fleet fleet) throws DataAccessException {
+    public Fleet create(Fleet fleet) throws DataAccessException {
         HibernateUtil.create(session, fleet);
+        return fleet;
     }
 
     @Override
-    public void update(Fleet fleet) throws DataAccessException {
+    public Fleet update(Fleet fleet) throws DataAccessException {
         HibernateUtil.update(session, fleet);
+        return fleet;
     }
 
     @Override
@@ -105,4 +107,5 @@ public class ProductionFleetDAO implements FleetDAO {
     public void close() throws Exception {
         session.close();
     }
+
 }

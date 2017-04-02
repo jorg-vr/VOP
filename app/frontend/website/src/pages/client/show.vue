@@ -50,6 +50,7 @@
                             :key="fleet.id">
             </list-component>
             <button-back :route="{name: 'clients'}"></button-back>
+            <button-add :route="{name: 'new_fleet', params: {clientId: client.id}}"></button-add>
         </div>
     </div>
 </template>
@@ -57,14 +58,17 @@
     import {mapGetters, mapActions} from 'vuex'
     import listComponent from "../../assets/general/listComponent.vue"
     import buttonBack from '../../assets/buttons/buttonBack.vue'
+    import buttonAdd from '../../assets/buttons/buttonAdd.vue'
 
     export default {
         components: {
-            buttonBack, listComponent
+            buttonBack, listComponent, buttonAdd
+        },
+        props: {
+            id: String
         },
         created(){
-            let clientId = this.$route.params.id
-            console.log(this.$route.params.id)
+            let clientId = this.id
             this.fetchClient({id: clientId})
             this.fetchFleetsByClient({clientId: clientId})
         },
