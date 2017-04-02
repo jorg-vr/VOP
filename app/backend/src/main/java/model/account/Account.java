@@ -3,6 +3,7 @@ package model.account;
 import model.history.EditableObject;
 import model.identity.Person;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
 
@@ -12,22 +13,22 @@ public class Account implements EditableObject, java.io.Serializable {
     private String login;
     private String hashedPassword;
     private Person person;
-    private UUID uuid;
     private Collection<Function> functions;
+    private UUID uuid;
 
     public Account() {
     }
 
-    public Account(String login, String hashedPassword, Person person, Collection<Function> functions) {
+    public Account(String login, String hashedPassword, Person person) {
         this.login = login;
         this.hashedPassword = hashedPassword;
         this.person = person;
-        this.functions = functions;
-        uuid = UUID.randomUUID();
+        this.functions = new ArrayList<Function>();
     }
 
     private Account(String login, String hashedPassword, Person person, Collection<Function> functions, UUID uuid) {
-        this(login, hashedPassword, person, functions);
+        this(login, hashedPassword, person);
+        this.functions = functions;
         this.uuid = uuid;
     }
 

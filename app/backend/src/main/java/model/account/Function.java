@@ -26,7 +26,6 @@ public class Function implements EditableObject, java.io.Serializable {
         this.account = account;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.uuid = UUID.randomUUID();
     }
 
     public Function(Company company, Role role, Account account, LocalDateTime startDate, LocalDateTime endDate, UUID uuid) {
