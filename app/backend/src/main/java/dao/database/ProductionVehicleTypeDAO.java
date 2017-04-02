@@ -3,6 +3,7 @@ package dao.database;
 import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
 import dao.interfaces.VehicleTypeDao;
+import model.account.Account;
 import model.fleet.Vehicle;
 import model.fleet.VehicleType;
 import org.hibernate.Session;
@@ -15,6 +16,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -46,8 +48,7 @@ public class ProductionVehicleTypeDAO implements VehicleTypeDao {
 
     @Override
     public VehicleType get(UUID id) throws DataAccessException {
-
-        return session.get(VehicleType.class, id);
+        return Optional.ofNullable(session.get(VehicleType.class, id)).orElseThrow(DataAccessException::new);
 
     }
 

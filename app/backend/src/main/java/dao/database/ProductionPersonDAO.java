@@ -3,6 +3,7 @@ package dao.database;
 import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
 import dao.interfaces.PersonDAO;
+import model.account.Account;
 import model.identity.Address;
 import model.identity.Person;
 import org.hibernate.Session;
@@ -12,6 +13,7 @@ import org.hibernate.Transaction;
 import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -42,7 +44,7 @@ public class ProductionPersonDAO implements PersonDAO {
 
     @Override
     public Person get(UUID id) throws DataAccessException {
-            return session.get(Person.class, id);
+        return Optional.ofNullable(session.get(Person.class, id)).orElseThrow(DataAccessException::new);
     }
 
     @Override

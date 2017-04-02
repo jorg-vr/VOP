@@ -3,6 +3,7 @@ package dao.database;
 import dao.interfaces.CustomerDAO;
 import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
+import model.account.Account;
 import model.fleet.Fleet;
 import model.identity.Address;
 import model.identity.Customer;
@@ -17,6 +18,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -48,7 +50,7 @@ public class ProductionCustomerDAO implements CustomerDAO {
 
     @Override
     public Customer get(UUID id) throws DataAccessException {
-            return session.get(Customer.class, id);
+        return Optional.ofNullable(session.get(Customer.class, id)).orElseThrow(DataAccessException::new);
     }
 
     @Override

@@ -16,6 +16,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -47,7 +48,7 @@ public class ProductionAccountDAO implements AccountDAO {
 
     @Override
     public Account get(UUID id) throws DataAccessException {
-        return session.get(Account.class, id);
+        return Optional.ofNullable(session.get(Account.class, id)).orElseThrow(DataAccessException::new);
     }
 
     @Override

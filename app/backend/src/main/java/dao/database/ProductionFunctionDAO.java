@@ -18,6 +18,7 @@ import javax.persistence.criteria.Root;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -49,8 +50,7 @@ public class ProductionFunctionDAO implements FunctionDAO {
 
     @Override
     public Function get(UUID id) throws DataAccessException {
-
-            return session.get(Function.class, id);
+        return Optional.ofNullable(session.get(Function.class, id)).orElseThrow(DataAccessException::new);
     }
 
     @Override

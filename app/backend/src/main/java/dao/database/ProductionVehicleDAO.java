@@ -3,6 +3,7 @@ package dao.database;
 import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
 import dao.interfaces.VehicleDAO;
+import model.account.Account;
 import model.fleet.Fleet;
 import model.fleet.Vehicle;
 import model.fleet.VehicleType;
@@ -17,6 +18,7 @@ import javax.persistence.criteria.Root;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -49,7 +51,7 @@ public class ProductionVehicleDAO implements VehicleDAO {
 
     @Override
     public Vehicle get(UUID id) throws DataAccessException {
-        return session.get(Vehicle.class, id);
+        return Optional.ofNullable(session.get(Vehicle.class, id)).orElseThrow(DataAccessException::new);
     }
 
 

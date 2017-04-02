@@ -3,6 +3,7 @@ package dao.database;
 import dao.interfaces.AddressDAO;
 import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
+import model.account.Account;
 import model.identity.Address;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -14,6 +15,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -46,8 +48,7 @@ public class ProductionAddressDAO implements AddressDAO {
 
     @Override
     public Address get(UUID id) throws DataAccessException {
-
-        return session.get(Address.class, id);
+        return Optional.ofNullable(session.get(Address.class, id)).orElseThrow(DataAccessException::new);
     }
 
     @Override
