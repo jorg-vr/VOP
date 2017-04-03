@@ -4,9 +4,7 @@ import dao.interfaces.*;
 import model.account.Account;
 import model.account.Function;
 import model.account.Role;
-import model.identity.Address;
-import model.identity.Company;
-import model.identity.Person;
+import model.identity.*;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -20,7 +18,7 @@ import static org.junit.Assert.*;
 public class ProductionFunctionDAOTest {
     private static DAOProvider daoProvider;
     private static FunctionDAO functionDAO;
-    private static CompanyDAO companyDAO;
+    private static CustomerDAO customerDAO;
     private static AddressDAO addressDAO;
     private static PersonDAO personDAO;
     private static AccountDAO accountDAO;
@@ -33,8 +31,8 @@ public class ProductionFunctionDAOTest {
         ProductionProvider.initializeProvider("unittest");
         daoProvider = ProductionProvider.getInstance();
         functionDAO = daoProvider.getFunctionDAO();
-        //companyDAO = daoProvider.getCompanyDAO();
-        //addressDAO = daoProvider.getAddressDao();
+        customerDAO = daoProvider.getCustomerDAO();
+        addressDAO = daoProvider.getAddressDao();
         personDAO = daoProvider.getPersonDAO();
         accountDAO = daoProvider.getAccountDao();
         //roleDAO = daoProvider.getRoleDAO();
@@ -50,7 +48,7 @@ public class ProductionFunctionDAOTest {
     @Ignore
     @Test
     public void createGetRemoveTest() throws Exception {
-        Company comp1 = null;
+        Customer cust1 = null;
         Address adr1 = null;
         Person p1 = null;
         Account acc1 = null;
@@ -59,23 +57,23 @@ public class ProductionFunctionDAOTest {
         boolean present = false;
         boolean removed = false;
         //test if a function can be succesfully added to the database
-        /*try {
-            comp1 = companyDAO.create();
-        } catch (Exception e) {
-            fail("Failed trying to create a new company");
-        }*/
         try {
-            adr1 = addressDAO.create("streettest n1", "59", "town 1", "9999", "country 1");
+            adr1 = addressDAO.create(new Address("streettest n1", "59", "town 1", "9999", "country 1"));
         } catch (Exception e) {
             fail("Failed trying to create a new address");
         }
         try {
-            p1 = personDAO.create("Firstname 1", "Lastname 1", "Email@address1.com");
+            cust1 = customerDAO.create(new Customer(adr1, "Email@address1.com", "911", "customername 1", "btw123", "123456789", CompanyType.TYPE1));
+        } catch (Exception e) {
+            fail("Failed trying to create a new customer");
+        }
+        try {
+            p1 = personDAO.create(new Person(null, "Email@address1.com", "123456789", "Firstname 1", "Lastname 1"));
         } catch (Exception e) {
             fail("Failed trying to create a new person");
         }
         try {
-            acc1 = accountDAO.create("login1", "hashedPassword1", p1);
+            acc1 = accountDAO.create(new Account("login1", "hashedPassword1", p1));
         } catch (Exception e) {
             fail("Failed trying to create a new account");
         }
@@ -85,7 +83,7 @@ public class ProductionFunctionDAOTest {
             fail("Failed trying to create a new role");
         }*/
         try {
-            f1 = functionDAO.create(comp1, r1, acc1, LocalDateTime.of(2016, 7, 15, 0, 0), LocalDateTime.of(2017, 8, 3, 0, 0));
+            f1 = functionDAO.create(new Function(cust1, r1, acc1, LocalDateTime.of(2016, 7, 15, 0, 0), LocalDateTime.of(2017, 8, 3, 0, 0)));
         } catch (Exception e) {
             fail("Failed trying to create a new function");
         }
@@ -93,7 +91,7 @@ public class ProductionFunctionDAOTest {
         try {
             if (f1 != null) {
                 Function f2 = functionDAO.get(f1.getUuid());
-                assertEquals("company field not created correctly", f1.getCompany(), f2.getCompany());
+                assertEquals("customer field not created correctly", f1.getCompany(), f2.getCompany());
                 assertEquals("role field not created correctly", f1.getRole(), f2.getRole());
                 assertEquals("account field not created correctly", f1.getAccount(), f2.getAccount());
                 assertEquals("startDate field not created correctly", f1.getStartDate(), f2.getStartDate());
@@ -138,36 +136,35 @@ public class ProductionFunctionDAOTest {
         if (adr1 != null) {
             addressDAO.remove(adr1.getUuid());
         }
-        if (comp1 != null) {
-            companyDAO.remove(comp1.getUuid());
+        if (cust1 != null) {
+            customerDAO.remove(cust1.getUuid());
         }
     }
 
     @Ignore
     @Test
     public void update() throws Exception {
-        Company comp1 = null;
-        //Company comp1 = companyDAO.create();
-        Address adr1 = addressDAO.create("streettest n1", "59", "town 1", "9999", "country 1");
-        Person p1 = personDAO.create("Firstname 1", "Lastname 1", "Email@address1.com");
-        Account acc1 = accountDAO.create("login1", "hashedPassword1", p1);
+        Address adr1 = addressDAO.create(new Address("streettest n1", "59", "town 1", "9999", "country 1"));
+        Customer cust1 = customerDAO.create(new Customer(adr1, "Email@address1.com", "911", "customername 1", "btw123", "123456789", CompanyType.TYPE1));
+        Person p1 = personDAO.create(new Person(null, "Email@address1.com", "123456789", "Firstname 1", "Lastname 1"));
+        Account acc1 = accountDAO.create(new Account("login1", "hashedPassword1", p1));
         Role r1 = null;
         //Role r1 = roleDAO.create();
 
-        Company comp2 = null;
-        //Company comp2 = companyDAO.create();
-        Address adr2 = addressDAO.create("streettest n2", "60", "town 2", "99999", "country 2");
-        Person p2 = personDAO.create("Firstname 2", "Lastname 2", "Email@address2.com");
-        Account acc2 = accountDAO.create("login2", "hashedPassword2", p2);
+        Address adr2 = addressDAO.create(new Address("streettest n2", "60", "town 2", "99999", "country 2"));
+        Customer cust2 = customerDAO.create(new Customer(adr2, "Email@address2.com", "912", "customername 2", "btw124", "123456781", CompanyType.TYPE2));
+        Account acc2 = accountDAO.create(new Account("login2", "hashedPassword2", p1));
         Role r2 = null;
         //Role r2 = roleDAO.create();
         LocalDateTime t1 = LocalDateTime.of(2017, 7, 15, 0, 0);
         LocalDateTime t2 = LocalDateTime.of(2018, 8, 3, 0, 0);
 
-        Function f1 = functionDAO.create(comp1, r1, acc1, LocalDateTime.of(2016, 7, 15, 0, 0), LocalDateTime.of(2017, 8, 3, 0, 0));
-        Function f2 = functionDAO.update(f1.getUuid(), comp2, r2, acc2, t1, t2);
+        Function f1 = functionDAO.create(new Function(cust1, r1, acc1, LocalDateTime.of(2016, 7, 15, 0, 0), LocalDateTime.of(2017, 8, 3, 0, 0)));
+        Function f2 = functionDAO.create(new Function(cust2, r2, acc2, t1, t2));
+        f2.setUuid(f1.getUuid());
+        functionDAO.update(f2);
         Function f3 = functionDAO.get(f1.getUuid());
-        assertEquals("company field not updated correctly", comp2, f3.getCompany());
+        assertEquals("customer field not updated correctly", cust2, f3.getCompany());
         assertEquals("role field not updated correctly", r2, f3.getRole());
         assertEquals("account field not updated correctly", acc2, f3.getAccount());
         assertEquals("startDate field not updated correctly", t1, f3.getStartDate());
@@ -179,10 +176,9 @@ public class ProductionFunctionDAOTest {
         accountDAO.remove(acc1.getUuid());
         accountDAO.remove(acc2.getUuid());
         personDAO.remove(p1.getUuid());
-        personDAO.remove(p2.getUuid());
+        customerDAO.remove(cust1.getUuid());
+        customerDAO.remove(cust2.getUuid());
         addressDAO.remove(adr1.getUuid());
         addressDAO.remove(adr2.getUuid());
-        companyDAO.remove(comp1.getUuid());
-        companyDAO.remove(comp2.getUuid());
     }
 }

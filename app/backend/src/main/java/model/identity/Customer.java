@@ -1,6 +1,7 @@
 package model.identity;
 
 import model.fleet.Fleet;
+import model.fleet.Vehicle;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,9 +14,9 @@ public class Customer extends Company implements java.io.Serializable {
     public Customer() {
     }
 
-    public Customer(Address address, String email, String phoneNumber, String name, String btwNumber, String bankAccountNumber, CompanyType companyType, Collection<Fleet> fleets) {
+    public Customer(Address address, String email, String phoneNumber, String name, String btwNumber, String bankAccountNumber, CompanyType companyType) {
         super(address, email, phoneNumber, name, btwNumber, bankAccountNumber, companyType);
-        this.fleets = fleets;
+        this.fleets = new ArrayList<Fleet>();
     }
 
     public Customer(UUID id, Address address, String email, String phoneNumber, String name, String btwNumber, String bankAccountNumber, CompanyType companyType) {

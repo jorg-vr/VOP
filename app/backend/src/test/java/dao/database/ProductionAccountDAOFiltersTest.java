@@ -34,9 +34,9 @@ public class ProductionAccountDAOFiltersTest {
 
         p1 = personDAO.create(new Person(null, "Email@address1.com", "123", "Firstname 1", "Lastname 1"));
         p2 = personDAO.create(new Person(null, "Email@address2.com", "456", "Firstname 2", "Lastname 2"));
-        a1 = accountDAO.create(new Account("login1", "hashedPassword1", p1, null);
-        a2 = accountDAO.create("login1", "hashedPassword2", p2);
-        a3 = accountDAO.create("login2", "hashedPassword2", p1);
+        a1 = accountDAO.create(new Account("login1", "hashedPassword1", p1));
+        a2 = accountDAO.create(new Account("login1", "hashedPassword2", p2));
+        a3 = accountDAO.create(new Account("login2", "hashedPassword2", p1));
     }
 
     //Gets executed after all tests have been run

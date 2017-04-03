@@ -25,9 +25,9 @@ public class ProductionAddressDAOFiltersTest {
         daoProvider = ProductionProvider.getInstance();
         addressDAO = daoProvider.getAddressDao();
 
-        a1 = addressDAO.create("streettest n1", "59", "town 1", "9999", "country 1");
-        a2 = addressDAO.create("streettest n2", "59", "town 2", "9999", "country 2");
-        a3 = addressDAO.create("streettest n2", "60", "town 2", "99999", "country 2");
+        a1 = addressDAO.create(new Address("streettest n1", "59", "town 1", "9999", "country 1"));
+        a2 = addressDAO.create(new Address("streettest n2", "59", "town 2", "9999", "country 2"));
+        a3 = addressDAO.create(new Address("streettest n2", "60", "town 2", "99999", "country 2"));
     }
 
     //Gets executed after all tests have been run

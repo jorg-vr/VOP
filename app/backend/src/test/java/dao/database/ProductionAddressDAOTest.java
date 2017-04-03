@@ -33,9 +33,9 @@ public class ProductionAddressDAOTest {
         Address a1 = null;
         boolean present = false;
         boolean removed = false;
-        //test if a vehicle can be succesfully added to the database
+        //test if a address can be succesfully added to the database
         try {
-            a1 = addressDAO.create("streettest n1", "59", "town 1", "9999", "country 1");
+            a1 = addressDAO.create(new Address("streettest n1", "59", "town 1", "9999", "country 1"));
         } catch (Exception e) {
             fail("Failed trying to create a new address");
         }
@@ -79,8 +79,10 @@ public class ProductionAddressDAOTest {
 
     @Test
     public void update() throws Exception {
-        Address a1 = addressDAO.create("streettest n1", "59", "town 1", "9999", "country 1");
-        Address a2 = addressDAO.update(a1.getUuid(), "streettest n2", "60", "town 2", "99999", "country 2");
+        Address a1 = addressDAO.create(new Address("streettest n1", "59", "town 1", "9999", "country 1"));
+        Address a2 = new Address("streettest n2", "60", "town 2", "99999", "country 2");
+        a2.setUuid(a1.getUuid());
+        addressDAO.update(a2);
         Address a3 = addressDAO.get(a1.getUuid());
         assertEquals("street field not updated correctly", "streettest n2", a3.getStreet());
         assertEquals("streetNumber field not updated correctly", "60", a3.getStreetNumber());

@@ -44,13 +44,13 @@ public class ProductionAccountDAOTest {
         boolean removed = false;
         //test if a vehicle can be succesfully added to the database
         try {
-            p1 = personDAO.create("Firstname 1", "Lastname 1", "Email@address1.com");
+            p1 = personDAO.create(new Person(null, "Email@address1.com", "123", "Firstname 1", "Lastname 1"));
             assertNotNull("Failed to create a person object", p1);
         } catch (Exception e) {
             fail("Failed trying to create a new person");
         }
         try {
-            a1 = accountDAO.create("login1", "hashedPassword1", p1);
+            a1 = accountDAO.create(new Account("login1", "hashedPassword1", p1));
             assertNotNull("Failed to create an account object", a1);
         } catch (Exception e) {
             fail("Failed trying to create a new account");
@@ -92,14 +92,17 @@ public class ProductionAccountDAOTest {
     }
 
 
+    //TODO: add update check on functions field maybe
     @Test
     public void update() throws Exception {
-        Person p1 = personDAO.create("Firstname 1", "Lastname 1", "Email@address1.com");
-        Account a1 = accountDAO.create("login1", "hashedPassword1", p1);
-        Account a2 = accountDAO.update(a1.getUuid(), "login2", "hashedPassword2");
+        Person p1 = personDAO.create(new Person(null, "Email@address1.com", "123", "Firstname 1", "Lastname 1"));
+        Account a1 = accountDAO.create(new Account("login1", "hashedPassword1", p1));
+        a1.setLogin("login2");
+        a1.setHashedPassword("hashedPassword2");
+        accountDAO.update(a1);
         Account a3 = accountDAO.get(a1.getUuid());
-        assertEquals("login field not updated correctly","login2" , a3.getLogin());
-        assertEquals("hashedPassword field not updated correctly","hashedPassword2" , a3.getHashedPassword());
+        assertEquals("login field not updated correctly", "login2", a3.getLogin());
+        assertEquals("hashedPassword field not updated correctly", "hashedPassword2", a3.getHashedPassword());
         assertEquals("person field not updated correctly", p1, a3.getPerson());
 
         accountDAO.remove(a1.getUuid());
