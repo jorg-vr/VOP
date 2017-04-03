@@ -19,6 +19,11 @@ public class RoleController extends AbstractController<Role> {
         //TODO !!
         super(new DAO<Role>() {
             @Override
+            public void close() throws Exception {
+
+            }
+
+            @Override
             public Role get(UUID id) throws DataAccessException {
                 return null;
             }
