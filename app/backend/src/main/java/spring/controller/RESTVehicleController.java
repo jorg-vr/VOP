@@ -14,6 +14,7 @@ import spring.exceptions.NotFoundException;
 import spring.model.RESTSchema;
 import spring.model.RESTVehicle;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -38,8 +39,6 @@ import java.util.*;
 @RequestMapping("/vehicles")
 public class RESTVehicleController {
 
-    public static final String PATH_VEHICLE = "/vehicles";
-
     private static DateTimeFormatter yearFormat = DateTimeFormatter.ofPattern("yyyyMMdd").withLocale(Locale.forLanguageTag("NL"));
 
     private VehicleController controller = new VehicleController();
@@ -48,7 +47,8 @@ public class RESTVehicleController {
      * @return
      */
     @RequestMapping(method = RequestMethod.GET)
-    public RESTSchema<RESTVehicle> get(@RequestParam(required = false) String licensPlate,
+    public RESTSchema<RESTVehicle> get(HttpServletRequest request,
+                                       @RequestParam(required = false) String licensPlate,
                                        @RequestParam(required = false) String vin,
                                        @RequestParam(required = false) String leasingCompany,
                                        @RequestParam(required = false) String year,
@@ -56,11 +56,9 @@ public class RESTVehicleController {
                                        @RequestParam(required = false) String type,
                                        @RequestParam(required = false) Integer page,
                                        @RequestParam(required = false) Integer limit) {
-        String baseString = PATH_VEHICLE +"?";
         VehicleDAO vehicleDAO = (VehicleDAO) controller.getDao();
         List<Filter<Vehicle>> filters = new ArrayList<>();
         if (licensPlate != null) {
-            baseString += "licensPlate=" + licensPlate + "&";
             filters.add(vehicleDAO.byLicensePlate(licensPlate));
         }
         if (vin != null) {
@@ -70,11 +68,9 @@ public class RESTVehicleController {
             //TODO after issue #88
         }
         if (year != null) {
-            baseString += "year=" + year + "&";
             filters.add(vehicleDAO.atProductionDate(LocalDate.parse(year + "0101", yearFormat)));
         }
         if (fleet != null) {
-            baseString += "fleet=" + fleet + "&";
             Fleet fl;
             try {
                 fl = new FleetController().get(UUIDUtil.toUUID(fleet));
@@ -84,7 +80,6 @@ public class RESTVehicleController {
             filters.add(vehicleDAO.byFleet(fl));
         }
         if (type != null) {
-            baseString += "type=" + type;
             try {
                 filters.add(vehicleDAO.byType(controller.getVehicleType(UUIDUtil.toUUID(type))));
             } catch (DataAccessException e) {
@@ -101,7 +96,7 @@ public class RESTVehicleController {
             throw new InvalidInputException("Some parameters where invalid");
         }
 
-        return new RESTSchema<>(result, page, limit, baseString);
+        return new RESTSchema<>(result, page, limit, request);
     }
 
     /***

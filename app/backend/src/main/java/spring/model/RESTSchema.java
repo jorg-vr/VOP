@@ -1,7 +1,9 @@
 package spring.model;
 
+import spring.controller.URLUtil;
 import spring.exceptions.InvalidInputException;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -45,10 +47,10 @@ public class RESTSchema<T> {
      * @param collection the full collection that has to be paginated
      * @param page       if null data of the pagination will be set to collection
      * @param limit      if null data of the pastination will be set to collection
-     * @param baseString Path should end with ? or &
+     * @param request    request of the HTTP request
      * @return
      */
-    public RESTSchema(Collection<T> collection, Integer page, Integer limit, String baseString) {
+    public RESTSchema(Collection<T> collection, Integer page, Integer limit, HttpServletRequest request) {
         this.data = collection;
         List<T> list = new ArrayList<>(collection);
         this.setTotal(list.size());
@@ -78,28 +80,18 @@ public class RESTSchema<T> {
         this.limit = limit;
         this.offset = page * limit;
 
-        this.first = makeLink(baseString, 0, limit);
+        String relativeURL = URLUtil.getRelativeURL(request);
+
+        this.first = URLUtil.replace(relativeURL, "page", 0);
         int lastPage = ((listSize - 1) / limit);
-        this.last = makeLink(baseString, lastPage, limit);
+        this.last = URLUtil.replace(relativeURL, "page", lastPage);
 
         if (page > 0) {
-            this.previous = makeLink(baseString, page - 1, limit);
+            this.previous = URLUtil.replace(relativeURL, "page", page - 1);
         }
         if (page < lastPage) {
-            this.next = makeLink(baseString, page + 1, limit);
+            this.next = URLUtil.replace(relativeURL, "page", page + 1);
         }
-    }
-
-    /**
-     * Appends page and limit to the query. Path should end with ? or &
-     *
-     * @param path  the query so far
-     * @param page  the page number, should not be null
-     * @param limit the limit, should not be null
-     * @return the path where limit and page have been appended to
-     */
-    private String makeLink(String path, Integer page, Integer limit) {
-        return path + "page=" + page + "&limit=" + limit;
     }
 
     public Collection<T> getData() {

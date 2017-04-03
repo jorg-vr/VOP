@@ -9,6 +9,7 @@ import spring.exceptions.NotFoundException;
 import spring.model.RESTSchema;
 import spring.model.RESTVehicleType;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,10 +24,10 @@ import java.util.List;
 public class RESTVehicleTypeController {
 
     @RequestMapping(method = RequestMethod.GET)
-    public RESTSchema<RESTVehicleType> getAllVehileTypes(
-            @RequestParam(required = false) Integer page,
-            @RequestParam(required = false) Integer limit){
-        List<RESTVehicleType> restVehicleTypes=new ArrayList<>();
+    public RESTSchema<RESTVehicleType> getAllVehileTypes(HttpServletRequest request,
+                                                         @RequestParam(required = false) Integer page,
+                                                         @RequestParam(required = false) Integer limit) {
+        List<RESTVehicleType> restVehicleTypes = new ArrayList<>();
         try {
             for (VehicleType vehicleType : new VehicleController().getAllVehicleTypes()) {
                 restVehicleTypes.add(modelToREST(vehicleType));
@@ -36,13 +37,14 @@ public class RESTVehicleTypeController {
             throw new InvalidInputException("Some parameters where invalid");
         }
 
-        return new RESTSchema<>(restVehicleTypes, page, limit, "/vehicleTypes?");
-    }
-    private RESTVehicleType modelToREST(VehicleType vehicleType){
-        return new RESTVehicleType(UUIDUtil.UUIDToNumberString(vehicleType.getUuid()),vehicleType.getType());
+        return new RESTSchema<>(restVehicleTypes, page, limit, request);
     }
 
-    @RequestMapping(method = RequestMethod.GET,value = "{id}")
+    private RESTVehicleType modelToREST(VehicleType vehicleType) {
+        return new RESTVehicleType(UUIDUtil.UUIDToNumberString(vehicleType.getUuid()), vehicleType.getType());
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "{id}")
     public RESTVehicleType getId(@PathVariable("id") String id) {
 
         try {
@@ -52,7 +54,6 @@ public class RESTVehicleTypeController {
             throw new NotFoundException();
         }
     }
-
 
 
 }
