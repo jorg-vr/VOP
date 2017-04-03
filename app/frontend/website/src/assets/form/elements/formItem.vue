@@ -2,9 +2,10 @@
     <div class="row">
         <div class="form-group">
             <label v-if="label" class="col-sm-4 control-label">{{label}}</label>
-            <div class="col-sm-8">
+            <div :class="getColumnClass">
                 <slot></slot>
             </div>
+
         </div>
     </div>
 </template>
@@ -12,6 +13,16 @@
     export default {
         props: {
             label: String
+        },
+        computed: {
+            getColumnClass(){
+                if(this.label){
+                    return "col-sm-8"
+                }
+                else {
+                    return ""
+                }
+            }
         }
     }
 </script>

@@ -26,6 +26,7 @@ public interface FunctionDAO extends DAO<Function> {
      * @return A new function
      * @throws DataAccessException thrown when wrong data is given or the object can't be created
      */
+    @Deprecated
     Function create(Company company, Role role, Account account, LocalDateTime startDate, LocalDateTime endDate) throws DataAccessException;
 
     /**
@@ -40,6 +41,7 @@ public interface FunctionDAO extends DAO<Function> {
      * @return the updated function
      * @throws DataAccessException thrown when wrong data is given or the object can't be updated
      */
+    @Deprecated
     Function update(UUID id, Company company, Role role, Account account, LocalDateTime startDate, LocalDateTime endDate) throws DataAccessException;
 
     /**

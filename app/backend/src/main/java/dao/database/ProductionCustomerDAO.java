@@ -3,6 +3,7 @@ package dao.database;
 import dao.interfaces.CustomerDAO;
 import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
+import model.account.Account;
 import model.fleet.Fleet;
 import model.identity.Address;
 import model.identity.Customer;
@@ -17,6 +18,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -24,27 +26,31 @@ import java.util.UUID;
  */
 public class ProductionCustomerDAO implements CustomerDAO {
 
-    private final SessionFactory factory;
+    private final Session session;
     private Collection<Predicate> predicates = new ArrayList<>();
     private Root<Customer> root;
     private CriteriaQuery<Customer> criteriaQuery;
     private CriteriaBuilder criteriaBuilder;
 
-    public ProductionCustomerDAO(SessionFactory factory) {
-        this.factory = factory;
+    public ProductionCustomerDAO(Session session) {
+        this.session = session;
+    }
+
+    @Override
+    public Customer create(Customer customer) throws DataAccessException {
+        HibernateUtil.create(session,customer);
+        return customer;
+    }
+
+    @Override
+    public Customer update(Customer customer) throws DataAccessException {
+        HibernateUtil.update(session,customer);
+        return customer;
     }
 
     @Override
     public Customer get(UUID id) throws DataAccessException {
-        try (Session session = factory.openSession()) {
-            Customer customer=session.get(Customer.class, id);
-            if(customer!=null) {
-                Hibernate.initialize(customer.getAddress());
-            }else{
-                throw new DataAccessException();//Todo use correct exception
-            }
-            return customer;
-        }
+        return Optional.ofNullable(session.get(Customer.class, id)).orElseThrow(DataAccessException::new);
     }
 
     @Override
@@ -54,7 +60,7 @@ public class ProductionCustomerDAO implements CustomerDAO {
         customer.setAddress(address);
         customer.setPhoneNumber(phonenumber);
         customer.setBtwNumber(btwNumber);
-        HibernateUtil.create(factory, customer);
+        HibernateUtil.create(session, customer);
         return customer;
     }
 
@@ -66,19 +72,19 @@ public class ProductionCustomerDAO implements CustomerDAO {
         customer.setAddress(address);
         customer.setPhoneNumber(phonenumber);
         customer.setBtwNumber(btwNumber);
-        HibernateUtil.update(factory, customer);
+        HibernateUtil.update(session, customer);
         return customer;
     }
 
     @Override
     public void remove(UUID id) throws DataAccessException {
-        HibernateUtil.remove(factory, get(id));
+        HibernateUtil.remove(session, get(id));
     }
 
     @Override
     public Collection<Customer> listFiltered(Filter<Customer>[] filters) throws DataAccessException {
         Transaction tx = null;
-        try (Session session = factory.openSession()) {
+        try {
 
             tx = session.beginTransaction();
             this.criteriaBuilder = session.getCriteriaBuilder();
@@ -107,17 +113,6 @@ public class ProductionCustomerDAO implements CustomerDAO {
         }
         return null;
     }
-
-    @Override
-    public Customer create(Customer customer) {
-        return null;
-    }
-
-    @Override
-    public Customer update(Customer customer) {
-        return null;
-    }
-
 
     @Override
     public Filter<Customer> containsFleet(Fleet fleet) {
@@ -166,4 +161,9 @@ public class ProductionCustomerDAO implements CustomerDAO {
             return () ->
                 predicates.add(criteriaBuilder.equal(root.get("email"), email));
         }
+
+    @Override
+    public void close() throws Exception {
+        session.close();
     }
+}

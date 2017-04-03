@@ -1,8 +1,8 @@
 <template>
     <form-item :label="label">
         <!--$event.target.value is the value of this input item-->
-        <input type="text" class="form-control input-sm" :placeholder="placeholder" :id="inputId"
-               :value="value" @input="updateValue($event.target.value)" @keyup.enter="emitSubmitted">
+        <input type="text" class="form-control" :placeholder="placeholder"
+               :value="value" @input="updateValue($event.target.value)">
     </form-item>
 </template>
 <script>
@@ -11,24 +11,15 @@
         props: {
             placeholder: String,
             label: String,
-            value: [Number, String],
-            inputId: String
+            value: [Number, String]
         },
         components: {
             formItem
         },
         methods: {
-            //TODO: With props we can add validation functions for each input item.
             updateValue (value) {
-                let formattedValue = value.trim()
-                // If the value was not already normalized,
-                // manually override it to conform
-                if (formattedValue !== value) {
-                    this.$refs.input.value = formattedValue
-
-                }
                 // Emit the formatted value through the input event
-                this.$emit('input', formattedValue)
+                this.$emit('input', value)
             }
         }
     }

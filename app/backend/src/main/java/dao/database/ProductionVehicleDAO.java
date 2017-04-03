@@ -3,6 +3,7 @@ package dao.database;
 import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
 import dao.interfaces.VehicleDAO;
+import model.account.Account;
 import model.fleet.Fleet;
 import model.fleet.Vehicle;
 import model.fleet.VehicleType;
@@ -17,6 +18,7 @@ import javax.persistence.criteria.Root;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -24,22 +26,32 @@ import java.util.UUID;
  */
 public class ProductionVehicleDAO implements VehicleDAO {
 
-    private final SessionFactory factory;
+    private final Session session;
     private CriteriaQuery<Vehicle> criteriaQuery;
     private CriteriaBuilder criteriaBuilder;
     private Root<Vehicle> root;
     private Collection<Predicate> predicates = new ArrayList<>();
 
-    public ProductionVehicleDAO(SessionFactory factory) {
-        this.factory = factory;
+    public ProductionVehicleDAO(Session session) {
+        this.session = session;
     }
 
 
     @Override
+    public Vehicle create(Vehicle vehicle) throws DataAccessException{
+        HibernateUtil.create(session,vehicle);
+        return vehicle;
+    }
+
+    @Override
+    public Vehicle update(Vehicle vehicle) throws DataAccessException{
+        HibernateUtil.update(session,vehicle);
+        return vehicle;
+    }
+
+    @Override
     public Vehicle get(UUID id) throws DataAccessException {
-        try (Session session = factory.openSession()) {
-            return session.get(Vehicle.class, id);
-        }
+        return Optional.ofNullable(session.get(Vehicle.class, id)).orElseThrow(DataAccessException::new);
     }
 
 
@@ -55,7 +67,7 @@ public class ProductionVehicleDAO implements VehicleDAO {
         vehicle.setType(type);
         vehicle.setChassisNumber(chassisNumber);
         vehicle.setFleet(fleet);
-        HibernateUtil.create(factory, vehicle);
+        HibernateUtil.create(session, vehicle);
         return vehicle;
     }
 
@@ -72,19 +84,19 @@ public class ProductionVehicleDAO implements VehicleDAO {
         vehicle.setType(type);
         vehicle.setChassisNumber(chassisNumber);
         vehicle.setFleet(fleet);
-        HibernateUtil.update(factory, vehicle);
+        HibernateUtil.update(session, vehicle);
         return vehicle;
     }
 
     @Override
     public void remove(UUID id) throws DataAccessException {
-        HibernateUtil.remove(factory, get(id));
+        HibernateUtil.remove(session, get(id));
     }
 
     @Override
     public Collection<Vehicle> listFiltered(Filter<Vehicle>[] filters) throws DataAccessException {
         Transaction tx = null;
-        try (Session session = factory.openSession()) {
+        try {
 
             tx = session.beginTransaction();
             this.criteriaBuilder = session.getCriteriaBuilder();
@@ -109,17 +121,6 @@ public class ProductionVehicleDAO implements VehicleDAO {
         }
         return null;
     }
-
-    @Override
-    public Vehicle create(Vehicle vehicle) {
-        return null;
-    }
-
-    @Override
-    public Vehicle update(Vehicle vehicle) {
-        return null;
-    }
-
 
     @Override
     public Filter<Vehicle> byBrand(String brandName) {
@@ -183,4 +184,8 @@ public class ProductionVehicleDAO implements VehicleDAO {
     }
 
 
+    @Override
+    public void close() throws Exception {
+        session.close();
+    }
 }

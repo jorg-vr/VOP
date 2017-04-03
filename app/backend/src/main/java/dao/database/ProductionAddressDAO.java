@@ -3,6 +3,7 @@ package dao.database;
 import dao.interfaces.AddressDAO;
 import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
+import model.account.Account;
 import model.identity.Address;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -14,6 +15,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -21,32 +23,43 @@ import java.util.UUID;
  */
 public class ProductionAddressDAO implements AddressDAO {
 
-    private final SessionFactory factory;
+    private final Session session;
 
     private CriteriaQuery<Address> criteriaQuery;
     private CriteriaBuilder criteriaBuilder;
     private Root<Address> root;
     private Collection<Predicate> predicates = new ArrayList<>();
-    public ProductionAddressDAO(SessionFactory factory){
-        this.factory = factory;
+
+    public ProductionAddressDAO(Session session) {
+        this.session = session;
+    }
+
+    @Override
+    public Address create(Address address) throws DataAccessException {
+        HibernateUtil.create(session, address);
+        return address;
+    }
+
+    @Override
+    public Address update(Address address) throws DataAccessException {
+        HibernateUtil.update(session, address);
+        return address;
     }
 
     @Override
     public Address get(UUID id) throws DataAccessException {
-        try (Session session = factory.openSession()) {
-            return session.get(Address.class, id);
-        }
+        return Optional.ofNullable(session.get(Address.class, id)).orElseThrow(DataAccessException::new);
     }
 
     @Override
     public void remove(UUID id) throws DataAccessException {
-        HibernateUtil.remove(factory,get(id));
+        HibernateUtil.remove(session, get(id));
     }
 
     @Override
     public Collection<Address> listFiltered(Filter<Address>[] filters) throws DataAccessException {
         Transaction tx = null;
-        try (Session session = factory.openSession()) {
+        try {
 
             tx = session.beginTransaction();
             this.criteriaBuilder = session.getCriteriaBuilder();
@@ -73,16 +86,6 @@ public class ProductionAddressDAO implements AddressDAO {
     }
 
     @Override
-    public Address create(Address address) {
-        return null;
-    }
-
-    @Override
-    public Address update(Address address) {
-        return null;
-    }
-
-    @Override
     public Address create(String street, String streetNumber, String town, String postalCode, String country) throws DataAccessException {
         Address address = new Address();
         address.setStreet(street);
@@ -90,12 +93,13 @@ public class ProductionAddressDAO implements AddressDAO {
         address.setTown(town);
         address.setPostalCode(postalCode);
         address.setCountry(country);
-        HibernateUtil.create(factory,address);
+        HibernateUtil.create(session, address);
         return address;
     }
 
     @Override
-    public Address update(UUID id, String street, String streetNumber, String town, String postalCode, String country) throws DataAccessException {
+    public Address update(UUID id, String street, String streetNumber, String town, String postalCode, String
+            country) throws DataAccessException {
         Address address = new Address();
         address.setUuid(id);
         address.setStreet(street);
@@ -103,7 +107,7 @@ public class ProductionAddressDAO implements AddressDAO {
         address.setTown(town);
         address.setPostalCode(postalCode);
         address.setCountry(country);
-        HibernateUtil.update(factory,address);
+        HibernateUtil.update(session, address);
         return address;
     }
 
@@ -137,4 +141,8 @@ public class ProductionAddressDAO implements AddressDAO {
                 predicates.add(criteriaBuilder.equal(root.get("country"), country));
     }
 
+    @Override
+    public void close() throws Exception {
+        session.close();
+    }
 }
