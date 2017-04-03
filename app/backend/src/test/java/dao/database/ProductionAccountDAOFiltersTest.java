@@ -50,7 +50,6 @@ public class ProductionAccountDAOFiltersTest {
         daoProvider.close();
     }
 
-    @Ignore
     @Test
     public void bySecurity() throws Exception {
         Collection<Account> c1 = accountDAO.listFiltered(accountDAO.bySecurity("login1", "hashedPassword1"));
@@ -61,7 +60,6 @@ public class ProductionAccountDAOFiltersTest {
         assertTrue("bySecurity filter doesn't work", !c3.contains(a1) && !c3.contains(a2) && c3.contains(a3));
     }
 
-    @Ignore
     @Test
     public void byPerson() throws Exception {
         Collection<Account> c1 = accountDAO.listFiltered(accountDAO.byPerson(p1));
