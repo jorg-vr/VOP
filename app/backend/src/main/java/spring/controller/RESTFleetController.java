@@ -11,6 +11,7 @@ import spring.exceptions.NotFoundException;
 import spring.model.RESTFleet;
 import spring.model.RESTSchema;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
@@ -34,19 +35,16 @@ import java.util.UUID;
 @RequestMapping("/fleets")
 public class RESTFleetController {
 
-    public static final String PATH_FLEETS = "/fleets";
-
     private FleetController controller = new FleetController();
     private CustomerController customerController = new CustomerController();
 
-
     @RequestMapping(method = RequestMethod.GET)
-    public RESTSchema<RESTFleet> get(@RequestParam(required = false) String company,
+    public RESTSchema<RESTFleet> get(HttpServletRequest request,
+                                     @RequestParam(required = false) String company,
                                      @RequestParam(required = false) Integer page,
                                      @RequestParam(required = false) Integer limit) {
         FleetDAO fleetDAO = (FleetDAO) controller.getDao();
         try {
-            String baseString = PATH_FLEETS + "?";
             Collection<RESTFleet> restFleets = new ArrayList<>();
             Collection<Fleet> fleets;
             if (company != null) {
@@ -58,7 +56,7 @@ public class RESTFleetController {
             for (Fleet f : fleets) {
                 restFleets.add(new RESTFleet(f));
             }
-            return new RESTSchema<>(restFleets, page, limit, baseString);
+            return new RESTSchema<>(restFleets, page, limit, request);
         } catch (Exception e) {
             e.printStackTrace();
             throw new InvalidInputException();

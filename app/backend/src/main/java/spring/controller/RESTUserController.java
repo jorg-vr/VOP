@@ -5,6 +5,7 @@ import controller.PersonController;
 import dao.interfaces.DataAccessException;
 import model.account.Account;
 import model.identity.Person;
+import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.*;
 import spring.exceptions.ConflictException;
 import spring.exceptions.InvalidInputException;
@@ -12,6 +13,8 @@ import spring.exceptions.NotFoundException;
 import spring.model.RESTSchema;
 import spring.model.RESTUser;
 
+import javax.servlet.http.HttpServletRequest;
+import java.net.URL;
 import java.util.*;
 
 /**
@@ -33,19 +36,16 @@ import java.util.*;
 @RequestMapping("/users")
 public class RESTUserController {
 
-    public static final String PATH_USER = "/users";
-
     private AccountController accountController = new AccountController();
-
     private PersonController personController = new PersonController();
-
 
     /**
      * @return a collection of all the users in the system.
      * If there are no users, an empty collection will be returned.
      */
     @RequestMapping(method = RequestMethod.GET)
-    public RESTSchema<RESTUser> get(String email,
+    public RESTSchema<RESTUser> get(HttpServletRequest request,
+                                    String email,
                                     String firstName,
                                     String lastName,
                                     Integer page,
@@ -65,7 +65,7 @@ public class RESTUserController {
             System.err.println("Something is wrong with the database");
             e.printStackTrace();
         }
-        return new RESTSchema<>(users, page, limit, PATH_USER + "?");
+        return new RESTSchema<>(users, page, limit, request);
     }
 
     /**
