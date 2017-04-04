@@ -1,13 +1,14 @@
 package spring.controller;
 
 import controller.AccountController;
-import controller.AuthContoller;
+import controller.AuthController;
 import controller.PersonController;
 import controller.exceptions.UnAuthorizedException;
 import dao.interfaces.DataAccessException;
 import model.account.Account;
 import model.account.Function;
 import model.identity.Person;
+import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.*;
 import spring.exceptions.ConflictException;
 import spring.exceptions.InvalidInputException;
@@ -17,6 +18,8 @@ import spring.model.AuthenticationToken;
 import spring.model.RESTSchema;
 import spring.model.RESTUser;
 
+import javax.servlet.http.HttpServletRequest;
+import java.net.URL;
 import java.util.*;
 
 /**
@@ -38,11 +41,9 @@ import java.util.*;
 @RequestMapping("/users")
 public class RESTUserController {
 
-    public static final String PATH_USER = "/users";
-
-    public Function verifyToken(String token,String functionId){
+ public Function verifyToken(String token,String functionId){
         try {
-            return new AuthContoller().getFunction(new AuthenticationToken(token),UUIDUtil.toUUID(functionId));
+            return new AuthController().getFunction(new AuthenticationToken(token),UUIDUtil.toUUID(functionId));
         } catch (DataAccessException e) {
             throw new InvalidInputException(e);
         } catch (UnAuthorizedException e) {
@@ -50,12 +51,14 @@ public class RESTUserController {
         }
     }
 
+
     /**
      * @return a collection of all the users in the system.
      * If there are no users, an empty collection will be returned.
      */
     @RequestMapping(method = RequestMethod.GET)
-    public RESTSchema<RESTUser> get(String email,
+    public RESTSchema<RESTUser> get(HttpServletRequest request,
+                                    String email,
                                     String firstName,
                                     String lastName,
                                     Integer page,
@@ -79,7 +82,7 @@ public class RESTUserController {
         }catch (UnAuthorizedException e) {
             throw new NotAuthorizedException();
         }
-        return new RESTSchema<>(users, page, limit, PATH_USER + "?");
+        return new RESTSchema<>(users, page, limit, request);
     }
 
     /**

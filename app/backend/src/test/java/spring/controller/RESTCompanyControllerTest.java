@@ -8,6 +8,7 @@ import model.identity.Address;
 import model.identity.Customer;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -24,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 
-
+@Ignore
 @RunWith(SpringJUnit4ClassRunner.class)
 public class RESTCompanyControllerTest {
 
@@ -62,6 +63,7 @@ public class RESTCompanyControllerTest {
 
         ProductionProvider.getInstance().close();
     }
+
 
     @Test
     public void get() throws Exception {

@@ -13,6 +13,12 @@ public class AuthenticationToken {
     private String hash;
     private LocalDateTime expire;
 
+    public AuthenticationToken(UUID acountId, String hash) {
+        this.acountId = acountId;
+        this.hash = hash;
+        this.expire=LocalDateTime.now().plusMinutes(30);
+    }
+
     public AuthenticationToken(String token) {
         String[] tokenparts=token.split(":");
         acountId= UUIDUtil.toUUID(tokenparts[0]);

@@ -15,6 +15,7 @@ import spring.exceptions.NotAuthorizedException;
 import spring.exceptions.NotFoundException;
 import spring.model.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -39,15 +40,15 @@ import java.util.UUID;
 @RequestMapping("/companies")
 public class RESTCompanyController extends RESTAbstractController<RESTCompany,Customer> {
 
-    public static final String PATH_COMPANY = "/companies";
-
 
     public RESTCompanyController() {
         super( CustomerController::new, RESTCompany::new);
     }
 
+
     @RequestMapping(method = RequestMethod.GET)
-    public RESTSchema<RESTCompany> get(Integer page, Integer limit,
+    public RESTSchema<RESTCompany> get(HttpServletRequest request,
+                                       Integer page, Integer limit,
                                        @RequestParam(required = false) String nameContains,
                                        @RequestParam(required = false) String country,
                                        @RequestParam(required = false) String city,
@@ -68,13 +69,15 @@ public class RESTCompanyController extends RESTAbstractController<RESTCompany,Cu
                 result.add(new RESTCompany(company));
             }
 
-            return new RESTSchema<>(result, page, limit, PATH_COMPANY + "?");
+            return new RESTSchema<>(result, page, limit, request);
         } catch (DataAccessException e) {
             //API doesn't contain error
             throw new RuntimeException(e);
         } catch (UnAuthorizedException e) {
             throw new NotAuthorizedException();
         }
+
+
     }
 
 

@@ -1,7 +1,7 @@
 package spring.controller;
 
 import controller.AbstractController;
-import controller.AuthContoller;
+import controller.AuthController;
 import controller.ControllerFactory;
 import controller.exceptions.UnAuthorizedException;
 import dao.interfaces.DataAccessException;
@@ -33,7 +33,7 @@ public class RESTAbstractController<R extends RESTAbstractModel<M>,M extends Edi
 
     public Function verifyToken(String token,String functiunId){
         try {
-            return new AuthContoller().getFunction(new AuthenticationToken(token),UUIDUtil.toUUID(functiunId));
+            return new AuthController().getFunction(new AuthenticationToken(token),UUIDUtil.toUUID(functiunId));
         } catch (DataAccessException e) {
             throw new InvalidInputException(e);
         } catch (UnAuthorizedException e) {

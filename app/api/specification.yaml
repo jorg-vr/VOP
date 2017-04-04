@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: "2.0.0"
+  version: "2.0.1"
   title: Solvas Fleet API - Milestone 2
   description: |
     The API definitions for the first Milestone.
@@ -273,38 +273,6 @@ paths:
                 example: /contracts&page=100
         '400':
           $ref: '#/responses/WrongQuery'
-    post:
-      produces:
-        - application/json
-      consumes:
-        - application/json
-      summary: Add a new `Contract` to the to the company.
-      description: |
-        This will add a new contract to the given company. The company needs to exist already.
-
-        Attributes described as 'server-generated' will be ignored by the server. Non-required attributes that are
-        not present will be filled in by the server, using default values.
-      parameters:
-      - in: body
-        name: Contract
-        description: Contract item to add
-        schema:
-          $ref: '#/definitions/Contract'
-      responses:
-        '200':
-          description: OK
-          schema:
-            $ref: '#/definitions/Contract'
-        '400':
-          $ref: '#/responses/Malformed'
-        '404':
-          description: When the company was not found.
-        '409':
-          $ref: '#/responses/Conflict'
-        '422':
-          $ref: '#/responses/WrongContent'
-        '415':
-          $ref: '#/responses/WrongType' 
   /companies/{company_id}/fleets/{fleet_id}/vehicles/{vehicle_id}/contracts:
     parameters:
       - in: path
@@ -384,36 +352,6 @@ paths:
                 example: /contracts&page=100
         '400':
           $ref: '#/responses/WrongQuery'
-    post:
-      produces:
-        - application/json
-      consumes:
-        - application/json
-      summary: Add a new `Contract` to the vehicle.
-      description: |
-        Attributes described as 'server-generated' will be ignored by the server. Non-required attributes that are
-        not present will be filled in by the server, using default values.
-      parameters:
-      - in: body
-        name: Contract
-        description: Contract item to add
-        schema:
-          $ref: '#/definitions/Contract'
-      responses:
-        '200':
-          description: OK
-          schema:
-            $ref: '#/definitions/Contract'
-        '400':
-          $ref: '#/responses/Malformed'
-        '404':
-          description: A dependant was not found, i.e. the company, fleet or vehicle
-        '409':
-          $ref: '#/responses/Conflict'
-        '422':
-          $ref: '#/responses/WrongContent'
-        '415':
-          $ref: '#/responses/WrongType' 
   '/companies/{id}/invoices':
     parameters:
         - in: path
@@ -1232,36 +1170,6 @@ paths:
                 example: /vehicles&page=100
         '400':
           $ref: '#/responses/WrongQuery'
-    post:
-      produces:
-        - application/json
-      consumes:
-        - application/json
-      summary: Add a new `Vehicle` to the list of vehicles
-      description: |
-        Attributes described as 'server-generated' will be ignored by the server. Non-required attributes that are
-        not present will be filled in by the server, using default values.
-      parameters:
-      - in: body
-        name: Vehicle
-        description: Vehicle item to add
-        schema:
-          $ref: '#/definitions/Vehicle'
-      responses:
-        '200':
-          description: OK
-          schema:
-            $ref: '#/definitions/Vehicle'
-        '400':
-          $ref: '#/responses/Malformed'
-        '404':
-          description: "The company or fleet was not found"
-        '409':
-          $ref: '#/responses/Conflict'
-        '422':
-          $ref: '#/responses/WrongContent'
-        '415':
-          $ref: '#/responses/WrongType'
   /companies/{companyId}/fleets/{fleetId}/vehicles/{id}:
     parameters:
         - in: path
@@ -1291,46 +1199,6 @@ paths:
             $ref: '#/definitions/Vehicle'
         '404':
           $ref: '#/responses/NotFound'
-    put:
-      produces:
-        - application/json
-      consumes:
-        - application/json
-      summary: Update the Vehicle with the given ID
-      description: |
-        Attributes described as 'server-generated' will be ignored by the server. Non-required attributes that are
-        not present will not be updated.
-      parameters:
-      - in: body
-        name: Vehicle
-        description: Vehicle to add
-        required: true
-        schema:
-          $ref: '#/definitions/Vehicle'
-      responses:
-        '200':
-          description: OK
-          schema:
-            $ref: '#/definitions/Vehicle'
-        '400':
-          $ref: '#/responses/Malformed'
-        '404':
-          $ref: '#/responses/NotFound'
-        '409':
-          $ref: '#/responses/Conflict'
-        '422':
-          $ref: '#/responses/WrongContent'
-        '415':
-          $ref: '#/responses/WrongType'
-    delete:
-      summary: Archive the Vehicle with the given ID.
-      responses:
-        '204':
-          description: Vehicle archived successfully
-        '404':
-          $ref: '#/responses/NotFound'
-        '409':
-          $ref: '#/responses/Conflict'
   /auth/roles:
     get:
       produces:
@@ -1342,10 +1210,6 @@ paths:
         AND. This means the resulting objects must satisfy all filters.
         All the string filter operations are case insensitive.
       parameters:
-        - in: query
-          name: company
-          description: Filter by company
-          type: integer
         - in: query
           name: name
           description: The name of the role.
@@ -1851,7 +1715,7 @@ paths:
           $ref: '#/responses/NotFound'
         '409':
           $ref: '#/responses/Conflict'
-  /users/{id}/roles:
+  /users/{id}/functions:
     parameters:
       - name: id
         in: path
@@ -1861,9 +1725,9 @@ paths:
     get:
       produces:
         - application/json
-      summary: Get a list of Roles for a user.
+      summary: Get a list of Functions for a user.
       description: |
-        Get a list of `Role` objects for a `User`, eventually filtered by the query
+        Get a list of `Function` objects for a `User`, eventually filtered by the query
         parameters. When combining parameters, the conditions are joined by
         AND. This means the resulting objects must satisfy all filters.
         All the string filter operations are case insensitive.
@@ -1873,9 +1737,9 @@ paths:
           description: Filter by company
           type: integer
         - in: query
-          name: name
-          description: The name of the role.
-          type: string
+          name: role
+          description: Filter by role
+          type: integer
         - in: query
           name: page
           type: integer
@@ -1935,37 +1799,54 @@ paths:
                 example: /roles&page=100
         '400':
           $ref: '#/responses/WrongQuery'
-    put:
-      summary: Set the Roles of a User.
+    post:
+      summary: Add a new function to a User.
       description: |
-        Set the Roles for a User. You must pass the list of roles you want a user to have. After this operation
-        the roles should match exactly with the list you sent: roles that were not in your list will be removed,
-        and roles that are in your list will be added (or left the same if the user already has it).
+        Add a new function to a User
       produces:
         - application/json
       consumes:
         - application/json
       parameters:
         - in: body
-          name: data
-          description: List of roles
+          name: Function
+          description: Function to add
           schema:
-            type: array
-            items:
-              type: integer
-              description: The ID's of the role.
+            $ref: '#/definitions/Function'
       responses:
         204:
-          description: Roles were updated succesfully.
+          description: Function was added succesfully.
+          schema:
+            $ref: '#/definitions/Function'
         400:
           $ref: '#/responses/Malformed'
         404:
           description: The user with the given ID does not exist.
         409:
-          description: Could not update one or more of the roles (e.g. because it doesn't exist)
+          description: The Function already exists, the triple (user, role , company) should be unique
         415:
           $ref: '#/responses/WrongType'
-
+  /users/{userId}/functions/{id}:
+    parameters:
+      - name: userId
+        in: path
+        description: ID of User
+        required: true
+        type: integer
+      - name: id
+        in: path
+        description: ID of Function
+        required: true
+        type: integer
+    delete:
+      description: Archive the Function with the given ID.
+      responses:
+        '204':
+          description: Function archived successfully
+        '404':
+          $ref: '#/responses/NotFound'
+    
+      
 responses:
   Malformed:
     description: The JSON is malformed. This is a syntax error.
@@ -2116,7 +1997,34 @@ definitions:
         example: /vehicles/1
   Role:
     type: object
-    required: [company, name]
+    required: [name]
+    properties:
+      id:
+        description: This is a server-generated value.
+        type: integer
+      name:
+        type: string
+        description: The name of the role.
+      permissions:
+        type: string
+        description: An URL to the permissions of this role. This is a server-generated value.
+        example: /roles/65/permissions
+      createdAt:
+        description: This is a server-generated value.
+        type: string
+        format: date-time
+        example: 2016-08-29T09:12:33.001Z
+      updatedAt:
+        description: This is a server-generated value.
+        type: string
+        format: date-time
+        example: 2016-08-29T09:12:33.001Z
+      url:
+        description: This is a server-generated value.
+        type: string
+  Function:
+    type: object
+    required: [company, user, role]
     properties:
       id:
         description: This is a server-generated value.
@@ -2129,13 +2037,12 @@ definitions:
           the company is -1, the role can read all vehicles. If the company is another number, it can only read the
           vehicles of that company.
         type: integer
-      name:
-        type: string
-        description: The name of the role.
-      permissions:
-        type: string
-        description: An URL to the permissions of this role. This is a server-generated value.
-        example: /roles/65/permissions
+      role:
+        type: integer
+        description: The id of the role.
+      user:
+        type: integer
+        description: The id of the user.
       createdAt:
         description: This is a server-generated value.
         type: string
@@ -2198,10 +2105,10 @@ definitions:
         type: string
         format: email
         example: "user@ugent.be"
-      roles:
+      functions:
         type: string
-        description: The URL to the Roles of this user. This is a server-generated value.
-        example: "/users/5/roles"
+        description: The URL to the Functions of this user. This is a server-generated value.
+        example: "/users/5/functions"
       password:
         type: string
         description: This attribute is client-generated, and will never be returned by the server.

@@ -9,6 +9,7 @@ import spring.exceptions.InvalidInputException;
 import spring.model.RESTFleet;
 import spring.model.RESTSchema;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -31,24 +32,21 @@ import java.util.Collection;
 @RequestMapping("/fleets")
 public class RESTFleetController extends RESTAbstractController<RESTFleet,Fleet>{
 
-    public static final String PATH_FLEETS = "/fleets";
-
-
     public RESTFleetController() {
         super(FleetController::new, RESTFleet::new);
     }
 
 
     @RequestMapping(method = RequestMethod.GET)
-    public RESTSchema<RESTFleet> get(@RequestParam(required = false) String company,
+    public RESTSchema<RESTFleet> get(HttpServletRequest request,
+                                     @RequestParam(required = false) String company,
                                      @RequestParam(required = false) Integer page,
                                      @RequestParam(required = false) Integer limit,
                                      @RequestHeader(value="AuthToken") String token,
                                      @RequestHeader(value="Function") String function) {
 
         try(FleetController controller= new FleetController(verifyToken(token,function))) {
-            FleetDAO fleetDAO = (FleetDAO) controller.getDao();
-            String baseString = PATH_FLEETS + "?";
+
             Collection<RESTFleet> restFleets = new ArrayList<>();
             Collection<Fleet> fleets;
             if (company != null) {
@@ -61,7 +59,7 @@ public class RESTFleetController extends RESTAbstractController<RESTFleet,Fleet>
             for (Fleet f : fleets) {
                 restFleets.add(new RESTFleet(f));
             }
-            return new RESTSchema<>(restFleets, page, limit, baseString);
+            return new RESTSchema<>(restFleets, page, limit, request);
         } catch (Exception e) {
             e.printStackTrace();
             throw new InvalidInputException();

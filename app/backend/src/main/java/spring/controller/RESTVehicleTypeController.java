@@ -10,6 +10,7 @@ import spring.exceptions.NotAuthorizedException;
 import spring.model.RESTSchema;
 import spring.model.RESTVehicleType;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class RESTVehicleTypeController extends RESTAbstractController<RESTVehicl
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public RESTSchema<RESTVehicleType> getAllVehileTypes(
+    public RESTSchema<RESTVehicleType> getAllVehileTypes(HttpServletRequest request,
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false) Integer limit,
             @RequestHeader(value="AuthToken") String token,
@@ -45,10 +46,7 @@ public class RESTVehicleTypeController extends RESTAbstractController<RESTVehicl
             throw new NotAuthorizedException();
         }
 
-        return new RESTSchema<>(restVehicleTypes, page, limit, "/vehicleTypes?");
+        return new RESTSchema<>(restVehicleTypes, page, limit, request);
     }
-
-
-
 
 }

@@ -56,6 +56,12 @@ export default
         },
         search_bar: {
             search_for: 'Search for',
+        },
+        exception: {
+            e404: 'Not Found',
+            e502: 'Internal Server Error',
+            return: 'Home',
+            contact: 'Contact'
         }
     },
     nl : {
@@ -114,6 +120,12 @@ export default
         },
         search_bar: {
             search_for: 'Zoeken naar',
+        },
+        exception: {
+            e404: 'Pagina niet gevonden',
+            e502: 'Interne server fout',
+            return: 'Home',
+            contact: 'Contact'
         }
     }
 }
