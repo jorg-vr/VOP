@@ -7,7 +7,7 @@
     <nav class="navbar navbar-default navbar-static-side" role="navigation">
         <div id="sidebar-collapse">
             <ul class="nav">
-                <li class="sidebar-brand">Solvas fleet</li>
+                <li><router-link :to="{name: 'home'}">Solvas Fleet</router-link></li>
                 <li><router-link :to="{name: 'fleets'}">{{$t("fleet.fleets") | capitalize}}</router-link></li>
                 <li><router-link :to="{name: 'users'}">{{$t("user.users") | capitalize}}</router-link></li>
                 <li><router-link :to="{name: 'clients'}">{{$t("client.clients") | capitalize}}</router-link></li>
