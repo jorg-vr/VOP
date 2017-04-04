@@ -7,6 +7,7 @@
     <typedef name="action" class="model.account.Action">
         <param name="enumClassName">model.account.Action</param>
     </typedef>
+
     <class name="model.account.Role" table="role">
         <meta attribute="class-description">
             This class contains the vehicle detail.
@@ -15,12 +16,16 @@
             <generator class="uuid2"/>
         </id>
         <property name="name" column="name" type="string"/>
-
         <map name="rights"
-             table="rights">
+             table="rights" cascade="all">
             <key column="role_id"/>
-            <index column="resource" type="org.hibernate.type.EnumType"/>
-            <one-to-many class="model.account.Permission"/>
+
+            <map-key column="resource">
+                <type name = "org.hibernate.type.EnumType" >
+                    <param name="enumClass" >model.account.Resource</param>
+                </type>
+            </map-key>
+            <many-to-many class="model.account.Permission"/>
         </map>
     </class>
 
@@ -28,7 +33,11 @@
         <id name="uuid" type="uuid-binary" column="id">
             <generator class="uuid2"/>
         </id>
-        <property name="resource" type="org.hibernate.type.EnumType"/>
+        <property name="resource" >
+            <type name = "org.hibernate.type.EnumType" >
+                <param name="enumClass" >model.account.Resource</param>
+            </type>
+        </property>
         <set name="actions" table="action">
             <key column="id" not-null="true"/>
             <element type="action" column="action"/>

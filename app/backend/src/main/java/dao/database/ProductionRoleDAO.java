@@ -14,7 +14,7 @@ import java.util.UUID;
  */
 public class ProductionRoleDAO extends ProductionDAO<Role> implements RoleDAO  {
 
-    public ProductionRoleDAO(Session session, Class<Role> cl) {
-        super(session, cl);
+    public ProductionRoleDAO(Session session) {
+        super(session, Role.class);
     }
 }

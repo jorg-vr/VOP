@@ -62,6 +62,12 @@ public interface DAOProvider extends AutoCloseable {
     AddressDAO getAddressDao();
 
     /**
+     * Gets an RoleDAO
+     * @return a RoleDAO
+     */
+    RoleDAO getRoleDAO();
+
+    /**
      * MUST BE CALLED WHEN PROVIDER IS NOT USED ANYMORE
      * if not called application will keep running
      */
