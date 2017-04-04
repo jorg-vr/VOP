@@ -20,10 +20,13 @@ import newVehicle from '../pages/vehicle/new.vue'
 import editVehicle from '../pages/vehicle/edit.vue'
 import showVehicle from '../pages/vehicle/show.vue'
 
+import exception from '../pages/exception/exception.vue'
+
 export default [
     {
         path: '',
         component: App,
+        name: 'home',
         children: [
             //User
             {path: 'users', name: 'users', component: indexUser},
@@ -47,6 +50,7 @@ export default [
             {path: 'vehicles/:id(\\d+)', name: 'vehicle', component: showVehicle, props: true},
             {path: 'vehicles/:id(\\d+)/edit', name: 'edit_vehicle', component: editVehicle, props: true}
         ],
-    }
+    },
+    {path: '*', component: exception, props: {statusCode: 404}}
 ];
 
