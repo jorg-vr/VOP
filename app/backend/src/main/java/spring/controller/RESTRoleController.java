@@ -13,6 +13,7 @@ import spring.exceptions.NotAuthorizedException;
 import spring.model.RESTRole;
 import spring.model.RESTSchema;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 /**
@@ -42,7 +43,8 @@ public class RESTRoleController extends RESTAbstractController<RESTRole,Function
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public RESTSchema<RESTRole> get(@RequestParam(required = false) String company,
+    public RESTSchema<RESTRole> get(HttpServletRequest request,
+                                    @RequestParam(required = false) String company,
                                     @RequestParam(required = false) String user,
                                     @RequestParam(required = false) Boolean active,
                                     @RequestParam(required = false) Integer page,
@@ -71,7 +73,7 @@ public class RESTRoleController extends RESTAbstractController<RESTRole,Function
         } catch (UnAuthorizedException e) {
             throw new NotAuthorizedException();
         }
-        return new RESTSchema<>(roles, page, limit, PATH_ROLE + "?");
+        return new RESTSchema<>(roles, page, limit, request);
     }
 
 
