@@ -1,7 +1,7 @@
 package spring.controller;
 
 import controller.AccountController;
-import controller.AuthContoller;
+import controller.AuthController;
 import controller.PersonController;
 import controller.exceptions.UnAuthorizedException;
 import dao.interfaces.DataAccessException;
@@ -42,7 +42,7 @@ public class RESTUserController {
 
     public Function verifyToken(String token,String functionId){
         try {
-            return new AuthContoller().getFunction(new AuthenticationToken(token),UUIDUtil.toUUID(functionId));
+            return new AuthController().getFunction(new AuthenticationToken(token),UUIDUtil.toUUID(functionId));
         } catch (DataAccessException e) {
             throw new InvalidInputException(e);
         } catch (UnAuthorizedException e) {
