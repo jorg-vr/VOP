@@ -1,6 +1,8 @@
 package model.fleet;
 
 import model.history.EditableObject;
+import model.identity.LeasingCompany;
+import spring.exceptions.InvalidInputException;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -27,13 +29,15 @@ public class Vehicle implements EditableObject, java.io.Serializable {
 
     private VehicleType type;
 
+    private LeasingCompany leasingCompany;
 
+    private Fleet fleet;
 
     public Vehicle() {
-        
+
     }
 
-    public Vehicle(UUID uuid, String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int value, int mileage, VehicleType type) {
+    public Vehicle(UUID uuid, String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int value, int mileage, VehicleType type,Fleet fleet) {
         this.uuid = uuid;
         this.brand = brand;
         this.model = model;
@@ -43,6 +47,20 @@ public class Vehicle implements EditableObject, java.io.Serializable {
         this.value = value;
         this.mileage = mileage;
         this.type = type;
+        this.fleet=fleet;
+    }
+
+    public Vehicle(UUID uuid, String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int value, int mileage, VehicleType type,Fleet fleet, LeasingCompany leasingCompany) {
+        this(uuid,brand,model,licensePlate,productionDate,chassisNumber,value,mileage,type,fleet);
+        this.leasingCompany = leasingCompany;
+    }
+
+    public Fleet getFleet() {
+        return fleet;
+    }
+
+    public void setFleet(Fleet fleet) {
+        this.fleet = fleet;
     }
 
     public UUID getUuid() {
@@ -73,7 +91,11 @@ public class Vehicle implements EditableObject, java.io.Serializable {
         return licensePlate;
     }
 
-    public void setLicensePlate(String licensePlate) {
+    /**
+     * sets the licenseplate of the vehicle
+     * @param licensePlate string representing a licenseplate
+     */
+    public void setLicensePlate(String licensePlate){
         this.licensePlate = licensePlate;
     }
 
@@ -89,15 +111,40 @@ public class Vehicle implements EditableObject, java.io.Serializable {
         return chassisNumber;
     }
 
-    public void setChassisNumber(String chassisNumber) {
-        this.chassisNumber = chassisNumber;
+    /**
+     * Checks if the given chassis number (VIN-code) has the correct format. Following requirements need to be met:
+     * - length has to be 17 characters
+     * - characters can only be alphanumeric
+     * - the code can not contain the characters I, O, and Q
+     * - the 10th character can not be U, Z or the digit 0
+     * Additionally lowercase characters are converted to uppercase before storing the code.
+     *
+     * @param chassisNumber chassinumber or VIN-code
+     * @throws InvalidInputException when the code has the wrong format.
+     */
+    public void setChassisNumber(String chassisNumber) throws InvalidInputException {
+        if (chassisNumber != null) {
+            String VIN = chassisNumber.toUpperCase();
+            if (!VIN.matches("^[A-HJ-NPR-Z0-9]{9}[A-HJ-NPR-TV-Y1-9][A-HJ-NPR-Z0-9]{7}$")) {
+                throw new InvalidInputException("VIN code has to be 17 characters long, cannot contain character I, O or Q and the 10th character cannot be U, Z or the digit 0");
+            }
+            this.chassisNumber = VIN;
+        }
     }
 
     public int getValue() {
         return value;
     }
 
-    public void setValue(int value) {
+    /**
+     * sets the Value
+     * @param value
+     * @throws InvalidInputException when trying to set a negative value
+     */
+    public void setValue(int value) throws InvalidInputException {
+        if (value < 0) {
+            throw new InvalidInputException("Value can not be a negative value");
+        }
         this.value = value;
     }
 
@@ -105,7 +152,15 @@ public class Vehicle implements EditableObject, java.io.Serializable {
         return mileage;
     }
 
-    public void setMileage(int mileage) {
+    /**
+     * set mileage
+     * @param mileage
+     * @throws InvalidInputException when trying to set a negative value
+     */
+    public void setMileage(int mileage) throws InvalidInputException {
+        if (mileage < 0) {
+            throw new InvalidInputException("Mileage can not be a negative value");
+        }
         this.mileage = mileage;
     }
 
@@ -117,15 +172,27 @@ public class Vehicle implements EditableObject, java.io.Serializable {
         this.type = type;
     }
 
+    public LeasingCompany getLeasingCompany() {
+        return leasingCompany;
+    }
+
+    public void setLeasingCompany(LeasingCompany leasingCompany) {
+        this.leasingCompany = leasingCompany;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
 
         if (o == null || getClass() != o.getClass()) return false;
 
-        return uuid == ((Vehicle)o).getUuid();
+        return uuid.equals(((Vehicle) o).getUuid());
     }
 
+    @Override
+    public int hashCode() {
+        return uuid.hashCode();
+    }
 
     @Override
     public String toString() {
@@ -144,6 +211,6 @@ public class Vehicle implements EditableObject, java.io.Serializable {
 
     @Override
     public EditableObject copy() {
-        return new Vehicle(uuid, brand, model, licensePlate, productionDate, chassisNumber, value, mileage, (VehicleType)type.copy());
+        return new Vehicle(uuid, brand, model, licensePlate, productionDate, chassisNumber, value, mileage, (VehicleType) type.copy(),fleet);
     }
 }

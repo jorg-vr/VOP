@@ -3,51 +3,56 @@ package controller;
 import dao.interfaces.AccountDAO;
 import dao.interfaces.DAOProvider;
 import dao.interfaces.DataAccessException;
+import main.BackendApplication;
 import model.account.Account;
+import model.identity.Person;
+import spring.exceptions.NotImplementedException;
+
+import java.util.UUID;
+
 
 /**
- * This class acts as a protecting interface of backend model
- * methods should in final state take care of:
- *      1) constraint issues
- *      2) history changes (not yet implemented) TODO milestone?
- *      3) correct authentication (not yet implemented) TODO milestone?
+ * For more information of what this class does, see AbstractController
  */
-public class AccountController {
-
-    private DAOProvider provider;
+public class AccountController extends AbstractController<Account> {
 
     private AccountDAO dao;
+    private DAOProvider provider;
 
-    public AccountController(DAOProvider provider) {
-        this.provider = provider;
-        this.dao = null; // TODO get the dao from provider
+    public AccountController() {
+        super(BackendApplication.getProvider().getAccountDao());
+        this.provider = BackendApplication.getProvider();
+        this.dao = provider.getAccountDao();
     }
 
     /**
      * Attempts to create a new account
+     *
      * @param name
      * @param password
-     * @return  an account object with all the fields filled in
-     * @throws DataAccessException      something went wrong when communicating with the database
-     * @throws IllegalArgumentException name has already been taken
+     * @param personId UUID of the person associated with this account
+     * @return an account object with all the fields filled in
+     * @throws DataAccessException name is already taken
      */
-    public Account createAccount(String name, String password) throws DataAccessException, IllegalArgumentException {
-        return null;
+    public Account createAccount(String name, String password, UUID personId) throws DataAccessException {
+        Person person = provider.getPersonDAO().get(personId);
+        return dao.create(name, password, person);
+    }
+
+    public Account updateAccount(UUID id, String login, String hashedPassword) throws DataAccessException {
+        return dao.update(id, login, hashedPassword);
     }
 
     /**
-     * Attempts to get the account with the given name
-     * @throws IllegalArgumentException there is no account associated with that name
+     * @param name the account name
+     * @return true if the name is already taken
      */
-    public Account getAccount(String name) throws DataAccessException, IllegalArgumentException {
-        return null;
-    }
-
-    /**
-     * Attempts to archive the account with the given name
-     * @throws IllegalArgumentException there is no account associated with that name
-     */
-    public void archiveAccount(String name) throws DataAccessException, IllegalArgumentException {
-
+    public boolean isTaken(String name) throws DataAccessException {
+        for (Account account: dao.listFiltered()) {
+            if (account.getLogin().equals(name)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

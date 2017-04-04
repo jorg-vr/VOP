@@ -1,67 +1,97 @@
 package spring.model;
 
+import model.fleet.Vehicle;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import spring.controller.UUIDUtil;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 /**
- * Created by jorg on 3/6/17.
- * bean class implementing swagger api for vehicle
+ * This is a bean class as specified in the API specification
  */
-@ResponseStatus(value= HttpStatus.OK, reason="OK")
-public class RESTVehicle {
-    private String id;
-    private String license_plate;
-    private String chassis_number;
+@ResponseStatus(value = HttpStatus.OK, reason = "OK")
+public class RESTVehicle extends RESTAbstractModel {
+
+    private static final String PATH_VEHICLES = "/vehicles";
+
+    private static DateTimeFormatter yearFormat = DateTimeFormatter.ofPattern("yyyyMMdd").withLocale(Locale.forLanguageTag("NL"));
+
+    private String licensePlate;
+    private String vin; //chassisnumber
     private String brand;
     private String model;
     private String type;
-    private int kilometer_count;
+    private int value;
+    private int mileage;
     private String year;
-    private String leasing_company; //id of leasing company
-    private String created_at;
-    private String updated_at;
-    private String url;
+    private String leasingCompany; //id of leasing company
+    private String fleet;
 
     public RESTVehicle() {
     }
 
-    public RESTVehicle(String id, String license_plate, String chassis_number, String brand, String model, String type, int kilometer_count, String year, String leasing_company, String created_at, String updated_at, String url) {
-        this.id = id;
-        this.license_plate = license_plate;
-        this.chassis_number = chassis_number;
-        this.brand = brand;
-        this.model = model;
-        this.type = type;
-        this.kilometer_count = kilometer_count;
-        this.year = year;
-        this.leasing_company = leasing_company;
-        this.created_at = created_at;
-        this.updated_at = updated_at;
-        this.url = url;
+    /**
+     * Create a new RESTVehicle based on the fields of the vehicle object
+     * @param vehicle the vehicle that this RESTVehicle is based on
+     */
+    public RESTVehicle(Vehicle vehicle) {
+        super(vehicle.getUuid(), PATH_VEHICLES);
+        licensePlate = vehicle.getLicensePlate();
+        vin = vehicle.getChassisNumber();
+        brand = vehicle.getBrand();
+        model = vehicle.getModel();
+        type = vehicle.getType() != null ? UUIDUtil.UUIDToNumberString(vehicle.getType().getUuid()) : null;
+        value = vehicle.getValue();
+        mileage = vehicle.getMileage();
+        year = vehicle.getProductionDate().getYear() + "";
+        leasingCompany = vehicle.getLeasingCompany() != null ? UUIDUtil.UUIDToNumberString(vehicle.getLeasingCompany().getUuid()) : null;
+        fleet = vehicle.getFleet() != null ? UUIDUtil.UUIDToNumberString(vehicle.getFleet().getUuid()) : null;
     }
 
-    public String getId() {
-        return id;
+    /**
+     * @return a new Vehicle object that has fields that are based on this object
+     */
+    public Vehicle translate() {
+        Vehicle vehicle = new Vehicle();
+        vehicle.setUuid(UUIDUtil.toUUID(getId()));
+        vehicle.setBrand(brand);
+        vehicle.setModel(model);
+        vehicle.setLicensePlate(licensePlate);
+        LocalDate year = LocalDate.parse(this.year + "0101", yearFormat);//Fix conversion bug
+        vehicle.setProductionDate(year);
+        vehicle.setChassisNumber(vin);
+        vehicle.setValue(value);
+        vehicle.setMileage(mileage);
+        //vehicle.setType(); TODO create dummy type or get it from DAO?
+        //vehicle.setFleet();
+        return vehicle;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public int getValue() {
+        return value;
     }
 
-    public String getLicense_plate() {
-        return license_plate;
+    public void setValue(int value) {
+        this.value = value;
     }
 
-    public void setLicense_plate(String license_plate) {
-        this.license_plate = license_plate;
+    public String getLicensePlate() {
+        return licensePlate;
     }
 
-    public String getChassis_number() {
-        return chassis_number;
+    public void setLicensePlate(String licensePlate) {
+        this.licensePlate = licensePlate;
     }
 
-    public void setChassis_number(String chassis_number) {
-        this.chassis_number = chassis_number;
+    public String getVin() {
+        return vin;
+    }
+
+    public void setVin(String vin) {
+        this.vin = vin;
     }
 
     public String getBrand() {
@@ -88,12 +118,12 @@ public class RESTVehicle {
         this.type = type;
     }
 
-    public int getKilometer_count() {
-        return kilometer_count;
+    public int getMileage() {
+        return mileage;
     }
 
-    public void setKilometer_count(int kilometer_count) {
-        this.kilometer_count = kilometer_count;
+    public void setMileage(int mileage) {
+        this.mileage = mileage;
     }
 
     public String getYear() {
@@ -104,35 +134,20 @@ public class RESTVehicle {
         this.year = year;
     }
 
-    public String getLeasing_company() {
-        return leasing_company;
+    public String getLeasingCompany() {
+        return leasingCompany;
     }
 
-    public void setLeasing_company(String leasing_company) {
-        this.leasing_company = leasing_company;
+    public void setLeasingCompany(String leasingCompany) {
+        this.leasingCompany = leasingCompany;
     }
 
-    public String getCreated_at() {
-        return created_at;
+    public String getFleet() {
+        return fleet;
     }
 
-    public void setCreated_at(String created_at) {
-        this.created_at = created_at;
+    public void setFleet(String fleet) {
+        this.fleet = fleet;
     }
 
-    public String getUpdated_at() {
-        return updated_at;
-    }
-
-    public void setUpdated_at(String updated_at) {
-        this.updated_at = updated_at;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
 }

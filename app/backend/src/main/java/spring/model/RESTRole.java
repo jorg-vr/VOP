@@ -1,25 +1,28 @@
 package spring.model;
 
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
+/**
+ * This is a bean class as specified in the API specification
+ */
 public class RESTRole {
 
     private String id;
 
-    private String companyId;
+    private String company;
 
     private String function;
 
-    private String userId;
+    private String user;
 
-    private LocalDate startDate;
+    private LocalDateTime startDate;
 
-    private LocalDate endDate;
+    private LocalDateTime endDate;
 
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
 
-    private LocalDate updatedAt;
+    private LocalDateTime updatedAt;
 
     private String url;
 
@@ -31,12 +34,12 @@ public class RESTRole {
         this.id = id;
     }
 
-    public String getCompanyId() {
-        return companyId;
+    public String getCompany() {
+        return company;
     }
 
-    public void setCompanyId(String companyId) {
-        this.companyId = companyId;
+    public void setCompany(String company) {
+        this.company = company;
     }
 
     public String getFunction() {
@@ -47,43 +50,43 @@ public class RESTRole {
         this.function = function;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getUser() {
+        return user;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUser(String user) {
+        this.user = user;
     }
 
-    public LocalDate getStartDate() {
+    public LocalDateTime getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDate startDate) {
+    public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
     }
 
-    public LocalDate getEndDate() {
+    public LocalDateTime getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDate endDate) {
+    public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
     }
 
-    public LocalDate getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDate createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
-    public LocalDate getUpdatedAt() {
+    public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(LocalDate updatedAt) {
+    public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
 
@@ -93,5 +96,21 @@ public class RESTRole {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        RESTRole that = (RESTRole) o;
+
+        return id.equals(that.id);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
     }
 }

@@ -11,24 +11,22 @@ import java.util.UUID;
 public class Fleet implements EditableObject, java.io.Serializable {
 
     private UUID uuid;
+    private String name;
     private Customer owner;
+
     private Collection<Vehicle> vehicles;
 
     public Fleet() {
     }
 
-    public Fleet(UUID uuid, Customer owner, Collection<Vehicle> vehicles) {
-        this.uuid = uuid;
-        this.owner = owner;
+    public Fleet(UUID uuid, Collection<Vehicle> vehicles) {
+        this.uuid= uuid;
+
         this.vehicles = vehicles;
     }
 
 
-    public Fleet(UUID uuid, Customer owner) {
-        this.uuid = uuid;
-        this.owner = owner;
-        this.vehicles = new HashSet<Vehicle>();
-    }
+
 
     /**
      * Adds the Vehicle to the Fleet.
@@ -38,12 +36,13 @@ public class Fleet implements EditableObject, java.io.Serializable {
      *
      * @return true if the Vehicle was added
      */
-    public boolean add(Vehicle vehicle) {
-        if (vehicles.contains(vehicle)) {
+    public boolean addVehicle(Vehicle vehicle) {
+        if (vehicles == null) {
+            vehicles = new ArrayList<Vehicle>();
+        } else if (vehicle == null || vehicles.contains(vehicle)) {
             return false;
         }
-        vehicles.add(vehicle);
-        return true;
+        return vehicles.add(vehicle);
     }
 
     /**
@@ -54,28 +53,22 @@ public class Fleet implements EditableObject, java.io.Serializable {
      *
      * @return true if the Vehicle was removed
      */
-    public boolean remove(Vehicle vehicle) {
-        if (!vehicles.contains(vehicle)) {
+    public boolean removeVehicle(Vehicle vehicle) {
+        if(vehicles == null){
             return false;
         }
-        vehicles.remove(vehicle);
-        return true;
+        if (vehicle == null || !vehicles.contains(vehicle)) {
+            return false;
+        }
+        return vehicles.remove(vehicle);
     }
 
     /**
      * @return The amount of vehicles in this fleet
      */
     public int size() {
+        if(vehicles==null){return 0;}
         return vehicles.size();
-    }
-
-    public UUID getUuid() {
-        return uuid;
-    }
-
-
-    public void setUuid(UUID uuid) {
-        this.uuid = uuid;
     }
 
     public Customer getOwner() {
@@ -86,8 +79,24 @@ public class Fleet implements EditableObject, java.io.Serializable {
         this.owner = owner;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
+    }
+
     public Collection<Vehicle> getVehicles() {
-        return new ArrayList<>(vehicles);
+        return vehicles;
     }
 
     public void setVehicles(Collection<Vehicle> vehicles) {
@@ -99,18 +108,19 @@ public class Fleet implements EditableObject, java.io.Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        return uuid == ((Fleet)o).getUuid();
+        return uuid.equals(((Fleet) o).getUuid());
 
     }
 
     @Override
     public EditableObject copy() {
-        Collection<Vehicle> newList =  new ArrayList<Vehicle>();
-        for(Vehicle v : vehicles){
-            newList.add((Vehicle)v.copy());
+        Collection<Vehicle> newList = new ArrayList<Vehicle>();
+        for (Vehicle v : vehicles) {
+            newList.add((Vehicle) v.copy());
         }
-        return new Fleet(uuid,owner, newList);
+        return new Fleet(uuid, newList);
     }
+
     @Override
     public int hashCode() {
         return uuid.hashCode();

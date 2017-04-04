@@ -4,6 +4,7 @@
 ### [Persoonlijke timesheets](https://docs.google.com/spreadsheets/d/13IeYrYabPoF_jOV6B7rT37mbyNtSmx6vzdmhjrjOPnA/edit)
 ### [Vergaderingen](https://github.ugent.be/VakOverschrijdendProject/2016-2017-groep-05/wiki/Verslagen)
 ### [Opgave](https://github.ugent.be/pages/VakOverschrijdendProject/algemeen/)
+### [API specificatie](https://github.ugent.be/pages/VakOverschrijdendProject/2016-2017-rest-api/)
 ## Git workflow ([Feature Branch Workflow](https://www.atlassian.com/git/tutorials/comparing-workflows#feature-branch-workflow))
 
 * Niet code-gerelateerde zaken op de [wiki](https://github.ugent.be/VakOverschrijdendProject/2016-2017-groep-05/wiki)

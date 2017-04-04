@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+
+    <session-factory>
+
+        <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQL94Dialect</property>
+        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+        <property name="hibernate.connection.username">testdata</property>
+        <property name="hibernate.connection.password">testdata</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5430/test</property>
+        <property name="connection.pool_size">100</property>
+        <property name="hbm2ddl.auto">none</property>
+        <property name="show_sql">true</property>
+        <mapping resource="hibernate/address.hbm.xml" />
+        <mapping resource="hibernate/vehicletype.hbm.xml" />
+        <mapping resource="hibernate/vehicle.hbm.xml" />
+        <mapping resource="hibernate/fleet.hbm.xml" />
+        <mapping resource="hibernate/identity.hbm.xml" />
+        <mapping resource="hibernate/account.hbm.xml" />
+        <mapping resource="hibernate/function.hbm.xml" />
+
+
+    </session-factory>
+</hibernate-configuration>

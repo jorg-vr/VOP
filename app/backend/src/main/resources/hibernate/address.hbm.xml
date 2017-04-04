@@ -8,12 +8,12 @@
         <meta attribute="class-description">
             This class contains the address detail.
         </meta>
-        <id name="uuid" type="binary" column="id">
-            <generator class="uuid"/>
+        <id name="uuid" type="uuid-binary" column="id">
+            <generator class="uuid2"/>
         </id>
 
         <property name="country" column="country" type="string"/>
-        <property name="postalCode" column="postal_code" type="string"/>
+        <property name="postalCode" column="postalCode" type="string"/>
         <property name="street" column="street" type="string"/>
         <property name="streetNumber" column="street_number" type="string"/>
         <property name="town" column="town" type="string"/>

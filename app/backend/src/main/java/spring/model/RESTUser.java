@@ -1,35 +1,39 @@
 package spring.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import model.account.Account;
+import model.identity.Person;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-public class RESTUser {
+/**
+ * This is a bean class as specified in the API specification
+ */
+public class RESTUser extends RESTAbstractModel {
 
-    private String id;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
+    private static final String PATH_USERS = "/users";
 
     private String firstName;
-
     private String lastName;
-
     private String email;
-
     private String password;
 
-    private LocalDate createdAt;
+    public RESTUser() {
+    }
 
-    private LocalDate updatedAt;
-
-    private String url;
-
+    /**
+     * Created a RESTUser based on the fields of account and pereson
+     * @param account should not not be null
+     * @param person should not be null
+     */
+    public RESTUser(Account account, Person person) {
+        super(account.getUuid(), PATH_USERS);
+        firstName = person.getFirstName();
+        lastName = person.getLastName();
+        email = person.getEmail();
+        password = account.getHashedPassword();
+    }
 
     public String getFirstName() {
         return firstName;
@@ -61,43 +65,5 @@ public class RESTUser {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public LocalDate getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDate createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDate getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDate updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    @Override
-    public String toString() {
-        return "RESTUser{" +
-                "id='" + id + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                ", url='" + url + '\'' +
-                '}';
     }
 }

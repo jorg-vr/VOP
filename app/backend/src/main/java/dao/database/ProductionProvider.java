@@ -1,26 +1,14 @@
 package dao.database;
 
-import dao.interfaces.DAOProvider;
-import dao.interfaces.HistoryDAO;
-import dao.interfaces.InsuranceDAO;
-import dao.interfaces.VehicleDAO;
-import model.fleet.Vehicle;
-import model.identity.Identity;
-import model.insurance.Insurance;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
+import dao.interfaces.*;
+import model.fleet.VehicleType;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
-import java.util.Map;
 
-/**
- * Created by sam on 3/8/17.
- */
 public class ProductionProvider implements DAOProvider {
 
     private static ProductionProvider provider = null;
@@ -28,10 +16,10 @@ public class ProductionProvider implements DAOProvider {
     private SessionFactory sessionFactory;
 
 
-    private ProductionProvider(){
+    private ProductionProvider(String configLocation) {
 
         registry = new StandardServiceRegistryBuilder()
-                .configure("hibernate/hibernate.cfg.xml")
+                .configure(configLocation)
                 .build();
         // Create MetadataSources
         MetadataSources sources = new MetadataSources(registry);
@@ -42,34 +30,75 @@ public class ProductionProvider implements DAOProvider {
         // Create SessionFactory
         sessionFactory = metadata.getSessionFactoryBuilder().build();
 
+    }
 
+    /**
+     * SHOULD BE CALLED BEFORE getInstance()
+     * initializes the provider with the right hibernate configuration
+     *
+     * @param environment should it run on production or development
+     */
+    public synchronized static void initializeProvider(String environment) {
+        if (environment.equals("production")) {
+            provider = new ProductionProvider("hibernate/deployment.cfg.xml");
+        } else if (environment.equals("localtest")) {
+            provider = new ProductionProvider("hibernate/localtest.cfg.xml");
+        } else if (environment.equals("test")) {
+            provider = new ProductionProvider("hibernate/test.cfg.xml");
+        } else if (environment.equals("unittest")) {
+            provider = new ProductionProvider("hibernate/test-in-memory.cfg.xml");
+        }
 
     }
-    public static DAOProvider getInstance() {
-        if(provider==null){
-            provider = new ProductionProvider();
+
+    /**
+     * @return the DAOProvider
+     */
+    public synchronized static DAOProvider getInstance() {
+        if (provider == null) {
+            initializeProvider("test");
         }
         return provider;
     }
 
     @Override
-    public InsuranceDAO getInsuranceDao() {
-        return null;
+    public synchronized AccountDAO getAccountDao() {
+        return new ProductionAccountDAO(sessionFactory.openSession());
     }
 
     @Override
-    public VehicleDAO getVehicleDao() {
-        return null;
+    public synchronized CustomerDAO getCustomerDAO() {
+        return new ProductionCustomerDAO(sessionFactory.openSession());
     }
 
     @Override
-    public HistoryDAO<Vehicle> getVehicleHistoryDAO() {
-        return null;
+    public synchronized FleetDAO getFleetDAO() {
+        return new ProductionFleetDAO(sessionFactory.openSession());
     }
 
     @Override
-    public HistoryDAO<Insurance> getInsuranceHistoryDAO() {
-        return null;
+    public synchronized FunctionDAO getFunctionDAO() {
+        return new ProductionFunctionDAO(sessionFactory.openSession());
+    }
+
+    @Override
+    public synchronized PersonDAO getPersonDAO() {
+        return new ProductionPersonDAO(sessionFactory.openSession());
+    }
+
+    @Override
+    public synchronized VehicleDAO getVehicleDAO() {
+        return new ProductionVehicleDAO(sessionFactory.openSession());
+    }
+
+    @Override
+    public synchronized VehicleTypeDao getVehicleTypeDAO() {
+        return new ProductionVehicleTypeDAO(sessionFactory.openSession());
+    }
+
+    @Override
+    public AddressDAO getAddressDao() {
+        return new ProductionAddressDAO(sessionFactory.openSession());
     }
 
     @Override
@@ -78,16 +107,17 @@ public class ProductionProvider implements DAOProvider {
         StandardServiceRegistryBuilder.destroy(this.registry);
     }
 
-    public static void main(String[] args) {
-//        try(DAOProvider daoProvider = ProductionProvider.getInstance()){
-//
-//        }
-        Map<String, String> env = System.getenv();
-        for (String envName : env.keySet()) {
-            System.out.format("%s=%s%n",
-                    envName,
-                    env.get(envName));
+    public static void main(String[] args) throws DataAccessException {
+        ProductionProvider.initializeProvider("test");
+        DAOProvider provider = ProductionProvider.getInstance();
+
+        VehicleTypeDao dao = provider.getVehicleTypeDAO();
+        for (VehicleType type : dao.listFiltered(dao.nameContains("type"))) {
+            dao.remove(type.getUuid());
         }
-        System.out.println(System.getenv("TESTTEST"));
+
+
+        provider.close();
     }
+
 }
