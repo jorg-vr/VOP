@@ -2,6 +2,7 @@ package controller;
 
 import controller.exceptions.UnAuthorizedException;
 import dao.database.ProductionProvider;
+import dao.interfaces.AccountDAO;
 import dao.interfaces.DataAccessException;
 import model.account.Account;
 import model.account.Function;
@@ -34,12 +35,23 @@ public class AuthController implements  AutoCloseable{
         }
     }
 
-    public AuthenticationToken getToken(String login,String password){
-        return ProductionProvider.getInstance().getAccountDao().bySecurity(login,password);
+    public AuthenticationToken getToken(String login,String password)throws DataAccessException, UnAuthorizedException{
+        AccountDAO accountDAO=ProductionProvider.getInstance().getAccountDao();
+        Account account=accountDAO.listFiltered(accountDAO.bySecurity(login,password)).iterator().next();
+        return new AuthenticationToken(account.getUuid(),account.getHashedPassword());
+    }
+
+    public AuthenticationToken refreshToken(AuthenticationToken token)throws DataAccessException, UnAuthorizedException{
+        Account account= ProductionProvider.getInstance().getAccountDao().get(token.getAcountId());
+        if(token.getExpire().isAfter(LocalDateTime.now())&&account.validatePassword(token.getHash())){
+            return new AuthenticationToken(account.getUuid(),account.getHashedPassword());
+        }else{
+            throw new UnAuthorizedException();
+        }
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
 
     }
 }
