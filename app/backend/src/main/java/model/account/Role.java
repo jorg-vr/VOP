@@ -10,7 +10,7 @@ import java.util.*;
  */
 public class Role implements EditableObject, java.io.Serializable {
     private String name;
-    private Map<Resource,Set<Action>>  rights;
+    private Map<Resource,Permission>  rights;
     private UUID uuid;
 
     public Role() {
@@ -23,19 +23,19 @@ public class Role implements EditableObject, java.io.Serializable {
         uuid=UUID.randomUUID();
     }
 
-    private Role(String name, Map<Resource, Set<Action>> rights, UUID uuid) {
+    private Role(String name, Map<Resource,Permission> rights, UUID uuid) {
         this.name = name;
         this.rights = rights;
         this.uuid = uuid;
     }
 
     public void setAccess(Resource resource, Action action){
-        rights.putIfAbsent(resource,new HashSet<>());
-        rights.get(resource).add(action);
+        rights.putIfAbsent(resource,new Permission(resource));
+        rights.get(resource).addAction(action);
     }
 
     public boolean hasAccess(Resource resource, Action action){
-        return rights.containsKey(resource) &&rights.get(resource).contains(action);
+        return rights.containsKey(resource) &&rights.get(resource).getActions().contains(action);
     }
 
     public String getName() {
@@ -46,11 +46,11 @@ public class Role implements EditableObject, java.io.Serializable {
         this.name = name;
     }
 
-    public Map<Resource, Set<Action>> getRights() {
+    public Map<Resource,Permission> getRights() {
         return rights;
     }
 
-    public void setRights(Map<Resource, Set<Action>> rights) {
+    public void setRights(Map<Resource,Permission> rights) {
         this.rights = rights;
     }
 

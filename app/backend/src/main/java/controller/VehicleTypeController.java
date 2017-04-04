@@ -1,8 +1,6 @@
 package controller;
 
 import dao.database.ProductionProvider;
-import dao.interfaces.DAO;
-import dao.interfaces.DAOProvider;
 import model.account.Function;
 import model.account.Resource;
 import model.fleet.VehicleType;
@@ -14,7 +12,7 @@ public class VehicleTypeController extends AbstractController<VehicleType> {
 
 
     public VehicleTypeController(Function function) {
-        super(ProductionProvider.getInstance().getVehicleTypeDAO(), Resource.VEHIVLETYPE, function);
+        super(ProductionProvider.getInstance().getVehicleTypeDAO(), Resource.VEHICLETYPE, function);
     }
 
     @Override

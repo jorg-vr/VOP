@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <typedef name="action" class="model.account.Action">
+        <param name="enumClassName">model.account.Action</param>
+    </typedef>
+    <class name="model.account.Role" table="role">
+        <meta attribute="class-description">
+            This class contains the vehicle detail.
+        </meta>
+        <id name="uuid" type="uuid-binary" column="id">
+            <generator class="uuid2"/>
+        </id>
+        <property name="name" column="name" type="string"/>
+
+        <map name="rights"
+             table="rights">
+            <key column="role_id"/>
+            <index column="resource" type="org.hibernate.type.EnumType"/>
+            <one-to-many class="model.account.Permission"/>
+        </map>
+    </class>
+
+    <class name="model.account.Permission" table="permission">
+        <id name="uuid" type="uuid-binary" column="id">
+            <generator class="uuid2"/>
+        </id>
+        <property name="resource" type="org.hibernate.type.EnumType"/>
+        <set name="actions" table="action">
+            <key column="id" not-null="true"/>
+            <element type="action" column="action"/>
+        </set>
+    </class>
+</hibernate-mapping>

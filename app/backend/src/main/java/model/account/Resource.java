@@ -10,7 +10,7 @@ public enum Resource {
     BILLING,
     VEHICLE,
     FLEET,
-    VEHIVLETYPE,
+    VEHICLETYPE,
     COMPANY,
     PERSON,
     INSURANCE
