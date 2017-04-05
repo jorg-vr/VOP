@@ -1,6 +1,5 @@
 package spring.model;
 
-import model.account.Account;
 import model.account.Function;
 import model.account.User;
 

@@ -1,12 +1,5 @@
 package dao.interfaces;
 
-import model.account.Account;
-import model.identity.Company;
-import model.identity.InsuranceCompany;
-import model.identity.Person;
-import model.insurance.Insurance;
-import model.fleet.Vehicle;
-
 /**
  * DAO provider to get DAO's
  * Created by sam on 3/7/17.

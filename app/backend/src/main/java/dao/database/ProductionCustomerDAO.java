@@ -3,13 +3,11 @@ package dao.database;
 import dao.interfaces.CustomerDAO;
 import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
-import model.account.Account;
 import model.fleet.Fleet;
 import model.identity.Address;
 import model.identity.Customer;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import javax.persistence.criteria.CriteriaBuilder;

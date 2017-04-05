@@ -1,24 +1,17 @@
 package spring.controller;
 
 import controller.AuthController;
-import controller.UserController;
 import controller.exceptions.UnAuthorizedException;
 import dao.interfaces.DataAccessException;
-import model.account.Account;
 import model.account.Function;
-import model.identity.Person;
-import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.*;
-import spring.exceptions.ConflictException;
 import spring.exceptions.InvalidInputException;
 import spring.exceptions.NotAuthorizedException;
-import spring.exceptions.NotFoundException;
 import spring.model.AuthenticationToken;
 import spring.model.RESTSchema;
 import spring.model.RESTUser;
 
 import javax.servlet.http.HttpServletRequest;
-import java.net.URL;
 import java.util.*;
 
 /**

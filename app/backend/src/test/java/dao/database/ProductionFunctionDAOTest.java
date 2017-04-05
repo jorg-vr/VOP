@@ -1,20 +1,14 @@
 package dao.database;
 
 import dao.interfaces.*;
-import model.account.Account;
 import model.account.Function;
 import model.account.Role;
 import model.identity.Address;
 import model.identity.Company;
-import model.identity.Person;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
-
-import java.time.LocalDateTime;
-
-import static org.junit.Assert.*;
 
 
 public class ProductionFunctionDAOTest {
@@ -49,8 +43,8 @@ public class ProductionFunctionDAOTest {
     public void createGetRemoveTest() throws Exception {
         Company comp1 = null;
         Address adr1 = null;
-        Person p1 = null;
-        Account acc1 = null;
+        //Person p1 = null;
+        //Account acc1 = null;
         Role r1 = null;
         Function f1 = null;
         boolean present = false;

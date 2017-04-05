@@ -1,21 +1,12 @@
 package spring.controller;
 
-import controller.CustomerController;
 import controller.FunctionController;
-import controller.UserController;
-import controller.exceptions.UnAuthorizedException;
-import dao.interfaces.DataAccessException;
-import model.account.Account;
 import model.account.Function;
-import model.account.User;
-import model.identity.Company;
 import org.springframework.web.bind.annotation.*;
-import spring.exceptions.NotAuthorizedException;
 import spring.model.RESTRole;
 import spring.model.RESTSchema;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
 
 /**
  * This controller is responsible for handling the HTTP requests of the URL /roles.

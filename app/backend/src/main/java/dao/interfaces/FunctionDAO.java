@@ -1,13 +1,8 @@
 package dao.interfaces;
 
-import model.account.Account;
 import model.account.Function;
-import model.account.Role;
+import model.account.User;
 import model.identity.Company;
-
-import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.UUID;
 
 /**
  * DAO for the bean Function
@@ -18,10 +13,10 @@ public interface FunctionDAO extends DAO<Function> {
     /**
      * Returns a Filter to use in ListFiltered in this class, which returns all functions the given account has.
      *
-     * @param account The account to use in the filter
+     * @param user The User to use in the filter
      * @return A useable Filter for listFiltered
      */
-    Filter<Function> byAccount(Account account);
+    Filter<Function> byUser(User user);
 
     /**
      * Returns a Filter to use in ListFiltered in this class, which returns all functions the given company has.
