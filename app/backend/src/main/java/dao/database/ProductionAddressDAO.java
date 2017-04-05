@@ -29,31 +29,26 @@ public class ProductionAddressDAO extends ProductionDAO<Address> implements Addr
 
     @Override
     public Filter<Address> byStreet(String street) {
-        return () ->
-                getPredicates().add(getCriteriaBuilder().equal(getRoot().get("street"), street));
+        return filterContains("street",street);
     }
 
     @Override
     public Filter<Address> byStreetNumber(String streetNumber) {
-        return () ->
-                getPredicates().add(getCriteriaBuilder().equal(getRoot().get("streetNumber"), streetNumber));
+        return filterContains("streetNumber",streetNumber);
     }
 
     @Override
     public Filter<Address> byTown(String town) {
-        return () ->
-                getPredicates().add(getCriteriaBuilder().equal(getRoot().get("town"), town));
+        return filterContains("town",town);
     }
 
     @Override
     public Filter<Address> byPostalCode(String postalCode) {
-        return () ->
-                getPredicates().add(getCriteriaBuilder().equal(getRoot().get("postalCode"), postalCode));
+        return filterEqual("postalCode",postalCode);
     }
 
     @Override
     public Filter<Address> byCountry(String country) {
-        return () ->
-                getPredicates().add(getCriteriaBuilder().equal(getRoot().get("country"), country));
+        return filterEqual("country",country);
     }
 }
