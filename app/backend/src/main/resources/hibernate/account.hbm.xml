@@ -14,9 +14,9 @@
 
         <property name="login" column="login" type="string"/>
         <property name="hashedPassword" column="hashed_password" type="string"/>
-        <many-to-one name="person" column="person_id"  class="model.identity.Person" lazy="false"/>
+        <many-to-one name="person" column="person_id"  class="model.identity.Person" lazy="proxy" fetch="select"/>
         <bag name="functions" access="field" table="FUNCTION" cascade="all"
-             inverse="true" lazy="false" fetch="select">
+             inverse="true" lazy="true" fetch="select">
             <key column="account_id" not-null="true"/>
             <one-to-many class="model.account.Function" />
         </bag>

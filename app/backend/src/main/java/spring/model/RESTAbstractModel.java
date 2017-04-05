@@ -1,6 +1,8 @@
 package spring.model;
 
+import model.account.Function;
 import model.history.EditEvent;
+import model.history.EditableObject;
 import spring.controller.UUIDUtil;
 
 import java.time.LocalDateTime;
@@ -9,7 +11,7 @@ import java.util.UUID;
 /**
  * This abstract class contains some fields that (almost) every RESTModel has.
  */
-public abstract class RESTAbstractModel {
+public abstract class RESTAbstractModel<T extends EditableObject> {
 
     private String id;
     private LocalDateTime createdAt;
@@ -36,6 +38,8 @@ public abstract class RESTAbstractModel {
     public RESTAbstractModel(UUID uuid, String url) {
         this(uuid, null, null, url);
     }
+
+    public abstract T translate(Function function);
 
     public String getId() {
         return id;
@@ -84,4 +88,5 @@ public abstract class RESTAbstractModel {
     public int hashCode() {
         return id.hashCode();
     }
+
 }

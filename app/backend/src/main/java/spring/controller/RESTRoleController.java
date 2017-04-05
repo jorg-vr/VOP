@@ -3,19 +3,18 @@ package spring.controller;
 import controller.AccountController;
 import controller.CustomerController;
 import controller.FunctionController;
+import controller.exceptions.UnAuthorizedException;
 import dao.interfaces.DataAccessException;
 import model.account.Account;
 import model.account.Function;
 import model.identity.Company;
 import org.springframework.web.bind.annotation.*;
-import spring.exceptions.InvalidInputException;
-import spring.exceptions.NotFoundException;
+import spring.exceptions.NotAuthorizedException;
 import spring.model.RESTRole;
 import spring.model.RESTSchema;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
-
-import static spring.controller.UUIDUtil.UUIDToNumberString;
 
 /**
  * This controller is responsible for handling the HTTP requests of the URL /roles.
@@ -34,22 +33,29 @@ import static spring.controller.UUIDUtil.UUIDToNumberString;
  */
 @RestController
 @RequestMapping("/roles")
-public class RESTRoleController {
+public class RESTRoleController extends RESTAbstractController<RESTRole,Function>{
 
     public static final String PATH_ROLE = "/roles";
 
-    private FunctionController controller = new FunctionController();
-    private CustomerController customerController = new CustomerController();
-    private AccountController accountController = new AccountController();
+
+    public RESTRoleController() {
+        super(FunctionController::new, RESTRole::new);
+    }
 
     @RequestMapping(method = RequestMethod.GET)
-    public RESTSchema<RESTRole> get(@RequestParam(required = false) String company,
+    public RESTSchema<RESTRole> get(HttpServletRequest request,
+                                    @RequestParam(required = false) String company,
                                     @RequestParam(required = false) String user,
                                     @RequestParam(required = false) Boolean active,
                                     @RequestParam(required = false) Integer page,
-                                    @RequestParam(required = false) Integer limit) {
+                                    @RequestParam(required = false) Integer limit,
+                                    @RequestHeader(value="AuthToken") String token,
+                                    @RequestHeader(value="Function") String fu) {
         Collection<RESTRole> roles = new ArrayList<>();
-        try {
+        Function function=verifyToken(token,fu);
+        try(FunctionController controller=new FunctionController(function);
+        CustomerController customerController=new CustomerController(function);
+        AccountController accountController=new AccountController(function)) {
             UUID companyUuid = UUIDUtil.toUUID(company);
             UUID accountUuid = UUIDUtil.toUUID(user);
 
@@ -57,93 +63,21 @@ public class RESTRoleController {
             Account account = accountUuid != null ? accountController.get(accountUuid) : null;
 
             Collection<Function> functions = controller.getFiltered(customer, account, active);
-            for (Function function : functions) {
-                RESTRole restRole = modelToRest(function);
+            for (Function f : functions) {
+                RESTRole restRole = new RESTRole(f);
                 roles.add(restRole);
             }
 
         } catch (DataAccessException e) {
             e.printStackTrace();
+        } catch (UnAuthorizedException e) {
+            throw new NotAuthorizedException();
         }
-        return new RESTSchema<>(roles, page, limit, PATH_ROLE + "?");
+        return new RESTSchema<>(roles, page, limit, request);
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public RESTRole post(@RequestBody RESTRole role) {
-        UUID companyUUID = UUIDUtil.toUUID(role.getCompany());
-        UUID userUUID = UUIDUtil.toUUID(role.getUser());
-        RESTRole createdRole;
 
-        try {
-            Function function = controller.create(companyUUID, role.getFunction(), userUUID, role.getStartDate(), role.getEndDate());
-            createdRole = modelToRest(function);
-        } catch (DataAccessException e) {
-            throw new InvalidInputException(e);
-        }
-        return createdRole;
-    }
 
-    @RequestMapping(value = "{id}", method = RequestMethod.GET)
-    public RESTRole getId(@PathVariable("id") String id) {
-        UUID uuid = UUIDUtil.toUUID(id);
-        try {
-            Function function = controller.get(uuid);
-            return modelToRest(function);
-        } catch (Exception e) {
-            throw new NotFoundException();
-        }
-    }
 
-    @RequestMapping(value = "{id}", method = RequestMethod.PUT)
-    public RESTRole putId(@PathVariable("id") String id, @RequestBody RESTRole role) {
-        System.out.println("ids: " + id + "  " + role.getCompany() + "  " + role.getUser());
-        UUID uuid = UUIDUtil.toUUID(id);
-        UUID companyUuid = UUIDUtil.toUUID(role.getCompany());
-        UUID userUuid = UUIDUtil.toUUID(role.getUser());
-        System.out.println("ids: " + uuid + "  " + userUuid + "  " + companyUuid);
-        try {
-            Function function = controller.update(uuid,
-                    companyUuid,
-                    role.getFunction(),
-                    userUuid,
-                    role.getStartDate(),
-                    role.getEndDate());
-            return modelToRest(function);
-        } catch (DataAccessException e) {
-            throw new NotFoundException();
-        }
-    }
-
-    @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
-    public void deleteId(@PathVariable("id") String id) {
-        UUID uuid = UUIDUtil.toUUID(id);
-        try {
-            controller.archive(uuid);
-        } catch (DataAccessException e) {
-            throw new NotFoundException();
-        }
-    }
-
-    /**
-     * Transforms a function object to a restrole object
-     *
-     * @param function
-     * @return restroleobject with the fields of the function object
-     */
-    private RESTRole modelToRest(Function function) {
-        String id = UUIDToNumberString(function.getUuid());
-        String userId = UUIDToNumberString(function.getAccount().getUuid());
-        RESTRole role = new RESTRole();
-        role.setFunction("");
-        role.setId(id);
-        role.setUser(userId);
-        role.setCompany(UUIDUtil.UUIDToNumberString(function.getCompany().getUuid()));
-        role.setStartDate(function.getStartDate());
-        role.setEndDate(function.getEndDate());
-        //role.setUpdatedAt(); TODO milestone?
-        //role.setCreatedAt();
-        role.setUrl(PATH_ROLE + "/" + id);
-        return role;
-    }
 
 }

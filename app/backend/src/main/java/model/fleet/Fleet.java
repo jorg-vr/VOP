@@ -67,6 +67,7 @@ public class Fleet implements EditableObject, java.io.Serializable {
      * @return The amount of vehicles in this fleet
      */
     public int size() {
+        if(vehicles==null){return 0;}
         return vehicles.size();
     }
 

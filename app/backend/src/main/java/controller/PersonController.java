@@ -4,6 +4,8 @@ import dao.interfaces.DAOProvider;
 import dao.interfaces.DataAccessException;
 import dao.interfaces.PersonDAO;
 import main.BackendApplication;
+import model.account.Function;
+import model.account.Resource;
 import model.identity.Person;
 
 import java.util.UUID;
@@ -17,18 +19,15 @@ public class PersonController extends AbstractController<Person> {
 
     private PersonDAO dao;
 
-    public PersonController() {
-        super(BackendApplication.getProvider().getPersonDAO());
+    public PersonController(Function function) {
+        super(BackendApplication.getProvider().getPersonDAO(), Resource.PERSON,function);
         provider = BackendApplication.getProvider();
         this.dao = provider.getPersonDAO();
     }
 
-    public Person createPerson(String firstName, String lastName, String email) throws DataAccessException {
-        return dao.create(firstName, lastName, email);
-    }
 
-    public Person updatePerson(UUID personId, String firstName, String lastName, String email) throws DataAccessException {
-        return dao.update(personId, firstName, lastName, email);
+    @Override
+    public boolean isOwner(Person person, Function function) {
+        return function.getAccount().getPerson().equals(person);
     }
-
 }

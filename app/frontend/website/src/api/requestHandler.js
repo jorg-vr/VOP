@@ -1,14 +1,11 @@
 import Vue from 'vue'
 
-const headers = {
-    Accept: "application/json"
-};
 
 export default {
 
     getObjectsRequest(location){
         return new Promise(resolve => {
-            Vue.http.get(location, headers).then(response => {
+            Vue.http.get(location).then(response => {
                 resolve(response.body.data)
             })
         })
@@ -17,31 +14,28 @@ export default {
 
     getObjectRequest(location, id){
         return new Promise(resolve => {
-            Vue.http.get(location + id, headers).then(response => {
+            Vue.http.get(location + id).then(response => {
                 resolve(response.body)
             })
         })
     },
 
-    /*
-    filters: an array of objects, each have a filter and its value.
-    This object can look like this: {filter: 'company', value: 'Hertsens'}
-     */
+    //This function isn't optimised yet for any use case!
+    //For example, some properties can't be filtered, some properties might be nested
     getObjectsRequestBy(location, filters){
-        query = ''
-        if(filters.length > 0){
-            query += '?'
-            for(let i=0; i<filters.length; i++){
-                let filter = filters[i]
-                query += filters[i].filter + '=' + filters[i].value
+        let query = '?'
+        for(const filter in filters){
+            if(filters.hasOwnProperty(filter)){
+                query += filter + '=' + filters[filter] + '&'
             }
         }
-        return getObjectsRequest(location + query)
+        query =  query.slice(0, -1)
+        return this.getObjectsRequest(location + query)
     },
 
     postObjectRequest(location, object){
         return new Promise(resolve => {
-            Vue.http.post(location, object, headers).then(response => {
+            Vue.http.post(location, object).then(response => {
                 resolve(response.body)
             })
         })
@@ -49,7 +43,7 @@ export default {
 
     putObjectRequest(location, object){
         return new Promise(resolve => {
-            Vue.http.put(location + object.id, object, headers).then(response => {
+            Vue.http.put(location + object.id, object).then(response => {
                 resolve(response.body)
             })
         })
@@ -57,7 +51,7 @@ export default {
 
     deleteObjectRequest(location, id){
         return new Promise(resolve => {
-            Vue.http.delete(location + id, headers).then(() => {
+            Vue.http.delete(location + id).then(() => {
                 resolve()
             })
         })

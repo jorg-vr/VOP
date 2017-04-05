@@ -6,7 +6,7 @@
         <div class="page-header">
             <h1><h1>{{ $t("fleet.fleet") | capitalize }} {{$t("actions_plural.create") }}</h1></h1>
         </div>
-        <fleet-form :submit="createFleet"></fleet-form>
+        <fleet-form :submit="createFleet" :clientId="clientId"></fleet-form>
     </div>
 </template>
 <script>
@@ -16,6 +16,9 @@
     export default {
         components: {
             FleetForm
+        },
+        props: {
+            clientId: String
         },
         methods: {
             ...mapActions([

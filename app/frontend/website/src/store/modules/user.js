@@ -46,7 +46,7 @@ export default {
 
         [types.CREATE_USER] (state, {user}){
             state.users.push(user)
-            state.users.push(user)
+            state.filteredUsers.push(user)
         },
 
         [types.DELETE_USER] (state, {id}){

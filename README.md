@@ -1,5 +1,5 @@
 # Vakoverschrijdend Project van groep 5
-[![Build Status](https://vopro5.ugent.be/jenkins/buildStatus/icon?job=Deployment)](https://vopro5.ugent.be/jenkins/job/Deployment/)
+[![Build Status](https://vopro5.ugent.be/jenkins/buildStatus/icon?job=--TEST-- Deploy backend)](https://vopro5.ugent.be/jenkins/job/--TEST--%20Deploy%20backend/)
 ### [Website](https://vopro5.ugent.be)
 ### [Persoonlijke timesheets](https://docs.google.com/spreadsheets/d/13IeYrYabPoF_jOV6B7rT37mbyNtSmx6vzdmhjrjOPnA/edit)
 ### [Vergaderingen](https://github.ugent.be/VakOverschrijdendProject/2016-2017-groep-05/wiki/Verslagen)

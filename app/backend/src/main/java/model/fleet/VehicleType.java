@@ -60,11 +60,14 @@ public class VehicleType implements EditableObject, java.io.Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        System.out.println(o instanceof VehicleType);
+        if (o == null ||  !(o instanceof VehicleType)) {
+            return false;
+        }
 
         VehicleType that = (VehicleType) o;
 
-        return uuid.equals(that.uuid);
+        return uuid.equals(that.getUuid());
 
     }
 
@@ -73,6 +76,10 @@ public class VehicleType implements EditableObject, java.io.Serializable {
         return uuid.hashCode();
     }
 
+    @Override
+    public String toString(){
+        return type;
+    }
     @Override
     public EditableObject copy() {
         return new VehicleType(uuid, type, tax);

@@ -18,6 +18,7 @@ public interface PersonDAO extends IdentityDAO<Person> {
      * @return a new Person object with a valid UUID
      * @throws DataAccessException thrown when unique constraints are violated or the object can't be created
      */
+    @Deprecated
     Person create(String firstName, String lastName, String email) throws DataAccessException;
 
     /**
@@ -29,6 +30,7 @@ public interface PersonDAO extends IdentityDAO<Person> {
      * @return a new Person object with a valid UUID
      * @throws DataAccessException thrown when unique constraints are violated or the object can't be created
      */
+    @Deprecated
     Person update(UUID id, String firstName, String lastName, String email) throws DataAccessException;
 
     /**

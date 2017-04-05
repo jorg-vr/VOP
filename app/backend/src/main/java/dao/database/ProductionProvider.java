@@ -1,6 +1,7 @@
 package dao.database;
 
 import dao.interfaces.*;
+import model.account.*;
 import model.fleet.VehicleType;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
@@ -63,43 +64,49 @@ public class ProductionProvider implements DAOProvider {
 
     @Override
     public synchronized AccountDAO getAccountDao() {
-        return new ProductionAccountDAO(sessionFactory);
+        return new ProductionAccountDAO(sessionFactory.openSession());
     }
 
     @Override
     public synchronized CustomerDAO getCustomerDAO() {
-        return new ProductionCustomerDAO(sessionFactory);
+        return new ProductionCustomerDAO(sessionFactory.openSession());
     }
 
     @Override
     public synchronized FleetDAO getFleetDAO() {
-        return new ProductionFleetDAO(sessionFactory);
+        return new ProductionFleetDAO(sessionFactory.openSession());
     }
 
     @Override
     public synchronized FunctionDAO getFunctionDAO() {
-        return new ProductionFunctionDAO(sessionFactory);
+        return new ProductionFunctionDAO(sessionFactory.openSession());
     }
 
     @Override
     public synchronized PersonDAO getPersonDAO() {
-        return new ProductionPersonDAO(sessionFactory);
+        return new ProductionPersonDAO(sessionFactory.openSession());
     }
 
     @Override
     public synchronized VehicleDAO getVehicleDAO() {
-        return new ProductionVehicleDAO(sessionFactory);
+        return new ProductionVehicleDAO(sessionFactory.openSession());
     }
 
     @Override
     public synchronized VehicleTypeDao getVehicleTypeDAO() {
-        return new ProductionVehicleTypeDAO(sessionFactory);
+        return new ProductionVehicleTypeDAO(sessionFactory.openSession());
     }
 
     @Override
     public AddressDAO getAddressDao() {
-        return new ProductionAddressDAO(sessionFactory);
+        return new ProductionAddressDAO(sessionFactory.openSession());
     }
+
+    @Override
+    public RoleDAO getRoleDAO() {
+        return new ProductionRoleDAO(sessionFactory.openSession());
+    }
+
 
     @Override
     public void close() {
@@ -108,12 +115,36 @@ public class ProductionProvider implements DAOProvider {
     }
 
     public static void main(String[] args) throws DataAccessException {
-        ProductionProvider.initializeProvider("test");
+        ProductionProvider.initializeProvider("localtest");
         DAOProvider provider = ProductionProvider.getInstance();
 
-        VehicleTypeDao dao = provider.getVehicleTypeDAO();
-        for (VehicleType type : dao.listFiltered(dao.nameContains("type"))) {
-            dao.remove(type.getUuid());
+        try (RoleDAO roleDAO = provider.getRoleDAO();
+             AccountDAO accountDAO = provider.getAccountDao();
+             FunctionDAO functionDAO = provider.getFunctionDAO()) {
+
+            Account account = new Account();
+            account.setLogin("admin");
+            account.setHashedPassword("123");
+
+            Role role = new Role();
+            role.setName("adminrole");
+            role.setAccess(Resource.ACCOUNT, Action.CREATE_ALL);
+            role.setAccess(Resource.ACCOUNT, Action.READ_ALL);
+            role.setAccess(Resource.ACCOUNT, Action.REMOVE_ALL);
+            role.setAccess(Resource.ACCOUNT, Action.UPDATE_ALL);
+
+            Function function = new Function();
+            function.setAccount(account);
+            function.setRole(role);
+
+
+            roleDAO.create(role);
+            accountDAO.create(account);
+            functionDAO.create(function);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
 

@@ -73,22 +73,7 @@
             },
             updateFleetsAdvanced(filterFleet){
                 this.updateFilteredFleets({fleets: this.getFleetsByAllAdvanced(filterFleet)})
-
-
             }
         }
     }
 </script>
-<style>
-    .btn-circle.btn-lg {
-        position: fixed;
-        left: 230px;
-        bottom: 40px;
-        width: 50px;
-        height: 50px;
-        padding: 10px 16px;
-        font-size: 18px;
-        line-height: 1.33;
-        border-radius: 25px;
-    }
-</style>

@@ -1,8 +1,10 @@
 package spring;
 
+import org.apache.catalina.connector.Request;
 import org.junit.*;
 import spring.model.RESTSchema;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -39,7 +41,7 @@ public class TestPagination {
     }
 
     private void testNullParametersHelp(Integer page, Integer limit) {
-        RESTSchema<Integer> result = new RESTSchema<>(collection, page, limit, "/int?");
+        RESTSchema<Integer> result = new RESTSchema<>(collection, page, limit, new MockRequest("/int", page, limit));
         assertEquals(SIZE, result.getTotal());
         assertNull(result.getFirst());
         assertNull(result.getLast());
@@ -53,7 +55,7 @@ public class TestPagination {
     public void testSizeIsLimit() throws Exception {
         Integer page = 0;
         Integer limit = SIZE;
-        RESTSchema<Integer> result = new RESTSchema<>(collection, page, limit, "/int?");
+        RESTSchema<Integer> result = new RESTSchema<>(collection, page, limit, new MockRequest("/int", page, limit));
         assertEquals(SIZE, result.getTotal());
         assertEquals(limit, result.getLimit());
         assertEquals(new Integer((page * limit)), result.getOffset());
@@ -70,10 +72,40 @@ public class TestPagination {
         int[] sizes = new int[]{limit + 1, limit + limit / 2, 2 * limit};
         for (int size : sizes) {
             Collection<Integer> col = createCollection(size);
-            RESTSchema<Integer> result = new RESTSchema<>(col, 0, limit, "/int?");
+            RESTSchema<Integer> result = new RESTSchema<>(col, 0, limit, new MockRequest("/int", 0, limit));
 
             assertEquals("/int?page=1&limit=" + limit, result.getNext());
             assertNull(result.getPrevious());
+        }
+    }
+
+    // Class that mocks a HttpServletRequest
+    private class MockRequest extends Request {
+
+        private String requestURI;
+        private String queryString = "";
+
+        public MockRequest(String requestURI, Integer page, Integer limit) {
+            this.requestURI = requestURI;
+            if (page != null) {
+                this.queryString = "page=" + page;
+            }
+            if (limit != null) {
+                if (page != null) {
+                    queryString += "&";
+                }
+                queryString += "limit=" + limit;
+            }
+        }
+
+        @Override
+        public String getRequestURI() {
+            return requestURI;
+        }
+
+        @Override
+        public String getQueryString() {
+            return queryString;
         }
     }
 

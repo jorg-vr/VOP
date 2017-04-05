@@ -3,6 +3,7 @@ package dao.database;
 import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
 import dao.interfaces.PersonDAO;
+import model.account.Account;
 import model.identity.Address;
 import model.identity.Person;
 import org.hibernate.Session;
@@ -12,6 +13,7 @@ import org.hibernate.Transaction;
 import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -19,25 +21,35 @@ import java.util.UUID;
  */
 public class ProductionPersonDAO implements PersonDAO {
 
-    private final SessionFactory factory;
+    private final Session session;
     private Collection<Predicate> predicates = new ArrayList<>();
     private Root<Person> root;
     private CriteriaQuery<Person> criteriaQuery;
     private CriteriaBuilder criteriaBuilder;
-    public ProductionPersonDAO(SessionFactory factory){
-        this.factory = factory;
+    public ProductionPersonDAO(Session session){
+        this.session = session;
+    }
+
+    @Override
+    public Person create(Person person) throws DataAccessException {
+        HibernateUtil.create(session,person);
+        return person;
+    }
+
+    @Override
+    public Person update(Person person) throws DataAccessException {
+        HibernateUtil.update(session,person);
+        return person;
     }
 
     @Override
     public Person get(UUID id) throws DataAccessException {
-        try (Session session = factory.openSession()) {
-            return session.get(Person.class, id);
-        }
+        return Optional.ofNullable(session.get(Person.class, id)).orElseThrow(DataAccessException::new);
     }
 
     @Override
     public void remove(UUID id) throws DataAccessException {
-        HibernateUtil.remove(factory,get(id));
+        HibernateUtil.remove(session,get(id));
     }
 
     @Override
@@ -52,7 +64,7 @@ public class ProductionPersonDAO implements PersonDAO {
         person.setEmail(email);
         person.setPhoneNumber(phonenumber);
         person.setAddress(address);
-        HibernateUtil.create(factory,person);
+        HibernateUtil.create(session,person);
         return person;
     }
 
@@ -65,14 +77,14 @@ public class ProductionPersonDAO implements PersonDAO {
         person.setEmail(email);
         person.setPhoneNumber(null);
         person.setAddress(null);
-        HibernateUtil.update(factory,person);
+        HibernateUtil.update(session,person);
         return person;
     }
 
     @Override
     public Collection<Person> listFiltered(Filter<Person>[] filters) throws DataAccessException {
         Transaction tx = null;
-        try (Session session = factory.openSession()) {
+        try  {
 
             tx = session.beginTransaction();
             this.criteriaBuilder = session.getCriteriaBuilder();
@@ -94,16 +106,6 @@ public class ProductionPersonDAO implements PersonDAO {
                 tx.rollback();
             }
         }
-        return null;
-    }
-
-    @Override
-    public Person create(Person person) {
-        return null;
-    }
-
-    @Override
-    public Person update(Person person) {
         return null;
     }
 
@@ -138,4 +140,8 @@ public class ProductionPersonDAO implements PersonDAO {
     }
 
 
+    @Override
+    public void close() throws Exception {
+        session.close();
+    }
 }

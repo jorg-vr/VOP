@@ -2,18 +2,16 @@ package spring.controller;
 
 import controller.CustomerController;
 import controller.FleetController;
-import dao.interfaces.DataAccessException;
 import dao.interfaces.FleetDAO;
 import model.fleet.Fleet;
 import org.springframework.web.bind.annotation.*;
 import spring.exceptions.InvalidInputException;
-import spring.exceptions.NotFoundException;
 import spring.model.RESTFleet;
 import spring.model.RESTSchema;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.UUID;
 
 /**
  * This controller is responsible for handling the HTTP requests of the URL /fleets.
@@ -32,33 +30,36 @@ import java.util.UUID;
  */
 @RestController
 @RequestMapping("/fleets")
-public class RESTFleetController {
+public class RESTFleetController extends RESTAbstractController<RESTFleet,Fleet>{
 
-    public static final String PATH_FLEETS = "/fleets";
-
-    private FleetController controller = new FleetController();
-    private CustomerController customerController = new CustomerController();
+    public RESTFleetController() {
+        super(FleetController::new, RESTFleet::new);
+    }
 
 
     @RequestMapping(method = RequestMethod.GET)
-    public RESTSchema<RESTFleet> get(@RequestParam(required = false) String company,
+    public RESTSchema<RESTFleet> get(HttpServletRequest request,
+                                     @RequestParam(required = false) String company,
                                      @RequestParam(required = false) Integer page,
-                                     @RequestParam(required = false) Integer limit) {
-        FleetDAO fleetDAO = (FleetDAO) controller.getDao();
-        try {
-            String baseString = PATH_FLEETS + "?";
+                                     @RequestParam(required = false) Integer limit,
+                                     @RequestHeader(value="AuthToken") String token,
+                                     @RequestHeader(value="Function") String function) {
+
+        try(FleetController controller= new FleetController(verifyToken(token,function))) {
+
             Collection<RESTFleet> restFleets = new ArrayList<>();
             Collection<Fleet> fleets;
             if (company != null) {
-                fleets = customerController.get(UUIDUtil.toUUID(company)).getFleets();
-
+                try(CustomerController customerController= new CustomerController(verifyToken(token,function))) {
+                    fleets = customerController.get(UUIDUtil.toUUID(company)).getFleets();
+                }
             } else {
                 fleets = controller.getAll();
             }
             for (Fleet f : fleets) {
                 restFleets.add(new RESTFleet(f));
             }
-            return new RESTSchema<>(restFleets, page, limit, baseString);
+            return new RESTSchema<>(restFleets, page, limit, request);
         } catch (Exception e) {
             e.printStackTrace();
             throw new InvalidInputException();
@@ -66,51 +67,4 @@ public class RESTFleetController {
 
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public RESTFleet post(@RequestBody RESTFleet restFleet) {
-        UUID companyUuid = UUIDUtil.toUUID(restFleet.getCompany());
-        try {
-            Fleet fleet = controller.create(companyUuid, restFleet.getName());
-            return new RESTFleet(fleet);
-        } catch (DataAccessException e) {
-            throw new InvalidInputException();
-            //TODO updateId when there are more exceptions
-        }
-    }
-
-    @RequestMapping(method = RequestMethod.GET, value = "{id}")
-    public RESTFleet getId(@PathVariable("id") String id) {
-        UUID uuid = UUIDUtil.toUUID(id);
-        try {
-            Fleet fleet = controller.get(uuid);
-            return new RESTFleet(fleet);
-
-        } catch (DataAccessException | NullPointerException e) {
-            throw new NotFoundException();
-        }
-    }
-
-    @RequestMapping(method = RequestMethod.PUT, value = "{id}")
-    public RESTFleet updateId(@PathVariable("id") String id, @RequestBody RESTFleet restFleet) {
-        UUID uuid = UUIDUtil.toUUID(id);
-        UUID companyUuid = UUIDUtil.toUUID(restFleet.getCompany());
-        try {
-            Fleet fleet = controller.update(uuid, companyUuid, restFleet.getName());
-            return new RESTFleet(fleet);
-        } catch (DataAccessException e) {
-            throw new InvalidInputException();
-            //TODO updateId when there are more exceptions
-        }
-    }
-
-    @RequestMapping(method = RequestMethod.DELETE, value = "{id}")
-    public void deleteId(@PathVariable("id") String id) {
-        UUID uuid = UUIDUtil.toUUID(id);
-        try {
-            controller.archive(uuid);
-        } catch (DataAccessException e) {
-            throw new NotFoundException();
-            //TODO updateId when there are more exceptions
-        }
-    }
 }

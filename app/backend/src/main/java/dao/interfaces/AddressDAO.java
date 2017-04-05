@@ -19,6 +19,7 @@ public interface AddressDAO extends DAO<Address> {
      * @return A new address
      * @throws DataAccessException Thrown when the object can't be created or wrong parameters are given
      */
+    @Deprecated
     Address create(String street, String streetNumber, String town, String postalCode, String country) throws DataAccessException;
 
     /**
@@ -32,6 +33,7 @@ public interface AddressDAO extends DAO<Address> {
      * @return A new address
      * @throws DataAccessException Thrown when the given id does not exist, the object can't be update or wrong parameters are given
      */
+    @Deprecated
     Address update(UUID id, String street, String streetNumber, String town, String postalCode, String country) throws DataAccessException;
 
 

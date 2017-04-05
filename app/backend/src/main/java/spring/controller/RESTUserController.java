@@ -1,17 +1,25 @@
 package spring.controller;
 
 import controller.AccountController;
+import controller.AuthController;
 import controller.PersonController;
+import controller.exceptions.UnAuthorizedException;
 import dao.interfaces.DataAccessException;
 import model.account.Account;
+import model.account.Function;
 import model.identity.Person;
+import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.*;
 import spring.exceptions.ConflictException;
 import spring.exceptions.InvalidInputException;
+import spring.exceptions.NotAuthorizedException;
 import spring.exceptions.NotFoundException;
+import spring.model.AuthenticationToken;
 import spring.model.RESTSchema;
 import spring.model.RESTUser;
 
+import javax.servlet.http.HttpServletRequest;
+import java.net.URL;
 import java.util.*;
 
 /**
@@ -33,11 +41,15 @@ import java.util.*;
 @RequestMapping("/users")
 public class RESTUserController {
 
-    public static final String PATH_USER = "/users";
-
-    private AccountController accountController = new AccountController();
-
-    private PersonController personController = new PersonController();
+ public Function verifyToken(String token,String functionId){
+        try {
+            return new AuthController().getFunction(new AuthenticationToken(token),UUIDUtil.toUUID(functionId));
+        } catch (DataAccessException e) {
+            throw new InvalidInputException(e);
+        } catch (UnAuthorizedException e) {
+            throw new NotAuthorizedException();
+        }
+    }
 
 
     /**
@@ -45,18 +57,21 @@ public class RESTUserController {
      * If there are no users, an empty collection will be returned.
      */
     @RequestMapping(method = RequestMethod.GET)
-    public RESTSchema<RESTUser> get(String email,
+    public RESTSchema<RESTUser> get(HttpServletRequest request,
+                                    String email,
                                     String firstName,
                                     String lastName,
                                     Integer page,
-                                    Integer limit) {
+                                    Integer limit,
+                                    @RequestHeader(value="AuthToken") String token,
+                                    @RequestHeader(value="Function") String function) {
         Collection<RESTUser> users = new ArrayList<>();
 
-        try {
+        try(AccountController accountController=new AccountController(verifyToken(token,function))) {
             Collection<Account> accounts = accountController.getAll();
             for (Account account : accounts) {
                 Person person = account.getPerson();
-                if (passesFilters(person, email, firstName, lastName)) {
+                if (person!=null&&passesFilters(person, email, firstName, lastName)) {
                     users.add(new RESTUser(account, person));
                 }
             }
@@ -64,8 +79,10 @@ public class RESTUserController {
             // This should not happen unless there is something wrong with the database
             System.err.println("Something is wrong with the database");
             e.printStackTrace();
+        }catch (UnAuthorizedException e) {
+            throw new NotAuthorizedException();
         }
-        return new RESTSchema<>(users, page, limit, PATH_USER + "?");
+        return new RESTSchema<>(users, page, limit, request);
     }
 
     /**
@@ -78,7 +95,7 @@ public class RESTUserController {
      * @return whether the person passes the filters or not
      */
     private boolean passesFilters(Person person, String email, String firstName, String lastName) {
-        return containsLowerCase(person.getEmail(), email)
+        return person != null && containsLowerCase(person.getEmail(), email)
                 && containsLowerCase(person.getFirstName(), firstName)
                 && containsLowerCase(person.getLastName(), lastName);
     }
@@ -108,20 +125,26 @@ public class RESTUserController {
      * 4) url:         will look like: https//domain.org/users/id
      */
     @RequestMapping(method = RequestMethod.POST)
-    public RESTUser post(@RequestBody RESTUser user) {
-        try {
+    public RESTUser post(@RequestBody RESTUser user,
+                         @RequestHeader(value="AuthToken") String token,
+                         @RequestHeader(value="Function") String function) {
+        try (AccountController accountController=new AccountController(verifyToken(token,function));
+        PersonController personController=new PersonController(verifyToken(token,function))){
 
             // Check if the account name is still free
             if (accountController.isTaken(user.getEmail())) {
                 throw new ConflictException();
             }
+            Account account=user.translate(verifyToken(token,function));
 
-            Person person = personController.createPerson(user.getFirstName(), user.getLastName(), user.getEmail());
-            Account account = accountController.createAccount(user.getEmail(), user.getPassword(), person.getUuid());
+            Person person = personController.create(account.getPerson());
+            account = accountController.create(account);
 
             return new RESTUser(account, person);
         } catch (DataAccessException e) {
             e.printStackTrace();
+        }catch (UnAuthorizedException e) {
+            throw new NotAuthorizedException();
         }
         return null;
     }
@@ -133,8 +156,10 @@ public class RESTUserController {
      * @return the RESTUSer object
      */
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
-    public RESTUser getId(@PathVariable("id") String id) {
-        try {
+    public RESTUser getId(@PathVariable("id") String id,
+                          @RequestHeader(value="AuthToken") String token,
+                          @RequestHeader(value="Function") String function) {
+        try(AccountController accountController=new AccountController(verifyToken(token,function))) {
             UUID uuid = UUIDUtil.toUUID(id);
             Account account = accountController.get(uuid);
             Person person = account.getPerson();
@@ -142,6 +167,8 @@ public class RESTUserController {
             return new RESTUser(account, person);
         } catch (DataAccessException | NumberFormatException | NullPointerException e) {
             throw new NotFoundException();
+        }catch (UnAuthorizedException e) {
+            throw new NotAuthorizedException();
         }
     }
 
@@ -156,15 +183,23 @@ public class RESTUserController {
      * @return the updated RESTUser object. The updatedAt will be updated.
      */
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
-    public RESTUser putId(@PathVariable("id") String id, @RequestBody RESTUser user) {
+    public RESTUser putId(@PathVariable("id") String id, @RequestBody RESTUser user,
+                          @RequestHeader(value="AuthToken") String token,
+                          @RequestHeader(value="Function") String function) {
         UUID uuid = UUIDUtil.toUUID(id);
-        try {
-            Account account = accountController.updateAccount(uuid, user.getEmail(), user.getPassword());
+        try(AccountController accountController=new AccountController(verifyToken(token,function));
+            PersonController personController=new PersonController(verifyToken(token,function))) {
+            Account account = user.translate(verifyToken(token,function));
+            account.setUuid(uuid);
+            Account result= accountController.update(account);
             Person person = account.getPerson();
-            person = personController.updatePerson(person.getUuid(), user.getFirstName(), user.getLastName(), user.getEmail());
+            person.setUuid(result.getPerson().getUuid());
+            person = personController.update(person);
             return new RESTUser(account, person);
         } catch (DataAccessException e) {
             throw new InvalidInputException();
+        }catch (UnAuthorizedException e) {
+            throw new NotAuthorizedException();
         }
     }
 
@@ -174,15 +209,20 @@ public class RESTUserController {
      * @param id the id of the user that should be archived
      */
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
-    public void deleteId(@PathVariable("id") String id) {
+    public void deleteId(@PathVariable("id") String id,
+                         @RequestHeader(value="AuthToken") String token,
+                         @RequestHeader(value="Function") String function) {
         UUID uuid = UUIDUtil.toUUID(id);
 
-        try {
+        try(AccountController accountController=new AccountController(verifyToken(token,function));
+            PersonController personController=new PersonController(verifyToken(token,function))) {
             Account account = accountController.get(uuid);
             accountController.archive(account.getUuid());
             personController.archive(account.getPerson().getUuid());
         } catch (DataAccessException e) {
             throw new NotFoundException();
+        }catch (UnAuthorizedException e) {
+            throw new NotAuthorizedException();
         }
     }
 }

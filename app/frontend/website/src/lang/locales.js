@@ -56,6 +56,18 @@ export default
         },
         search_bar: {
             search_for: 'Search for',
+        },
+        modal:{
+            title: 'Confirmation',
+            text: 'Are you sure you want to proceed with this action?',
+            button1: 'Yes',
+            button2: 'No'
+        },
+        exception: {
+            e404: 'Not Found',
+            e502: 'Internal Server Error',
+            return: 'Home',
+            contact: 'Contact'
         }
     },
     nl : {
@@ -114,6 +126,18 @@ export default
         },
         search_bar: {
             search_for: 'Zoeken naar',
+        },
+        modal:{
+            title: 'Bevestiging',
+            text: 'Weet u zeker dat u wilt doorgaan met deze actie?',
+            button1: 'Ja',
+            button2: 'Nee'
+        },
+        exception: {
+            e404: 'Pagina niet gevonden',
+            e502: 'Interne server fout',
+            return: 'Home',
+            contact: 'Contact'
         }
     }
 }

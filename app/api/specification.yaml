@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: "2.0.0"
+  version: "2.0.1"
   title: Solvas Fleet API - Milestone 2
   description: |
     The API definitions for the first Milestone.
@@ -18,6 +18,33 @@ info:
 
     Note on the sorting parameters. Support for sorting is currently optional: this means that the sort parameters may
     be ignored by the server. If the server does decide to support sorting, it should adhere to the API.
+
+securityDefinitions:
+  KeySecurity:
+    description: |
+      Here in the swagger document, the API is described using the type `API Key`. This might not be ideal; what we actually
+      use is something between an API Key and OAuth(2).
+
+      The authentication flow is as follows:
+        1. The client sends an `Auth` object to the `/auth/login` endpoint.
+        2. The server validates the credentials and sends back a `JWT` token. The contents of the JWT token are defined
+           as object in this API spec, however, a JWT token should be sent according to the JWT-specification. See below.
+        3. The client sends this token along with every request it sends to the server.
+        4. The token has an expiration data. If the expiration date is near, the client should refresh the token.
+        5. To refresh the token, the client sends the token it has to the `/auth/refresh` endpoint.
+        6. The server looks up the user and validates it. If the user is still valid, the server returns a new token.
+
+      The token must be sent in the header, using `Authorization: Bearer {token}`. Note that not all swagger-related tools
+      understand the notation below.
+
+      The token's format is defined in this spec as an object. This does not define the full token; it only defines the payload
+      of the token. The payload contains the data. More information can be found at https://jwt.io/.
+    type: apiKey
+    in: header
+    name: "Authorization: Bearer X"
+security:
+  - KeySecurity: []
+
 paths:
   /companies:
     get:
@@ -105,6 +132,8 @@ paths:
                 example: /companies&page=100
         '400':
            $ref: '#/responses/WrongQuery'
+        '401':
+          $ref: '#/responses/Unauthorised'
     post:
       produces:
         - application/json
@@ -127,6 +156,8 @@ paths:
             $ref: '#/definitions/Company'
         '400':
           $ref: '#/responses/Malformed'
+        '401':
+          $ref: '#/responses/Unauthorised'
         '422':
           $ref: '#/responses/WrongContent'
         '415':
@@ -148,6 +179,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/Company'
+        '401':
+          $ref: '#/responses/Unauthorised'
         '404':
           $ref: '#/responses/NotFound'
     put:
@@ -172,6 +205,8 @@ paths:
             $ref: '#/definitions/Company'
         '400':
           $ref: '#/responses/Malformed'
+        '401':
+          $ref: '#/responses/Unauthorised'
         '404':
           $ref: '#/responses/NotFound'
         '422':
@@ -183,6 +218,8 @@ paths:
       responses:
         '204':
           description: Company archived successfully.
+        '401':
+          $ref: '#/responses/Unauthorised'
         '404':
           $ref: '#/responses/NotFound'
         '409':
@@ -273,38 +310,8 @@ paths:
                 example: /contracts&page=100
         '400':
           $ref: '#/responses/WrongQuery'
-    post:
-      produces:
-        - application/json
-      consumes:
-        - application/json
-      summary: Add a new `Contract` to the to the company.
-      description: |
-        This will add a new contract to the given company. The company needs to exist already.
-
-        Attributes described as 'server-generated' will be ignored by the server. Non-required attributes that are
-        not present will be filled in by the server, using default values.
-      parameters:
-      - in: body
-        name: Contract
-        description: Contract item to add
-        schema:
-          $ref: '#/definitions/Contract'
-      responses:
-        '200':
-          description: OK
-          schema:
-            $ref: '#/definitions/Contract'
-        '400':
-          $ref: '#/responses/Malformed'
-        '404':
-          description: When the company was not found.
-        '409':
-          $ref: '#/responses/Conflict'
-        '422':
-          $ref: '#/responses/WrongContent'
-        '415':
-          $ref: '#/responses/WrongType' 
+        '401':
+          $ref: '#/responses/Unauthorised'
   /companies/{company_id}/fleets/{fleet_id}/vehicles/{vehicle_id}/contracts:
     parameters:
       - in: path
@@ -384,36 +391,8 @@ paths:
                 example: /contracts&page=100
         '400':
           $ref: '#/responses/WrongQuery'
-    post:
-      produces:
-        - application/json
-      consumes:
-        - application/json
-      summary: Add a new `Contract` to the vehicle.
-      description: |
-        Attributes described as 'server-generated' will be ignored by the server. Non-required attributes that are
-        not present will be filled in by the server, using default values.
-      parameters:
-      - in: body
-        name: Contract
-        description: Contract item to add
-        schema:
-          $ref: '#/definitions/Contract'
-      responses:
-        '200':
-          description: OK
-          schema:
-            $ref: '#/definitions/Contract'
-        '400':
-          $ref: '#/responses/Malformed'
-        '404':
-          description: A dependant was not found, i.e. the company, fleet or vehicle
-        '409':
-          $ref: '#/responses/Conflict'
-        '422':
-          $ref: '#/responses/WrongContent'
-        '415':
-          $ref: '#/responses/WrongType' 
+        '401':
+          $ref: '#/responses/Unauthorised'
   '/companies/{id}/invoices':
     parameters:
         - in: path
@@ -479,6 +458,8 @@ paths:
                 description: Link to the last page, if applicable.
                 type: string
                 example: /companies/id/invoices&page=100
+        '401':
+          $ref: '#/responses/Unauthorised'
         '404':
           $ref: '#/responses/NotFound'
   '/companies/{company_id}/invoices/{invoice_id}':
@@ -504,6 +485,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/Invoice'
+        '401':
+          $ref: '#/responses/Unauthorised'
         '404':
           $ref: '#/responses/NotFound'
   '/companies/{company_id}/invoices/{invoice_id}{extention}':
@@ -540,6 +523,8 @@ paths:
             description: A file with the requested extention
             type: file
             example: "invoice.pdf"
+        '401':
+          $ref: '#/responses/Unauthorised'
         '404':
           $ref: '#/responses/NotFound'
         '415':
@@ -564,6 +549,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/Invoice'
+        '401':
+          $ref: '#/responses/Unauthorised'
         '404':
           $ref: '#/responses/NotFound'
   /vehicles:
@@ -659,6 +646,8 @@ paths:
                 example: /vehicles&page=100
         '400':
           $ref: '#/responses/WrongQuery'
+        '401':
+          $ref: '#/responses/Unauthorised'
     post:
       produces:
         - application/json
@@ -703,6 +692,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/Vehicle'
+        '401':
+          $ref: '#/responses/Unauthorised'
         '404':
           $ref: '#/responses/NotFound'
     put:
@@ -728,6 +719,8 @@ paths:
             $ref: '#/definitions/Vehicle'
         '400':
           $ref: '#/responses/Malformed'
+        '401':
+          $ref: '#/responses/Unauthorised'
         '404':
           $ref: '#/responses/NotFound'
         '409':
@@ -741,6 +734,8 @@ paths:
       responses:
         '204':
           description: Vehicle archived successfully
+        '401':
+          $ref: '#/responses/Unauthorised'
         '404':
           $ref: '#/responses/NotFound'
         '409':
@@ -768,6 +763,8 @@ paths:
                 type: integer
         '400':
           $ref: '#/responses/Malformed'
+        '401':
+          $ref: '#/responses/Unauthorised'
   /contracts:
     get:
       produces:
@@ -849,6 +846,8 @@ paths:
                 example: /contracts&page=100
         '400':
           $ref: '#/responses/WrongQuery'
+        '401':
+          $ref: '#/responses/Unauthorised'
     post:
       produces:
         - application/json
@@ -871,6 +870,8 @@ paths:
             $ref: '#/definitions/Contract'
         '400':
           $ref: '#/responses/Malformed'
+        '401':
+          $ref: '#/responses/Unauthorised'
         '409':
           $ref: '#/responses/Conflict'
         '422':
@@ -893,6 +894,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/Contract'
+        '401':
+          $ref: '#/responses/Unauthorised'
         '404':
           $ref: '#/responses/NotFound'
     put:
@@ -918,6 +921,8 @@ paths:
             $ref: '#/definitions/Contract'
         '400':
           $ref: '#/responses/Malformed'
+        '401':
+          $ref: '#/responses/Unauthorised'
         '404':
           $ref: '#/responses/NotFound'
         '409':
@@ -931,6 +936,8 @@ paths:
       responses:
         '204':
           description: Contract archived successfully
+        '401':
+          $ref: '#/responses/Unauthorised'
         '404':
           $ref: '#/responses/NotFound'
         '409':
@@ -960,6 +967,8 @@ paths:
                 type: integer
         '400':
           $ref: '#/responses/Malformed'
+        '401':
+          $ref: '#/responses/Unauthorised'
   /companies/{id}/fleets:
     parameters:
         - in: path
@@ -1036,6 +1045,8 @@ paths:
                 example: /fleet&page=100
         '400':
           $ref: '#/responses/WrongQuery'
+        '401':
+          $ref: '#/responses/Unauthorised'
     post:
       produces:
         - application/json
@@ -1059,6 +1070,8 @@ paths:
             $ref: '#/definitions/Fleet'
         '400':
           $ref: '#/responses/Malformed'
+        '401':
+          $ref: '#/responses/Unauthorised'
         '404':
           description: The company was not found.
         '409':
@@ -1089,6 +1102,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/Fleet'
+        '401':
+          $ref: '#/responses/Unauthorised'
         '404':
           $ref: '#/responses/NotFound'
     put:
@@ -1114,6 +1129,8 @@ paths:
             $ref: '#/definitions/Fleet'
         '400':
           $ref: '#/responses/Malformed'
+        '401':
+          $ref: '#/responses/Unauthorised'
         '404':
           $ref: '#/responses/NotFound'
         '409':
@@ -1127,6 +1144,8 @@ paths:
       responses:
         '204':
           description: Fleet archived successfully
+        '401':
+          $ref: '#/responses/Unauthorised'
         '404':
           $ref: '#/responses/NotFound'
         '409':
@@ -1232,36 +1251,8 @@ paths:
                 example: /vehicles&page=100
         '400':
           $ref: '#/responses/WrongQuery'
-    post:
-      produces:
-        - application/json
-      consumes:
-        - application/json
-      summary: Add a new `Vehicle` to the list of vehicles
-      description: |
-        Attributes described as 'server-generated' will be ignored by the server. Non-required attributes that are
-        not present will be filled in by the server, using default values.
-      parameters:
-      - in: body
-        name: Vehicle
-        description: Vehicle item to add
-        schema:
-          $ref: '#/definitions/Vehicle'
-      responses:
-        '200':
-          description: OK
-          schema:
-            $ref: '#/definitions/Vehicle'
-        '400':
-          $ref: '#/responses/Malformed'
-        '404':
-          description: "The company or fleet was not found"
-        '409':
-          $ref: '#/responses/Conflict'
-        '422':
-          $ref: '#/responses/WrongContent'
-        '415':
-          $ref: '#/responses/WrongType'
+        '401':
+          $ref: '#/responses/Unauthorised'
   /companies/{companyId}/fleets/{fleetId}/vehicles/{id}:
     parameters:
         - in: path
@@ -1289,48 +1280,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/Vehicle'
+        '401':
+          $ref: '#/responses/Unauthorised'
         '404':
           $ref: '#/responses/NotFound'
-    put:
-      produces:
-        - application/json
-      consumes:
-        - application/json
-      summary: Update the Vehicle with the given ID
-      description: |
-        Attributes described as 'server-generated' will be ignored by the server. Non-required attributes that are
-        not present will not be updated.
-      parameters:
-      - in: body
-        name: Vehicle
-        description: Vehicle to add
-        required: true
-        schema:
-          $ref: '#/definitions/Vehicle'
-      responses:
-        '200':
-          description: OK
-          schema:
-            $ref: '#/definitions/Vehicle'
-        '400':
-          $ref: '#/responses/Malformed'
-        '404':
-          $ref: '#/responses/NotFound'
-        '409':
-          $ref: '#/responses/Conflict'
-        '422':
-          $ref: '#/responses/WrongContent'
-        '415':
-          $ref: '#/responses/WrongType'
-    delete:
-      summary: Archive the Vehicle with the given ID.
-      responses:
-        '204':
-          description: Vehicle archived successfully
-        '404':
-          $ref: '#/responses/NotFound'
-        '409':
-          $ref: '#/responses/Conflict'
   /auth/roles:
     get:
       produces:
@@ -1342,10 +1295,6 @@ paths:
         AND. This means the resulting objects must satisfy all filters.
         All the string filter operations are case insensitive.
       parameters:
-        - in: query
-          name: company
-          description: Filter by company
-          type: integer
         - in: query
           name: name
           description: The name of the role.
@@ -1409,6 +1358,8 @@ paths:
                 example: /roles&page=100
         '400':
           $ref: '#/responses/WrongQuery'
+        '401':
+          $ref: '#/responses/Unauthorised'
     post:
       produces:
         - application/json
@@ -1432,6 +1383,8 @@ paths:
             $ref: '#/definitions/Role'
         '400':
           $ref: '#/responses/Malformed'
+        '401':
+          $ref: '#/responses/Unauthorised'
         '422':
           $ref: '#/responses/WrongContent'
         '415':
@@ -1452,6 +1405,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/Role'
+        '401':
+          $ref: '#/responses/Unauthorised'
         '404':
           $ref: '#/responses/NotFound'
     put:
@@ -1477,6 +1432,8 @@ paths:
             $ref: "#/definitions/Role"
         '400':
           $ref: '#/responses/Malformed'
+        '401':
+          $ref: '#/responses/Unauthorised'
         '404':
           $ref: '#/responses/NotFound'
         '422':
@@ -1488,6 +1445,8 @@ paths:
       responses:
         '204':
           description: Role archived successfully
+        '401':
+          $ref: '#/responses/Unauthorised'
         '404':
           $ref: '#/responses/NotFound'
         '409':
@@ -1575,6 +1534,8 @@ paths:
                 example: /users&page=100
         '400':
           $ref: '#/responses/WrongQuery'
+        '401':
+          $ref: '#/responses/Unauthorised'
     put:
       summary: Set the Permissions of a Role.
       description: |
@@ -1599,6 +1560,8 @@ paths:
           description: Permissions were updated succesfully.
         400:
           $ref: '#/responses/Malformed'
+        '401':
+          $ref: '#/responses/Unauthorised'
         404:
           description: The role with the given ID does not exist.
         409:
@@ -1682,6 +1645,51 @@ paths:
                 example: /users&page=100
         '400':
           $ref: '#/responses/WrongQuery'
+        '401':
+          $ref: '#/responses/Unauthorised'
+  /auth/login:
+    post:
+      produces:
+        - application/text
+      consumes:
+        - application/json
+      summary: Get an access token.
+      security: []
+      description: |
+        Request a security token to access the application. The response is a JSON Web Token (JWT). The response in this
+        specification only specifies what fields must be included in the payload of the JWT. However, the response MUST
+        be a full JWT.
+      parameters:
+        - in: body
+          name: auth
+          description: The login data of the user
+          schema:
+            $ref: '#/definitions/Auth'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/JWT'
+        '401':
+          $ref: '#/responses/Unauthorised'
+  /auth/refresh:
+    post:
+      produces:
+        - application/text
+      consumes:
+        - application/json
+      summary: Get a new access token.
+      description: |
+        Request a security token to access the application, based on an existing token.  The response is a JSON Web Token (JWT).
+        The response in this specification only specifies what fields must be included in the payload of the JWT. However, the
+        response MUST be a full JWT.
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/JWT'
+        '401':
+          $ref: '#/responses/Unauthorised'
   /users:
     get:
       produces:
@@ -1764,6 +1772,8 @@ paths:
                 example: /users&page=100
         '400':
           $ref: '#/responses/WrongQuery'
+        '401':
+          $ref: '#/responses/Unauthorised'
     post:
       produces:
         - application/json
@@ -1787,6 +1797,8 @@ paths:
             $ref: '#/definitions/User'
         '400':
           $ref: '#/responses/Malformed'
+        '401':
+          $ref: '#/responses/Unauthorised'
         '409':
           $ref: '#/responses/Conflict'
         '422':
@@ -1809,6 +1821,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/User'
+        '401':
+          $ref: '#/responses/Unauthorised'
         '404':
           $ref: '#/responses/NotFound'
     put:
@@ -1834,6 +1848,8 @@ paths:
             $ref: '#/definitions/User'
         '400':
           $ref: '#/responses/Malformed'
+        '401':
+          $ref: '#/responses/Unauthorised'
         '404':
           $ref: '#/responses/NotFound'
         '409':
@@ -1847,11 +1863,13 @@ paths:
       responses:
         '204':
           description: Role archived successfully
+        '401':
+          $ref: '#/responses/Unauthorised'
         '404':
           $ref: '#/responses/NotFound'
         '409':
           $ref: '#/responses/Conflict'
-  /users/{id}/roles:
+  /users/{id}/functions:
     parameters:
       - name: id
         in: path
@@ -1861,9 +1879,9 @@ paths:
     get:
       produces:
         - application/json
-      summary: Get a list of Roles for a user.
+      summary: Get a list of Functions for a user.
       description: |
-        Get a list of `Role` objects for a `User`, eventually filtered by the query
+        Get a list of `Function` objects for a `User`, eventually filtered by the query
         parameters. When combining parameters, the conditions are joined by
         AND. This means the resulting objects must satisfy all filters.
         All the string filter operations are case insensitive.
@@ -1873,9 +1891,9 @@ paths:
           description: Filter by company
           type: integer
         - in: query
-          name: name
-          description: The name of the role.
-          type: string
+          name: role
+          description: Filter by role
+          type: integer
         - in: query
           name: page
           type: integer
@@ -1935,37 +1953,60 @@ paths:
                 example: /roles&page=100
         '400':
           $ref: '#/responses/WrongQuery'
-    put:
-      summary: Set the Roles of a User.
+        '401':
+          $ref: '#/responses/Unauthorised'
+    post:
+      summary: Add a new function to a User.
       description: |
-        Set the Roles for a User. You must pass the list of roles you want a user to have. After this operation
-        the roles should match exactly with the list you sent: roles that were not in your list will be removed,
-        and roles that are in your list will be added (or left the same if the user already has it).
+        Add a new function to a User
       produces:
         - application/json
       consumes:
         - application/json
       parameters:
         - in: body
-          name: data
-          description: List of roles
+          name: Function
+          description: Function to add
           schema:
-            type: array
-            items:
-              type: integer
-              description: The ID's of the role.
+            $ref: '#/definitions/Function'
       responses:
         204:
-          description: Roles were updated succesfully.
+          description: Function was added succesfully.
+          schema:
+            $ref: '#/definitions/Function'
         400:
           $ref: '#/responses/Malformed'
+        '401':
+          $ref: '#/responses/Unauthorised'
         404:
           description: The user with the given ID does not exist.
         409:
-          description: Could not update one or more of the roles (e.g. because it doesn't exist)
+          description: The Function already exists, the triple (user, role , company) should be unique
         415:
           $ref: '#/responses/WrongType'
-
+  /users/{userId}/functions/{id}:
+    parameters:
+      - name: userId
+        in: path
+        description: ID of User
+        required: true
+        type: integer
+      - name: id
+        in: path
+        description: ID of Function
+        required: true
+        type: integer
+    delete:
+      description: Archive the Function with the given ID.
+      responses:
+        '204':
+          description: Function archived successfully
+        '401':
+          $ref: '#/responses/Unauthorised'
+        '404':
+          $ref: '#/responses/NotFound'
+    
+      
 responses:
   Malformed:
     description: The JSON is malformed. This is a syntax error.
@@ -1996,17 +2037,23 @@ responses:
   NotFound:
     description: |
       The resource with the given ID was not found.
+  Unauthorised:
+    description: |
+      The token was not valid.
 
 definitions:
   Company:
     type: object
-    required: [name, vatNumber, phoneNumber, address]
+    required: [name, type, vatNumber, phoneNumber, address]
     properties:
       id:
         description: This is a server-generated value.
         type: integer
       name:
         type: string
+      type:
+        type: string
+        description: This is a required attribute. Possible values are CUSTOMER, LEASING_COMPANY and INSURANCE_COMPANY.   
       vatNumber:
         type: string
         example: "BE123456789B01"
@@ -2116,7 +2163,34 @@ definitions:
         example: /vehicles/1
   Role:
     type: object
-    required: [company, name]
+    required: [name]
+    properties:
+      id:
+        description: This is a server-generated value.
+        type: integer
+      name:
+        type: string
+        description: The name of the role.
+      permissions:
+        type: string
+        description: An URL to the permissions of this role. This is a server-generated value.
+        example: /roles/65/permissions
+      createdAt:
+        description: This is a server-generated value.
+        type: string
+        format: date-time
+        example: 2016-08-29T09:12:33.001Z
+      updatedAt:
+        description: This is a server-generated value.
+        type: string
+        format: date-time
+        example: 2016-08-29T09:12:33.001Z
+      url:
+        description: This is a server-generated value.
+        type: string
+  Function:
+    type: object
+    required: [company, user, role]
     properties:
       id:
         description: This is a server-generated value.
@@ -2129,13 +2203,12 @@ definitions:
           the company is -1, the role can read all vehicles. If the company is another number, it can only read the
           vehicles of that company.
         type: integer
-      name:
-        type: string
-        description: The name of the role.
-      permissions:
-        type: string
-        description: An URL to the permissions of this role. This is a server-generated value.
-        example: /roles/65/permissions
+      role:
+        type: integer
+        description: The id of the role.
+      user:
+        type: integer
+        description: The id of the user.
       createdAt:
         description: This is a server-generated value.
         type: string
@@ -2198,10 +2271,10 @@ definitions:
         type: string
         format: email
         example: "user@ugent.be"
-      roles:
+      functions:
         type: string
-        description: The URL to the Roles of this user. This is a server-generated value.
-        example: "/users/5/roles"
+        description: The URL to the Functions of this user. This is a server-generated value.
+        example: "/users/5/functions"
       password:
         type: string
         description: This attribute is client-generated, and will never be returned by the server.
@@ -2357,3 +2430,36 @@ definitions:
         description: |
           Contains a list of attributes that have an error. This can range from being required to
           having a conflict.
+  Auth:
+    type: object
+    required: [email, password]
+    properties:
+      email:
+        description: The email address of the user
+        type: string
+      password:
+        description: The password of the user
+        type: string
+  JWT:
+    description: |
+      This is the payload of the JWT. Most of these are standard claims. Additional claims may be defined by the
+      implementations, on the condition that they 1) follow the JWT specification and 2) both the client and server
+      continue to function without them.
+    type: object
+    required: [iat, exp, sub]
+    properties:
+      iss:
+        type: string
+        description: Identifies the issuer of the token.
+      iat:
+        type: integer
+        format: int64
+        description: UTC Unix time when the token was issued.
+      exp:
+        type: integer
+        format: int64
+        description: UTC Unix time when the token will expire.
+      sub:
+        type: string
+        format: email
+        description: The e-mail of the user.
