@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.UUID;
 
 
-public class User implements EditableObject {
+public class User implements EditableObject, java.io.Serializable {
 
     private UUID uuid;
 
@@ -26,6 +26,16 @@ public class User implements EditableObject {
 
     public User() {
         functions = new ArrayList<>();
+    }
+
+    public void resetPassword(String oldPassword, String newPassword) {
+        if (validatePassword(oldPassword)) {
+            this.password = newPassword; //TODO hash this extra
+        }
+    }
+
+    public boolean validatePassword(String password) {
+        return password.equals(password); // TODO also use hashfunction
     }
 
     /**

@@ -1,12 +1,13 @@
 package spring.controller;
 
-import controller.AccountController;
 import controller.CustomerController;
 import controller.FunctionController;
+import controller.UserController;
 import controller.exceptions.UnAuthorizedException;
 import dao.interfaces.DataAccessException;
 import model.account.Account;
 import model.account.Function;
+import model.account.User;
 import model.identity.Company;
 import org.springframework.web.bind.annotation.*;
 import spring.exceptions.NotAuthorizedException;
@@ -51,29 +52,7 @@ public class RESTRoleController extends RESTAbstractController<RESTRole,Function
                                     @RequestParam(required = false) Integer limit,
                                     @RequestHeader(value="AuthToken") String token,
                                     @RequestHeader(value="Function") String fu) {
-        Collection<RESTRole> roles = new ArrayList<>();
-        Function function=verifyToken(token,fu);
-        try(FunctionController controller=new FunctionController(function);
-        CustomerController customerController=new CustomerController(function);
-        AccountController accountController=new AccountController(function)) {
-            UUID companyUuid = UUIDUtil.toUUID(company);
-            UUID accountUuid = UUIDUtil.toUUID(user);
-
-            Company customer = companyUuid != null ? customerController.get(companyUuid) : null;
-            Account account = accountUuid != null ? accountController.get(accountUuid) : null;
-
-            Collection<Function> functions = controller.getFiltered(customer, account, active);
-            for (Function f : functions) {
-                RESTRole restRole = new RESTRole(f);
-                roles.add(restRole);
-            }
-
-        } catch (DataAccessException e) {
-            e.printStackTrace();
-        } catch (UnAuthorizedException e) {
-            throw new NotAuthorizedException();
-        }
-        return new RESTSchema<>(roles, page, limit, request);
+        return null;
     }
 
 

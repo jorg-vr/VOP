@@ -14,10 +14,10 @@ import model.fleet.Vehicle;
 public interface DAOProvider extends AutoCloseable {
 
     /**
-     * Gets an AccountDAO
-     * @return an AccountDAO
+     * Gets a UserDAO
+     * @return a UserDAO
      */
-    AccountDAO getAccountDao();
+    UserDAO getUserDAO();
 
     /**
      * Gets an CustomerDAO
@@ -36,12 +36,6 @@ public interface DAOProvider extends AutoCloseable {
      * @return a FunctionDAO
      */
     FunctionDAO getFunctionDAO();
-
-    /**
-     * Gets a PersonDAO
-     * @return a PersonDAO
-     */
-    PersonDAO getPersonDAO();
 
     /**
      * Gets a VehicleDAO

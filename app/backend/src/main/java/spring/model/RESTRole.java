@@ -1,9 +1,9 @@
 package spring.model;
 
 
-import controller.AccountController;
 import controller.CustomerController;
 import controller.RoleController;
+import controller.UserController;
 import controller.exceptions.UnAuthorizedException;
 import dao.interfaces.DataAccessException;
 import model.account.Function;
@@ -49,7 +49,7 @@ public class RESTRole extends RESTAbstractModel<Function> {
     public RESTRole(Function function){
          super(function.getUuid(),PATH_ROLE);
          setPermissions(UUIDToNumberString(function.getRole().getUuid()));
-         setUser(UUIDToNumberString(function.getAccount().getUuid()));
+         setUser(UUIDToNumberString(function.getUser().getUuid()));
          setCompany(UUIDToNumberString(function.getCompany().getUuid()));
          setStartDate(function.getStartDate());
          setEndDate(function.getEndDate());
@@ -59,8 +59,8 @@ public class RESTRole extends RESTAbstractModel<Function> {
     public Function translate(Function f){
         Function function=new Function();
         function.setUuid(UUIDUtil.toUUID(getId()));
-        try(AccountController accountController=new AccountController(f)) {
-            function.setAccount(accountController.get(UUIDUtil.toUUID(getUser())));
+        try(UserController userController=new UserController(f)) {
+            function.setUser(userController.get(UUIDUtil.toUUID(getUser())));
         } catch (DataAccessException e) {
             throw new InvalidInputException("user");
         } catch (UnAuthorizedException e) {

@@ -10,8 +10,6 @@ import org.junit.runners.Suite;
 
 //Add DAO test classes whenever a new test class is made.
 @Suite.SuiteClasses({
-        ProductionAccountDAOFiltersTest.class,
-        ProductionAccountDAOTest.class,
         ProductionAddressDAOFiltersTest.class,
         ProductionAddressDAOTest.class,
         ProductionCustomerDAOTest.class,

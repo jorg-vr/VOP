@@ -4,7 +4,7 @@ package model.account;
  * Created by jorg on 3/2/17.
  */
 public enum Resource {
-    ACCOUNT,
+    USER,
     FUNCTION,
     ROLE,
     BILLING,
@@ -12,8 +12,5 @@ public enum Resource {
     FLEET,
     VEHICLETYPE,
     COMPANY,
-    PERSON,
     INSURANCE
-
-
 }
