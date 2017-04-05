@@ -71,7 +71,7 @@ public class RESTUserController {
             Collection<Account> accounts = accountController.getAll();
             for (Account account : accounts) {
                 Person person = account.getPerson();
-                if (passesFilters(person, email, firstName, lastName)) {
+                if (person!=null&&passesFilters(person, email, firstName, lastName)) {
                     users.add(new RESTUser(account, person));
                 }
             }
