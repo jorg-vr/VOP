@@ -1,6 +1,7 @@
 package dao.database;
 
 import dao.interfaces.*;
+import model.account.*;
 import model.fleet.VehicleType;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
@@ -102,18 +103,48 @@ public class ProductionProvider implements DAOProvider {
     }
 
     @Override
+    public RoleDAO getRoleDAO() {
+        return new ProductionRoleDAO(sessionFactory.openSession());
+    }
+
+
+    @Override
     public void close() {
         sessionFactory.close();
         StandardServiceRegistryBuilder.destroy(this.registry);
     }
 
     public static void main(String[] args) throws DataAccessException {
-        ProductionProvider.initializeProvider("test");
+        ProductionProvider.initializeProvider("localtest");
         DAOProvider provider = ProductionProvider.getInstance();
 
-        VehicleTypeDao dao = provider.getVehicleTypeDAO();
-        for (VehicleType type : dao.listFiltered(dao.nameContains("type"))) {
-            dao.remove(type.getUuid());
+        try (RoleDAO roleDAO = provider.getRoleDAO();
+             AccountDAO accountDAO = provider.getAccountDao();
+             FunctionDAO functionDAO = provider.getFunctionDAO()) {
+
+            Account account = new Account();
+            account.setLogin("admin");
+            account.setHashedPassword("123");
+
+            Role role = new Role();
+            role.setName("adminrole");
+            role.setAccess(Resource.ACCOUNT, Action.CREATE_ALL);
+            role.setAccess(Resource.ACCOUNT, Action.READ_ALL);
+            role.setAccess(Resource.ACCOUNT, Action.REMOVE_ALL);
+            role.setAccess(Resource.ACCOUNT, Action.UPDATE_ALL);
+
+            Function function = new Function();
+            function.setAccount(account);
+            function.setRole(role);
+
+
+            roleDAO.create(role);
+            accountDAO.create(account);
+            functionDAO.create(function);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
 

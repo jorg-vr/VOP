@@ -22,7 +22,7 @@
         <mapping resource="hibernate/identity.hbm.xml" />
         <mapping resource="hibernate/account.hbm.xml" />
         <mapping resource="hibernate/function.hbm.xml" />
-
+        <mapping resource="hibernate/role.hbm.xml" />
 
     </session-factory>
 </hibernate-configuration>
