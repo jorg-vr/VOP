@@ -3,6 +3,8 @@ package spring.controller;
 import controller.FleetController;
 import controller.VehicleController;
 
+import controller.VehicleTypeController;
+import controller.exceptions.UnAuthorizedException;
 import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
 import dao.interfaces.VehicleDAO;
@@ -10,7 +12,7 @@ import model.fleet.Fleet;
 import model.fleet.Vehicle;
 import org.springframework.web.bind.annotation.*;
 import spring.exceptions.InvalidInputException;
-import spring.exceptions.NotFoundException;
+import spring.exceptions.NotAuthorizedException;
 import spring.model.RESTSchema;
 import spring.model.RESTVehicle;
 
@@ -37,11 +39,13 @@ import java.util.*;
  */
 @RestController
 @RequestMapping("/vehicles")
-public class RESTVehicleController {
+public class RESTVehicleController extends RESTAbstractController<RESTVehicle,Vehicle> {
 
     private static DateTimeFormatter yearFormat = DateTimeFormatter.ofPattern("yyyyMMdd").withLocale(Locale.forLanguageTag("NL"));
 
-    private VehicleController controller = new VehicleController();
+    public RESTVehicleController() {
+        super(VehicleController::new, RESTVehicle::new);
+    }
 
     /***
      * @return
@@ -55,136 +59,60 @@ public class RESTVehicleController {
                                        @RequestParam(required = false) String fleet,
                                        @RequestParam(required = false) String type,
                                        @RequestParam(required = false) Integer page,
-                                       @RequestParam(required = false) Integer limit) {
-        VehicleDAO vehicleDAO = (VehicleDAO) controller.getDao();
-        List<Filter<Vehicle>> filters = new ArrayList<>();
-        if (licensPlate != null) {
-            filters.add(vehicleDAO.byLicensePlate(licensPlate));
-        }
-        if (vin != null) {
-            //TODO after issue #87
-        }
-        if (leasingCompany != null) {
-            //TODO after issue #88
-        }
-        if (year != null) {
-            filters.add(vehicleDAO.atProductionDate(LocalDate.parse(year + "0101", yearFormat)));
-        }
-        if (fleet != null) {
-            Fleet fl;
-            try {
-                fl = new FleetController().get(UUIDUtil.toUUID(fleet));
-            } catch (DataAccessException e) {
-                throw new InvalidInputException("Something went wrong when getting the fleet from the database");
+                                       @RequestParam(required = false) Integer limit,
+                                       @RequestHeader(value="AuthToken") String token,
+                                       @RequestHeader(value="Function") String function) {
+
+        try(VehicleController controller=new VehicleController(verifyToken(token,function))) {
+            VehicleDAO vehicleDAO = (VehicleDAO) controller.getDao();
+            List<Filter<Vehicle>> filters = new ArrayList<>();
+            if (licensPlate != null) {
+                filters.add(vehicleDAO.byLicensePlate(licensPlate));
             }
-            filters.add(vehicleDAO.byFleet(fl));
-        }
-        if (type != null) {
-            try {
-                filters.add(vehicleDAO.byType(controller.getVehicleType(UUIDUtil.toUUID(type))));
-            } catch (DataAccessException e) {
-                throw new InvalidInputException("Could not find requested type");
+            if (vin != null) {
+                //TODO after issue #87
             }
-        }
-        List<RESTVehicle> result = new ArrayList<>();
-        try {
+            if (leasingCompany != null) {
+                //TODO after issue #88
+            }
+            if (year != null) {
+                filters.add(vehicleDAO.atProductionDate(LocalDate.parse(year + "0101", yearFormat)));
+            }
+            if (fleet != null) {
+                Fleet fl;
+                try(FleetController fleetController=new FleetController(verifyToken(token,function))) {
+                    fl = fleetController.get(UUIDUtil.toUUID(fleet));
+                } catch (DataAccessException e) {
+                    throw new InvalidInputException("Something went wrong when getting the fleet from the database");
+                }catch (UnAuthorizedException e) {
+                    throw new NotAuthorizedException();
+                }
+                filters.add(vehicleDAO.byFleet(fl));
+            }
+            if (type != null) {
+                try(VehicleTypeController vehicleTypeController= new VehicleTypeController(verifyToken(token,function))) {
+                    filters.add(vehicleDAO.byType(vehicleTypeController.get(UUIDUtil.toUUID(type))));
+                } catch (DataAccessException e) {
+                    throw new InvalidInputException("Could not find requested type");
+                }catch (UnAuthorizedException e) {
+                    throw new NotAuthorizedException();
+                }
+            }
+            List<RESTVehicle> result = new ArrayList<>();
             for (Vehicle vehicle : controller.getAll(filters.toArray(new Filter[filters.size()]))) {
                 result.add(new RESTVehicle(vehicle));
             }
+            return new RESTSchema<>(result, page, limit, request);
 
         } catch (DataAccessException e) {
             throw new InvalidInputException("Some parameters where invalid");
+        }catch (UnAuthorizedException e) {
+            throw new NotAuthorizedException();
         }
 
-        return new RESTSchema<>(result, page, limit, request);
-    }
 
-    /***
-     * implement post method, see api
-     *
-     * @param vehicle
-     * @return
-     */
-    @RequestMapping(method = RequestMethod.POST)
-    public RESTVehicle post(@RequestBody RESTVehicle vehicle) {
-        try {
-            LocalDate year = LocalDate.parse(vehicle.getYear() + "0101", yearFormat);//Fix conversion bug
-            return new RESTVehicle(
-                    controller.create(vehicle.getBrand(),
-                            vehicle.getModel(),
-                            vehicle.getLicensePlate(),
-                            year,
-                            vehicle.getVin(),
-                            vehicle.getValue(),
-                            vehicle.getMileage(),
-                            UUIDUtil.toUUID(vehicle.getType()),
-                            UUIDUtil.toUUID(vehicle.getFleet())));
-        } catch (DataAccessException e) {
-            throw new InvalidInputException();
-            //TODO updateId when there are more exceptions
-        }
-    }
-
-    /***
-     * implement getId method, see api
-     *
-     * @param id
-     * @return
-     */
-    @RequestMapping(method = RequestMethod.GET, value = "{id}")
-    public RESTVehicle getId(@PathVariable("id") String id) {
-        UUID uuid = UUIDUtil.toUUID(id);
-        try {
-            Vehicle vehicle = controller.get(uuid);
-            return new RESTVehicle(vehicle);
-        } catch (DataAccessException e) {
-            throw new NotFoundException();
-        }
-    }
-
-    /***
-     * implement put method, see api
-     *
-     * @param id
-     * @param vehicle
-     * @return
-     */
-    @RequestMapping(method = RequestMethod.PUT, value = "{id}")
-    public RESTVehicle putId(@PathVariable("id") String id, @RequestBody RESTVehicle vehicle) {
-        try {
-            LocalDate year = LocalDate.parse(vehicle.getYear() + "0101", yearFormat);//Fix conversion bug
-            return new RESTVehicle(
-                    controller.update(UUIDUtil.toUUID(id),
-                            vehicle.getBrand(),
-                            vehicle.getModel(),
-                            vehicle.getLicensePlate(),
-                            year,
-                            vehicle.getVin(),
-                            vehicle.getValue(),
-                            vehicle.getMileage(),
-                            UUIDUtil.toUUID(vehicle.getType()),
-                            UUIDUtil.toUUID(vehicle.getFleet())));
-        } catch (DataAccessException e) {
-            throw new InvalidInputException();
-            //TODO updateId when there are more exceptions
-        }
 
     }
 
-    /***
-     * implement deleteId method, see api
-     *
-     * @param id
-     * @return
-     */
-    @RequestMapping(method = RequestMethod.DELETE, value = "{id}")
-    public void deleteId(@PathVariable("id") String id) {
 
-        try {
-            controller.archive(UUIDUtil.toUUID(id));
-        } catch (DataAccessException e) {
-            throw new NotFoundException();
-            //TODO updateId when there are more exceptions
-        }
-    }
 }

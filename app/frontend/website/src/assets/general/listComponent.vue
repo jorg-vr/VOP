@@ -21,14 +21,21 @@
             </div>
         </router-link>
         <button-edit v-if="edit" :route="{name: edit, params: {id: object.id}}"></button-edit>
-        <button-remove v-if="remove" @click="remove({id: object.id})"></button-remove>
+        <button-remove v-if="remove" @click="showModal=true"></button-remove>
+        <confirm-modal v-show="showModal" @cancelModal="showModal=false" @confirmModal="confirmAction()"></confirm-modal>
     </div>
 </template>
 <script>
     import buttonEdit from '../../assets/buttons/buttonEdit.vue'
     import buttonRemove from '../../assets/buttons/buttonRemove.vue'
+    import confirmModal from './modal.vue'
 
     export default {
+        data(){
+            return{
+                showModal:false
+            }
+        },
         props: {
             object: Object, //Object with values to show
             visibleKeys: Array, //Keys of values which have to be shown
@@ -38,7 +45,7 @@
             rowClass: String //Class for this object.
         },
         components: {
-            buttonEdit, buttonRemove
+            buttonEdit, buttonRemove,confirmModal
         },
         computed: {
             values() {
@@ -50,6 +57,14 @@
                     }
                 }
                 return values
+            }
+        },
+        methods:{
+            confirmAction: function(){
+                // hide modal
+                this.showModal=false
+                // remove object
+                this.remove({id: this.object.id})
             }
         }
     }

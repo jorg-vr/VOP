@@ -1,9 +1,16 @@
 package spring.model;
 
+import controller.FleetController;
+import controller.VehicleTypeController;
+import controller.exceptions.UnAuthorizedException;
+import dao.interfaces.DataAccessException;
+import model.account.Function;
 import model.fleet.Vehicle;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import spring.controller.UUIDUtil;
+import spring.exceptions.InvalidInputException;
+import spring.exceptions.NotAuthorizedException;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -13,7 +20,7 @@ import java.util.Locale;
  * This is a bean class as specified in the API specification
  */
 @ResponseStatus(value = HttpStatus.OK, reason = "OK")
-public class RESTVehicle extends RESTAbstractModel {
+public class RESTVehicle extends RESTAbstractModel<Vehicle> {
 
     private static final String PATH_VEHICLES = "/vehicles";
 
@@ -54,7 +61,7 @@ public class RESTVehicle extends RESTAbstractModel {
     /**
      * @return a new Vehicle object that has fields that are based on this object
      */
-    public Vehicle translate() {
+    public Vehicle translate(Function function) {
         Vehicle vehicle = new Vehicle();
         vehicle.setUuid(UUIDUtil.toUUID(getId()));
         vehicle.setBrand(brand);
@@ -65,8 +72,20 @@ public class RESTVehicle extends RESTAbstractModel {
         vehicle.setChassisNumber(vin);
         vehicle.setValue(value);
         vehicle.setMileage(mileage);
-        //vehicle.setType(); TODO create dummy type or get it from DAO?
-        //vehicle.setFleet();
+        try(VehicleTypeController vehicleTypeController=new VehicleTypeController(function)) {
+            vehicle.setType( vehicleTypeController.get(UUIDUtil.toUUID(getType())));
+        } catch (DataAccessException e) {
+            throw new InvalidInputException("type");
+        }  catch (UnAuthorizedException e) {
+            throw new NotAuthorizedException();
+        }
+        try(FleetController fleetController=new FleetController(function)) {
+            vehicle.setFleet(fleetController.get(UUIDUtil.toUUID(getFleet())));
+        }catch (DataAccessException e) {
+            throw new InvalidInputException("fleet");
+        }  catch (UnAuthorizedException e) {
+            throw new NotAuthorizedException();
+        }
         return vehicle;
     }
 

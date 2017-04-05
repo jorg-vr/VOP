@@ -1,11 +1,12 @@
 package spring.controller;
 
-import controller.VehicleController;
+import controller.VehicleTypeController;
+import controller.exceptions.UnAuthorizedException;
 import dao.interfaces.DataAccessException;
 import model.fleet.VehicleType;
 import org.springframework.web.bind.annotation.*;
 import spring.exceptions.InvalidInputException;
-import spring.exceptions.NotFoundException;
+import spring.exceptions.NotAuthorizedException;
 import spring.model.RESTSchema;
 import spring.model.RESTVehicleType;
 
@@ -21,39 +22,31 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/vehicleTypes")
-public class RESTVehicleTypeController {
+public class RESTVehicleTypeController extends RESTAbstractController<RESTVehicleType,VehicleType> {
+
+    public RESTVehicleTypeController() {
+        super(VehicleTypeController::new, RESTVehicleType::new);
+    }
 
     @RequestMapping(method = RequestMethod.GET)
     public RESTSchema<RESTVehicleType> getAllVehileTypes(HttpServletRequest request,
-                                                         @RequestParam(required = false) Integer page,
-                                                         @RequestParam(required = false) Integer limit) {
-        List<RESTVehicleType> restVehicleTypes = new ArrayList<>();
-        try {
-            for (VehicleType vehicleType : new VehicleController().getAllVehicleTypes()) {
-                restVehicleTypes.add(modelToREST(vehicleType));
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer limit,
+            @RequestHeader(value="AuthToken") String token,
+            @RequestHeader(value="Function") String function){
+        List<RESTVehicleType> restVehicleTypes=new ArrayList<>();
+        try(VehicleTypeController controller=new VehicleTypeController(verifyToken(token,function))) {
+            for (VehicleType vehicleType : controller.getAll()) {
+                restVehicleTypes.add(new RESTVehicleType(vehicleType));
             }
 
         } catch (DataAccessException e) {
             throw new InvalidInputException("Some parameters where invalid");
+        }catch (UnAuthorizedException e) {
+            throw new NotAuthorizedException();
         }
 
         return new RESTSchema<>(restVehicleTypes, page, limit, request);
     }
-
-    private RESTVehicleType modelToREST(VehicleType vehicleType) {
-        return new RESTVehicleType(UUIDUtil.UUIDToNumberString(vehicleType.getUuid()), vehicleType.getType());
-    }
-
-    @RequestMapping(method = RequestMethod.GET, value = "{id}")
-    public RESTVehicleType getId(@PathVariable("id") String id) {
-
-        try {
-            return modelToREST(new VehicleController().getVehicleType(UUIDUtil.toUUID(id)));
-
-        } catch (DataAccessException e) {
-            throw new NotFoundException();
-        }
-    }
-
 
 }
