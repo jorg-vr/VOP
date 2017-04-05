@@ -1,36 +1,62 @@
 package spring.model;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTCreationException;
+import com.auth0.jwt.exceptions.JWTDecodeException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import spring.controller.UUIDUtil;
+import spring.exceptions.NotAuthorizedException;
 
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.UUID;
 
 /**
  * Created by jorg on 3/30/17.
  */
 public class AuthenticationToken {
+
     private UUID acountId;
-    private String hash;
     private LocalDateTime expire;
 
-    public AuthenticationToken(UUID acountId, String hash) {
+    public AuthenticationToken(UUID acountId) {
         this.acountId = acountId;
-        this.hash = hash;
         this.expire=LocalDateTime.now().plusMinutes(30);
     }
 
     public AuthenticationToken(String token) {
-        String[] tokenparts=token.split(";");
-        acountId= UUIDUtil.toUUID(tokenparts[0]);
-        hash=tokenparts[1];
-        expire=LocalDateTime.parse(tokenparts[2]);
+        try {
+            DecodedJWT jwt = JWT.decode(token);
+            expire=toLocalDate(jwt.getExpiresAt());
+            acountId=UUIDUtil.toUUID(jwt.getSubject());
+        } catch (JWTDecodeException exception){
+            throw new NotAuthorizedException();
+        }
+    }
+
+    private Date fromLocalDate(LocalDateTime ldt){
+        return Date.from(ldt.atZone(ZoneId.systemDefault()).toInstant());
+    }
+
+    private LocalDateTime toLocalDate(Date date){
+        return LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
     }
 
     @Override
     public String toString() {
-        return UUIDUtil.UUIDToNumberString(acountId)+";"+
-                hash+";"+
-                expire;
+        try {
+            Algorithm algorithm = Algorithm.HMAC256("secret");
+            String token = JWT.create()
+                    .withSubject(UUIDUtil.UUIDToNumberString(acountId))
+                    .withExpiresAt(fromLocalDate(expire))
+                    .sign(algorithm);
+            return token;
+        } catch (UnsupportedEncodingException | JWTCreationException exception){
+            throw new RuntimeException(exception);
+        }
     }
 
     public UUID getAcountId() {
@@ -39,14 +65,6 @@ public class AuthenticationToken {
 
     public void setAcountId(UUID acountId) {
         this.acountId = acountId;
-    }
-
-    public String getHash() {
-        return hash;
-    }
-
-    public void setHash(String hash) {
-        this.hash = hash;
     }
 
     public LocalDateTime getExpire() {
