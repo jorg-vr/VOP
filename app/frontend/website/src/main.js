@@ -41,7 +41,9 @@ Vue.filter('capitalize', function(value){
     return value.charAt(0).toUpperCase() + value.slice(1)
 })
 
+console.log( Vue.config.env.API_KEY)
 Vue.http.options.root = Vue.config.env.API_KEY
+Vue.http.headers.common['Accept'] = 'application/json'
 
 new Vue({
     store,
