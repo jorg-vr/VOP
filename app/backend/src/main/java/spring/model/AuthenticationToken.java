@@ -20,16 +20,16 @@ public class AuthenticationToken {
     }
 
     public AuthenticationToken(String token) {
-        String[] tokenparts=token.split(":");
+        String[] tokenparts=token.split(";");
         acountId= UUIDUtil.toUUID(tokenparts[0]);
-        hash=tokenparts[2];
-        expire=LocalDateTime.parse(tokenparts[3]);
+        hash=tokenparts[1];
+        expire=LocalDateTime.parse(tokenparts[2]);
     }
 
     @Override
     public String toString() {
-        return UUIDUtil.UUIDToNumberString(acountId)+":"+
-                hash+":"+
+        return UUIDUtil.UUIDToNumberString(acountId)+";"+
+                hash+";"+
                 expire;
     }
 
