@@ -49,12 +49,12 @@ public class ProductionCustomerDAO extends ProductionDAO<Customer> implements Cu
 
     @Override
     public Filter<Customer> byVatNumber(String vatNumber) {
-        return filterEqual("btwNumber",vatNumber);
+        return filterContains("btwNumber",vatNumber);
     }
 
     @Override
     public Filter<Customer> byPhoneNumber(String phoneNumber) {
-        return filterEqual("phoneNumber",phoneNumber);
+        return filterContains("phoneNumber",phoneNumber);
     }
 
     @Override
@@ -64,7 +64,7 @@ public class ProductionCustomerDAO extends ProductionDAO<Customer> implements Cu
 
     @Override
     public Filter<Customer> byBankAccountNummber(String bankAccountNumber) {
-        return filterEqual("bankAccountNumber",bankAccountNumber);
+        return filterContains("bankAccountNumber",bankAccountNumber);
     }
 
     @Override

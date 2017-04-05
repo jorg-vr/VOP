@@ -44,11 +44,11 @@ public class ProductionAddressDAO extends ProductionDAO<Address> implements Addr
 
     @Override
     public Filter<Address> byPostalCode(String postalCode) {
-        return filterEqual("postalCode",postalCode);
+        return filterContains("postalCode",postalCode);
     }
 
     @Override
     public Filter<Address> byCountry(String country) {
-        return filterEqual("country",country);
+        return filterContains("country",country);
     }
 }
