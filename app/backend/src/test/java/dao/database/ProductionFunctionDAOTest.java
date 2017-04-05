@@ -22,7 +22,7 @@ public class ProductionFunctionDAOTest {
     private static AddressDAO addressDAO;
     private static PersonDAO personDAO;
     private static AccountDAO accountDAO;
-    //private static RoleDAO roleDAO;
+    private static RoleDAO roleDAO;
 
 
     //Setup before any of the tests are started
@@ -35,7 +35,7 @@ public class ProductionFunctionDAOTest {
         addressDAO = daoProvider.getAddressDao();
         personDAO = daoProvider.getPersonDAO();
         accountDAO = daoProvider.getAccountDao();
-        //roleDAO = daoProvider.getRoleDAO();
+        roleDAO = daoProvider.getRoleDAO();
     }
 
     //Gets executed after all tests have been run
@@ -77,11 +77,11 @@ public class ProductionFunctionDAOTest {
         } catch (Exception e) {
             fail("Failed trying to create a new account");
         }
-        /*try {
-            r1 = roleDAO.create();
+        try {
+            r1 = roleDAO.create(new Role("testRole1"));
         } catch (Exception e) {
             fail("Failed trying to create a new role");
-        }*/
+        }
         try {
             f1 = functionDAO.create(new Function(cust1, r1, acc1, LocalDateTime.of(2016, 7, 15, 0, 0), LocalDateTime.of(2017, 8, 3, 0, 0)));
         } catch (Exception e) {
@@ -126,7 +126,9 @@ public class ProductionFunctionDAOTest {
         if (f1 != null) {
             functionDAO.remove(f1.getUuid());
         }
-        //if(r1 != null){roleDAO.remove(r1.getUuid());}
+        if (r1 != null) {
+            roleDAO.remove(r1.getUuid());
+        }
         if (acc1 != null) {
             accountDAO.remove(acc1.getUuid());
         }
@@ -148,14 +150,12 @@ public class ProductionFunctionDAOTest {
         Customer cust1 = customerDAO.create(new Customer(adr1, "Email@address1.com", "911", "customername 1", "btw123", "123456789", CompanyType.TYPE1));
         Person p1 = personDAO.create(new Person(null, "Email@address1.com", "123456789", "Firstname 1", "Lastname 1"));
         Account acc1 = accountDAO.create(new Account("login1", "hashedPassword1", p1));
-        Role r1 = null;
-        //Role r1 = roleDAO.create();
+        Role r1 = roleDAO.create(new Role("testRole1"));
 
         Address adr2 = addressDAO.create(new Address("streettest n2", "60", "town 2", "99999", "country 2"));
         Customer cust2 = customerDAO.create(new Customer(adr2, "Email@address2.com", "912", "customername 2", "btw124", "123456781", CompanyType.TYPE2));
         Account acc2 = accountDAO.create(new Account("login2", "hashedPassword2", p1));
-        Role r2 = null;
-        //Role r2 = roleDAO.create();
+        Role r2 = roleDAO.create(new Role("testRole2"));
         LocalDateTime t1 = LocalDateTime.of(2017, 7, 15, 0, 0);
         LocalDateTime t2 = LocalDateTime.of(2018, 8, 3, 0, 0);
 
@@ -171,8 +171,8 @@ public class ProductionFunctionDAOTest {
         assertEquals("endDate field not updated correctly", t2, f3.getEndDate());
 
         functionDAO.remove(f1.getUuid());
-        //roleDAO.remove(r1.getUuid());
-        //roleDAO.remove(r2.getUuid());
+        roleDAO.remove(r1.getUuid());
+        roleDAO.remove(r2.getUuid());
         accountDAO.remove(acc1.getUuid());
         accountDAO.remove(acc2.getUuid());
         personDAO.remove(p1.getUuid());
