@@ -18,9 +18,6 @@ body {
 
     import NavBar from './assets/general/navBar.vue'
     export default {
-        created(){
-
-        },
         components: {
             NavBar
         }

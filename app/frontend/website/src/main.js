@@ -17,7 +17,6 @@ Vue.use(VueResource);
 //Language support
 Vue.use(VueI18n);
 
-Vue.config.lang = 'nl';
 
 if(process.env.NODE_ENV){
     Vue.config.env = environments[process.env.NODE_ENV]
@@ -25,6 +24,10 @@ if(process.env.NODE_ENV){
 else {
     Vue.config.env = environments['development']
 }
+
+Vue.config.lang = 'nl';
+Vue.http.options.root = Vue.config.env.API_KEY
+Vue.http.headers.common['Accept'] = 'application/json'
 
 Object.keys(locales).forEach(function (lang) {
     Vue.locale(lang, locales[lang])
@@ -41,9 +44,7 @@ Vue.filter('capitalize', function(value){
     return value.charAt(0).toUpperCase() + value.slice(1)
 })
 
-console.log( Vue.config.env.API_KEY)
-Vue.http.options.root = Vue.config.env.API_KEY
-Vue.http.headers.common['Accept'] = 'application/json'
+
 
 new Vue({
     store,

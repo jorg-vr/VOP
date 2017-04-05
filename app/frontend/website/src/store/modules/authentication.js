@@ -9,7 +9,9 @@ export default {
         account: null //Current authenticated account
     },
     getters: {
-
+        hasActiveAccount(state){
+            return state.account != null
+        }
     },
     mutations: {
         [types.SET_AUTH_TOKEN] (state, {authToken}){
