@@ -9,12 +9,9 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import spring.controller.UUIDUtil;
 import spring.exceptions.NotAuthorizedException;
 
-import java.io.UnsupportedEncodingException;
-import java.security.Key;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
-import java.security.interfaces.RSAKey;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.time.LocalDateTime;
@@ -41,11 +38,11 @@ public class AuthenticationToken {
     }
 
 
-    private UUID acountId;
+    private UUID accountId;
     private LocalDateTime expire;
 
-    public AuthenticationToken(UUID acountId) {
-        this.acountId = acountId;
+    public AuthenticationToken(UUID accountId) {
+        this.accountId = accountId;
         this.expire=LocalDateTime.now().plusMinutes(30);
     }
 
@@ -56,7 +53,7 @@ public class AuthenticationToken {
                     .build(); //Reusable verifier instance
             DecodedJWT jwt = verifier.verify(token);
             expire=toLocalDate(jwt.getExpiresAt());
-            acountId=UUIDUtil.toUUID(jwt.getSubject());
+            accountId =UUIDUtil.toUUID(jwt.getSubject());
         } catch (JWTDecodeException exception){
             throw new NotAuthorizedException();
         }
@@ -75,7 +72,7 @@ public class AuthenticationToken {
         try {
             Algorithm algorithm = Algorithm.RSA256(privateKey);
             String token = JWT.create()
-                    .withSubject(UUIDUtil.UUIDToNumberString(acountId))
+                    .withSubject(UUIDUtil.UUIDToNumberString(accountId))
                     .withExpiresAt(fromLocalDate(expire))
                     .sign(algorithm);
             return token;
@@ -84,12 +81,12 @@ public class AuthenticationToken {
         }
     }
 
-    public UUID getAcountId() {
-        return acountId;
+    public UUID getAccountId() {
+        return accountId;
     }
 
-    public void setAcountId(UUID acountId) {
-        this.acountId = acountId;
+    public void setAccountId(UUID accountId) {
+        this.accountId = accountId;
     }
 
     public LocalDateTime getExpire() {
