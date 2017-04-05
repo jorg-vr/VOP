@@ -19,7 +19,7 @@ public class AuthController implements  AutoCloseable{
     public Function getFunction(AuthenticationToken token, UUID functionId) throws DataAccessException, UnAuthorizedException {
         Account account= ProductionProvider.getInstance().getAccountDao().get(token.getAccountId());
         Function function= ProductionProvider.getInstance().getFunctionDAO().get(functionId);
-        if(token.getExpire().isAfter(LocalDateTime.now())&&function.getAccount().equals(account)){
+        if(function.getAccount().equals(account)){
             return function;
         }else{
             throw new UnAuthorizedException();
@@ -28,11 +28,7 @@ public class AuthController implements  AutoCloseable{
 
     public Collection<Function> getFunctions(AuthenticationToken token) throws DataAccessException, UnAuthorizedException {
         Account account= ProductionProvider.getInstance().getAccountDao().get(token.getAccountId());
-        if(token.getExpire().isAfter(LocalDateTime.now())){
-            return account.getFunctions();
-        }else{
-            throw new UnAuthorizedException();
-        }
+        return account.getFunctions();
     }
 
     public AuthenticationToken getToken(String login,String password)throws DataAccessException, UnAuthorizedException{
@@ -43,11 +39,7 @@ public class AuthController implements  AutoCloseable{
 
     public AuthenticationToken refreshToken(AuthenticationToken token)throws DataAccessException, UnAuthorizedException{
         Account account= ProductionProvider.getInstance().getAccountDao().get(token.getAccountId());
-        if(token.getExpire().isAfter(LocalDateTime.now())){
-            return new AuthenticationToken(account.getUuid());
-        }else{
-            throw new UnAuthorizedException();
-        }
+        return new AuthenticationToken(account.getUuid());
     }
 
     @Override
