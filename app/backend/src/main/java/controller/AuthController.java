@@ -17,9 +17,9 @@ import java.util.UUID;
  */
 public class AuthController implements AutoCloseable {
     public Function getFunction(AuthenticationToken token, UUID functionId) throws DataAccessException, UnAuthorizedException {
-        User user = ProductionProvider.getInstance().getUserDAO().get(token.getAcountId());
-        Function function = ProductionProvider.getInstance().getFunctionDAO().get(functionId);
-        if (token.getExpire().isAfter(LocalDateTime.now()) && function.getUser().equals(user) && user.validatePassword(token.getHash())) {
+        User account= ProductionProvider.getInstance().getUserDAO().get(token.getAccountId());
+        Function function= ProductionProvider.getInstance().getFunctionDAO().get(functionId);
+        if(function.getUser().equals(account)){
             return function;
         } else {
             throw new UnAuthorizedException();
@@ -27,27 +27,19 @@ public class AuthController implements AutoCloseable {
     }
 
     public Collection<Function> getFunctions(AuthenticationToken token) throws DataAccessException, UnAuthorizedException {
-        User user = ProductionProvider.getInstance().getUserDAO().get(token.getAcountId());
-        if (token.getExpire().isAfter(LocalDateTime.now()) && user.validatePassword(token.getHash())) {
-            return user.getFunctions();
-        } else {
-            throw new UnAuthorizedException();
-        }
+        User user= ProductionProvider.getInstance().getUserDAO().get(token.getAccountId());
+        return user.getFunctions();
     }
 
-    public AuthenticationToken getToken(String login, String password) throws DataAccessException, UnAuthorizedException {
-        UserDAO userDAO = ProductionProvider.getInstance().getUserDAO();
-        User user = null; // TODO accountDAO.listFiltered(accountDAO.bySecurity(login,password)).iterator().next();
-        return new AuthenticationToken(user.getUuid(), user.getPassword());
+    public AuthenticationToken getToken(String login,String password)throws DataAccessException, UnAuthorizedException{
+        UserDAO userDAO=ProductionProvider.getInstance().getUserDAO();
+        User account=null; //TODO userDAO.listFiltered(userDAO.bySecurity(login,password)).iterator().next();
+        return new AuthenticationToken(account.getUuid());
     }
 
-    public AuthenticationToken refreshToken(AuthenticationToken token) throws DataAccessException, UnAuthorizedException {
-        User user = ProductionProvider.getInstance().getUserDAO().get(token.getAcountId());
-        if (token.getExpire().isAfter(LocalDateTime.now()) && user.validatePassword(token.getHash())) {
-            return new AuthenticationToken(user.getUuid(), user.getPassword());
-        } else {
-            throw new UnAuthorizedException();
-        }
+    public AuthenticationToken refreshToken(AuthenticationToken token)throws DataAccessException, UnAuthorizedException{
+        User user= ProductionProvider.getInstance().getUserDAO().get(token.getAccountId());
+        return new AuthenticationToken(user.getUuid());
     }
 
     @Override

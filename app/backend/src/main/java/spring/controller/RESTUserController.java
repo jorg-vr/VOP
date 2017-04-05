@@ -1,9 +1,11 @@
 package spring.controller;
 
 import controller.AuthController;
+import controller.UserController;
 import controller.exceptions.UnAuthorizedException;
 import dao.interfaces.DataAccessException;
 import model.account.Function;
+import model.account.User;
 import org.springframework.web.bind.annotation.*;
 import spring.exceptions.InvalidInputException;
 import spring.exceptions.NotAuthorizedException;
@@ -57,8 +59,18 @@ public class RESTUserController {
                                     Integer limit,
                                     @RequestHeader(value="AuthToken") String token,
                                     @RequestHeader(value="Function") String function) {
-        Collection<RESTUser> users = new ArrayList<>();
-        return null;
-    }
+        Collection<RESTUser> restUsers = new ArrayList<>();
+        try (UserController userController = new UserController(verifyToken(token, function))) {
+            Collection<User> users = userController.getAll();
+            for (User user: users) {
+                restUsers.add(new RESTUser(user));
+            }
 
+        }catch (UnAuthorizedException e) {
+            throw new NotAuthorizedException();
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
+        return new RESTSchema<>(restUsers, page, limit, request);
+    }
 }

@@ -12,6 +12,6 @@ export default {
     development: {
         NODE_ENV: 'development',
         BASE: '/',
-        API_KEY: 'https://vopro5.ugent.be/app/api'
+        API_KEY: 'https://vopro5.ugent.be/test/app/api'
     }
 }

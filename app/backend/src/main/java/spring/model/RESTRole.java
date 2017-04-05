@@ -47,13 +47,17 @@ public class RESTRole extends RESTAbstractModel<Function> {
     }
 
     public RESTRole(Function function){
-         super(function.getUuid(),PATH_ROLE);
-         setPermissions(UUIDToNumberString(function.getRole().getUuid()));
-         setUser(UUIDToNumberString(function.getUser().getUuid()));
-         setCompany(UUIDToNumberString(function.getCompany().getUuid()));
-         setStartDate(function.getStartDate());
-         setEndDate(function.getEndDate());
-         setName(function.getName());
+        super(function.getUuid(),PATH_ROLE);
+        if(function.getRole()!=null) {
+            setPermissions(UUIDToNumberString(function.getRole().getUuid()));
+        }
+        setUser(UUIDToNumberString(function.getUser().getUuid()));
+        if(function.getCompany()!=null) {
+            setCompany(UUIDToNumberString(function.getCompany().getUuid()));
+        }
+        setStartDate(function.getStartDate());
+        setEndDate(function.getEndDate());
+        setName(function.getName());
      }
 
     public Function translate(Function f){
