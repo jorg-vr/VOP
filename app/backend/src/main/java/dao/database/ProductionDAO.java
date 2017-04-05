@@ -88,6 +88,22 @@ public abstract class ProductionDAO<T extends EditableObject> implements DAO<T> 
         return null;
     }
 
+    protected Collection<Predicate> getPredicates() {
+        return predicates;
+    }
+
+    protected Root<T> getRoot() {
+        return root;
+    }
+
+    protected CriteriaQuery<T> getCriteriaQuery() {
+        return criteriaQuery;
+    }
+
+    protected CriteriaBuilder getCriteriaBuilder() {
+        return criteriaBuilder;
+    }
+
     @Override
     public void close() throws Exception {
         session.close();
