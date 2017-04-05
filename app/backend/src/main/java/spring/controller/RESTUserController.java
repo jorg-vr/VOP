@@ -78,7 +78,7 @@ public class RESTUserController {
      * @return whether the person passes the filters or not
      */
     private boolean passesFilters(Person person, String email, String firstName, String lastName) {
-        return containsLowerCase(person.getEmail(), email)
+        return person != null && containsLowerCase(person.getEmail(), email)
                 && containsLowerCase(person.getFirstName(), firstName)
                 && containsLowerCase(person.getLastName(), lastName);
     }
