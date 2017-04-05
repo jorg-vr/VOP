@@ -1,13 +1,17 @@
 <template>
-    <div id="page-content-wrapper">
+    <div>
         <nav-bar></nav-bar>
-        <div class="container-fluid">
-            <div class="row">
-                <router-view></router-view>
-            </div>
+        <div class="container">
+            <router-view></router-view>
         </div>
-    </div>
+</div>
 </template>
+
+<style>
+body { 
+        padding-top: 65px; 
+        }
+</style>
 <script>
 
     import NavBar from './assets/general/navBar.vue'
