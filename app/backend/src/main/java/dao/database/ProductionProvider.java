@@ -160,8 +160,7 @@ public class ProductionProvider implements DAOProvider {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-
+            
             provider.close();
         }
     }
