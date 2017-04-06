@@ -3,18 +3,22 @@ package spring.controller;
 import controller.AccountController;
 import controller.CustomerController;
 import controller.FunctionController;
+import controller.RoleController;
 import controller.exceptions.UnAuthorizedException;
 import dao.interfaces.DataAccessException;
 import model.account.Account;
 import model.account.Function;
+import model.account.Role;
 import model.identity.Company;
 import org.springframework.web.bind.annotation.*;
+import spring.exceptions.InvalidInputException;
 import spring.exceptions.NotAuthorizedException;
 import spring.model.RESTRole;
 import spring.model.RESTSchema;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * This controller is responsible for handling the HTTP requests of the URL /roles.
@@ -33,47 +37,36 @@ import java.util.*;
  */
 @RestController
 @RequestMapping("/roles")
-public class RESTRoleController extends RESTAbstractController<RESTRole,Function>{
-
-    public static final String PATH_ROLE = "/roles";
+public class RESTRoleController extends RESTAbstractController<RESTRole, Role>{
 
 
     public RESTRoleController() {
-        super(FunctionController::new, RESTRole::new);
+        super(RoleController::new, RESTRole::new);
     }
 
     @RequestMapping(method = RequestMethod.GET)
     public RESTSchema<RESTRole> get(HttpServletRequest request,
-                                    @RequestParam(required = false) String company,
-                                    @RequestParam(required = false) String user,
-                                    @RequestParam(required = false) Boolean active,
+                                    @RequestParam(required = false) String name,
                                     @RequestParam(required = false) Integer page,
                                     @RequestParam(required = false) Integer limit,
                                     @RequestHeader(value="AuthToken") String token,
                                     @RequestHeader(value="Function") String fu) {
-        Collection<RESTRole> roles = new ArrayList<>();
+
+        Collection<RESTRole> restRoles = new ArrayList<>();
         Function function=verifyToken(token,fu);
-        try(FunctionController controller=new FunctionController(function);
-        CustomerController customerController=new CustomerController(function);
-        AccountController accountController=new AccountController(function)) {
-            UUID companyUuid = UUIDUtil.toUUID(company);
-            UUID accountUuid = UUIDUtil.toUUID(user);
 
-            Company customer = companyUuid != null ? customerController.get(companyUuid) : null;
-            Account account = accountUuid != null ? accountController.get(accountUuid) : null;
-
-            Collection<Function> functions = controller.getFiltered(customer, account, active);
-            for (Function f : functions) {
-                RESTRole restRole = new RESTRole(f);
-                roles.add(restRole);
-            }
-
+        try(RoleController roleController = new RoleController(function)) {
+            Collection<Role> roles = roleController.getAll();
+            restRoles.addAll(roles
+                    .stream()
+                    .map(RESTRole::new)
+                    .collect(Collectors.toList()));
         } catch (DataAccessException e) {
-            e.printStackTrace();
+            throw new InvalidInputException("Something is wrong with the database");
         } catch (UnAuthorizedException e) {
             throw new NotAuthorizedException();
         }
-        return new RESTSchema<>(roles, page, limit, request);
+        return new RESTSchema<>(restRoles, page, limit, request);
     }
 
 
