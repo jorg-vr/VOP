@@ -29,11 +29,6 @@
                 </bag>
             </joined-subclass>
         </joined-subclass>
-        <joined-subclass name="model.identity.Person" table="PERSON">
-            <key column="identity_id"/>
-            <property name="firstName" column="first_name" type="string"/>
-            <property name="lastName" column="last_name" type="string"/>
-        </joined-subclass>
 
     </class>
 </hibernate-mapping>

@@ -14,7 +14,7 @@
 
         <property name="startDate" column="start_data" type="java.time.LocalDateTime"/>
         <property name="endDate" column="end_data" type="java.time.LocalDateTime"/>
-        <many-to-one name="account" column="account_id"  class="model.account.Account" lazy="proxy" />
+        <many-to-one name="user" column="user_id"  class="model.account.User" lazy="proxy" />
         <many-to-one name="role" column="role_id"  class="model.account.Role" />
         <many-to-one name="company" column="company_id"  class="model.identity.Company" lazy="proxy" />
 
