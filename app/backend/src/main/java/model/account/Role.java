@@ -20,7 +20,6 @@ public class Role implements EditableObject, java.io.Serializable {
     public Role(String name) {
         this.name = name;
         rights=new HashMap<>();
-        uuid=UUID.randomUUID();
     }
 
     private Role(String name, Map<Resource,Permission> rights, UUID uuid) {

@@ -3,10 +3,7 @@ package controller;
 import controller.exceptions.UnAuthorizedException;
 import dao.interfaces.*;
 import main.BackendApplication;
-import model.account.Account;
-import model.account.Function;
-import model.account.Resource;
-import model.account.Role;
+import model.account.*;
 import model.identity.Company;
 import spring.exceptions.NotImplementedException;
 
@@ -32,13 +29,10 @@ public class FunctionController extends AbstractController<Function> {
 
 
 
-    public Collection<Function> getFiltered(Company company, Account account, Boolean active) throws UnAuthorizedException {
+    public Collection<Function> getFiltered(Company company, User user, Boolean active) throws UnAuthorizedException {
         try {
             List<Filter<Function>> filters = new ArrayList<>();
 
-            if (account != null) {
-                filters.add(functionDAO.byAccount(account));
-            }
 
             if (company != null) {
                 filters.add(functionDAO.byCompany(company));

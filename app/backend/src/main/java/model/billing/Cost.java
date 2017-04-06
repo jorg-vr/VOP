@@ -32,11 +32,24 @@ public class Cost implements EditableObject, java.io.Serializable {
     /**
      * Indicates whether the cost object is part of an invoice yet and is thus accounted for.
      * If true then it should not be able to be added to a list of costs of another invoice (to make sure costs aren't paid for in double or more)
-     * If false that means the cost has yet to be added to an invoice. (the name invoice is not 100% correct so feel free to rename)
+     * If false that means the cost has yet to be added to an invoice. (the name paidFor is not 100% correct so feel free to rename)
      */
-    private Invoice invoice;
+    private boolean paidFor;
 
     public Cost() {
+    }
+
+    public Cost(int contractID, double amount, LocalDate startDate, LocalDate endDate, boolean paidFor) {
+        ContractID = contractID;
+        this.amount = amount;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.paidFor = paidFor;
+    }
+
+    public Cost(UUID uuid, int contractID, double amount, LocalDate startDate, LocalDate endDate, boolean paidFor) {
+        this(contractID, amount, startDate, endDate, paidFor);
+        this.uuid = uuid;
     }
 
     public boolean isCorrection() {
@@ -89,11 +102,11 @@ public class Cost implements EditableObject, java.io.Serializable {
         this.endDate = endDate;
     }
 
-    public Invoice getInvoice() {
-        return invoice;
+    public boolean isPaidFor() {
+        return paidFor;
     }
 
-    public void setInvoice(Invoice invoice) {
-        this.invoice = invoice;
+    public void setPaidFor(boolean paidFor) {
+        this.paidFor = paidFor;
     }
 }

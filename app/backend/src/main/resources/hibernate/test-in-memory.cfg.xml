@@ -16,14 +16,15 @@
         <property name="connection.pool_size">100</property>
         <property name="hbm2ddl.auto">create</property>
         <property name="show_sql">true</property>
+
         <mapping resource="hibernate/address.hbm.xml" />
         <mapping resource="hibernate/vehicletype.hbm.xml" />
         <mapping resource="hibernate/vehicle.hbm.xml" />
         <mapping resource="hibernate/fleet.hbm.xml" />
         <mapping resource="hibernate/identity.hbm.xml" />
-        <mapping resource="hibernate/account.hbm.xml" />
         <mapping resource="hibernate/function.hbm.xml" />
         <mapping resource="hibernate/role.hbm.xml" />
+        <mapping resource="hibernate/user.hbm.xml" />
 
     </session-factory>
 </hibernate-configuration>

@@ -1,9 +1,12 @@
 package dao.database;
 
+import dao.interfaces.AddressDAO;
 import dao.interfaces.CustomerDAO;
 import dao.interfaces.DAOProvider;
 import dao.interfaces.FleetDAO;
 import model.fleet.Fleet;
+import model.identity.Address;
+import model.identity.CompanyType;
 import model.identity.Customer;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -16,6 +19,7 @@ public class ProductionFleetDAOTest {
     private static DAOProvider daoProvider;
     private static FleetDAO fleetDAO;
     private static CustomerDAO customerDAO;
+    private static AddressDAO addressDAO;
 
     //Setup before any of the tests are started
     @BeforeClass
@@ -24,6 +28,7 @@ public class ProductionFleetDAOTest {
         daoProvider = ProductionProvider.getInstance();
         fleetDAO = daoProvider.getFleetDAO();
         customerDAO = daoProvider.getCustomerDAO();
+        addressDAO = daoProvider.getAddressDao();
     }
 
     //Gets executed after all tests have been run
@@ -36,16 +41,23 @@ public class ProductionFleetDAOTest {
     public void createGetRemoveTest() throws Exception {
         Fleet fleet1 = null;
         Customer cust1 = null;
+        Address a1 = null;
         boolean present = false;
         boolean removed = false;
+        //test if an address can be succesfully added to the database
+        try {
+            a1 = addressDAO.create(new Address("streettest n1", "59", "town 1", "9999", "country 1"));
+        } catch (Exception e) {
+            fail("Failed trying to create a new address");
+        }
         //test if a fleet can be succesfully added to the database
         try {
-            cust1 = customerDAO.create("customername 1", null, "911", "123456789");
+            cust1 = customerDAO.create(new Customer(a1, "Email@address1.com", "911", "customername 1", "btw123", "123456789", CompanyType.TYPE1));
         } catch (Exception e) {
             fail("Failed trying to create a new customer");
         }
         try {
-            fleet1 = fleetDAO.create("fleet 1", cust1);
+            fleet1 = fleetDAO.create(new Fleet("fleet 1", cust1));
         } catch (Exception e) {
             fail("Failed trying to create a new fleet");
         }
@@ -91,17 +103,18 @@ public class ProductionFleetDAOTest {
 
     @Test
     public void update() throws Exception {
-        Customer cust1 = customerDAO.create("customername 1", null, "911", "123456789");
-        Customer cust2 = customerDAO.create("customername 2", null, "912", "123456788");
-        Fleet fleet1 = fleetDAO.create("fleet 1", cust1);
-        Fleet fleet2 = fleetDAO.update(fleet1.getUuid(), "fleet 2", cust2);
+        Address a1 = addressDAO.create(new Address("streettest n1", "59", "town 1", "9999", "country 1"));
+        Customer cust1 = customerDAO.create(new Customer(a1, "Email@address1.com", "911", "customername 1", "btw123", "123456789", CompanyType.TYPE1));
+        Fleet fleet1 = fleetDAO.create(new Fleet("fleet 1", cust1));
+        fleet1.setName("fleet 2");
+        fleetDAO.update(fleet1);
         Fleet fleet3 = fleetDAO.get(fleet1.getUuid());
         assertEquals("name field not updated correctly", "fleet 2", fleet3.getName());
-        assertEquals("customer field not updated correctly", cust2, fleet3.getOwner());
+        //assertEquals("customer field not updated correctly", cust2, fleet3.getOwner()); //Fleets never change owner so this is not needed currently
 
         fleetDAO.remove(fleet1.getUuid());
         customerDAO.remove(cust1.getUuid());
-        customerDAO.remove(cust2.getUuid());
+        addressDAO.remove(a1.getUuid());
     }
 
 }

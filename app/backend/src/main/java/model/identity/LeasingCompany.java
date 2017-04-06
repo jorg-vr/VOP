@@ -15,6 +15,11 @@ public class LeasingCompany extends Company implements java.io.Serializable {
     public LeasingCompany() {
     }
 
+    public LeasingCompany(Address address, String email, String phoneNumber, String name, String btwNumber, String bankAccountNumber, CompanyType companyType, Collection<Vehicle> vehicles) {
+        super(address, email, phoneNumber, name, btwNumber, bankAccountNumber, companyType);
+        this.vehicles = vehicles;
+    }
+
     public LeasingCompany(UUID id, Address address, String email, String phoneNumber, String name, String btwNumber, String bankAccountNumber, CompanyType companyType) {
         super(id, address, email, phoneNumber, name, btwNumber, bankAccountNumber, companyType);
     }
@@ -42,7 +47,7 @@ public class LeasingCompany extends Company implements java.io.Serializable {
      * @return true if the vehicle was succesfully removed
      */
     public boolean removeVehicle(Vehicle vehicle) {
-        if(vehicles == null){
+        if (vehicles == null) {
             return false;
         }
         return vehicles.remove(vehicle);

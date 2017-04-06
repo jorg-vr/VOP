@@ -15,43 +15,6 @@ import java.util.UUID;
 public interface VehicleDAO extends DAO<Vehicle> {
 
     /**
-     * Creates a new vehicle
-     *
-     * @param brand          the brand
-     * @param model          the model
-     * @param chassisNumber  the vin number
-     * @param licenseplate   the license plate
-     * @param value          the value of the vehicle
-     * @param mileage        the mileage
-     * @param type           the VehicleType of the vehicle
-     * @param productionDate the production date
-     * @param fleet          the fleet which the vehicle is in
-     * @return A new Vehicle
-     * @throws DataAccessException Thrown when invalid values are given or when the object cannot be created
-     */
-    @Deprecated
-    Vehicle create(String brand, String model, String chassisNumber, String licenseplate, int value, int mileage, VehicleType type, LocalDate productionDate, Fleet fleet) throws DataAccessException;
-
-    /**
-     * Updates an existing vehicle
-     *
-     * @param uuid           the id of the vehicle
-     * @param brand          the brand
-     * @param model          the model
-     * @param chassisNumber  the vin number
-     * @param licenseplate   the license plate
-     * @param value          the value of the vehicle
-     * @param mileage        the mileage
-     * @param type           the VehicleType of the vehicle
-     * @param productionDate the production date
-     * @param fleet          the fleet which the vehicle is in
-     * @return A new Vehicle
-     * @throws DataAccessException Thrown when invalid values are given or when the object cannot be created
-     */
-    @Deprecated
-    Vehicle update(UUID uuid, String brand, String model, String chassisNumber, String licenseplate, int value, int mileage, VehicleType type, LocalDate productionDate, Fleet fleet) throws DataAccessException;
-
-    /**
      * Returns a Filter to use in ListFiltered in this class, which returns all Vehicles which have the given brand.
      *
      * @param brandName The brand to use in the filter
