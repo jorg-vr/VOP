@@ -1,19 +1,13 @@
 package spring.controller;
 
-import controller.ControllerFactory;
-import controller.CustomerController;
-import controller.FleetController;
 import controller.FunctionController;
 import controller.exceptions.UnAuthorizedException;
 import dao.interfaces.DataAccessException;
 import model.account.Function;
-import model.fleet.Fleet;
+
 import org.springframework.web.bind.annotation.*;
-import spring.exceptions.InvalidInputException;
 import spring.exceptions.NotAuthorizedException;
-import spring.model.RESTFleet;
 import spring.model.RESTFunction;
-import spring.model.RESTModelFactory;
 import spring.model.RESTSchema;
 
 import javax.servlet.http.HttpServletRequest;
