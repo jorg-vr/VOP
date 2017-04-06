@@ -9,33 +9,6 @@ import java.util.UUID;
  * Created by sam on 3/13/17.
  */
 public interface AddressDAO extends DAO<Address> {
-    /**
-     * Creates a new address
-     * @param street The street
-     * @param streetNumber The streetnumber
-     * @param town The town
-     * @param postalCode The postalcode
-     * @param country The country
-     * @return A new address
-     * @throws DataAccessException Thrown when the object can't be created or wrong parameters are given
-     */
-    @Deprecated
-    Address create(String street, String streetNumber, String town, String postalCode, String country) throws DataAccessException;
-
-    /**
-     * Updates an existing address
-     * @param id The id
-     * @param street The street
-     * @param streetNumber The streetnumber
-     * @param town The town
-     * @param postalCode The postalcode
-     * @param country The country
-     * @return A new address
-     * @throws DataAccessException Thrown when the given id does not exist, the object can't be update or wrong parameters are given
-     */
-    @Deprecated
-    Address update(UUID id, String street, String streetNumber, String town, String postalCode, String country) throws DataAccessException;
-
 
     /**
      * Returns a Filter to use in ListFiltered in this class, which will give all address which are in the given street.

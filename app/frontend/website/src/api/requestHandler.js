@@ -1,23 +1,27 @@
 import Vue from 'vue'
 
-const headers = {
-    Accept: "application/json"
-};
 
 export default {
 
     getObjectsRequest(location){
         return new Promise(resolve => {
-            Vue.http.get(location, headers).then(response => {
+            Vue.http.get(location).then(response => {
                 resolve(response.body.data)
             })
         })
+    },
 
+    getObjectsRequestGetBody(location){
+        return new Promise(resolve => {
+            Vue.http.get(location).then(response => {
+                resolve(response.body)
+            })
+        })
     },
 
     getObjectRequest(location, id){
         return new Promise(resolve => {
-            Vue.http.get(location + id, headers).then(response => {
+            Vue.http.get(location + id).then(response => {
                 resolve(response.body)
             })
         })
@@ -36,17 +40,27 @@ export default {
         return this.getObjectsRequest(location + query)
     },
 
-    postObjectRequest(location, object){
+    //This version returns the body instead of the full response
+    postObjectRequestGetBody(location, object){
         return new Promise(resolve => {
-            Vue.http.post(location, object, headers).then(response => {
+            this.postObjectRequest(location, object).then(response => {
                 resolve(response.body)
             })
         })
     },
 
+    postObjectRequest(location, object){
+        return new Promise(resolve => {
+            Vue.http.post(location, object).then(response => {
+                resolve(response)
+            })
+        })
+    },
+
+
     putObjectRequest(location, object){
         return new Promise(resolve => {
-            Vue.http.put(location + object.id, object, headers).then(response => {
+            Vue.http.put(location + object.id, object).then(response => {
                 resolve(response.body)
             })
         })
@@ -54,7 +68,7 @@ export default {
 
     deleteObjectRequest(location, id){
         return new Promise(resolve => {
-            Vue.http.delete(location + id, headers).then(() => {
+            Vue.http.delete(location + id).then(() => {
                 resolve()
             })
         })

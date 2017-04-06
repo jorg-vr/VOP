@@ -36,3 +36,8 @@
         },
     }
 </script>
+<style>
+    body {
+        padding-top: 65px;
+    }
+</style>

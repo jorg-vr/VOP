@@ -13,6 +13,10 @@ public class InsuranceCompany extends Company implements java.io.Serializable {
     public InsuranceCompany() {
     }
 
+    public InsuranceCompany(Address address, String email, String phoneNumber, String name, String btwNumber, String bankAccountNumber, CompanyType companyType, Collection<Insurance> insurances) {
+        super(address, email, phoneNumber, name, btwNumber, bankAccountNumber, companyType);
+        this.insurances = insurances;
+    }
 
     public InsuranceCompany(UUID id, Address address, String email, String phoneNumber, String name, String btwNumber, String bankAccountNumber, CompanyType companyType) {
         super(id, address, email, phoneNumber, name, btwNumber, bankAccountNumber, companyType);
@@ -20,8 +24,8 @@ public class InsuranceCompany extends Company implements java.io.Serializable {
     }
 
     //TODO not milestone 1
-    public boolean addInsurance(Insurance insurance){
-        if(insurances.contains(insurance)){
+    public boolean addInsurance(Insurance insurance) {
+        if (insurances.contains(insurance)) {
             return false;
         }
         insurances.add(insurance);

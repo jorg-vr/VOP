@@ -4,6 +4,8 @@ import dao.interfaces.*;
 import model.fleet.Fleet;
 import model.fleet.Vehicle;
 import model.fleet.VehicleType;
+import model.identity.Address;
+import model.identity.CompanyType;
 import model.identity.Customer;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -21,10 +23,12 @@ public class ProductionVehicleDAOFiltersTest {
     private static VehicleTypeDao vehicleTypeDAO;
     private static FleetDAO fleetDAO;
     private static CustomerDAO customerDAO;
+    private static AddressDAO addressDAO;
     private static Vehicle v1, v2, v3;
     private static VehicleType t1, t2;
     private static Fleet fleet1, fleet2;
     private static Customer cust1;
+    private static Address a1;
 
     //Setup before any of the tests are started
     @BeforeClass
@@ -35,15 +39,17 @@ public class ProductionVehicleDAOFiltersTest {
         vehicleTypeDAO = daoProvider.getVehicleTypeDAO();
         fleetDAO = daoProvider.getFleetDAO();
         customerDAO = daoProvider.getCustomerDAO();
+        addressDAO = daoProvider.getAddressDao();
 
-        t1 = vehicleTypeDAO.create("type 1", 2.5);
-        t2 = vehicleTypeDAO.create("type 2", 5.7);
-        cust1 = customerDAO.create("customer 1", null, "123", "456");
-        fleet1 = fleetDAO.create("name 1", cust1);
-        fleet2 = fleetDAO.create("name 2", cust1);
-        v1 = vehicleDAO.create("brand 1", "model 1", "AAAAAAAAAAAAAAAAA", "ABC-123", 500, 3000, t1, LocalDate.of(2016, 7, 15), fleet1);
-        v2 = vehicleDAO.create("brand 1", "model 2", "BBBBBBBBBBBBBBBBB", "DEF-123", 1000, 3500, t2, LocalDate.of(2016, 7, 26), fleet2);
-        v3 = vehicleDAO.create("brand 2", "model 2", "CCCCCCCCCCCCCCCCC", "DEF-456", 1500, 4000, t1, LocalDate.of(2016, 9, 26), fleet2);
+        a1 = addressDAO.create(new Address("streettest n1", "59", "town 1", "9999", "country 1"));
+        t1 = vehicleTypeDAO.create(new VehicleType("type 1", 2.5));
+        t2 = vehicleTypeDAO.create(new VehicleType("type 2", 5.7));
+        cust1 = customerDAO.create(new Customer(a1, "Email@address1.com", "123", "customer 1", "456", "123456789", CompanyType.TYPE1));
+        fleet1 = fleetDAO.create(new Fleet("name 1", cust1));
+        fleet2 = fleetDAO.create(new Fleet("name 2", cust1));
+        v1 = vehicleDAO.create(new Vehicle("brand 1", "model 1", "AAAAAAAAAAAAAAAAA", "ABC-123", 500, 3000, t1, LocalDate.of(2016, 7, 15), fleet1, null));
+        v2 = vehicleDAO.create(new Vehicle("brand 1", "model 2", "BBBBBBBBBBBBBBBBB", "DEF-123", 1000, 3500, t2, LocalDate.of(2016, 7, 26), fleet2, null));
+        v3 = vehicleDAO.create(new Vehicle("brand 2", "model 2", "CCCCCCCCCCCCCCCCC", "DEF-456", 1500, 4000, t1, LocalDate.of(2016, 9, 26), fleet2, null));
     }
 
     //Gets executed after all tests have been run
@@ -57,6 +63,7 @@ public class ProductionVehicleDAOFiltersTest {
         customerDAO.remove(cust1.getUuid());
         vehicleTypeDAO.remove(t1.getUuid());
         vehicleTypeDAO.remove(t2.getUuid());
+        addressDAO.remove(a1.getUuid());
         daoProvider.close();
     }
 
@@ -144,9 +151,12 @@ public class ProductionVehicleDAOFiltersTest {
 
     @Test
     public void multipleFilters() throws Exception {
-        Vehicle v4 = vehicleDAO.create("brand 1", "model 2", "FAAAAAAAAAAAAAAAA", "ABC-123", 500, 4000, t2, LocalDate.of(2016, 9, 28), fleet2);
-        Vehicle v5 = vehicleDAO.create("brand 2", "model 1", "FBBBBBBBBBBBBBBBB", "DEF-123", 1000, 4500, t1, LocalDate.of(2017, 7, 26), fleet1);
-        Vehicle v6 = vehicleDAO.create("brand 1", "model 2", "FCCCCCCCCCCCCCCCC", "DEF-456", 1500, 5000, t2, LocalDate.of(2017, 9, 26), fleet1);
+        Vehicle v4 = new Vehicle("brand 1", "model 2", "FAAAAAAAAAAAAAAAA", "ABC-123", 500, 4000, t2, LocalDate.of(2016, 9, 28), fleet2,null);
+        Vehicle v5 = new Vehicle("brand 2", "model 1", "FBBBBBBBBBBBBBBBB", "DEF-123", 1000, 4500, t1, LocalDate.of(2017, 7, 26), fleet1,null);
+        Vehicle v6 = new Vehicle("brand 1", "model 2", "FCCCCCCCCCCCCCCCC", "DEF-456", 1500, 5000, t2, LocalDate.of(2017, 9, 26), fleet1,null);
+        v4 = vehicleDAO.create(v4);
+        v5 = vehicleDAO.create(v5);
+        v6 = vehicleDAO.create(v6);
         Collection<Vehicle> c1 = vehicleDAO.listFiltered(vehicleDAO.byType(t1), vehicleDAO.byModel("model 1"));
         Collection<Vehicle> c2 = vehicleDAO.listFiltered(vehicleDAO.byBrand("brand 1"), vehicleDAO.byLicensePlate("DEF-123"));
         Collection<Vehicle> c3 = vehicleDAO.listFiltered(vehicleDAO.atLeastMileage(4000), vehicleDAO.beforeProductionDate(LocalDate.of(2016, 9, 28)));

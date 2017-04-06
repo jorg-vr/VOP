@@ -64,6 +64,22 @@ public class Invoice implements EditableObject, java.io.Serializable {
     public Invoice() {
     }
 
+    public Invoice(Company payer, Company beneficiary, URL url, InvoiceType type, boolean paid, LocalDate startDate, LocalDate endDate) {
+        this.payer = payer;
+        this.beneficiary = beneficiary;
+        this.url = url;
+        this.type = type;
+        this.paid = paid;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
+    public Invoice(UUID uuid, Company payer, Company beneficiary, URL url, InvoiceType type, boolean paid, LocalDate startDate, LocalDate endDate, Collection<Cost> costs) {
+        this(payer, beneficiary, url, type, paid, startDate, endDate);
+        this.uuid = uuid;
+        this.costs = costs;
+    }
+
     @Override
     public EditableObject copy() {
         return null;

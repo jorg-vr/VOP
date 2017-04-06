@@ -12,7 +12,8 @@ import java.util.UUID;
 public class Function implements EditableObject, java.io.Serializable {
     private Company company;
     private Role role;
-    private Account account;
+    private User user;
+    private String name;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private UUID uuid;
@@ -20,17 +21,16 @@ public class Function implements EditableObject, java.io.Serializable {
     public Function() {
     }
 
-    public Function(Company company, Role role, Account account, LocalDateTime startDate, LocalDateTime endDate) {
+    public Function(Company company, Role role, User user, LocalDateTime startDate, LocalDateTime endDate) {
         this.company = company;
         this.role = role;
-        this.account = account;
+        this.user = user;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.uuid = UUID.randomUUID();
     }
 
-    public Function(Company company, Role role, Account account, LocalDateTime startDate, LocalDateTime endDate, UUID uuid) {
-        this(company, role, account, startDate, endDate);
+    public Function(Company company, Role role, User user, LocalDateTime startDate, LocalDateTime endDate, UUID uuid) {
+        this(company, role, user, startDate, endDate);
         this.uuid = uuid;
     }
 
@@ -51,12 +51,20 @@ public class Function implements EditableObject, java.io.Serializable {
         this.role = role;
     }
 
-    public Account getAccount() {
-        return account;
+    public String getName() {
+        return name;
     }
 
-    public void setAccount(Account account) {
-        this.account = account;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public LocalDateTime getStartDate() {

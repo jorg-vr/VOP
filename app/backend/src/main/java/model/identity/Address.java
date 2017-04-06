@@ -1,9 +1,12 @@
 package model.identity;
 
 
+import model.history.EditableObject;
+
+import java.io.Serializable;
 import java.util.UUID;
 
-public class Address implements java.io.Serializable {
+public class Address implements Serializable, EditableObject {
 
     private UUID uuid;
 
@@ -31,6 +34,7 @@ public class Address implements java.io.Serializable {
     public UUID getUuid() {
         return uuid;
     }
+
 
     public void setUuid(UUID uuid) {
         this.uuid = uuid;
@@ -75,6 +79,19 @@ public class Address implements java.io.Serializable {
     public void setCountry(String country) {
         this.country = country;
     }
+
+    @Override
+    public EditableObject copy() {
+        Address address = new Address();
+        address.setUuid(getUuid());
+        address.setCountry(getCountry());
+        address.setPostalCode(getPostalCode());
+        address.setTown(getTown());
+        address.setStreet(getStreet());
+        address.setStreetNumber(getStreetNumber());
+        return address;
+    }
+
 
     @Override
     public boolean equals(Object o) {

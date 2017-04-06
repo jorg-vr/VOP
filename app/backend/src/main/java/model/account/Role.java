@@ -2,9 +2,7 @@ package model.account;
 
 import model.history.EditableObject;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by jorg on 3/2/17.
@@ -12,37 +10,31 @@ import java.util.UUID;
  */
 public class Role implements EditableObject, java.io.Serializable {
     private String name;
-    private Map<Accessible,AccessLevel>  rights;
+    private Map<Resource,Permission>  rights;
     private UUID uuid;
 
     public Role() {
+        rights=new HashMap<>();
     }
 
     public Role(String name) {
         this.name = name;
         rights=new HashMap<>();
-        uuid=UUID.randomUUID();
     }
 
-    private Role(String name, Map<Accessible, AccessLevel> rights, UUID uuid) {
+    private Role(String name, Map<Resource,Permission> rights, UUID uuid) {
         this.name = name;
         this.rights = rights;
         this.uuid = uuid;
     }
 
-    public void setAccess(Accessible ai,AccessLevel al){
-        rights.put(ai,al);
+    public void setAccess(Resource resource, Action action){
+        rights.putIfAbsent(resource,new Permission(resource));
+        rights.get(resource).addAction(action);
     }
 
-    public boolean hasAccess(Accessible ai,AccessLevel al){
-        return rights.containsKey(ai) &&rights.get(ai).equals(al);
-    }
-    public boolean canRead(Accessible ai){
-        return hasAccess(ai,AccessLevel.READ);
-    }
-
-    public boolean canWrite(Accessible ai){
-        return hasAccess(ai,AccessLevel.WRITE);
+    public boolean hasAccess(Resource resource, Action action){
+        return rights.containsKey(resource) &&rights.get(resource).getActions().contains(action);
     }
 
     public String getName() {
@@ -53,11 +45,11 @@ public class Role implements EditableObject, java.io.Serializable {
         this.name = name;
     }
 
-    public Map<Accessible, AccessLevel> getRights() {
+    public Map<Resource,Permission> getRights() {
         return rights;
     }
 
-    public void setRights(Map<Accessible, AccessLevel> rights) {
+    public void setRights(Map<Resource,Permission> rights) {
         this.rights = rights;
     }
 

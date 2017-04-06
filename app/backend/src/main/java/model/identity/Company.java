@@ -16,6 +16,14 @@ public class Company extends Identity implements java.io.Serializable {
     public Company() {
     }
 
+    public Company(Address address, String email, String phoneNumber, String name, String btwNumber, String bankAccountNumber, CompanyType companyType) {
+        super(address, email, phoneNumber);
+        this.name = name;
+        this.btwNumber = btwNumber;
+        this.bankAccountNumber = bankAccountNumber;
+        this.companyType = companyType;
+    }
+
     public Company(UUID id, Address address, String email, String phoneNumber, String name, String btwNumber, String bankAccountNumber, CompanyType companyType) {
         super(id, address, email, phoneNumber);
         this.name = name;
