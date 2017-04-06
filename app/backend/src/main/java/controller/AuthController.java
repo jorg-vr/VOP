@@ -17,9 +17,9 @@ import java.util.UUID;
  */
 public class AuthController implements  AutoCloseable{
     public Function getFunction(AuthenticationToken token, UUID functionId) throws DataAccessException, UnAuthorizedException {
-        Account account= ProductionProvider.getInstance().getAccountDao().get(token.getAcountId());
+        Account account= ProductionProvider.getInstance().getAccountDao().get(token.getAccountId());
         Function function= ProductionProvider.getInstance().getFunctionDAO().get(functionId);
-        if(token.getExpire().isAfter(LocalDateTime.now())&&function.getAccount().equals(account)&&account.validatePassword(token.getHash())){
+        if(function.getAccount().equals(account)){
             return function;
         }else{
             throw new UnAuthorizedException();
@@ -27,27 +27,19 @@ public class AuthController implements  AutoCloseable{
     }
 
     public Collection<Function> getFunctions(AuthenticationToken token) throws DataAccessException, UnAuthorizedException {
-        Account account= ProductionProvider.getInstance().getAccountDao().get(token.getAcountId());
-        if(token.getExpire().isAfter(LocalDateTime.now())&&account.validatePassword(token.getHash())){
-            return account.getFunctions();
-        }else{
-            throw new UnAuthorizedException();
-        }
+        Account account= ProductionProvider.getInstance().getAccountDao().get(token.getAccountId());
+        return account.getFunctions();
     }
 
     public AuthenticationToken getToken(String login,String password)throws DataAccessException, UnAuthorizedException{
         AccountDAO accountDAO=ProductionProvider.getInstance().getAccountDao();
         Account account=accountDAO.listFiltered(accountDAO.bySecurity(login,password)).iterator().next();
-        return new AuthenticationToken(account.getUuid(),account.getHashedPassword());
+        return new AuthenticationToken(account.getUuid());
     }
 
     public AuthenticationToken refreshToken(AuthenticationToken token)throws DataAccessException, UnAuthorizedException{
-        Account account= ProductionProvider.getInstance().getAccountDao().get(token.getAcountId());
-        if(token.getExpire().isAfter(LocalDateTime.now())&&account.validatePassword(token.getHash())){
-            return new AuthenticationToken(account.getUuid(),account.getHashedPassword());
-        }else{
-            throw new UnAuthorizedException();
-        }
+        Account account= ProductionProvider.getInstance().getAccountDao().get(token.getAccountId());
+        return new AuthenticationToken(account.getUuid());
     }
 
     @Override

@@ -1,5 +1,7 @@
 package controller;
 
+import dao.database.ProductionProvider;
+import dao.database.ProductionRoleDAO;
 import dao.interfaces.DAO;
 import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
@@ -16,38 +18,7 @@ import java.util.UUID;
 public class RoleController extends AbstractController<Role> {
 
     public RoleController(Function function) {
-        //TODO !!
-        super(new DAO<Role>() {
-            @Override
-            public void close() throws Exception {
-
-            }
-
-            @Override
-            public Role get(UUID id) throws DataAccessException {
-                return null;
-            }
-
-            @Override
-            public void remove(UUID id) throws DataAccessException {
-
-            }
-
-            @Override
-            public Collection<Role> listFiltered(Filter<Role>... filters) throws DataAccessException {
-                return null;
-            }
-
-            @Override
-            public Role create(Role role) {
-                return null;
-            }
-
-            @Override
-            public Role update(Role role) {
-                return null;
-            }
-        }, Resource.ROLE,function);
+        super(ProductionProvider.getInstance().getRoleDAO(), Resource.ROLE,function);
     }
 
     @Override
