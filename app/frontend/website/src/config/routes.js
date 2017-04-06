@@ -22,12 +22,15 @@ import showVehicle from '../pages/vehicle/show.vue'
 
 import exception from '../pages/exception/exception.vue'
 
+import loginModal from '../assets/general/loginModal.vue'
 export default [
     {
         path: '',
         component: App,
         name: 'home',
         children: [
+            //Login
+            {path: 'login',name: 'login', component: loginModal},
             //User
             {path: 'users', name: 'users', component: indexUser},
             {path: 'users/new', name: 'new_user', component: newUser},
