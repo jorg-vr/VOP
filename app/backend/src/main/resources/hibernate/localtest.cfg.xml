@@ -13,7 +13,7 @@
         <property name="hibernate.connection.password">testdata</property>
         <property name="hibernate.connection.url">jdbc:postgresql://localhost:5430/test</property>
         <property name="connection.pool_size">100</property>
-        <property name="hbm2ddl.auto"><none></none></property>
+        <property name="hbm2ddl.auto">none</property>
         <property name="show_sql">true</property>
 
         <mapping resource="hibernate/address.hbm.xml" />
