@@ -28,18 +28,14 @@ public class ProductionFunctionDAO extends ProductionDAO<Function> implements Fu
         super(session, Function.class);
     }
 
-    // TODO THIS WILL NOT WORK!!!!!!
-
     @Override
     public Filter<Function> byUser(User user) {
-        return () ->
-            predicates.add(criteriaBuilder.equal(root.get("user"), user));
+        return filterEqual("user",user);
     }
 
     @Override
     public Filter<Function> byCompany(Company company) {
-        return () ->
-            predicates.add(criteriaBuilder.equal(root.get("company"), company));
+        return filterEqual("company",company);
     }
 
 }
