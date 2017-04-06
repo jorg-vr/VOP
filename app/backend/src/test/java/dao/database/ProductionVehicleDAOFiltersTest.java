@@ -151,9 +151,12 @@ public class ProductionVehicleDAOFiltersTest {
 
     @Test
     public void multipleFilters() throws Exception {
-        Vehicle v4 = vehicleDAO.create("brand 1", "model 2", "FAAAAAAAAAAAAAAAA", "ABC-123", 500, 4000, t2, LocalDate.of(2016, 9, 28), fleet2);
-        Vehicle v5 = vehicleDAO.create("brand 2", "model 1", "FBBBBBBBBBBBBBBBB", "DEF-123", 1000, 4500, t1, LocalDate.of(2017, 7, 26), fleet1);
-        Vehicle v6 = vehicleDAO.create("brand 1", "model 2", "FCCCCCCCCCCCCCCCC", "DEF-456", 1500, 5000, t2, LocalDate.of(2017, 9, 26), fleet1);
+        Vehicle v4 = new Vehicle("brand 1", "model 2", "FAAAAAAAAAAAAAAAA", "ABC-123", 500, 4000, t2, LocalDate.of(2016, 9, 28), fleet2,null);
+        Vehicle v5 = new Vehicle("brand 2", "model 1", "FBBBBBBBBBBBBBBBB", "DEF-123", 1000, 4500, t1, LocalDate.of(2017, 7, 26), fleet1,null);
+        Vehicle v6 = new Vehicle("brand 1", "model 2", "FCCCCCCCCCCCCCCCC", "DEF-456", 1500, 5000, t2, LocalDate.of(2017, 9, 26), fleet1,null);
+        v4 = vehicleDAO.create(v4);
+        v5 = vehicleDAO.create(v5);
+        v6 = vehicleDAO.create(v6);
         Collection<Vehicle> c1 = vehicleDAO.listFiltered(vehicleDAO.byType(t1), vehicleDAO.byModel("model 1"));
         Collection<Vehicle> c2 = vehicleDAO.listFiltered(vehicleDAO.byBrand("brand 1"), vehicleDAO.byLicensePlate("DEF-123"));
         Collection<Vehicle> c3 = vehicleDAO.listFiltered(vehicleDAO.atLeastMileage(4000), vehicleDAO.beforeProductionDate(LocalDate.of(2016, 9, 28)));

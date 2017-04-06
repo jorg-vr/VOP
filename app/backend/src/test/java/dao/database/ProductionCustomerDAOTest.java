@@ -27,8 +27,6 @@ public class ProductionCustomerDAOTest {
     private static FunctionDAO functionDAO;
     private static CustomerDAO customerDAO;
     private static AddressDAO addressDAO;
-    private static PersonDAO personDAO;
-    private static AccountDAO accountDAO;
     //private static RoleDAO roleDAO;
 
 
@@ -114,17 +112,17 @@ public class ProductionCustomerDAOTest {
         Address adr1 = addressDAO.create(new Address("streettest n1", "59", "town 1", "9999", "country 1"));
         Address adr2 = addressDAO.create(new Address("streettest n2", "60", "town 2", "99999", "country 2"));
         Customer cust1 = customerDAO.create(new Customer(adr1, "Email@address1.com", "911", "customername 1", "btw123", "123456789", CompanyType.TYPE1));
+        cust1.setAddress(adr2);
         Customer cust2 = new Customer(adr2, "Email@address2.com", "912", "customername 2", "btw124", "123456781", CompanyType.TYPE2);
         cust2.setUuid(cust1.getUuid());
         customerDAO.update(cust2);
-        Customer cust3 = customerDAO.get(cust1.getUuid());
+        Customer cust3 = customerDAO.get(cust2.getUuid());
         assertEquals("address field not updated correctly", adr2, cust3.getAddress());
         assertEquals("email field not updated correctly", "Email@address2.com", cust3.getEmail());
         assertEquals("phoneNumber field not updated correctly", "912", cust3.getPhoneNumber());
         assertEquals("name field not updated correctly", "customername 2", cust3.getName());
         assertEquals("btwNumber field not updated correctly", "btw124", cust3.getBtwNumber());
         assertEquals("bankAccountNumber field not updated correctly", "123456781", cust3.getBankAccountNumber());
-        assertEquals("companyType field not updated correctly", CompanyType.TYPE2, cust3.getCompanyType());
 
         customerDAO.remove(cust1.getUuid());
         addressDAO.remove(adr1.getUuid());

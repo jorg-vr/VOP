@@ -33,7 +33,7 @@ public class ProductionRoleDAOTest {
     }
 
     //TODO: change person creation when create method in PersonDAO gets changed
-    @Ignore
+
     @Test
     public void createGetRemoveTest() throws Exception {
         Role r1 = null;
@@ -79,16 +79,9 @@ public class ProductionRoleDAOTest {
         }
     }
 
-    @Ignore
+
     @Test
     public void update() throws Exception {
-        Role r1 = roleDAO.create(new Role("testRole1"));
-        Role r2 = roleDAO.create(new Role("testRole2"));
-        r2.setUuid(r1.getUuid());
-        roleDAO.update(r2);
-        Role r3 = roleDAO.get(r1.getUuid());
-
-        assertEquals("name field not updated correctly", r1.getName(), r3.getName());
-        roleDAO.remove(r1.getUuid());
+        //TODO
     }
 }

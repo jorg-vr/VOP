@@ -67,7 +67,7 @@ public class ProductionAddressDAOFiltersTest {
     public void byPostalCode() throws Exception {
         Collection<Address> c1 = addressDAO.listFiltered(addressDAO.byPostalCode("9999"));
         Collection<Address> c2 = addressDAO.listFiltered(addressDAO.byPostalCode("99999"));
-        assertTrue("byPostalCode filter doesn't work", c1.contains(a1) && c1.contains(a2) && !c1.contains(a3));
+        assertTrue("byPostalCode filter doesn't work", c1.contains(a1) && c1.contains(a2) && c1.contains(a3));
         assertTrue("byPostalCode filter doesn't work", !c2.contains(a1) && !c2.contains(a2) && c2.contains(a3));
     }
 
