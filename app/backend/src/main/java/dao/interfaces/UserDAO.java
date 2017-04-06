@@ -3,6 +3,8 @@ package dao.interfaces;
 import model.account.User;
 import model.fleet.Vehicle;
 
+import java.util.UUID;
+
 /**
  * Created by Billie Devolder on 5/04/2017.
  */
@@ -14,7 +16,7 @@ public interface UserDAO extends DAO<User> {
      * @param firstName The name to use in the filter
      * @return A useable Filter for listFiltered
      */
-    Filter<Vehicle> byFirstName(String firstName);
+    Filter<User> byFirstName(String firstName);
 
     /**
      * Returns a Filter to use in ListFiltered in this class, which returns all Users having the given name.
@@ -22,7 +24,7 @@ public interface UserDAO extends DAO<User> {
      * @param lastName The name to use in the filter
      * @return A useable Filter for listFiltered
      */
-    Filter<Vehicle> byLastName(String lastName);
+    Filter<User> byLastName(String lastName);
 
     /**
      * Returns a Filter to use in ListFiltered in this class, which returns all Users having the given email.
@@ -30,7 +32,7 @@ public interface UserDAO extends DAO<User> {
      * @param email The email to use in the filter
      * @return A useable Filter for listFiltered
      */
-    Filter<Vehicle> byEmail(String email);
+    Filter<User> byEmail(String email);
 
     /**
      * Returns a user, when the right credentials are given

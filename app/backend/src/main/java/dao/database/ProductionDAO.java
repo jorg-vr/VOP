@@ -32,7 +32,7 @@ public abstract class ProductionDAO<T extends EditableObject> implements DAO<T> 
     private CriteriaBuilder criteriaBuilder;
 
 
-    public ProductionDAO(Session session, Class<T> cl){
+    public ProductionDAO(Session session, Class<T> cl) {
         this.session = session;
         this.cl = cl;
     }
@@ -40,13 +40,13 @@ public abstract class ProductionDAO<T extends EditableObject> implements DAO<T> 
 
     @Override
     public T create(T t) throws DataAccessException {
-        HibernateUtil.create(session,t);
+        HibernateUtil.create(session, t);
         return t;
     }
 
     @Override
     public T update(T t) throws DataAccessException {
-        HibernateUtil.update(session,t);
+        HibernateUtil.update(session, t);
         return t;
     }
 
@@ -104,12 +104,16 @@ public abstract class ProductionDAO<T extends EditableObject> implements DAO<T> 
         return criteriaBuilder;
     }
 
-    protected Filter<T> filterEqual(String fieldName, Object object){
+    protected Session getSession() {
+        return session;
+    }
+
+    protected Filter<T> filterEqual(String fieldName, Object object) {
         return () ->
                 getPredicates().add(getCriteriaBuilder().equal(getRoot().get(fieldName), object));
     }
 
-    protected Filter<T> filterContains(String fieldName, String string){
+    protected Filter<T> filterContains(String fieldName, String string) {
         return () ->
                 getPredicates().add(getCriteriaBuilder().like(getRoot().get(fieldName), "%" + string + "%"));
 
