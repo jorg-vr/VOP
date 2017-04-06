@@ -5,7 +5,9 @@ import controller.AuthController;
 import controller.ControllerFactory;
 import controller.exceptions.UnAuthorizedException;
 import dao.interfaces.DataAccessException;
-import model.account.Function;
+import dao.interfaces.FunctionDAO;
+import main.BackendApplication;
+import model.account.*;
 import model.history.EditableObject;
 import org.springframework.web.bind.annotation.*;
 import spring.exceptions.InvalidInputException;
@@ -15,12 +17,12 @@ import spring.model.RESTAbstractModel;
 import spring.model.AuthenticationToken;
 import spring.model.RESTModelFactory;
 
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by jorg on 3/30/17.
  */
-public class RESTAbstractController<R extends RESTAbstractModel<M>,M extends EditableObject> {
+public abstract class RESTAbstractController<R extends RESTAbstractModel<M>,M extends EditableObject> extends RESTSimpleController {
     private ControllerFactory<M> controllerFactory;
 
     private RESTModelFactory<R,M> factory;
@@ -28,17 +30,6 @@ public class RESTAbstractController<R extends RESTAbstractModel<M>,M extends Edi
     public RESTAbstractController(ControllerFactory<M> controllerFactory,RESTModelFactory<R,M> factory) {
         this.controllerFactory = controllerFactory;
         this.factory=factory;
-    }
-
-
-    public Function verifyToken(String token,String functiunId){
-        try {
-            return new AuthController().getFunction(new AuthenticationToken(token),UUIDUtil.toUUID(functiunId));
-        } catch (DataAccessException e) {
-            throw new InvalidInputException(e);
-        } catch (UnAuthorizedException e) {
-            throw new NotAuthorizedException();
-        }
     }
 
     public ControllerFactory<M> getControllerFactory() {

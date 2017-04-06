@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
  * For more information about what the HTTP requests do, see the API specification
  */
 @RestController
-@RequestMapping("/roles")
+@RequestMapping("/auth/roles")
 public class RESTRoleController extends RESTAbstractController<RESTRole, Role>{
 
 
