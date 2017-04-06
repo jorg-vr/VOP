@@ -43,7 +43,15 @@
     }
 </script>
 <style>
-    #language-picker {
-        margin-left: 10px;
+     #language-picker {
+        background: rgba(0, 0, 0, 0);
+        border-color: rgba(0, 0, 0, 0);
+        box-shadow: none;
+        margin-top: 7.5px;
+        color:white;
+        padding-right:0;
+    }
+    option{
+        color:black;
     }
 </style>
