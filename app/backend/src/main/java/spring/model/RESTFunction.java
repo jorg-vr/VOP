@@ -21,11 +21,22 @@ public class RESTFunction extends RESTAbstractModel<Function> {
     private String role;
     private String user;
 
+    public RESTFunction(){
+
+    }
+
     public RESTFunction(Function function){
         super(function.getUuid(), PATH_FUNCTIONS);
         this.company = UUIDUtil.UUIDToNumberString(function.getCompany().getUuid());
         this.role = UUIDUtil.UUIDToNumberString(function.getRole().getUuid());
         this.user = UUIDUtil.UUIDToNumberString(function.getUser().getUuid());
+    }
+
+    public RESTFunction(String id, String company, String role, String user, String updatedAt, String lastUpdatedBy, String url){
+        setId(id);
+        this.company = company;
+        this.role = role;
+        this.user = user;
     }
 
     @Override
