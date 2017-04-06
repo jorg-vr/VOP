@@ -3,10 +3,8 @@ package dao.database;
 import dao.interfaces.AddressDAO;
 import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
-import model.account.Account;
 import model.identity.Address;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import javax.persistence.criteria.CriteriaBuilder;

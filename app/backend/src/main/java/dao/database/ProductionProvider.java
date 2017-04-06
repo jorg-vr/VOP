@@ -63,8 +63,8 @@ public class ProductionProvider implements DAOProvider {
     }
 
     @Override
-    public synchronized AccountDAO getAccountDao() {
-        return new ProductionAccountDAO(sessionFactory.openSession());
+    public UserDAO getUserDAO() {
+        return new ProductionUserDAO(sessionFactory.openSession());
     }
 
     @Override
@@ -80,11 +80,6 @@ public class ProductionProvider implements DAOProvider {
     @Override
     public synchronized FunctionDAO getFunctionDAO() {
         return new ProductionFunctionDAO(sessionFactory.openSession());
-    }
-
-    @Override
-    public synchronized PersonDAO getPersonDAO() {
-        return new ProductionPersonDAO(sessionFactory.openSession());
     }
 
     @Override
@@ -113,42 +108,4 @@ public class ProductionProvider implements DAOProvider {
         sessionFactory.close();
         StandardServiceRegistryBuilder.destroy(this.registry);
     }
-
-    public static void main(String[] args) throws DataAccessException {
-        ProductionProvider.initializeProvider("localtest");
-        DAOProvider provider = ProductionProvider.getInstance();
-
-        try (RoleDAO roleDAO = provider.getRoleDAO();
-             AccountDAO accountDAO = provider.getAccountDao();
-             FunctionDAO functionDAO = provider.getFunctionDAO()) {
-
-            Account account = new Account();
-            account.setLogin("admin");
-            account.setHashedPassword("123");
-
-            Role role = new Role();
-            role.setName("adminrole");
-            role.setAccess(Resource.ACCOUNT, Action.CREATE_ALL);
-            role.setAccess(Resource.ACCOUNT, Action.READ_ALL);
-            role.setAccess(Resource.ACCOUNT, Action.REMOVE_ALL);
-            role.setAccess(Resource.ACCOUNT, Action.UPDATE_ALL);
-
-            Function function = new Function();
-            function.setAccount(account);
-            function.setRole(role);
-
-
-            roleDAO.create(role);
-            accountDAO.create(account);
-            functionDAO.create(function);
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-        provider.close();
-    }
-
 }

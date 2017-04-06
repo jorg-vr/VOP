@@ -1,33 +1,10 @@
 package spring.controller;
 
-import controller.AccountController;
-import controller.CustomerController;
-import controller.FunctionController;
-import controller.PersonController;
-import dao.database.ProductionProvider;
-import dao.interfaces.DataAccessException;
-import model.account.Account;
-import model.account.Function;
-import model.identity.Address;
-import model.identity.Customer;
-import model.identity.Person;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Ignore;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import spring.model.RESTRole;
 
-import java.time.LocalDateTime;
-
-import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * Created by jorg on 3/15/17.
@@ -36,6 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Ignore
 @RunWith(SpringJUnit4ClassRunner.class)
 public class RESTRoleControllerTest {
+    /**
     private MockMvc mvc= MockMvcBuilders.standaloneSetup(new RESTRoleController()).build();
 
     private static Address address;
@@ -148,4 +126,5 @@ public class RESTRoleControllerTest {
                 .andReturn();
 
     }
+    */
 }
