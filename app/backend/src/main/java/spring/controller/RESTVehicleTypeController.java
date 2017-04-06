@@ -21,7 +21,7 @@ import java.util.List;
  * may be enlarged when admin gets rights to edit vehicletypes
  */
 @RestController
-@RequestMapping("/vehicleTypes")
+@RequestMapping("/vehicles/types")
 public class RESTVehicleTypeController extends RESTAbstractController<RESTVehicleType,VehicleType> {
 
     public RESTVehicleTypeController() {
