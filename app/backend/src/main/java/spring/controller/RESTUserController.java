@@ -1,6 +1,7 @@
 package spring.controller;
 
 import controller.AuthController;
+import controller.ControllerFactory;
 import controller.UserController;
 import controller.exceptions.UnAuthorizedException;
 import dao.interfaces.DataAccessException;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import spring.exceptions.InvalidInputException;
 import spring.exceptions.NotAuthorizedException;
 import spring.model.AuthenticationToken;
+import spring.model.RESTModelFactory;
 import spring.model.RESTSchema;
 import spring.model.RESTUser;
 
@@ -33,18 +35,11 @@ import java.util.*;
  */
 @RestController
 @RequestMapping("/users")
-public class RESTUserController {
+public class RESTUserController extends RESTAbstractController<RESTUser, User> {
 
- public Function verifyToken(String token,String functionId){
-        try {
-            return new AuthController().getFunction(new AuthenticationToken(token),UUIDUtil.toUUID(functionId));
-        } catch (DataAccessException e) {
-            throw new InvalidInputException(e);
-        } catch (UnAuthorizedException e) {
-            throw new NotAuthorizedException();
-        }
+    public RESTUserController() {
+        super(UserController::new, RESTUser::new);
     }
-
 
     /**
      * @return a collection of all the users in the system.
