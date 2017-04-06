@@ -29,6 +29,10 @@ Vue.config.lang = 'nl';
 Vue.http.options.root = Vue.config.env.API_KEY
 Vue.http.headers.common['Accept'] = 'application/json'
 
+//Temporary automatic authentication: TODO
+Vue.http.headers.common['AuthToken'] = 'randomAuthToken'
+Vue.http.headers.common['Function'] = '12345'
+
 Object.keys(locales).forEach(function (lang) {
     Vue.locale(lang, locales[lang])
 })

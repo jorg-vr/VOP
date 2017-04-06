@@ -101,7 +101,7 @@ export default {
 
         createVehicle(context, {vehicle}){
             return new Promise(resolve => {
-                RequestHandler.postObjectRequest(locations.VEHICLE, vehicle).then(newVehicle => {
+                RequestHandler.postObjectRequestGetBody(locations.VEHICLE, vehicle).then(newVehicle => {
                     context.commit(types.CREATE_VEHICLE, {newVehicle})
                     resolve(newVehicle)
                 })

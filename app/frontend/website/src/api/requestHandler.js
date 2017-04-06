@@ -9,7 +9,14 @@ export default {
                 resolve(response.body.data)
             })
         })
+    },
 
+    getObjectsRequestGetBody(location){
+        return new Promise(resolve => {
+            Vue.http.get(location).then(response => {
+                resolve(response.body)
+            })
+        })
     },
 
     getObjectRequest(location, id){
@@ -33,13 +40,23 @@ export default {
         return this.getObjectsRequest(location + query)
     },
 
-    postObjectRequest(location, object){
+    //This version returns the body instead of the full response
+    postObjectRequestGetBody(location, object){
         return new Promise(resolve => {
-            Vue.http.post(location, object).then(response => {
+            this.postObjectRequest(location, object).then(response => {
                 resolve(response.body)
             })
         })
     },
+
+    postObjectRequest(location, object){
+        return new Promise(resolve => {
+            Vue.http.post(location, object).then(response => {
+                resolve(response)
+            })
+        })
+    },
+
 
     putObjectRequest(location, object){
         return new Promise(resolve => {

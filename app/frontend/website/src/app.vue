@@ -4,13 +4,13 @@
         <div class="container">
             <router-view></router-view>
         </div>
-</div>
+    </div>
 </template>
 
 <style>
-body { 
-        padding-top: 65px; 
-        }
+    body {
+        padding-top: 65px;
+    }
 </style>
 <script>
     //TEMPORARY ADD AUTHENTICATION HERE (TODO)
@@ -20,6 +20,12 @@ body {
     export default {
         components: {
             NavBar
+        },
+        methods: {
+            ...mapActions([
+                'authenticate',
+                'fetchAccount'
+            ])
         }
     }
 </script>
