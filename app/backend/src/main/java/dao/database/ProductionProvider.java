@@ -2,7 +2,6 @@ package dao.database;
 
 import dao.interfaces.*;
 import model.account.*;
-import model.fleet.VehicleType;
 import model.identity.Address;
 import model.identity.Customer;
 import org.hibernate.SessionFactory;
@@ -58,9 +57,6 @@ public class ProductionProvider implements DAOProvider {
      * @return the DAOProvider
      */
     public synchronized static DAOProvider getInstance() {
-        if (provider == null) {
-            initializeProvider("test");
-        }
         return provider;
     }
 
