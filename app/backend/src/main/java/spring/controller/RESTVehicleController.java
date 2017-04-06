@@ -38,7 +38,7 @@ import java.util.*;
  *  For more information about what the HTTP requests do, see the API specification
  */
 @RestController
-@RequestMapping("/vehicles")
+@RequestMapping(value = {"/vehicles", "/companies/{companyId}/fleets/{fleetId}/vehicles"})
 public class RESTVehicleController extends RESTAbstractController<RESTVehicle,Vehicle> {
 
     private static DateTimeFormatter yearFormat = DateTimeFormatter.ofPattern("yyyyMMdd").withLocale(Locale.forLanguageTag("NL"));
@@ -52,6 +52,7 @@ public class RESTVehicleController extends RESTAbstractController<RESTVehicle,Ve
      */
     @RequestMapping(method = RequestMethod.GET)
     public RESTSchema<RESTVehicle> get(HttpServletRequest request,
+                                       @PathVariable Optional<String> fleetId,
                                        @RequestParam(required = false) String licensPlate,
                                        @RequestParam(required = false) String vin,
                                        @RequestParam(required = false) String leasingCompany,
@@ -62,6 +63,9 @@ public class RESTVehicleController extends RESTAbstractController<RESTVehicle,Ve
                                        @RequestParam(required = false) Integer limit,
                                        @RequestHeader(value="AuthToken") String token,
                                        @RequestHeader(value="Function") String function) {
+        if (fleetId.isPresent()) {
+            fleet = fleetId.get();
+        }
 
         try(VehicleController controller=new VehicleController(verifyToken(token,function))) {
             VehicleDAO vehicleDAO = (VehicleDAO) controller.getDao();

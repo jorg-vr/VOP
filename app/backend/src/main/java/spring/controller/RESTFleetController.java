@@ -12,6 +12,7 @@ import spring.model.RESTSchema;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 
 /**
  * This controller is responsible for handling the HTTP requests of the URL /fleets.
@@ -29,7 +30,7 @@ import java.util.Collection;
  * For more information about what the HTTP requests do, see the API specification
  */
 @RestController
-@RequestMapping("/fleets")
+@RequestMapping(value = {"/fleets", "/companies/{companyId}/fleets"})
 public class RESTFleetController extends RESTAbstractController<RESTFleet,Fleet>{
 
     public RESTFleetController() {
@@ -39,11 +40,15 @@ public class RESTFleetController extends RESTAbstractController<RESTFleet,Fleet>
 
     @RequestMapping(method = RequestMethod.GET)
     public RESTSchema<RESTFleet> get(HttpServletRequest request,
+                                     @PathVariable Optional<String> companyId,
                                      @RequestParam(required = false) String company,
                                      @RequestParam(required = false) Integer page,
                                      @RequestParam(required = false) Integer limit,
                                      @RequestHeader(value="AuthToken") String token,
                                      @RequestHeader(value="Function") String function) {
+        if (companyId.isPresent()) {
+            company = companyId.get();
+        }
 
         try(FleetController controller= new FleetController(verifyToken(token,function))) {
 
