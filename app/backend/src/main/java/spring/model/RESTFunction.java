@@ -15,7 +15,7 @@ import spring.exceptions.NotAuthorizedException;
  */
 public class RESTFunction extends RESTAbstractModel<Function> {
 
-    private final static String PATH_FUNCTIONS = "/users/{userId}/functions";
+    private final static String PATH_FUNCTIONS = "/functions";
 
     private String company;
     private String role;

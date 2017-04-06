@@ -1,6 +1,7 @@
 package spring.controller;
 
 import controller.FunctionController;
+import controller.UserController;
 import controller.exceptions.UnAuthorizedException;
 import dao.interfaces.DataAccessException;
 import model.account.Function;
@@ -29,7 +30,7 @@ public class RESTFunctionController extends RESTAbstractController<RESTFunction,
 
     @RequestMapping(method = RequestMethod.GET)
     public RESTSchema<RESTFunction> get(HttpServletRequest request,
-                                        @PathVariable Optional<String> userId,
+                                        @PathVariable String userId,
                                         @RequestParam(required = false) String user,
                                         @RequestParam(required = false) String company,
                                         @RequestParam(required = false) String role,
@@ -39,20 +40,18 @@ public class RESTFunctionController extends RESTAbstractController<RESTFunction,
                                         @RequestHeader(value="AuthToken") String token,
                                         @RequestHeader(value="Function") String authorityFunction){
 
-        if(userId.isPresent()){
-            user = userId.get();
-        }
         Collection<RESTFunction> restFunctions = new ArrayList<>();
-        try(FunctionController controller = new FunctionController(verifyToken(token, authorityFunction))){
-            for(Function function: controller.getAll()){
+        try(UserController userController = new UserController(verifyToken(token, authorityFunction))){
+            Collection<Function> functions = userController.get(UUIDUtil.toUUID(user)).getFunctions();
+            for(Function function: functions) {
                 restFunctions.add(new RESTFunction(function));
             }
-        } catch (DataAccessException e) {
-            throw new RuntimeException(e);
         } catch (UnAuthorizedException e) {
             throw new NotAuthorizedException();
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
         }
 
-        return new RESTSchema<RESTFunction>(restFunctions, page, limit, request);
+        return new RESTSchema<>(restFunctions, page, limit, request);
     }
 }
