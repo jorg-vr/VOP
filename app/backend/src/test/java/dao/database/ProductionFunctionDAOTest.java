@@ -9,7 +9,6 @@ import model.identity.CompanyType;
 import model.identity.Customer;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
@@ -46,8 +45,7 @@ public class ProductionFunctionDAOTest {
         daoProvider.close();
     }
 
-    //TODO: change person creation when create method in PersonDAO gets changed
-    @Ignore
+
     @Test
     public void createGetRemoveTest() throws Exception {
         Customer cust1 = null;
@@ -119,9 +117,6 @@ public class ProductionFunctionDAOTest {
             //Nothing because the test passed in this case
         }
         //make sure everything is removed from the database again
-        if (f1 != null) {
-            functionDAO.remove(f1.getUuid());
-        }
         if (r1 != null) {
             roleDAO.remove(r1.getUuid());
         }
@@ -136,7 +131,6 @@ public class ProductionFunctionDAOTest {
         }
     }
 
-    @Ignore
     @Test
     public void update() throws Exception {
         Address adr1 = addressDAO.create(new Address("streettest n1", "59", "town 1", "9999", "country 1"));
