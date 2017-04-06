@@ -1,19 +1,12 @@
 package dao.database;
 
 import dao.interfaces.*;
-import model.account.Account;
-import model.account.Function;
-import model.account.Role;
 import model.identity.Address;
 import model.identity.CompanyType;
 import model.identity.Customer;
-import model.identity.Person;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
-
-import java.time.LocalDateTime;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
