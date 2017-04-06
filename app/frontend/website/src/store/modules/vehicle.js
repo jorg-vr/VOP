@@ -129,7 +129,7 @@ export default {
 
         fetchVehicleTypes(context){
             return new Promise(resolve => {
-                RequestHandler.getObjectsRequest(locations.VEHICLE_TYPES).then(vehicleTypes => {
+                RequestHandler.getObjectsRequest(locations.VEHICLE + locations.VEHICLE_TYPES).then(vehicleTypes => {
                     context.commit(types.RECEIVE_VEHICLE_TYPES, {vehicleTypes})
                     resolve(vehicleTypes)
                 })
@@ -138,7 +138,7 @@ export default {
 
         fetchVehicleType(context, {id}){
             return new Promise(resolve => {
-                RequestHandler.getObjectRequest(locations.VEHICLE_TYPES, id).then(vehicleType => {
+                RequestHandler.getObjectRequest(locations.VEHICLE + locations.VEHICLE_TYPES, id).then(vehicleType => {
                     context.commit(types.RECEIVE_VEHICLE_TYPE, {vehicleType})
                     resolve(vehicleType)
                 })

@@ -39,4 +39,5 @@ public interface DAO<T> extends AutoCloseable {
     Collection<T> listFiltered(Filter<T>... filters) throws DataAccessException;
 
 
+
 }

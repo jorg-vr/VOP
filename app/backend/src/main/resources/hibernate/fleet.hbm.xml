@@ -4,7 +4,7 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    <class name="model.fleet.Fleet" table="FLEET">
+    <class name="model.fleet.Fleet" table="fleets">
         <meta attribute="class-description">
             This class contains the fleet detail.
         </meta>
@@ -13,7 +13,7 @@
         </id>
         <property name="name" type="string" column="name"/>
         <many-to-one name="owner" column="owner_id"  class="model.identity.Customer" not-null="true" lazy="proxy" fetch="select" />
-        <bag name="vehicles" access="field" table="VEHICLE" cascade="all"
+        <bag name="vehicles" access="field" table="vehicles" cascade="all"
              lazy="true" fetch="select">
             <key column="fleet_id" not-null="false"/>
             <one-to-many class="model.fleet.Vehicle" />

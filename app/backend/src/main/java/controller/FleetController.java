@@ -2,6 +2,8 @@ package controller;
 
 import dao.interfaces.*;
 import main.BackendApplication;
+import model.account.Function;
+import model.account.Resource;
 import model.fleet.Fleet;
 import model.identity.Customer;
 
@@ -12,24 +14,12 @@ import java.util.UUID;
  */
 public class FleetController extends AbstractController<Fleet> {
 
-    private CustomerDAO customerDAO;
-    private DAOProvider provider;
-    private FleetDAO fleetDAO;
-
-    public FleetController() {
-        super(BackendApplication.getProvider().getFleetDAO());
-        provider = BackendApplication.getProvider();
-        customerDAO = provider.getCustomerDAO();
-        fleetDAO = provider.getFleetDAO();
+    public FleetController(Function function) {
+        super(BackendApplication.getProvider().getFleetDAO(), Resource.FLEET,function);
     }
 
-    public Fleet create(UUID owner, String name) throws DataAccessException {
-        Customer customer = customerDAO.get(owner);
-        return fleetDAO.create(name, customer);
-    }
-
-    public Fleet update(UUID fleetId, UUID owner, String name) throws DataAccessException {
-        Customer customer = customerDAO.get(owner);
-        return fleetDAO.update(fleetId, name, customer);
+    @Override
+    public boolean isOwner(Fleet fleet, Function function) {
+        return fleet.getOwner().equals(function.getCompany());
     }
 }
