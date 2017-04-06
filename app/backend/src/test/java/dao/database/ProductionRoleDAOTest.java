@@ -24,7 +24,7 @@ public class ProductionRoleDAOTest {
     //Setup before any of the tests are started
     @BeforeClass
     public static void initProvider() throws Exception {
-        ProductionProvider.initializeProvider("unit test");
+        ProductionProvider.initializeProvider("unittest");
         daoProvider = ProductionProvider.getInstance();
         roleDAO = daoProvider.getRoleDAO();
     }
