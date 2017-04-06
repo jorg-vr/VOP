@@ -4,7 +4,7 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    <class name="model.identity.Identity" table="IDENTITY">
+    <class name="model.identity.Identity" table="identities">
         <meta attribute="class-description">
             This class contains the account detail.
         </meta>
@@ -15,14 +15,14 @@
         <many-to-one name="address" column="address_id" class="model.identity.Address" cascade="all" lazy="proxy" fetch="select"/>
         <property name="email" column="email" type="string"/>
         <property name="phoneNumber" column="phonenumber" type="string"/>
-        <joined-subclass name="model.identity.Company" table="COMPANY">
+        <joined-subclass name="model.identity.Company" table="companies">
             <key column="identity_id"/>
             <property name="name" column="name" type="string"/>
             <property name="btwNumber" column="btw_number" type="string"/>
             <property name="bankAccountNumber" column="bank_account_number" type="string"/>
-            <joined-subclass name="model.identity.Customer" table="CUSTOMER">
+            <joined-subclass name="model.identity.Customer" table="customers">
                 <key column="identity_id"/>
-                <bag name="fleets" access="field" table="FLEET"
+                <bag name="fleets" access="field" table="fleets"
                      lazy="true" fetch="select" inverse="true">
                     <key column="owner_id" not-null="true"/>
                     <one-to-many class="model.fleet.Fleet" />

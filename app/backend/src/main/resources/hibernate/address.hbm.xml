@@ -4,7 +4,7 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    <class name="model.identity.Address" table="ADDRESS">
+    <class name="model.identity.Address" table="addresses">
         <meta attribute="class-description">
             This class contains the address detail.
         </meta>

@@ -4,7 +4,7 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    <class name="model.account.User" table="USER">
+    <class name="model.account.User" table="users">
         <meta attribute="class-description">
             This class contains the user detail.
         </meta>
@@ -15,10 +15,10 @@
         <property name="firstName" column="first_name" type="string"/>
         <property name="lastName" column="last_name" type="string"/>
         <property name="password" column="password" type="string"/>
-        <bag name="functions" access="field" table="FUNCTION"
+        <bag name="functions" access="field" table="functions"
              lazy="true" fetch="select" inverse="true">
             <key column="user_id" not-null="true"/>
-            <one-to-many class="model.account.Function  " />
+            <one-to-many class="model.account.Function" />
         </bag>
     </class>
 

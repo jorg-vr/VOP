@@ -4,7 +4,7 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    <class name="model.fleet.VehicleType" table="VEHICLETYPE">
+    <class name="model.fleet.VehicleType" table="vehicletypes">
         <meta attribute="class-description">
             This class contains the vehicletype details.
         </meta>
