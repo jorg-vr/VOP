@@ -2,11 +2,14 @@ package dao.database;
 
 import dao.interfaces.DAOProvider;
 import dao.interfaces.RoleDAO;
-import model.account.Role;
+import model.account.*;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -21,7 +24,7 @@ public class ProductionRoleDAOTest {
     //Setup before any of the tests are started
     @BeforeClass
     public static void initProvider() throws Exception {
-        ProductionProvider.initializeProvider("unittest");
+        ProductionProvider.initializeProvider("localtest");
         daoProvider = ProductionProvider.getInstance();
         roleDAO = daoProvider.getRoleDAO();
     }
@@ -82,6 +85,35 @@ public class ProductionRoleDAOTest {
 
     @Test
     public void update() throws Exception {
-        //TODO
+        Role r1 = roleDAO.create(new Role("test1"));
+        r1.setAccess(Resource.INSURANCE, Action.READ_ALL);
+        r1.setAccess(Resource.INSURANCE, Action.UPDATE_ALL);
+        r1.setAccess(Resource.INSURANCE, Action.REMOVE_ALL);
+        r1.setAccess(Resource.INSURANCE, Action.CREATE_ALL);
+        roleDAO.update(r1);
+        Role r11 = roleDAO.get(r1.getUuid());
+        assertEquals(r1.getRights(), r11.getRights());
+        r1.setAccess(Resource.BILLING, Action.READ_ALL);
+        r1.setAccess(Resource.BILLING, Action.UPDATE_ALL);
+        r1.setAccess(Resource.BILLING, Action.REMOVE_ALL);
+        r1.setAccess(Resource.BILLING, Action.CREATE_ALL);
+        roleDAO.update(r1);
+        Role r12 = roleDAO.get(r1.getUuid());
+        assertTrue(r12.getRights().keySet().contains(Resource.BILLING));
+        assertTrue(r12.getRights().keySet().contains(Resource.INSURANCE));
+
+        Map<Resource, Permission> permissionMap = new HashMap<>();
+        Permission permission = new Permission();
+        permission.setResource(Resource.COMPANY);
+        permission.addAction(Action.READ_ALL);
+        permission.addAction(Action.CREATE_ALL);
+        permissionMap.put(Resource.COMPANY,permission);
+
+        r1.setRights(permissionMap);
+        roleDAO.update(r1);
+        Role r13 = roleDAO.get(r1.getUuid());
+        assertTrue(!r13.getRights().containsKey(Resource.BILLING));
+
+        roleDAO.remove(r1.getUuid());
     }
 }
