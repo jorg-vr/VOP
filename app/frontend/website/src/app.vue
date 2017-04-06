@@ -18,12 +18,6 @@
 
     import NavBar from './assets/general/navBar.vue'
     export default {
-        created(){
-            this.authenticate({login: 'admin', password: 123}).then(response => {
-                this.fetchAccount()
-            })
-
-        },
         components: {
             NavBar
         },
