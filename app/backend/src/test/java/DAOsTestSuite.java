@@ -12,9 +12,10 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
         ProductionAddressDAOFiltersTest.class,
         ProductionAddressDAOTest.class,
+        ProductionCustomerDAOFiltersTest.class,
         ProductionCustomerDAOTest.class,
         ProductionFleetDAOTest.class,
-        ProductionFunctionDAOTest.class,
+        ProductionRoleDAOTest.class,
         ProductionVehicleDAOFiltersTest.class,
         ProductionVehicleDAOTest.class,
         ProductionVehicleTypeDAOFiltersTest.class,
