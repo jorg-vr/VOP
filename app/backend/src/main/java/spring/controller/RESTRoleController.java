@@ -1,15 +1,11 @@
 package spring.controller;
 
-import controller.AccountController;
-import controller.CustomerController;
-import controller.FunctionController;
+
 import controller.RoleController;
 import controller.exceptions.UnAuthorizedException;
 import dao.interfaces.DataAccessException;
-import model.account.Account;
 import model.account.Function;
 import model.account.Role;
-import model.identity.Company;
 import org.springframework.web.bind.annotation.*;
 import spring.exceptions.InvalidInputException;
 import spring.exceptions.NotAuthorizedException;
@@ -17,7 +13,8 @@ import spring.model.RESTRole;
 import spring.model.RESTSchema;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.stream.Collectors;
 
 /**
@@ -51,7 +48,6 @@ public class RESTRoleController extends RESTAbstractController<RESTRole, Role>{
                                     @RequestParam(required = false) Integer limit,
                                     @RequestHeader(value="AuthToken") String token,
                                     @RequestHeader(value="Function") String fu) {
-
         Collection<RESTRole> restRoles = new ArrayList<>();
         Function function=verifyToken(token,fu);
 

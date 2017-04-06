@@ -1,12 +1,5 @@
 package dao.interfaces;
 
-import model.account.Account;
-import model.identity.Company;
-import model.identity.InsuranceCompany;
-import model.identity.Person;
-import model.insurance.Insurance;
-import model.fleet.Vehicle;
-
 /**
  * DAO provider to get DAO's
  * Created by sam on 3/7/17.
@@ -14,10 +7,10 @@ import model.fleet.Vehicle;
 public interface DAOProvider extends AutoCloseable {
 
     /**
-     * Gets an AccountDAO
-     * @return an AccountDAO
+     * Gets a UserDAO
+     * @return a UserDAO
      */
-    AccountDAO getAccountDao();
+    UserDAO getUserDAO();
 
     /**
      * Gets an CustomerDAO
@@ -36,12 +29,6 @@ public interface DAOProvider extends AutoCloseable {
      * @return a FunctionDAO
      */
     FunctionDAO getFunctionDAO();
-
-    /**
-     * Gets a PersonDAO
-     * @return a PersonDAO
-     */
-    PersonDAO getPersonDAO();
 
     /**
      * Gets a VehicleDAO

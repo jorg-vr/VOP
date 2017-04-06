@@ -17,14 +17,20 @@ public class Identity implements EditableObject, java.io.Serializable {
     public Identity() {
     }
 
-    public Identity(UUID id, Address address, String email, String phoneNumber){
+    public Identity(Address address, String email, String phoneNumber) {
+        this.address = address;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+    }
+
+    public Identity(UUID id, Address address, String email, String phoneNumber) {
         this.uuid = id;
         this.address = address;
         this.email = email;
         this.phoneNumber = phoneNumber;
     }
 
-    public UUID getUuid(){
+    public UUID getUuid() {
         return uuid;
     }
 
@@ -58,6 +64,7 @@ public class Identity implements EditableObject, java.io.Serializable {
 
     /**
      * Checks if 2 objects are equal to the same identity, based on the UUID.
+     *
      * @param o Identity to compare to
      * @return true if 2 objects have the same UUID
      */
@@ -66,7 +73,7 @@ public class Identity implements EditableObject, java.io.Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        return uuid.equals(((Identity)o).uuid);
+        return uuid.equals(((Identity) o).uuid);
 
     }
 

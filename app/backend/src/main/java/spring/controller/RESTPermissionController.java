@@ -66,7 +66,7 @@ public class RESTPermissionController extends RESTSimpleController {
         try (RoleController roleController = new RoleController(verifyToken(token, function))) {
             try {
                 Role role = roleController.get(uuid);
-                role.setRights(translatePermissions(permissions));
+                translatePermissions(role, permissions);
                 roleController.update(role);
             } catch (DataAccessException e) {
                 throw new InvalidInputException("Role does not exist");
@@ -76,32 +76,18 @@ public class RESTPermissionController extends RESTSimpleController {
         }
     }
 
-    private Map<Resource, Permission> translatePermissions(List<Long> idList) {
-        Map<Resource, Permission> rights = new HashMap<>();
-        Permission permission = new Permission(Resource.ACCOUNT);
-        permission.addAction(Action.CREATE_ALL);
-        rights.put(Resource.ACCOUNT, permission);
-        /*
+    private void translatePermissions(Role role, List<Long> idList) {
         for (Long id : idList) {
             if (!allPermissions.containsKey(id)) {
                 throw new InvalidInputException("There is no permission with id" + id);
             }
 
+            //TODO clear permissions first
             RESTPermission restPermission = allPermissions.get(id);
             Resource resource = Resource.valueOf(restPermission.getResource());
             Action action = Action.valueOf(restPermission.getAction());
 
-            rights.putIfAbsent(resource, new Permission(resource));
-
-            Permission permission = rights.get(resource);
-            permission.addAction(action);
+            role.setAccess(resource, action);
         }
-
-        for (Permission permission : rights.values()) {
-            for (Action action : permission.getActions()) {
-                System.out.println(permission.getResource() + ": " + action);
-            }
-        }*/
-        return rights;
     }
 }

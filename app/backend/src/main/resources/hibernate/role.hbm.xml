@@ -8,7 +8,7 @@
         <param name="enumClassName">model.account.Action</param>
     </typedef>
 
-    <class name="model.account.Role" table="role">
+    <class name="model.account.Role" table="roles">
         <meta attribute="class-description">
             This class contains the vehicle detail.
         </meta>
@@ -29,7 +29,7 @@
         </map>
     </class>
 
-    <class name="model.account.Permission" table="permission">
+    <class name="model.account.Permission" table="permissions">
         <id name="uuid" type="uuid-binary" column="id">
             <generator class="uuid2"/>
         </id>

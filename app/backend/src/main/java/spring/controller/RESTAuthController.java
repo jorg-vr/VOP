@@ -32,6 +32,7 @@ public class RESTAuthController {
         }
     }
 
+    /*
     @RequestMapping(method = RequestMethod.GET)
     public Collection<RESTRole> getAll(@RequestHeader(value="AuthToken") String token){
         try(AuthController authController =new AuthController()) {
@@ -46,7 +47,7 @@ public class RESTAuthController {
             throw new NotAuthorizedException();
         }
     }
-
+    */
     @RequestMapping(method = RequestMethod.PUT)
     public String put(@RequestHeader(value="AuthToken") String token){
         try(AuthController authController =new AuthController()) {

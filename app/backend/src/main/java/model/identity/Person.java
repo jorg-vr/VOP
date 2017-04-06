@@ -12,7 +12,12 @@ public class Person extends Identity implements java.io.Serializable {
     public Person() {
     }
 
-    // TODO person doesnt have address and phoneNumber according to API
+    public Person(Address address, String email, String phoneNumber, String firstName, String lastName) {
+        super(address, email, phoneNumber);
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
     public Person(UUID id, Address address, String email, String phoneNumber, String firstName, String lastName) {
         super(id, address, email, phoneNumber);
         this.firstName = firstName;

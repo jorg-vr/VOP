@@ -19,13 +19,24 @@ public class Fleet implements EditableObject, java.io.Serializable {
     public Fleet() {
     }
 
-    public Fleet(UUID uuid, Collection<Vehicle> vehicles) {
-        this.uuid= uuid;
+    public Fleet(String name, Customer owner) {
+        this.name = name;
+        this.owner = owner;
+        this.vehicles = new ArrayList<Vehicle>();
+    }
 
+    public Fleet(UUID uuid, String name, Customer owner, Collection<Vehicle> vehicles) {
+        this.uuid = uuid;
+        this.name = name;
+        this.owner = owner;
         this.vehicles = vehicles;
     }
 
+    public Fleet(UUID uuid, Collection<Vehicle> vehicles) {
+        this.uuid = uuid;
 
+        this.vehicles = vehicles;
+    }
 
 
     /**
@@ -54,7 +65,7 @@ public class Fleet implements EditableObject, java.io.Serializable {
      * @return true if the Vehicle was removed
      */
     public boolean removeVehicle(Vehicle vehicle) {
-        if(vehicles == null){
+        if (vehicles == null) {
             return false;
         }
         if (vehicle == null || !vehicles.contains(vehicle)) {
@@ -67,7 +78,9 @@ public class Fleet implements EditableObject, java.io.Serializable {
      * @return The amount of vehicles in this fleet
      */
     public int size() {
-        if(vehicles==null){return 0;}
+        if (vehicles == null) {
+            return 0;
+        }
         return vehicles.size();
     }
 

@@ -1,6 +1,8 @@
 package spring.model;
 
 
+import model.account.Role;
+
 import model.account.Function;
 import model.account.Role;
 
