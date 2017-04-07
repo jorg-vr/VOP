@@ -12,7 +12,8 @@ export default {
     },
     getters: {
         hasActiveAccount(state){
-            return state.account != null
+            return true //TEMPORARY ALLOW EVERYTHING
+            //return state.account != null
         },
         getAccountInfo(state){
             return {login: state.login, id:state.id}
@@ -45,20 +46,28 @@ export default {
         //Credentials has to contain a key 'login' and 'password'
         //TODO handle failure
         authenticate(context, credentials){
-            RequestHandler.postObjectRequest(locations.AUTHENTICATION, credentials).then(token => {
-                context.commit(types.SET_AUTH_TOKEN, {authToken: token})
+            return new Promise(resolve => {
+                RequestHandler.postObjectRequest(locations.AUTHENTICATION, credentials).then(response => {
+                    response.bodyText.promise.then(token => {
+                        context.commit(types.SET_AUTH_TOKEN, {authToken: token})
+                        resolve(token)
+                    })
+                })
             })
         },
 
         //Precondition: user has an active authToken
         fetchAccount(context){
-            RequestHandler.getObjectsRequest(locations.AUTHENTICATION).then(account => {
-                context.commit(types.SET_ACTIVE_ACCOUNT, {account: account})
+            return new Promise(resolve => {
+                RequestHandler.getObjectsRequestGetBody(locations.AUTHENTICATION).then(account => {
+                    context.commit(types.SET_ACTIVE_ACCOUNT, {account: account[0]})
+                    resolve(account[0])
+                })
             })
         },
-
         logout(context){
             context.commit(types.RESET_STATE)
+
         }
 
     }

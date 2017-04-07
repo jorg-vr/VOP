@@ -135,9 +135,15 @@ public class ProductionVehicleDAOTest {
         //add new vehicle to the database
         Vehicle v1 = vehicleDao.create(new Vehicle("brand 2", "model A", "AZ0UZABCUKZ12345L", "ABR 569", 36000, 4900, t1, LocalDate.of(2015, 6, 17), fleet1, null));
         //try to update the vehicle's brand field in the database
-        Vehicle v2 = new Vehicle("brand 3", "model B", "AZ0UZABCUKZ12345A", "ABR 600", 37000, 5900, t2, LocalDate.of(2016, 7, 18), fleet1, null);
-        v2.setUuid(v1.getUuid());
-        vehicleDao.update(v2);
+        v1.setBrand("brand 3");
+        v1.setModel("model B");
+        v1.setChassisNumber("AZ0UZABCUKZ12345A");
+        v1.setLicensePlate("ABR 600");
+        v1.setValue(37000);
+        v1.setMileage(5900);
+        v1.setType(t2);
+        v1.setProductionDate(LocalDate.of(2016, 7, 18));
+        vehicleDao.update(v1);
         Vehicle v3 = vehicleDao.get(v1.getUuid());
         assertEquals("brand field not updated correctly", "brand 3", v3.getBrand());
         assertEquals("model field not updated correctly", "model B", v3.getModel());

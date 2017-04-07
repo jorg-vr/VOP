@@ -2,7 +2,6 @@
     Navigation bar of the website
 -->
 <template>
-
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container-fluid">
@@ -70,6 +69,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import languageSwitcher from './languagePicker.vue'
+
     export default {
         components: {
             languageSwitcher
@@ -81,7 +81,8 @@ import languageSwitcher from './languagePicker.vue'
         },
         methods:{
             ...mapActions([
-                'logout'
+                'logout',
+                'loginInfo'
             ]),
             confirmLogout:function(){
                 this.logout()
@@ -91,14 +92,39 @@ import languageSwitcher from './languagePicker.vue'
     }
 </script>
 <style>
-.navbar-right {
-    margin-right: 0px;
-}
-.navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus {
-    color: white;
-}
-.navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:hover, .navbar-default .navbar-nav>.open>a:focus {
-    background-color: #2c3e50;
-    color: #18bc9c;
-}
+    .navbar-right {
+        margin-right: 0px;
+    }
+    .navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus {
+        color: white;
+    }
+    .navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:hover, .navbar-default .navbar-nav>.open>a:focus {
+        background-color: #2c3e50;
+        color: #18bc9c;
+    }
+
+    #submenu li{
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        text-indent: 0px;
+        color: #ecf0f1;
+    }
+
+    #usericon{
+        margin-right: 5px;
+        font-size: 20px;
+    }
+    .dropdown{
+        text-indent: 10px;
+    }
+
+    #logout{
+        background:#1AB394;
+        color:white;
+        width: 100px;
+        margin: 0;
+        margin-top: -50px;
+        font-weight: 600;
+    }
 </style>

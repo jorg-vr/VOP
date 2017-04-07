@@ -158,6 +158,7 @@ export default
             password: 'Wachtwoord',
             logout: 'Afmelden',
             login: 'Aanmelden'
+
         }
     }
 }

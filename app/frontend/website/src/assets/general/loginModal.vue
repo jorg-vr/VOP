@@ -47,7 +47,6 @@
         },
         computed: {
             ...mapGetters([
-                'hasActiveAccount'
             ])
         },
         methods: {
@@ -107,6 +106,13 @@
 	}
 
 	.modal-mask {
+		position: fixed;
+		z-index: 9998;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: #304052;
 		transition: opacity .3s ease;
 		text-align: center;
 	}
@@ -128,6 +134,7 @@
         color: white;
         background-color: #304052;
         border:none;
+        /*background: rgba(0, 0, 0, 0.01); OLD STYLE */
     }
 
 
