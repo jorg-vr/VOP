@@ -9,6 +9,7 @@ import spring.exceptions.InvalidInputException;
 import spring.exceptions.NotAuthorizedException;
 import spring.model.AuthenticationToken;
 import spring.model.RESTAuth;
+import spring.model.RESTFunction;
 import spring.model.RESTRole;
 
 import java.util.ArrayList;
@@ -22,9 +23,9 @@ import java.util.Collection;
 public class RESTAuthController {
 
     @RequestMapping(method = RequestMethod.POST)
-    public String post(@RequestBody RESTAuth restAuth){
-        try(AuthController authController =new AuthController()) {
-            return authController.getToken(restAuth.getLogin(),restAuth.getPassword()).toString();
+    public String post(@RequestBody RESTAuth restAuth) {
+        try (AuthController authController = new AuthController()) {
+            return authController.getToken(restAuth.getLogin(), restAuth.getPassword()).toString();
         } catch (DataAccessException e) {
             throw new InvalidInputException(e);
         } catch (UnAuthorizedException e) {
@@ -33,13 +34,13 @@ public class RESTAuthController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public Collection<RESTRole> getAll(@RequestHeader(value="AuthToken") String token){
-        try(AuthController authController =new AuthController()) {
-            Collection<RESTRole> restRoles=new ArrayList<>();
-            for(Function function:authController.getFunctions(new AuthenticationToken(token))){
-                restRoles.add(new RESTRole(function));
+    public Collection<RESTFunction> getAll(@RequestHeader(value = "AuthToken") String token) {
+        try (AuthController authController = new AuthController()) {
+            Collection<RESTFunction> restFunctions = new ArrayList<>();
+            for (Function function : authController.getFunctions(new AuthenticationToken(token))) {
+                restFunctions.add(new RESTFunction(function));
             }
-            return restRoles;
+            return restFunctions;
         } catch (DataAccessException e) {
             throw new InvalidInputException(e);
         } catch (UnAuthorizedException e) {
@@ -48,8 +49,8 @@ public class RESTAuthController {
     }
 
     @RequestMapping(method = RequestMethod.PUT)
-    public String put(@RequestHeader(value="AuthToken") String token){
-        try(AuthController authController =new AuthController()) {
+    public String put(@RequestHeader(value = "AuthToken") String token) {
+        try (AuthController authController = new AuthController()) {
             return authController.refreshToken(new AuthenticationToken(token)).toString();
         } catch (DataAccessException e) {
             throw new InvalidInputException(e);
