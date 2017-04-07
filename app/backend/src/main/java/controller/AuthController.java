@@ -22,7 +22,6 @@ public class AuthController implements AutoCloseable {
         if(function.getUser().equals(account)){
             return function;
         } else {
-            System.out.println("Else !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             throw new UnAuthorizedException();
         }
     }
@@ -34,11 +33,6 @@ public class AuthController implements AutoCloseable {
 
     public AuthenticationToken getToken(String login,String password)throws DataAccessException, UnAuthorizedException{
         UserDAO userDAO=ProductionProvider.getInstance().getUserDAO();
-        System.out.println("login:"+login);
-        System.out.println("password:"+password);
-        for(User user:userDAO.listFiltered()){
-            System.out.println(user.getEmail());
-        }
         User account= userDAO.getUserByLogin(login,password);
         return new AuthenticationToken(account.getUuid());
     }
