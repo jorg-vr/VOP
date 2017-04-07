@@ -30,23 +30,24 @@
 </template>
 
 <script>
-	import { mapActions,mapGetters } from 'vuex'
+    import { mapActions, mapMutations, mapGetters } from 'vuex'
     import buttonLogin from '../../assets/buttons/buttonLogin.vue'
-	export default {
-		data() {
+    export default {
+        data() {
             return {
                 credentials:{
-                	login:'',
-                	password:''
+                    login:'',
+                    password:''
                 },
                 showError: false
             }
-        },	
+        },
         components: {
             buttonLogin
         },
         computed: {
             ...mapGetters([
+                'hasActiveAccount', 'nextRoute'
             ])
         },
         methods: {
@@ -54,10 +55,15 @@
                 'authenticate','fetchAccount'
 
             ]),
+            ...mapMutations({
+                setActiveAccount: 'SET_ACTIVE_ACCOUNT'
+            }),
             confirmLogin:function(){
                 // Get webtoken and account information
-        		this.authenticate(this.credentials).then(() => {
-                   this.fetchAccount()
+                this.setActiveAccount({account : {id: '123', name: 'test'}}) //TEMPORARY
+                this.authenticate(this.credentials).then(() => {
+                    this.fetchAccount()
+
                 })
                 // check if login was succesfull
                 if(!(this.hasActiveAccount)){
@@ -66,15 +72,20 @@
                 }
                 else{
                     // Succes, return to home 
-                    this.$router.push({name: 'home'})
-                }   
+                    if(this.nextRoute.path !== null){
+                        this.$router.push({name: this.nextRoute.name, params: this.nextRoute.params})
+                    }
+                    else {
+                        this.$router.push({name: 'home'})
+                    }
+                }
 
                 // fetch account info into store
                 //this.fetchAccount()
 
-        	}
+            }
         }
-	}
+    }
 </script>
 
 <style>
@@ -117,59 +128,59 @@
 		text-align: center;
 	}
 	.modal-wrapper {
-        margin-top: 8%;
-        vertical-align: middle;
+		margin-top: 8%;
+		vertical-align: middle;
 
-    }
-    
-    .modal-container {
-        width: 40%;
-        margin: auto;
-        background-color: #304052;
-        padding:25px;
-    }
+	}
 
-    .modal-header{
-        padding: 15px;
-        color: white;
-        background-color: #304052;
-        border:none;
-        /*background: rgba(0, 0, 0, 0.01); OLD STYLE */
-    }
+	.modal-container {
+		width: 40%;
+		margin: auto;
+		background-color: #304052;
+		padding:25px;
+	}
 
-
-    .modal-body {
-        color: #304052;
-        font-size: 14px;
-        font-weight: 600;
-    }
-    .modal-footer{
-        border:none
-    }
+	.modal-header{
+		padding: 15px;
+		color: white;
+		background-color: #304052;
+		border:none;
+		/*background: rgba(0, 0, 0, 0.01); OLD STYLE */
+	}
 
 
-    .modal-footer button{
-        background:#1AB394;
-        color:white;
-        width: 100px;
-        margin: 0px 10px 0px 10px;
-        font-weight: 600;
-    }
+	.modal-body {
+		color: #304052;
+		font-size: 14px;
+		font-weight: 600;
+	}
+	.modal-footer{
+		border:none
+	}
 
-    .modal-footer button:hover{
-            background:#009D7E;
-            color:white;
-    }
 
-    .form-group input{
-        border:none;
-        width: 100%;
-        height: 40px;
-        margin-bottom: 10px;
-    }
+	.modal-footer button{
+		background:#1AB394;
+		color:white;
+		width: 100px;
+		margin: 0px 10px 0px 10px;
+		font-weight: 600;
+	}
 
-     .form-group input:focus{
-        border:none;
-    }
+	.modal-footer button:hover{
+		background:#009D7E;
+		color:white;
+	}
+
+	.form-group input{
+		border:none;
+		width: 100%;
+		height: 40px;
+		margin-bottom: 10px;
+	}
+
+	.form-group input:focus{
+		border:none;
+	}
 
 </style>

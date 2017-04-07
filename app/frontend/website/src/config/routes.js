@@ -55,7 +55,7 @@ export default [
             {path: 'vehicles/:id(\\d+)/edit', name: 'edit_vehicle', component: editVehicle, props: true}
         ],
     },
-    {path: '/login', name: login, component: login},
+    {path: '/login', name: loginModal, component: login},
     {path: '*', component: exception, props: {statusCode: 404}}
 ];
 

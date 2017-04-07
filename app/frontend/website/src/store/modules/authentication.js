@@ -12,8 +12,7 @@ export default {
     },
     getters: {
         hasActiveAccount(state){
-            return true //TEMPORARY ALLOW EVERYTHING
-            //return state.account != null
+            return state.account != null
         },
         getAccountInfo(state){
             return {login: state.login, id:state.id}
@@ -30,7 +29,7 @@ export default {
             Vue.http.headers.common['Function'] = account.id
             // set values for navbar data binding
             state.login = account.login
-            statel.id = account.id
+            state.id = account.id
         },
         [types.RESET_STATE](state){
             // remove webtoken and current authenticated account
