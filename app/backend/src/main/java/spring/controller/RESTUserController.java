@@ -52,7 +52,7 @@ public class RESTUserController extends RESTAbstractController<RESTUser, User> {
                                     String lastName,
                                     Integer page,
                                     Integer limit,
-                                    @RequestHeader(value="AuthToken") String token,
+                                    @RequestHeader(value="Authorization") String token,
                                     @RequestHeader(value="Function") String function) {
         Collection<RESTUser> restUsers = new ArrayList<>();
         try (UserController userController = new UserController(verifyToken(token, function))) {

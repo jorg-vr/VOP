@@ -4,22 +4,25 @@
         <div class="container">
             <router-view></router-view>
         </div>
-</div>
+    </div>
 </template>
 
 <style>
-body { 
-        padding-top: 65px; 
-        }
+    body {
+        padding-top: 65px;
+    }
 </style>
 <script>
-    //TEMPORARY ADD AUTHENTICATION HERE (TODO)
-    import {mapActions} from 'vuex'
-
     import NavBar from './assets/general/navBar.vue'
+
     export default {
         components: {
             NavBar
         }
     }
 </script>
+<style>
+    body {
+        padding-top: 65px;
+    }
+</style>

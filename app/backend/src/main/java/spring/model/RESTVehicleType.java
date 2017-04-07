@@ -8,14 +8,14 @@ import spring.controller.UUIDUtil;
  * Created by jorg on 3/14/17.
  */
 public class RESTVehicleType extends RESTAbstractModel<VehicleType> {
-    private static final String PATH_VEHICLETYPES = "/vehicletypes";
+    private static final String PATH_VEHICLE_TYPES = "/vehicle/types";
     private String name;
 
     public RESTVehicleType() {
     }
 
     public RESTVehicleType(VehicleType vehicleType){
-        super(vehicleType.getUuid(), PATH_VEHICLETYPES);
+        super(vehicleType.getUuid(), PATH_VEHICLE_TYPES);
         setName(vehicleType.getType());
     }
 

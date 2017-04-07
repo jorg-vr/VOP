@@ -68,6 +68,16 @@ export default
             e502: 'Internal Server Error',
             return: 'Home',
             contact: 'Contact'
+        },
+        login:{
+            header: 'Sign in to  ',
+            text: 'Enter your username and password to continue.',
+            error: 'Your username or password is incorrect.',
+            button: 'Sign in',
+            username: 'Username',
+            password: 'Password',
+            logout: 'Sign off',
+            login: 'Sign in'
         }
     },
     nl : {
@@ -138,6 +148,17 @@ export default
             e502: 'Interne server fout',
             return: 'Home',
             contact: 'Contact'
+        },
+        login:{
+            header: 'Log in bij ',
+            text: 'Vul uw gebruikersnaam en wachtwoord in.',
+            error: 'Uw gebruikersnaam of wachtwoord is niet geldig.',
+            button: 'Log in',
+            username: 'Gebruikersnaam',
+            password: 'Wachtwoord',
+            logout: 'Afmelden',
+            login: 'Aanmelden'
+
         }
     }
 }
