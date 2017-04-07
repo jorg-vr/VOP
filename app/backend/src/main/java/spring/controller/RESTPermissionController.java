@@ -14,29 +14,41 @@ import spring.model.RESTSchema;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
+import java.util.stream.Collectors;
 
+/**
+ * Requests that are implemented in this class:
+ *  1) GET /auth/permissions
+ *  2) GET /auth/roles/{id}/permissions
+ *  3) PUT /auth/roles/{id}/permissions
+ */
 @RestController
 public class RESTPermissionController extends RESTSimpleController {
 
     @RequestMapping(value = "/auth/permissions", method = RequestMethod.GET)
     public RESTSchema<RESTPermission> getAllPermissions(HttpServletRequest request,
                                                         Integer page, Integer limit,
+                                                        String resource, String action,
                                                         @RequestHeader(value = "AuthToken") String token,
                                                         @RequestHeader(value = "Function") String function) {
-        return new RESTSchema<>(RESTPermission.getAllRESTPermissions().values(), page, limit, request);
+        Collection<RESTPermission> allPermissions = RESTPermission.getAllRESTPermissions().values();
+        Collection<RESTPermission> filtered = filter(allPermissions, resource, action);
+        return new RESTSchema<>(filtered, page, limit, request);
     }
 
     @RequestMapping(value = "/auth/roles/{id}/permissions", method = RequestMethod.GET)
     public RESTSchema<RESTPermission> get(@PathVariable String id,
                                           HttpServletRequest request,
                                           Integer page, Integer limit,
+                                          String resource, String action,
                                           @RequestHeader(value = "AuthToken") String token,
                                           @RequestHeader(value = "Function") String function) {
         UUID uuid = UUIDUtil.toUUID(id);
         try (RoleController roleController = new RoleController(verifyToken(token, function))) {
             Role role = roleController.get(uuid);
             Collection<RESTPermission> restPermissions = RESTPermission.translate(role.getRights().values());
-            return new RESTSchema<>(restPermissions, page, limit, request);
+            Collection<RESTPermission> filtered = filter(restPermissions, resource, action);
+            return new RESTSchema<>(filtered, page, limit, request);
         } catch (DataAccessException e) {
             throw new InvalidInputException("Role does not exist");
         } catch (UnAuthorizedException e) {
@@ -61,6 +73,21 @@ public class RESTPermissionController extends RESTSimpleController {
                 throw new NotAuthorizedException();
             }
         }
+    }
+
+    /**
+     *
+     * @param permissions collection of permissions that should be filtered. This method does NOT alter this collection in any way
+     * @param resource null if should not be filtered on resource. The filtering is case-insensitive contains
+     * @param action null if should not be filtered on action. The filtering is case-insensitive contains
+     * @return a new collection with all the RESTPermissions of permissions that pass the filters
+     */
+    public Collection<RESTPermission> filter(Collection<RESTPermission> permissions, String resource, String action) {
+        return permissions
+                .stream()
+                .filter(p -> resource == null || p.getResource().toLowerCase().contains(resource.toLowerCase()))
+                .filter(a -> action == null || a.getAction().toLowerCase().contains(action.toLowerCase()))
+                .collect(Collectors.toList());
     }
 
     /**
