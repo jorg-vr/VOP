@@ -47,6 +47,15 @@
     }
 </script>
 <style>
+     #language-picker {
+        background: rgba(0, 0, 0, 0);
+        border-color: rgba(0, 0, 0, 0);
+        box-shadow: none;
+        margin-top: 7.5px;
+        color:white;
+        padding-right:0;
+    }
+/* OLD STYLE
     #language-picker {
         margin-left: 5px;
         width:103px;
@@ -59,11 +68,11 @@
         box-shadow: none;
         color: #ecf0f1;
     }
+*/
     .lang-sm{
         margin-top: 5px;
     }
-
-    option{
+ option{
         color:black;
     }
 </style>

@@ -72,12 +72,13 @@ export default
         login:{
             header: 'Sign in to  ',
             text: 'Enter your username and password to continue.',
-            error: 'Your username or password was incorrect.',
+            error: 'Your username or password is incorrect.',
             button: 'Sign in',
-            username: 'username',
-            password: 'password',
-            logout: 'Sign off'
-        },
+            username: 'Username',
+            password: 'Password',
+            logout: 'Sign off',
+            login: 'Sign in'
+        }
     },
     nl : {
         vehicle: {
@@ -154,8 +155,10 @@ export default
             error: 'Uw gebruikersnaam of wachtwoord is niet geldig.',
             button: 'Log in',
             username: 'Gebruikersnaam',
-            password: 'wachtwoord',
-            logout: 'Log uit'
+            password: 'Wachtwoord',
+            logout: 'Afmelden',
+            login: 'Aanmelden'
+
         }
     }
 }

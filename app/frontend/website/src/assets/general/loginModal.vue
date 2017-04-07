@@ -8,19 +8,18 @@
 				</div>
 				<div class="modal-body">
 					<form id="loginform">
-						<p id="error" v-show="showError"> sdfsfsd {{$t("login.error") | capitalize }}  </p>
+						<p id="error" v-show="showError"> {{$t("login.error") | capitalize }}  </p>
 						<div class="input-group" id="username">
 							<span class="input-group-addon"><i aria-hidden="true" class="fa fa-user"></i></span>
-							<input id="email" type="text" class="form-control" name="email" placeholder="Gebruikersnaam"  v-model="loginInfo
-							.username">
+							<input id="email" type="text" class="form-control" name="email"  v-bind:placeholder="$t('login.username')" v-model="credentials
+							.login">
 						</div>
 						<div class="input-group">
 							<span class="input-group-addon"><i aria-hidden="true" class="fa fa-lock"></i></span>
-							<input id="password" type="password" class="form-control" name="password" placeholder="Wachtwoord"  v-model="loginInfo.password">
+							<input id="password" type="password" class="form-control" name="password" v-bind:placeholder="$t('login.password')"  v-model="credentials.password">
 						</div>
 						<br>
-						<!-- TODO SUBMIT on enter -->
-						<button type="button" id="login-button" @click="confirmLogin()">{{$t("login.button") | capitalize }} </button>
+						<button-login id="login-button" @click="confirmLogin()"> {{$t("login.button") | capitalize }} </button-login>
 					</form>
 				</div>
 			</div>
@@ -31,34 +30,62 @@
 </template>
 
 <script>
-	import { mapActions,mapGetters } from 'vuex'
-	export default {
-		data() {
+    import { mapActions, mapMutations, mapGetters } from 'vuex'
+    import buttonLogin from '../../assets/buttons/buttonLogin.vue'
+    export default {
+        data() {
             return {
-                loginInfo:{
-                	username:'',
-                	password:''
-                }
+                credentials:{
+                    login:'',
+                    password:''
+                },
+                showError: false
             }
-        },	
+        },
+        components: {
+            buttonLogin
+        },
         computed: {
             ...mapGetters([
-                'showError'
+                'hasActiveAccount', 'nextRoute'
             ])
         },
         methods: {
             ...mapActions([
-                'registerLogin',
+                'authenticate','fetchAccount'
 
             ]),
+            ...mapMutations({
+                setActiveAccount: 'SET_ACTIVE_ACCOUNT'
+            }),
             confirmLogin:function(){
-        		console.log('Logged in as '+this.loginInfo.username)
-        		
-        		this.registerLogin(this.loginInfo)
-                this.$emit('confirmLogin')
-        	}
+                // Get webtoken and account information
+                this.setActiveAccount({account : {id: '123', name: 'test'}}) //TEMPORARY
+                this.authenticate(this.credentials).then(() => {
+                    this.fetchAccount()
+
+                })
+                // check if login was succesfull
+                if(!(this.hasActiveAccount)){
+                    // Failed
+                    this.showError=true
+                }
+                else{
+                    // Succes, return to home 
+                    if(this.nextRoute.path !== null){
+                        this.$router.push({name: this.nextRoute.name, params: this.nextRoute.params})
+                    }
+                    else {
+                        this.$router.push({name: 'home'})
+                    }
+                }
+
+                // fetch account info into store
+                //this.fetchAccount()
+
+            }
         }
-	}
+    }
 </script>
 
 <style>
@@ -101,59 +128,59 @@
 		text-align: center;
 	}
 	.modal-wrapper {
-        margin-top: 12%;
-        vertical-align: middle;
+		margin-top: 8%;
+		vertical-align: middle;
 
-    }
-    
-    .modal-container {
-        width: 35%;
-        margin: auto;
-        background: rgba(0, 0, 0, 0.1);
-        padding:25px;
-    }
+	}
 
-    .modal-header{
-        padding: 15px;
-        color: white;
-        background-color: #304052;
-        border:none;
-        background: rgba(0, 0, 0, 0.01);
-    }
+	.modal-container {
+		width: 40%;
+		margin: auto;
+		background-color: #304052;
+		padding:25px;
+	}
 
-
-    .modal-body {
-        color: #304052;
-        font-size: 14px;
-        font-weight: 600;
-    }
-    .modal-footer{
-        border:none
-    }
+	.modal-header{
+		padding: 15px;
+		color: white;
+		background-color: #304052;
+		border:none;
+		/*background: rgba(0, 0, 0, 0.01); OLD STYLE */
+	}
 
 
-    .modal-footer button{
-        background:#1AB394;
-        color:white;
-        width: 100px;
-        margin: 0px 10px 0px 10px;
-        font-weight: 600;
-    }
+	.modal-body {
+		color: #304052;
+		font-size: 14px;
+		font-weight: 600;
+	}
+	.modal-footer{
+		border:none
+	}
 
-    .modal-footer button:hover{
-            background:#009D7E;
-            color:white;
-    }
 
-    .form-group input{
-        border:none;
-        width: 100%;
-        height: 40px;
-        margin-bottom: 10px;
-    }
+	.modal-footer button{
+		background:#1AB394;
+		color:white;
+		width: 100px;
+		margin: 0px 10px 0px 10px;
+		font-weight: 600;
+	}
 
-     .form-group input:focus{
-        border:none;
-    }
+	.modal-footer button:hover{
+		background:#009D7E;
+		color:white;
+	}
+
+	.form-group input{
+		border:none;
+		width: 100%;
+		height: 40px;
+		margin-bottom: 10px;
+	}
+
+	.form-group input:focus{
+		border:none;
+	}
 
 </style>

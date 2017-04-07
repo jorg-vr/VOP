@@ -45,7 +45,6 @@ const router = new VueRouter({
 
 
 router.beforeEach((to, from, next) => {
-    console.log()
     if(to.path !== '/login' && !store.getters.hasActiveAccount){
         store.commit('setNextRoute' , {route: to})
         next({path: '/login'});

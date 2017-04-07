@@ -18,6 +18,8 @@
             <!-- Navbar with toggable links -->
             <div class="collapse navbar-collapse" id="navbar-collapse-1">
                 <ul class="nav navbar-nav">
+                     <!-- conditional group rendering for navbar links-->
+                    <template v-if="hasActiveAccount">
                     <li>
                         <router-link :to="{name: 'fleets'}">{{$t("fleet.fleets") | capitalize}}</router-link>
                     </li>
@@ -30,32 +32,43 @@
                     <li>
                         <router-link :to="{name: 'vehicles'}">{{$t("vehicle.vehicles") | capitalize}}</router-link>
                     </li>
+                    </template>
                 </ul><!-- /.navbar-nav -->
 
                 <ul class="nav navbar-nav navbar-right">
+                    <li v-if="hasActiveAccount == false">
+                        <router-link :to="{name: 'login'}"> {{$t("login.login") | capitalize }}  </router-link>
+                    </li>
                     <li>
-                        <p class="navbar-text">Admin</p>
+                        <language-switcher></language-switcher>
+                    </li>
+                    <!-- condition group rendering for navbar login info-->
+                    <template v-if="hasActiveAccount">
+                    <li>
+                        <p class="navbar-text"> {{getAccountInfo.id}}</p>
                     </li>
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" ariahaspopup="true" aria-expanded="false">Username <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" ariahaspopup="true" aria-expanded="false">
+                        {{getAccountInfo.login}}<span class="caret"></span></a>
+                        <ul class="dropdown-menu">  
+                            <li role="separator" class="divider"></li>
                             <li>
                                 <a href="#">View account</a>
                             </li>
-                            <li role="separator" class="divider"></li>
                             <li>
-                                <a href="#">Log out</a>
+                                <a @click='confirmLogout()'> {{$t("login.logout") | capitalize }} </a>
                             </li>
                         </ul>
                     </li>
+                    </template>
                 </ul><!-- ./navbar-right -->
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
     </nav><!-- /.navbar -->
 </template>
 <script>
+import { mapGetters, mapActions } from 'vuex'
 import languageSwitcher from './languagePicker.vue'
-import {mapGetters} from 'vuex'
 
     export default {
         components: {
@@ -63,10 +76,19 @@ import {mapGetters} from 'vuex'
         },
         computed: {
             ...mapGetters([
-                'loginInfo'
+                'hasActiveAccount','getAccountInfo'
             ])
         },
-
+        methods:{
+            ...mapActions([
+                'logout',
+                'loginInfo'
+            ]),
+            confirmLogout:function(){
+                this.logout()
+                this.$router.push({name: 'login'})
+            }
+        }
     }
 </script>
 <style>
