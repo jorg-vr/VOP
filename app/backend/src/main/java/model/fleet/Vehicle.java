@@ -37,7 +37,20 @@ public class Vehicle implements EditableObject, java.io.Serializable {
 
     }
 
-    public Vehicle(UUID uuid, String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int value, int mileage, VehicleType type,Fleet fleet) {
+    public Vehicle(String brand, String model, String chassisNumber, String licensePlate, int value, int mileage, VehicleType type, LocalDate productionDate, Fleet fleet, LeasingCompany leasingCompany) {
+        this.brand = brand;
+        this.model = model;
+        this.productionDate = productionDate;
+        this.chassisNumber = chassisNumber;
+        this.licensePlate = licensePlate;
+        this.value = value;
+        this.mileage = mileage;
+        this.type = type;
+        this.leasingCompany = leasingCompany;
+        this.fleet = fleet;
+    }
+
+    public Vehicle(UUID uuid, String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int value, int mileage, VehicleType type, Fleet fleet) {
         this.uuid = uuid;
         this.brand = brand;
         this.model = model;
@@ -47,11 +60,11 @@ public class Vehicle implements EditableObject, java.io.Serializable {
         this.value = value;
         this.mileage = mileage;
         this.type = type;
-        this.fleet=fleet;
+        this.fleet = fleet;
     }
 
-    public Vehicle(UUID uuid, String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int value, int mileage, VehicleType type,Fleet fleet, LeasingCompany leasingCompany) {
-        this(uuid,brand,model,licensePlate,productionDate,chassisNumber,value,mileage,type,fleet);
+    public Vehicle(UUID uuid, String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int value, int mileage, VehicleType type, Fleet fleet, LeasingCompany leasingCompany) {
+        this(uuid, brand, model, licensePlate, productionDate, chassisNumber, value, mileage, type, fleet);
         this.leasingCompany = leasingCompany;
     }
 
@@ -93,9 +106,10 @@ public class Vehicle implements EditableObject, java.io.Serializable {
 
     /**
      * sets the licenseplate of the vehicle
+     *
      * @param licensePlate string representing a licenseplate
      */
-    public void setLicensePlate(String licensePlate){
+    public void setLicensePlate(String licensePlate) {
         this.licensePlate = licensePlate;
     }
 
@@ -138,6 +152,7 @@ public class Vehicle implements EditableObject, java.io.Serializable {
 
     /**
      * sets the Value
+     *
      * @param value
      * @throws InvalidInputException when trying to set a negative value
      */
@@ -154,6 +169,7 @@ public class Vehicle implements EditableObject, java.io.Serializable {
 
     /**
      * set mileage
+     *
      * @param mileage
      * @throws InvalidInputException when trying to set a negative value
      */
@@ -211,6 +227,6 @@ public class Vehicle implements EditableObject, java.io.Serializable {
 
     @Override
     public EditableObject copy() {
-        return new Vehicle(uuid, brand, model, licensePlate, productionDate, chassisNumber, value, mileage, (VehicleType) type.copy(),fleet);
+        return new Vehicle(uuid, brand, model, licensePlate, productionDate, chassisNumber, value, mileage, (VehicleType) type.copy(), fleet);
     }
 }

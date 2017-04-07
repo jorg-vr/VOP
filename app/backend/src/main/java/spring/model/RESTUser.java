@@ -1,16 +1,12 @@
 package spring.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import model.account.Account;
-import model.identity.Person;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import model.account.Function;
+import model.account.User;
 
 /**
  * This is a bean class as specified in the API specification
  */
-public class RESTUser extends RESTAbstractModel {
+public class RESTUser extends RESTAbstractModel<User> {
 
     private static final String PATH_USERS = "/users";
 
@@ -24,15 +20,25 @@ public class RESTUser extends RESTAbstractModel {
 
     /**
      * Created a RESTUser based on the fields of account and pereson
-     * @param account should not not be null
-     * @param person should not be null
+     *
+     * @param user should not be null
      */
-    public RESTUser(Account account, Person person) {
-        super(account.getUuid(), PATH_USERS);
-        firstName = person.getFirstName();
-        lastName = person.getLastName();
-        email = person.getEmail();
-        password = account.getHashedPassword();
+    public RESTUser(User user) {
+        super(user.getUuid(), PATH_USERS);
+        firstName = user.getFirstName();
+        lastName = user.getLastName();
+        email = user.getEmail();
+        password = user.getPassword();
+    }
+
+    public User translate(Function f) {
+        User user = new User();
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setEmail(email);
+        user.setPassword(password);
+        //TODO add support for functions
+        return user;
     }
 
     public String getFirstName() {

@@ -1,12 +1,19 @@
 package spring.model;
 
+import controller.CustomerController;
+import controller.exceptions.UnAuthorizedException;
+import dao.interfaces.DataAccessException;
+import model.account.Function;
 import model.fleet.Fleet;
+import model.identity.Customer;
 import spring.controller.UUIDUtil;
+import spring.exceptions.InvalidInputException;
+import spring.exceptions.NotAuthorizedException;
 
 /**
  * This is a bean class as specified in the API specification
  */
-public class RESTFleet extends RESTAbstractModel {
+public class RESTFleet extends RESTAbstractModel<Fleet> {
 
     private static final String PATH_FLEETS = "/fleets";
 
@@ -26,6 +33,20 @@ public class RESTFleet extends RESTAbstractModel {
         setId(id);
         this.company = company;
         this.name = name;
+    }
+
+    public Fleet translate(Function function){
+        Fleet fleet=new Fleet();
+        fleet.setName(getName());
+        try (CustomerController customerController=new CustomerController(function)){
+            fleet.setOwner(customerController.get(UUIDUtil.toUUID(getCompany())));
+        } catch (DataAccessException e) {
+            throw new InvalidInputException("company");
+        } catch (UnAuthorizedException e) {
+            throw new NotAuthorizedException();
+        }
+        fleet.setUuid(UUIDUtil.toUUID(getId()));
+        return  fleet;
     }
 
     public String getCompany() {

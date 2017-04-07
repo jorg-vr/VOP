@@ -1,14 +1,17 @@
 package spring.model;
 
+import model.account.Function;
 import model.identity.Address;
 import model.identity.Company;
+import model.identity.Customer;
+import spring.controller.UUIDUtil;
 
 import java.util.UUID;
 
 /**
  * This is a bean class as specified in the API specification
  */
-public class RESTCompany extends RESTAbstractModel {
+public class RESTCompany extends RESTAbstractModel<Customer>{
 
     private static final String PATH_COMPANIES = "/companies";
 
@@ -42,6 +45,16 @@ public class RESTCompany extends RESTAbstractModel {
         this.address = address;
     }
 
+    public Customer translate(Function function){
+        Customer customer= new Customer();
+        customer.setName(getName());
+        customer.setBtwNumber(getVatNumber());
+        customer.setPhoneNumber(getPhoneNumber());
+        customer.setAddress(getAddress().translate());
+        customer.setUuid(UUIDUtil.toUUID(getId()));
+        return customer;
+    }
+
     public String getName() {
         return name;
     }
@@ -73,6 +86,7 @@ public class RESTCompany extends RESTAbstractModel {
     public void setAddress(RESTAddress address) {
         this.address = address;
     }
+
 }
 
 

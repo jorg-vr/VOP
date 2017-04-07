@@ -1,7 +1,6 @@
 import * as types from '../constants/mutationTypes'
 import * as locations from '../constants/locations'
 import RequestHandler from '../../api/requestHandler'
-import Vue from 'vue'
 
 export default {
     state: {
@@ -74,7 +73,7 @@ export default {
 
         createClient(context, {client}){
             return new Promise(resolve => {
-                RequestHandler.postObjectRequest(locations.CLIENT, client).then(newClient => {
+                RequestHandler.postObjectRequestGetBody(locations.CLIENT, client).then(newClient => {
                     context.commit(types.CREATE_CLIENT, {newClient})
                     resolve(newClient)
                 })

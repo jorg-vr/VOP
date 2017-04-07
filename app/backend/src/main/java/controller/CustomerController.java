@@ -4,6 +4,8 @@ import dao.database.ProductionProvider;
 import dao.interfaces.CustomerDAO;
 import dao.interfaces.DataAccessException;
 import main.BackendApplication;
+import model.account.Function;
+import model.account.Resource;
 import model.identity.Address;
 import model.identity.Customer;
 
@@ -14,17 +16,13 @@ import java.util.UUID;
  */
 public class CustomerController extends AbstractController<Customer>{
 
-    private CustomerDAO dao;
-    public CustomerController() {
-        super(BackendApplication.getProvider().getCustomerDAO());
-        dao = BackendApplication.getProvider().getCustomerDAO();
+    public CustomerController(Function function) {
+        super(BackendApplication.getProvider().getCustomerDAO(), Resource.COMPANY,function);
     }
 
-    public Customer create(Address address, String phoneNumber, String name, String btwNumber) throws DataAccessException {
-        return dao.create(name, address, phoneNumber, btwNumber);
-    }
 
-    public Customer update(UUID id, Address address, String phoneNumber, String name, String btwNumber) throws DataAccessException {
-        return dao.update(id, name, address, phoneNumber, btwNumber);
+    @Override
+    public boolean isOwner(Customer customer, Function function) {
+        return function.getCompany().equals(customer);
     }
 }

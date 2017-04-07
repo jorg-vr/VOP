@@ -39,6 +39,19 @@ public class Cost implements EditableObject, java.io.Serializable {
     public Cost() {
     }
 
+    public Cost(int contractID, double amount, LocalDate startDate, LocalDate endDate, boolean paidFor) {
+        ContractID = contractID;
+        this.amount = amount;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.paidFor = paidFor;
+    }
+
+    public Cost(UUID uuid, int contractID, double amount, LocalDate startDate, LocalDate endDate, boolean paidFor) {
+        this(contractID, amount, startDate, endDate, paidFor);
+        this.uuid = uuid;
+    }
+
     public boolean isCorrection() {
         return false;
     }

@@ -56,6 +56,28 @@ export default
         },
         search_bar: {
             search_for: 'Search for',
+        },
+        modal:{
+            title: 'Confirmation',
+            text: 'Are you sure you want to proceed with this action?',
+            button1: 'Yes',
+            button2: 'No'
+        },
+        exception: {
+            e404: 'Not Found',
+            e502: 'Internal Server Error',
+            return: 'Home',
+            contact: 'Contact'
+        },
+        login:{
+            header: 'Sign in to  ',
+            text: 'Enter your username and password to continue.',
+            error: 'Your username or password is incorrect.',
+            button: 'Sign in',
+            username: 'Username',
+            password: 'Password',
+            logout: 'Sign off',
+            login: 'Sign in'
         }
     },
     nl : {
@@ -114,6 +136,29 @@ export default
         },
         search_bar: {
             search_for: 'Zoeken naar',
+        },
+        modal:{
+            title: 'Bevestiging',
+            text: 'Weet u zeker dat u wilt doorgaan met deze actie?',
+            button1: 'Ja',
+            button2: 'Nee'
+        },
+        exception: {
+            e404: 'Pagina niet gevonden',
+            e502: 'Interne server fout',
+            return: 'Home',
+            contact: 'Contact'
+        },
+        login:{
+            header: 'Log in bij ',
+            text: 'Vul uw gebruikersnaam en wachtwoord in.',
+            error: 'Uw gebruikersnaam of wachtwoord is niet geldig.',
+            button: 'Log in',
+            username: 'Gebruikersnaam',
+            password: 'Wachtwoord',
+            logout: 'Afmelden',
+            login: 'Aanmelden'
+
         }
     }
 }

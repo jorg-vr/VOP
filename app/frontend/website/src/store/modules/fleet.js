@@ -140,7 +140,7 @@ export default {
 
         createFleet(context, {fleet}){
             return new Promise(resolve => {
-                RequestHandler.postObjectRequest(locations.FLEET, fleet).then(newFleet => {
+                RequestHandler.postObjectRequestGetBody(locations.FLEET, fleet).then(newFleet => {
                     context.commit(types.CREATE_FLEET, {newFleet})
                     resolve(newFleet)
                 })

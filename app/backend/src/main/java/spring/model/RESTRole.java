@@ -1,116 +1,50 @@
 package spring.model;
 
 
-import java.time.LocalDateTime;
+import model.account.Role;
+
+import model.account.Function;
+import model.account.Role;
 
 /**
  * This is a bean class as specified in the API specification
  */
-public class RESTRole {
+public class RESTRole extends RESTAbstractModel<Role> {
 
-    private String id;
 
-    private String company;
+    private static final String PATH_ROLES = "/auth/roles";
 
-    private String function;
+    private String name;
 
-    private String user;
+    private String permissions;
 
-    private LocalDateTime startDate;
-
-    private LocalDateTime endDate;
-
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
-
-    private String url;
-
-    public String getId() {
-        return id;
+    public RESTRole() {
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public RESTRole(Role role) {
+        super(role.getUuid(), PATH_ROLES);
+        this.name = role.getName();
     }
 
-    public String getCompany() {
-        return company;
+    public Role translate(Function f) {
+        Role role = new Role();
+        role.setName(name);
+        return role;
     }
 
-    public void setCompany(String company) {
-        this.company = company;
+    public String getName() {
+        return name;
     }
 
-    public String getFunction() {
-        return function;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setFunction(String function) {
-        this.function = function;
+    public String getPermissions() {
+        return getUrl() + "/permissions";
     }
 
-    public String getUser() {
-        return user;
-    }
-
-    public void setUser(String user) {
-        this.user = user;
-    }
-
-    public LocalDateTime getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(LocalDateTime startDate) {
-        this.startDate = startDate;
-    }
-
-    public LocalDateTime getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDateTime endDate) {
-        this.endDate = endDate;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        RESTRole that = (RESTRole) o;
-
-        return id.equals(that.id);
-
-    }
-
-    @Override
-    public int hashCode() {
-        return id.hashCode();
+    public void setPermissions(String permissions) {
+        this.permissions = permissions;
     }
 }

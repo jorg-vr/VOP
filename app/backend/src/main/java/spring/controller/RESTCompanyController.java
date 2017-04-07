@@ -1,17 +1,19 @@
 package spring.controller;
 
+import controller.AbstractController;
 import controller.CustomerController;
+import controller.exceptions.UnAuthorizedException;
 import dao.interfaces.CustomerDAO;
 import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
 import model.identity.Address;
 import model.identity.Company;
+import model.identity.Customer;
 import org.springframework.web.bind.annotation.*;
 import spring.exceptions.InvalidInputException;
+import spring.exceptions.NotAuthorizedException;
 import spring.exceptions.NotFoundException;
-import spring.model.RESTAddress;
-import spring.model.RESTCompany;
-import spring.model.RESTSchema;
+import spring.model.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -36,9 +38,13 @@ import java.util.UUID;
  */
 @RestController
 @RequestMapping("/companies")
-public class RESTCompanyController {
+public class RESTCompanyController extends RESTAbstractController<RESTCompany,Customer> {
 
-    private CustomerController controller = new CustomerController();
+
+    public RESTCompanyController() {
+        super( CustomerController::new, RESTCompany::new);
+    }
+
 
     @RequestMapping(method = RequestMethod.GET)
     public RESTSchema<RESTCompany> get(HttpServletRequest request,
@@ -46,87 +52,34 @@ public class RESTCompanyController {
                                        @RequestParam(required = false) String nameContains,
                                        @RequestParam(required = false) String country,
                                        @RequestParam(required = false) String city,
-                                       @RequestParam(required = false) String postalCode) {
+                                       @RequestParam(required = false) String postalCode,
+                                       @RequestHeader(value="Authorization") String token,
+                                       @RequestHeader(value="Function") String function) {
 
-        CustomerDAO customerDAO = (CustomerDAO) controller.getDao(); //TODO getId rid of cast
-        List<Filter> filters = new ArrayList<>();
-        if (nameContains != null) {
-            filters.add(customerDAO.byName(nameContains));
-        }
-        //filters.add(customerDAO.byAddress(new Address(null, null, city, postalCode, country))); TODO fix this
-        Collection<RESTCompany> result = new ArrayList<>();
-        try {
+
+        try(CustomerController controller= new CustomerController(verifyToken(token,function))) {
+            CustomerDAO customerDAO = (CustomerDAO) controller.getDao(); //TODO getId rid of cast
+            List<Filter> filters = new ArrayList<>();
+            if (nameContains != null) {
+                filters.add(customerDAO.byName(nameContains));
+            }
+            //filters.add(customerDAO.byAddress(new Address(null, null, city, postalCode, country))); TODO fix this
+            Collection<RESTCompany> result = new ArrayList<>();
             for (Company company : controller.getAll(filters.toArray(new Filter[filters.size()]))) {
                 result.add(new RESTCompany(company));
             }
 
+            return new RESTSchema<>(result, page, limit, request);
         } catch (DataAccessException e) {
             //API doesn't contain error
+            throw new RuntimeException(e);
+        } catch (UnAuthorizedException e) {
+            throw new NotAuthorizedException();
         }
-        return new RESTSchema<>(result, page, limit, request);
+
+
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public RESTCompany post(@RequestBody RESTCompany restCompany) {
-        RESTCompany updatedCompany;
-        try {
-            Company company = controller.create(RESTToModelAddress(restCompany.getAddress()),
-                    restCompany.getPhoneNumber(),
-                    restCompany.getName(),
-                    restCompany.getVatNumber());
-            updatedCompany = new RESTCompany(company);
-        } catch (DataAccessException e) {
-            throw new InvalidInputException(e);
-        }
-        return updatedCompany;
-    }
 
-    @RequestMapping(method = RequestMethod.GET, value = "{id}")
-    public RESTCompany getId(@PathVariable("id") String id) {
-        UUID uuid = UUIDUtil.toUUID(id);
-        try {
-            return new RESTCompany(controller.get(uuid));
-        } catch (DataAccessException e) {
-            throw new NotFoundException();
-        }
-    }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "{id}")
-    public RESTCompany putId(@PathVariable("id") String id, @RequestBody RESTCompany restCompany) {
-        UUID uuid = UUIDUtil.toUUID(id);
-        RESTCompany createdCompany;
-        try {
-            Company company = controller.update(uuid,
-                    RESTToModelAddress(restCompany.getAddress()),
-                    restCompany.getPhoneNumber(),
-                    restCompany.getName(),
-                    restCompany.getVatNumber());
-            createdCompany = new RESTCompany(company);
-        } catch (DataAccessException e) {
-            e.printStackTrace();
-            throw new InvalidInputException();
-        }
-        return createdCompany;
-    }
-
-    @RequestMapping(method = RequestMethod.DELETE, value = "{id}")
-    public void deleteId(@PathVariable("id") String id) {
-        UUID uuid = UUIDUtil.toUUID(id);
-        try {
-            controller.archive(uuid);
-        } catch (DataAccessException e) {
-            throw new NotFoundException();
-        }
-    }
-
-    /**
-     * This method translates the Addres object to a RESTAddress object.
-     * @return if address is null, null will be returned
-     */
-    private Address RESTToModelAddress(RESTAddress restAddress) {
-        if (restAddress == null) {
-            return null;
-        }
-        return restAddress.translate();
-    }
 }

@@ -1,20 +1,21 @@
 package spring.controller;
 
-import controller.AccountController;
-import controller.PersonController;
+import controller.AuthController;
+import controller.ControllerFactory;
+import controller.UserController;
+import controller.exceptions.UnAuthorizedException;
 import dao.interfaces.DataAccessException;
-import model.account.Account;
-import model.identity.Person;
-import org.springframework.http.HttpRequest;
+import model.account.Function;
+import model.account.User;
 import org.springframework.web.bind.annotation.*;
-import spring.exceptions.ConflictException;
 import spring.exceptions.InvalidInputException;
-import spring.exceptions.NotFoundException;
+import spring.exceptions.NotAuthorizedException;
+import spring.model.AuthenticationToken;
+import spring.model.RESTModelFactory;
 import spring.model.RESTSchema;
 import spring.model.RESTUser;
 
 import javax.servlet.http.HttpServletRequest;
-import java.net.URL;
 import java.util.*;
 
 /**
@@ -34,10 +35,11 @@ import java.util.*;
  */
 @RestController
 @RequestMapping("/users")
-public class RESTUserController {
+public class RESTUserController extends RESTAbstractController<RESTUser, User> {
 
-    private AccountController accountController = new AccountController();
-    private PersonController personController = new PersonController();
+    public RESTUserController() {
+        super(UserController::new, RESTUser::new);
+    }
 
     /**
      * @return a collection of all the users in the system.
@@ -49,140 +51,21 @@ public class RESTUserController {
                                     String firstName,
                                     String lastName,
                                     Integer page,
-                                    Integer limit) {
-        Collection<RESTUser> users = new ArrayList<>();
-
-        try {
-            Collection<Account> accounts = accountController.getAll();
-            for (Account account : accounts) {
-                Person person = account.getPerson();
-                if (passesFilters(person, email, firstName, lastName)) {
-                    users.add(new RESTUser(account, person));
-                }
-            }
-        } catch (DataAccessException e) {
-            // This should not happen unless there is something wrong with the database
-            System.err.println("Something is wrong with the database");
-            e.printStackTrace();
-        }
-        return new RESTSchema<>(users, page, limit, request);
-    }
-
-    /**
-     * This method checks if the person passes the filters.
-     *
-     * @param person    the person that should be checked
-     * @param firstName can be null
-     * @param lastName  can be null
-     * @param email     can be null
-     * @return whether the person passes the filters or not
-     */
-    private boolean passesFilters(Person person, String email, String firstName, String lastName) {
-        return containsLowerCase(person.getEmail(), email)
-                && containsLowerCase(person.getFirstName(), firstName)
-                && containsLowerCase(person.getLastName(), lastName);
-    }
-
-    /**
-     * @param toCheck the string that should be tested
-     * @param filter  if null, true will be returned
-     * @return returns true if toCheck contains filter (case insensitive) or true if filter is null
-     */
-    private boolean containsLowerCase(String toCheck, String filter) {
-        return filter == null || toCheck.toLowerCase().contains(filter.toLowerCase());
-    }
-
-    /**
-     * Adds a new user to the system.
-     *
-     * @param user all the fields of this object are required except:
-     *             1) id
-     *             2) createdAt
-     *             3) updatedAt
-     *             4) url
-     *             If there is any information in these fields, it will be ignored.
-     * @return the object will be returned, with valid values for the not required field listed below:
-     * 1) id:          this will be an unique UUID
-     * 2) createdAt:   will be set to the moment when it was created
-     * 3) updatedAt:   will be equal to createdAt
-     * 4) url:         will look like: https//domain.org/users/id
-     */
-    @RequestMapping(method = RequestMethod.POST)
-    public RESTUser post(@RequestBody RESTUser user) {
-        try {
-
-            // Check if the account name is still free
-            if (accountController.isTaken(user.getEmail())) {
-                throw new ConflictException();
+                                    Integer limit,
+                                    @RequestHeader(value="Authorization") String token,
+                                    @RequestHeader(value="Function") String function) {
+        Collection<RESTUser> restUsers = new ArrayList<>();
+        try (UserController userController = new UserController(verifyToken(token, function))) {
+            Collection<User> users = userController.getAll();
+            for (User user: users) {
+                restUsers.add(new RESTUser(user));
             }
 
-            Person person = personController.createPerson(user.getFirstName(), user.getLastName(), user.getEmail());
-            Account account = accountController.createAccount(user.getEmail(), user.getPassword(), person.getUuid());
-
-            return new RESTUser(account, person);
+        }catch (UnAuthorizedException e) {
+            throw new NotAuthorizedException();
         } catch (DataAccessException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        return null;
-    }
-
-    /**
-     * Returns the user associated with the id.
-     *
-     * @param id id of the user
-     * @return the RESTUSer object
-     */
-    @RequestMapping(value = "{id}", method = RequestMethod.GET)
-    public RESTUser getId(@PathVariable("id") String id) {
-        try {
-            UUID uuid = UUIDUtil.toUUID(id);
-            Account account = accountController.get(uuid);
-            Person person = account.getPerson();
-
-            return new RESTUser(account, person);
-        } catch (DataAccessException | NumberFormatException | NullPointerException e) {
-            throw new NotFoundException();
-        }
-    }
-
-    /**
-     * Attempts to updateId the user with the given id.
-     *
-     * @param id   id of the user that should be updated
-     * @param user fields that can be changed:
-     *             1) firstName
-     *             2) lastName
-     *             3) password
-     * @return the updated RESTUser object. The updatedAt will be updated.
-     */
-    @RequestMapping(value = "{id}", method = RequestMethod.PUT)
-    public RESTUser putId(@PathVariable("id") String id, @RequestBody RESTUser user) {
-        UUID uuid = UUIDUtil.toUUID(id);
-        try {
-            Account account = accountController.updateAccount(uuid, user.getEmail(), user.getPassword());
-            Person person = account.getPerson();
-            person = personController.updatePerson(person.getUuid(), user.getFirstName(), user.getLastName(), user.getEmail());
-            return new RESTUser(account, person);
-        } catch (DataAccessException e) {
-            throw new InvalidInputException();
-        }
-    }
-
-    /**
-     * Attempts to archive the user with the given id.
-     *
-     * @param id the id of the user that should be archived
-     */
-    @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
-    public void deleteId(@PathVariable("id") String id) {
-        UUID uuid = UUIDUtil.toUUID(id);
-
-        try {
-            Account account = accountController.get(uuid);
-            accountController.archive(account.getUuid());
-            personController.archive(account.getPerson().getUuid());
-        } catch (DataAccessException e) {
-            throw new NotFoundException();
-        }
+        return new RESTSchema<>(restUsers, page, limit, request);
     }
 }

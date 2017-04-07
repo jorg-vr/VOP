@@ -1,23 +1,22 @@
 package model.history;
 
-import model.account.Account;
+import model.account.User;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 
 public class EditEvent implements java.io.Serializable {
     private LocalDateTime editTime;
-    private Account account;
+    private User user;
     private EditableObject newObject;
     private EditableObject oldObject;
 
     public EditEvent() {
     }
 
-    public EditEvent(Account account, EditableObject newObject, EditableObject oldObject) {
+    public EditEvent(User user, EditableObject newObject, EditableObject oldObject) {
         editTime=LocalDateTime.now();
-        this.account = account;
+        this.user = user;
         this.newObject = newObject;
         this.oldObject = oldObject;
         History.getHistory().addEditEvent(this);
@@ -31,12 +30,12 @@ public class EditEvent implements java.io.Serializable {
         this.editTime = editTime;
     }
 
-    public Account getAccount() {
-        return account;
+    public User getUser() {
+        return user;
     }
 
-    public void setAccount(Account account) {
-        this.account = account;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public EditableObject getNewObject() {

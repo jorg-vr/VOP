@@ -16,9 +16,6 @@
             clients: Array,
             fleet: Object
         },
-        created(){
-            console.log(this.fleet)
-        },
         components: {
             formInput, formSelect
         }
