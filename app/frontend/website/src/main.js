@@ -43,6 +43,18 @@ const router = new VueRouter({
     routes: routes,
 })
 
+
+router.beforeEach((to, from, next) => {
+    console.log()
+    if(to.path !== '/login' && !store.getters.hasActiveAccount){
+        store.commit('setNextRoute' , {route: to})
+        next({path: '/login'});
+    }
+    else {
+        next()
+    }
+})
+
 Vue.filter('capitalize', function(value){
     value = value.toString()
     return value.charAt(0).toUpperCase() + value.slice(1)

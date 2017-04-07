@@ -13,19 +13,16 @@
     }
 </style>
 <script>
-    //TEMPORARY ADD AUTHENTICATION HERE (TODO)
-    import {mapActions} from 'vuex'
-
     import NavBar from './assets/general/navBar.vue'
+
     export default {
         components: {
             NavBar
-        },
-        methods: {
-            ...mapActions([
-                'authenticate',
-                'fetchAccount'
-            ])
         }
     }
 </script>
+<style>
+    body {
+        padding-top: 65px;
+    }
+</style>
