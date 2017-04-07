@@ -1,7 +1,7 @@
 <template>
     <div class="row">
         <div class="form-group">
-            <label v-if="label" class="col-sm-4 control-label">{{label}}</label>
+            <label v-if="label" class="col-md-2 col-sm-3 col-xs-3 control-label">{{label}}</label>
             <div :class="getColumnClass">
                 <slot></slot>
             </div>
@@ -17,7 +17,7 @@
         computed: {
             getColumnClass(){
                 if(this.label){
-                    return "col-sm-8"
+                    return "col-md-6 col-sm-7 col-xs-8"
                 }
                 else {
                     return ""
