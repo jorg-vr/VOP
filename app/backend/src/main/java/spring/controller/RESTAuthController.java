@@ -16,7 +16,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Created by jorg on 4/3/17.
+ * Requests that are implemented in this class:
+ *  1) POST /auth/login
+ *  2) POST /auth/refresh
+ *  3) GET /auth (this one should be removed after /user/me is implemented)
  */
 @RestController
 @RequestMapping("/auth")

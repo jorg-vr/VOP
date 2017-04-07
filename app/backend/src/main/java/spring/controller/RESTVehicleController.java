@@ -23,13 +23,18 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
- * This controller is responsible for handling the HTTP requests of the URL /vehicles.
+ * This controller is responsible for handling the HTTP requests of the URLs /vehicles and /companies/{companyId}/fleets/{fleetId}/vehicles.
  * Currently, the following HTTP requests are supported:
- *  1) GET /vehicles
- *  2) GET /vehicles/{id}
- *  3) POST /vehicles
- *  4) PUT /vehicles/{id}
- *  5) DELETE /vehicles/{id}
+ *  1)  GET /vehicles
+ *  2)  GET /vehicles/{id}
+ *  3)  POST /vehicles
+ *  4)  PUT /vehicles/{id}
+ *  5)  DELETE /vehicles/{id}
+ *  6)  GET /companies/{companyId}/fleets/{fleetId}/vehicles
+ *  7)  GET /companies/{companyId}/fleets/{fleetId}/vehicles/{id}
+ *  8)  POST /companies/{companyId}/fleets/{fleetId}/vehicles
+ *  9)  PUT /companies/{companyId}/fleets/{fleetId}/vehicles/{id}
+ *  10) DELETE /companies/{companyId}/fleets/{fleetId}/vehicles/{id}
  *
  *  This controller is responsible for translating the RESTModels to the backend specific models and calling the appropriate methods
  *  of the spring independent controllers,  located in the controller package.

@@ -20,11 +20,11 @@ import java.util.stream.Collectors;
 /**
  * This controller is responsible for handling the HTTP requests of the URL /roles.
  * Currently, the following HTTP requests are supported:
- * 1) GET /roles
- * 2) GET /roles/{id}
- * 3) POST /roles
- * 4) PUT /roles/{id}
- * 5) DELETE /roles/{id}
+ * 1) GET /auth/roles
+ * 2) GET /auth/roles/{id}
+ * 3) POST /auth/roles
+ * 4) PUT /auth/roles/{id}
+ * 5) DELETE /auth/roles/{id}
  * <p>
  * This controller is responsible for translating the RESTModels to the backend specific models and calling the appropriate methods
  * of the spring independent controllers,  located in the controller package.

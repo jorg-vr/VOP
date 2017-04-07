@@ -15,13 +15,18 @@ import java.util.Collection;
 import java.util.Optional;
 
 /**
- * This controller is responsible for handling the HTTP requests of the URL /fleets.
+ * This controller is responsible for handling the HTTP requests of the URLs /fleets and /companies/{companyId}/fleets.
  * Currently, the following HTTP requests are supported:
- * 1) GET /fleet
- * 2) GET /fleets/{id}
- * 3) POST /fleets
- * 4) PUT /fleets/{id}
- * 5) DELETE /fleets/{id}
+ * 1)  GET /fleet
+ * 2)  GET /fleets/{id}
+ * 3)  POST /fleets
+ * 4)  PUT /fleets/{id}
+ * 5)  DELETE /fleets/{id}
+ * 6)  GET companies/{companyId}/fleet
+ * 7)  GET companies/{companyId}/fleets/{id}
+ * 8)  POST companies/{companyId}/fleets
+ * 9)  PUT companies/{companyId}/fleets/{id}
+ * 10) DELETE companies/{companyId}/fleets/{id}
  * <p>
  * This controller is responsible for translating the RESTModels to the backend specific models and calling the appropriate methods
  * of the spring independent controllers,  located in the controller package.
