@@ -22,7 +22,7 @@ import java.util.Collection;
 @RequestMapping("/auth")
 public class RESTAuthController {
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String post(@RequestBody RESTAuth restAuth) {
         try (AuthController authController = new AuthController()) {
             return authController.getToken(restAuth.getLogin(), restAuth.getPassword()).toString();
@@ -33,6 +33,7 @@ public class RESTAuthController {
         }
     }
 
+    // TODO remove this after /user/me is implemented
     @RequestMapping(method = RequestMethod.GET)
     public Collection<RESTFunction> getAll(@RequestHeader(value = "Authorization") String token) {
         try (AuthController authController = new AuthController()) {
@@ -48,7 +49,7 @@ public class RESTAuthController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.PUT)
+    @RequestMapping(value = "/refresh", method = RequestMethod.POST)
     public String put(@RequestHeader(value = "Authorization") String token) {
         try (AuthController authController = new AuthController()) {
             return authController.refreshToken(new AuthenticationToken(token)).toString();
