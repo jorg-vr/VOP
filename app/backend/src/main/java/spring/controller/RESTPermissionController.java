@@ -1,11 +1,9 @@
 package spring.controller;
 
-import controller.AbstractController;
 import controller.RoleController;
 import controller.exceptions.UnAuthorizedException;
 import dao.interfaces.DataAccessException;
 import model.account.Action;
-import model.account.Permission;
 import model.account.Resource;
 import model.account.Role;
 import org.springframework.web.bind.annotation.*;
@@ -20,23 +18,12 @@ import java.util.*;
 @RestController
 public class RESTPermissionController extends RESTSimpleController {
 
-    private static Map<Long, RESTPermission> allPermissions = new HashMap<>();
-
-    static {
-        for (Resource resource : Resource.values()) {
-            for (Action action : Action.values()) {
-                RESTPermission permission = new RESTPermission(resource, action);
-                allPermissions.put(permission.getId(), permission);
-            }
-        }
-    }
-
     @RequestMapping(value = "/auth/permissions", method = RequestMethod.GET)
     public RESTSchema<RESTPermission> getAllPermissions(HttpServletRequest request,
                                                         Integer page, Integer limit,
                                                         @RequestHeader(value = "AuthToken") String token,
                                                         @RequestHeader(value = "Function") String function) {
-        return new RESTSchema<>(allPermissions.values(), page, limit, request);
+        return new RESTSchema<>(RESTPermission.getAllRESTPermissions().values(), page, limit, request);
     }
 
     @RequestMapping(value = "/auth/roles/{id}/permissions", method = RequestMethod.GET)
@@ -66,7 +53,7 @@ public class RESTPermissionController extends RESTSimpleController {
         try (RoleController roleController = new RoleController(verifyToken(token, function))) {
             try {
                 Role role = roleController.get(uuid);
-                translatePermissions(role, permissions);
+                setPermissions(role, permissions);
                 roleController.update(role);
             } catch (DataAccessException e) {
                 throw new InvalidInputException("Role does not exist");
@@ -76,13 +63,22 @@ public class RESTPermissionController extends RESTSimpleController {
         }
     }
 
-    private void translatePermissions(Role role, List<Long> idList) {
-        for (Long id : idList) {
+    /**
+     * Set the Permissions of a Role based on the ids.
+     * @param role Role whose Permissions should be set. Note that is is set and not add.
+     * @param ids ids of all the RESTPermissions that should be set on the Role.
+     *            Note that a Role has Permissions and not RESTPermissions,
+     *            so a translation to Permissions happens in this method.
+     * @throws InvalidInputException gets thrown when there is an invalid RESTPermission id
+     */
+    private void setPermissions(Role role, List<Long> ids) {
+        role.clearPermissions();
+        Map<Long, RESTPermission> allPermissions = RESTPermission.getAllRESTPermissions();
+        for (Long id : ids) {
             if (!allPermissions.containsKey(id)) {
                 throw new InvalidInputException("There is no permission with id" + id);
             }
 
-            //TODO clear permissions first
             RESTPermission restPermission = allPermissions.get(id);
             Resource resource = Resource.valueOf(restPermission.getResource());
             Action action = Action.valueOf(restPermission.getAction());
