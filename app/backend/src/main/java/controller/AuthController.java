@@ -22,6 +22,7 @@ public class AuthController implements AutoCloseable {
         if(function.getUser().equals(account)){
             return function;
         } else {
+            System.out.println("Else !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             throw new UnAuthorizedException();
         }
     }
