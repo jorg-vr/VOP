@@ -17,9 +17,13 @@ import java.util.Collection;
 import java.util.Optional;
 
 /**
- * Created by Jarre on 6-4-2017.
+ * Requests that are implemented in this class:
+ *  1) GET /users/{userId}/functions
+ *  2) POST /users/{userId}/functions
+ *  2) GET /users/{userId}/functions/{id}
+ *  4) PUT /users/{userId}/functions/{id}
+ *  2) DELETE /users/{userId}/functions/{id}
  */
-
 @RestController
 @RequestMapping("/users/{userId}/functions")
 public class RESTFunctionController extends RESTAbstractController<RESTFunction, Function> {
@@ -36,7 +40,7 @@ public class RESTFunctionController extends RESTAbstractController<RESTFunction,
                                         @RequestParam(required = false) Integer page,
                                         @RequestParam(required = false) Integer limit,
                                         @RequestParam(required = false) String sort,
-                                        @RequestHeader(value="AuthToken") String token,
+                                        @RequestHeader(value="Authorization") String token,
                                         @RequestHeader(value="Function") String authorityFunction){
 
         Collection<RESTFunction> restFunctions = new ArrayList<>();

@@ -29,7 +29,7 @@ public class RESTPermissionController extends RESTSimpleController {
     public RESTSchema<RESTPermission> getAllPermissions(HttpServletRequest request,
                                                         Integer page, Integer limit,
                                                         String resource, String action,
-                                                        @RequestHeader(value = "AuthToken") String token,
+                                                        @RequestHeader(value = "Authorization") String token,
                                                         @RequestHeader(value = "Function") String function) {
         Collection<RESTPermission> allPermissions = RESTPermission.getAllRESTPermissions().values();
         Collection<RESTPermission> filtered = filter(allPermissions, resource, action);
@@ -41,7 +41,7 @@ public class RESTPermissionController extends RESTSimpleController {
                                           HttpServletRequest request,
                                           Integer page, Integer limit,
                                           String resource, String action,
-                                          @RequestHeader(value = "AuthToken") String token,
+                                          @RequestHeader(value = "Authorization") String token,
                                           @RequestHeader(value = "Function") String function) {
         UUID uuid = UUIDUtil.toUUID(id);
         try (RoleController roleController = new RoleController(verifyToken(token, function))) {
@@ -59,7 +59,7 @@ public class RESTPermissionController extends RESTSimpleController {
     @RequestMapping(value = "/auth/roles/{id}/permissions", method = RequestMethod.PUT)
     public void put(@PathVariable String id,
                     @RequestBody List<Long> permissions,
-                    @RequestHeader(value = "AuthToken") String token,
+                    @RequestHeader(value = "Authorization") String token,
                     @RequestHeader(value = "Function") String function) {
         UUID uuid = UUIDUtil.toUUID(id);
         try (RoleController roleController = new RoleController(verifyToken(token, function))) {

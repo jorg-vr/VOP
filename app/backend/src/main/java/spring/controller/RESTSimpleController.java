@@ -11,7 +11,7 @@ import spring.model.AuthenticationToken;
 import java.util.*;
 
 /**
- * Created by Billie Devolder on 6/04/2017.
+ * This class contains methods that every RESTController should have
  */
 public abstract class RESTSimpleController {
 
