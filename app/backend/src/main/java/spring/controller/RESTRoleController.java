@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping("/auth/roles")
-public class RESTRoleController extends RESTAbstractController<RESTRole, Role>{
+public class RESTRoleController extends RESTAbstractController<RESTRole, Role> {
 
 
     public RESTRoleController() {
@@ -46,17 +46,16 @@ public class RESTRoleController extends RESTAbstractController<RESTRole, Role>{
                                     @RequestParam(required = false) String name,
                                     @RequestParam(required = false) Integer page,
                                     @RequestParam(required = false) Integer limit,
-                                    @RequestHeader(value="AuthToken") String token,
-                                    @RequestHeader(value="Function") String fu) {
-        Collection<RESTRole> restRoles = new ArrayList<>();
-        Function function=verifyToken(token,fu);
+                                    @RequestHeader(value = "AuthToken") String token,
+                                    @RequestHeader(value = "Function") String fu) {
+        Function function = verifyToken(token, fu);
 
-        try(RoleController roleController = new RoleController(function)) {
+        Collection<RESTRole> restRoles = new ArrayList<>();
+        try (RoleController roleController = new RoleController(function)) {
             Collection<Role> roles = roleController.getAll();
-            restRoles.addAll(roles
-                    .stream()
-                    .map(RESTRole::new)
-                    .collect(Collectors.toList()));
+            for (Role role : roles) {
+                restRoles.add(new RESTRole(role));
+            }
         } catch (DataAccessException e) {
             throw new InvalidInputException("Something is wrong with the database");
         } catch (UnAuthorizedException e) {
@@ -64,9 +63,4 @@ public class RESTRoleController extends RESTAbstractController<RESTRole, Role>{
         }
         return new RESTSchema<>(restRoles, page, limit, request);
     }
-
-
-
-
-
 }
