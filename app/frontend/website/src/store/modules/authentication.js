@@ -21,7 +21,7 @@ export default {
 
         [types.SET_ACTIVE_ACCOUNT] (state, {account}){
             state.account = account
-            Vue.http.headers.common['Function'] = account.id
+            //Vue.http.headers.common['Function'] = account.id
         }
     },
     actions: {

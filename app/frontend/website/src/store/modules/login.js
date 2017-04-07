@@ -8,6 +8,7 @@ export default {
 		loginInfo: {},
 		showLogin: true,
 		showError: false,
+		nextRoute: {path: null}
 
 	},
 	getters:{
@@ -19,8 +20,10 @@ export default {
         },
         showError(state){
         	return state.showError
-        }
-
+        },
+		nextRoute(state){
+        	return state.nextRoute
+		}
 	},
 	mutations:{
 		register (state,login) {
@@ -32,12 +35,14 @@ export default {
 	    error (state,value){
 	    	// show error message if true, do not show if false
 	    	state.showError=value
-	    }
+	    },
+	    setNextRoute(state, {route}){
+	    	state.nextRoute = route;
+		}
 	},
 	actions:{
 		registerLogin(context,login){
 			console.log('Store registerLogin')
-			console.log(login)
 			// API CALL TO AUTHENICATE
 				// success
 				//context.commit('error',false) // Don't show error message

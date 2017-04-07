@@ -21,6 +21,7 @@ import editVehicle from '../pages/vehicle/edit.vue'
 import showVehicle from '../pages/vehicle/show.vue'
 
 import exception from '../pages/exception/exception.vue'
+import login from '../pages/login/login.vue'
 
 export default [
     {
@@ -51,6 +52,7 @@ export default [
             {path: 'vehicles/:id(\\d+)/edit', name: 'edit_vehicle', component: editVehicle, props: true}
         ],
     },
+    {path: '/login', name: login, component: login},
     {path: '*', component: exception, props: {statusCode: 404}}
 ];
 
