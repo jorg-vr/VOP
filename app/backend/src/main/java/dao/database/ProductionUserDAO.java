@@ -8,7 +8,10 @@ import model.fleet.Vehicle;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.util.Collection;
 
 /**
@@ -41,9 +44,12 @@ public class ProductionUserDAO extends ProductionDAO<User> implements UserDAO {
         try {
 
             tx = getSession().beginTransaction();
-            Collection<User> users = getSession().createQuery(getCriteriaQuery().where(
-                    getCriteriaBuilder().equal(getRoot().get("login"), login),
-                    getCriteriaBuilder().equal(getRoot().get("hashedPassword"), hashedPassword))).getResultList();
+            CriteriaBuilder criteriaBuilder = getSession().getCriteriaBuilder();
+            CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
+            Root<User> root = criteriaQuery.from(User.class);
+            Collection<User> users = getSession().createQuery(criteriaQuery.where(
+                    criteriaBuilder.equal(root.get("email"), login),
+                    criteriaBuilder.equal(root.get("password"), hashedPassword))).getResultList();
             tx.commit();
             if(users.size()>1){
                 throw new DataAccessException();

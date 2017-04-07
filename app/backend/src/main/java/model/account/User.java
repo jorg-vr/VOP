@@ -138,4 +138,20 @@ public class User implements EditableObject, java.io.Serializable {
         user.setPassword(password);
         return user;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || !(o instanceof User)) return false;
+
+        User user = (User) o;
+
+        return getUuid().equals(user.getUuid());
+
+    }
+
+    @Override
+    public int hashCode() {
+        return getUuid().hashCode();
+    }
 }
