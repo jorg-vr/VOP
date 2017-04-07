@@ -75,7 +75,7 @@ export default {
 
         createUser(context, {user}){
             return new Promise(resolve => {
-                RequestHandler.postObjectRequest(locations.USER, user).then(newUser => {
+                RequestHandler.postObjectRequestGetBody(locations.USER, user).then(newUser => {
                     context.commit(types.CREATE_USER, {newUser})
                     resolve(newUser)
                 })

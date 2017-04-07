@@ -15,26 +15,18 @@ import java.util.*;
  */
 public abstract class RESTSimpleController {
 
-    public Function verifyToken(String token, String functiunId){
+    public Function verifyToken(String token,String functionId){
+//        Function function = new Function();
+//        Role role = new Role();
+//        for (Resource resource: Resource.values()) {
+//            for (Action action: Action.values()) {
+//                role.setAccess(resource, action);
+//            }
+//        }
+//        function.setRole(role);
+//        return function;
         try {
-            Function function = new Function();
-            Role role = new Role();
-            Map<Resource, Permission> rights = new HashMap<>();
-            for (Resource resource: Resource.values()) {
-                Permission permission = new Permission();
-                Set<Action> actionSet = new HashSet<>();
-                Collections.addAll(actionSet, Action.values());
-                permission.setActions(actionSet);
-                rights.put(resource, permission);
-            }
-            role.setRights(rights);
-            function.setRole(role);
-            return function;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        try {
-            return new AuthController().getFunction(new AuthenticationToken(token),UUIDUtil.toUUID(functiunId));
+            return new AuthController().getFunction(new AuthenticationToken(token),UUIDUtil.toUUID(functionId));
         } catch (DataAccessException e) {
             throw new InvalidInputException(e);
         } catch (UnAuthorizedException e) {

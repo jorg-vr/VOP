@@ -1,19 +1,12 @@
 package dao.database;
 
 import dao.interfaces.*;
-import model.account.Account;
-import model.account.Function;
-import model.account.Role;
 import model.identity.Address;
 import model.identity.CompanyType;
 import model.identity.Customer;
-import model.identity.Person;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
-
-import java.time.LocalDateTime;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -113,10 +106,14 @@ public class ProductionCustomerDAOTest {
         Address adr2 = addressDAO.create(new Address("streettest n2", "60", "town 2", "99999", "country 2"));
         Customer cust1 = customerDAO.create(new Customer(adr1, "Email@address1.com", "911", "customername 1", "btw123", "123456789", CompanyType.TYPE1));
         cust1.setAddress(adr2);
-        Customer cust2 = new Customer(adr2, "Email@address2.com", "912", "customername 2", "btw124", "123456781", CompanyType.TYPE2);
-        cust2.setUuid(cust1.getUuid());
-        customerDAO.update(cust2);
-        Customer cust3 = customerDAO.get(cust2.getUuid());
+        cust1.setEmail("Email@address2.com");
+        cust1.setPhoneNumber("912");
+        cust1.setName("customername 2");
+        cust1.setBtwNumber("btw124");
+        cust1.setBankAccountNumber("123456781");
+        cust1.setCompanyType(CompanyType.TYPE2);
+        customerDAO.update(cust1);
+        Customer cust3 = customerDAO.get(cust1.getUuid());
         assertEquals("address field not updated correctly", adr2, cust3.getAddress());
         assertEquals("email field not updated correctly", "Email@address2.com", cust3.getEmail());
         assertEquals("phoneNumber field not updated correctly", "912", cust3.getPhoneNumber());

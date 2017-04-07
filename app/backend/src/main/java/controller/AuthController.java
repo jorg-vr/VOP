@@ -33,7 +33,7 @@ public class AuthController implements AutoCloseable {
 
     public AuthenticationToken getToken(String login,String password)throws DataAccessException, UnAuthorizedException{
         UserDAO userDAO=ProductionProvider.getInstance().getUserDAO();
-        User account=null; //TODO userDAO.listFiltered(userDAO.bySecurity(login,password)).iterator().next();
+        User account= userDAO.getUserByLogin(login,password);
         return new AuthenticationToken(account.getUuid());
     }
 
