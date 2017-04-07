@@ -34,7 +34,7 @@ public class RESTAuthController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public Collection<RESTFunction> getAll(@RequestHeader(value = "AuthToken") String token) {
+    public Collection<RESTFunction> getAll(@RequestHeader(value = "Authorization") String token) {
         try (AuthController authController = new AuthController()) {
             Collection<RESTFunction> restFunctions = new ArrayList<>();
             for (Function function : authController.getFunctions(new AuthenticationToken(token))) {
@@ -49,7 +49,7 @@ public class RESTAuthController {
     }
 
     @RequestMapping(method = RequestMethod.PUT)
-    public String put(@RequestHeader(value = "AuthToken") String token) {
+    public String put(@RequestHeader(value = "Authorization") String token) {
         try (AuthController authController = new AuthController()) {
             return authController.refreshToken(new AuthenticationToken(token)).toString();
         } catch (DataAccessException e) {

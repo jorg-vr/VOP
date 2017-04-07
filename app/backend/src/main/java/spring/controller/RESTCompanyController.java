@@ -53,7 +53,7 @@ public class RESTCompanyController extends RESTAbstractController<RESTCompany,Cu
                                        @RequestParam(required = false) String country,
                                        @RequestParam(required = false) String city,
                                        @RequestParam(required = false) String postalCode,
-                                       @RequestHeader(value="AuthToken") String token,
+                                       @RequestHeader(value="Authorization") String token,
                                        @RequestHeader(value="Function") String function) {
 
 

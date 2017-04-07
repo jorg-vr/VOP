@@ -36,7 +36,7 @@ public class RESTFunctionController extends RESTAbstractController<RESTFunction,
                                         @RequestParam(required = false) Integer page,
                                         @RequestParam(required = false) Integer limit,
                                         @RequestParam(required = false) String sort,
-                                        @RequestHeader(value="AuthToken") String token,
+                                        @RequestHeader(value="Authorization") String token,
                                         @RequestHeader(value="Function") String authorityFunction){
 
         Collection<RESTFunction> restFunctions = new ArrayList<>();

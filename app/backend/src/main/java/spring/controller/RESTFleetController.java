@@ -44,7 +44,7 @@ public class RESTFleetController extends RESTAbstractController<RESTFleet,Fleet>
                                      @RequestParam(required = false) String company,
                                      @RequestParam(required = false) Integer page,
                                      @RequestParam(required = false) Integer limit,
-                                     @RequestHeader(value="AuthToken") String token,
+                                     @RequestHeader(value="Authorization") String token,
                                      @RequestHeader(value="Function") String function) {
         if (companyId.isPresent()) {
             company = companyId.get();

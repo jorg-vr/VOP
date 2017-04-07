@@ -61,7 +61,7 @@ public class RESTVehicleController extends RESTAbstractController<RESTVehicle,Ve
                                        @RequestParam(required = false) String type,
                                        @RequestParam(required = false) Integer page,
                                        @RequestParam(required = false) Integer limit,
-                                       @RequestHeader(value="AuthToken") String token,
+                                       @RequestHeader(value="Authorization") String token,
                                        @RequestHeader(value="Function") String function) {
         if (fleetId.isPresent()) {
             fleet = fleetId.get();

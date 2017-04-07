@@ -39,7 +39,7 @@ public abstract class RESTAbstractController<R extends RESTAbstractModel<M>,M ex
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public R post(@RequestBody R rest, @RequestHeader(value="AuthToken") String token,
+    public R post(@RequestBody R rest, @RequestHeader(value="Authorization") String token,
                   @RequestHeader(value="Function") String function) {
         try(AbstractController<M> controller=controllerFactory.create(verifyToken(token,function))) {
             M model = controller.create(rest.translate(verifyToken(token,function)));
@@ -52,7 +52,7 @@ public abstract class RESTAbstractController<R extends RESTAbstractModel<M>,M ex
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "{id}")
-    public R getId(@PathVariable("id") String id, @RequestHeader(value="AuthToken") String token,
+    public R getId(@PathVariable("id") String id, @RequestHeader(value="Authorization") String token,
                    @RequestHeader(value="Function") String function) {
         UUID uuid = UUIDUtil.toUUID(id);
         try(AbstractController<M> controller=controllerFactory.create(verifyToken(token,function))) {
@@ -65,7 +65,7 @@ public abstract class RESTAbstractController<R extends RESTAbstractModel<M>,M ex
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "{id}")
-    public R putId(@PathVariable("id") String id, @RequestBody R rest, @RequestHeader(value="AuthToken") String token,
+    public R putId(@PathVariable("id") String id, @RequestBody R rest, @RequestHeader(value="Authorization") String token,
                    @RequestHeader(value="Function") String function) {
         try(AbstractController<M> controller=controllerFactory.create(verifyToken(token,function))) {
             rest.setId(id);
@@ -81,7 +81,7 @@ public abstract class RESTAbstractController<R extends RESTAbstractModel<M>,M ex
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "{id}")
-    public void deleteId(@PathVariable("id") String id, @RequestHeader(value="AuthToken") String token,
+    public void deleteId(@PathVariable("id") String id, @RequestHeader(value="Authorization") String token,
                          @RequestHeader(value="Function") String function) {
         UUID uuid = UUIDUtil.toUUID(id);
         try(AbstractController<M> controller=controllerFactory.create(verifyToken(token,function))) {
