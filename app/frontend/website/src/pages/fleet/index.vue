@@ -4,7 +4,10 @@
 <template>
     <div>
         <div class="page-header">
-            <h1>{{$t("fleet.fleets") | capitalize}}</h1>
+            <h1>
+                {{$t("fleet.fleets") | capitalize}}
+                <button-link :route="{name: 'new_fleet'}" buttonClass="pull-right btn btn-md btn-primary btn-add">Nieuwe vloot</button-link>
+            </h1>
         </div>
         <fleet-search-bar @search="updateFleets" :clients="clients" @advancedSearch="updateFleetsAdvanced"></fleet-search-bar>
         <!-- Render an info-pane for every fleet. Once all the data is loaded, the table will be shown.-->
@@ -18,19 +21,23 @@
                         :key="fleet.id"
                         rowClass="fleetrow">
         </list-component>
-        <button-add :route="{name: 'new_fleet'}"></button-add>
     </div>
 </template>
+<style>
+.btn-add {
+    margin-top: -2px;
+}
+</style>
 <script>
     import { mapGetters, mapActions, mapMutations } from 'vuex'
     import listComponent from "../../assets/general/listComponent.vue"
-    import buttonAdd from '../../assets/buttons/buttonAdd.vue'
     import fleetSearchBar from '../../assets/search/types/fleetSearchBar.vue'
+    import buttonLink from '../../assets/buttons/buttonLink.vue'
     import Vue from 'vue'
 
     export default {
         components: {
-            listComponent, buttonAdd, fleetSearchBar
+            listComponent, buttonLink, fleetSearchBar
         },
         created() {
             let p1 = this.fetchFleets().then(fleets => {
