@@ -1,16 +1,18 @@
 package model.insurance;
 
 
+import model.fleet.VehicleType;
 import model.history.EditableObject;
 import model.identity.InsuranceCompany;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.UUID;
 
 /**
  * Insurance class representing an insurance linked to a (group of) vehicle(s).
  */
-public class Insurance implements EditableObject, Calculation, java.io.Serializable {
+public class Insurance implements EditableObject, java.io.Serializable {
 
     /**
      * Company that offers insurance to customer.
@@ -18,11 +20,10 @@ public class Insurance implements EditableObject, Calculation, java.io.Serializa
     private InsuranceCompany company;
 
     /**
-     * Price of insurance (gross premium). This is the amount the holder of the insurance has to pay and is based on
-     * the net premium (= gross premium - taxes and changes) and the risk premium (net premium - commission costs).
+     * Percentage of insured capital that has to be paid yearly
      */
 
-    private int price;
+    private int netPrice;
 
     /**
      * Franchise of the insurance. This is the amount that has to be paid by the one who holds the insurance.
@@ -31,12 +32,10 @@ public class Insurance implements EditableObject, Calculation, java.io.Serializa
     private int franchise;
 
     /**
-     * Collection of insurance sureties included in the insurance. These determine the coverage
-     * of the insurance itself aswell as the franchise and price of the insurance according
-     * to their taxes and commission costs.
+     * Type of insurance included
      */
 
-    private Collection<Surety> sureties;
+    private SuretyType suretyType;
 
     /**
      * Constructor
@@ -54,13 +53,6 @@ public class Insurance implements EditableObject, Calculation, java.io.Serializa
         return null;
     }
 
-    /**
-     * Implementation of the function to calculate price of insurance.
-     */
-    @Override
-    public void calculatePrice() {
-
-    }
 
     public InsuranceCompany getCompany() {
         return company;
@@ -70,12 +62,12 @@ public class Insurance implements EditableObject, Calculation, java.io.Serializa
         this.company = company;
     }
 
-    public int getPrice() {
-        return price;
+    public int getNetPrice() {
+        return netPrice;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
+    public void setNetPrice(int netPrice) {
+        this.netPrice = netPrice;
     }
 
     public int getFranchise() {
@@ -86,11 +78,12 @@ public class Insurance implements EditableObject, Calculation, java.io.Serializa
         this.franchise = franchise;
     }
 
-    public Collection<Surety> getSureties() {
-        return sureties;
+    public SuretyType getSuretyType() {
+        return suretyType;
     }
 
-    public void setSureties(Collection<Surety> sureties) {
-        this.sureties = sureties;
+    public void setSuretyType(SuretyType suretyType) {
+        this.suretyType = suretyType;
     }
+
 }
