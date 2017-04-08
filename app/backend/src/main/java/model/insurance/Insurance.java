@@ -1,12 +1,9 @@
 package model.insurance;
 
 
-import model.fleet.VehicleType;
 import model.history.EditableObject;
 import model.identity.InsuranceCompany;
 
-import java.util.Collection;
-import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -23,11 +20,11 @@ public class Insurance implements EditableObject, java.io.Serializable {
      * Percentage of insured capital that has to be paid yearly
      */
 
-    private int netPrice;
+    private int premium;
 
     /**
      * Franchise of the insurance. This is the amount that has to be paid by the one who holds the insurance.
-     * This can either be a percentage or a fixed amount.
+     * This is a fixed amount.
      */
     private int franchise;
 
@@ -62,12 +59,12 @@ public class Insurance implements EditableObject, java.io.Serializable {
         this.company = company;
     }
 
-    public int getNetPrice() {
-        return netPrice;
+    public int getPremium() {
+        return premium;
     }
 
-    public void setNetPrice(int netPrice) {
-        this.netPrice = netPrice;
+    public void setPremium(int premium) {
+        this.premium = premium;
     }
 
     public int getFranchise() {
