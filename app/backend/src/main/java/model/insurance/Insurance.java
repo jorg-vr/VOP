@@ -1,55 +1,26 @@
 package model.insurance;
 
-
-import model.history.EditableObject;
+import model.fleet.Vehicle;
 import model.identity.InsuranceCompany;
 
-import java.util.UUID;
+import java.time.LocalDateTime;
+import java.util.Collection;
 
 /**
- * Insurance class representing an insurance linked to a (group of) vehicle(s).
+ * Created by jorg on 4/8/17.
  */
-public class Insurance implements EditableObject, java.io.Serializable {
-
+public class Insurance {
     /**
-     * Company that offers insurance to customer.
+     * Company that offers surety to customer.
      */
     private InsuranceCompany company;
+    Vehicle vehicle;
+    Collection<Surety> sureties;
+    LocalDateTime startDate;
+    LocalDateTime endDate;
 
-    /**
-     * Percentage of insured capital that has to be paid yearly
-     */
-
-    private int premium;
-
-    /**
-     * Franchise of the insurance. This is the amount that has to be paid by the one who holds the insurance.
-     * This is a fixed amount.
-     */
-    private int franchise;
-
-    /**
-     * Type of insurance included
-     */
-
-    private SuretyType suretyType;
-
-    /**
-     * Constructor
-     */
     public Insurance() {
     }
-
-    @Override
-    public UUID getUuid() {
-        return null;
-    }
-
-    @Override
-    public EditableObject copy() {
-        return null;
-    }
-
 
     public InsuranceCompany getCompany() {
         return company;
@@ -59,28 +30,35 @@ public class Insurance implements EditableObject, java.io.Serializable {
         this.company = company;
     }
 
-    public int getPremium() {
-        return premium;
+    public Vehicle getVehicle() {
+        return vehicle;
     }
 
-    public void setPremium(int premium) {
-        this.premium = premium;
+    public void setVehicle(Vehicle vehicle) {
+        this.vehicle = vehicle;
     }
 
-    public int getFranchise() {
-        return franchise;
+    public Collection<Surety> getSureties() {
+        return sureties;
     }
 
-    public void setFranchise(int franchise) {
-        this.franchise = franchise;
+    public void setSureties(Collection<Surety> sureties) {
+        this.sureties = sureties;
     }
 
-    public SuretyType getSuretyType() {
-        return suretyType;
+    public LocalDateTime getStartDate() {
+        return startDate;
     }
 
-    public void setSuretyType(SuretyType suretyType) {
-        this.suretyType = suretyType;
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
     }
 
+    public LocalDateTime getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDateTime endDate) {
+        this.endDate = endDate;
+    }
 }

@@ -2,7 +2,7 @@ package model.billing;
 
 import model.history.EditableObject;
 import model.identity.Company;
-import model.insurance.Contract;
+import model.insurance.Insurance;
 
 import java.net.URL;
 import java.time.LocalDate;
@@ -55,9 +55,9 @@ public class Invoice implements EditableObject, java.io.Serializable {
     private LocalDate endDate;
 
     /**
-     * collection of the contracts that are the subject of this invoice
+     * collection of the insurances that are the subject of this invoice
      */
-    private Collection<Contract> contracts;
+    private Collection<Insurance> insurances;
 
     /**
      * constructor
@@ -146,12 +146,12 @@ public class Invoice implements EditableObject, java.io.Serializable {
         this.type = type;
     }
 
-    public Collection<Contract> getContracts() {
-        return contracts;
+    public Collection<Insurance> getInsurances() {
+        return insurances;
     }
 
-    public void setContracts(Collection<Contract> contracts) {
-        this.contracts = contracts;
+    public void setInsurances(Collection<Insurance> insurances) {
+        this.insurances = insurances;
     }
 
 }
