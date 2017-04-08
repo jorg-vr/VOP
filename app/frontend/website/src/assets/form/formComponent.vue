@@ -3,7 +3,7 @@
         <slot></slot>
         <div class="row">
             <button-link :route="failroute" buttonClass="pull-right btn btn-sm btn-default form-component-button">{{failButtonText}}</button-link>
-            <button-action @click="onSubmit" buttonClass="pull-right btn btn-sm btn-default form-component-button">{{successButtonText}}</button-action>
+            <button-action @click="onSubmit" buttonClass="pull-right btn btn-sm btn-primary form-component-button">{{successButtonText}}</button-action>
         </div>
     </form>
 </template>
