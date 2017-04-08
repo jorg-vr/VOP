@@ -17,28 +17,32 @@ import java.util.UUID;
  */
 public class AuthController implements AutoCloseable {
     public Function getFunction(AuthenticationToken token, UUID functionId) throws DataAccessException, UnAuthorizedException {
-        User account= ProductionProvider.getInstance().getUserDAO().get(token.getAccountId());
-        Function function= ProductionProvider.getInstance().getFunctionDAO().get(functionId);
-        if(function.getUser().equals(account)){
+        User account = ProductionProvider.getInstance().getUserDAO().get(token.getAccountId());
+        Function function = ProductionProvider.getInstance().getFunctionDAO().get(functionId);
+        if (function.getUser().equals(account)) {
             return function;
         } else {
             throw new UnAuthorizedException();
         }
     }
 
-    public Collection<Function> getFunctions(AuthenticationToken token) throws DataAccessException, UnAuthorizedException {
-        User user= ProductionProvider.getInstance().getUserDAO().get(token.getAccountId());
+    public User getUser(AuthenticationToken token) throws DataAccessException {
+        return ProductionProvider.getInstance().getUserDAO().get(token.getAccountId());
+    }
+
+    public Collection<Function> getFunctions(AuthenticationToken token) throws DataAccessException {
+        User user = getUser(token);
         return user.getFunctions();
     }
 
-    public AuthenticationToken getToken(String login,String password)throws DataAccessException, UnAuthorizedException{
-        UserDAO userDAO=ProductionProvider.getInstance().getUserDAO();
-        User account= userDAO.getUserByLogin(login,password);
+    public AuthenticationToken getToken(String login, String password) throws DataAccessException, UnAuthorizedException {
+        UserDAO userDAO = ProductionProvider.getInstance().getUserDAO();
+        User account = userDAO.getUserByLogin(login, password);
         return new AuthenticationToken(account.getUuid());
     }
 
-    public AuthenticationToken refreshToken(AuthenticationToken token)throws DataAccessException, UnAuthorizedException{
-        User user= ProductionProvider.getInstance().getUserDAO().get(token.getAccountId());
+    public AuthenticationToken refreshToken(AuthenticationToken token) throws DataAccessException, UnAuthorizedException {
+        User user = ProductionProvider.getInstance().getUserDAO().get(token.getAccountId());
         return new AuthenticationToken(user.getUuid());
     }
 
