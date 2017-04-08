@@ -2,7 +2,7 @@
     This page shows all of the fleets in the database.
 -->
 <template>
-    <div>
+    <div class="col-lg-8 col-md-9 col-sm-11">
         <div class="page-header">
             <h1>
                 {{$t("fleet.fleets") | capitalize}}
