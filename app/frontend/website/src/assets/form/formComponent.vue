@@ -1,9 +1,8 @@
 <template>
-    <form class="form-horizontal">
+    <form class="form-horizontal col-xs-12 col-sm-11 col-md-9 col-lg-7">
         <slot></slot>
         <div class="row">
             <button-success @click="onSubmit"></button-success>
-            <button-fail :route="failroute"></button-fail>
         </div>
     </form>
 </template>

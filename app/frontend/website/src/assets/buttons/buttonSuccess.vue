@@ -1,6 +1,11 @@
 <template>
-    <button-action @click="emitClicked" buttonClass="btn btn-success btn-md" buttonId="success"></button-action>
+    <button-action @click="emitClicked" buttonClass="btn btn-default btn-sm btn-succes pull-right" buttonId="success">Voeg gebruiker toe</button-action>
 </template>
+
+<style>
+
+</style>
+
 <script>
     import buttonAction from './buttonAction.vue'
 
