@@ -43,7 +43,7 @@ import java.util.*;
  *  For more information about what the HTTP requests do, see the API specification
  */
 @RestController
-@RequestMapping(value = {"/vehicles", "/companies/{companyId}/fleets/{fleetId}/vehicles"})
+@RequestMapping(value = {"/${path.vehicles}", "/${path.companies}/{companyId}/${path.fleets}/{fleetId}/${path.vehicles}"})
 public class RESTVehicleController extends RESTAbstractController<RESTVehicle,Vehicle> {
 
     private static DateTimeFormatter yearFormat = DateTimeFormatter.ofPattern("yyyyMMdd").withLocale(Locale.forLanguageTag("NL"));

@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 @RestController
 public class RESTPermissionController extends RESTSimpleController {
 
-    @RequestMapping(value = "/auth/permissions", method = RequestMethod.GET)
+    @RequestMapping(value = "/${path.auth}/${path.permissions}", method = RequestMethod.GET)
     public RESTSchema<RESTPermission> getAllPermissions(HttpServletRequest request,
                                                         Integer page, Integer limit,
                                                         String resource, String action,
@@ -36,7 +36,7 @@ public class RESTPermissionController extends RESTSimpleController {
         return new RESTSchema<>(filtered, page, limit, request);
     }
 
-    @RequestMapping(value = "/auth/roles/{id}/permissions", method = RequestMethod.GET)
+    @RequestMapping(value = "/${path.auth}/${path.roles}/{id}/${path.permissions}", method = RequestMethod.GET)
     public RESTSchema<RESTPermission> get(@PathVariable String id,
                                           HttpServletRequest request,
                                           Integer page, Integer limit,
@@ -56,7 +56,7 @@ public class RESTPermissionController extends RESTSimpleController {
         }
     }
 
-    @RequestMapping(value = "/auth/roles/{id}/permissions", method = RequestMethod.PUT)
+    @RequestMapping(value = "/${path.auth}/${path.roles}/{id}/${path.permissions}", method = RequestMethod.PUT)
     public void put(@PathVariable String id,
                     @RequestBody List<Long> permissions,
                     @RequestHeader(value = "Authorization") String token,

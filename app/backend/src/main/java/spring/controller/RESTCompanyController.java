@@ -37,7 +37,7 @@ import java.util.UUID;
  *  For more information about what the HTTP requests do, see the API specification
  */
 @RestController
-@RequestMapping("/companies")
+@RequestMapping("/${path.companies}")
 public class RESTCompanyController extends RESTAbstractController<RESTCompany,Customer> {
 
 

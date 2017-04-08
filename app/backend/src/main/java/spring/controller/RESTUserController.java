@@ -34,7 +34,7 @@ import java.util.*;
  * For more information about what the HTTP requests do, see the API specification
  */
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/${path.users}")
 public class RESTUserController extends RESTAbstractController<RESTUser, User> {
 
     public RESTUserController() {

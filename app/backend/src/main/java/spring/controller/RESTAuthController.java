@@ -22,10 +22,10 @@ import java.util.Collection;
  *  3) GET /auth (this one should be removed after /user/me is implemented)
  */
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/${path.auth}")
 public class RESTAuthController {
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/${path.login}", method = RequestMethod.POST)
     public String post(@RequestBody RESTAuth restAuth) {
         try (AuthController authController = new AuthController()) {
             return authController.getToken(restAuth.getLogin(), restAuth.getPassword()).toString();
@@ -36,7 +36,7 @@ public class RESTAuthController {
         }
     }
 
-    @RequestMapping(value = "/refresh", method = RequestMethod.POST)
+    @RequestMapping(value = "/${path.refresh}", method = RequestMethod.POST)
     public String put(@RequestHeader(value = "Authorization") String token) {
         try (AuthController authController = new AuthController()) {
             return authController.refreshToken(new AuthenticationToken(token)).toString();

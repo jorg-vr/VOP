@@ -25,7 +25,7 @@ import java.util.Optional;
  *  2) DELETE /users/{userId}/functions/{id}
  */
 @RestController
-@RequestMapping("/users/{userId}/functions")
+@RequestMapping("/${path.users}/{userId}/${path.functions}")
 public class RESTFunctionController extends RESTAbstractController<RESTFunction, Function> {
 
     public RESTFunctionController() {

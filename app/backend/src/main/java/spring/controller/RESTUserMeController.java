@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 @RestController
-@RequestMapping("/users/me")
+@RequestMapping("/${path.users}/me")
 public class RESTUserMeController {
 
     @RequestMapping(method = RequestMethod.GET)

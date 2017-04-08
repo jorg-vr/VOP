@@ -35,7 +35,7 @@ import java.util.Optional;
  * For more information about what the HTTP requests do, see the API specification
  */
 @RestController
-@RequestMapping(value = {"/fleets", "/companies/{companyId}/fleets"})
+@RequestMapping(value = {"/${path.fleets}", "/${path.companies}/{companyId}/${path.fleets}"})
 public class RESTFleetController extends RESTAbstractController<RESTFleet,Fleet>{
 
     public RESTFleetController() {
