@@ -10,12 +10,10 @@ import model.identity.CompanyType;
 import model.identity.Customer;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.time.LocalDate;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -74,43 +72,6 @@ public class VehiclesCollectionTest {
     }
 
     /**
-     * Tests if if the database automatically updates a vehicle's 'fleet' field when adding the vehicle to a fleet's vehicles collection.
-     *
-     * @throws Exception
-     */
-    @Ignore
-    @Test
-    public void addToCollection() throws Exception {
-
-        Vehicle v1 = null;
-        try (FleetDAO fleetDAO = daoProvider.getFleetDAO();
-             VehicleDAO vehicleDAO = daoProvider.getVehicleDAO()) {
-
-            //create vehicle
-            v1 = vehicleDAO.create(new Vehicle("brand 2", "model A", "AZ0UZABCUKZ12345L", "ABR 569", 36000, 4900, t1, LocalDate.of(2015, 6, 17), null, null));
-
-            //Test if vehicles are correctly added to the fleet's vehicles collection
-            f1.addVehicle(v1);
-            fleetDAO.update(f1);
-            v1 = vehicleDAO.get(v1.getUuid());
-            f1 = fleetDAO.get(f1.getUuid());
-            assertTrue("vehicle was not added to the fleet's vehicles collection", f1.getVehicles().contains(v1));
-
-            //Test if a vehicle's assigned fleet is automatically set when adding it to a fleet.
-            assertEquals("fleet field of a vehicle not automatically set upon adding to a fleet's vehicles collection", f1, v1.getFleet());
-
-        } catch (Exception e) {
-
-        } finally {
-            VehicleDAO vehicleDAO = daoProvider.getVehicleDAO();
-            if (v1 != null) {
-                vehicleDAO.remove(v1.getUuid());
-            }
-            vehicleDAO.close();
-        }
-    }
-
-    /**
      * Test if a vehicle is automatically added to a fleet's vehicles collection when setting the vehicle's 'fleet' field to that fleet.
      *
      * @throws Exception
@@ -147,54 +108,6 @@ public class VehiclesCollectionTest {
             }
             if (v2 != null) {
                 vehicleDAO.remove(v2.getUuid());
-            }
-            vehicleDAO.close();
-        }
-    }
-
-    /**
-     * Test if a vehicle's 'fleet' field is set to null when removing the vehicle from the fleet's vehicles collection.
-     *
-     * @throws Exception
-     */
-    @Ignore
-    @Test
-    public void removeFromCollection() throws Exception {
-
-        Vehicle v1 = null;
-        try (FleetDAO fleetDAO = daoProvider.getFleetDAO();
-             VehicleDAO vehicleDAO = daoProvider.getVehicleDAO()) {
-
-            //create vehicle
-            v1 = vehicleDAO.create(new Vehicle("brand 2", "model A", "AZ0UZABCUKZ12345L", "ABR 569", 36000, 4900, t1, LocalDate.of(2015, 6, 17), null, null));
-
-            //Test if vehicles are correctly added to the fleet's vehicles collection and if the fleet field of the vehicle was correctly set
-            //If these don't pass the rest of this test is irrelevant since it relies on this working correctly
-            f1 = fleetDAO.get(f1.getUuid());
-            f1.addVehicle(v1);
-            fleetDAO.update(f1);
-            v1 = vehicleDAO.get(v1.getUuid());
-            f1 = fleetDAO.get(f1.getUuid());
-            assertTrue("vehicle was not added to the fleet's vehicles collection", f1.getVehicles().contains(v1));
-            assertEquals("fleet field of a vehicle not automatically set upon adding to a fleet's vehicles collection", f1, v1.getFleet());
-
-            //Test if vehicles are correctly removed from the collection
-            f1 = fleetDAO.get(f1.getUuid());
-            f1.removeVehicle(vehicleDAO.get(v1.getUuid()));
-            fleetDAO.update(f1);
-            v1 = vehicleDAO.get(v1.getUuid());
-            f1 = fleetDAO.get(f1.getUuid());
-            assertTrue("vehicle was not correctly removed from vehicles collection", !f1.getVehicles().contains(v1));
-
-            //Test if vehicle's fleet field is automatically set to null upon removal
-            assertEquals("vehicle's fleet field was not automatically updated (set to null) upon removal from it's fleet", null, v1.getFleet());
-
-        } catch (Exception e) {
-
-        } finally {
-            VehicleDAO vehicleDAO = daoProvider.getVehicleDAO();
-            if (v1 != null) {
-                vehicleDAO.remove(v1.getUuid());
             }
             vehicleDAO.close();
         }
