@@ -3,7 +3,7 @@
     From this page a new user can be added or an existing user can be edited or removed.
 -->
 <template>
-    <div>
+    <div class="col-lg-8 col-md-9 col-sm-11">
         <div class="page-header">
             <h1>
                 {{$t("user.users") | capitalize }}

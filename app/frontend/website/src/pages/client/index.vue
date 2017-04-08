@@ -3,7 +3,7 @@
     From this page a new client can be added or an existing client can be edited or removed.
 -->
 <template>
-    <div>
+    <div class="col-lg-8 col-md-9 col-sm-11">
         <div class="page-header">
             <h1>
                 {{$t("client.clients") | capitalize }}
