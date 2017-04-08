@@ -6,7 +6,7 @@
         <div class="page-header">
             <h1>{{ $t("user.user") | capitalize }} {{$t("actions_plural.create") }}</h1>
         </div>
-        <user-form :submit="createUser"></user-form>
+        <user-form :successButtonText="$t('user.user').capitalize() + ' ' +  $t('actions_plural.create')" :failButtonText="$t('common.cancel').capitalize()"  :submit="createUser"></user-form>
     </div>
 </template>
 <script>
