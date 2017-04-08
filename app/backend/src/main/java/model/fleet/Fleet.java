@@ -5,7 +5,6 @@ import model.identity.Customer;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.UUID;
 
 public class Fleet implements EditableObject, java.io.Serializable {
@@ -36,42 +35,6 @@ public class Fleet implements EditableObject, java.io.Serializable {
         this.uuid = uuid;
 
         this.vehicles = vehicles;
-    }
-
-
-    /**
-     * Adds the Vehicle to the Fleet.
-     * If the Vehicle is already present in the Fleet, nothing will happen.
-     * DEVELOPER NOTE:  We can't be sure that vehicles is a HashSet (because the Constructor accepts a Collection)
-     * so we can't shorten this function to 1 line.
-     *
-     * @return true if the Vehicle was added
-     */
-    public boolean addVehicle(Vehicle vehicle) {
-        if (vehicles == null) {
-            vehicles = new ArrayList<Vehicle>();
-        } else if (vehicle == null || vehicles.contains(vehicle)) {
-            return false;
-        }
-        return vehicles.add(vehicle);
-    }
-
-    /**
-     * Removes the Vehicle from the Fleet.
-     * If the Vehicle is not present in the Fleet, nothing will happen.
-     * DEVELOPER NOTE:  We can't be sure that vehicles is a HashSet (because the Constructor accepts a Collection)
-     * so we can't shorten this function to 1 line.
-     *
-     * @return true if the Vehicle was removed
-     */
-    public boolean removeVehicle(Vehicle vehicle) {
-        if (vehicles == null) {
-            return false;
-        }
-        if (vehicle == null || !vehicles.contains(vehicle)) {
-            return false;
-        }
-        return vehicles.remove(vehicle);
     }
 
     /**
