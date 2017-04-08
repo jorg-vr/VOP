@@ -2,6 +2,7 @@ package model.billing;
 
 import model.history.EditableObject;
 import model.identity.Company;
+import model.insurance.Contract;
 
 import java.net.URL;
 import java.time.LocalDate;
@@ -54,9 +55,9 @@ public class Invoice implements EditableObject, java.io.Serializable {
     private LocalDate endDate;
 
     /**
-     * collection of the costs that fall in this billing period.
+     * collection of the contracts that are the subject of this invoice
      */
-    private Collection<Cost> costs;
+    private Collection<Contract> contracts;
 
     /**
      * constructor
@@ -74,11 +75,6 @@ public class Invoice implements EditableObject, java.io.Serializable {
         this.endDate = endDate;
     }
 
-    public Invoice(UUID uuid, Company payer, Company beneficiary, URL url, InvoiceType type, boolean paid, LocalDate startDate, LocalDate endDate, Collection<Cost> costs) {
-        this(payer, beneficiary, url, type, paid, startDate, endDate);
-        this.uuid = uuid;
-        this.costs = costs;
-    }
 
     @Override
     public EditableObject copy() {
@@ -142,11 +138,20 @@ public class Invoice implements EditableObject, java.io.Serializable {
         this.endDate = endDate;
     }
 
-    public Collection<Cost> getCosts() {
-        return costs;
+    public InvoiceType getType() {
+        return type;
     }
 
-    public void setCosts(Collection<Cost> costs) {
-        this.costs = costs;
+    public void setType(InvoiceType type) {
+        this.type = type;
     }
+
+    public Collection<Contract> getContracts() {
+        return contracts;
+    }
+
+    public void setContracts(Collection<Contract> contracts) {
+        this.contracts = contracts;
+    }
+
 }
