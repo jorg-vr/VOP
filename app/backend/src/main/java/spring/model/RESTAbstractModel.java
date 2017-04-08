@@ -26,12 +26,16 @@ public abstract class RESTAbstractModel<T extends EditableObject> {
      * @param createdAt
      * @param lastUpdated
      * @param url the base URL of the RESTModel.
-     *            Appending the id to the url will be handled in the constructor, so it should NOT be /vehicles/123 for example but /vehicles
+     *            Appending the id to the url will be handled in the constructor, so it should NOT be /vehicles/123 for example but /vehicles.
+     *            If url does not start with '/' it will be added
      */
     public RESTAbstractModel(UUID uuid, EditEvent createdAt, EditEvent lastUpdated, String url) {
         this.id = UUIDUtil.UUIDToNumberString(uuid);
         //this.createdAt = createdAt.getEditTime(); TODO milestone3
         //this.lastUpdated = lastUpdated.getEditTime(); TODO milestone3
+        if (! url.startsWith("/")) {
+            url = "/" + url;
+        }
         this.url = url + "/" + id;
     }
 

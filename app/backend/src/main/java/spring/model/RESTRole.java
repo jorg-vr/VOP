@@ -6,23 +6,21 @@ import model.account.Role;
 import model.account.Function;
 import model.account.Role;
 
+import static util.MyProperties.*;
+
 /**
  * This is a bean class as specified in the API specification
  */
 public class RESTRole extends RESTAbstractModel<Role> {
 
-
-    private static final String PATH_ROLES = "/auth/roles";
-
     private String name;
-
     private String permissions;
 
     public RESTRole() {
     }
 
     public RESTRole(Role role) {
-        super(role.getUuid(), PATH_ROLES);
+        super(role.getUuid(), getProperty(PATH_AUTH) + "/" + getProperty(PATH_ROLES));
         this.name = role.getName();
     }
 
@@ -41,7 +39,7 @@ public class RESTRole extends RESTAbstractModel<Role> {
     }
 
     public String getPermissions() {
-        return getUrl() + "/permissions";
+        return getUrl() + "/" + getProperty(PATH_PERMISSIONS);
     }
 
     public void setPermissions(String permissions) {

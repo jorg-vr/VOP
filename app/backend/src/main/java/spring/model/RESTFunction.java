@@ -10,12 +10,13 @@ import spring.controller.UUIDUtil;
 import spring.exceptions.InvalidInputException;
 import spring.exceptions.NotAuthorizedException;
 
+import static util.MyProperties.PATH_FUNCTIONS;
+import static util.MyProperties.getProperty;
+
 /**
  * Created by Jarre on 6-4-2017.
  */
 public class RESTFunction extends RESTAbstractModel<Function> {
-
-    private final static String PATH_FUNCTIONS = "/functions";
 
     private String company;
     private String role;
@@ -26,7 +27,7 @@ public class RESTFunction extends RESTAbstractModel<Function> {
     }
 
     public RESTFunction(Function function){
-        super(function.getUuid(), PATH_FUNCTIONS);
+        super(function.getUuid(), getProperty(PATH_FUNCTIONS));
         this.company = UUIDUtil.UUIDToNumberString(function.getCompany().getUuid());
         this.role = UUIDUtil.UUIDToNumberString(function.getRole().getUuid());
         this.user = UUIDUtil.UUIDToNumberString(function.getUser().getUuid());

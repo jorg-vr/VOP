@@ -10,12 +10,13 @@ import spring.controller.UUIDUtil;
 import spring.exceptions.InvalidInputException;
 import spring.exceptions.NotAuthorizedException;
 
+import static util.MyProperties.PATH_FLEETS;
+import static util.MyProperties.getProperty;
+
 /**
  * This is a bean class as specified in the API specification
  */
 public class RESTFleet extends RESTAbstractModel<Fleet> {
-
-    private static final String PATH_FLEETS = "/fleets";
 
     private String company;
     private String name;
@@ -24,7 +25,7 @@ public class RESTFleet extends RESTAbstractModel<Fleet> {
     }
 
     public RESTFleet(Fleet fleet) {
-        super(fleet.getUuid(), PATH_FLEETS);
+        super(fleet.getUuid(), getProperty(PATH_FLEETS));
         company = UUIDUtil.UUIDToNumberString(fleet.getOwner().getUuid());
         name = fleet.getName();
     }

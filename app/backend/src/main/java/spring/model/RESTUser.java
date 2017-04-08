@@ -4,12 +4,13 @@ import model.account.Function;
 import model.account.User;
 import spring.controller.UUIDUtil;
 
+import static util.MyProperties.PATH_USERS;
+import static util.MyProperties.getProperty;
+
 /**
  * This is a bean class as specified in the API specification
  */
 public class RESTUser extends RESTAbstractModel<User> {
-
-    private static final String PATH_USERS = "/users";
 
     private String firstName;
     private String lastName;
@@ -25,7 +26,7 @@ public class RESTUser extends RESTAbstractModel<User> {
      * @param user should not be null
      */
     public RESTUser(User user) {
-        super(user.getUuid(), PATH_USERS);
+        super(user.getUuid(), getProperty(PATH_USERS));
         firstName = user.getFirstName();
         lastName = user.getLastName();
         email = user.getEmail();

@@ -6,14 +6,13 @@ import model.identity.Company;
 import model.identity.Customer;
 import spring.controller.UUIDUtil;
 
-import java.util.UUID;
+import static util.MyProperties.PATH_COMPANIES;
+import static util.MyProperties.getProperty;
 
 /**
  * This is a bean class as specified in the API specification
  */
 public class RESTCompany extends RESTAbstractModel<Customer>{
-
-    private static final String PATH_COMPANIES = "/companies";
 
     private String name;
     private String vatNumber;
@@ -27,7 +26,7 @@ public class RESTCompany extends RESTAbstractModel<Customer>{
      * @param company the company that the fields of this object should be based on
      */
     public RESTCompany(Company company) {
-        super(company.getUuid(), PATH_COMPANIES);
+        super(company.getUuid(), getProperty(PATH_COMPANIES));
         this.name = company.getName();
         this.vatNumber = company.getBtwNumber();
         this.phoneNumber = company.getPhoneNumber();
