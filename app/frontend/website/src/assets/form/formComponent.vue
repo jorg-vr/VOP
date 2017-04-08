@@ -2,7 +2,7 @@
     <form class="form-horizontal col-xs-12 col-sm-11 col-md-9 col-lg-7">
         <slot></slot>
         <div class="row">
-            <button-link :route="failroute" buttonClass="btn btn-sm btn-default form-component-button">{{failButtonText}}</button-link>
+            <button-link :route="failroute" buttonClass="pull-right btn btn-sm btn-default form-component-button">{{failButtonText}}</button-link>
             <button-action @click="onSubmit" buttonClass="pull-right btn btn-sm btn-default form-component-button">{{successButtonText}}</button-action>
         </div>
     </form>
@@ -10,6 +10,7 @@
 <style>
 .form-component-button {
     margin-top: 25px;
+    margin-left: 20px;
 }
 </style>
 <script>
