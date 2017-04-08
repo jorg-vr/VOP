@@ -36,22 +36,6 @@ public class RESTAuthController {
         }
     }
 
-    // TODO remove this after /user/me is implemented
-    @RequestMapping(method = RequestMethod.GET)
-    public Collection<RESTFunction> getAll(@RequestHeader(value = "Authorization") String token) {
-        try (AuthController authController = new AuthController()) {
-            Collection<RESTFunction> restFunctions = new ArrayList<>();
-            for (Function function : authController.getFunctions(new AuthenticationToken(token))) {
-                restFunctions.add(new RESTFunction(function));
-            }
-            return restFunctions;
-        } catch (DataAccessException e) {
-            throw new InvalidInputException(e);
-        } catch (UnAuthorizedException e) {
-            throw new NotAuthorizedException();
-        }
-    }
-
     @RequestMapping(value = "/refresh", method = RequestMethod.POST)
     public String put(@RequestHeader(value = "Authorization") String token) {
         try (AuthController authController = new AuthController()) {
