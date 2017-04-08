@@ -5,6 +5,7 @@
             <h1>{{ $t("vehicle.vehicle") | capitalize }} {{$t("actions_plural.create") }}</h1>
         </div>
         <vehicle-form :submit="createVehicle" :fleetId="fleetId"></vehicle-form>
+        <vehicle-form :successButtonText="$t('vehicle.vehicle').capitalize() + ' ' +  $t('actions_plural.create')" :failButtonText="$t('common.cancel').capitalize()"  :submit="createVehicle" fleetId="fleetId"></vehicle-form>
     </div>
 </template>
 <script>

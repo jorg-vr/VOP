@@ -6,7 +6,7 @@
         <div class="page-header">
             <h1><h1>{{ $t("fleet.fleet") | capitalize }} {{$t("actions_plural.create") }}</h1></h1>
         </div>
-        <fleet-form :submit="createFleet" :clientId="clientId"></fleet-form>
+        <fleet-form :successButtonText="$t('fleet.fleet').capitalize() + ' ' +  $t('actions_plural.create')" :failButtonText="$t('common.cancel').capitalize()"  :submit="createFleet" :clientId="clientId"></fleet-form>
     </div>
 </template>
 <script>

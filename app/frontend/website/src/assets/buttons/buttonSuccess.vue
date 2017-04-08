@@ -1,5 +1,5 @@
 <template>
-    <button-action @click="emitClicked" buttonClass="btn btn-default btn-sm btn-succes pull-right" buttonId="success">Voeg gebruiker toe</button-action>
+    <button-action @click="emitClicked" buttonClass="btn btn-default btn-sm btn-succes" buttonId="success"></button-action>
 </template>
 
 <style>
