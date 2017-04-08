@@ -5,7 +5,10 @@
 <template>
     <div>
         <div class="page-header">
-            <h1>{{$t("user.users") | capitalize }}</h1>
+            <h1>
+                {{$t("user.users") | capitalize }}
+                <button-link :route="{name: 'new_user'}" buttonClass="pull-right btn btn-md btn-primary btn-add">Nieuwe gebruiker</button-link>
+            </h1>
         </div>
         <user-search-bar @search="updateUsers" @advancedSearch="updateUsersAdvanced"></user-search-bar>
         <!-- Render an info-pane for every user. Once all the data is loaded, the table will be shown.-->
@@ -18,18 +21,22 @@
                         show="user"
                         :key="user.id">
         </list-component>
-        <button-add :route="{name: 'new_user'}"></button-add>
     </div>
 </template>
+<style>
+.btn-add {
+    margin-top: -2px;
+}
+</style>
 <script>
     import { mapGetters, mapActions, mapMutations } from 'vuex'
     import listComponent from "../../assets/general/listComponent.vue"
-    import buttonAdd from '../../assets/buttons/buttonAdd.vue'
+    import buttonLink from '../../assets/buttons/buttonLink.vue'
     import userSearchBar from '../../assets/search/types/userSearchBar.vue'
 
     export default {
         components: {
-            listComponent, buttonAdd, userSearchBar
+            listComponent, buttonLink, userSearchBar
         },
         created() {
             this.fetchUsers().then(users => {
