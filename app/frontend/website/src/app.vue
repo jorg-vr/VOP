@@ -10,6 +10,7 @@
 <style>
     body {
         padding-top: 65px;
+        margin-bottom: 50px;
     }
 </style>
 <script>

@@ -3,7 +3,7 @@
     The form accepts the old data and an update or create function.
 -->
 <template>
-    <form-component v-if="fleet" @submit="proceed" :failroute="{name: 'fleets'}">
+    <form-component v-if="fleet" @submit="proceed" :failroute="{name: 'fleets'}" :successButtonText="successButtonText" :failButtonText="failButtonText">
         <fleet-form-input :clients=clients :fleet="fleet"></fleet-form-input>
     </form-component>
 </template>
@@ -17,6 +17,8 @@
             formComponent, fleetFormInput
         },
         props: {
+            failButtonText: String,
+            successButtonText: String,
             submit: Function, //Function to create the fleet.
             oldFleet: Object,
             clientId: String

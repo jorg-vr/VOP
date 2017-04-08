@@ -1,22 +1,30 @@
 <template>
-    <form class="form-horizontal">
+    <form class="form-horizontal col-xs-12 col-sm-11 col-md-9 col-lg-7">
         <slot></slot>
         <div class="row">
-            <button-success @click="onSubmit"></button-success>
-            <button-fail :route="failroute"></button-fail>
+            <button-link :route="failroute" buttonClass="pull-right btn btn-sm btn-default form-component-button">{{failButtonText}}</button-link>
+            <button-action @click="onSubmit" buttonClass="pull-right btn btn-sm btn-default form-component-button">{{successButtonText}}</button-action>
         </div>
     </form>
 </template>
+<style>
+.form-component-button {
+    margin-top: 25px;
+    margin-left: 20px;
+}
+</style>
 <script>
-    import buttonFail from '../buttons/buttonFail.vue'
-    import buttonSuccess from '../buttons/buttonSuccess.vue'
+    import buttonLink from '../buttons/buttonLink.vue'
+    import buttonAction from '../buttons/buttonAction.vue'
 
     export default {
         components: {
-            buttonFail, buttonSuccess
+            buttonLink, buttonAction
         },
         props: {
-            failroute: Object
+            failroute: Object,
+            failButtonText: String,
+            successButtonText: String
         },
         created(){
             document.addEventListener("keyup", e => {
