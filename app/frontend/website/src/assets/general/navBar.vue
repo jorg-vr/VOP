@@ -44,8 +44,8 @@
                     </li>
                     <!-- condition group rendering for navbar login info-->
                     <template v-if="hasActiveAccount">
-                    <li>
-                        <p class="navbar-text">logged in as Admin</p>
+                    <li v-if="accountFunction">
+                        <p class="navbar-text">Logged in as {{accountFunction.roleName}}</p>
                     </li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" ariahaspopup="true" aria-expanded="false">
@@ -67,16 +67,18 @@
     </nav><!-- /.navbar -->
 </template>
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions, mapMutations } from 'vuex'
 import languageSwitcher from './languagePicker.vue'
+import formSelect from '../../assets/form/elements/formSelect.vue'
+import * as types from '../../store/constants/mutationTypes'
 
     export default {
         components: {
-            languageSwitcher
+            languageSwitcher, formSelect
         },
         computed: {
             ...mapGetters([
-                'hasActiveAccount','account'
+                'hasActiveAccount','account', 'accountFunction'
             ])
         },
         methods:{
@@ -84,6 +86,9 @@ import languageSwitcher from './languagePicker.vue'
                 'logout',
                 'loginInfo'
             ]),
+            ...mapMutations({
+                setActiveFunction: types.SET_ACTIVE_FUNCTION
+            }),
             confirmLogout:function(){
                 this.logout()
                 this.$router.push({name: 'login'})
