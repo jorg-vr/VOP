@@ -44,9 +44,7 @@
                     </li>
                     <!-- condition group rendering for navbar login info-->
                     <template v-if="hasActiveAccount">
-                    <li>
-                        <p class="navbar-text">logged in as Admin</p>
-                    </li>
+
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" ariahaspopup="true" aria-expanded="false">
                         {{account.email}}<span class="caret"></span></a>
@@ -69,10 +67,11 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import languageSwitcher from './languagePicker.vue'
+import formSelect from '../../assets/form/elements/formSelect.vue'
 
     export default {
         components: {
-            languageSwitcher
+            languageSwitcher, formSelect
         },
         computed: {
             ...mapGetters([

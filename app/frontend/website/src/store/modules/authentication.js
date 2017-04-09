@@ -7,6 +7,7 @@ export default {
     state: {
         authToken: null,
         account: null, //Current authenticated account
+        accountFunction: null
     },
     getters: {
         hasActiveAccount(state){
@@ -24,7 +25,10 @@ export default {
 
         [types.SET_ACTIVE_ACCOUNT] (state, {account}){
             state.account = account
-            Vue.http.headers.common['Function'] = account.id
+        },
+        [types.SET_ACTIVE_FUNCTION] (state, {accountFunction}){
+            state.accountFunction = accountFunction
+            Vue.http.headers.common['Function'] = functionObj.id
         },
         [types.RESET_STATE](state){
             // remove webtoken and current authenticated account
@@ -50,12 +54,20 @@ export default {
         //Precondition: user has an active authToken
         fetchAccount(context){
             return new Promise(resolve => {
-                RequestHandler.getObjectsRequestGetBody(locations.CURRENT_USER).then(account => {
-                    console.log(account)
+                RequestHandler.getObjectRequest(locations.CURRENT_USER, '').then(account => {
                     context.commit(types.SET_ACTIVE_ACCOUNT, {account: account})
-                    resolve(account[0])
+                    context.dispatch('fetchUserFunctions').then(accountFunctions => {
+                        //Set a default function
+                        context.commit(types.SET_ACTIVE_FUNCTION, {accountFunction: accountFunctions[0]})
+                        context.dispath('addRoleNamesToFunctions')
+                    })
+                    resolve(account)
                 })
             })
+        },
+
+        selectFunction(){
+
         },
         logout(context){
             context.commit(types.RESET_STATE)
