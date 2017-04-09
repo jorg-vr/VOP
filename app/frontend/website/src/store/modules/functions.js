@@ -40,7 +40,6 @@ export default {
         fetchUserFunctions(context){
             return new Promise(resolve => {
                 RequestHandler.getObjectsRequest(locations.USER_FUNCTIONS).then(userFunctions => {
-                    console.log(userFunctions)
                     context.commit(types.RECEIVE_USER_FUNCTIONS, {userFunctions})
                     resolve(userFunctions)
                 })

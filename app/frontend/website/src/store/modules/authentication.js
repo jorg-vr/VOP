@@ -15,6 +15,9 @@ export default {
         },
         account(state){
             return state.account
+        },
+        accountFunction(state){
+            return state.accountFunction
         }
     },
     mutations: {
@@ -28,7 +31,7 @@ export default {
         },
         [types.SET_ACTIVE_FUNCTION] (state, {accountFunction}){
             state.accountFunction = accountFunction
-            Vue.http.headers.common['Function'] = functionObj.id
+            Vue.http.headers.common['Function'] = accountFunction.id
         },
         [types.RESET_STATE](state){
             // remove webtoken and current authenticated account
@@ -59,7 +62,6 @@ export default {
                     context.dispatch('fetchUserFunctions').then(accountFunctions => {
                         //Set a default function
                         context.commit(types.SET_ACTIVE_FUNCTION, {accountFunction: accountFunctions[0]})
-                        context.dispath('addRoleNamesToFunctions')
                     })
                     resolve(account)
                 })
