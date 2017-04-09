@@ -7,37 +7,29 @@ export default {
     state: {
         authToken: null,
         account: null, //Current authenticated account
-        login: '', // Needed for data binding in navbar (can't bind to null value in account)
-        id: ''  // Needed for data binding in navbar (can't bind to null value in account)
     },
     getters: {
         hasActiveAccount(state){
             return state.account != null
         },
-        getAccountInfo(state){
-            return {login: state.login, id:state.id}
+        account(state){
+            return state.account
         }
     },
     mutations: {
         [types.SET_AUTH_TOKEN] (state, {authToken}){
             state.authToken = authToken
-            Vue.http.headers.common['AuthToken'] = authToken
+            Vue.http.headers.common['Authorization'] = authToken
         },
 
         [types.SET_ACTIVE_ACCOUNT] (state, {account}){
             state.account = account
             Vue.http.headers.common['Function'] = account.id
-            // set values for navbar data binding
-            state.login = account.login
-            state.id = account.id
         },
         [types.RESET_STATE](state){
             // remove webtoken and current authenticated account
             state.authToken = null
             state.account = null
-            // remove values for navbar data binding
-            state.login= ''
-            state.id= ''
         }
     },
     actions: {
@@ -58,8 +50,9 @@ export default {
         //Precondition: user has an active authToken
         fetchAccount(context){
             return new Promise(resolve => {
-                RequestHandler.getObjectsRequestGetBody(locations.AUTHENTICATION).then(account => {
-                    context.commit(types.SET_ACTIVE_ACCOUNT, {account: account[0]})
+                RequestHandler.getObjectsRequestGetBody(locations.CURRENT_USER).then(account => {
+                    console.log(account)
+                    context.commit(types.SET_ACTIVE_ACCOUNT, {account: account})
                     resolve(account[0])
                 })
             })

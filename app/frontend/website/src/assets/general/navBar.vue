@@ -45,11 +45,11 @@
                     <!-- condition group rendering for navbar login info-->
                     <template v-if="hasActiveAccount">
                     <li>
-                        <p class="navbar-text"> {{getAccountInfo.id}}</p>
+                        <p class="navbar-text">logged in as Admin</p>
                     </li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" ariahaspopup="true" aria-expanded="false">
-                        {{getAccountInfo.login}}<span class="caret"></span></a>
+                        {{account.email}}<span class="caret"></span></a>
                         <ul class="dropdown-menu">  
                             <li role="separator" class="divider"></li>
                             <li>
@@ -76,7 +76,7 @@ import languageSwitcher from './languagePicker.vue'
         },
         computed: {
             ...mapGetters([
-                'hasActiveAccount','getAccountInfo'
+                'hasActiveAccount','account'
             ])
         },
         methods:{
