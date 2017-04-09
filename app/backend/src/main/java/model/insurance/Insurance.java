@@ -1,5 +1,6 @@
 package model.insurance;
 
+import model.billing.Periodicity;
 import model.fleet.Vehicle;
 import model.history.EditableObject;
 import model.identity.Customer;
@@ -16,6 +17,7 @@ public class Insurance implements EditableObject {
     /**
      * Company that offers surety to customer.
      */
+    private Periodicity paymentPeriodicity;
     private InsuranceCompany company;
     private Customer customer;
     private Collection<VehicleInsurance> vehicleInsurances;
@@ -64,6 +66,14 @@ public class Insurance implements EditableObject {
 
     public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
+    }
+
+    public Periodicity getPaymentPeriodicity() {
+        return paymentPeriodicity;
+    }
+
+    public void setPaymentPeriodicity(Periodicity paymentPeriodicity) {
+        this.paymentPeriodicity = paymentPeriodicity;
     }
 
     public void setUuid(UUID uuid) {
