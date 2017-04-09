@@ -11,8 +11,10 @@ import spring.exceptions.InvalidInputException;
 import spring.exceptions.NotAuthorizedException;
 import spring.model.AuthenticationToken;
 import spring.model.RESTFunction;
+import spring.model.RESTSchema;
 import spring.model.RESTUser;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -26,12 +28,15 @@ public class RESTUserMeController {
     }
 
     @RequestMapping(value = "/functions", method = RequestMethod.GET)
-    public Collection<RESTFunction> getAll(@RequestHeader(value = "Authorization") String token) {
+    public RESTSchema<RESTFunction> getAll(HttpServletRequest request,
+                                           Integer page,
+                                           Integer limit,
+                                           @RequestHeader(value = "Authorization") String token) {
         Collection<RESTFunction> functions = new ArrayList<>();
         for (Function function: getUser(token).getFunctions()) {
             functions.add(new RESTFunction(function));
         }
-        return functions;
+        return new RESTSchema(functions, page, limit, request);
     }
 
     @RequestMapping(method = RequestMethod.PUT)
