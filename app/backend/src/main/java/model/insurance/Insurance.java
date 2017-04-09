@@ -1,23 +1,27 @@
 package model.insurance;
 
 import model.fleet.Vehicle;
+import model.history.EditableObject;
+import model.identity.Customer;
 import model.identity.InsuranceCompany;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.UUID;
 
 /**
  * Created by jorg on 4/8/17.
  */
-public class Insurance {
+public class Insurance implements EditableObject {
     /**
      * Company that offers surety to customer.
      */
     private InsuranceCompany company;
-    Vehicle vehicle;
-    Collection<Surety> sureties;
-    LocalDateTime startDate;
-    LocalDateTime endDate;
+    private Customer customer;
+    private Collection<VehicleInsurance> vehicleInsurances;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
+    private UUID uuid;
 
     public Insurance() {
     }
@@ -30,20 +34,20 @@ public class Insurance {
         this.company = company;
     }
 
-    public Vehicle getVehicle() {
-        return vehicle;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setVehicle(Vehicle vehicle) {
-        this.vehicle = vehicle;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
-    public Collection<Surety> getSureties() {
-        return sureties;
+    public Collection<VehicleInsurance> getVehicleInsurances() {
+        return vehicleInsurances;
     }
 
-    public void setSureties(Collection<Surety> sureties) {
-        this.sureties = sureties;
+    public void setVehicleInsurances(Collection<VehicleInsurance> vehicleInsurances) {
+        this.vehicleInsurances = vehicleInsurances;
     }
 
     public LocalDateTime getStartDate() {
@@ -60,5 +64,19 @@ public class Insurance {
 
     public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
+    }
+
+    @Override
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    @Override
+    public EditableObject copy() {
+        return null;
     }
 }

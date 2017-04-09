@@ -1,8 +1,7 @@
 package model.insurance;
 
 /**
- * Type of surety surety with default values for taxes/charges and commission costs.
- *
+ * Type of surety
  */
 public enum SuretyType {
     CIVIL_LIABILITY,

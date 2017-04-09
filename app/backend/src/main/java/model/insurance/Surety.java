@@ -1,6 +1,7 @@
 package model.insurance;
 
 
+import model.fleet.Vehicle;
 import model.history.EditableObject;
 import model.identity.InsuranceCompany;
 
@@ -9,12 +10,13 @@ import java.util.UUID;
 /**
  * Surety class representing an surety linked to a (group of) vehicle(s).
  */
-public class Surety implements EditableObject, java.io.Serializable {
+public class Surety implements EditableObject {
 
 
+    private int insuredCapital;
 
     /**
-     * Percentage of insured capital that has to be paid yearly
+     * Fixed value that has to be paid yearly
      */
 
     private int premium;
