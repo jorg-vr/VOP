@@ -1,7 +1,7 @@
 <template>
     <div class="row">
         <div class="form-group">
-            <label v-if="label" class="col-sm-4 control-label">{{label}}</label>
+            <label v-if="label" class="col-xs-3 control-label">{{label}}</label>
             <div :class="getColumnClass">
                 <slot></slot>
             </div>
@@ -9,6 +9,11 @@
         </div>
     </div>
 </template>
+<style>
+.form-horizontal .control-label{
+    text-align: left;
+}
+</style>
 <script>
     export default {
         props: {
@@ -17,7 +22,7 @@
         computed: {
             getColumnClass(){
                 if(this.label){
-                    return "col-sm-8"
+                    return "col-xs-9"
                 }
                 else {
                     return ""

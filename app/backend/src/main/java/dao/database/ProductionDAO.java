@@ -4,8 +4,6 @@ import dao.interfaces.DAO;
 import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
 import model.history.EditableObject;
-import model.identity.Customer;
-import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -123,5 +121,10 @@ public abstract class ProductionDAO<T extends EditableObject> implements DAO<T> 
     @Override
     public void close() throws Exception {
         session.close();
+    }
+
+    @Override
+    public void refresh(T t) throws Exception{
+        session.refresh(t);
     }
 }

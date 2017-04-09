@@ -2,6 +2,7 @@ package spring.model;
 
 import model.account.Function;
 import model.account.User;
+import spring.controller.UUIDUtil;
 
 /**
  * This is a bean class as specified in the API specification
@@ -33,11 +34,11 @@ public class RESTUser extends RESTAbstractModel<User> {
 
     public User translate(Function f) {
         User user = new User();
+        user.setUuid(UUIDUtil.toUUID(getId()));
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setEmail(email);
         user.setPassword(password);
-        //TODO add support for functions
         return user;
     }
 

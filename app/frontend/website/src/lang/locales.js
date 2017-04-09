@@ -44,7 +44,8 @@ export default
             new: 'new',
             remove: 'remove',
             back: 'back',
-            name: 'name'
+            name: 'name',
+            cancel: 'cancel'
         },
         actions: {
             select: 'select',
@@ -125,7 +126,8 @@ export default
             remove: 'verwijder',
             edit: 'wijzig',
             back: 'terug',
-            name: 'naam'
+            name: 'naam',
+            cancel: 'annuleer'
         },
         actions: {
             select: 'selecteer',

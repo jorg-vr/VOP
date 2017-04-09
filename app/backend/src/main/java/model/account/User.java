@@ -1,8 +1,6 @@
 package model.account;
 
 import model.history.EditableObject;
-import model.identity.Company;
-import spring.exceptions.InvalidInputException;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -43,40 +41,6 @@ public class User implements EditableObject, java.io.Serializable {
 
     public boolean validatePassword(String password) {
         return password.equals(password); // TODO also use hashfunction
-    }
-
-    /**
-     * Attempts to a add a new Function to the User
-     * @param newFunction Function that should be added to the User. The User field of Function should be set to the User.
-     * @throws InvalidInputException newFunction.user is not equal to the User or the User already has that Function.
-     *                               If the company field of the User is not null, (role, company) should be unique.
-     *                               If the company field of the User is null, (role) should be unique.
-     */
-    public void addFunction(Function newFunction) throws InvalidInputException {
-        if (!newFunction.getUser().equals(this)) {
-            throw new InvalidInputException("User field of function field should be set to this user");
-        }
-
-        for (Function function : functions) {
-            Role role = newFunction.getRole();
-            Company company = newFunction.getCompany();
-            Role role2 = function.getRole();
-            Company company2 = function.getCompany();
-
-            if (role2.equals(role) && (company2 == null || company2.equals(company))) {
-                throw new InvalidInputException("User already has that function");
-            }
-        }
-        functions.add(newFunction);
-    }
-
-    /**
-     * Attempts to remove the Function of the User
-     * @param function Function to remove
-     * @return true if removal was successful
-     */
-    public boolean removeFunction(Function function) {
-        return functions.remove(function);
     }
 
     public Collection<Function> getFunctions() {
