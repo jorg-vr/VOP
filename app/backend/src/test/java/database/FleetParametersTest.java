@@ -2,12 +2,11 @@ package database;
 
 import dao.database.ProductionProvider;
 import dao.interfaces.AddressDAO;
-import dao.interfaces.CustomerDAO;
 import dao.interfaces.DAOProvider;
 import dao.interfaces.DataAccessException;
+import dao.interfaces.FleetDAO;
+import model.fleet.Fleet;
 import model.identity.Address;
-import model.identity.CompanyType;
-import model.identity.Customer;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -43,14 +42,14 @@ public class FleetParametersTest {
 
     @Test
     public void addressField() throws Exception {
-        Customer customer = null;
-        try (CustomerDAO customerDAO = daoProvider.getCustomerDAO()) {
-            customer = customerDAO.create(new Customer(null, "Email@address1.com", "911", "customername 1", "btw123", "123456789", CompanyType.CUSTOMER));
-            customerDAO.remove(customer.getUuid());
-            fail("Customer succesfully created with address field null when an exception was expected");
+        Fleet fleet = null;
+        try (FleetDAO fleetDAO = daoProvider.getFleetDAO()) {
+            fleet = fleetDAO.create(new Fleet("Name", null, address));
+            fleetDAO.remove(fleet.getUuid());
+            fail("Fleet succesfully created with owner field null when an exception was expected");
         } catch (DataAccessException d) {
-            if (customer != null) {
-                fail("Customer succesfully created with address field null when an exception was expected");
+            if (fleet != null) {
+                fail("Fleet succesfully created with owner field null when an exception was expected");
             }
         }
     }
