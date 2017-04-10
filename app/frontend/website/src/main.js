@@ -46,15 +46,7 @@ if(token){
     store.dispatch('refreshToken')
 }
 
-router.beforeEach((to, from, next) => {
-    if(to.path !== '/login' && !store.getters.hasActiveAccount){
-        store.commit('setNextRoute' , {route: to})
-        next({path: '/login'});
-    }
-    else {
-        next()
-    }
-})
+
 
 Vue.filter('capitalize', function(value){
     value = value.toString()

@@ -10,8 +10,8 @@ import roles from './modules/roles'
 import functions from './modules/functions'
 import authentication from './modules/authentication'
 
-import state from './getters'
-import getters from './state'
+import state from './state'
+import getters from './getters'
 import mutations from './mutations'
 
 Vue.use(Vuex)
