@@ -61,7 +61,6 @@
             confirmLogin:function(){
                 // Get webtoken and account information
                 this.authenticate(this.credentials).then(() => {
-
                     // check if login was succesfull
                     if(!(this.hasActiveAccount)){
                         // Failed

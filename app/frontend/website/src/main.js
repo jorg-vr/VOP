@@ -48,9 +48,7 @@ router.beforeEach((to, from, next) => {
         if(token){
             store.commit('SET_AUTH_TOKEN', {authToken: token})
             store.dispatch('refreshToken').then(() => {
-                console.log(to)
-                console.log(store.getters.hasActiveAccount)
-                if(to.path !== '/login' && !store.getters.hasActiveAccount) {
+                if(!store.getters.hasActiveAccount) {
                     store.commit('setNextRoute' , {route: to})
                     next({path: '/login'});
                 }
@@ -58,7 +56,10 @@ router.beforeEach((to, from, next) => {
                     next()
                 }
             })
-
+        }
+        else {
+            store.commit('setNextRoute' , {route: to})
+            next({path: '/login'});
         }
     }
 
