@@ -37,33 +37,33 @@ public class Vehicle implements EditableObject, java.io.Serializable {
 
     }
 
-    public Vehicle(String brand, String model, String chassisNumber, String licensePlate, int value, int mileage, VehicleType type, LocalDate productionDate, Fleet fleet, LeasingCompany leasingCompany) {
+    public Vehicle(String brand, String model, String chassisNumber, String licensePlate, int value, int mileage, VehicleType type, LocalDate productionDate, Fleet fleet, LeasingCompany leasingCompany) throws InvalidInputException{
         this.brand = brand;
         this.model = model;
         this.productionDate = productionDate;
-        this.chassisNumber = chassisNumber;
+        setChassisNumber(chassisNumber);
         this.licensePlate = licensePlate;
-        this.value = value;
-        this.mileage = mileage;
+        setValue(value);
+        setMileage(mileage);
         this.type = type;
         this.leasingCompany = leasingCompany;
         this.fleet = fleet;
     }
 
-    public Vehicle(UUID uuid, String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int value, int mileage, VehicleType type, Fleet fleet) {
+    public Vehicle(UUID uuid, String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int value, int mileage, VehicleType type, Fleet fleet) throws InvalidInputException {
         this.uuid = uuid;
         this.brand = brand;
         this.model = model;
         this.licensePlate = licensePlate;
         this.productionDate = productionDate;
-        this.chassisNumber = chassisNumber;
-        this.value = value;
-        this.mileage = mileage;
+        setChassisNumber(chassisNumber);
+        setValue(value);
+        setMileage(mileage);
         this.type = type;
         this.fleet = fleet;
     }
 
-    public Vehicle(UUID uuid, String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int value, int mileage, VehicleType type, Fleet fleet, LeasingCompany leasingCompany) {
+    public Vehicle(UUID uuid, String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int value, int mileage, VehicleType type, Fleet fleet, LeasingCompany leasingCompany) throws InvalidInputException{
         this(uuid, brand, model, licensePlate, productionDate, chassisNumber, value, mileage, type, fleet);
         this.leasingCompany = leasingCompany;
     }
