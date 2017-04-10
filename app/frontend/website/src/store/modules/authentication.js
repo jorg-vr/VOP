@@ -23,6 +23,7 @@ export default {
     mutations: {
         [types.SET_AUTH_TOKEN] (state, {authToken}){
             state.authToken = authToken
+            localStorage.setItem('authToken', authToken)
             Vue.http.headers.common['Authorization'] = authToken
         },
 
@@ -45,7 +46,18 @@ export default {
         //TODO handle failure
         authenticate(context, credentials){
             return new Promise(resolve => {
-                RequestHandler.postObjectRequest(locations.AUTHENTICATION, credentials).then(response => {
+                RequestHandler.postObjectRequest(locations.LOGIN, credentials).then(response => {
+                    response.bodyText.promise.then(token => {
+                        context.commit(types.SET_AUTH_TOKEN, {authToken: token})
+                        resolve(token)
+                    })
+                })
+            })
+        },
+
+        refreshToken(context, authToken){
+            return new Promise(resolve => {
+                RequestHandler.postObjectRequest(locations.REFRESH, authToken).then(response => {
                     response.bodyText.promise.then(token => {
                         context.commit(types.SET_AUTH_TOKEN, {authToken: token})
                         resolve(token)

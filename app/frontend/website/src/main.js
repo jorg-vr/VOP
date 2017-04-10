@@ -39,6 +39,10 @@ const router = new VueRouter({
     routes: routes,
 })
 
+let token = localStorage.getItem('authToken')
+if(token){
+    store.dispatch('refreshToken', {authToken: token})
+}
 
 router.beforeEach((to, from, next) => {
     if(to.path !== '/login' && !store.getters.hasActiveAccount){
