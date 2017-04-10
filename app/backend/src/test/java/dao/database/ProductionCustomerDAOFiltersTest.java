@@ -1,14 +1,17 @@
 package dao.database;
 
-import dao.interfaces.*;
+import dao.interfaces.AddressDAO;
+import dao.interfaces.CustomerDAO;
+import dao.interfaces.DAOProvider;
 import model.identity.Address;
 import model.identity.CompanyType;
 import model.identity.Customer;
-import org.junit.*;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import java.util.Collection;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 
@@ -28,9 +31,9 @@ public class ProductionCustomerDAOFiltersTest {
 
         a1 = addressDAO.create(new Address("streettest n1", "59", "town 1", "9999", "country 1"));
         a2 = addressDAO.create(new Address("streettest n2", "60", "town 2", "99999", "country 2"));
-        v1 = customerDAO.create(new Customer(a1, "Email@address1.com", "911", "customername 1", "btw123", "123456789", CompanyType.TYPE1));
-        v2 = customerDAO.create(new Customer(a1, "Email@address2.com", "911", "customername 2", "btw123", "123456781", CompanyType.TYPE1));
-        v3 = customerDAO.create(new Customer(a2, "Email@address2.com", "912", "customername 2", "btw124", "123456781", CompanyType.TYPE2));
+        v1 = customerDAO.create(new Customer(a1, "Email@address1.com", "911", "customername 1", "btw123", "123456789", CompanyType.CUSTOMER));
+        v2 = customerDAO.create(new Customer(a1, "Email@address2.com", "911", "customername 2", "btw123", "123456781", CompanyType.CUSTOMER));
+        v3 = customerDAO.create(new Customer(a2, "Email@address2.com", "912", "customername 2", "btw124", "123456781", CompanyType.LEASING_COMPANY));
     }
 
     @AfterClass

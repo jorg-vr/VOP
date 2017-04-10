@@ -52,7 +52,7 @@ public class ProductionCustomerDAOTest {
             fail("Failed trying to create a new address");
         }
         try {
-            cust1 = customerDAO.create(new Customer(adr1, "Email@address1.com", "911", "customername 1", "btw123", "123456789", CompanyType.TYPE1));
+            cust1 = customerDAO.create(new Customer(adr1, "Email@address1.com", "911", "customername 1", "btw123", "123456789", CompanyType.CUSTOMER));
         } catch (Exception e) {
             fail("Failed trying to create a new customer");
         }
@@ -104,14 +104,13 @@ public class ProductionCustomerDAOTest {
     public void update() throws Exception {
         Address adr1 = addressDAO.create(new Address("streettest n1", "59", "town 1", "9999", "country 1"));
         Address adr2 = addressDAO.create(new Address("streettest n2", "60", "town 2", "99999", "country 2"));
-        Customer cust1 = customerDAO.create(new Customer(adr1, "Email@address1.com", "911", "customername 1", "btw123", "123456789", CompanyType.TYPE1));
+        Customer cust1 = customerDAO.create(new Customer(adr1, "Email@address1.com", "911", "customername 1", "btw123", "123456789", CompanyType.CUSTOMER));
         cust1.setAddress(adr2);
         cust1.setEmail("Email@address2.com");
         cust1.setPhoneNumber("912");
         cust1.setName("customername 2");
         cust1.setBtwNumber("btw124");
         cust1.setBankAccountNumber("123456781");
-        cust1.setCompanyType(CompanyType.TYPE2);
         customerDAO.update(cust1);
         Customer cust3 = customerDAO.get(cust1.getUuid());
         assertEquals("address field not updated correctly", adr2, cust3.getAddress());

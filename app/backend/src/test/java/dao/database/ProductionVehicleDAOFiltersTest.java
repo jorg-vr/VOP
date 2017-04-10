@@ -44,7 +44,7 @@ public class ProductionVehicleDAOFiltersTest {
         a1 = addressDAO.create(new Address("streettest n1", "59", "town 1", "9999", "country 1"));
         t1 = vehicleTypeDAO.create(new VehicleType("type 1", 2.5));
         t2 = vehicleTypeDAO.create(new VehicleType("type 2", 5.7));
-        cust1 = customerDAO.create(new Customer(a1, "Email@address1.com", "123", "customer 1", "456", "123456789", CompanyType.TYPE1));
+        cust1 = customerDAO.create(new Customer(a1, "Email@address1.com", "123", "customer 1", "456", "123456789", CompanyType.CUSTOMER));
         fleet1 = fleetDAO.create(new Fleet("name 1", cust1));
         fleet2 = fleetDAO.create(new Fleet("name 2", cust1));
         v1 = vehicleDAO.create(new Vehicle("brand 1", "model 1", "AAAAAAAAAAAAAAAAA", "ABC-123", 500, 3000, t1, LocalDate.of(2016, 7, 15), fleet1, null));
