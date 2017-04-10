@@ -18,8 +18,6 @@ Vue.use(VueResource);
 Vue.use(VueI18n);
 
 
-console.log(store)
-
 if(process.env.NODE_ENV){
     Vue.config.env = environments[process.env.NODE_ENV]
 }
@@ -48,7 +46,7 @@ router.beforeEach((to, from, next) => {
     else {
         let token = localStorage.getItem('authToken')
         if(token){
-            store.commit('SET_AUTH_TOKEN', {authToken: token})
+            store.commit('setAuthToken', {authToken: token})
             store.dispatch('refreshToken').then(() => {
                 next()
             }, () => {

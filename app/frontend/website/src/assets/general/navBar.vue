@@ -37,7 +37,7 @@
 
                 <ul class="nav navbar-nav navbar-right">
                     <li v-if="hasActiveAccount == false">
-                        <router-link :to="{name: 'login'}"> {{$t("login.login") | capitalize }}  </router-link>
+                        <router-link :to="{path: '/login'}"> {{$t("login.login") | capitalize }}  </router-link>
                     </li>
                     <li>
                         <language-switcher></language-switcher>
@@ -70,7 +70,6 @@
 import { mapGetters, mapActions, mapMutations } from 'vuex'
 import languageSwitcher from './languagePicker.vue'
 import formSelect from '../../assets/form/elements/formSelect.vue'
-import * as types from '../../store/constants/mutationTypes'
 
     export default {
         components: {
@@ -83,12 +82,8 @@ import * as types from '../../store/constants/mutationTypes'
         },
         methods:{
             ...mapActions([
-                'logout',
-                'loginInfo'
+                'logout'
             ]),
-            ...mapMutations({
-                setActiveFunction: types.SET_ACTIVE_FUNCTION
-            }),
             confirmLogout:function(){
                 this.logout()
                 this.$router.push({name: 'login'})

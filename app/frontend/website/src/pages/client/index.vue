@@ -40,7 +40,8 @@
         },
         created() {
             this.fetchClients().then(clients => {
-                this.updateFilteredClients({clients: clients})
+                console.log(clients)
+                this.setFilteredClients(clients)
             })
         },
         computed: {
@@ -56,20 +57,19 @@
                 'fetchClients',
                 'deleteClient',
             ]),
-
-            ...mapMutations({
-                updateFilteredClients: 'UPDATE_FILTERED_CLIENTS'
-            }),
+            ...mapMutations([
+                'setFilteredClients'
+            ]),
             updateClients(value){
                 if(value!==''){
-                    this.updateFilteredClients({clients: this.getClientsByAll(value)})
+                    this.setFilteredClients(this.getClientsByAll(value))
                 }
                 else {
-                    this.updateFilteredClients({clients: this.clients})
+                    this.setFilteredClients(this.clients)
                 }
             },
             updateClientsAdvanced(filterClient){
-                this.updateFilteredClients({clients: this.getClientsByAllAdvanced(filterClient)})
+                this.setFilteredClients(this.getClientsByAllAdvanced(filterClient))
 
             }
         }

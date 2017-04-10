@@ -40,7 +40,7 @@
         },
         created() {
             this.fetchUsers().then(users => {
-                this.updateFilteredUsers({users: users})
+                this.setFilteredUsers({users: users})
             })
         },
         computed: {
@@ -56,21 +56,19 @@
                 'fetchUsers',
                 'deleteUser'
             ]),
-
-            ...mapMutations({
-                updateFilteredUsers: 'UPDATE_FILTERED_USERS'
-            }),
-
+            ...mapMutations([
+                'setFilteredUsers'
+            ]),
             updateUsers(value){
                 if(value!==''){
-                    this.updateFilteredUsers({users: this.getUsersByAll(value)})
+                    this.setFilteredUsers({users: this.getUsersByAll(value)})
                 }
                 else {
-                    this.updateFilteredUsers({users: this.users})
+                    this.setFilteredUsers({users: this.users})
                 }
             },
             updateUsersAdvanced(filterUser){
-                this.updateFilteredUsers({users: this.getUsersByAllAdvanced(filterUser)})
+                this.setFilteredUsers({users: this.getUsersByAllAdvanced(filterUser)})
             }
         }
     }

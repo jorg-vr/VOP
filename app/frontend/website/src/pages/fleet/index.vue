@@ -33,16 +33,14 @@
     import listComponent from "../../assets/general/listComponent.vue"
     import fleetSearchBar from '../../assets/search/types/fleetSearchBar.vue'
     import buttonLink from '../../assets/buttons/buttonLink.vue'
-    import Vue from 'vue'
 
     export default {
         components: {
             listComponent, buttonLink, fleetSearchBar
         },
         created() {
-            let p1 = this.fetchFleets().then(fleets => {
-                this.updateFilteredFleets({fleets: fleets})
-            })
+            let p1 = this.fetchFleets()
+
             let p2 = this.fetchClients()
             Promise.all([p1, p2]).then(values => {
                 this.addClientNames({clients: values[1]})
@@ -53,8 +51,6 @@
                 'clients',
                 'fleets',
                 'filteredFleets',
-                'getFleetsByName',
-                'getFleetsByClient',
                 'getFleetsByAll',
                 'getFleetsByAllAdvanced'
             ])
@@ -66,20 +62,19 @@
                 'fetchClients',
                 'addClientNames',
             ]),
-
-            ...mapMutations({
-                updateFilteredFleets: 'UPDATE_FILTERED_FLEETS'
-            }),
+            ...mapMutations([
+                'setFilteredFleets'
+            ]),
             updateFleets(value){
                 if(value!==''){
-                    this.updateFilteredFleets({fleets: this.getFleetsByAll(value)})
+                    this.setFilteredFleets(this.getFleetsByAll(value))
                 }
                 else {
-                    this.updateFilteredFleets({fleets: this.fleets})
+                    this.setFilteredFleets(this.fleets)
                 }
             },
             updateFleetsAdvanced(filterFleet){
-                this.updateFilteredFleets({fleets: this.getFleetsByAllAdvanced(filterFleet)})
+                this.setFilteredFleets(this.getFleetsByAllAdvanced(filterFleet))
             }
         }
     }

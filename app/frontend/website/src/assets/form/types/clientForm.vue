@@ -32,7 +32,7 @@
         },
         methods: {
             proceed(){
-                this.submit({client: this.client}).then(() => {
+                this.submit(this.client).then(() => {
                     this.$router.push({name: 'clients'})
                 })
             }
