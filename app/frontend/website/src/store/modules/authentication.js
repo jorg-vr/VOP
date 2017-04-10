@@ -2,6 +2,7 @@ import * as locations from '../constants/locations'
 import * as types from '../constants/mutationTypes'
 import RequestHandler from '../../api/requestHandler'
 import Vue from 'vue'
+import route from '../../config/routes'
 
 export default {
     state: {
@@ -25,6 +26,7 @@ export default {
             state.authToken = authToken
             localStorage.setItem('authToken', authToken)
             Vue.http.headers.common['Authorization'] = authToken
+            console.log(authToken)
         },
 
         [types.SET_ACTIVE_ACCOUNT] (state, {account}){
@@ -33,6 +35,7 @@ export default {
         [types.SET_ACTIVE_FUNCTION] (state, {accountFunction}){
             state.accountFunction = accountFunction
             Vue.http.headers.common['Function'] = accountFunction.id
+            console.log(accountFunction.id)
         },
         [types.RESET_STATE](state){
             // remove webtoken and current authenticated account
@@ -50,10 +53,14 @@ export default {
                     response.bodyText.promise.then(token => {
                         context.commit(types.SET_AUTH_TOKEN, {authToken: token})
                     })
+                }, () =>  { //failure
+                    resolve()
                 }).then(() => {
                     context.dispatch('fetchAccount').then(() => {
                         resolve()
                     })
+                }, () => {
+                    alert('test')
                 })
             })
         },
@@ -64,6 +71,8 @@ export default {
                     response.bodyText.promise.then(token => {
                         context.commit(types.SET_AUTH_TOKEN, {authToken: token})
                     })
+                }, () => { //failure
+                    resolve()
                 }).then(() => {
                     context.dispatch('fetchAccount').then(() => {
                         resolve()

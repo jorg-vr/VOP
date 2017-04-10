@@ -6,6 +6,7 @@ export default {
     state: {
         roles: [],
         role: {},
+        permissions: []
     },
     getters: {
         roles(state) {

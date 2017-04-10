@@ -50,9 +50,11 @@ export default {
     },
 
     postObjectRequest(location, object){
-        return new Promise(resolve => {
+        return new Promise((resolveSuccess, resolveFailure) => {
             Vue.http.post(location, object).then(response => {
-                resolve(response)
+                resolveSuccess(response)
+            }, response => {
+                resolveFailure(response)
             })
         })
     },
