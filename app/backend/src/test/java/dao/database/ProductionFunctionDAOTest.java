@@ -62,7 +62,7 @@ public class ProductionFunctionDAOTest {
             fail("Failed trying to create a new address");
         }
         try {
-            cust1 = customerDAO.create(new Customer(adr1, "Email@address1.com", "911", "customername 1", "btw123", "123456789", CompanyType.TYPE1));
+            cust1 = customerDAO.create(new Customer(adr1, "Email@address1.com", "911", "customername 1", "btw123", "123456789", CompanyType.CUSTOMER));
         } catch (Exception e) {
             fail("Failed trying to create a new customer");
         }
@@ -134,12 +134,12 @@ public class ProductionFunctionDAOTest {
     @Test
     public void update() throws Exception {
         Address adr1 = addressDAO.create(new Address("streettest n1", "59", "town 1", "9999", "country 1"));
-        Customer cust1 = customerDAO.create(new Customer(adr1, "Email@address1.com", "911", "customername 1", "btw123", "123456789", CompanyType.TYPE1));
+        Customer cust1 = customerDAO.create(new Customer(adr1, "Email@address1.com", "911", "customername 1", "btw123", "123456789", CompanyType.CUSTOMER));
         User usr1 = userDAO.create(new User("Firstname 1", "Lastname 1", "Email@address1.com", "hashedPassword1"));
         Role r1 = roleDAO.create(new Role("testRole1"));
 
         Address adr2 = addressDAO.create(new Address("streettest n2", "60", "town 2", "99999", "country 2"));
-        Customer cust2 = customerDAO.create(new Customer(adr2, "Email@address2.com", "912", "customername 2", "btw124", "123456781", CompanyType.TYPE2));
+        Customer cust2 = customerDAO.create(new Customer(adr2, "Email@address2.com", "912", "customername 2", "btw124", "123456781", CompanyType.CUSTOMER));
         User usr2 = userDAO.create(new User("Firstname 2", "Lastname 2", "Email@address2.com", "hashedPassword2"));
         Role r2 = roleDAO.create(new Role("testRole2"));
         LocalDateTime t1 = LocalDateTime.of(2017, 7, 15, 0, 0);
