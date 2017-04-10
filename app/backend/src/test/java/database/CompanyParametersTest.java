@@ -47,7 +47,7 @@ public class CompanyParametersTest {
     public void addressField() throws Exception {
         Customer customer = null;
         try (CustomerDAO customerDAO = daoProvider.getCustomerDAO()) {
-            customer = customerDAO.create(new Customer(null, "Email@address1.com", "911", "customername 1", "btw123", "123456789", CompanyType.CUSTOMER));
+            customer = customerDAO.create(new Customer(null, "911", "customername 1", "btw123", CompanyType.CUSTOMER));
             customerDAO.remove(customer.getUuid());
             fail("Customer succesfully created with address field null when an exception was expected");
         } catch (DataAccessException d) {
@@ -61,7 +61,7 @@ public class CompanyParametersTest {
     public void nameField() throws Exception {
         Customer customer = null;
         try (CustomerDAO customerDAO = daoProvider.getCustomerDAO()) {
-            customer = customerDAO.create(new Customer(address, "Email@address1.com", "911", null, "btw123", "123456789", CompanyType.CUSTOMER));
+            customer = customerDAO.create(new Customer(address, "911", null, "btw123", CompanyType.CUSTOMER));
             customerDAO.remove(customer.getUuid());
             fail("Customer succesfully created with name field null when an exception was expected");
         } catch (DataAccessException d) {
@@ -75,7 +75,7 @@ public class CompanyParametersTest {
     public void phoneNumberField() throws Exception {
         Customer customer = null;
         try (CustomerDAO customerDAO = daoProvider.getCustomerDAO()) {
-            customer = customerDAO.create(new Customer(address, "Email@address1.com", null, "customername 1", "btw123", "123456789", CompanyType.CUSTOMER));
+            customer = customerDAO.create(new Customer(address, null, "customername 1", "btw123", CompanyType.CUSTOMER));
             customerDAO.remove(customer.getUuid());
             fail("Customer succesfully created with phoneNumber field null when an exception was expected");
         } catch (DataAccessException d) {
@@ -89,7 +89,7 @@ public class CompanyParametersTest {
     public void btwNumberField() throws Exception {
         Customer customer = null;
         try (CustomerDAO customerDAO = daoProvider.getCustomerDAO()) {
-            customer = customerDAO.create(new Customer(address, "Email@address1.com", "911", "customername 1", null, "123456789", CompanyType.CUSTOMER));
+            customer = customerDAO.create(new Customer(address, "911", "customername 1", null, CompanyType.CUSTOMER));
             customerDAO.remove(customer.getUuid());
             fail("Customer succesfully created with btwNumber field null when an exception was expected");
         } catch (DataAccessException d) {
@@ -103,7 +103,7 @@ public class CompanyParametersTest {
     public void typeField() throws Exception {
         Customer customer = null;
         try (CustomerDAO customerDAO = daoProvider.getCustomerDAO()) {
-            customer = customerDAO.create(new Customer(address, "Email@address1.com", "911", "customername 1", "btw123", "123456789", null));
+            customer = customerDAO.create(new Customer(address, "911", "customername 1", "btw123", null));
             customerDAO.remove(customer.getUuid());
             fail("Customer succesfully created with type field null when an exception was expected");
         } catch (DataAccessException d) {

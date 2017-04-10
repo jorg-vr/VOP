@@ -52,7 +52,7 @@ public class ProductionCustomerDAOTest {
             fail("Failed trying to create a new address");
         }
         try {
-            cust1 = customerDAO.create(new Customer(adr1, "Email@address1.com", "911", "customername 1", "btw123", "123456789"));
+            cust1 = customerDAO.create(new Customer(adr1, "911", "customername 1", "btw123"));
         } catch (Exception e) {
             fail("Failed trying to create a new customer");
         }
@@ -61,11 +61,9 @@ public class ProductionCustomerDAOTest {
             if (cust1 != null) {
                 Customer cust2 = customerDAO.get(cust1.getUuid());
                 assertEquals("address field not created correctly", cust1.getAddress(), cust2.getAddress());
-                assertEquals("email field not created correctly", cust1.getEmail(), cust2.getEmail());
                 assertEquals("phoneNumber field not created correctly", cust1.getPhoneNumber(), cust2.getPhoneNumber());
                 assertEquals("name field not created correctly", cust1.getName(), cust2.getName());
                 assertEquals("btwNumber field not created correctly", cust1.getBtwNumber(), cust2.getBtwNumber());
-                assertEquals("bankAccountNumber field not created correctly", cust1.getBankAccountNumber(), cust2.getBankAccountNumber());
                 assertEquals("companyType field not created correctly", cust1.getCompanyType(), cust2.getCompanyType());
                 present = true;
             }
@@ -104,21 +102,17 @@ public class ProductionCustomerDAOTest {
     public void update() throws Exception {
         Address adr1 = addressDAO.create(new Address("streettest n1", "59", "town 1", "9999", "country 1"));
         Address adr2 = addressDAO.create(new Address("streettest n2", "60", "town 2", "99999", "country 2"));
-        Customer cust1 = customerDAO.create(new Customer(adr1, "Email@address1.com", "911", "customername 1", "btw123", "123456789"));
+        Customer cust1 = customerDAO.create(new Customer(adr1, "911", "customername 1", "btw123"));
         cust1.setAddress(adr2);
-        cust1.setEmail("Email@address2.com");
         cust1.setPhoneNumber("912");
         cust1.setName("customername 2");
         cust1.setBtwNumber("btw124");
-        cust1.setBankAccountNumber("123456781");
         customerDAO.update(cust1);
         Customer cust3 = customerDAO.get(cust1.getUuid());
         assertEquals("address field not updated correctly", adr2, cust3.getAddress());
-        assertEquals("email field not updated correctly", "Email@address2.com", cust3.getEmail());
         assertEquals("phoneNumber field not updated correctly", "912", cust3.getPhoneNumber());
         assertEquals("name field not updated correctly", "customername 2", cust3.getName());
         assertEquals("btwNumber field not updated correctly", "btw124", cust3.getBtwNumber());
-        assertEquals("bankAccountNumber field not updated correctly", "123456781", cust3.getBankAccountNumber());
 
         customerDAO.remove(cust1.getUuid());
         addressDAO.remove(adr1.getUuid());

@@ -15,6 +15,7 @@
 </style>
 <script>
     import NavBar from './assets/general/navBar.vue'
+    import {mapGetters, mapMutations} from 'vuex'
 
     export default {
         components: {

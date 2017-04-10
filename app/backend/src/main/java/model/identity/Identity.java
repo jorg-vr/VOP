@@ -17,13 +17,13 @@ public class Identity implements EditableObject, java.io.Serializable {
     public Identity() {
     }
 
-    public Identity(Address address, String email, String phoneNumber) {
+    public Identity(Address address, String phoneNumber) {
         this.address = address;
         this.email = email;
         this.phoneNumber = phoneNumber;
     }
 
-    public Identity(UUID id, Address address, String email, String phoneNumber) {
+    public Identity(UUID id, Address address, String phoneNumber) {
         this.uuid = id;
         this.address = address;
         this.email = email;
@@ -79,7 +79,7 @@ public class Identity implements EditableObject, java.io.Serializable {
 
     @Override
     public EditableObject copy() {
-        return new Identity(uuid, address, email, phoneNumber);
+        return new Identity(uuid, address, phoneNumber);
     }
 
     @Override
