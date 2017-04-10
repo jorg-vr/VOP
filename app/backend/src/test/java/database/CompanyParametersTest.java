@@ -15,9 +15,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.fail;
 
-/**
- * Created by Ponti on 10/04/2017.
- */
 @Ignore
 public class CompanyParametersTest {
 

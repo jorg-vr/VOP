@@ -9,13 +9,12 @@ import model.identity.Address;
 import model.identity.Customer;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.fail;
 
-/**
- * Created by Ponti on 10/04/2017.
- */
+@Ignore
 public class FunctionParametersTest {
 
     private static DAOProvider daoProvider;
