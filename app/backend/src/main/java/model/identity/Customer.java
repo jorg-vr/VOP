@@ -13,6 +13,11 @@ public class Customer extends Company implements java.io.Serializable {
     public Customer() {
     }
 
+    public Customer(Address address, String email, String phoneNumber, String name, String btwNumber, String bankAccountNumber) {
+        super(address, email, phoneNumber, name, btwNumber, bankAccountNumber, CompanyType.CUSTOMER);
+        this.fleets = new ArrayList<Fleet>();
+    }
+
     public Customer(Address address, String email, String phoneNumber, String name, String btwNumber, String bankAccountNumber, CompanyType companyType) {
         super(address, email, phoneNumber, name, btwNumber, bankAccountNumber, companyType);
         this.fleets = new ArrayList<Fleet>();
