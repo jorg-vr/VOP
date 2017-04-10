@@ -142,7 +142,6 @@ public class ProductionProvider implements DAOProvider {
                 Customer customer = new Customer();
                 customer.setAddress(address);
                 customer.setName("Solvas");
-                customer.setBankAccountNumber("BE123456789");
                 function.setCompany(customer);
 
 
