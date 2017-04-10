@@ -39,14 +39,30 @@ const router = new VueRouter({
     routes: routes,
 })
 
-let token = localStorage.getItem('authToken')
-if(token){
-    store.commit('SET_AUTH_TOKEN', {authToken: token})
-    store.commit('finishedLoading')
-    store.dispatch('refreshToken')
-}
+router.beforeEach((to, from, next) => {
+    if(to.path === '/login'){
+        next()
+    }
+    else {
+        let token = localStorage.getItem('authToken')
+        if(token){
+            store.commit('SET_AUTH_TOKEN', {authToken: token})
+            store.dispatch('refreshToken').then(() => {
+                console.log(to)
+                console.log(store.getters.hasActiveAccount)
+                if(to.path !== '/login' && !store.getters.hasActiveAccount) {
+                    store.commit('setNextRoute' , {route: to})
+                    next({path: '/login'});
+                }
+                else {
+                    next()
+                }
+            })
 
+        }
+    }
 
+})
 
 Vue.filter('capitalize', function(value){
     value = value.toString()
