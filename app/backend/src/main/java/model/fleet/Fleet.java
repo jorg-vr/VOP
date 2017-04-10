@@ -1,6 +1,7 @@
 package model.fleet;
 
 import model.history.EditableObject;
+import model.identity.Address;
 import model.identity.Customer;
 
 import java.util.ArrayList;
@@ -12,22 +13,25 @@ public class Fleet implements EditableObject, java.io.Serializable {
     private UUID uuid;
     private String name;
     private Customer owner;
+    private Address address;
 
     private Collection<Vehicle> vehicles;
 
     public Fleet() {
     }
 
-    public Fleet(String name, Customer owner) {
+    public Fleet(String name, Customer owner, Address address) {
         this.name = name;
         this.owner = owner;
+        this.address = address;
         this.vehicles = new ArrayList<Vehicle>();
     }
 
-    public Fleet(UUID uuid, String name, Customer owner, Collection<Vehicle> vehicles) {
+    public Fleet(UUID uuid, String name, Customer owner, Address address, Collection<Vehicle> vehicles) {
         this.uuid = uuid;
         this.name = name;
         this.owner = owner;
+        this.address = address;
         this.vehicles = vehicles;
     }
 
@@ -45,6 +49,14 @@ public class Fleet implements EditableObject, java.io.Serializable {
             return 0;
         }
         return vehicles.size();
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     public Customer getOwner() {

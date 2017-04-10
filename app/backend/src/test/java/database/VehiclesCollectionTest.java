@@ -41,8 +41,8 @@ public class VehiclesCollectionTest {
              FleetDAO fleetDAO = daoProvider.getFleetDAO();
              AddressDAO addressDAO = daoProvider.getAddressDao()) {
             a1 = addressDAO.create(new Address("streettest n1", "59", "town 1", "9999", "country 1"));
-            c1 = customerDAO.create(new Customer(a1, "Email@address1.com", "911", "customername 1", "btw123", "123456789"));
-            f1 = fleetDAO.create(new Fleet("fleet 1", c1));
+            c1 = customerDAO.create(new Customer(a1, "911", "customername 1", "btw123"));
+            f1 = fleetDAO.create(new Fleet("fleet 1", c1, a1));
             t1 = vehicleTypeDAO.create(new VehicleType("type 1", 2.5));
             t2 = vehicleTypeDAO.create(new VehicleType("type 2", 3.5));
         } catch (Exception e) {

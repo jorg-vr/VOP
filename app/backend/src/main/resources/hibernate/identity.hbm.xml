@@ -13,13 +13,11 @@
         </id>
 
         <many-to-one name="address" column="address_id" class="model.identity.Address" lazy="proxy" fetch="select"/>
-        <property name="email" column="email" type="string"/>
         <property name="phoneNumber" column="phonenumber" type="string"/>
         <joined-subclass name="model.identity.Company" table="companies">
             <key column="identity_id"/>
             <property name="name" column="name" type="string"/>
             <property name="btwNumber" column="btw_number" type="string"/>
-            <property name="bankAccountNumber" column="bank_account_number" type="string"/>
             <joined-subclass name="model.identity.Customer" table="customers">
                 <key column="identity_id"/>
                 <bag name="fleets" access="field" table="fleets"
