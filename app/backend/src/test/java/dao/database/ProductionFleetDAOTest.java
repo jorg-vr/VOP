@@ -51,7 +51,7 @@ public class ProductionFleetDAOTest {
         }
         //test if a fleet can be succesfully added to the database
         try {
-            cust1 = customerDAO.create(new Customer(a1, "Email@address1.com", "911", "customername 1", "btw123", "123456789"));
+            cust1 = customerDAO.create(new Customer(a1, "911", "customername 1", "btw123"));
         } catch (Exception e) {
             fail("Failed trying to create a new customer");
         }
@@ -109,7 +109,7 @@ public class ProductionFleetDAOTest {
     public void update() throws Exception {
         Address a1 = addressDAO.create(new Address("streettest n1", "59", "town 1", "9999", "country 1"));
         Address a2 = addressDAO.create(new Address("streettest n2", "60", "town 2", "9990", "country 2"));
-        Customer cust1 = customerDAO.create(new Customer(a1, "Email@address1.com", "911", "customername 1", "btw123", "123456789"));
+        Customer cust1 = customerDAO.create(new Customer(a1, "911", "customername 1", "btw123"));
         Fleet fleet1 = fleetDAO.create(new Fleet("fleet 1", cust1, a1));
         fleet1.setName("fleet 2");
         fleet1.setAddress(a2);
