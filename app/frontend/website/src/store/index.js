@@ -9,6 +9,7 @@ import login from './modules/login'
 import roles from './modules/roles'
 import functions from './modules/functions'
 import authentication from './modules/authentication'
+import insurance from './modules/insurance'
 
 import state from './state'
 import getters from './getters'
@@ -25,7 +26,8 @@ export default new Vuex.Store({
         login,
         roles,
         functions,
-        authentication
+        authentication,
+        insurance
     },
     state,
     getters,
