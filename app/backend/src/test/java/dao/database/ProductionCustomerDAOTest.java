@@ -1,16 +1,16 @@
 package dao.database;
 
-import dao.interfaces.*;
+import dao.interfaces.AddressDAO;
+import dao.interfaces.CustomerDAO;
+import dao.interfaces.DAOProvider;
+import dao.interfaces.FunctionDAO;
 import model.identity.Address;
-import model.identity.CompanyType;
 import model.identity.Customer;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 /**
  * Created by tjupo on 03/04/2017.
@@ -52,7 +52,7 @@ public class ProductionCustomerDAOTest {
             fail("Failed trying to create a new address");
         }
         try {
-            cust1 = customerDAO.create(new Customer(adr1, "Email@address1.com", "911", "customername 1", "btw123", "123456789", CompanyType.CUSTOMER));
+            cust1 = customerDAO.create(new Customer(adr1, "Email@address1.com", "911", "customername 1", "btw123", "123456789"));
         } catch (Exception e) {
             fail("Failed trying to create a new customer");
         }
@@ -104,7 +104,7 @@ public class ProductionCustomerDAOTest {
     public void update() throws Exception {
         Address adr1 = addressDAO.create(new Address("streettest n1", "59", "town 1", "9999", "country 1"));
         Address adr2 = addressDAO.create(new Address("streettest n2", "60", "town 2", "99999", "country 2"));
-        Customer cust1 = customerDAO.create(new Customer(adr1, "Email@address1.com", "911", "customername 1", "btw123", "123456789", CompanyType.CUSTOMER));
+        Customer cust1 = customerDAO.create(new Customer(adr1, "Email@address1.com", "911", "customername 1", "btw123", "123456789"));
         cust1.setAddress(adr2);
         cust1.setEmail("Email@address2.com");
         cust1.setPhoneNumber("912");

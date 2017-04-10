@@ -5,7 +5,6 @@ import model.fleet.Fleet;
 import model.fleet.Vehicle;
 import model.fleet.VehicleType;
 import model.identity.Address;
-import model.identity.CompanyType;
 import model.identity.Customer;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -59,7 +58,7 @@ public class ProductionVehicleDAOTest {
             fail("Failed trying to create a new address");
         }
         try {
-            cust1 = customerDAO.create(new Customer(a1, "Email@address1.com", "911", "customername 1", "btw123", "123456789", CompanyType.CUSTOMER));
+            cust1 = customerDAO.create(new Customer(a1, "Email@address1.com", "911", "customername 1", "btw123", "123456789"));
         } catch (Exception e) {
             fail("Failed trying to create a new customer");
         }
@@ -128,7 +127,7 @@ public class ProductionVehicleDAOTest {
     @Test
     public void update() throws Exception {
         Address a1 = addressDAO.create(new Address("streettest n1", "59", "town 1", "9999", "country 1"));
-        Customer cust1 = customerDAO.create(new Customer(a1, "Email@address1.com", "911", "customername 1", "btw123", "123456789", CompanyType.CUSTOMER));
+        Customer cust1 = customerDAO.create(new Customer(a1, "Email@address1.com", "911", "customername 1", "btw123", "123456789"));
         Fleet fleet1 = fleetDAO.create(new Fleet("fleet 1", cust1));
         VehicleType t1 = vehicleTypeDAO.create(new VehicleType("type 1", 2.5));
         VehicleType t2 = vehicleTypeDAO.create(new VehicleType("type 2", 3.5));
