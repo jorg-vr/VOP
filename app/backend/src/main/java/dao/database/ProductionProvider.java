@@ -105,6 +105,7 @@ public class ProductionProvider implements DAOProvider {
     public void close() {
         sessionFactory.close();
         StandardServiceRegistryBuilder.destroy(this.registry);
+        provider = null;
     }
 
     public static void main(String[] args) throws DataAccessException {
