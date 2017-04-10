@@ -15,10 +15,8 @@ import org.junit.Test;
 
 import static org.junit.Assert.fail;
 
-/**
- * Created by Ponti on 10/04/2017.
- */
-public class CompanyParamtersTest {
+@Ignore
+public class CompanyParametersTest {
 
     private static DAOProvider daoProvider;
     private static Address address;
@@ -42,7 +40,6 @@ public class CompanyParamtersTest {
         daoProvider.close();
     }
 
-    @Ignore
     @Test
     public void addressField() throws Exception {
         Customer customer = null;
@@ -57,7 +54,6 @@ public class CompanyParamtersTest {
         }
     }
 
-    @Ignore
     @Test
     public void nameField() throws Exception {
         Customer customer = null;
@@ -72,7 +68,6 @@ public class CompanyParamtersTest {
         }
     }
 
-    @Ignore
     @Test
     public void phoneNumberField() throws Exception {
         Customer customer = null;
@@ -87,7 +82,6 @@ public class CompanyParamtersTest {
         }
     }
 
-    @Ignore
     @Test
     public void btwNumberField() throws Exception {
         Customer customer = null;
@@ -102,7 +96,6 @@ public class CompanyParamtersTest {
         }
     }
 
-    @Ignore
     @Test
     public void typeField() throws Exception {
         Customer customer = null;

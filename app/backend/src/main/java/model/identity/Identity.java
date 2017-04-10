@@ -10,8 +10,6 @@ public class Identity implements EditableObject, java.io.Serializable {
 
     private Address address;
 
-    private String email;
-
     private String phoneNumber;
 
     public Identity() {
@@ -19,14 +17,12 @@ public class Identity implements EditableObject, java.io.Serializable {
 
     public Identity(Address address, String phoneNumber) {
         this.address = address;
-        this.email = email;
         this.phoneNumber = phoneNumber;
     }
 
     public Identity(UUID id, Address address, String phoneNumber) {
         this.uuid = id;
         this.address = address;
-        this.email = email;
         this.phoneNumber = phoneNumber;
     }
 
@@ -44,14 +40,6 @@ public class Identity implements EditableObject, java.io.Serializable {
 
     public void setAddress(Address address) {
         this.address = address;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getPhoneNumber() {

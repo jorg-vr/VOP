@@ -12,9 +12,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.fail;
 
-/**
- * Created by Ponti on 10/04/2017.
- */
+@Ignore
 public class AddressParametersTest {
 
     private static DAOProvider daoProvider;
@@ -32,7 +30,6 @@ public class AddressParametersTest {
         daoProvider.close();
     }
 
-    @Ignore
     @Test
     public void townField() throws Exception {
         Address address = null;
@@ -47,7 +44,6 @@ public class AddressParametersTest {
         }
     }
 
-    @Ignore
     @Test
     public void countryField() throws Exception {
         Address address = null;
@@ -62,7 +58,6 @@ public class AddressParametersTest {
         }
     }
 
-    @Ignore
     @Test
     public void streetNumberField() throws Exception {
         Address address = null;
@@ -77,7 +72,6 @@ public class AddressParametersTest {
         }
     }
 
-    @Ignore
     @Test
     public void postalCodeField() throws Exception {
         Address address = null;
@@ -92,7 +86,6 @@ public class AddressParametersTest {
         }
     }
 
-    @Ignore
     @Test
     public void streetField() throws Exception {
         Address address = null;
