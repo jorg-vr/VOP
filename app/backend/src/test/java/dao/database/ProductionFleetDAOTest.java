@@ -56,7 +56,7 @@ public class ProductionFleetDAOTest {
             fail("Failed trying to create a new customer");
         }
         try {
-            fleet1 = fleetDAO.create(new Fleet("fleet 1", cust1));
+            fleet1 = fleetDAO.create(new Fleet("fleet 1", cust1, a1));
         } catch (Exception e) {
             fail("Failed trying to create a new fleet");
         }
@@ -66,6 +66,7 @@ public class ProductionFleetDAOTest {
                 Fleet fleet2 = fleetDAO.get(fleet1.getUuid());
                 assertEquals("name field not created correctly", fleet1.getName(), fleet2.getName());
                 assertEquals("customer field not created correctly", fleet1.getOwner(), fleet2.getOwner());
+                assertEquals("address field not created correctly", fleet1.getAddress(), fleet2.getAddress());
                 assertTrue("vehicles field not created correctly", fleet2.size() == 0);
                 present = true;
             }
@@ -98,22 +99,30 @@ public class ProductionFleetDAOTest {
         if (cust1 != null) {
             customerDAO.remove(cust1.getUuid());
         }
+
+        if (a1 != null) {
+            addressDAO.remove(a1.getUuid());
+        }
     }
 
     @Test
     public void update() throws Exception {
         Address a1 = addressDAO.create(new Address("streettest n1", "59", "town 1", "9999", "country 1"));
+        Address a2 = addressDAO.create(new Address("streettest n2", "60", "town 2", "9990", "country 2"));
         Customer cust1 = customerDAO.create(new Customer(a1, "Email@address1.com", "911", "customername 1", "btw123", "123456789"));
-        Fleet fleet1 = fleetDAO.create(new Fleet("fleet 1", cust1));
+        Fleet fleet1 = fleetDAO.create(new Fleet("fleet 1", cust1, a1));
         fleet1.setName("fleet 2");
+        fleet1.setAddress(a2);
         fleetDAO.update(fleet1);
         Fleet fleet3 = fleetDAO.get(fleet1.getUuid());
         assertEquals("name field not updated correctly", "fleet 2", fleet3.getName());
+        assertEquals("address field not updated correctly", a2, fleet3.getAddress());
         //assertEquals("customer field not updated correctly", cust2, fleet3.getOwner()); //Fleets never change owner so this is not needed currently
 
         fleetDAO.remove(fleet1.getUuid());
         customerDAO.remove(cust1.getUuid());
         addressDAO.remove(a1.getUuid());
+        addressDAO.remove(a2.getUuid());
     }
 
 }

@@ -63,7 +63,7 @@ public class ProductionVehicleDAOTest {
             fail("Failed trying to create a new customer");
         }
         try {
-            fleet1 = fleetDAO.create(new Fleet("fleet 1", cust1));
+            fleet1 = fleetDAO.create(new Fleet("fleet 1", cust1, a1));
         } catch (Exception e) {
             fail("Failed trying to create a new fleet");
         }
@@ -128,7 +128,7 @@ public class ProductionVehicleDAOTest {
     public void update() throws Exception {
         Address a1 = addressDAO.create(new Address("streettest n1", "59", "town 1", "9999", "country 1"));
         Customer cust1 = customerDAO.create(new Customer(a1, "Email@address1.com", "911", "customername 1", "btw123", "123456789"));
-        Fleet fleet1 = fleetDAO.create(new Fleet("fleet 1", cust1));
+        Fleet fleet1 = fleetDAO.create(new Fleet("fleet 1", cust1, a1));
         VehicleType t1 = vehicleTypeDAO.create(new VehicleType("type 1", 2.5));
         VehicleType t2 = vehicleTypeDAO.create(new VehicleType("type 2", 3.5));
         //add new vehicle to the database
