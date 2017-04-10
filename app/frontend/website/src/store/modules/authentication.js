@@ -51,17 +51,21 @@ export default {
                         context.commit(types.SET_AUTH_TOKEN, {authToken: token})
                         resolve(token)
                     })
+                }).then(() => {
+                    context.dispatch('fetchAccount')
                 })
             })
         },
 
-        refreshToken(context, authToken){
+        refreshToken(context){
             return new Promise(resolve => {
-                RequestHandler.postObjectRequest(locations.REFRESH, authToken).then(response => {
+                RequestHandler.postObjectRequest(locations.REFRESH, {}).then(response => {
                     response.bodyText.promise.then(token => {
                         context.commit(types.SET_AUTH_TOKEN, {authToken: token})
                         resolve(token)
                     })
+                }).then(() => {
+                    context.dispatch('fetchAccount')
                 })
             })
         },

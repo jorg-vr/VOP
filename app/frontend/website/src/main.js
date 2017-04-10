@@ -41,7 +41,9 @@ const router = new VueRouter({
 
 let token = localStorage.getItem('authToken')
 if(token){
-    store.dispatch('refreshToken', {authToken: token})
+    store.commit('SET_AUTH_TOKEN', {authToken: token})
+    store.commit('finishedLoading')
+    store.dispatch('refreshToken')
 }
 
 router.beforeEach((to, from, next) => {

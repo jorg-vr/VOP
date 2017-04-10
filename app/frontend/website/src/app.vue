@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="finishedLoading">
         <nav-bar></nav-bar>
         <div class="container">
             <router-view></router-view>
@@ -15,10 +15,16 @@
 </style>
 <script>
     import NavBar from './assets/general/navBar.vue'
+    import {mapGetters} from 'vuex'
 
     export default {
         components: {
             NavBar
+        },
+        computed: {
+            ...mapGetters([
+                'finishedLoading'
+            ])
         }
     }
 </script>

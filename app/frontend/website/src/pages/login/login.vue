@@ -61,23 +61,21 @@
             confirmLogin:function(){
                 // Get webtoken and account information
                 this.authenticate(this.credentials).then(() => {
-                    this.fetchAccount().then(() => {
-                        // check if login was succesfull
-                        if(!(this.hasActiveAccount)){
-                            // Failed
-                            this.showError=true
-                        }
-                        else{
-                            // Succes, return to home
-                            if(this.nextRoute.path !== null){
-                                this.$router.push({name: this.nextRoute.name, params: this.nextRoute.params})
-                            }
-                            else {
-                                this.$router.push({name: 'home'})
-                            }
-                        }
-                    })
 
+                    // check if login was succesfull
+                    if(!(this.hasActiveAccount)){
+                        // Failed
+                        this.showError=true
+                    }
+                    else{
+                        // Succes, return to home
+                        if(this.nextRoute.path !== null){
+                            this.$router.push({name: this.nextRoute.name, params: this.nextRoute.params})
+                        }
+                        else {
+                            this.$router.push({name: 'home'})
+                        }
+                    }
                 })
 
 

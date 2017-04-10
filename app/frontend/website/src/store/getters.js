@@ -1,6 +1,9 @@
 let nonAcceptedFilters = ['id', 'createdAt', 'lastUpdated', 'url', 'originalObject']
 
 export default {
+    loading(state){
+        return state.loading
+    },
     filterByAll: () => (objects, value) => {
         let filteredObjects = []
         if(objects.length>0){

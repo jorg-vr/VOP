@@ -10,8 +10,9 @@ import roles from './modules/roles'
 import functions from './modules/functions'
 import authentication from './modules/authentication'
 
-
-import getters from './getters'
+import state from './getters'
+import getters from './state'
+import mutations from './mutations'
 
 Vue.use(Vuex)
 
@@ -26,5 +27,7 @@ export default new Vuex.Store({
         functions,
         authentication
     },
-    getters
+    state,
+    getters,
+    mutations
 })
