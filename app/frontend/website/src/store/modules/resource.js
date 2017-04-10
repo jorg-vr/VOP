@@ -1,12 +1,18 @@
 /* Abstract file for managing a resource */
 import RequestHandler from '../../api/requestHandler'
 
+
+let capitalize = function(value) {
+    return value.charAt(0).toUpperCase() + value.slice(1);
+}
+
+
 export default {
     //Create a new module with all of the basic operations 
     initialise(location, name){
         let names = name + 's'
-        let capname = name.capitalize()
-        let capnames = names.capitalize()
+        let capname = capitalize(name)
+        let capnames = capitalize(names)
         let setResources = 'set' + capnames
         let setResource = 'set' + capname
         let removeResource = 'remove' + capname
@@ -15,24 +21,30 @@ export default {
         let createResource = 'create' + capname
         let updateResource = 'update' + capname
         let deleteResource = 'delete' + capname
-        this.state[name] = null
-        this.state[names] = null
-        this.getters[name] = (state) => {
+        module = {
+            state: {},
+            getters: {},
+            mutations: {},
+            actions: {}
+        }
+        module.state[name] = null
+        module.state[names] = null
+        module.getters[name] = (state) => {
             return state[name]
         }
-        this.getters[names] = (state) => {
+        module.getters[names] = (state) => {
             return state[names]
         }
-        this.mutations[setResource] = (state, payload) => {
+        module.mutations[setResource] = (state, payload) => {
             state[name] = payload
         }
-        this.mutations[setResources] = (state, payload) => {
+        module.mutations[setResources] = (state, payload) => {
             state[names] = payload
         }
-        this.mutations[removeResource] = (state, payload) => {
+        module.mutations[removeResource] = (state, payload) => {
             state[names] = state[names].filter(resource => resource.id !== payload.id)
         }
-        this.actions[fetchResources] = (context) => {
+        module.actions[fetchResources] = (context) => {
             return new Promise(resolve => {
                 RequestHandler.getObjectsRequest(location).then(resources => {
                     context.commit(setResources, resources)
@@ -40,7 +52,7 @@ export default {
                 })
             })
         }
-        this.actions[fetchResource] = (context, {id}) => {
+        module.actions[fetchResource] = (context, {id}) => {
             return new Promise(resolve => {
                 RequestHandler.getObjectRequest(location, id).then(resource => {
                     context.commit(setResource, resource)
@@ -48,7 +60,7 @@ export default {
                 })
             })
         }
-        this.actions[createResource] = (context, resource) => {
+        module.actions[createResource] = (context, resource) => {
             return new Promise(resolve => {
                 RequestHandler.postObjectRequest(location, resource).then(createdResource => {
                     context.commit(setResource, createdResource)
@@ -57,7 +69,7 @@ export default {
             })
         }
 
-        this.actions[updateResource] = (context, resource) => {
+        module.actions[updateResource] = (context, resource) => {
             return new Promise(resolve => {
                 RequestHandler.putObjectRequest(location, resource).then(updatedResource => {
                     context.commit(setResource, updatedResource)
@@ -66,7 +78,7 @@ export default {
             })
         }
 
-        this.actions[deleteResource] = (context, {id}) => {
+        module.actions[deleteResource] = (context, {id}) => {
             return new Promise(resolve => {
                 RequestHandler.deleteObjectRequest(location, id).then(() => {
                     context.commit(types.DELETE_RESOURCE, {id})
@@ -74,12 +86,7 @@ export default {
                 }, id)
             })
         }
-    },
-
-
-    state: {},
-    getters: {},
-    mutations: {},
-    actions: {}
+        return module
+    }
 }
 

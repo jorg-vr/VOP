@@ -18,6 +18,8 @@ Vue.use(VueResource);
 Vue.use(VueI18n);
 
 
+console.log(store)
+
 if(process.env.NODE_ENV){
     Vue.config.env = environments[process.env.NODE_ENV]
 }
@@ -60,7 +62,6 @@ router.beforeEach((to, from, next) => {
     }
 
 })
-
 
 String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
