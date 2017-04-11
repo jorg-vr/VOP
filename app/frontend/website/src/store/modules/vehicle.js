@@ -6,7 +6,8 @@ export default {
         fetchVehiclesBy(context, {vehicle}){
             return new Promise(resolve => {
                 RequestHandler.getObjectsRequestBy(locations.VEHICLE, vehicle).then(vehicles => {
-                    context.commit('setFilteredVehicles', {vehicles})
+                    console.log(vehicles)
+                    context.commit('setFilteredVehicles', vehicles)
                     resolve(vehicles)
                 })
             })

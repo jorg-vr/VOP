@@ -46,12 +46,12 @@
                 'fetchVehiclesBy'
             ]),
 
-            ...mapMutations({
-                updateFilteredVehicles: 'UPDATE_FILTERED_VEHICLES'
-            }),
+            ...mapMutations([
+                'setFilteredVehicles'
+            ]),
 
             updateVehiclesAdvanced(filterVehicle){
-                this.updateFilteredVehicles({vehicles: this.fetchVehiclesBy({vehicle: filterVehicle})})
+                this.setFilteredVehicles(this.fetchVehiclesBy({vehicle: filterVehicle}))
             }
         }
     }

@@ -11,14 +11,6 @@ export default {
         })
     },
 
-    getObjectsRequestGetBody(location){
-        return new Promise(resolve => {
-            Vue.http.get(location).then(response => {
-                resolve(response.body)
-            })
-        })
-    },
-
     getObjectRequest(location, id){
         return new Promise(resolve => {
             Vue.http.get(location + id).then(response => {

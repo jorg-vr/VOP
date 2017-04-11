@@ -40,7 +40,7 @@
         },
         created() {
             this.fetchUsers().then(users => {
-                this.setFilteredUsers({users: users})
+                this.setFilteredUsers(users)
             })
         },
         computed: {
@@ -61,14 +61,14 @@
             ]),
             updateUsers(value){
                 if(value!==''){
-                    this.setFilteredUsers({users: this.getUsersByAll(value)})
+                    this.setFilteredUsers(this.getUsersByAll(value))
                 }
                 else {
-                    this.setFilteredUsers({users: this.users})
+                    this.setFilteredUsers(this.users)
                 }
             },
             updateUsersAdvanced(filterUser){
-                this.setFilteredUsers({users: this.getUsersByAllAdvanced(filterUser)})
+                this.setFilteredUsers(this.getUsersByAllAdvanced(filterUser))
             }
         }
     }
