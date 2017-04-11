@@ -7,11 +7,11 @@ import model.history.EditableObject;
 import java.util.UUID;
 
 /**
- *  SuretyTaxAndCommission class representing an surety surety (verzekeringswaarborg). A surety is characterized by its suretyType.
+ *  SuretyTax class representing an surety surety (verzekeringswaarborg). A surety is characterized by its suretyType.
  *  Each suretyType of an surety surety has different taxes/charges and commission costs. These costs have
  *  default values for each suretyType but can be adjusted on subfleet level by the administrator.
  */
-public class SuretyTaxAndCommission implements EditableObject {
+public class SuretyTax implements EditableObject {
 
     private UUID uuid;
 
@@ -20,11 +20,7 @@ public class SuretyTaxAndCommission implements EditableObject {
      *  Expressed as a percentage.
      */
     private double taxes;
-    /**
-     *  Compensation to estate agent for the realization of the polis itself and the assistance
-     *  in case of damage. Expressed as a percentage.
-     */
-    private double commission;
+
     /**
      * Type of the surety surety as defined in SuretyType.
      */
@@ -38,7 +34,7 @@ public class SuretyTaxAndCommission implements EditableObject {
     /**
      * Constructor
      */
-    public SuretyTaxAndCommission() {
+    public SuretyTax() {
     }
 
     public double getTaxes() {
@@ -47,14 +43,6 @@ public class SuretyTaxAndCommission implements EditableObject {
 
     public void setTaxes(double taxes) {
         this.taxes = taxes;
-    }
-
-    public double getCommission() {
-        return commission;
-    }
-
-    public void setCommission(double commission) {
-        this.commission = commission;
     }
 
     public SuretyType getSuretyType() {
@@ -77,11 +65,10 @@ public class SuretyTaxAndCommission implements EditableObject {
 
     @Override
     public EditableObject copy() {
-        SuretyTaxAndCommission suretyTaxAndCommission =new SuretyTaxAndCommission();
-        suretyTaxAndCommission.setUuid(getUuid());
-        suretyTaxAndCommission.setCommission(getCommission());
-        suretyTaxAndCommission.setTaxes(getTaxes());
-        suretyTaxAndCommission.setSuretyType(getSuretyType());
-        return suretyTaxAndCommission;
+        SuretyTax suretyTax =new SuretyTax();
+        suretyTax.setUuid(getUuid());
+        suretyTax.setTaxes(getTaxes());
+        suretyTax.setSuretyType(getSuretyType());
+        return suretyTax;
     }
 }
