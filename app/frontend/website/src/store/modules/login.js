@@ -1,6 +1,4 @@
-import * as types from '../constants/mutationTypes'
 import * as locations from '../constants/locations'
-import Vue from 'vue'
 
 export default {
 

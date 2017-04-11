@@ -25,8 +25,8 @@ public abstract class RESTSimpleController {
 //        }
 //        function.setRole(role);
 //        return function;
-        try {
-            return new AuthController().getFunction(new AuthenticationToken(token),UUIDUtil.toUUID(functionId));
+        try (AuthController authController = new AuthController()){
+            return authController.getFunction(new AuthenticationToken(token),UUIDUtil.toUUID(functionId));
         } catch (DataAccessException e) {
             throw new InvalidInputException(e);
         } catch (UnAuthorizedException e) {

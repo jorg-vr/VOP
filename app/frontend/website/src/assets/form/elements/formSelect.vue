@@ -8,7 +8,7 @@
                     {{option[optionKey]}}
             </option>
             </select>
-            <button type="button" id="advanced-search" class="btn btn-xs" @click="reset"><i class="fa fa-times"></i></button>
+            <button v-if="resetButton" type="button" id="reset" class="btn btn-xs" @click="reset"><i class="fa fa-times"></i></button>
         </div>
     </form-item>
 
@@ -22,7 +22,11 @@
             options: Array,
             hiddenOption: String,
             inputId: String,
-            optionKey: String //Key to show of an object
+            optionKey: String, //Key to show of an object
+            resetButton: {
+                type: Boolean,
+                default: false
+            }
         },
         components: {
             formItem
@@ -42,9 +46,7 @@
     .select-row {
         display: flex
     }
-    #advanced-search {
-        width: 30px;
-        height: 34px;
-        margin: 0px;
+    #reset{
+        width: 50px;
     }
 </style>

@@ -34,7 +34,7 @@
         },
         methods: {
             proceed(){
-                this.submit({vehicle: this.vehicle}).then(vehicle => {
+                this.submit(this.vehicle).then(vehicle => {
                     if(vehicle.fleet){
                         this.$router.push({name: 'fleet', params: {id: vehicle.fleet}})
                     }

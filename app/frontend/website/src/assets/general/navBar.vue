@@ -37,19 +37,19 @@
 
                 <ul class="nav navbar-nav navbar-right">
                     <li v-if="hasActiveAccount == false">
-                        <router-link :to="{name: 'login'}"> {{$t("login.login") | capitalize }}  </router-link>
+                        <router-link :to="{path: '/login'}"> {{$t("login.login") | capitalize }}  </router-link>
                     </li>
                     <li>
                         <language-switcher></language-switcher>
                     </li>
                     <!-- condition group rendering for navbar login info-->
                     <template v-if="hasActiveAccount">
-                    <li>
-                        <p class="navbar-text"> {{getAccountInfo.id}}</p>
+                    <li v-if="accountFunction">
+                        <p class="navbar-text">Logged in as {{accountFunction.roleName}}</p>
                     </li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" ariahaspopup="true" aria-expanded="false">
-                        {{getAccountInfo.login}}<span class="caret"></span></a>
+                        {{account.email}}<span class="caret"></span></a>
                         <ul class="dropdown-menu">  
                             <li role="separator" class="divider"></li>
                             <li>
@@ -67,22 +67,22 @@
     </nav><!-- /.navbar -->
 </template>
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions, mapMutations } from 'vuex'
 import languageSwitcher from './languagePicker.vue'
+import formSelect from '../../assets/form/elements/formSelect.vue'
 
     export default {
         components: {
-            languageSwitcher
+            languageSwitcher, formSelect
         },
         computed: {
             ...mapGetters([
-                'hasActiveAccount','getAccountInfo'
+                'hasActiveAccount','account', 'accountFunction'
             ])
         },
         methods:{
             ...mapActions([
-                'logout',
-                'loginInfo'
+                'logout'
             ]),
             confirmLogout:function(){
                 this.logout()

@@ -9,26 +9,22 @@ public class Company extends Identity implements java.io.Serializable {
 
     private String btwNumber;
 
-    private String bankAccountNumber;
-
     private CompanyType companyType;
 
     public Company() {
     }
 
-    public Company(Address address, String email, String phoneNumber, String name, String btwNumber, String bankAccountNumber, CompanyType companyType) {
-        super(address, email, phoneNumber);
+    public Company(Address address, String phoneNumber, String name, String btwNumber, CompanyType companyType) {
+        super(address, phoneNumber);
         this.name = name;
         this.btwNumber = btwNumber;
-        this.bankAccountNumber = bankAccountNumber;
         this.companyType = companyType;
     }
 
-    public Company(UUID id, Address address, String email, String phoneNumber, String name, String btwNumber, String bankAccountNumber, CompanyType companyType) {
-        super(id, address, email, phoneNumber);
+    public Company(UUID id, Address address, String phoneNumber, String name, String btwNumber, CompanyType companyType) {
+        super(id, address, phoneNumber);
         this.name = name;
         this.btwNumber = btwNumber;
-        this.bankAccountNumber = bankAccountNumber;
         this.companyType = companyType;
     }
 
@@ -46,14 +42,6 @@ public class Company extends Identity implements java.io.Serializable {
 
     public void setBtwNumber(String btwNumber) {
         this.btwNumber = btwNumber;
-    }
-
-    public String getBankAccountNumber() {
-        return bankAccountNumber;
-    }
-
-    public void setBankAccountNumber(String bankAccountNumber) {
-        this.bankAccountNumber = bankAccountNumber;
     }
 
     public CompanyType getCompanyType() {

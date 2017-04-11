@@ -1,5 +1,4 @@
 import * as locations from '../constants/locations'
-import * as types from '../constants/mutationTypes'
 import RequestHandler from '../../api/requestHandler'
 import Vue from 'vue'
 
@@ -7,37 +6,37 @@ export default {
     state: {
         authToken: null,
         account: null, //Current authenticated account
-        login: '', // Needed for data binding in navbar (can't bind to null value in account)
-        id: ''  // Needed for data binding in navbar (can't bind to null value in account)
+        accountFunction: null
     },
     getters: {
         hasActiveAccount(state){
-            return state.account != null
+            return state.account !== null
         },
-        getAccountInfo(state){
-            return {login: state.login, id:state.id}
+        account(state){
+            return state.account
+        },
+        accountFunction(state){
+            return state.accountFunction
         }
     },
     mutations: {
-        [types.SET_AUTH_TOKEN] (state, {authToken}){
+        setAuthToken(state, {authToken}){
             state.authToken = authToken
-            Vue.http.headers.common['AuthToken'] = authToken
+            localStorage.setItem('authToken', authToken)
+            Vue.http.headers.common['Authorization'] = authToken
         },
 
-        [types.SET_ACTIVE_ACCOUNT] (state, {account}){
+        setActiveAccount(state, {account}){
             state.account = account
-            Vue.http.headers.common['Function'] = account.id
-            // set values for navbar data binding
-            state.login = account.login
-            state.id = account.id
         },
-        [types.RESET_STATE](state){
+        setActiveFunction(state, {accountFunction}){
+            state.accountFunction = accountFunction
+            Vue.http.headers.common['Function'] = accountFunction.id
+        },
+        resetState(state){
             // remove webtoken and current authenticated account
             state.authToken = null
             state.account = null
-            // remove values for navbar data binding
-            state.login= ''
-            state.id= ''
         }
     },
     actions: {
@@ -46,10 +45,33 @@ export default {
         //TODO handle failure
         authenticate(context, credentials){
             return new Promise(resolve => {
-                RequestHandler.postObjectRequest(locations.AUTHENTICATION, credentials).then(response => {
+                RequestHandler.postObjectRequest(locations.LOGIN, credentials).then(response => {
                     response.bodyText.promise.then(token => {
-                        context.commit(types.SET_AUTH_TOKEN, {authToken: token})
-                        resolve(token)
+                        context.commit('setAuthToken', {authToken: token})
+                    })
+                }, () =>  { //failure
+                    resolve()
+                }).then(() => {
+                    context.dispatch('fetchAccount').then(() => {
+                        resolve()
+                    })
+                }, () => {
+                    alert('test')
+                })
+            })
+        },
+
+        refreshToken(context){
+            return new Promise(resolve => {
+                RequestHandler.postObjectRequest(locations.REFRESH, {}).then(response => {
+                    response.bodyText.promise.then(token => {
+                        context.commit('setAuthToken', {authToken: token})
+                    })
+                }, () => { //failure
+                    resolve()
+                }).then(() => {
+                    context.dispatch('fetchAccount').then(() => {
+                        resolve()
                     })
                 })
             })
@@ -58,14 +80,19 @@ export default {
         //Precondition: user has an active authToken
         fetchAccount(context){
             return new Promise(resolve => {
-                RequestHandler.getObjectsRequestGetBody(locations.AUTHENTICATION).then(account => {
-                    context.commit(types.SET_ACTIVE_ACCOUNT, {account: account[0]})
-                    resolve(account[0])
+                RequestHandler.getObjectRequest(locations.CURRENT_USER, '').then(account => {
+                    context.commit('setActiveAccount', {account: account})
+                    context.dispatch('fetchUserFunctions').then(accountFunctions => {
+                        //Set a default function
+                        context.commit('setActiveFunction', {accountFunction: accountFunctions[0]})
+                    }).then(() => {
+                        resolve(account)
+                    })
                 })
             })
         },
         logout(context){
-            context.commit(types.RESET_STATE)
+            context.commit('resetState')
 
         }
 

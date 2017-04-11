@@ -2,7 +2,7 @@ package model.identity;
 
 
 public enum CompanyType {
-    TYPE1,
-    TYPE2,
-    TYPE3
+    CUSTOMER,
+    LEASING_COMPANY,
+    INSURANCE_COMPANY
 }

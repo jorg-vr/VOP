@@ -30,11 +30,6 @@ public class Invoice implements EditableObject, java.io.Serializable {
     private Company beneficiary;
 
     /**
-     * url to the billing itself
-     */
-    private URL url;
-
-    /**
      * Type of Invoice. Can be either a billing (monthly payments), a statement at the end of a billing period or a correction invoice
      */
     private InvoiceType type;
@@ -65,16 +60,20 @@ public class Invoice implements EditableObject, java.io.Serializable {
     public Invoice() {
     }
 
-    public Invoice(Company payer, Company beneficiary, URL url, InvoiceType type, boolean paid, LocalDate startDate, LocalDate endDate) {
+    public Invoice(Company payer, Company beneficiary,  InvoiceType type, boolean paid, LocalDate startDate, LocalDate endDate) {
         this.payer = payer;
         this.beneficiary = beneficiary;
-        this.url = url;
         this.type = type;
         this.paid = paid;
         this.startDate = startDate;
         this.endDate = endDate;
     }
 
+    public Invoice(UUID uuid, Company payer, Company beneficiary, InvoiceType type, boolean paid, LocalDate startDate, LocalDate endDate, Collection<Cost> costs) {
+        this(payer, beneficiary, type, paid, startDate, endDate);
+        this.uuid = uuid;
+        this.costs = costs;
+    }
 
     @Override
     public EditableObject copy() {
@@ -104,14 +103,6 @@ public class Invoice implements EditableObject, java.io.Serializable {
 
     public void setBeneficiary(Company beneficiary) {
         this.beneficiary = beneficiary;
-    }
-
-    public URL getUrl() {
-        return url;
-    }
-
-    public void setUrl(URL url) {
-        this.url = url;
     }
 
     public boolean isPaid() {
@@ -153,5 +144,5 @@ public class Invoice implements EditableObject, java.io.Serializable {
     public void setInsurances(Collection<Insurance> insurances) {
         this.insurances = insurances;
     }
-
+    
 }

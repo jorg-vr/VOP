@@ -86,7 +86,7 @@ public class ProductionProvider implements DAOProvider {
     }
 
     @Override
-    public synchronized VehicleTypeDao getVehicleTypeDAO() {
+    public synchronized VehicleTypeDAO getVehicleTypeDAO() {
         return new ProductionVehicleTypeDAO(sessionFactory.openSession());
     }
 
@@ -105,6 +105,7 @@ public class ProductionProvider implements DAOProvider {
     public void close() {
         sessionFactory.close();
         StandardServiceRegistryBuilder.destroy(this.registry);
+        provider = null;
     }
 
     public static void main(String[] args) throws DataAccessException {
@@ -142,7 +143,6 @@ public class ProductionProvider implements DAOProvider {
                 Customer customer = new Customer();
                 customer.setAddress(address);
                 customer.setName("Solvas");
-                customer.setBankAccountNumber("BE123456789");
                 function.setCompany(customer);
 
 

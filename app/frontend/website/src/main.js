@@ -29,10 +29,6 @@ Vue.config.lang = 'nl';
 Vue.http.options.root = Vue.config.env.API_KEY
 Vue.http.headers.common['Accept'] = 'application/json'
 
-//Temporary automatic authentication: TODO
-Vue.http.headers.common['AuthToken'] = 'randomAuthToken'
-Vue.http.headers.common['Function'] = '12345'
-
 Object.keys(locales).forEach(function (lang) {
     Vue.locale(lang, locales[lang])
 })
@@ -43,25 +39,35 @@ const router = new VueRouter({
     routes: routes,
 })
 
-
 router.beforeEach((to, from, next) => {
-    if(to.path !== '/login' && !store.getters.hasActiveAccount){
-        store.commit('setNextRoute' , {route: to})
-        next({path: '/login'});
-    }
-    else {
+    if(to.path === '/login'){
         next()
     }
-})
-
-Vue.filter('capitalize', function(value){
-    value = value.toString()
-    return value.charAt(0).toUpperCase() + value.slice(1)
+    else {
+        let token = localStorage.getItem('authToken')
+        if(token){
+            store.commit('setAuthToken', {authToken: token})
+            store.dispatch('refreshToken').then(() => {
+                next()
+            }, () => {
+                next({path: '/login'});
+            })
+        }
+        else {
+            store.commit('setNextRoute' , {route: to})
+            next({path: '/login'});
+        }
+    }
 })
 
 String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
 }
+
+Vue.filter('capitalize', function(value){
+    return value.capitalize()
+})
+
 
 new Vue({
     store,

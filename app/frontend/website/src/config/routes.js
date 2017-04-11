@@ -23,15 +23,12 @@ import showVehicle from '../pages/vehicle/show.vue'
 import exception from '../pages/exception/exception.vue'
 import login from '../pages/login/login.vue'
 
-import loginModal from '../assets/general/loginModal.vue'
 export default [
     {
         path: '',
         component: App,
         name: 'home',
         children: [
-            //Login
-            {path: 'login',name: 'login', component: loginModal},
             //User
             {path: 'users', name: 'users', component: indexUser},
             {path: 'users/new', name: 'new_user', component: newUser},
@@ -55,7 +52,7 @@ export default [
             {path: 'vehicles/:id(\\d+)/edit', name: 'edit_vehicle', component: editVehicle, props: true}
         ],
     },
-    {path: '/login', name: loginModal, component: login},
+    {path: '/login', name: login, component: login},
     {path: '*', component: exception, props: {statusCode: 404}}
 ];
 

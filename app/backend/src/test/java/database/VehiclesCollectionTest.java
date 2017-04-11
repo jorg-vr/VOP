@@ -6,7 +6,6 @@ import model.fleet.Fleet;
 import model.fleet.Vehicle;
 import model.fleet.VehicleType;
 import model.identity.Address;
-import model.identity.CompanyType;
 import model.identity.Customer;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -37,13 +36,13 @@ public class VehiclesCollectionTest {
             daoProvider = ProductionProvider.getInstance();
             notLocalTest = true;
         }
-        try (VehicleTypeDao vehicleTypeDAO = daoProvider.getVehicleTypeDAO();
+        try (VehicleTypeDAO vehicleTypeDAO = daoProvider.getVehicleTypeDAO();
              CustomerDAO customerDAO = daoProvider.getCustomerDAO();
              FleetDAO fleetDAO = daoProvider.getFleetDAO();
              AddressDAO addressDAO = daoProvider.getAddressDao()) {
             a1 = addressDAO.create(new Address("streettest n1", "59", "town 1", "9999", "country 1"));
-            c1 = customerDAO.create(new Customer(a1, "Email@address1.com", "911", "customername 1", "btw123", "123456789", CompanyType.TYPE1));
-            f1 = fleetDAO.create(new Fleet("fleet 1", c1));
+            c1 = customerDAO.create(new Customer(a1, "911", "customername 1", "btw123"));
+            f1 = fleetDAO.create(new Fleet("fleet 1", c1, a1));
             t1 = vehicleTypeDAO.create(new VehicleType("type 1", 2.5));
             t2 = vehicleTypeDAO.create(new VehicleType("type 2", 3.5));
         } catch (Exception e) {
@@ -54,7 +53,7 @@ public class VehiclesCollectionTest {
     //Gets executed after all tests have been run
     @AfterClass
     public static void closeProvider() throws Exception {
-        try (VehicleTypeDao vehicleTypeDAO = daoProvider.getVehicleTypeDAO();
+        try (VehicleTypeDAO vehicleTypeDAO = daoProvider.getVehicleTypeDAO();
              CustomerDAO customerDAO = daoProvider.getCustomerDAO();
              FleetDAO fleetDAO = daoProvider.getFleetDAO();
              AddressDAO addressDAO = daoProvider.getAddressDao()) {

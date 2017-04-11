@@ -22,7 +22,7 @@ import static model.account.Action.*;
  * 1) history changes (not yet implemented) TODO milestone?
  * 2) correct authentication (not yet implemented) TODO milestone 2
  * 3) business logic (currently nothing)
- *
+ * <p>
  * Currently there is a generic implementation for the get, archive and listFiltered methods.
  */
 public abstract class AbstractController<T extends EditableObject> implements AutoCloseable {
@@ -35,75 +35,80 @@ public abstract class AbstractController<T extends EditableObject> implements Au
     /**
      * @param dao a DAO object on which the get, listFiltered and archive methods should be called.
      */
-    public AbstractController(DAO<T> dao,Resource resource,Function function) {
+    public AbstractController(DAO<T> dao, Resource resource, Function function) {
         this.dao = dao;
-        this.resource=resource;
-        this.function=function;
-        this.role=function.getRole();
+        this.resource = resource;
+        this.function = function;
+        this.role = function.getRole();
     }
 
-    public DAO<T> getDao(){
+    public DAO<T> getDao() {
         return dao;
     }
 
     public T get(UUID uuid) throws DataAccessException, UnAuthorizedException {
-        T t=dao.get(uuid);
-        if(role.hasAccess(resource, READ_ALL) ||
-                (role.hasAccess(resource,READ_MINE)&&isOwner(t,function))){
+        T t = dao.get(uuid);
+        if (role.hasAccess(resource, READ_ALL) ||
+                (role.hasAccess(resource, READ_MINE) && isOwner(t, function))) {
             return t;
-        }else{
+        } else {
             throw new UnAuthorizedException();
         }
 
     }
 
     public Collection<T> getAll(Filter... filters) throws DataAccessException, UnAuthorizedException {
-        Collection<T> collection=dao.listFiltered(filters);
-        if(role.hasAccess(resource, READ_ALL)){
+        Collection<T> collection = dao.listFiltered(filters);
+        if (role.hasAccess(resource, READ_ALL)) {
             return collection;
-        }else if(role.hasAccess(resource,READ_MINE)){
-            collection.removeIf((t)->!isOwner(t,function));
+        } else if (role.hasAccess(resource, READ_MINE)) {
+            collection.removeIf((t) -> !isOwner(t, function));
             return collection;
-        }else{
+        } else {
             throw new UnAuthorizedException();
         }
 
     }
 
     public void archive(UUID uuid) throws DataAccessException, UnAuthorizedException {
-        T t=dao.get(uuid);
-        if(role.hasAccess(resource, REMOVE_ALL) ||
-                (role.hasAccess(resource,REMOVE_MINE)&&isOwner(t,function))){
+        T t = dao.get(uuid);
+        if (role.hasAccess(resource, REMOVE_ALL) ||
+                (role.hasAccess(resource, REMOVE_MINE) && isOwner(t, function))) {
             dao.remove(uuid);
-        }else{
+        } else {
             throw new UnAuthorizedException();
         }
     }
 
     public T create(T t) throws DataAccessException, UnAuthorizedException {
-        if(role.hasAccess(resource, CREATE_ALL) ||
-                (role.hasAccess(resource,CREATE_MINE)&&isOwner(t,function))){
+        if (role.hasAccess(resource, CREATE_ALL) ||
+                (role.hasAccess(resource, CREATE_MINE) && isOwner(t, function))) {
             return dao.create(t);
-        }else{
+        } else {
             throw new UnAuthorizedException();
         }
     }
 
     public T update(T t) throws DataAccessException, UnAuthorizedException {
-        T tOld=dao.get(t.getUuid());
-        if(role.hasAccess(resource, UPDATE_ALL) ||
-                (role.hasAccess(resource,UPDATE_MINE)&&
-                        isOwner(tOld,function)&&
-                        isOwner(t,function))){
+        T tOld = dao.get(t.getUuid());
+        if (role.hasAccess(resource, UPDATE_ALL) ||
+                (role.hasAccess(resource, UPDATE_MINE) &&
+                        isOwner(tOld, function) &&
+                        isOwner(t, function))) {
             return dao.update(t);
-        }else{
+        } else {
             throw new UnAuthorizedException();
         }
     }
 
 
-    public void close(){
-
+    public void close() {
+        try {
+            dao.close();
+        } catch (Exception e) {
+            System.err.println("Could not close DAO!");
+            e.printStackTrace();
+        }
     }
 
 
