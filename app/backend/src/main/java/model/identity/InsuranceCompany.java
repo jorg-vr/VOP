@@ -1,7 +1,6 @@
 package model.identity;
 
 import model.insurance.Insurance;
-import model.insurance.Surety;
 
 import java.util.Collection;
 import java.util.UUID;

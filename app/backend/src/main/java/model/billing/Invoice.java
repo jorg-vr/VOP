@@ -2,9 +2,7 @@ package model.billing;
 
 import model.history.EditableObject;
 import model.identity.Company;
-import model.insurance.Insurance;
 
-import java.net.URL;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.UUID;
@@ -52,7 +50,7 @@ public class Invoice implements EditableObject, java.io.Serializable {
     /**
      * collection of the insurances that are the subject of this invoice
      */
-    private Collection<Insurance> insurances;
+    private Collection<Cost> costs;
 
     /**
      * constructor
@@ -137,12 +135,11 @@ public class Invoice implements EditableObject, java.io.Serializable {
         this.type = type;
     }
 
-    public Collection<Insurance> getInsurances() {
-        return insurances;
+    public Collection<Cost> getCosts() {
+        return costs;
     }
 
-    public void setInsurances(Collection<Insurance> insurances) {
-        this.insurances = insurances;
+    public void setCosts(Collection<Cost> costs) {
+        this.costs = costs;
     }
-    
 }

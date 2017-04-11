@@ -1,9 +1,7 @@
 package model.insurance;
 
 
-import model.fleet.Vehicle;
 import model.history.EditableObject;
-import model.identity.InsuranceCompany;
 
 import java.util.UUID;
 

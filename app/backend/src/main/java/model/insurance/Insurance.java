@@ -1,7 +1,5 @@
 package model.insurance;
 
-import model.billing.Periodicity;
-import model.fleet.Vehicle;
 import model.history.EditableObject;
 import model.identity.Customer;
 import model.identity.InsuranceCompany;
