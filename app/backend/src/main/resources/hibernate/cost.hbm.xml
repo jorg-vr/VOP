@@ -19,6 +19,10 @@
         <property name="amount" column="amount" type="double" />
         <property name="startDate" column="start_data" type="java.time.LocalDateTime"/>
         <property name="endDate" column="end_data" type="java.time.LocalDateTime"/>
+        <joined-subclass name="model.billing.CostCorrection" table="costcorrections">
+            <key column="correction_cost_id"/>
+            <many-to-one name="relatedCost" column="related_cost_id" class="model.billing.Cost" lazy="proxy" fetch="select"/>
+        </joined-subclass>
 
     </class>
 </hibernate-mapping>
