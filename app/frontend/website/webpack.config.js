@@ -46,17 +46,17 @@ module.exports = {
         hints: false
     },
     devtool: '#eval-source-map',
+    plugins: {
+        'process.env': {
+            NODE_ENV: '"' + process.env.NODE_ENV + '"'
+        }
+    }
 }
 
 if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'testing') {
     module.exports.devtool = '#source-map'
     // http://vue-loader.vuejs.org/en/workflow/production.html
     module.exports.plugins = (module.exports.plugins || []).concat([
-        new webpack.DefinePlugin({
-            'process.env': {
-                NODE_ENV: '"' + process.env.NODE_ENV +'"'
-            }
-        }),
         new webpack.optimize.UglifyJsPlugin({
             sourceMap: true,
             compress: {
@@ -68,3 +68,4 @@ if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'testing')
         })
     ])
 }
+
