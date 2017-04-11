@@ -13,7 +13,6 @@
         </id>
 
         <property name="paid" column="paid" type="java.lang.Boolean" />
-        <!--TODO url for billing?????-->
         <many-to-one name="payer" column="payer_id" class="model.identity.Company" lazy="proxy" fetch="select"/>
         <many-to-one name="beneficiary" column="beneficiary_id" class="model.identity.Company" lazy="proxy" fetch="select"/>
         <property name="startDate" column="start_data" type="java.time.LocalDateTime"/>
