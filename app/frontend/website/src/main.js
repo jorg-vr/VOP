@@ -58,7 +58,6 @@ router.beforeEach((to, from, next) => {
             next({path: '/login'});
         }
     }
-
 })
 
 String.prototype.capitalize = function() {
