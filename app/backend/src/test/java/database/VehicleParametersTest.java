@@ -4,7 +4,7 @@ import dao.database.ProductionProvider;
 import dao.interfaces.DAOProvider;
 import dao.interfaces.DataAccessException;
 import dao.interfaces.VehicleDAO;
-import dao.interfaces.VehicleTypeDao;
+import dao.interfaces.VehicleTypeDAO;
 import model.fleet.Vehicle;
 import model.fleet.VehicleType;
 import org.junit.AfterClass;
@@ -27,7 +27,7 @@ public class VehicleParametersTest {
     public static void initProvider() throws Exception {
         ProductionProvider.initializeProvider("unittest");
         daoProvider = ProductionProvider.getInstance();
-        try (VehicleTypeDao vehicleTypeDao = daoProvider.getVehicleTypeDAO()) {
+        try (VehicleTypeDAO vehicleTypeDao = daoProvider.getVehicleTypeDAO()) {
             vehicleType = vehicleTypeDao.create(new VehicleType("persoonswagen", 4.5));
         }
     }
@@ -35,7 +35,7 @@ public class VehicleParametersTest {
     //Gets executed after all tests have been run
     @AfterClass
     public static void closeProvider() throws Exception {
-        try (VehicleTypeDao vehicleTypeDao = daoProvider.getVehicleTypeDAO()) {
+        try (VehicleTypeDAO vehicleTypeDao = daoProvider.getVehicleTypeDAO()) {
             vehicleTypeDao.remove(vehicleType.getUuid());
         }
         daoProvider.close();

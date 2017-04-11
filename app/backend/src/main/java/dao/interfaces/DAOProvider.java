@@ -40,7 +40,7 @@ public interface DAOProvider extends AutoCloseable {
      * Gets a VehicleTypeDAO
      * @return a VehicleTypeDAO
      */
-    VehicleTypeDao getVehicleTypeDAO();
+    VehicleTypeDAO getVehicleTypeDAO();
 
     /**
      * Gets an AdressDAO
