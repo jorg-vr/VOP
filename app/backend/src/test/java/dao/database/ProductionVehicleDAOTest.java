@@ -19,7 +19,7 @@ public class ProductionVehicleDAOTest {
 
     private static DAOProvider daoProvider;
     private static VehicleDAO vehicleDao;
-    private static VehicleTypeDao vehicleTypeDAO;
+    private static VehicleTypeDAO vehicleTypeDAO;
     private static FleetDAO fleetDAO;
     private static CustomerDAO customerDAO;
     private static AddressDAO addressDAO;

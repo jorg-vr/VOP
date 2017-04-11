@@ -86,7 +86,7 @@ public class ProductionProvider implements DAOProvider {
     }
 
     @Override
-    public synchronized VehicleTypeDao getVehicleTypeDAO() {
+    public synchronized VehicleTypeDAO getVehicleTypeDAO() {
         return new ProductionVehicleTypeDAO(sessionFactory.openSession());
     }
 
