@@ -8,7 +8,7 @@ import java.time.LocalDate;
 /**
  * Created by sam on 4/11/17.
  */
-public interface CostDAO extends DAO<Cost> {
+public interface CostDAO<T extends Cost> extends DAO<T> {
 
     /**
      * Returns a Filter to use in listFiltered in this class, which returns all costs that are paid or not
@@ -16,10 +16,10 @@ public interface CostDAO extends DAO<Cost> {
      * @param paid boolean if is paid
      * @return A useable Filter for listFiltered
      */
-    Filter<Cost> byPaid(boolean paid);
+    Filter<T> byPaid(boolean paid);
 
     //TODO insurance object
-    Filter<Cost> byInsurance(int contractID);
+    Filter<T> byInsurance(int contractID);
 
     /**
      * Returns a Filter to use in listFiltered in this class, which returns all costs after the given startDate.
@@ -27,7 +27,7 @@ public interface CostDAO extends DAO<Cost> {
      * @param date The date to use in the filter
      * @return A useable Filter for listFiltered
      */
-    Filter<Cost> startAfter(LocalDate date);
+    Filter<T> startAfter(LocalDate date);
 
     /**
      * Returns a Filter to use in ListFiltered in this class, which returns all costs before the given endDate.
@@ -35,6 +35,6 @@ public interface CostDAO extends DAO<Cost> {
      * @param date The date to use in the filter
      * @return A useable Filter for listFiltered
      */
-    Filter<Cost> endBefore(LocalDate date);
+    Filter<T> endBefore(LocalDate date);
 
 }
