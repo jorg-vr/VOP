@@ -32,20 +32,12 @@ export default {
         return this.getObjectsRequest(location + query)
     },
 
-    //This version returns the body instead of the full response
-    postObjectRequestGetBody(location, object){
-        return new Promise(resolve => {
-            this.postObjectRequest(location, object).then(response => {
-                resolve(response.body)
-            })
-        })
-    },
-
     postObjectRequest(location, object){
         return new Promise((resolveSuccess, resolveFailure) => {
             Vue.http.post(location, object).then(response => {
                 resolveSuccess(response)
             }, response => {
+                console.log(response)
                 resolveFailure(response)
             })
         })
