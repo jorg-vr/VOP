@@ -12,21 +12,22 @@
             <generator class="uuid2"/>
         </id>
 
-        <property name="paid" column="paid" type="java.lang.Boolean" />
+        <property name="paid" column="paid" type="java.lang.Boolean"/>
         <many-to-one name="payer" column="payer_id" class="model.identity.Company" lazy="proxy" fetch="select"/>
-        <many-to-one name="beneficiary" column="beneficiary_id" class="model.identity.Company" lazy="proxy" fetch="select"/>
+        <many-to-one name="beneficiary" column="beneficiary_id" class="model.identity.Company" lazy="proxy"
+                     fetch="select"/>
         <property name="startDate" column="start_data" type="java.time.LocalDateTime"/>
         <property name="endDate" column="end_data" type="java.time.LocalDateTime"/>
-        <bag name="costs" access="field" table="costs" inverse="false"
+        <bag name="contracts" access="field" table="contracts" inverse="false"
              lazy="true" fetch="select">
-            <key column="invoice_id" not-null="false"/>
-            <one-to-many class="model.billing.Cost" />
+            <key column="invoice_id" not-null="true"/>
+            <one-to-many class="model.insurance.Contract"/>
         </bag>
-        <property name="type" >
-        <type name = "org.hibernate.type.EnumType" >
-            <param name="enumClass" >model.billing.InvoiceType</param>
-        </type>
-    </property>
+        <property name="type">
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">model.billing.InvoiceType</param>
+            </type>
+        </property>
 
     </class>
 </hibernate-mapping>
