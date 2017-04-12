@@ -13,5 +13,10 @@ export default {
         NODE_ENV: 'development',
         BASE: '/',
         API_KEY: 'https://vopro5.ugent.be/test/app/api'
+    },
+    local_development: {
+        NODE_ENV: 'local_development',
+        BASE: '/',
+        API_KEY: 'http://localhost:8080'
     }
 }

@@ -35,7 +35,7 @@
         },
         methods: {
             proceed(){
-                this.submit({user: this.user}).then(() => {
+                this.submit(this.user).then(() => {
                     this.$router.push({name: 'users'})
                 })
             }

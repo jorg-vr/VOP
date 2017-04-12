@@ -19,7 +19,7 @@ import static org.junit.Assert.assertTrue;
 public class ProductionVehicleDAOFiltersTest {
     private static DAOProvider daoProvider;
     private static VehicleDAO vehicleDAO;
-    private static VehicleTypeDao vehicleTypeDAO;
+    private static VehicleTypeDAO vehicleTypeDAO;
     private static FleetDAO fleetDAO;
     private static CustomerDAO customerDAO;
     private static AddressDAO addressDAO;

@@ -46,15 +46,11 @@ router.beforeEach((to, from, next) => {
     else {
         let token = localStorage.getItem('authToken')
         if(token){
-            store.commit('SET_AUTH_TOKEN', {authToken: token})
+            store.commit('setAuthToken', {authToken: token})
             store.dispatch('refreshToken').then(() => {
-                if(!store.getters.hasActiveAccount) {
-                    store.commit('setNextRoute' , {route: to})
-                    next({path: '/login'});
-                }
-                else {
-                    next()
-                }
+                next()
+            }, () => {
+                next({path: '/login'});
             })
         }
         else {
@@ -62,17 +58,16 @@ router.beforeEach((to, from, next) => {
             next({path: '/login'});
         }
     }
-
-})
-
-Vue.filter('capitalize', function(value){
-    value = value.toString()
-    return value.charAt(0).toUpperCase() + value.slice(1)
 })
 
 String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
 }
+
+Vue.filter('capitalize', function(value){
+    return value.capitalize()
+})
+
 
 new Vue({
     store,

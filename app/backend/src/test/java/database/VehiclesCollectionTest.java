@@ -36,7 +36,7 @@ public class VehiclesCollectionTest {
             daoProvider = ProductionProvider.getInstance();
             notLocalTest = true;
         }
-        try (VehicleTypeDao vehicleTypeDAO = daoProvider.getVehicleTypeDAO();
+        try (VehicleTypeDAO vehicleTypeDAO = daoProvider.getVehicleTypeDAO();
              CustomerDAO customerDAO = daoProvider.getCustomerDAO();
              FleetDAO fleetDAO = daoProvider.getFleetDAO();
              AddressDAO addressDAO = daoProvider.getAddressDao()) {
@@ -53,7 +53,7 @@ public class VehiclesCollectionTest {
     //Gets executed after all tests have been run
     @AfterClass
     public static void closeProvider() throws Exception {
-        try (VehicleTypeDao vehicleTypeDAO = daoProvider.getVehicleTypeDAO();
+        try (VehicleTypeDAO vehicleTypeDAO = daoProvider.getVehicleTypeDAO();
              CustomerDAO customerDAO = daoProvider.getCustomerDAO();
              FleetDAO fleetDAO = daoProvider.getFleetDAO();
              AddressDAO addressDAO = daoProvider.getAddressDao()) {

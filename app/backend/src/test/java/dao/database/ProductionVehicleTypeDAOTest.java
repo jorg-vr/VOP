@@ -1,7 +1,7 @@
 package dao.database;
 
 import dao.interfaces.DAOProvider;
-import dao.interfaces.VehicleTypeDao;
+import dao.interfaces.VehicleTypeDAO;
 import model.fleet.VehicleType;
 import org.junit.*;
 
@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
 
 public class ProductionVehicleTypeDAOTest {
     private static DAOProvider daoProvider;
-    private static VehicleTypeDao vehicleTypeDAO;
+    private static VehicleTypeDAO vehicleTypeDAO;
 
     //Setup before any of the tests are started
     @BeforeClass

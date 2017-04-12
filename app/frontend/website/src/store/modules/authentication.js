@@ -1,5 +1,4 @@
 import * as locations from '../constants/locations'
-import * as types from '../constants/mutationTypes'
 import RequestHandler from '../../api/requestHandler'
 import Vue from 'vue'
 
@@ -21,20 +20,20 @@ export default {
         }
     },
     mutations: {
-        [types.SET_AUTH_TOKEN] (state, {authToken}){
+        setAuthToken(state, {authToken}){
             state.authToken = authToken
             localStorage.setItem('authToken', authToken)
             Vue.http.headers.common['Authorization'] = authToken
         },
 
-        [types.SET_ACTIVE_ACCOUNT] (state, {account}){
+        setActiveAccount(state, {account}){
             state.account = account
         },
-        [types.SET_ACTIVE_FUNCTION] (state, {accountFunction}){
+        setActiveFunction(state, {accountFunction}){
             state.accountFunction = accountFunction
             Vue.http.headers.common['Function'] = accountFunction.id
         },
-        [types.RESET_STATE](state){
+        resetState(state){
             // remove webtoken and current authenticated account
             state.authToken = null
             state.account = null
@@ -48,25 +47,31 @@ export default {
             return new Promise(resolve => {
                 RequestHandler.postObjectRequest(locations.LOGIN, credentials).then(response => {
                     response.bodyText.promise.then(token => {
-                        context.commit(types.SET_AUTH_TOKEN, {authToken: token})
+                        context.commit('setAuthToken', {authToken: token})
                     })
+                }, () =>  { //failure
+                    resolve()
                 }).then(() => {
                     context.dispatch('fetchAccount').then(() => {
                         resolve()
                     })
+                }, () => {
+                    alert('test')
                 })
             })
         },
 
         refreshToken(context){
-            return new Promise(resolve => {
+            return new Promise((resolveSuccess, resolveFailure) => {
                 RequestHandler.postObjectRequest(locations.REFRESH, {}).then(response => {
                     response.bodyText.promise.then(token => {
-                        context.commit(types.SET_AUTH_TOKEN, {authToken: token})
+                        context.commit('setAuthToken', {authToken: token})
                     })
+                }, () => { //failure
+                    resolveFailure()
                 }).then(() => {
                     context.dispatch('fetchAccount').then(() => {
-                        resolve()
+                        resolveSuccess()
                     })
                 })
             })
@@ -76,22 +81,18 @@ export default {
         fetchAccount(context){
             return new Promise(resolve => {
                 RequestHandler.getObjectRequest(locations.CURRENT_USER, '').then(account => {
-                    context.commit(types.SET_ACTIVE_ACCOUNT, {account: account})
+                    context.commit('setActiveAccount', {account: account})
                     context.dispatch('fetchUserFunctions').then(accountFunctions => {
                         //Set a default function
-                        context.commit(types.SET_ACTIVE_FUNCTION, {accountFunction: accountFunctions[0]})
+                        context.commit('setActiveFunction', {accountFunction: accountFunctions[0]})
                     }).then(() => {
                         resolve(account)
                     })
                 })
             })
         },
-
-        selectFunction(){
-
-        },
         logout(context){
-            context.commit(types.RESET_STATE)
+            context.commit('resetState')
 
         }
 

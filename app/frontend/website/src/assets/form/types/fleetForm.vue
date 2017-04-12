@@ -44,7 +44,7 @@
                 'fetchClients'
             ]),
             proceed(){
-                this.submit({fleet: this.fleet}).then(() => {
+                this.submit(this.fleet).then(() => {
                     this.$router.push({name: 'fleets'})
                 })
 

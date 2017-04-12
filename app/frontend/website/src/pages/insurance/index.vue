@@ -36,7 +36,7 @@
         },
         created() {
              this.fetchInsurances().then(insurances => {
-                 this.updateFilteredInsurances({insurances: insurances})
+                 this.setFilteredInsurances({insurances: insurances})
             })
         },
         computed: {
@@ -53,21 +53,20 @@
                 'deleteInsurance',
             ]),
 
-            ...mapMutations({
-                updateFilteredInsurances: 'UPDATE_FILTERED_INSURANCES'
-            }),
+            ...mapMutations([
+                'setFilteredInsurances'
+            ]),
             updateInsurance(value){
                 console.log(value)
                 if(value!==''){
-                    console.log('searchinput')
-                    this.updateFilteredInsurances({insurances: this.getInsurancesByAll(value)})
+                    this.setFilteredInsurances(this.getInsurancesByAll(value))
                 }
                 else {
-                    this.updateFilteredInsurances({insurances: this.insurances})
+                    this.setFilteredInsurances(this.insurances)
                 }
             },
             updateInsurancesAdvanced(filterInsurance){
-                this.updateFilteredInsurances({insurances: this.getInsurancesByAllAdvanced(filterInsurance)})
+                this.setFilteredInsurances(this.getInsurancesByAllAdvanced(filterInsurance))
             }
         }
     }
