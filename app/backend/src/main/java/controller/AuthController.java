@@ -24,6 +24,7 @@ public class AuthController implements AutoCloseable {
     public Function getFunction(AuthenticationToken token, UUID functionId) throws DataAccessException, UnAuthorizedException {
         User account = provider.getUserDAO().get(token.getAccountId());
         Function function = provider.getFunctionDAO().get(functionId);
+        init(function);
         if (function.getUser().equals(account)) {
             return function;
         } else {
@@ -51,8 +52,14 @@ public class AuthController implements AutoCloseable {
         return new AuthenticationToken(user.getUuid());
     }
 
+    private void init(Function function){
+        function.getCompany();
+        function.getRole().getRights();
+        function.getUser();
+    }
+
     @Override
     public void close() {
-
+        provider.close();
     }
 }
