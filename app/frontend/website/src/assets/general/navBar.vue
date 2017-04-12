@@ -32,6 +32,9 @@
                     <li>
                         <router-link :to="{name: 'vehicles'}">{{$t("vehicle.vehicles") | capitalize}}</router-link>
                     </li>
+                    <li>
+                        <router-link :to="{name: 'insurances'}"> {{$t("insurance.insurances") | capitalize}} </router-link>
+                    </li>
                     </template>
                 </ul><!-- /.navbar-nav -->
 

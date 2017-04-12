@@ -25,6 +25,8 @@ let functionResource = resource.initializeModule(locations.USER_FUNCTIONS, 'user
 let roleResource = resource.initializeModule(locations.ROLE, 'role')
 let permissionResource = resource.initializeModule(locations.PERMISSIONS, 'permission')
 let vehicleTypeResource = resource.initializeModule(locations.VEHICLE_TYPES, 'vehicleType')
+let insuranceResource = resource.initializeModule(locations.INSURANCE, 'insurance')
+
 
 export default new Vuex.Store({
     modules : {
@@ -36,6 +38,7 @@ export default new Vuex.Store({
         roleResource,
         permissionResource,
         vehicleTypeResource,
+        insuranceResource,
         //The following modules provide additional functions for the previous resources (or are completely new modules).
         fleet,
         vehicle,

@@ -20,6 +20,11 @@ import newVehicle from '../pages/vehicle/new.vue'
 import editVehicle from '../pages/vehicle/edit.vue'
 import showVehicle from '../pages/vehicle/show.vue'
 
+import indexInsurance from '../pages/insurance/index.vue'
+import newInsurance from '../pages/insurance/new.vue'
+import editInsurance from '../pages/insurance/edit.vue'
+import showInsurance from '../pages/insurance/show.vue'
+
 import exception from '../pages/exception/exception.vue'
 import login from '../pages/login/login.vue'
 
@@ -49,7 +54,13 @@ export default [
             {path: 'vehicles', name: 'vehicles', component: indexVehicle},
             {path: 'vehicles/new', name: 'new_vehicle', component: newVehicle, props: true},
             {path: 'vehicles/:id(\\d+)', name: 'vehicle', component: showVehicle, props: true},
-            {path: 'vehicles/:id(\\d+)/edit', name: 'edit_vehicle', component: editVehicle, props: true}
+            {path: 'vehicles/:id(\\d+)/edit', name: 'edit_vehicle', component: editVehicle, props: true},
+
+            // insurance
+            {path: 'insurances', name: 'insurances', component: indexInsurance},
+            {path: 'insurances/new', name: 'new_insurance', component: newInsurance},
+            {path: 'insurances/:id(\\d+)', name: 'insurance', component: showInsurance, props: true},
+            {path: 'insurances/:id(\\d+)/edit', name: 'edit_insurance', component: editInsurance, props: true},    
         ],
     },
     {path: '/login', name: login, component: login},

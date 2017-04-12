@@ -45,7 +45,8 @@ export default
             remove: 'remove',
             back: 'back',
             name: 'name',
-            cancel: 'cancel'
+            cancel: 'cancel',
+            add: 'new'
         },
         actions: {
             select: 'select',
@@ -79,6 +80,18 @@ export default
             password: 'Password',
             logout: 'Sign off',
             login: 'Sign in'
+        },
+        insurance:{
+            insurance: 'insurance',
+            insurances: 'insurances',
+            type:'insurance surety',
+            vehicle: 'vehicle',
+            company: 'insurance company',
+            premium: 'insurance premium',
+            franchise: 'franchise',
+            startdate: 'startdate',
+            enddate: 'enddate',
+
         }
     },
     nl : {
@@ -127,7 +140,8 @@ export default
             edit: 'wijzig',
             back: 'terug',
             name: 'naam',
-            cancel: 'annuleer'
+            cancel: 'annuleer',
+            add: 'nieuwe'
         },
         actions: {
             select: 'selecteer',
@@ -161,6 +175,17 @@ export default
             logout: 'Afmelden',
             login: 'Aanmelden'
 
+        },
+        insurance:{
+            insurance: 'verzekering',
+            insurances: 'verzekeringen',
+            type:'verzekeringswaarborg',
+            vehicle: 'voertuig',
+            company: 'verzekeringsmaatschappij',
+            premium: 'verzekeringspremie',
+            franchise: 'makelaarsloon',
+            startdate: 'startdatum',
+            enddate: 'einddatum'
         }
     }
 }
