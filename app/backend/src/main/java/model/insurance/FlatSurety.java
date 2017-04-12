@@ -9,17 +9,17 @@ public class FlatSurety extends Surety {
      * percentage of value that has to be paid yearly
      */
 
-    private double premium;
+    private double premiumPercentage;
 
     private int minPremium;
 
 
-    public double getPremium() {
-        return premium;
+    public double getPremiumPercentage() {
+        return premiumPercentage;
     }
 
-    public void setPremium(double premium) {
-        this.premium = premium;
+    public void setPremiumPercentage(double premiumPercentage) {
+        this.premiumPercentage = premiumPercentage;
     }
 
     public int getMinPremium() {
