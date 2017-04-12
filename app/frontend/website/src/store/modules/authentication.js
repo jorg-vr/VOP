@@ -72,7 +72,7 @@ export default {
                         resolveSuccess()
                     })
                 })
-            })
+                })
         },
 
         //Precondition: user has an active authToken
