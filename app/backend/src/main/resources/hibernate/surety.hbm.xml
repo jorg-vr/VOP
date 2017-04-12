@@ -23,12 +23,12 @@
         </bag>
         <joined-subclass name="model.insurance.FlatSurety" table="flatsureties">
             <key column="surety_id"/>
-            <property name="getPremiumPercentage" column="premiumPercentage" type="double"/>
+            <property name="premiumPercentage" column="premium_percentage" type="double"/>
             <property name="minPremium" column="minimum" type="double"/>
         </joined-subclass>
         <joined-subclass name="model.insurance.NonFlatSurety" table="nonflatsureties">
             <key column="surety_id"/>
-            <property name="premiumPercentage" column="premiumPercentage" type="int"/>
+            <property name="premium" column="premium" type="int"/>
         </joined-subclass>
 
     </class>
