@@ -62,16 +62,16 @@ export default {
         },
 
         refreshToken(context){
-            return new Promise(resolve => {
+            return new Promise((resolveSuccess, resolveFailure) => {
                 RequestHandler.postObjectRequest(locations.REFRESH, {}).then(response => {
                     response.bodyText.promise.then(token => {
                         context.commit('setAuthToken', {authToken: token})
                     })
                 }, () => { //failure
-                    resolve()
+                    resolveFailure()
                 }).then(() => {
                     context.dispatch('fetchAccount').then(() => {
-                        resolve()
+                        resolveSuccess()
                     })
                 })
             })
