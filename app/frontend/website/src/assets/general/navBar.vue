@@ -89,7 +89,7 @@ import formSelect from '../../assets/form/elements/formSelect.vue'
             ]),
             confirmLogout:function(){
                 this.logout()
-                this.$router.push({name: 'login'})
+                this.$router.push({path: '/login'})
             }
         }
     }

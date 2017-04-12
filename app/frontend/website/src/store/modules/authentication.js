@@ -31,12 +31,12 @@ export default {
         },
         setActiveFunction(state, {accountFunction}){
             state.accountFunction = accountFunction
-            Vue.http.headers.common['Function'] = accountFunction.id
-        },
-        resetState(state){
-            // remove webtoken and current authenticated account
-            state.authToken = null
-            state.account = null
+            if(accountFunction){
+                Vue.http.headers.common['Function'] = accountFunction.id
+            }
+            else {
+                Vue.http.headers.common['Function'] = null
+            }
         }
     },
     actions: {
@@ -55,8 +55,6 @@ export default {
                     context.dispatch('fetchAccount').then(() => {
                         resolve()
                     })
-                }, () => {
-                    alert('test')
                 })
             })
         },
@@ -92,8 +90,9 @@ export default {
             })
         },
         logout(context){
-            context.commit('resetState')
-
+            context.commit('setAuthToken', {authToken: null})
+            context.commit('setActiveAccount', {account: null})
+            context.commit('setActiveFunction', {accountFunction: null})
         }
 
     }
