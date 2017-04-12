@@ -92,6 +92,18 @@ export default
             startdate: 'startdate',
             enddate: 'enddate',
 
+        },
+        invoice:{
+            invoice: 'invoice',
+            invoices: 'invoices',
+            type:'insurance surety',
+            vehicle: 'vehicle',
+            company: 'insurance company',
+            premium: 'insurance premium',
+            franchise: 'franchise',
+            startdate: 'startdate',
+            enddate: 'enddate',
+
         }
     },
     nl : {
