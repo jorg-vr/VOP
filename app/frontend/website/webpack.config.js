@@ -46,11 +46,13 @@ module.exports = {
         hints: false
     },
     devtool: '#eval-source-map',
-    plugins: {
-        'process.env': {
-            NODE_ENV: '"' + process.env.NODE_ENV + '"'
-        }
-    }
+    plugins: [
+        new webpack.DefinePlugin({
+            'process.env': {
+                NODE_ENV: '"' + process.env.NODE_ENV + '"'
+            }
+        })
+    ]
 }
 
 if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'testing') {
@@ -67,5 +69,8 @@ if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'testing')
             minimize: true
         })
     ])
+}
+else {
+
 }
 
