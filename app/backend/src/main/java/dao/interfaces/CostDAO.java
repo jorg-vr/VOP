@@ -1,8 +1,5 @@
 package dao.interfaces;
 
-import model.billing.Cost;
-import model.fleet.Vehicle;
-
 import java.time.LocalDate;
 
 /**

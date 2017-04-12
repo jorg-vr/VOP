@@ -1,4 +1,4 @@
-package model.insurance;
+package model.identity;
 
 /**
  * Created by jorg on 4/9/17.

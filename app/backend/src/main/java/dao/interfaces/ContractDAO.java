@@ -1,9 +1,9 @@
 package dao.interfaces;
 
-import model.insurance.Insurance;
+import model.insurance.Contract;
 
 /**
  * Created by jorg on 4/8/17.
  */
-public interface ContractDAO extends DAO<Insurance> {
+public interface ContractDAO extends DAO<Contract> {
 }

@@ -2,6 +2,7 @@ package model.billing;
 
 import model.history.EditableObject;
 import model.identity.Company;
+import model.insurance.Contract;
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -50,27 +51,12 @@ public class Invoice implements EditableObject, java.io.Serializable {
     /**
      * collection of the insurances that are the subject of this invoice
      */
-    private Collection<Cost> costs;
+    private Collection<Contract> contracts;
 
     /**
      * constructor
      */
     public Invoice() {
-    }
-
-    public Invoice(Company payer, Company beneficiary,  InvoiceType type, boolean paid, LocalDate startDate, LocalDate endDate) {
-        this.payer = payer;
-        this.beneficiary = beneficiary;
-        this.type = type;
-        this.paid = paid;
-        this.startDate = startDate;
-        this.endDate = endDate;
-    }
-
-    public Invoice(UUID uuid, Company payer, Company beneficiary, InvoiceType type, boolean paid, LocalDate startDate, LocalDate endDate, Collection<Cost> costs) {
-        this(payer, beneficiary, type, paid, startDate, endDate);
-        this.uuid = uuid;
-        this.costs = costs;
     }
 
     @Override
@@ -135,11 +121,11 @@ public class Invoice implements EditableObject, java.io.Serializable {
         this.type = type;
     }
 
-    public Collection<Cost> getCosts() {
-        return costs;
+    public Collection<Contract> getContracts() {
+        return contracts;
     }
 
-    public void setCosts(Collection<Cost> costs) {
-        this.costs = costs;
+    public void setContracts(Collection<Contract> contracts) {
+        this.contracts = contracts;
     }
 }

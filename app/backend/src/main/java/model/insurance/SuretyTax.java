@@ -7,7 +7,7 @@ import model.history.EditableObject;
 import java.util.UUID;
 
 /**
- *  SuretyTax class representing an surety surety (verzekeringswaarborg). A surety is characterized by its suretyType.
+ *  SuretyTax class representing a surety (verzekeringswaarborg). A surety is characterized by its suretyType.
  *  Each suretyType of an surety surety has different taxes/charges and commission costs. These costs have
  *  default values for each suretyType but can be adjusted on subfleet level by the administrator.
  */
@@ -22,12 +22,12 @@ public class SuretyTax implements EditableObject {
     private double taxes;
 
     /**
-     * Type of the surety surety as defined in SuretyType.
+     * Type of the surety  as defined in SuretyType.
      */
     private SuretyType suretyType;
 
     /**
-     * Combined with suretytype this defines the commission and taxes.
+     * Combined with suretytype this defines the  taxes.
      */
     private VehicleType vehicleType;
 

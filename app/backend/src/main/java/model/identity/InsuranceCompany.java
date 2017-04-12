@@ -1,6 +1,6 @@
 package model.identity;
 
-import model.insurance.Insurance;
+import model.insurance.Contract;
 
 import java.util.Collection;
 import java.util.UUID;
@@ -8,19 +8,19 @@ import java.util.UUID;
 
 public class InsuranceCompany extends Company implements java.io.Serializable {
 
-    private Collection<Insurance> insurances;
+    private Collection<Contract> contracts;
 
     public InsuranceCompany() {
     }
 
-    public InsuranceCompany(Address address, String phoneNumber, String name, String btwNumber, Collection<Insurance> insurances) {
+    public InsuranceCompany(Address address, String phoneNumber, String name, String btwNumber, Collection<Contract> contracts) {
         super(address, phoneNumber, name, btwNumber, CompanyType.INSURANCE_COMPANY);
-        this.insurances = insurances;
+        this.contracts = contracts;
     }
 
-    public InsuranceCompany(Address address, String phoneNumber, String name, String btwNumber, CompanyType companyType, Collection<Insurance> insurances) {
+    public InsuranceCompany(Address address, String phoneNumber, String name, String btwNumber, CompanyType companyType, Collection<Contract> contracts) {
         super(address, phoneNumber, name, btwNumber, companyType);
-        this.insurances = insurances;
+        this.contracts = contracts;
     }
 
     public InsuranceCompany(UUID id, Address address, String phoneNumber, String name, String btwNumber, CompanyType companyType) {
@@ -28,11 +28,11 @@ public class InsuranceCompany extends Company implements java.io.Serializable {
 
     }
 
-    public Collection<Insurance> getInsurances() {
-        return insurances;
+    public Collection<Contract> getContracts() {
+        return contracts;
     }
 
-    public void setInsurances(Collection<Insurance> insurances) {
-        this.insurances = insurances;
+    public void setContracts(Collection<Contract> contracts) {
+        this.contracts = contracts;
     }
 }

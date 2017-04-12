@@ -3,27 +3,17 @@ package model.insurance;
 
 import model.history.EditableObject;
 
+import java.util.Collection;
 import java.util.UUID;
 
 /**
  * Surety class representing an surety linked to a (group of) vehicle(s).
  */
-public class Surety implements EditableObject {
+public  abstract class Surety implements EditableObject {
 
 
-    private int insuredCapital;
+    private Collection<SpecialCondition> specialConditions;
 
-    /**
-     * Fixed value that has to be paid yearly
-     */
-
-    private int premium;
-
-    /**
-     * Franchise of the surety. This is the amount that has to be paid by the one who holds the surety.
-     * This is a fixed amount.
-     */
-    private int franchise;
 
     /**
      * Type of surety included
@@ -47,22 +37,6 @@ public class Surety implements EditableObject {
         return null;
     }
 
-
-    public int getPremium() {
-        return premium;
-    }
-
-    public void setPremium(int premium) {
-        this.premium = premium;
-    }
-
-    public int getFranchise() {
-        return franchise;
-    }
-
-    public void setFranchise(int franchise) {
-        this.franchise = franchise;
-    }
 
     public SuretyType getSuretyType() {
         return suretyType;

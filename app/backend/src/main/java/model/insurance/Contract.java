@@ -3,6 +3,7 @@ package model.insurance;
 import model.history.EditableObject;
 import model.identity.Customer;
 import model.identity.InsuranceCompany;
+import model.identity.Periodicity;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -11,11 +12,10 @@ import java.util.UUID;
 /**
  * Created by jorg on 4/8/17.
  */
-public class Insurance implements EditableObject {
+public class Contract implements EditableObject {
     /**
      * Company that offers surety to customer.
      */
-    private Periodicity paymentPeriodicity;
     private InsuranceCompany company;
     private Customer customer;
     private Collection<VehicleInsurance> vehicleInsurances;
@@ -23,7 +23,7 @@ public class Insurance implements EditableObject {
     private LocalDateTime endDate;
     private UUID uuid;
 
-    public Insurance() {
+    public Contract() {
     }
 
     public InsuranceCompany getCompany() {
@@ -66,15 +66,7 @@ public class Insurance implements EditableObject {
         this.endDate = endDate;
     }
 
-    public Periodicity getPaymentPeriodicity() {
-        return paymentPeriodicity;
-    }
-
-    public void setPaymentPeriodicity(Periodicity paymentPeriodicity) {
-        this.paymentPeriodicity = paymentPeriodicity;
-    }
-
-    public void setUuid(UUID uuid) {
+   public void setUuid(UUID uuid) {
         this.uuid = uuid;
     }
 

@@ -3,6 +3,7 @@ package model.insurance;
 import model.fleet.Vehicle;
 import model.history.EditableObject;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.UUID;
 
@@ -13,7 +14,17 @@ public class VehicleInsurance implements EditableObject {
 
     private UUID uuid;
     private Vehicle vehicle;
-    private Collection<Surety> sureties;
+    private Surety surety;
+
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
+    /**
+     * Franchise of the surety. This is the amount that has to be paid by the one who holds the surety.
+     * This is a fixed amount.
+     */
+    private int franchise;
+
+    private int insuredValue;
 
     public VehicleInsurance() {
     }
@@ -30,12 +41,44 @@ public class VehicleInsurance implements EditableObject {
         this.vehicle = vehicle;
     }
 
-    public Collection<Surety> getSureties() {
-        return sureties;
+    public Surety getSurety() {
+        return surety;
     }
 
-    public void setSureties(Collection<Surety> sureties) {
-        this.sureties = sureties;
+    public void setSurety(Surety surety) {
+        this.surety = surety;
+    }
+
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDateTime getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDateTime endDate) {
+        this.endDate = endDate;
+    }
+
+    public int getFranchise() {
+        return franchise;
+    }
+
+    public void setFranchise(int franchise) {
+        this.franchise = franchise;
+    }
+
+    public int getInsuredValue() {
+        return insuredValue;
+    }
+
+    public void setInsuredValue(int insuredValue) {
+        this.insuredValue = insuredValue;
     }
 
     @Override
