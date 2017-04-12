@@ -6,7 +6,7 @@ export default {
     state: {
         authToken: null,
         account: null, //Current authenticated account
-        accountFunction: null
+        activeFunction: null
     },
     getters: {
         hasActiveAccount(state){
@@ -15,8 +15,8 @@ export default {
         account(state){
             return state.account
         },
-        accountFunction(state){
-            return state.accountFunction
+        activeFunction(state){
+            return state.activeFunction
         }
     },
     mutations: {
@@ -26,23 +26,23 @@ export default {
             Vue.http.headers.common['Authorization'] = authToken
         },
 
-        setActiveAccount(state, {account}){
+        setActiveAccount(state, account){
             state.account = account
         },
-        setActiveFunction(state, {accountFunction}){
-            state.accountFunction = accountFunction
-            Vue.http.headers.common['Function'] = accountFunction.id
-        },
-        resetState(state){
-            // remove webtoken and current authenticated account
-            state.authToken = null
-            state.account = null
+
+        setActiveFunction(state, activeFunction){
+            state.activeFunction = activeFunction
+            let functionId = null
+            if(activeFunction) {
+                functionId = activeFunction.id
+            }
+            localStorage.setItem('functionId', functionId)
+            Vue.http.headers.common['Function'] = functionId
         }
     },
     actions: {
 
         //Credentials has to contain a key 'login' and 'password'
-        //TODO handle failure
         authenticate(context, credentials){
             return new Promise(resolve => {
                 RequestHandler.postObjectRequest(locations.LOGIN, credentials).then(response => {
@@ -55,8 +55,6 @@ export default {
                     context.dispatch('fetchAccount').then(() => {
                         resolve()
                     })
-                }, () => {
-                    alert('test')
                 })
             })
         },
@@ -74,26 +72,36 @@ export default {
                         resolveSuccess()
                     })
                 })
-            })
+                })
         },
 
         //Precondition: user has an active authToken
         fetchAccount(context){
             return new Promise(resolve => {
                 RequestHandler.getObjectRequest(locations.CURRENT_USER, '').then(account => {
-                    context.commit('setActiveAccount', {account: account})
-                    context.dispatch('fetchUserFunctions').then(accountFunctions => {
-                        //Set a default function
-                        context.commit('setActiveFunction', {accountFunction: accountFunctions[0]})
-                    }).then(() => {
-                        resolve(account)
-                    })
+                    context.commit('setActiveAccount', account)
+                    let functionId = localStorage.getItem('functionId')
+                    if(functionId==='null'){
+                        context.dispatch('fetchUserFunctions').then(activeFunctions => {
+                            //Set a default function. At the moment this is the first function in the list.
+                            context.commit('setActiveFunction', activeFunctions[0])
+                        }).then(() => {
+                            resolve(account)
+                        })
+                    }
+                    else {
+                        context.dispatch('fetchUserFunction', {id: functionId}).then(activeFunction => {
+                            context.commit('setActiveFunction', activeFunction)
+                        }).then(() => {
+                            resolve(account)
+                        })
+                    }
                 })
             })
         },
         logout(context){
-            context.commit('resetState')
-
+            context.commit('setAuthToken', {authToken: null})
+            context.commit('setActiveAccount', null)
         }
 
     }

@@ -7,7 +7,8 @@
         <div class="page-header">
             <h1>
                 {{$t("client.clients") | capitalize }}
-                <button-link :route="{name: 'new_client'}" buttonClass="pull-right btn btn-md btn-primary btn-add">Nieuwe vloot</button-link>
+                <button-link :route="{name: 'new_client'}" buttonClass="pull-right btn btn-md btn-primary btn-add">
+                {{$t("common.add") | capitalize }} {{$t("client.client")}}</button-link>
             </h1>
         </div>
         <client-search-bar @search="updateClients" @advancedSearch="updateClientsAdvanced"></client-search-bar>

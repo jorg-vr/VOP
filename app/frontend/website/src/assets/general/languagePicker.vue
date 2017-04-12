@@ -5,7 +5,7 @@
     <!-- Wrap select into <p> to be able to add language flag -->
      <p> 
         <span class="lang-sm" v-bind:lang="currentLangCode"></span>
-        <select id="language-picker" class="form-control" :value="currentLangName" @change="updateLanguage($event.target.value)" >
+        <select class="picker form-control" :value="currentLangName" @change="updateLanguage($event.target.value)" >
             <option v-for="lang in languages" :selected="lang.code===currentLangCode">{{lang.name}}</option>
         </select> 
     </p>
@@ -47,7 +47,7 @@
     }
 </script>
 <style>
-     #language-picker {
+     .picker {
         background: rgba(0, 0, 0, 0);
         border-color: rgba(0, 0, 0, 0);
         box-shadow: none;
