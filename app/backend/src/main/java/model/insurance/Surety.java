@@ -46,4 +46,20 @@ public  abstract class Surety implements EditableObject {
         this.suretyType = suretyType;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || !(o instanceof Surety)) return false;
+
+        Surety that = (Surety) o;
+
+        return getUuid().equals(that.getUuid());
+
+    }
+
+    @Override
+    public int hashCode() {
+        return getUuid().hashCode();
+    }
+
 }

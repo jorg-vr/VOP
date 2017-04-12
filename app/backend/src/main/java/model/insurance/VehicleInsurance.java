@@ -90,4 +90,20 @@ public class VehicleInsurance implements EditableObject {
     public EditableObject copy() {
         return null;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || !(o instanceof VehicleInsurance)) return false;
+
+        VehicleInsurance that = (VehicleInsurance) o;
+
+        return getUuid().equals(that.getUuid());
+
+    }
+
+    @Override
+    public int hashCode() {
+        return getUuid().hashCode();
+    }
 }

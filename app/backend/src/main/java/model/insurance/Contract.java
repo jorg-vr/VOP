@@ -79,4 +79,20 @@ public class Contract implements EditableObject {
     public EditableObject copy() {
         return null;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || !(o instanceof Contract)) return false;
+
+        Contract that = (Contract) o;
+
+        return getUuid().equals(that.getUuid());
+
+    }
+
+    @Override
+    public int hashCode() {
+        return getUuid().hashCode();
+    }
 }

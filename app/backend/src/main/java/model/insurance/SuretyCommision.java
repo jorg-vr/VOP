@@ -1,6 +1,7 @@
 package model.insurance;
 
 import model.fleet.VehicleType;
+import model.history.EditableObject;
 import model.identity.Company;
 
 import java.util.UUID;
@@ -8,7 +9,7 @@ import java.util.UUID;
 /**
  * Created by jorg on 4/12/17.
  */
-public class SuretyCommision {
+public class SuretyCommision implements EditableObject {
 
     private UUID uuid;
 
@@ -26,6 +27,11 @@ public class SuretyCommision {
 
     public UUID getUuid() {
         return uuid;
+    }
+
+    @Override
+    public EditableObject copy() {
+        return null;
     }
 
     public void setUuid(UUID uuid) {
@@ -62,5 +68,20 @@ public class SuretyCommision {
 
     public void setCompany(Company company) {
         this.company = company;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || !(o instanceof SuretyCommision)) return false;
+
+        SuretyCommision that = (SuretyCommision) o;
+
+        return getUuid().equals(that.getUuid());
+
+    }
+
+    @Override
+    public int hashCode() {
+        return getUuid().hashCode();
     }
 }

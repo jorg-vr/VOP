@@ -128,4 +128,19 @@ public class Invoice implements EditableObject, java.io.Serializable {
     public void setContracts(Collection<Contract> contracts) {
         this.contracts = contracts;
     }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || !(o instanceof Invoice)) return false;
+
+        Invoice that = (Invoice) o;
+
+        return getUuid().equals(that.getUuid());
+
+    }
+
+    @Override
+    public int hashCode() {
+        return getUuid().hashCode();
+    }
 }

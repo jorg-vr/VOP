@@ -29,4 +29,20 @@ public class FlatSurety extends Surety {
     public void setMinPremium(int minPremium) {
         this.minPremium = minPremium;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || !(o instanceof FlatSurety)) return false;
+
+        FlatSurety that = (FlatSurety) o;
+
+        return getUuid().equals(that.getUuid());
+
+    }
+
+    @Override
+    public int hashCode() {
+        return getUuid().hashCode();
+    }
 }

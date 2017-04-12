@@ -71,4 +71,20 @@ public class SuretyTax implements EditableObject {
         suretyTax.setSuretyType(getSuretyType());
         return suretyTax;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || !(o instanceof SuretyTax)) return false;
+
+        SuretyTax that = (SuretyTax) o;
+
+        return getUuid().equals(that.getUuid());
+
+    }
+
+    @Override
+    public int hashCode() {
+        return getUuid().hashCode();
+    }
 }
