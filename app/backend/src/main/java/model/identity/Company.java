@@ -5,6 +5,11 @@ import java.util.UUID;
 
 public class Company extends Identity implements java.io.Serializable {
 
+
+    private Periodicity invoicePeriodicity;
+
+    private Periodicity statementPeriodicity;
+
     private String name;
 
     private String btwNumber;
@@ -50,5 +55,21 @@ public class Company extends Identity implements java.io.Serializable {
 
     public void setCompanyType(CompanyType companyType) {
         this.companyType = companyType;
+    }
+
+    public Periodicity getStatementPeriodicity() {
+        return statementPeriodicity;
+    }
+
+    public void setStatementPeriodicity(Periodicity statementPeriodicity) {
+        this.statementPeriodicity = statementPeriodicity;
+    }
+
+    public Periodicity getInvoicePeriodicity() {
+        return invoicePeriodicity;
+    }
+
+    public void setInvoicePeriodicity(Periodicity invoicePeriodicity) {
+        this.invoicePeriodicity = invoicePeriodicity;
     }
 }

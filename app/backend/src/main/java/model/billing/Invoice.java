@@ -2,8 +2,8 @@ package model.billing;
 
 import model.history.EditableObject;
 import model.identity.Company;
+import model.insurance.Contract;
 
-import java.net.URL;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.UUID;
@@ -49,29 +49,14 @@ public class Invoice implements EditableObject, java.io.Serializable {
     private LocalDate endDate;
 
     /**
-     * collection of the costs that fall in this billing period.
+     * collection of the insurances that are the subject of this invoice
      */
-    private Collection<Cost> costs;
+    private Collection<Contract> contracts;
 
     /**
      * constructor
      */
     public Invoice() {
-    }
-
-    public Invoice(Company payer, Company beneficiary,  InvoiceType type, boolean paid, LocalDate startDate, LocalDate endDate) {
-        this.payer = payer;
-        this.beneficiary = beneficiary;
-        this.type = type;
-        this.paid = paid;
-        this.startDate = startDate;
-        this.endDate = endDate;
-    }
-
-    public Invoice(UUID uuid, Company payer, Company beneficiary, InvoiceType type, boolean paid, LocalDate startDate, LocalDate endDate, Collection<Cost> costs) {
-        this(payer, beneficiary, type, paid, startDate, endDate);
-        this.uuid = uuid;
-        this.costs = costs;
     }
 
     @Override
@@ -128,19 +113,34 @@ public class Invoice implements EditableObject, java.io.Serializable {
         this.endDate = endDate;
     }
 
-    public Collection<Cost> getCosts() {
-        return costs;
-    }
-
-    public void setCosts(Collection<Cost> costs) {
-        this.costs = costs;
-    }
-
     public InvoiceType getType() {
         return type;
     }
 
     public void setType(InvoiceType type) {
         this.type = type;
+    }
+
+    public Collection<Contract> getContracts() {
+        return contracts;
+    }
+
+    public void setContracts(Collection<Contract> contracts) {
+        this.contracts = contracts;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || !(o instanceof Invoice)) return false;
+
+        Invoice that = (Invoice) o;
+
+        return getUuid().equals(that.getUuid());
+
+    }
+
+    @Override
+    public int hashCode() {
+        return getUuid().hashCode();
     }
 }
