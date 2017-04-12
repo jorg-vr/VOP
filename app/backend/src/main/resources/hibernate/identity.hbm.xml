@@ -18,6 +18,16 @@
             <key column="identity_id"/>
             <property name="name" column="name" type="string"/>
             <property name="btwNumber" column="btw_number" type="string"/>
+            <property name="invoicePeriodicity">
+                <type name="org.hibernate.type.EnumType">
+                    <param name="enumClass">model.identity.Periodicity</param>
+                </type>
+            </property>
+            <property name="statementPeriodicity">
+                <type name="org.hibernate.type.EnumType">
+                    <param name="enumClass">model.identity.Periodicity</param>
+                </type>
+            </property>
             <joined-subclass name="model.identity.Customer" table="customers">
                 <key column="identity_id"/>
                 <bag name="fleets" access="field" table="fleets"
