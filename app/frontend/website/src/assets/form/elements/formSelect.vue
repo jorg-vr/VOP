@@ -1,7 +1,7 @@
 <template>
     <form-item :label="label">
         <div class="select-row">
-            <select class="form-control select-item" :value="value" @change="updateValue($event.target.value)" :id="inputId" ref="select">
+            <select :class="'form-control select-item'+selectClass" :value="value" @change="updateValue($event.target.value)" :id="inputId" ref="select">
                 <option v-if="hiddenOption" value="" disabled hidden>{{hiddenOption}}</option>
                 <option v-else value="" disabled hidden></option>
                 <option :selected="option.id === value" v-for="option in options" :value="option.id">
@@ -26,6 +26,10 @@
             resetButton: {
                 type: Boolean,
                 default: false
+            },
+            selectClass: {
+                type: String,
+                default: ''
             }
         },
         components: {

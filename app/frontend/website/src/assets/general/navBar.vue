@@ -43,13 +43,13 @@
                         <router-link :to="{path: '/login'}"> {{$t("login.login") | capitalize }}  </router-link>
                     </li>
                     <li>
-                        <language-switcher></language-switcher>
+                        <language-picker></language-picker>
+                    </li>
+                    <li>
+                        <function-picker></function-picker>
                     </li>
                     <!-- condition group rendering for navbar login info-->
                     <template v-if="hasActiveAccount">
-                    <li v-if="accountFunction">
-                        <p class="navbar-text">Logged in as {{accountFunction.roleName}}</p>
-                    </li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" ariahaspopup="true" aria-expanded="false">
                         {{account.email}}<span class="caret"></span></a>
@@ -71,16 +71,17 @@
 </template>
 <script>
 import { mapGetters, mapActions, mapMutations } from 'vuex'
-import languageSwitcher from './languagePicker.vue'
+import languagePicker from './languagePicker.vue'
+import functionPicker from './functionPicker.vue'
 import formSelect from '../../assets/form/elements/formSelect.vue'
 
     export default {
         components: {
-            languageSwitcher, formSelect
+            languagePicker, functionPicker, formSelect
         },
         computed: {
             ...mapGetters([
-                'hasActiveAccount','account', 'accountFunction'
+                'hasActiveAccount', 'account'
             ])
         },
         methods:{
