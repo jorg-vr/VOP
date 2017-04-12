@@ -11,3 +11,4 @@ export const ROLE = AUTHENTICATION + 'roles/'
 export const USER_FUNCTIONS = CURRENT_USER + 'functions/'
 export const INSURANCE ='contracts/'
 export const PERMISSIONS = 'permissions/'
+export const INVOICES = USER + "invoices/"
