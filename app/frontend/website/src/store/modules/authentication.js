@@ -36,9 +36,7 @@ export default {
             if(activeFunction) {
                 functionId = activeFunction.id
             }
-            console.log(functionId)
             localStorage.setItem('functionId', functionId)
-            console.log(localStorage.getItem('functionId'))
             Vue.http.headers.common['Function'] = functionId
         }
     },

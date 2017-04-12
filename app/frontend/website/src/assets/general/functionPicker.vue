@@ -14,6 +14,9 @@
             }
         },
         created(){
+            if(this.userFunctions.length === 0){
+                this.fetchUserFunctions()
+            }
             this.accountFunction = this.activeFunction
         },
         components: {
