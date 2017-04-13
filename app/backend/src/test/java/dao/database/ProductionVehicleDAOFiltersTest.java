@@ -63,6 +63,10 @@ public class ProductionVehicleDAOFiltersTest {
         vehicleTypeDAO.remove(t1.getUuid());
         vehicleTypeDAO.remove(t2.getUuid());
         addressDAO.remove(a1.getUuid());
+        vehicleDAO.close();
+        fleetDAO.close();
+        customerDAO.close();
+        addressDAO.close();
         daoProvider.close();
     }
 

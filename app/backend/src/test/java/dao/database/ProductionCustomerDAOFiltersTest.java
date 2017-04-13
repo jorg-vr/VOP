@@ -45,6 +45,8 @@ public class ProductionCustomerDAOFiltersTest {
         //Address temp1 = addressDAO.get(a1.getUuid());
         //Address temp2 = addressDAO.get(a2.getUuid());
         addressDAO.remove(a2.getUuid());
+        customerDAO.close();
+        addressDAO.close();
         daoProvider.close();
     }
 
