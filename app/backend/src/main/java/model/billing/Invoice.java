@@ -4,7 +4,7 @@ import model.history.EditableObject;
 import model.identity.Company;
 import model.insurance.Contract;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
@@ -42,12 +42,12 @@ public class Invoice implements EditableObject, java.io.Serializable {
     /**
      * start-date of the billing period the invoice applies to
      */
-    private LocalDate startDate;
+    private LocalDateTime startDate;
 
     /**
      * end-date of the billing period the invoice applies to
      */
-    private LocalDate endDate;
+    private LocalDateTime endDate;
 
     /**
      * collection of the insurances that are the subject of this invoice
@@ -61,7 +61,7 @@ public class Invoice implements EditableObject, java.io.Serializable {
         this.contracts = new ArrayList<>();
     }
 
-    public Invoice(Company payer, Company beneficiary, InvoiceType type, boolean paid, LocalDate startDate, LocalDate endDate) {
+    public Invoice(Company payer, Company beneficiary, InvoiceType type, boolean paid, LocalDateTime startDate, LocalDateTime endDate) {
         this.payer = payer;
         this.beneficiary = beneficiary;
         this.type = type;
@@ -109,19 +109,19 @@ public class Invoice implements EditableObject, java.io.Serializable {
         this.paid = paid;
     }
 
-    public LocalDate getStartDate() {
+    public LocalDateTime getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDate startDate) {
+    public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
     }
 
-    public LocalDate getEndDate() {
+    public LocalDateTime getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDate endDate) {
+    public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
     }
 

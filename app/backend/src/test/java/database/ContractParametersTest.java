@@ -1,10 +1,7 @@
 package database;
 
 import dao.database.ProductionProvider;
-import dao.interfaces.AddressDAO;
-import dao.interfaces.ContractDAO;
-import dao.interfaces.DAOProvider;
-import dao.interfaces.DataAccessException;
+import dao.interfaces.*;
 import model.identity.Address;
 import model.identity.InsuranceCompany;
 import model.insurance.Contract;
@@ -31,16 +28,18 @@ public class ContractParametersTest {
         ProductionProvider.initializeProvider("unittest");
         daoProvider = ProductionProvider.getInstance();
         try (AddressDAO addressDAO = daoProvider.getAddressDao();
-        ) {
+             InsuranceCompanyDAO insuranceCompanyDAO = daoProvider.getInsuranceCompanyDao()) {
             address = addressDAO.create(new Address("Street", "55", "Town", "9000", "Country"));
-            insuranceCompany = null;
+            insuranceCompany = insuranceCompanyDAO.create(new InsuranceCompany(address, "123456789", "customerName", "BE123123123B01"));
         }
     }
 
     //Gets executed after all tests have been run
     @AfterClass
     public static void closeProvider() throws Exception {
-        try (AddressDAO addressDAO = daoProvider.getAddressDao()) {
+        try (AddressDAO addressDAO = daoProvider.getAddressDao();
+             InsuranceCompanyDAO insuranceCompanyDAO = daoProvider.getInsuranceCompanyDao()) {
+            insuranceCompanyDAO.remove(insuranceCompany.getUuid());
             addressDAO.remove(address.getUuid());
         }
         daoProvider.close();
