@@ -24,6 +24,6 @@ public class RoleController extends AbstractController<Role> {
 
     @Override
     public boolean isOwner(Role role, Function function) {
-        return false;// Role never has an owner
+        return function.getRole().equals(role);
     }
 }

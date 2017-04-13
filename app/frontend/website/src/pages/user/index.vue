@@ -7,7 +7,8 @@
         <div class="page-header">
             <h1>
                 {{$t("user.users") | capitalize }}
-                <button-link :route="{name: 'new_user'}" buttonClass="pull-right btn btn-md btn-primary btn-add">Nieuwe gebruiker</button-link>
+                <button-link :route="{name: 'new_user'}" buttonClass="pull-right btn btn-md btn-primary btn-add">
+                {{$t("common.add") | capitalize }} {{$t("user.user")}}</button-link>
             </h1>
         </div>
         <user-search-bar @search="updateUsers" @advancedSearch="updateUsersAdvanced"></user-search-bar>

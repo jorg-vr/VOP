@@ -17,6 +17,7 @@ import spring.model.RESTUser;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/users/me")
@@ -37,6 +38,17 @@ public class RESTUserMeController {
             functions.add(new RESTFunction(function));
         }
         return new RESTSchema(functions, page, limit, request);
+    }
+
+    @RequestMapping(value = "/functions/{id}", method = RequestMethod.GET)
+    public RESTFunction getFunction(@PathVariable String id, @RequestHeader(value = "Authorization") String token) {
+        UUID uuid = UUIDUtil.toUUID(id);
+        for (Function function: getUser(token).getFunctions()) {
+            if (function.getUuid().equals(uuid)) {
+                return new RESTFunction(function);
+            }
+        }
+        throw new InvalidInputException("user has no function with that id");
     }
 
     @RequestMapping(method = RequestMethod.PUT)
