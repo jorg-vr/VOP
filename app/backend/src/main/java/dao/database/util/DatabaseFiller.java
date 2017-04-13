@@ -12,13 +12,19 @@ import model.identity.Customer;
  */
 public class DatabaseFiller {
     public static void main(String[] args) throws DataAccessException {
+        DAOProvider provider = null;
+        try {
 
-        ProductionProvider.initializeProvider("localtest");
-        try (DAOProvider provider = ProductionProvider.getInstance();) {
+            ProductionProvider.initializeProvider("localtest");
+            provider = ProductionProvider.getInstance();
             DatabaseFiller filler = new DatabaseFiller();
             filler.initAdminRole(provider);
             filler.initVehicleTypes(provider);
 
+        } catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            provider.close();
         }
     }
 
