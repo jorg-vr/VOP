@@ -140,6 +140,11 @@ public class ProductionProvider implements DAOProvider {
         return new ProductionVehicleInsuranceDAO(sessionFactory.openSession());
     }
 
+    @Override
+    public InsuranceCompanyDAO getInsuranceCompanyDao() {
+        return new ProductionInsuranceCompanyDAO(sessionFactory.openSession());
+    }
+
 
     @Override
     public void close() {
