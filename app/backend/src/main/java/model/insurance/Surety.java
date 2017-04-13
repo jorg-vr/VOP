@@ -11,7 +11,7 @@ import java.util.UUID;
  */
 public  abstract class Surety implements EditableObject {
 
-
+    private UUID uuid;
     private Collection<SpecialCondition> specialConditions;
 
 
@@ -30,6 +30,10 @@ public  abstract class Surety implements EditableObject {
     @Override
     public UUID getUuid() {
         return null;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 
     @Override

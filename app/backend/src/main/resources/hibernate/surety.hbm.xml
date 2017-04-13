@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="model.insurance.Surety" table="sureties">
+        <meta attribute="class-description">
+            This class contains the surety detail.
+        </meta>
+        <id name="uuid" type="uuid-binary" column="id">
+            <generator class="uuid2"/>
+        </id>
+        <property name="suretyType">
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">model.insurance.SuretyType</param>
+            </type>
+        </property>
+        <bag name="specialConditions" access="field" table="specialconditions"
+             lazy="true" fetch="select" inverse="false">
+            <key column="surety_id" not-null="true"/>
+            <many-to-many class="model.insurance.SpecialCondition" />
+        </bag>
+        <joined-subclass name="model.insurance.FlatSurety" table="flatsureties">
+            <key column="surety_id"/>
+            <property name="premiumPercentage" column="premium_percentage" type="double"/>
+            <property name="minPremium" column="minimum" type="double"/>
+        </joined-subclass>
+        <joined-subclass name="model.insurance.NonFlatSurety" table="nonflatsureties">
+            <key column="surety_id"/>
+            <property name="premium" column="premium" type="int"/>
+        </joined-subclass>
+
+    </class>
+</hibernate-mapping>

@@ -53,6 +53,14 @@ public class SuretyTax implements EditableObject {
         this.suretyType = suretyType;
     }
 
+    public VehicleType getVehicleType() {
+        return vehicleType;
+    }
+
+    public void setVehicleType(VehicleType vehicleType) {
+        this.vehicleType = vehicleType;
+    }
+
     public void setUuid(UUID uuid){
         this.uuid=uuid;
     }

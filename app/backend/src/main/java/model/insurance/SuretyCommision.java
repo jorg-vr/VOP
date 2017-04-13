@@ -3,6 +3,7 @@ package model.insurance;
 import model.fleet.VehicleType;
 import model.history.EditableObject;
 import model.identity.Company;
+import model.identity.Customer;
 
 import java.util.UUID;
 
@@ -23,7 +24,7 @@ public class SuretyCommision implements EditableObject {
 
     private VehicleType vehicleType;
 
-    private Company company;
+    private Customer customer;
 
     public UUID getUuid() {
         return uuid;
@@ -62,13 +63,14 @@ public class SuretyCommision implements EditableObject {
         this.vehicleType = vehicleType;
     }
 
-    public Company getCompany() {
-        return company;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setCompany(Company company) {
-        this.company = company;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

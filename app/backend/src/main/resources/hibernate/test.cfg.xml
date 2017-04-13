@@ -24,6 +24,12 @@
         <mapping resource="hibernate/function.hbm.xml" />
         <mapping resource="hibernate/role.hbm.xml" />
         <mapping resource="hibernate/user.hbm.xml" />
-
+        <mapping resource="hibernate/contract.hbm.xml" />
+        <mapping resource="hibernate/invoice.hbm.xml" />
+        <mapping resource="hibernate/specialcondition.hbm.xml" />
+        <mapping resource="hibernate/surety.hbm.xml" />
+        <mapping resource="hibernate/suretycommision.hbm.xml" />
+        <mapping resource="hibernate/suretytax.hbm.xml" />
+        <mapping resource="hibernate/vehicleinsurance.hbm.xml" />
     </session-factory>
 </hibernate-configuration>
