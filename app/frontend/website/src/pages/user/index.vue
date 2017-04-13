@@ -14,7 +14,7 @@
         <!-- Render an info-pane for every user. Once all the data is loaded, the table will be shown.-->
         <list-component v-for="user in filteredUsers"
                         v-if="user"
-                        resourceName="user",
+                        resourceName="user"
                         :object="user"
                         :visibleKeys="new Array('firstName', 'lastName')"
                         :key="user.id">

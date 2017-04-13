@@ -36,6 +36,8 @@
             updateActiveFunction(functionId){
                 let userFunction = this.userFunctions.filter(obj => obj.id === functionId)[0]
                 this.setActiveFunction(userFunction)
+                //Navigate back to home once the function has changed.
+                this.$router.push({name: 'home'})
             }
         }
     }

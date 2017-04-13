@@ -21,7 +21,7 @@
             </div>
         </router-link>
         <button-edit :resourceName="resourceName" :params="{id: object.id}"></button-edit>
-        <button-remove @click="showModal=true"></button-remove>
+        <button-remove :resourceName="resourceName" @click="showModal=true"></button-remove>
         <confirm-modal v-show="showModal" @cancelModal="showModal=false" @confirmModal="confirmAction()"></confirm-modal>
     </div>
 </template>

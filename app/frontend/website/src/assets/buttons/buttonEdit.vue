@@ -9,7 +9,7 @@
 <script>
     import * as actions from '../../constants/actions'
     import buttonLink from './buttonLink.vue'
-    import PermissionComponent from '../general/PermissionComponent.vue'
+    import PermissionComponent from '../protection/ProtectedElement.vue'
 
     export default {
         data() {
@@ -24,11 +24,17 @@
                 }
             }
         },
+        created(){
+            console.log(this.permission)
+        },
         components: {
             buttonLink, PermissionComponent
         },
         props: {
-            resourceName: String, //Name of the resource
+            resourceName: { //Name of the resource
+                type: String,
+                default: ''
+            } ,
             params: { //Initial params for adding
                 type: Object,
                 default(){

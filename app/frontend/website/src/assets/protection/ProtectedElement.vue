@@ -4,7 +4,7 @@ Place a component inside this component for permission checking.
 -->
 
 <template>
-    <span v-if="hasPermission(permission)">
+    <span v-if="hasPermissionWithActions(permission)">
         <slot></slot>
     </span>
 </template>
@@ -29,7 +29,7 @@ Place a component inside this component for permission checking.
         },
         computed: {
             ...mapGetters([
-                'hasPermission'
+                'hasPermissionWithActions'
             ])
         }
     }

@@ -1,6 +1,6 @@
 <template>
     <permission-component :permission="permission">
-        <button-action @click="emitClicked" buttonClass="btn btn-md btn-danger" buttonId="remove">
+        <button-action @click="$emit('click')" buttonClass="btn btn-md btn-danger" buttonId="remove">
             <i aria-hidden="true" class="fa fa-trash"></i>
         </button-action>
     </permission-component>
@@ -9,7 +9,7 @@
 <script>
     import * as actions from '../../constants/actions'
     import buttonAction from './buttonAction.vue'
-    import PermissionComponent from '../general/PermissionComponent.vue'
+    import PermissionComponent from '../protection/ProtectedElement.vue'
 
     export default {
         data() {
@@ -23,8 +23,15 @@
         components: {
             buttonAction, PermissionComponent
         },
+        created(){
+            console.log(this.permission)
+
+        },
         props: {
-            resourceName: String, //Name of the resource
+            resourceName: { //Name of the resource
+                type: String,
+                default: ''
+            } ,
             buttonClass: String
         }
     }

@@ -26,7 +26,7 @@ export default {
 
         hasPermissionForRoute: (state, getters) => (routeName) => {
             if(resources[routeName]){
-                return getters.hasPermission(resources[routeName])
+                return getters.hasPermissionWithActions(resources[routeName])
             }
             else { //If there's no permissions for a route. The user should get access
                 return true
@@ -34,7 +34,7 @@ export default {
         },
 
         //Checks if the user has a given permission requirement. The permission requirement should have a resource key and actions value.
-        hasPermission: (state) => (permissionRequirement) => {
+        hasPermissionWithActions: (state) => (permissionRequirement) => {
             if(permissionRequirement.resource === "CLIENT"){
                 permissionRequirement.resource = "COMPANY"
             }
@@ -46,6 +46,12 @@ export default {
                 }
             })
             return filtered.length > 0
+        },
+
+        //Checks if the user has a given permission requirement. The permission requirement should have a resource key and action value.
+        hasPermission: (state, getters) => (permissionRequirement) => {
+            permissionRequirement.actions = new Array(permissionRequirement.action)
+            return getters.hasPermissionWithActions(permissionRequirement)
         }
     },
     mutations: {
@@ -119,7 +125,6 @@ export default {
                      * If not choose a random function.
                      * Else fetch the old function.
                      */
-                    console.log(functionId)
                     if(functionId==='null' || functionId === null){
                         context.dispatch('fetchUserFunctions').then(activeFunctions => {
                             //Set a default function. At the moment this is the first function in the list.

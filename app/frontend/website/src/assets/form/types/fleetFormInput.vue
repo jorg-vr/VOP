@@ -18,6 +18,9 @@
         },
         components: {
             formInput, formSelect
+        },
+        created(){
+
         }
     }
 </script>

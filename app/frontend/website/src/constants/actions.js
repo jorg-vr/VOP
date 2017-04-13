@@ -5,4 +5,4 @@
 export const READ = ['READ_MINE', 'READ_ALL']
 export const CREATE = ['CREATE_MINE', 'CREATE_ALL']
 export const UPDATE = ['UPDATE_MINE', 'UPDATE_ALL']
-export const DELETE = ['DELETE_MINE', 'DELETE_ALL']
+export const DELETE = ['REMOVE_MINE', 'REMOVE_ALL']

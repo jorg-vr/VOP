@@ -1,20 +1,15 @@
 <template>
-    <button type="button" :class="buttonClass" @click="emitClicked" :id="buttonId">
+    <button type="button" @click="$emit('click')" :class="buttonClass" :id="buttonId">
         <slot></slot>
     </button>
 </template>
 <script>
-    import PermissionComponent from '../general/PermissionComponent.vue'
+    import PermissionComponent from '../protection/ProtectedElement.vue'
     export default {
         props: {
             action: Function,
             buttonClass: String,
             buttonId: String,
-        },
-        methods: {
-            emitClicked(){
-                this.$emit('click')
-            }
         }
     }
 </script>

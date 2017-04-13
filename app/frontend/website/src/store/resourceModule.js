@@ -99,42 +99,52 @@ export default {
             state[filteredNames] = state[filteredNames].filter(resource => resource.id !== payload.id)
         }
         module.actions[fetchResources] = (context) => {
-            return new Promise(resolve => {
+            return new Promise((resolveSuccess, resolveFailure) => {
                 RequestHandler.getObjectsRequest(location).then(resources => {
                     context.commit(setResources, resources)
-                    resolve(resources)
+                    resolveSuccess(resources)
+                }, response => {
+                    resolveFailure(response)
                 })
             })
         }
         module.actions[fetchResource] = (context, {id}) => {
-            return new Promise(resolve => {
+            return new Promise((resolveSuccess, resolveFailure) => {
                 RequestHandler.getObjectRequest(location, id).then(resource => {
                     context.commit(setResource, resource)
-                    resolve(resource)
+                    resolveSuccess(resource)
+                }, response => {
+                    resolveFailure(response)
                 })
             })
         }
         module.actions[createResource] = (context, resource) => {
-            return new Promise(resolve => {
+            return new Promise((resolveSuccess, resolveFailure) => {
                 RequestHandler.postObjectRequest(location, resource).then(createdResource => {
                     context.commit(setResource, createdResource)
-                    resolve(createdResource)
+                    resolveSuccess(createdResource)
+                }, response => {
+                    resolveFailure(response)
                 })
             })
         }
         module.actions[updateResource] = (context, resource) => {
-            return new Promise(resolve => {
+            return new Promise((resolveSuccess, resolveFailure) => {
                 RequestHandler.putObjectRequest(location, resource).then(updatedResource => {
                     context.commit(setResource, updatedResource)
-                    resolve(updatedResource)
+                    resolveSuccess(updatedResource)
+                }, response => {
+                    resolveFailure(response)
                 })
             })
         }
         module.actions[deleteResource] = (context, {id}) => {
-            return new Promise(resolve => {
+            return new Promise((resolveSuccess, resolveFailure) => {
                 RequestHandler.deleteObjectRequest(location, id).then(() => {
                     context.commit(types.DELETE_RESOURCE, {id})
-                    resolve()
+                    resolveSuccess()
+                }, response => {
+                    resolveFailure(response)
                 }, id)
             })
         }
