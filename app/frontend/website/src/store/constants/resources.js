@@ -7,19 +7,19 @@
 let addRoutesForResource = function(resourceName, resourceValue){
     res[resourceName + 's'] = {
         resource: resourceValue,
-        action: ['READ_MINE', 'READ_ALL']
+        actions: ['READ_MINE', 'READ_ALL']
     }
     res['new_' + resourceName] = {
         resource: resourceValue,
-        action: ['CREATE_ALL', 'CREATE_MINE']
+        actions: ['CREATE_ALL', 'CREATE_MINE']
     }
     res[resourceName] = {
         resource: resourceValue,
-        action: ['READ_ALL', 'READ_MINE']
+        actions: ['READ_ALL', 'READ_MINE']
     }
     res['edit_' + resourceName] = {
         resource: resourceValue,
-        action: ['UPDATE_ALL', 'UPDATE_MINE']
+        actions: ['UPDATE_ALL', 'UPDATE_MINE']
     }
 }
 

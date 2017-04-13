@@ -1,4 +1,5 @@
 import * as locations from '../constants/locations'
+import {resources} from '../constants/resources'
 import RequestHandler from '../../api/requestHandler'
 import Vue from 'vue'
 
@@ -21,6 +22,20 @@ export default {
         },
         activePermissions(state){
             return state.activePermissions
+        },
+
+        hasPermissionForRoute: (state) => (routeName) => {
+            let permissions = state.activePermissions
+            if(resources[routeName]){
+                let permissionRequirement = resources[routeName]
+                //Check if the user has the given permission requirement.
+                let filtered = permissions.filter(permission =>
+                    (permissionRequirement.resource === permission.resource && permissionRequirement.actions.indexOf(permission.action) !== -1))
+                return filtered.length > 0
+            }
+            else { //If there's no permissions for a route. The user should get access
+                return true
+            }
         }
     },
     mutations: {
@@ -40,8 +55,6 @@ export default {
             if(activeFunction) {
                 functionId = activeFunction.id
             }
-            console.log(activeFunction.roleName)
-            console.log(functionId)
             localStorage.setItem('functionId', functionId)
             Vue.http.headers.common['Function'] = functionId
         },
@@ -100,7 +113,7 @@ export default {
                         })
                     }
                     else {
-                        context.dispatch('fetchUserFunction', {id: "116254853657937470121394267611541291713"}).then(activeFunction => {
+                        context.dispatch('fetchUserFunction', {id: functionId}).then(activeFunction => {
                             context.dispatch('setActiveFunction', activeFunction)
                         }).then(() => {
                             resolve(activeAccount)

@@ -72,26 +72,26 @@
 </script>
 <style>
 
-    .btn-md {
-        margin-left: 5px;
-        margin-top: 8px;
-    }
+        .btn-md {
+            margin-left: 5px;
+            margin-top: 8px;
+        }
 
-    .panel {
-        margin-right: 5px;
-    }
+        .panel {
+            margin-right: 5px;
+        }
 
-    .panel table  {
-        /* Create columns with equal width */
-        width: 100%;
-        table-layout: fixed;
-    }
-    a td {
-        color: black;
-        /* Trigger columns with equal width */
-    }
-    a div.panel:hover {
-        background-color: #eee;
-    }
+        .panel table  {
+            /* Create columns with equal width */
+            width: 100%;
+            table-layout: fixed;
+        }
+        a td {
+            color: black;
+            /* Trigger columns with equal width */
+        }
+        a div.panel:hover {
+            background-color: #eee;
+        }
 
 </style>

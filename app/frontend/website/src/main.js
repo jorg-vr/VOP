@@ -7,7 +7,6 @@ import VueI18n from 'vue-i18n'
 import routes from './config/routes'
 import locales from './lang/locales'
 import store from './store'
-import {resources} from './store/constants/resources'
 import environments from './config/environments'
 
 //Routing support
@@ -48,21 +47,18 @@ router.beforeEach((to, from, next) => {
         if(token){
             store.commit('setAuthToken', {authToken: token})
             store.dispatch('refreshToken').then(() => {
-                if(resources[to.name] && false){
-                }
-                else {
+                if(store.getters.hasPermissionForRoute(to.name)){
                     next()
                 }
-
             }, () => {
                 next({path: '/login'});
             })
+            return
         }
-        else {
-            store.commit('setNextRoute' , {route: to})
-            next({path: '/login'});
-        }
+        store.commit('setNextRoute' , {route: to})
+        next({path: '/login'});
     }
+
 })
 
 String.prototype.capitalize = function() {
