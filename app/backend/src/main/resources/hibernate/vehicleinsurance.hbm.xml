@@ -4,19 +4,20 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    <class name="model.account.Function" table="functions">
+    <class name="model.insurance.VehicleInsurance" table="vehicleinsurances">
         <meta attribute="class-description">
-            This class contains the function detail.
+            This class contains the vehicleInsurance detail.
         </meta>
         <id name="uuid" type="uuid-binary" column="id">
             <generator class="uuid2"/>
         </id>
-
+        <property name="franchise" column="franchise" type="int"/>
+        <property name="insuredValue" column="value" type="int"/>
+        <many-to-one name="vehicle" column="vehicle_id" class="model.fleet.Vehicle"/>
+        <many-to-one name="surety" column="surety_id" class="model.insurance.Surety"/>
         <property name="startDate" column="start_date" type="java.time.LocalDateTime"/>
         <property name="endDate" column="end_date" type="java.time.LocalDateTime"/>
-        <many-to-one name="user" column="user_id"  class="model.account.User" lazy="proxy" />
-        <many-to-one name="role" column="role_id"  class="model.account.Role" />
-        <many-to-one name="company" column="company_id"  class="model.identity.Company" lazy="proxy" />
 
     </class>
+
 </hibernate-mapping>
