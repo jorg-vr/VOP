@@ -5,6 +5,7 @@ import model.identity.Company;
 import model.insurance.Contract;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
 
@@ -57,6 +58,17 @@ public class Invoice implements EditableObject, java.io.Serializable {
      * constructor
      */
     public Invoice() {
+        this.contracts = new ArrayList<>();
+    }
+
+    public Invoice(Company payer, Company beneficiary, InvoiceType type, boolean paid, LocalDate startDate, LocalDate endDate) {
+        this.payer = payer;
+        this.beneficiary = beneficiary;
+        this.type = type;
+        this.paid = paid;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.contracts = new ArrayList<>();
     }
 
     @Override
@@ -128,6 +140,7 @@ public class Invoice implements EditableObject, java.io.Serializable {
     public void setContracts(Collection<Contract> contracts) {
         this.contracts = contracts;
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
