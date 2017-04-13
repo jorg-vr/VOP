@@ -9,7 +9,7 @@ import org.hibernate.Session;
  */
 public class ProductionFlatSuretyDAO extends ProductionDAO<FlatSurety> implements FlatSuretyDAO {
 
-    public ProductionFlatSuretyDAO(Session session, Class<FlatSurety> cl) {
-        super(session, cl);
+    public ProductionFlatSuretyDAO(Session session) {
+        super(session, FlatSurety.class);
     }
 }
