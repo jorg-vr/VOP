@@ -36,7 +36,7 @@
  * This function takes the location of the resource, for example: "fleets/",
  * and takes the name of the resource as argument, for example "fleet".
  * */
-import RequestHandler from '../../api/requestHandler'
+import RequestHandler from '../api/requestHandler'
 
 
 let capitalize = function(value) {

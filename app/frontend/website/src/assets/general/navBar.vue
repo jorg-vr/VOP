@@ -52,11 +52,11 @@
                     <template v-if="hasActiveAccount">
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" ariahaspopup="true" aria-expanded="false">
-                        {{account.email}}<span class="caret"></span></a>
+                        {{activeAccount.email}}<span class="caret"></span></a>
                         <ul class="dropdown-menu">  
                             <li role="separator" class="divider"></li>
                             <li>
-                                <a href="#">View account</a>
+                                <a href="#">View activeAccount</a>
                             </li>
                             <li>
                                 <a @click='confirmLogout()'> {{$t("login.logout") | capitalize }} </a>
@@ -81,7 +81,7 @@ import formSelect from '../../assets/form/elements/formSelect.vue'
         },
         computed: {
             ...mapGetters([
-                'hasActiveAccount', 'account'
+                'hasActiveAccount', 'activeAccount'
             ])
         },
         methods:{

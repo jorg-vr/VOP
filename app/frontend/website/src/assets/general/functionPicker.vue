@@ -1,7 +1,7 @@
 <template>
     <!-- Wrap select into <p> to be able to add language flag -->
     <form-select selectClass="picker" optionKey="roleName" :options="userFunctions"
-                 @input="setActiveFunction(accountFunction)"
+                 @input="updateActiveFunction(accountFunction.id)"
                  v-model="accountFunction.id"></form-select>
 </template>
 <script>
@@ -16,6 +16,7 @@
         created(){
             if(this.userFunctions.length === 0){
                 this.fetchUserFunctions()
+                
             }
             this.accountFunction = this.activeFunction
         },
@@ -29,12 +30,14 @@
             ]),
         },
         methods: {
-            ...mapMutations([
-                'setActiveFunction'
-            ]),
             ...mapActions([
+                'setActiveFunction',
                 'fetchUserFunctions'
-            ])
+            ]),
+            updateActiveFunction(functionId){
+                let userFunction = this.userFunctions.filter(obj => obj.id === functionId)[0]
+                this.setActiveFunction(userFunction)
+            }
         }
     }
 </script>

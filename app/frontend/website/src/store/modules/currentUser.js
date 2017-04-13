@@ -5,18 +5,22 @@ import Vue from 'vue'
 export default {
     state: {
         authToken: null,
-        account: null, //Current authenticated account
-        activeFunction: null
+        activeAccount: null, //Current authenticated activeAccount
+        activeFunction: null,
+        activePermissions: []
     },
     getters: {
         hasActiveAccount(state){
-            return state.account !== null
+            return state.activeAccount !== null
         },
-        account(state){
-            return state.account
+        activeAccount(state){
+            return state.activeAccount
         },
         activeFunction(state){
             return state.activeFunction
+        },
+        activePermissions(state){
+            return state.activePermissions
         }
     },
     mutations: {
@@ -26,8 +30,8 @@ export default {
             Vue.http.headers.common['Authorization'] = authToken
         },
 
-        setActiveAccount(state, account){
-            state.account = account
+        setActiveAccount(state, activeAccount){
+            state.activeAccount = activeAccount
         },
 
         setActiveFunction(state, activeFunction){
@@ -36,8 +40,14 @@ export default {
             if(activeFunction) {
                 functionId = activeFunction.id
             }
+            console.log(activeFunction.roleName)
+            console.log(functionId)
             localStorage.setItem('functionId', functionId)
             Vue.http.headers.common['Function'] = functionId
+        },
+
+        setActivePermissions(state, permissions){
+            state.activePermissions = permissions
         }
     },
     actions: {
@@ -72,36 +82,53 @@ export default {
                         resolveSuccess()
                     })
                 })
-                })
+            })
         },
 
         //Precondition: user has an active authToken
         fetchAccount(context){
             return new Promise(resolve => {
-                RequestHandler.getObjectRequest(locations.CURRENT_USER, '').then(account => {
-                    context.commit('setActiveAccount', account)
+                RequestHandler.getObjectRequest(locations.CURRENT_USER, '').then(activeAccount => {
+                    context.commit('setActiveAccount', activeAccount)
                     let functionId = localStorage.getItem('functionId')
-                    if(functionId==='null'){
+                    if(functionId==='null' || functionId === null){
                         context.dispatch('fetchUserFunctions').then(activeFunctions => {
                             //Set a default function. At the moment this is the first function in the list.
-                            context.commit('setActiveFunction', activeFunctions[0])
+                            context.dispatch('setActiveFunction', activeFunctions[0])
                         }).then(() => {
-                            resolve(account)
+                            resolve(activeAccount)
                         })
                     }
                     else {
-                        context.dispatch('fetchUserFunction', {id: functionId}).then(activeFunction => {
-                            context.commit('setActiveFunction', activeFunction)
+                        context.dispatch('fetchUserFunction', {id: "116254853657937470121394267611541291713"}).then(activeFunction => {
+                            context.dispatch('setActiveFunction', activeFunction)
                         }).then(() => {
-                            resolve(account)
+                            resolve(activeAccount)
                         })
                     }
                 })
             })
         },
+
+        fetchPermissionsFunction(context, activeFunction){
+            return new Promise(resolve => {
+                RequestHandler.getObjectsRequest(locations.ROLE + activeFunction.role + '/' + locations.PERMISSIONS)
+                    .then(permissions => {
+                        context.commit('setActivePermissions', permissions)
+                        resolve(permissions)
+                    })
+            })
+        },
+
+        setActiveFunction(context, activeFunction){
+            context.commit('setActiveFunction', activeFunction)
+            context.dispatch('fetchPermissionsFunction', activeFunction)
+        },
+
         logout(context){
             context.commit('setAuthToken', {authToken: null})
             context.commit('setActiveAccount', null)
+            context.commit('setActivePermissions', [])
         }
 
     }

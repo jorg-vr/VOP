@@ -1,13 +1,13 @@
 import Vue from 'vue'
 
-import VueResource from 'vue-resource'
+import VueResource from 'vue-Resource'
 import VueRouter from 'vue-router'
 import VueI18n from 'vue-i18n'
 
 import routes from './config/routes'
 import locales from './lang/locales'
 import store from './store'
-
+import {resources} from './store/constants/resources'
 import environments from './config/environments'
 
 //Routing support
@@ -48,7 +48,12 @@ router.beforeEach((to, from, next) => {
         if(token){
             store.commit('setAuthToken', {authToken: token})
             store.dispatch('refreshToken').then(() => {
-                next()
+                if(resources[to.name] && false){
+                }
+                else {
+                    next()
+                }
+
             }, () => {
                 next({path: '/login'});
             })
