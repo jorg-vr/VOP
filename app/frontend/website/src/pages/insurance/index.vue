@@ -14,7 +14,7 @@
         <!-- Render an info-pane for every insurance. Once all the data is loaded, the table will be shown.-->
         <list-component v-for="insurance in filteredInsurances"
                         v-if="insurance"
-                        resourceName="insurance"
+                        :resource="resources.INSURANCE"
                         :object="insurance"
                         :visibleKeys="new Array('type','vehicle')"
                         :key="insurance.id">
@@ -23,6 +23,7 @@
 </template>
 <script>
     import { mapGetters, mapActions, mapMutations } from 'vuex'
+    import resources from '../../constants/resources'
     import listComponent from "../../assets/general/listComponent.vue"
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
     import insuranceSearchBar from '../../assets/search/types/insuranceSearchBar.vue'

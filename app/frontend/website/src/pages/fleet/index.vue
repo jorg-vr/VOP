@@ -13,7 +13,7 @@
         <!-- Render an info-pane for every fleet. Once all the data is loaded, the table will be shown.-->
         <list-component v-for="fleet in filteredFleets"
                         v-if="fleet"
-                        resourceName="fleet",
+                        :resource="resources.FLEET",
                         :object="fleet"
                         :visibleKeys="new Array('name','companyName')"
                         :key="fleet.id"
@@ -23,6 +23,7 @@
 </template>
 <script>
     import { mapGetters, mapActions, mapMutations } from 'vuex'
+    import resources from '../../constants/resources'
     import listComponent from "../../assets/general/listComponent.vue"
     import fleetSearchBar from '../../assets/search/types/fleetSearchBar.vue'
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'

@@ -1,16 +1,16 @@
 <template>
-    <permission-component :permission="permission">
+    <protected-element :permission="permission">
         <router-link :to="to">
             <slot></slot>
         </router-link>
-    </permission-component>
+    </protected-element>
 </template>
 <script>
-    import PermissionComponent from './ProtectedElement.vue'
-    
+    import ProtectedElement from './ProtectedElement.vue'
+
     export default {
         components: {
-            PermissionComponent
+                ProtectedElement
         },
         props: {
             permission: Object,

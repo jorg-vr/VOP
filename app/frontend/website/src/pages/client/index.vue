@@ -7,14 +7,14 @@
         <div class="page-header">
             <h1>
                 {{$t("client.client") | capitalize}}
-               <button-add resourceName="client"></button-add>
+               <button-add :resource="resource"></button-add>
             </h1>
         </div>
         <client-search-bar @search="updateClients" @advancedSearch="updateClientsAdvanced"></client-search-bar>
         <!-- Render an info-pane for every client. Once all the data is loaded, the table will be shown.-->
         <list-component v-for="client in filteredClients"
                         v-if="client"
-                        resourceName="client"
+                        :resource="resource"
                         :object="client"
                         :visibleKeys="new Array('name')"
                         :key="client.id">
@@ -24,11 +24,17 @@
 
 <script>
     import { mapGetters, mapActions, mapMutations } from 'vuex'
+    import resources from '../../constants/resources'
     import listComponent from "../../assets/general/listComponent.vue"
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
     import clientSearchBar from '../../assets/search/types/clientSearchBar.vue'
 
     export default {
+        data(){
+            return {
+                resource: resources.CLIENT
+            }
+        },
         components: {
             listComponent, buttonAdd, clientSearchBar
         },

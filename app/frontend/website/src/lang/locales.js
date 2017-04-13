@@ -49,12 +49,9 @@ export default
             add: 'new'
         },
         actions: {
-            select: 'select',
-
-        },
-        actions_plural: {
-            create: 'create',
-            edit: 'edit'
+            select: 'select {subject}',
+            create: 'create {subject}',
+            edit: 'edit {subject}'
         },
         search_bar: {
             search_for: 'Search for',
@@ -144,11 +141,9 @@ export default
             add: 'nieuwe'
         },
         actions: {
-            select: 'selecteer',
-        },
-        actions_plural: {
-            create: 'aanmaken',
-            edit: 'bewerken'
+            select: 'selecteer {subject}',
+            create: '{subject} aanmaken',
+            edit: '{subject} bewerken'
         },
         search_bar: {
             search_for: 'Zoeken naar',

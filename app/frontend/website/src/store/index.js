@@ -17,15 +17,18 @@ import mutations from './mutations'
 Vue.use(Vuex)
 
 
+
+
+
 //Basic operations for each resource
 let fleetResource = resourceModule.initializeModule(locations.FLEET, 'fleet')
 let vehicleResource = resourceModule.initializeModule(locations.VEHICLE, 'vehicle')
 let clientResource = resourceModule.initializeModule(locations.CLIENT, 'client')
 let userResource = resourceModule.initializeModule(locations.USER, 'user')
-let functionResource = resourceModule.initializeModule(locations.USER_FUNCTIONS, 'userFunction')
+let functionResource = resourceModule.initializeModule(locations.USER_FUNCTION, 'userFunction')
 let roleResource = resourceModule.initializeModule(locations.ROLE, 'role')
 let permissionResource = resourceModule.initializeModule(locations.PERMISSIONS, 'permission')
-let vehicleTypeResource = resourceModule.initializeModule(locations.VEHICLE_TYPES, 'vehicleType')
+let vehicleTypeResource = resourceModule.initializeModule(locations.VEHICLE_TYPE, 'vehicleType')
 let insuranceResource = resourceModule.initializeModule(locations.INSURANCE, 'insurance')
 
 

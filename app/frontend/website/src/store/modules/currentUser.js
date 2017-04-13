@@ -1,5 +1,5 @@
 import * as locations from '../../constants/locations'
-import {resources} from '../../constants/resources'
+import {pagePermissions} from '../../constants/pagePermissions'
 import RequestHandler from '../../api/requestHandler'
 import Vue from 'vue'
 
@@ -25,8 +25,8 @@ export default {
         },
 
         hasPermissionForRoute: (state, getters) => (routeName) => {
-            if(resources[routeName]){
-                return getters.hasPermissionWithActions(resources[routeName])
+            if(pagePermissions[routeName]){
+                return getters.hasPermissionWithActions(pagePermissions[routeName])
             }
             else { //If there's no permissions for a route. The user should get access
                 return true
@@ -35,9 +35,6 @@ export default {
 
         //Checks if the user has a given permission requirement. The permission requirement should have a resource key and actions value.
         hasPermissionWithActions: (state) => (permissionRequirement) => {
-            if(permissionRequirement.resource === "CLIENT"){
-                permissionRequirement.resource = "COMPANY"
-            }
             let permissions = state.activePermissions
             //Check if the user has the given permission requirement.
             let filtered = permissions.filter(permission => {

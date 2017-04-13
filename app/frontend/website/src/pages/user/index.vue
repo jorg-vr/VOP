@@ -14,7 +14,7 @@
         <!-- Render an info-pane for every user. Once all the data is loaded, the table will be shown.-->
         <list-component v-for="user in filteredUsers"
                         v-if="user"
-                        resourceName="user"
+                        :resource="resources.USER"
                         :object="user"
                         :visibleKeys="new Array('firstName', 'lastName')"
                         :key="user.id">
@@ -24,6 +24,7 @@
 
 <script>
     import { mapGetters, mapActions, mapMutations } from 'vuex'
+    import resources from '../../constants/resources'
     import listComponent from "../../assets/general/listComponent.vue"
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
     import userSearchBar from '../../assets/search/types/userSearchBar.vue'

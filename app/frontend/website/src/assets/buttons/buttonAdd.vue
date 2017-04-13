@@ -1,36 +1,33 @@
 <template>
-    <permission-component :permission="permission">
+    <protected-element :permission="permission">
         <button-link :route="route" :buttonClass="'pull-right btn btn-primary btn-add ' + buttonClass">
-            {{$t('common.new') | capitalize }} {{$t(resourceName + '.' + resourceName)}}
+            {{$t('common.new') | capitalize }} {{$t(resource.name + '.' + resource.name)}}
         </button-link>
-    </permission-component>
+    </protected-element>
 </template>
 <script>
     import * as actions from '../../constants/actions'
     import buttonLink from './buttonLink.vue'
-    import PermissionComponent from '../protection/ProtectedElement.vue'
+    import ProtectedElement from '../protection/ProtectedElement.vue'
 
     export default {
         data() {
             return {
                 permission: {
-                    resource: this.resourceName.toUpperCase(),
+                    resource: this.resource.value,
                     actions: actions.CREATE
                 },
                 route: {
-                    name: 'new_' + this.resourceName,
+                    name: 'new_' + this.resource.name,
                     params: this.params
                 }
             }
         },
         components: {
-            buttonLink, PermissionComponent
+            buttonLink, ProtectedElement
         },
         props: {
-            resourceName: { //Name of the resource
-                type: String,
-                default: ''
-            } ,
+            resource: Object ,
             params: { //Initial params for adding
                 type: Object,
                 default(){

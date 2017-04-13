@@ -1,40 +1,34 @@
 <template>
-    <permission-component :permission="permission">
+    <protected-element :permission="permission">
         <button-link :route="route"  buttonClass="btn btn-md btn-info" buttonId="edit">
             <i aria-hidden="true" class="fa fa-pencil"></i>
         </button-link>
-    </permission-component>
+    </protected-element>
 
 </template>
 <script>
     import * as actions from '../../constants/actions'
     import buttonLink from './buttonLink.vue'
-    import PermissionComponent from '../protection/ProtectedElement.vue'
+    import ProtectedElement from '../protection/ProtectedElement.vue'
 
     export default {
         data() {
             return {
                 permission: {
-                    resource: this.resourceName.toUpperCase(),
+                    resource: this.resource.value,
                     actions: actions.UPDATE
                 },
                 route: {
-                    name: 'edit_' + this.resourceName,
+                    name: 'edit_' + this.resource.name,
                     params: this.params
                 }
             }
         },
-        created(){
-            console.log(this.permission)
-        },
         components: {
-            buttonLink, PermissionComponent
+            buttonLink, ProtectedElement
         },
         props: {
-            resourceName: { //Name of the resource
-                type: String,
-                default: ''
-            } ,
+            resource: Object,
             params: { //Initial params for adding
                 type: Object,
                 default(){

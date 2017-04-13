@@ -9,7 +9,7 @@
 -->
 <template>
     <div :class="'row ' + rowClass" v-if="object">
-        <router-link :to="{name: resourceName, params: {id: object.id}}">
+        <router-link :to="{name: resource.name, params: {id: object.id}}">
             <div class="panel panel-default col-sm-10">
                 <div class="panel-body">
                     <table>
@@ -20,8 +20,8 @@
                 </div>
             </div>
         </router-link>
-        <button-edit :resourceName="resourceName" :params="{id: object.id}"></button-edit>
-        <button-remove :resourceName="resourceName" @click="showModal=true"></button-remove>
+        <button-edit :resource="resource" :params="{id: object.id}"></button-edit>
+        <button-remove :resource="resource" @click="showModal=true"></button-remove>
         <confirm-modal v-show="showModal" @cancelModal="showModal=false" @confirmModal="confirmAction()"></confirm-modal>
     </div>
 </template>
@@ -40,8 +40,9 @@
         props: {
             object: Object, //Object with values to show
             visibleKeys: Array, //Keys of values which have to be shown
-            resourceName: String, //Name of the resource this component shows.
-            rowClass: String //Class for this object.
+            rowClass: String, //Class for this object.
+            resource: Object  //Name of the resource this component shows.
+
         },
         components: {
             buttonEdit, buttonRemove,confirmModal
@@ -70,7 +71,6 @@
 
 </script>
 <style>
-
         .btn-md {
             margin-left: 5px;
             margin-top: 8px;

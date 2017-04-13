@@ -39,8 +39,6 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    console.log(from)
-    console.log(to)
     if(to.path === '/login'){
         next()
     }
@@ -81,12 +79,18 @@ String.prototype.rtrim = function(s) {
     return this.replace(new RegExp(s + "*$"),'');
 };
 
+String.prototype.plural = function(value) {
+    return value + 's'
+};
+
 Vue.filter('capitalize', function(value){
     return value.capitalize()
 })
+
 
 new Vue({
     store,
     router
 }).$mount('#app')
+
 

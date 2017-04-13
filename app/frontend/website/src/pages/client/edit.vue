@@ -6,13 +6,13 @@
         <div class="page-header">
             <h1>{{ $t("client.client") | capitalize }} {{$t("actions_plural.edit") }}</h1>
         </div>
-        <client-form :oldClient=client :submit="updateClient"></client-form>
+        <client-form :action="actions.UPDATE" :oldClient="client"></client-form>
     </div>
 </template>
 <script>
     import ClientForm from '../../assets/form/types/clientForm.vue'
+    import * as actions from '../../constants/actions'
     import {mapGetters, mapActions} from 'vuex'
-
 
     export default {
         components: {
@@ -32,7 +32,6 @@
         methods: {
             ...mapActions([
                 'fetchClient',
-                'updateClient'
             ])
         }
     }
