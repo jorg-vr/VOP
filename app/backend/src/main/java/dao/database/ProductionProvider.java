@@ -100,6 +100,46 @@ public class ProductionProvider implements DAOProvider {
         return new ProductionRoleDAO(sessionFactory.openSession());
     }
 
+    @Override
+    public ContractDAO getContractDao() {
+        return new ProductionContractDAO(sessionFactory.openSession());
+    }
+
+    @Override
+    public FlatSuretyDAO getFlatSuretyDao() {
+        return new ProductionFlatSuretyDAO(sessionFactory.openSession());
+    }
+
+    @Override
+    public InvoiceDAO getInvoiceDao() {
+        return new ProductionInvoiceDAO(sessionFactory.openSession());
+    }
+
+    @Override
+    public NonFlatSuretyDAO getNonFlatSuretyDao() {
+        return new ProductionNonFlatSuretyDAO(sessionFactory.openSession());
+    }
+
+    @Override
+    public SpecialConditionDAO getSpecialConditionDao() {
+        return new ProductionSpecialConditionDAO(sessionFactory.openSession());
+    }
+
+    @Override
+    public SuretyCommisionDAO getSuretyCommisionDao() {
+        return new ProductionSuretyCommisionDAO(sessionFactory.openSession());
+    }
+
+    @Override
+    public SuretyTaxDAO getSuretyTaxDao() {
+        return new ProductionSuretyTaxCommision(sessionFactory.openSession());
+    }
+
+    @Override
+    public VehicleInsuranceDAO getVehicleInsuranceDao() {
+        return new ProductionVehicleInsuranceDAO(sessionFactory.openSession());
+    }
+
 
     @Override
     public void close() {
