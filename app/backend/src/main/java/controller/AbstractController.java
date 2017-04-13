@@ -59,9 +59,8 @@ public abstract class AbstractController<T extends EditableObject> implements Au
 
     public Collection<T> getAll(Filter... filters) throws DataAccessException, UnAuthorizedException {
         Collection<T> collection = dao.listFiltered(filters);
-        if (role.hasAccess(resource, READ_ALL)) {
-            return collection;
-        } else if (role.hasAccess(resource, READ_MINE)&&collection.stream().allMatch((t) -> isOwner(t, function))) {
+        if (role.hasAccess(resource, READ_ALL)||
+                (role.hasAccess(resource, READ_MINE)&&collection.stream().allMatch((t) -> isOwner(t, function)))) {
             return collection;
         } else {
             throw new UnAuthorizedException();
