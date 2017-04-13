@@ -102,7 +102,6 @@ export default {
                     resolveFailure()
                 }).then(() => {
                     context.dispatch('fetchAccount').then(() => {
-                        console.log('check')
                         resolveSuccess()
                     })
                 })
@@ -115,6 +114,12 @@ export default {
                 RequestHandler.getObjectRequest(locations.CURRENT_USER, '').then(activeAccount => {
                     context.commit('setActiveAccount', activeAccount)
                     let functionId = localStorage.getItem('functionId')
+                    /**
+                     * Check if the user has already chosen a functionId before.
+                     * If not choose a random function.
+                     * Else fetch the old function.
+                     */
+                    console.log(functionId)
                     if(functionId==='null' || functionId === null){
                         context.dispatch('fetchUserFunctions').then(activeFunctions => {
                             //Set a default function. At the moment this is the first function in the list.
@@ -127,6 +132,17 @@ export default {
                         context.dispatch('fetchUserFunction', {id: functionId}).then(activeFunction => {
                             context.dispatch('setActiveFunction', activeFunction).then(() => {
                                 resolve(activeAccount)
+                            })
+                        }, () => {
+                            /**
+                             * If fetching current user fails, fetch any other function. This will be replaced with
+                             * going to a page for choosing a function.
+                             */
+                            context.dispatch('fetchUserFunctions').then(activeFunctions => {
+                                //Set a default function. At the moment this is the first function in the list.
+                                context.dispatch('setActiveFunction', activeFunctions[0]).then(() => {
+                                    resolve(activeAccount)
+                                })
                             })
                         })
                     }
