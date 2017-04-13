@@ -6,9 +6,8 @@
     <div class="col-lg-8 col-md-9 col-sm-11">
         <div class="page-header">
             <h1>
-                {{$t("user.users") | capitalize }}
-                <button-link :route="{name: 'new_user'}" buttonClass="pull-right btn btn-md btn-primary btn-add">
-                {{$t("common.add") | capitalize }} {{$t("user.user")}}</button-link>
+                {{$t("user.user") | capitalize}}
+               <button-add resourceName="user"></button-add>
             </h1>
         </div>
         <user-search-bar @search="updateUsers" @advancedSearch="updateUsersAdvanced"></user-search-bar>
@@ -24,20 +23,16 @@
         </list-component>
     </div>
 </template>
-<style>
-.btn-add {
-    margin-top: -2px;
-}
-</style>
+
 <script>
     import { mapGetters, mapActions, mapMutations } from 'vuex'
     import listComponent from "../../assets/general/listComponent.vue"
-    import buttonLink from '../../assets/buttons/buttonLink.vue'
+    import buttonAdd from '../../assets/buttons/buttonAdd.vue'
     import userSearchBar from '../../assets/search/types/userSearchBar.vue'
 
     export default {
         components: {
-            listComponent, buttonLink, userSearchBar
+            listComponent, buttonAdd, userSearchBar
         },
         created() {
             this.fetchUsers().then(users => {

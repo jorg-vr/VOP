@@ -50,7 +50,7 @@
                             :key="fleet.id">
             </list-component>
             <button-back :route="{name: 'clients'}"></button-back>
-            <button-add :route="{name: 'new_fleet', params: {clientId: client.id}}"></button-add>
+            <button-add resourceName="fleet" :params="{clientId: client.id}"></button-add>
         </div>
     </div>
 </template>

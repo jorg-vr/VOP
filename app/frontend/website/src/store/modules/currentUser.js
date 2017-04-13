@@ -1,5 +1,5 @@
-import * as locations from '../constants/locations'
-import {resources} from '../constants/resources'
+import * as locations from '../../constants/locations'
+import {resources} from '../../constants/resources'
 import RequestHandler from '../../api/requestHandler'
 import Vue from 'vue'
 
@@ -24,18 +24,28 @@ export default {
             return state.activePermissions
         },
 
-        hasPermissionForRoute: (state) => (routeName) => {
-            let permissions = state.activePermissions
+        hasPermissionForRoute: (state, getters) => (routeName) => {
             if(resources[routeName]){
-                let permissionRequirement = resources[routeName]
-                //Check if the user has the given permission requirement.
-                let filtered = permissions.filter(permission =>
-                    (permissionRequirement.resource === permission.resource && permissionRequirement.actions.indexOf(permission.action) !== -1))
-                return filtered.length > 0
+                return getters.hasPermission(resources[routeName])
             }
             else { //If there's no permissions for a route. The user should get access
                 return true
             }
+        },
+
+        //Checks if the user has a given permission requirement. The permission requirement should have a resource key and actions value.
+        hasPermission: (state) => (permissionRequirement) => {
+            if(permissionRequirement.resource === "CLIENT"){
+                permissionRequirement.resource = "COMPANY"
+            }
+            let permissions = state.activePermissions
+            //Check if the user has the given permission requirement.
+            let filtered = permissions.filter(permission => {
+                if(permissionRequirement.resource === permission.resource && permissionRequirement.actions.indexOf(permission.action) !== -1){
+                    return permission
+                }
+            })
+            return filtered.length > 0
         }
     },
     mutations: {
@@ -92,6 +102,7 @@ export default {
                     resolveFailure()
                 }).then(() => {
                     context.dispatch('fetchAccount').then(() => {
+                        console.log('check')
                         resolveSuccess()
                     })
                 })
@@ -107,16 +118,16 @@ export default {
                     if(functionId==='null' || functionId === null){
                         context.dispatch('fetchUserFunctions').then(activeFunctions => {
                             //Set a default function. At the moment this is the first function in the list.
-                            context.dispatch('setActiveFunction', activeFunctions[0])
-                        }).then(() => {
-                            resolve(activeAccount)
+                            context.dispatch('setActiveFunction', activeFunctions[0]).then(() => {
+                                resolve(activeAccount)
+                            })
                         })
                     }
                     else {
                         context.dispatch('fetchUserFunction', {id: functionId}).then(activeFunction => {
-                            context.dispatch('setActiveFunction', activeFunction)
-                        }).then(() => {
-                            resolve(activeAccount)
+                            context.dispatch('setActiveFunction', activeFunction).then(() => {
+                                resolve(activeAccount)
+                            })
                         })
                     }
                 })
@@ -135,7 +146,11 @@ export default {
 
         setActiveFunction(context, activeFunction){
             context.commit('setActiveFunction', activeFunction)
-            context.dispatch('fetchPermissionsFunction', activeFunction)
+            return new Promise(resolve => {
+                context.dispatch('fetchPermissionsFunction', activeFunction).then(() => {
+                    resolve()
+                })
+            })
         },
 
         logout(context){

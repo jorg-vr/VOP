@@ -135,7 +135,7 @@ export default
             houseNumber: 'huisnummer'
         },
         common: {
-            new: 'nieuw',
+            new: 'nieuwe',
             remove: 'verwijder',
             edit: 'wijzig',
             back: 'terug',

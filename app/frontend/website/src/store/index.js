@@ -7,7 +7,7 @@ import login from './modules/login'
 import currentUser from './modules/currentUser'
 
 import resourceModule from './resourceModule'
-import * as locations from './constants/locations'
+import * as locations from '../constants/locations'
 
 import state from './state'
 import getters from './getters'

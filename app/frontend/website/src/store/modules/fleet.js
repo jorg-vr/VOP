@@ -1,4 +1,4 @@
-import * as locations from '../constants/locations'
+import * as locations from '../../constants/locations'
 import RequestHandler from '../../api/requestHandler'
 import Vue from 'vue'
 
@@ -58,8 +58,9 @@ export default {
     },
     actions: {
         fetchFleetsByClient(context, {clientId}){
+            console.log(clientId)
             return new Promise(resolve => {
-                RequestHandler.getObjectsRequest(locations.FLEET + "?company=" + clientId).then(fleets => {
+                RequestHandler.getObjectsRequestBy(locations.FLEET, {company: clientId}).then(fleets => {
                     context.commit('receiveFleets', {fleets})
                     resolve(fleets)
                 })

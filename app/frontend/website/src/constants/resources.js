@@ -1,3 +1,4 @@
+import * as actions from './actions'
 /**
  * This file is a mapping from pages to resources. This is used for permission checking.
  */
@@ -7,19 +8,19 @@
 let addRoutesForResource = function(resourceName, resourceValue){
     res[resourceName + 's'] = {
         resource: resourceValue,
-        actions: ['READ_MINE', 'READ_ALL']
+        actions: actions.READ
     }
     res['new_' + resourceName] = {
         resource: resourceValue,
-        actions: ['CREATE_ALL', 'CREATE_MINE']
+        actions: actions.CREATE
     }
     res[resourceName] = {
         resource: resourceValue,
-        actions: ['READ_ALL', 'READ_MINE']
+        actions: actions.READ
     }
     res['edit_' + resourceName] = {
         resource: resourceValue,
-        actions: ['UPDATE_ALL', 'UPDATE_MINE']
+        actions: actions.UPDATE
     }
 }
 

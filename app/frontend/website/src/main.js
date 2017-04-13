@@ -39,6 +39,8 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
+    console.log(from)
+    console.log(to)
     if(to.path === '/login'){
         next()
     }
@@ -50,13 +52,23 @@ router.beforeEach((to, from, next) => {
                 if(store.getters.hasPermissionForRoute(to.name)){
                     next()
                 }
+                else {
+                    if(from.name !== null){
+                        next(false)
+                    }
+                    else {
+                        next({name: 'home'})
+                    }
+                }
             }, () => {
+                store.commit('setNextRoute' , {route: to})
                 next({path: '/login'});
             })
-            return
         }
-        store.commit('setNextRoute' , {route: to})
-        next({path: '/login'});
+        else {
+            store.commit('setNextRoute' , {route: to})
+            next({path: '/login'});
+        }
     }
 
 })
@@ -65,10 +77,13 @@ String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
 }
 
+String.prototype.rtrim = function(s) {
+    return this.replace(new RegExp(s + "*$"),'');
+};
+
 Vue.filter('capitalize', function(value){
     return value.capitalize()
 })
-
 
 new Vue({
     store,

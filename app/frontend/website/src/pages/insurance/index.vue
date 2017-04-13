@@ -5,10 +5,9 @@
 <template>
     <div class="col-lg-8 col-md-9 col-sm-11">
         <div class="page-header">
-            <h1>{{$t("insurance.insurances") | capitalize }}
-            <button-link :route="{name: 'new_insurance'}" buttonClass="pull-right btn btn-md btn-primary btn-add"> 
-            {{$t("common.add") | capitalize }} {{$t("insurance.insurance")}}
-            </button-link>
+            <h1>
+                {{$t("insurance.insurance") | capitalize}}
+               <button-add resourceName="insurance"></button-add>
             </h1>
         </div>
         <insurance-search-bar @search="updateInsurance" @advancedSearch="updateInsurancesAdvanced"></insurance-search-bar>
@@ -27,12 +26,12 @@
 <script>
     import { mapGetters, mapActions, mapMutations } from 'vuex'
     import listComponent from "../../assets/general/listComponent.vue"
-    import buttonLink from '../../assets/buttons/buttonLink.vue'
+    import buttonAdd from '../../assets/buttons/buttonAdd.vue'
     import insuranceSearchBar from '../../assets/search/types/insuranceSearchBar.vue'
 
     export default {
         components: {
-            listComponent, buttonLink, insuranceSearchBar
+            listComponent, buttonAdd, insuranceSearchBar
         },
         created() {
              this.fetchInsurances().then(insurances => {

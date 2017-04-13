@@ -6,9 +6,8 @@
     <div class="col-lg-8 col-md-9 col-sm-11">
         <div class="page-header">
             <h1>
-                {{$t("client.clients") | capitalize }}
-                <button-link :route="{name: 'new_client'}" buttonClass="pull-right btn btn-md btn-primary btn-add">
-                {{$t("common.add") | capitalize }} {{$t("client.client")}}</button-link>
+                {{$t("client.client") | capitalize}}
+               <button-add resourceName="client"></button-add>
             </h1>
         </div>
         <client-search-bar @search="updateClients" @advancedSearch="updateClientsAdvanced"></client-search-bar>
@@ -24,24 +23,19 @@
         </list-component>
     </div>
 </template>
-<style>
-.btn-add {
-    margin-top: -2px;
-}
-</style>
+
 <script>
     import { mapGetters, mapActions, mapMutations } from 'vuex'
     import listComponent from "../../assets/general/listComponent.vue"
-    import buttonLink from '../../assets/buttons/buttonLink.vue'
+    import buttonAdd from '../../assets/buttons/buttonAdd.vue'
     import clientSearchBar from '../../assets/search/types/clientSearchBar.vue'
 
     export default {
         components: {
-            listComponent, buttonLink, clientSearchBar
+            listComponent, buttonAdd, clientSearchBar
         },
         created() {
             this.fetchClients().then(clients => {
-                console.log(clients)
                 this.setFilteredClients(clients)
             })
         },

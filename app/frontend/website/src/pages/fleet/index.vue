@@ -6,7 +6,7 @@
         <div class="page-header">
             <h1>
                 {{$t("fleet.fleets") | capitalize}}
-                <button-link :route="{name: 'new_fleet'}" buttonClass="pull-right btn btn-md btn-primary btn-add">Nieuwe vloot</button-link>
+               <button-add resourceName="fleet"></button-add>
             </h1>
         </div>
         <fleet-search-bar @search="updateFleets" :clients="clients" @advancedSearch="updateFleetsAdvanced"></fleet-search-bar>
@@ -23,20 +23,15 @@
         </list-component>
     </div>
 </template>
-<style>
-.btn-add {
-    margin-top: -2px;
-}
-</style>
 <script>
     import { mapGetters, mapActions, mapMutations } from 'vuex'
     import listComponent from "../../assets/general/listComponent.vue"
     import fleetSearchBar from '../../assets/search/types/fleetSearchBar.vue'
-    import buttonLink from '../../assets/buttons/buttonLink.vue'
+    import buttonAdd from '../../assets/buttons/buttonAdd.vue'
 
     export default {
         components: {
-            listComponent, buttonLink, fleetSearchBar
+            listComponent, buttonAdd, fleetSearchBar
         },
         created() {
             let p1 = this.fetchFleets()
