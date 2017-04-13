@@ -30,6 +30,7 @@ public class ProductionVehicleTypeDAOFiltersTest {
     public static void closeProvider() throws Exception {
         vehicleTypeDAO.remove(t1.getUuid());
         vehicleTypeDAO.remove(t2.getUuid());
+        vehicleTypeDAO.close();
         daoProvider.close();
     }
 

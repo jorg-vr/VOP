@@ -23,6 +23,7 @@ public class ProductionVehicleTypeDAOTest {
     //Gets executed after all tests have been run
     @AfterClass
     public static void closeProvider() throws Exception {
+        vehicleTypeDAO.close();
         daoProvider.close();
     }
 
