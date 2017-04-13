@@ -61,8 +61,7 @@ public abstract class AbstractController<T extends EditableObject> implements Au
         Collection<T> collection = dao.listFiltered(filters);
         if (role.hasAccess(resource, READ_ALL)) {
             return collection;
-        } else if (role.hasAccess(resource, READ_MINE)) {
-            collection.removeIf((t) -> !isOwner(t, function));
+        } else if (role.hasAccess(resource, READ_MINE)&&collection.stream().allMatch((t) -> isOwner(t, function))) {
             return collection;
         } else {
             throw new UnAuthorizedException();
