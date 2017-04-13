@@ -20,21 +20,21 @@
                 <ul class="nav navbar-nav">
                      <!-- conditional group rendering for navbar links-->
                     <template v-if="hasActiveAccount">
-                    <li>
-                        <router-link :to="{name: 'fleets'}">{{$t("fleet.fleets") | capitalize}}</router-link>
-                    </li>
-                    <li>
-                        <router-link :to="{name: 'users'}">{{$t("user.users") | capitalize}}</router-link>
-                    </li>
-                    <li>
-                        <router-link :to="{name: 'clients'}">{{$t("client.clients") | capitalize}}</router-link>
-                    </li>
-                    <li>
-                        <router-link :to="{name: 'vehicles'}">{{$t("vehicle.vehicles") | capitalize}}</router-link>
-                    </li>
-                    <li>
-                        <router-link :to="{name: 'insurances'}"> {{$t("insurance.insurances") | capitalize}} </router-link>
-                    </li>
+                        <li>
+                            <resources-link resourceName="fleet"></resources-link>
+                        </li>
+                        <li>
+                            <resources-link resourceName="user"></resources-link>
+                        </li>
+                        <li>
+                            <resources-link resourceName="client"></resources-link>
+                        </li>
+                        <li>
+                            <resources-link resourceName="vehicle"></resources-link>
+                        </li>
+                        <li>
+                            <resources-link resourceName="insurance"></resources-link>
+                        </li>
                     </template>
                 </ul><!-- /.navbar-nav -->
 
@@ -73,11 +73,12 @@
 import { mapGetters, mapActions, mapMutations } from 'vuex'
 import languagePicker from './languagePicker.vue'
 import functionPicker from './functionPicker.vue'
-import formSelect from '../../assets/form/elements/formSelect.vue'
+import formSelect from '../form/elements/formSelect.vue'
+import ResourcesLink from './ResourcesLink.vue'
 
     export default {
         components: {
-            languagePicker, functionPicker, formSelect
+            languagePicker, functionPicker, formSelect, ResourcesLink
         },
         computed: {
             ...mapGetters([

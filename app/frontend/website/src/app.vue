@@ -14,7 +14,7 @@
     }
 </style>
 <script>
-    import NavBar from './assets/general/navBar.vue'
+    import NavBar from './assets/navbar/navBar.vue'
 
     export default {
         components: {
