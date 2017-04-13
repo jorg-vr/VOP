@@ -14,11 +14,9 @@
         <!-- Render an info-pane for every client. Once all the data is loaded, the table will be shown.-->
         <list-component v-for="client in filteredClients"
                         v-if="client"
+                        resourceName="client"
                         :object="client"
                         :visibleKeys="new Array('name')"
-                        :remove="deleteClient"
-                        edit="edit_client"
-                        show="client"
                         :key="client.id">
         </list-component>
     </div>

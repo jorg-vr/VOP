@@ -14,11 +14,9 @@
         <!-- Render an info-pane for every user. Once all the data is loaded, the table will be shown.-->
         <list-component v-for="user in filteredUsers"
                         v-if="user"
+                        resourceName="user",
                         :object="user"
                         :visibleKeys="new Array('firstName', 'lastName')"
-                        :remove="deleteUser"
-                        edit="edit_user"
-                        show="user"
                         :key="user.id">
         </list-component>
     </div>

@@ -14,11 +14,9 @@
         <!-- Render an info-pane for every insurance. Once all the data is loaded, the table will be shown.-->
         <list-component v-for="insurance in filteredInsurances"
                         v-if="insurance"
+                        resourceName="insurance"
                         :object="insurance"
                         :visibleKeys="new Array('type','vehicle')"
-                        :remove="deleteInsurance"
-                        edit="edit_insurance"
-                        show="insurance"
                         :key="insurance.id">
         </list-component>
     </div>

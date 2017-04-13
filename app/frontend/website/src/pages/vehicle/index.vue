@@ -11,11 +11,9 @@
         <!-- Render an info-pane for every vehicle. Once all the data is loaded, the table will be shown.-->
         <list-component v-for="vehicle in filteredVehicles"
                         v-if="vehicle"
+                        resourceName="vehicle",
                         :object="vehicle"
                         :visibleKeys="new Array('brand','model', 'licensePlate')"
-                        :remove="deleteVehicle"
-                        edit="edit_vehicle"
-                        show="vehicle"
                         :key="vehicle.id">
         </list-component>
     </div>

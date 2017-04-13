@@ -13,11 +13,9 @@
         <!-- Render an info-pane for every fleet. Once all the data is loaded, the table will be shown.-->
         <list-component v-for="fleet in filteredFleets"
                         v-if="fleet"
+                        resourceName="fleet",
                         :object="fleet"
                         :visibleKeys="new Array('name','companyName')"
-                        :remove="deleteFleet"
-                        edit="edit_fleet"
-                        show="fleet"
                         :key="fleet.id"
                         rowClass="fleetrow">
         </list-component>
