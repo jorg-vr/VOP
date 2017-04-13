@@ -41,6 +41,11 @@ public class ProductionFunctionDAOTest {
     //Gets executed after all tests have been run
     @AfterClass
     public static void closeProvider() throws Exception {
+        functionDAO.close();
+        customerDAO.close();
+        addressDAO.close();
+        userDAO.close();
+        roleDAO.close();
         daoProvider.close();
     }
 

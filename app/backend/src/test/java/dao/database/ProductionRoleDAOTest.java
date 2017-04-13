@@ -32,6 +32,7 @@ public class ProductionRoleDAOTest {
     //Gets executed after all tests have been run
     @AfterClass
     public static void closeProvider() throws Exception {
+        roleDAO.close();
         daoProvider.close();
     }
 
