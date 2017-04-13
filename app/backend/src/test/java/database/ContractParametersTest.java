@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 
 import static org.junit.Assert.fail;
 
-//TODO: add insuranceCompany once it has a DAO, test unusable without insuranceCmp DAO
 @Ignore
 public class ContractParametersTest {
 
