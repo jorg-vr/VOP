@@ -2,7 +2,7 @@
     This page shows a certain user in detail. 
 -->
 <template>
-    <div>
+    <div v-if="user">
         <div class="page-header">
             <h1>{{$t("user.user") | capitalize }}</h1>
         </div>

@@ -1,7 +1,7 @@
 <template>
     <!-- Wrap select into <p> to be able to add language flag -->
     <form-select selectClass="picker" optionKey="roleName" :options="userFunctions"
-                 @input="setActiveFunction(accountFunction)"
+                 @input="updateActiveFunction(accountFunction.id)"
                  v-model="accountFunction.id"></form-select>
 </template>
 <script>
@@ -29,12 +29,17 @@
             ]),
         },
         methods: {
-            ...mapMutations([
-                'setActiveFunction'
-            ]),
             ...mapActions([
+                'setActiveFunction',
                 'fetchUserFunctions'
-            ])
+            ]),
+            updateActiveFunction(functionId){
+                let userFunction = this.userFunctions.filter(obj => obj.id === functionId)[0]
+                this.setActiveFunction(userFunction)
+                //Navigate back to home once the function has changed.
+                //This method is used, and not the router, as the page has to reload in order to remove unwanted state
+                document.location.href = "/"
+            }
         }
     }
 </script>

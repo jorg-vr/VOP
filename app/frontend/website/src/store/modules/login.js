@@ -1,4 +1,4 @@
-import * as locations from '../constants/locations'
+import * as locations from '../../constants/locations'
 
 export default {
 

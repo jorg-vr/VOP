@@ -1,29 +1,21 @@
 <!--
-    This page is used to create a new fleet.
+    This page is used to edit a certain fleet.
 -->
 <template>
-    <div>
-        <div class="page-header">
-            <h1><h1>{{ $t("fleet.fleet") | capitalize }} {{$t("actions_plural.create") }}</h1></h1>
-        </div>
-        <fleet-form :successButtonText="$t('fleet.fleet').capitalize() + ' ' +  $t('actions_plural.create')" :failButtonText="$t('common.cancel').capitalize()"  :submit="createFleet" :clientId="clientId"></fleet-form>
-    </div>
+    <fleet-form-page :actions="actions"></fleet-form-page>
 </template>
 <script>
-    import FleetForm from '../../assets/form/types/fleetForm.vue'
-    import {mapActions} from 'vuex'
+    import FleetFormPage from '../../assets/form/pages/FleetFormPage.vue'
+    import actions from '../../constants/actions'
 
     export default {
+        data(){
+            return {
+                actions: actions.CREATE
+            }
+        },
         components: {
-            FleetForm
-        },
-        props: {
-            clientId: String
-        },
-        methods: {
-            ...mapActions([
-                'createFleet'
-            ])
+            FleetFormPage
         }
     }
 </script>

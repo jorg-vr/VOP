@@ -1,28 +1,24 @@
-
+<!--
+    This page is used to edit a certain vehicle.
+-->
 <template>
-    <div>
-        <div class="page-header">
-            <h1>{{ $t("vehicle.vehicle") | capitalize }} {{$t("actions_plural.create") }}</h1>
-        </div>
-        <vehicle-form :submit="createVehicle" :fleetId="fleetId"></vehicle-form>
-        <vehicle-form :successButtonText="$t('vehicle.vehicle').capitalize() + ' ' +  $t('actions_plural.create')" :failButtonText="$t('common.cancel').capitalize()"  :submit="createVehicle" fleetId="fleetId"></vehicle-form>
-    </div>
+    <vehicle-form-page :actions="actions" :fleetId="fleetId"></vehicle-form-page>
 </template>
 <script>
-    import VehicleForm from '../../assets/form/types/vehicleForm.vue'
-    import {mapActions} from 'vuex'
+    import VehicleFormPage from '../../assets/form/pages/VehicleFormPage.vue'
+    import actions from '../../constants/actions'
 
     export default {
-        components: {
-            VehicleForm
+        data(){
+            return {
+                actions: actions.CREATE
+            }
         },
         props: {
             fleetId: String
         },
-        methods: {
-            ...mapActions([
-                'createVehicle'
-            ])
+        components: {
+            VehicleFormPage
         }
     }
 </script>

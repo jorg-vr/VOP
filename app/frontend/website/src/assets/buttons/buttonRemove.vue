@@ -1,15 +1,31 @@
 <template>
-    <button-action @click="emitClicked" buttonClass="btn btn-md btn-danger" buttonId="remove">
-        <i aria-hidden="true" class="fa fa-trash"></i>
-    </button-action>
+    <protected-element :permission="permission">
+        <button-action @click="$emit('click')" buttonClass="btn btn-md btn-danger" buttonId="remove">
+            <i aria-hidden="true" class="fa fa-trash"></i>
+        </button-action>
+    </protected-element>
+
 </template>
 <script>
+    import actions from '../../constants/actions'
     import buttonAction from './buttonAction.vue'
+    import ProtectedElement from '../protection/ProtectedElement.js'
 
     export default {
-        components: {
-            buttonAction
+        data() {
+            return {
+                permission: {
+                    resource: this.resource,
+                    actions: actions.DELETE
+                }
+            }
         },
-        mixins: [buttonAction]
+        components: {
+            buttonAction, ProtectedElement
+        },
+        props: {
+            resource: Object,
+            buttonClass: String
+        }
     }
 </script>

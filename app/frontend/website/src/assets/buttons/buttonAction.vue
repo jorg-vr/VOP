@@ -1,19 +1,15 @@
 <template>
-    <button type="button" :class="buttonClass" @click="emitClicked" :id="buttonId">
+    <button type="button" @click="$emit('click')" :class="buttonClass" :id="buttonId">
         <slot></slot>
     </button>
 </template>
 <script>
+    import ProtectedElement from '../protection/ProtectedElement.js'
     export default {
         props: {
             action: Function,
             buttonClass: String,
-            buttonId: String
-        },
-        methods: {
-            emitClicked(){
-                this.$emit('click')
-            }
+            buttonId: String,
         }
     }
 </script>

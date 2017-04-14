@@ -11,6 +11,6 @@
             route: Object,
             buttonClass: String,
             buttonId: String
-        }
+        },
     }
 </script>

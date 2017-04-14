@@ -6,54 +6,69 @@
         <div class="page-header">
             <h1>
                 {{$t("fleet.fleets") | capitalize}}
-                <button-link :route="{name: 'new_fleet'}" buttonClass="pull-right btn btn-md btn-primary btn-add">Nieuwe vloot</button-link>
+               <button-add :resource="resource"></button-add>
             </h1>
         </div>
-        <fleet-search-bar @search="updateFleets" :clients="clients" @advancedSearch="updateFleetsAdvanced"></fleet-search-bar>
+        <fleet-search-bar @search="updateFleets" @advancedSearch="updateFleetsAdvanced"></fleet-search-bar>
         <!-- Render an info-pane for every fleet. Once all the data is loaded, the table will be shown.-->
         <list-component v-for="fleet in filteredFleets"
                         v-if="fleet"
+                        :resource="resource"
                         :object="fleet"
-                        :visibleKeys="new Array('name','companyName')"
-                        :remove="deleteFleet"
-                        edit="edit_fleet"
-                        show="fleet"
-                        :key="fleet.id"
-                        rowClass="fleetrow">
+                        :visibleKeys="['name']"
+                        :key="fleet.id">
         </list-component>
     </div>
 </template>
-<style>
-.btn-add {
-    margin-top: -2px;
-}
-</style>
 <script>
     import { mapGetters, mapActions, mapMutations } from 'vuex'
+    import resources from '../../constants/resources'
+    import actions from '../../constants/actions'
     import listComponent from "../../assets/general/listComponent.vue"
     import fleetSearchBar from '../../assets/search/types/fleetSearchBar.vue'
-    import buttonLink from '../../assets/buttons/buttonLink.vue'
+    import buttonAdd from '../../assets/buttons/buttonAdd.vue'
 
     export default {
+
+        data(){
+            return {
+                resource: resources.FLEET
+            }
+        },
         components: {
-            listComponent, buttonLink, fleetSearchBar
+            listComponent, buttonAdd, fleetSearchBar
         },
         created() {
-            let p1 = this.fetchFleets()
-
-            let p2 = this.fetchClients()
-            Promise.all([p1, p2]).then(values => {
-                this.addClientNames({clients: values[1]})
-            })
+            if(this.authorizedForAll) { //Then the user is authorized for all, else the user can't get on this page.
+                let p1 = this.fetchFleets()
+                let p2 = this.fetchClients()
+                Promise.all([p1, p2]).then(values => {
+                    this.addClientNames({clients: values[1]})
+                })
+            }
+            else {
+                this.fetchFleetsByClient({clientId: this.activeFunction.company})
+            }
         },
+
         computed: {
             ...mapGetters([
                 'clients',
                 'fleets',
                 'filteredFleets',
                 'getFleetsByAll',
-                'getFleetsByAllAdvanced'
-            ])
+                'getFleetsByAllAdvanced',
+                'activeFunction',
+                'isAuthorizedForAllResources'
+            ]),
+            authorizedForAll(){
+                return this.isAuthorizedForAllResources(this.resource, actions.READ_ALL)
+            },
+
+            visibleKeys() {
+                return this.authorizedForAll() ? ['name','companyName'] : ['name']
+            }
+
         },
         methods: {
             ...mapActions([
@@ -61,6 +76,7 @@
                 'deleteFleet',
                 'fetchClients',
                 'addClientNames',
+                'fetchFleetsByClient'
             ]),
             ...mapMutations([
                 'setFilteredFleets'
@@ -76,6 +92,7 @@
             updateFleetsAdvanced(filterFleet){
                 this.setFilteredFleets(this.getFleetsByAllAdvanced(filterFleet))
             }
+
         }
     }
 </script>

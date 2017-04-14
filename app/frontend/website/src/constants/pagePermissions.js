@@ -1,0 +1,85 @@
+import resources from './resources'
+import actions from './actions'
+/**
+ * This file is a mapping from pages to resources. This is used for permission checking.
+ */
+
+//Binds a resource and an action to the name of a route.
+//For example: 'vehicles', 'new_vehicle', 'vehicle', 'edit_vehicle'
+let addRoutesForResource = function(resource){
+    permissions[actions.READ_ALL.path(resource.name)] = {
+        resource: resource,
+        actions: actions.READ_ALL
+    }
+    permissions[actions.CREATE.path(resource.name)] = {
+        resource: resource,
+        actions: actions.CREATE
+    }
+    permissions[actions.READ_ONE.path(resource.name)] = {
+        resource: resource,
+        actions: actions.READ_ONE
+    }
+    permissions[actions.UPDATE.path(resource.name)] = {
+        resource: resource,
+        actions: actions.UPDATE
+    }
+}
+
+
+
+
+
+let permissions = {}
+addRoutesForResource(resources.USER)
+addRoutesForResource(resources.VEHICLE)
+addRoutesForResource(resources.FLEET)
+addRoutesForResource(resources.INSURANCE)
+addRoutesForResource(resources.CLIENT)
+
+//Define exceptions
+
+//Users & client pages can only be seen with READ_ALL permissions.
+permissions[actions.READ_ALL.path(resources.USER.name)] = {
+    resource: resources.USER,
+    actions: {
+        name: actions.READ_ALL.name,
+        path: actions.READ_ALL.path,
+        values: ['READ_ALL']
+    }
+}
+
+permissions[actions.READ_ALL.path(resources.CLIENT.name)] = {
+    resource: resources.CLIENT,
+    actions: {
+        name: actions.READ_ALL.name,
+        path: actions.READ_ALL.path,
+        values: ['READ_ALL']
+    }
+}
+
+export const PagePermissions = permissions
+
+/* For future reference if necessary...
+ export default {
+ USER: 'USER',
+ FUNCTION: 'FUNCTION',
+ ROLE: 'ROLE',
+ BILLING: 'BILLING',
+ VEHICLE: 'VEHICLE',
+ FLEET: 'FLEET',
+ VEHICLETYPE: 'VEHICLETYPE',
+ COMPANY: 'COMPANY',
+ INSURANCE: 'INSURANCE'
+ }
+
+ export default {
+ READ_MINE: 'READ_MINE',
+ READ_ALL: 'READ_ALL',
+ UPDATE_MINE: 'UPDATE_MINE',
+ UPDATE_ALL: 'UPDATE_ALL',
+ REMOVE_ALL: 'REMOVE_ALL',
+ REMOVE_MINE: 'REMOVE_MINE',
+ CREATE_ALL: 'CREATE_ALL',
+ CREATE_MINE: 'CREATE_MINE'
+ }
+ */

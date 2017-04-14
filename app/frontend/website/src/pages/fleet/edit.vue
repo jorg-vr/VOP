@@ -1,37 +1,25 @@
 <!--
-    This page is used to edit a fleet.
+    This page is used to edit a certain fleet.
 -->
 <template>
-    <div>
-        <div class="page-header">
-            <h1>{{ $t("fleet.fleet") | capitalize }} {{$t("actions_plural.edit") }}</h1>
-        </div>
-        <fleet-form :submit="updateFleet" :oldFleet="fleet"></fleet-form>
-    </div>
+    <fleet-form-page :actions="actions" :id="id"></fleet-form-page>
 </template>
 <script>
-    import FleetForm from '../../assets/form/types/fleetForm.vue'
-    import {mapGetters, mapActions} from 'vuex'
+    import FleetFormPage from '../../assets/form/pages/FleetFormPage.vue'
+    import actions from '../../constants/actions'
+
     export default {
+        data(){
+            return {
+                actions: actions.UPDATE
+            }
+        },
         components: {
-            FleetForm
+            FleetFormPage
         },
         props: {
             id: String
-        },
-        created() {
-            this.fetchFleet({id: this.id})
-        },
-        computed: {
-            ...mapGetters([
-                'fleet'
-            ])
-        },
-        methods: {
-            ...mapActions([
-                'updateFleet',
-                'fetchFleet'
-            ])
         }
     }
 </script>
+

@@ -9,7 +9,7 @@
 -->
 <template>
     <div :class="'row ' + rowClass" v-if="object">
-        <router-link :to="{name: this.show, params: {id: object.id}}">
+        <router-link :to="{name: resource.name, params: {id: object.id}}">
             <div class="panel panel-default col-sm-10">
                 <div class="panel-body">
                     <table>
@@ -20,12 +20,13 @@
                 </div>
             </div>
         </router-link>
-        <button-edit v-if="edit" :route="{name: edit, params: {id: object.id}}"></button-edit>
-        <button-remove v-if="remove" @click="showModal=true"></button-remove>
+        <button-edit :resource="resource" :params="{id: object.id}"></button-edit>
+        <button-remove :resource="resource" @click="showModal=true"></button-remove>
         <confirm-modal v-show="showModal" @cancelModal="showModal=false" @confirmModal="confirmAction()"></confirm-modal>
     </div>
 </template>
 <script>
+    import {mapActions} from 'vuex'
     import buttonEdit from '../../assets/buttons/buttonEdit.vue'
     import buttonRemove from '../../assets/buttons/buttonRemove.vue'
     import confirmModal from './modal.vue'
@@ -39,10 +40,9 @@
         props: {
             object: Object, //Object with values to show
             visibleKeys: Array, //Keys of values which have to be shown
-            show: String, //Name of link to show page of the given object.
-            edit: String, //Name of link to edit page of the given object.
-            remove: Function, //Function to remove the given object.
-            rowClass: String //Class for this object.
+            rowClass: String, //Class for this object.
+            resource: Object  //Name of the resource this component shows.
+
         },
         components: {
             buttonEdit, buttonRemove,confirmModal
@@ -64,34 +64,33 @@
                 // hide modal
                 this.showModal=false
                 // remove object
-                this.remove({id: this.object.id})
+                this.$store.dispatch('delete' + this.resource.name.capitalize(), {id: this.object.id})
             }
         }
     }
 
 </script>
 <style>
+        .btn-md {
+            margin-left: 5px;
+            margin-top: 8px;
+        }
 
-    .btn-md {
-        margin-left: 5px;
-        margin-top: 8px;
-    }
+        .panel {
+            margin-right: 5px;
+        }
 
-    .panel {
-        margin-right: 5px;
-    }
-
-    .panel table  {
-        /* Create columns with equal width */
-        width: 100%;
-        table-layout: fixed;
-    }
-    a td {
-        color: black;
-        /* Trigger columns with equal width */
-    }
-    a div.panel:hover {
-        background-color: #eee;
-    }
+        .panel table  {
+            /* Create columns with equal width */
+            width: 100%;
+            table-layout: fixed;
+        }
+        a td {
+            color: black;
+            /* Trigger columns with equal width */
+        }
+        a div.panel:hover {
+            background-color: #eee;
+        }
 
 </style>

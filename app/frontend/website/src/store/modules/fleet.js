@@ -1,4 +1,4 @@
-import * as locations from '../constants/locations'
+import * as locations from '../../constants/locations'
 import RequestHandler from '../../api/requestHandler'
 import Vue from 'vue'
 
@@ -34,7 +34,7 @@ export default {
         }
     },
     mutations: {
-        updateFilteredSubfleets(state, {subfleets}){
+        setFilteredSubfleets(state, subfleets){
             state.filteredSubfleets = subfleets
         },
 
@@ -43,31 +43,31 @@ export default {
         },
 
         addSubfleet(state, {subfleet}){
-                state.subfleets.push(subfleet)
+            state.subfleets.push(subfleet)
         },
 
-        addVehicleToSubfleets(state, {vehicle}){
+
+        addVehicleToSubfleet(state, {vehicle}){
             addVehicleToSubfleets(state.subfleets, vehicle)
-            addVehicleToSubfleets(state.filteredSubfleets, vehicle)
         },
 
-        removeVehicleFromSubfleets(state, {vehicle}){
+        removeVehicleFromSubfleet(state, {vehicle}){
             removeVehicleFromSubfleets(state.subfleets, vehicle)
-            removeVehicleFromSubfleets(state.filteredSubfleets, vehicle)
         }
     },
     actions: {
         fetchFleetsByClient(context, {clientId}){
             return new Promise(resolve => {
-                RequestHandler.getObjectsRequest(locations.FLEET + "?company=" + clientId).then(fleets => {
-                    context.commit('receiveFleets', {fleets})
+                RequestHandler.getObjectsRequestBy(locations.FLEET, {company: clientId}).then(fleets => {
+                    context.commit('setFleets', fleets)
+                    context.commit('setFilteredFleets', fleets)
                     resolve(fleets)
                 })
             })
         },
 
         addClientName(context, {client}){
-            Vue.set(context.state.fleet, 'companyName', client.name)
+            Vue.set(context.getters.fleet , 'companyName', client.name)
         },
 
         addClientNames(context, {clients}){
@@ -90,6 +90,7 @@ export default {
             for(let i=0; i < vehicles.length; i++) {
                 context.commit('addVehicleToSubfleet', {vehicle: vehicles[i]})
             }
+            context.commit('setFilteredSubfleets', context.getters.subfleets)
         },
     }
 }
