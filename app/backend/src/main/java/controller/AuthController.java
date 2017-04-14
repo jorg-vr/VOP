@@ -55,7 +55,7 @@ public class AuthController implements AutoCloseable {
     }
 
     private void init(Function function){
-        function.getCompany();
+        function.getCompany().getAddress();
         for(Action action:Action.values()){
             for(Resource resource: Resource.values()){
                 function.getRole().hasAccess(resource,action);

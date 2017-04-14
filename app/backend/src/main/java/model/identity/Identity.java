@@ -59,11 +59,12 @@ public class Identity implements EditableObject, java.io.Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        return uuid.equals(((Identity) o).uuid);
-
+        if (o == null || ! (o instanceof Identity)) return false;
+        Identity identity = (Identity) o;
+        return uuid.equals(identity.getUuid());
     }
+
+
 
     @Override
     public EditableObject copy() {
