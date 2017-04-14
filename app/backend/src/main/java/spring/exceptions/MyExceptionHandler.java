@@ -1,5 +1,6 @@
 package spring.exceptions;
 
+import controller.exceptions.InvalidTokenException;
 import controller.exceptions.UnAuthorizedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +32,14 @@ public class MyExceptionHandler {
     @ExceptionHandler(UnAuthorizedException.class)
     protected ResponseEntity<Object> handleUnAuthorizedException(UnAuthorizedException ex) {
         return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .body(new RESTError(HttpStatus.FORBIDDEN.value(), "Not authorized", null));
+    }
+
+    @ExceptionHandler(InvalidTokenException.class)
+    protected ResponseEntity<Object> handleInvalidTokenException(InvalidTokenException ex) {
+        return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
-                .body(new RESTError(HttpStatus.UNAUTHORIZED.value(), "Not authorized", null));
+                .body(new RESTError(HttpStatus.UNAUTHORIZED.value(), "Token is not valid", null));
     }
 }
