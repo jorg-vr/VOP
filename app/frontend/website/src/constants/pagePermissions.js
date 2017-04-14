@@ -25,6 +25,10 @@ let addRoutesForResource = function(resource){
     }
 }
 
+
+
+
+
 let permissions = {}
 addRoutesForResource(resources.USER)
 addRoutesForResource(resources.VEHICLE)
@@ -32,7 +36,28 @@ addRoutesForResource(resources.FLEET)
 addRoutesForResource(resources.INSURANCE)
 addRoutesForResource(resources.CLIENT)
 
-export const pagePermissions = permissions
+//Define exceptions
+
+//Users & client pages can only be seen with READ_ALL permissions.
+permissions[actions.READ_ALL.path(resources.USER.name)] = {
+    resource: resources.USER,
+    actions: {
+        name: actions.READ_ALL.name,
+        path: actions.READ_ALL.path,
+        values: ['READ_ALL']
+    }
+}
+
+permissions[actions.READ_ALL.path(resources.CLIENT.name)] = {
+    resource: resources.CLIENT,
+    actions: {
+        name: actions.READ_ALL.name,
+        path: actions.READ_ALL.path,
+        values: ['READ_ALL']
+    }
+}
+
+export const PagePermissions = permissions
 
 /* For future reference if necessary...
  export default {

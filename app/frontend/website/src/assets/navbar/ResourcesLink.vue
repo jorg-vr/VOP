@@ -11,14 +11,12 @@
 <script>
     import ProtectedLink from '../protection/ProtectedLink.vue'
     import actions from '../../constants/actions'
+    import {PagePermissions} from '../../constants/PagePermissions'
 
     export default {
         data(){
             return {
-                permission: {
-                    resource: this.resource,
-                    actions: actions.READ_ALL
-                }
+                permission: PagePermissions[actions.READ_ALL.path(this.resource.name)]
             }
         },
         components: {

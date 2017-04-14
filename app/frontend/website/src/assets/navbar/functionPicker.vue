@@ -37,7 +37,8 @@
                 let userFunction = this.userFunctions.filter(obj => obj.id === functionId)[0]
                 this.setActiveFunction(userFunction)
                 //Navigate back to home once the function has changed.
-                this.$router.push({name: 'home'})
+                //This method is used, and not the router, as the page has to reload in order to remove unwanted state
+                document.location.href = "/"
             }
         }
     }

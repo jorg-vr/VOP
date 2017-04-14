@@ -58,10 +58,10 @@ export default {
     },
     actions: {
         fetchFleetsByClient(context, {clientId}){
-            console.log(clientId)
             return new Promise(resolve => {
                 RequestHandler.getObjectsRequestBy(locations.FLEET, {company: clientId}).then(fleets => {
-                    context.commit('receiveFleets', {fleets})
+                    context.commit('setFleets', fleets)
+                    context.commit('setFilteredFleets', fleets)
                     resolve(fleets)
                 })
             })
