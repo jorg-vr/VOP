@@ -1,5 +1,6 @@
 package dao.interfaces;
 
+import model.identity.InsuranceCompany;
 import model.insurance.Contract;
 import model.insurance.SpecialCondition;
 
@@ -72,6 +73,8 @@ public interface DAOProvider extends AutoCloseable {
     SuretyTaxDAO getSuretyTaxDao();
 
     VehicleInsuranceDAO getVehicleInsuranceDao();
+
+    InsuranceCompanyDAO getInsuranceCompanyDao();
 
 
     /**

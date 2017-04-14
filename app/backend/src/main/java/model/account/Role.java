@@ -72,4 +72,20 @@ public class Role implements EditableObject, java.io.Serializable {
     public EditableObject copy() {
         return new Role(name, rights, uuid);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || !(o instanceof Role)) return false;
+
+        Role role = (Role) o;
+
+        return getUuid().equals(role.getUuid());
+
+    }
+
+    @Override
+    public int hashCode() {
+        return getUuid().hashCode();
+    }
 }
