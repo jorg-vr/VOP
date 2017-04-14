@@ -2,7 +2,7 @@
     This page shows a certain client in detail. 
 -->
 <template>
-    <div>
+    <div v-if="client && client.address">
         <div class="page-header">
             <h1>{{$t("client.client") | capitalize }}</h1>
         </div>
@@ -63,7 +63,9 @@
 
     export default {
         data(){
-            resource: resources.FLEET
+            return {
+                resource: resources.FLEET
+            }
         },
         components: {
             buttonBack, listComponent, buttonAdd
