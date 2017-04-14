@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-import VueResource from 'vue-Resource'
+import VueResource from 'vue-resource'
 import VueRouter from 'vue-router'
 import VueI18n from 'vue-i18n'
 
