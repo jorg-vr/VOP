@@ -32,24 +32,27 @@
                     <li>
                         <router-link :to="{name: 'vehicles'}">{{$t("vehicle.vehicles") | capitalize}}</router-link>
                     </li>
+                    <li>
+                        <router-link :to="{name: 'insurances'}"> {{$t("insurance.insurances") | capitalize}} </router-link>
+                    </li>
                     </template>
                 </ul><!-- /.navbar-nav -->
 
                 <ul class="nav navbar-nav navbar-right">
                     <li v-if="hasActiveAccount == false">
-                        <router-link :to="{name: 'login'}"> {{$t("login.login") | capitalize }}  </router-link>
+                        <router-link :to="{path: '/login'}"> {{$t("login.login") | capitalize }}  </router-link>
                     </li>
                     <li>
-                        <language-switcher></language-switcher>
+                        <language-picker></language-picker>
+                    </li>
+                    <li>
+                        <function-picker></function-picker>
                     </li>
                     <!-- condition group rendering for navbar login info-->
                     <template v-if="hasActiveAccount">
-                    <li>
-                        <p class="navbar-text"> {{getAccountInfo.id}}</p>
-                    </li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" ariahaspopup="true" aria-expanded="false">
-                        {{getAccountInfo.login}}<span class="caret"></span></a>
+                        {{account.email}}<span class="caret"></span></a>
                         <ul class="dropdown-menu">  
                             <li role="separator" class="divider"></li>
                             <li>
@@ -67,26 +70,27 @@
     </nav><!-- /.navbar -->
 </template>
 <script>
-import { mapGetters, mapActions } from 'vuex'
-import languageSwitcher from './languagePicker.vue'
+import { mapGetters, mapActions, mapMutations } from 'vuex'
+import languagePicker from './languagePicker.vue'
+import functionPicker from './functionPicker.vue'
+import formSelect from '../../assets/form/elements/formSelect.vue'
 
     export default {
         components: {
-            languageSwitcher
+            languagePicker, functionPicker, formSelect
         },
         computed: {
             ...mapGetters([
-                'hasActiveAccount','getAccountInfo'
+                'hasActiveAccount', 'account'
             ])
         },
         methods:{
             ...mapActions([
-                'logout',
-                'loginInfo'
+                'logout'
             ]),
             confirmLogout:function(){
                 this.logout()
-                this.$router.push({name: 'login'})
+                this.$router.push({path: '/login'})
             }
         }
     }

@@ -11,10 +11,13 @@ import spring.exceptions.InvalidInputException;
 import spring.exceptions.NotAuthorizedException;
 import spring.model.AuthenticationToken;
 import spring.model.RESTFunction;
+import spring.model.RESTSchema;
 import spring.model.RESTUser;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/${path.users}/me")
@@ -26,12 +29,26 @@ public class RESTUserMeController {
     }
 
     @RequestMapping(value = "/functions", method = RequestMethod.GET)
-    public Collection<RESTFunction> getAll(@RequestHeader(value = "Authorization") String token) {
+    public RESTSchema<RESTFunction> getAll(HttpServletRequest request,
+                                           Integer page,
+                                           Integer limit,
+                                           @RequestHeader(value = "Authorization") String token) {
         Collection<RESTFunction> functions = new ArrayList<>();
         for (Function function: getUser(token).getFunctions()) {
             functions.add(new RESTFunction(function));
         }
-        return functions;
+        return new RESTSchema(functions, page, limit, request);
+    }
+
+    @RequestMapping(value = "/functions/{id}", method = RequestMethod.GET)
+    public RESTFunction getFunction(@PathVariable String id, @RequestHeader(value = "Authorization") String token) {
+        UUID uuid = UUIDUtil.toUUID(id);
+        for (Function function: getUser(token).getFunctions()) {
+            if (function.getUuid().equals(uuid)) {
+                return new RESTFunction(function);
+            }
+        }
+        throw new InvalidInputException("user has no function with that id");
     }
 
     @RequestMapping(method = RequestMethod.PUT)

@@ -1,11 +1,11 @@
 package model.fleet;
 
 import model.history.EditableObject;
+import model.identity.Address;
 import model.identity.Customer;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.UUID;
 
 public class Fleet implements EditableObject, java.io.Serializable {
@@ -13,22 +13,25 @@ public class Fleet implements EditableObject, java.io.Serializable {
     private UUID uuid;
     private String name;
     private Customer owner;
+    private Address address;
 
     private Collection<Vehicle> vehicles;
 
     public Fleet() {
     }
 
-    public Fleet(String name, Customer owner) {
+    public Fleet(String name, Customer owner, Address address) {
         this.name = name;
         this.owner = owner;
+        this.address = address;
         this.vehicles = new ArrayList<Vehicle>();
     }
 
-    public Fleet(UUID uuid, String name, Customer owner, Collection<Vehicle> vehicles) {
+    public Fleet(UUID uuid, String name, Customer owner, Address address, Collection<Vehicle> vehicles) {
         this.uuid = uuid;
         this.name = name;
         this.owner = owner;
+        this.address = address;
         this.vehicles = vehicles;
     }
 
@@ -36,42 +39,6 @@ public class Fleet implements EditableObject, java.io.Serializable {
         this.uuid = uuid;
 
         this.vehicles = vehicles;
-    }
-
-
-    /**
-     * Adds the Vehicle to the Fleet.
-     * If the Vehicle is already present in the Fleet, nothing will happen.
-     * DEVELOPER NOTE:  We can't be sure that vehicles is a HashSet (because the Constructor accepts a Collection)
-     * so we can't shorten this function to 1 line.
-     *
-     * @return true if the Vehicle was added
-     */
-    public boolean addVehicle(Vehicle vehicle) {
-        if (vehicles == null) {
-            vehicles = new ArrayList<Vehicle>();
-        } else if (vehicle == null || vehicles.contains(vehicle)) {
-            return false;
-        }
-        return vehicles.add(vehicle);
-    }
-
-    /**
-     * Removes the Vehicle from the Fleet.
-     * If the Vehicle is not present in the Fleet, nothing will happen.
-     * DEVELOPER NOTE:  We can't be sure that vehicles is a HashSet (because the Constructor accepts a Collection)
-     * so we can't shorten this function to 1 line.
-     *
-     * @return true if the Vehicle was removed
-     */
-    public boolean removeVehicle(Vehicle vehicle) {
-        if (vehicles == null) {
-            return false;
-        }
-        if (vehicle == null || !vehicles.contains(vehicle)) {
-            return false;
-        }
-        return vehicles.remove(vehicle);
     }
 
     /**
@@ -82,6 +49,14 @@ public class Fleet implements EditableObject, java.io.Serializable {
             return 0;
         }
         return vehicles.size();
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     public Customer getOwner() {

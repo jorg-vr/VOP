@@ -3,7 +3,7 @@
 -->
 <template>
     <div>
-        <form-component v-if="user" @submit="proceed" :failroute="{name: 'users'}">
+        <form-component v-if="user" @submit="proceed" :failroute="{name: 'users'}" :successButtonText="successButtonText" :failButtonText="failButtonText">
             <user-form-input :user="user"></user-form-input>
         </form-component>
     </div>
@@ -17,6 +17,8 @@
             formComponent, userFormInput
         },
         props: {
+            failButtonText: String,
+            successButtonText: String,
             submit: Function, //Function to create the fleet.
             oldUser: Object
         },
@@ -33,7 +35,7 @@
         },
         methods: {
             proceed(){
-                this.submit({user: this.user}).then(() => {
+                this.submit(this.user).then(() => {
                     this.$router.push({name: 'users'})
                 })
             }

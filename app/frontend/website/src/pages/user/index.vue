@@ -3,9 +3,13 @@
     From this page a new user can be added or an existing user can be edited or removed.
 -->
 <template>
-    <div>
+    <div class="col-lg-8 col-md-9 col-sm-11">
         <div class="page-header">
-            <h1>{{$t("user.users") | capitalize }}</h1>
+            <h1>
+                {{$t("user.users") | capitalize }}
+                <button-link :route="{name: 'new_user'}" buttonClass="pull-right btn btn-md btn-primary btn-add">
+                {{$t("common.add") | capitalize }} {{$t("user.user")}}</button-link>
+            </h1>
         </div>
         <user-search-bar @search="updateUsers" @advancedSearch="updateUsersAdvanced"></user-search-bar>
         <!-- Render an info-pane for every user. Once all the data is loaded, the table will be shown.-->
@@ -18,22 +22,26 @@
                         show="user"
                         :key="user.id">
         </list-component>
-        <button-add :route="{name: 'new_user'}"></button-add>
     </div>
 </template>
+<style>
+.btn-add {
+    margin-top: -2px;
+}
+</style>
 <script>
     import { mapGetters, mapActions, mapMutations } from 'vuex'
     import listComponent from "../../assets/general/listComponent.vue"
-    import buttonAdd from '../../assets/buttons/buttonAdd.vue'
+    import buttonLink from '../../assets/buttons/buttonLink.vue'
     import userSearchBar from '../../assets/search/types/userSearchBar.vue'
 
     export default {
         components: {
-            listComponent, buttonAdd, userSearchBar
+            listComponent, buttonLink, userSearchBar
         },
         created() {
             this.fetchUsers().then(users => {
-                this.updateFilteredUsers({users: users})
+                this.setFilteredUsers(users)
             })
         },
         computed: {
@@ -49,21 +57,19 @@
                 'fetchUsers',
                 'deleteUser'
             ]),
-
-            ...mapMutations({
-                updateFilteredUsers: 'UPDATE_FILTERED_USERS'
-            }),
-
+            ...mapMutations([
+                'setFilteredUsers'
+            ]),
             updateUsers(value){
                 if(value!==''){
-                    this.updateFilteredUsers({users: this.getUsersByAll(value)})
+                    this.setFilteredUsers(this.getUsersByAll(value))
                 }
                 else {
-                    this.updateFilteredUsers({users: this.users})
+                    this.setFilteredUsers(this.users)
                 }
             },
             updateUsersAdvanced(filterUser){
-                this.updateFilteredUsers({users: this.getUsersByAllAdvanced(filterUser)})
+                this.setFilteredUsers(this.getUsersByAllAdvanced(filterUser))
             }
         }
     }

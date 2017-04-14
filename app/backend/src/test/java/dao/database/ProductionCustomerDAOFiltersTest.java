@@ -1,14 +1,16 @@
 package dao.database;
 
-import dao.interfaces.*;
+import dao.interfaces.AddressDAO;
+import dao.interfaces.CustomerDAO;
+import dao.interfaces.DAOProvider;
 import model.identity.Address;
-import model.identity.CompanyType;
 import model.identity.Customer;
-import org.junit.*;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import java.util.Collection;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 
@@ -28,9 +30,9 @@ public class ProductionCustomerDAOFiltersTest {
 
         a1 = addressDAO.create(new Address("streettest n1", "59", "town 1", "9999", "country 1"));
         a2 = addressDAO.create(new Address("streettest n2", "60", "town 2", "99999", "country 2"));
-        v1 = customerDAO.create(new Customer(a1, "Email@address1.com", "911", "customername 1", "btw123", "123456789", CompanyType.TYPE1));
-        v2 = customerDAO.create(new Customer(a1, "Email@address2.com", "911", "customername 2", "btw123", "123456781", CompanyType.TYPE1));
-        v3 = customerDAO.create(new Customer(a2, "Email@address2.com", "912", "customername 2", "btw124", "123456781", CompanyType.TYPE2));
+        v1 = customerDAO.create(new Customer(a1, "911", "customername 1", "btw123"));
+        v2 = customerDAO.create(new Customer(a1, "911", "customername 2", "btw123"));
+        v3 = customerDAO.create(new Customer(a2, "912", "customername 2", "btw124"));
     }
 
     @AfterClass
@@ -43,6 +45,8 @@ public class ProductionCustomerDAOFiltersTest {
         //Address temp1 = addressDAO.get(a1.getUuid());
         //Address temp2 = addressDAO.get(a2.getUuid());
         addressDAO.remove(a2.getUuid());
+        customerDAO.close();
+        addressDAO.close();
         daoProvider.close();
     }
 
@@ -98,22 +102,6 @@ public class ProductionCustomerDAOFiltersTest {
         Collection<Customer> c2 = customerDAO.listFiltered(customerDAO.byAddress(a2));
         assertTrue("byAddress filter doesn't work", c1.contains(v1) && c1.contains(v2) && !c1.contains(v3));
         assertTrue("byAddress filter doesn't work", !c2.contains(v1) && !c2.contains(v2) && c2.contains(v3));
-    }
-
-    @Test
-    public void byBankAccountNummber() throws Exception {
-        Collection<Customer> c1 = customerDAO.listFiltered(customerDAO.byBankAccountNummber("123456789"));
-        Collection<Customer> c2 = customerDAO.listFiltered(customerDAO.byBankAccountNummber("123456781"));
-        assertTrue("byBankAccountNummber filter doesn't work", c1.contains(v1) && !c1.contains(v2) && !c1.contains(v3));
-        assertTrue("byBankAccountNummber filter doesn't work", !c2.contains(v1) && c2.contains(v2) && c2.contains(v3));
-    }
-
-    @Test
-    public void byEmail() throws Exception {
-        Collection<Customer> c1 = customerDAO.listFiltered(customerDAO.byEmail("Email@address1.com"));
-        Collection<Customer> c2 = customerDAO.listFiltered(customerDAO.byEmail("Email@address2.com"));
-        assertTrue("byEmail filter doesn't work", c1.contains(v1) && !c1.contains(v2) && !c1.contains(v3));
-        assertTrue("byEmail filter doesn't work", !c2.contains(v1) && c2.contains(v2) && c2.contains(v3));
     }
 
 }

@@ -6,6 +6,8 @@ import controller.UserController;
 import controller.exceptions.UnAuthorizedException;
 import dao.interfaces.DataAccessException;
 import model.account.Function;
+import model.account.Role;
+import model.identity.Company;
 import spring.controller.UUIDUtil;
 import spring.exceptions.InvalidInputException;
 import spring.exceptions.NotAuthorizedException;
@@ -19,7 +21,9 @@ import static util.MyProperties.getProperty;
 public class RESTFunction extends RESTAbstractModel<Function> {
 
     private String company;
+    private String companyName;
     private String role;
+    private String roleName;
     private String user;
 
     public RESTFunction(){
@@ -28,8 +32,14 @@ public class RESTFunction extends RESTAbstractModel<Function> {
 
     public RESTFunction(Function function){
         super(function.getUuid(), getProperty(PATH_FUNCTIONS));
-        this.company = UUIDUtil.UUIDToNumberString(function.getCompany().getUuid());
-        this.role = UUIDUtil.UUIDToNumberString(function.getRole().getUuid());
+        Company company = function.getCompany();
+        if (company != null) {
+            this.company = UUIDUtil.UUIDToNumberString(company.getUuid());
+            this.companyName = company.getName();
+        }
+        Role role = function.getRole();
+        this.role = UUIDUtil.UUIDToNumberString(role.getUuid());
+        this.roleName = role.getName();
         this.user = UUIDUtil.UUIDToNumberString(function.getUser().getUuid());
     }
 
@@ -88,5 +98,21 @@ public class RESTFunction extends RESTAbstractModel<Function> {
 
     public void setUser(String user) {
         this.user = user;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
     }
 }

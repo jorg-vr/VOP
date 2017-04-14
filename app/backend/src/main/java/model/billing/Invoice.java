@@ -2,9 +2,10 @@ package model.billing;
 
 import model.history.EditableObject;
 import model.identity.Company;
+import model.insurance.Contract;
 
-import java.net.URL;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
 
@@ -29,11 +30,6 @@ public class Invoice implements EditableObject, java.io.Serializable {
     private Company beneficiary;
 
     /**
-     * url to the billing itself
-     */
-    private URL url;
-
-    /**
      * Type of Invoice. Can be either a billing (monthly payments), a statement at the end of a billing period or a correction invoice
      */
     private InvoiceType type;
@@ -46,38 +42,33 @@ public class Invoice implements EditableObject, java.io.Serializable {
     /**
      * start-date of the billing period the invoice applies to
      */
-    private LocalDate startDate;
+    private LocalDateTime startDate;
 
     /**
      * end-date of the billing period the invoice applies to
      */
-    private LocalDate endDate;
+    private LocalDateTime endDate;
 
     /**
-     * collection of the costs that fall in this billing period.
+     * collection of the insurances that are the subject of this invoice
      */
-    private Collection<Cost> costs;
+    private Collection<Contract> contracts;
 
     /**
      * constructor
      */
     public Invoice() {
+        this.contracts = new ArrayList<>();
     }
 
-    public Invoice(Company payer, Company beneficiary, URL url, InvoiceType type, boolean paid, LocalDate startDate, LocalDate endDate) {
+    public Invoice(Company payer, Company beneficiary, InvoiceType type, boolean paid, LocalDateTime startDate, LocalDateTime endDate) {
         this.payer = payer;
         this.beneficiary = beneficiary;
-        this.url = url;
         this.type = type;
         this.paid = paid;
         this.startDate = startDate;
         this.endDate = endDate;
-    }
-
-    public Invoice(UUID uuid, Company payer, Company beneficiary, URL url, InvoiceType type, boolean paid, LocalDate startDate, LocalDate endDate, Collection<Cost> costs) {
-        this(payer, beneficiary, url, type, paid, startDate, endDate);
-        this.uuid = uuid;
-        this.costs = costs;
+        this.contracts = new ArrayList<>();
     }
 
     @Override
@@ -110,14 +101,6 @@ public class Invoice implements EditableObject, java.io.Serializable {
         this.beneficiary = beneficiary;
     }
 
-    public URL getUrl() {
-        return url;
-    }
-
-    public void setUrl(URL url) {
-        this.url = url;
-    }
-
     public boolean isPaid() {
         return paid;
     }
@@ -126,27 +109,51 @@ public class Invoice implements EditableObject, java.io.Serializable {
         this.paid = paid;
     }
 
-    public LocalDate getStartDate() {
+    public LocalDateTime getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDate startDate) {
+    public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
     }
 
-    public LocalDate getEndDate() {
+    public LocalDateTime getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDate endDate) {
+    public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
     }
 
-    public Collection<Cost> getCosts() {
-        return costs;
+    public InvoiceType getType() {
+        return type;
     }
 
-    public void setCosts(Collection<Cost> costs) {
-        this.costs = costs;
+    public void setType(InvoiceType type) {
+        this.type = type;
+    }
+
+    public Collection<Contract> getContracts() {
+        return contracts;
+    }
+
+    public void setContracts(Collection<Contract> contracts) {
+        this.contracts = contracts;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || !(o instanceof Invoice)) return false;
+
+        Invoice that = (Invoice) o;
+
+        return getUuid().equals(that.getUuid());
+
+    }
+
+    @Override
+    public int hashCode() {
+        return getUuid().hashCode();
     }
 }

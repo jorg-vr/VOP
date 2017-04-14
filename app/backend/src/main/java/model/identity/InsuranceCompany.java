@@ -1,42 +1,46 @@
 package model.identity;
 
-import model.insurance.Insurance;
+import model.insurance.Contract;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
 
 
 public class InsuranceCompany extends Company implements java.io.Serializable {
 
-    private Collection<Insurance> insurances;
+    private Collection<Contract> contracts;
 
     public InsuranceCompany() {
+        this.contracts = new ArrayList<>();
+        super.setCompanyType(CompanyType.INSURANCE_COMPANY);
     }
 
-    public InsuranceCompany(Address address, String email, String phoneNumber, String name, String btwNumber, String bankAccountNumber, CompanyType companyType, Collection<Insurance> insurances) {
-        super(address, email, phoneNumber, name, btwNumber, bankAccountNumber, companyType);
-        this.insurances = insurances;
+    public InsuranceCompany(Address address, String phoneNumber, String name, String btwNumber) {
+        super(address, phoneNumber, name, btwNumber, CompanyType.INSURANCE_COMPANY);
+        this.contracts = new ArrayList<>();
     }
 
-    public InsuranceCompany(UUID id, Address address, String email, String phoneNumber, String name, String btwNumber, String bankAccountNumber, CompanyType companyType) {
-        super(id, address, email, phoneNumber, name, btwNumber, bankAccountNumber, companyType);
+    public InsuranceCompany(Address address, String phoneNumber, String name, String btwNumber, Collection<Contract> contracts) {
+        super(address, phoneNumber, name, btwNumber, CompanyType.INSURANCE_COMPANY);
+        this.contracts = contracts;
+    }
+
+    public InsuranceCompany(Address address, String phoneNumber, String name, String btwNumber, CompanyType companyType, Collection<Contract> contracts) {
+        super(address, phoneNumber, name, btwNumber, companyType);
+        this.contracts = contracts;
+    }
+
+    public InsuranceCompany(UUID id, Address address, String phoneNumber, String name, String btwNumber, CompanyType companyType) {
+        super(id, address, phoneNumber, name, btwNumber, companyType);
 
     }
 
-    //TODO not milestone 1
-    public boolean addInsurance(Insurance insurance) {
-        if (insurances.contains(insurance)) {
-            return false;
-        }
-        insurances.add(insurance);
-        return true;
+    public Collection<Contract> getContracts() {
+        return contracts;
     }
 
-    public Collection<Insurance> getInsurances() {
-        return insurances;
-    }
-
-    public void setInsurances(Collection<Insurance> insurances) {
-        this.insurances = insurances;
+    public void setContracts(Collection<Contract> contracts) {
+        this.contracts = contracts;
     }
 }

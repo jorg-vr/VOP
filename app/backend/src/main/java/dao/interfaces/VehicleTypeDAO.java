@@ -8,7 +8,7 @@ import java.util.UUID;
  * DAO for the bean VehicleType
  * Created by sam on 3/7/17.
  */
-public interface VehicleTypeDao extends DAO<VehicleType> {
+public interface VehicleTypeDAO extends DAO<VehicleType> {
 
     /**
      * Returns a Filter to use in ListFiltered in this class, which returns all VehicleTypes (only one) matching the given name exactly.

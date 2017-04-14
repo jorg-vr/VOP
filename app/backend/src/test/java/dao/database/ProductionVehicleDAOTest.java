@@ -5,7 +5,6 @@ import model.fleet.Fleet;
 import model.fleet.Vehicle;
 import model.fleet.VehicleType;
 import model.identity.Address;
-import model.identity.CompanyType;
 import model.identity.Customer;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -20,7 +19,7 @@ public class ProductionVehicleDAOTest {
 
     private static DAOProvider daoProvider;
     private static VehicleDAO vehicleDao;
-    private static VehicleTypeDao vehicleTypeDAO;
+    private static VehicleTypeDAO vehicleTypeDAO;
     private static FleetDAO fleetDAO;
     private static CustomerDAO customerDAO;
     private static AddressDAO addressDAO;
@@ -40,6 +39,10 @@ public class ProductionVehicleDAOTest {
     //Gets executed after all tests have been run
     @AfterClass
     public static void closeProvider() throws Exception {
+        vehicleTypeDAO.close();
+        fleetDAO.close();
+        customerDAO.close();
+        addressDAO.close();
         daoProvider.close();
     }
 
@@ -59,12 +62,12 @@ public class ProductionVehicleDAOTest {
             fail("Failed trying to create a new address");
         }
         try {
-            cust1 = customerDAO.create(new Customer(a1, "Email@address1.com", "911", "customername 1", "btw123", "123456789", CompanyType.TYPE1));
+            cust1 = customerDAO.create(new Customer(a1, "911", "customername 1", "btw123"));
         } catch (Exception e) {
             fail("Failed trying to create a new customer");
         }
         try {
-            fleet1 = fleetDAO.create(new Fleet("fleet 1", cust1));
+            fleet1 = fleetDAO.create(new Fleet("fleet 1", cust1, a1));
         } catch (Exception e) {
             fail("Failed trying to create a new fleet");
         }
@@ -128,8 +131,8 @@ public class ProductionVehicleDAOTest {
     @Test
     public void update() throws Exception {
         Address a1 = addressDAO.create(new Address("streettest n1", "59", "town 1", "9999", "country 1"));
-        Customer cust1 = customerDAO.create(new Customer(a1, "Email@address1.com", "911", "customername 1", "btw123", "123456789", CompanyType.TYPE1));
-        Fleet fleet1 = fleetDAO.create(new Fleet("fleet 1", cust1));
+        Customer cust1 = customerDAO.create(new Customer(a1, "911", "customername 1", "btw123"));
+        Fleet fleet1 = fleetDAO.create(new Fleet("fleet 1", cust1, a1));
         VehicleType t1 = vehicleTypeDAO.create(new VehicleType("type 1", 2.5));
         VehicleType t2 = vehicleTypeDAO.create(new VehicleType("type 2", 3.5));
         //add new vehicle to the database

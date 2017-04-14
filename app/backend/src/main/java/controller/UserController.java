@@ -17,6 +17,6 @@ public class UserController extends AbstractController<User> {
 
     @Override
     public boolean isOwner(User user, Function function) {
-        return false;
+        return function.getUser().equals(user);
     }
 }

@@ -36,6 +36,7 @@ public class ProductionAddressDAOFiltersTest {
         addressDAO.remove(a1.getUuid());
         addressDAO.remove(a2.getUuid());
         addressDAO.remove(a3.getUuid());
+        addressDAO.close();
         daoProvider.close();
     }
 

@@ -2,7 +2,6 @@ package dao.database;
 
 import dao.interfaces.*;
 import model.account.*;
-import model.fleet.VehicleType;
 import model.identity.Address;
 import model.identity.Customer;
 import org.hibernate.SessionFactory;
@@ -58,9 +57,6 @@ public class ProductionProvider implements DAOProvider {
      * @return the DAOProvider
      */
     public synchronized static DAOProvider getInstance() {
-        if (provider == null) {
-            initializeProvider("test");
-        }
         return provider;
     }
 
@@ -90,7 +86,7 @@ public class ProductionProvider implements DAOProvider {
     }
 
     @Override
-    public synchronized VehicleTypeDao getVehicleTypeDAO() {
+    public synchronized VehicleTypeDAO getVehicleTypeDAO() {
         return new ProductionVehicleTypeDAO(sessionFactory.openSession());
     }
 
@@ -104,64 +100,56 @@ public class ProductionProvider implements DAOProvider {
         return new ProductionRoleDAO(sessionFactory.openSession());
     }
 
+    @Override
+    public ContractDAO getContractDao() {
+        return new ProductionContractDAO(sessionFactory.openSession());
+    }
+
+    @Override
+    public FlatSuretyDAO getFlatSuretyDao() {
+        return new ProductionFlatSuretyDAO(sessionFactory.openSession());
+    }
+
+    @Override
+    public InvoiceDAO getInvoiceDao() {
+        return new ProductionInvoiceDAO(sessionFactory.openSession());
+    }
+
+    @Override
+    public NonFlatSuretyDAO getNonFlatSuretyDao() {
+        return new ProductionNonFlatSuretyDAO(sessionFactory.openSession());
+    }
+
+    @Override
+    public SpecialConditionDAO getSpecialConditionDao() {
+        return new ProductionSpecialConditionDAO(sessionFactory.openSession());
+    }
+
+    @Override
+    public SuretyCommisionDAO getSuretyCommisionDao() {
+        return new ProductionSuretyCommisionDAO(sessionFactory.openSession());
+    }
+
+    @Override
+    public SuretyTaxDAO getSuretyTaxDao() {
+        return new ProductionSuretyTaxCommision(sessionFactory.openSession());
+    }
+
+    @Override
+    public VehicleInsuranceDAO getVehicleInsuranceDao() {
+        return new ProductionVehicleInsuranceDAO(sessionFactory.openSession());
+    }
+
+    @Override
+    public InsuranceCompanyDAO getInsuranceCompanyDao() {
+        return new ProductionInsuranceCompanyDAO(sessionFactory.openSession());
+    }
+
 
     @Override
     public void close() {
         sessionFactory.close();
         StandardServiceRegistryBuilder.destroy(this.registry);
-    }
-
-    public static void main(String[] args) throws DataAccessException {
-        ProductionProvider.initializeProvider("localtest");
-        try (DAOProvider provider = ProductionProvider.getInstance();) {
-
-            try (RoleDAO roleDAO = provider.getRoleDAO();
-                 UserDAO userDAO = provider.getUserDAO();
-                 FunctionDAO functionDAO = provider.getFunctionDAO();
-                 AddressDAO addressDAO = provider.getAddressDao();
-                 CustomerDAO customerDAO = provider.getCustomerDAO();) {
-
-                User user = new User();
-                user.setEmail("admin@solvas.be");
-                user.setPassword("123");
-                user.setFirstName("Bill");
-                user.setLastName("kill");
-                user = userDAO.create(user);
-
-                Role role = new Role();
-                role.setName("adminrole");
-                for (Resource resource : Resource.values()) {
-                    role.setAccess(resource, Action.CREATE_ALL);
-                    role.setAccess(resource, Action.READ_ALL);
-                    role.setAccess(resource, Action.REMOVE_ALL);
-                    role.setAccess(resource, Action.UPDATE_ALL);
-                }
-
-                Function function = new Function();
-                function.setUser(user);
-                function.setRole(role);
-                function.setName("Adminfunction");
-
-                Address address = new Address("mystreet", "11", "The town", "9850", "Belgium");
-                Customer customer = new Customer();
-                customer.setAddress(address);
-                customer.setName("Solvas");
-                customer.setBankAccountNumber("BE123456789");
-                function.setCompany(customer);
-
-
-                userDAO.create(user);
-                addressDAO.create(address);
-                customerDAO.create(customer);
-                roleDAO.create(role);
-                functionDAO.create(function);
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            
-            provider.close();
-        }
+        provider = null;
     }
 }

@@ -3,7 +3,7 @@
     From this page a new vehicle can be added or an existing vehicle can be edited or removed.
 -->
 <template>
-    <div>
+    <div class="col-lg-8 col-md-9 col-sm-11">
         <div class="page-header">
             <h1>{{$t("vehicle.vehicles") | capitalize }}</h1>
         </div>
@@ -46,12 +46,12 @@
                 'fetchVehiclesBy'
             ]),
 
-            ...mapMutations({
-                updateFilteredVehicles: 'UPDATE_FILTERED_VEHICLES'
-            }),
+            ...mapMutations([
+                'setFilteredVehicles'
+            ]),
 
             updateVehiclesAdvanced(filterVehicle){
-                this.updateFilteredVehicles({vehicles: this.fetchVehiclesBy({vehicle: filterVehicle})})
+                this.setFilteredVehicles(this.fetchVehiclesBy({vehicle: filterVehicle}))
             }
         }
     }

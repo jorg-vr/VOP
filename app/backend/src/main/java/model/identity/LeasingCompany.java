@@ -13,44 +13,22 @@ public class LeasingCompany extends Company implements java.io.Serializable {
     private Collection<Vehicle> vehicles;
 
     public LeasingCompany() {
+        this.vehicles = new ArrayList<>();
+        super.setCompanyType(CompanyType.LEASING_COMPANY);
     }
 
-    public LeasingCompany(Address address, String email, String phoneNumber, String name, String btwNumber, String bankAccountNumber, CompanyType companyType, Collection<Vehicle> vehicles) {
-        super(address, email, phoneNumber, name, btwNumber, bankAccountNumber, companyType);
+    public LeasingCompany(Address address, String phoneNumber, String name, String btwNumber, Collection<Vehicle> vehicles) {
+        super(address, phoneNumber, name, btwNumber, CompanyType.LEASING_COMPANY);
         this.vehicles = vehicles;
     }
 
-    public LeasingCompany(UUID id, Address address, String email, String phoneNumber, String name, String btwNumber, String bankAccountNumber, CompanyType companyType) {
-        super(id, address, email, phoneNumber, name, btwNumber, bankAccountNumber, companyType);
+    public LeasingCompany(Address address, String phoneNumber, String name, String btwNumber, CompanyType companyType, Collection<Vehicle> vehicles) {
+        super(address, phoneNumber, name, btwNumber, companyType);
+        this.vehicles = vehicles;
     }
 
-    /**
-     * Adds the given vehicle to the list of vehicles the leasing company owns.
-     * Nothing will happen if the vehicle is already in the list.
-     *
-     * @param vehicle vehicle who's ownership has to be assigned to this leasingcompany
-     * @return true when the vehicle has been succesfully added
-     */
-    public boolean addVehicle(Vehicle vehicle) {
-        if (vehicles == null) {
-            vehicles = new ArrayList<Vehicle>();
-        } else if (vehicle == null || vehicles.contains(vehicle)) {
-            return false;
-        }
-        return vehicles.add(vehicle);
-    }
-
-    /**
-     * removes the vehicle from the list of owned vehicles (if it is in the list)
-     *
-     * @param vehicle vehicle that needs to be removed
-     * @return true if the vehicle was succesfully removed
-     */
-    public boolean removeVehicle(Vehicle vehicle) {
-        if (vehicles == null) {
-            return false;
-        }
-        return vehicles.remove(vehicle);
+    public LeasingCompany(UUID id, Address address, String phoneNumber, String name, String btwNumber, CompanyType companyType) {
+        super(id, address, phoneNumber, name, btwNumber, companyType);
     }
 
     public Collection<Vehicle> getVehicles() {

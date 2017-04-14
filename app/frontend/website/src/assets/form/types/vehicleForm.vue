@@ -3,7 +3,7 @@
     The form accepts the old vehicle and an update or create function.
 -->
 <template>
-    <form-component v-if="vehicle" @submit="proceed" :failroute="{name: 'fleet', params: {id: vehicle.fleet}}">
+    <form-component v-if="vehicle" @submit="proceed" :failroute="{name: 'fleet', params: {id: vehicle.fleet}}" :successButtonText="successButtonText" :failButtonText="failButtonText">
         <vehicle-form-input :vehicle="vehicle"></vehicle-form-input>
     </form-component>
 </template>
@@ -16,6 +16,8 @@
             formComponent, vehicleFormInput
         },
         props: {
+            failButtonText: String,
+            successButtonText: String,
             submit: Function, //Submit function to create/update the vehicle.
             oldVehicle: Object, //Vehicle which should be created/updated with this form
             fleetId: String
@@ -32,7 +34,7 @@
         },
         methods: {
             proceed(){
-                this.submit({vehicle: this.vehicle}).then(vehicle => {
+                this.submit(this.vehicle).then(vehicle => {
                     if(vehicle.fleet){
                         this.$router.push({name: 'fleet', params: {id: vehicle.fleet}})
                     }

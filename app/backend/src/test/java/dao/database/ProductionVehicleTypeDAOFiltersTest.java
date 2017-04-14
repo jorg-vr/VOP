@@ -1,7 +1,7 @@
 package dao.database;
 
 import dao.interfaces.DAOProvider;
-import dao.interfaces.VehicleTypeDao;
+import dao.interfaces.VehicleTypeDAO;
 import model.fleet.VehicleType;
 import org.junit.*;
 
@@ -12,7 +12,7 @@ import static org.junit.Assert.assertTrue;
 
 public class ProductionVehicleTypeDAOFiltersTest {
     private static DAOProvider daoProvider;
-    private static VehicleTypeDao vehicleTypeDAO;
+    private static VehicleTypeDAO vehicleTypeDAO;
     private static VehicleType t1, t2;
 
     //Setup before any of the tests are started
@@ -30,6 +30,7 @@ public class ProductionVehicleTypeDAOFiltersTest {
     public static void closeProvider() throws Exception {
         vehicleTypeDAO.remove(t1.getUuid());
         vehicleTypeDAO.remove(t2.getUuid());
+        vehicleTypeDAO.close();
         daoProvider.close();
     }
 

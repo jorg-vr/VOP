@@ -38,7 +38,7 @@
                 <param name="enumClass" >model.account.Resource</param>
             </type>
         </property>
-        <set name="actions" table="action">
+        <set name="actions" table="actions">
             <key column="id" not-null="true"/>
             <element type="action" column="action"/>
         </set>
