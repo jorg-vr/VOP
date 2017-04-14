@@ -8,10 +8,10 @@ import model.account.Resource;
 import model.account.Role;
 import org.springframework.web.bind.annotation.*;
 import spring.exceptions.InvalidInputException;
-import spring.exceptions.NotAuthorizedException;
 import spring.exceptions.NotFoundException;
 import spring.model.RESTPermission;
 import spring.model.RESTSchema;
+import util.UUIDUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;

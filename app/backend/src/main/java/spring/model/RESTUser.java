@@ -2,7 +2,7 @@ package spring.model;
 
 import model.account.Function;
 import model.account.User;
-import spring.controller.UUIDUtil;
+import util.UUIDUtil;
 
 import static util.MyProperties.PATH_USERS;
 import static util.MyProperties.getProperty;

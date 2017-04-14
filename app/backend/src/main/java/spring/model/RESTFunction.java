@@ -8,7 +8,7 @@ import dao.interfaces.DataAccessException;
 import model.account.Function;
 import model.account.Role;
 import model.identity.Company;
-import spring.controller.UUIDUtil;
+import util.UUIDUtil;
 import spring.exceptions.InvalidInputException;
 import spring.exceptions.NotAuthorizedException;
 

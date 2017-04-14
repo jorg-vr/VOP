@@ -15,6 +15,7 @@ import spring.exceptions.InvalidInputException;
 import spring.exceptions.NotAuthorizedException;
 import spring.model.RESTSchema;
 import spring.model.RESTVehicle;
+import util.UUIDUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;

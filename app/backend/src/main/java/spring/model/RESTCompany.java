@@ -4,7 +4,7 @@ import model.account.Function;
 import model.identity.Address;
 import model.identity.Company;
 import model.identity.Customer;
-import spring.controller.UUIDUtil;
+import util.UUIDUtil;
 
 import static util.MyProperties.PATH_COMPANIES;
 import static util.MyProperties.getProperty;

@@ -1,6 +1,5 @@
 package spring.controller;
 
-import controller.AbstractController;
 import controller.AuthController;
 import controller.exceptions.UnAuthorizedException;
 import dao.interfaces.DataAccessException;
@@ -8,12 +7,12 @@ import model.account.Function;
 import model.account.User;
 import org.springframework.web.bind.annotation.*;
 import spring.exceptions.InvalidInputException;
-import spring.exceptions.NotAuthorizedException;
 import spring.exceptions.NotFoundException;
 import spring.model.AuthenticationToken;
 import spring.model.RESTFunction;
 import spring.model.RESTSchema;
 import spring.model.RESTUser;
+import util.UUIDUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;

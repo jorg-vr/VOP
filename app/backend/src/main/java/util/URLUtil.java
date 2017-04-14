@@ -1,4 +1,4 @@
-package spring.controller;
+package util;
 
 import javax.servlet.http.HttpServletRequest;
 

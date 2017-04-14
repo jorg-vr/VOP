@@ -4,12 +4,12 @@ import controller.CustomerController;
 import controller.FleetController;
 import controller.exceptions.UnAuthorizedException;
 import dao.interfaces.DataAccessException;
-import dao.interfaces.FleetDAO;
 import model.fleet.Fleet;
 import org.springframework.web.bind.annotation.*;
 import spring.exceptions.InvalidInputException;
 import spring.model.RESTFleet;
 import spring.model.RESTSchema;
+import util.UUIDUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;

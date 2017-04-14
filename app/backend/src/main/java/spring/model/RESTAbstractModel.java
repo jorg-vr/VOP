@@ -3,7 +3,7 @@ package spring.model;
 import model.account.Function;
 import model.history.EditEvent;
 import model.history.EditableObject;
-import spring.controller.UUIDUtil;
+import util.UUIDUtil;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

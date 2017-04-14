@@ -8,7 +8,7 @@ import model.account.Function;
 import model.fleet.Vehicle;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import spring.controller.UUIDUtil;
+import util.UUIDUtil;
 import spring.exceptions.InvalidInputException;
 import spring.exceptions.NotAuthorizedException;
 

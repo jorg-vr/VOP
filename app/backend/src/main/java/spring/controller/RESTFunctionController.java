@@ -7,14 +7,13 @@ import dao.interfaces.DataAccessException;
 import model.account.Function;
 
 import org.springframework.web.bind.annotation.*;
-import spring.exceptions.NotAuthorizedException;
 import spring.model.RESTFunction;
 import spring.model.RESTSchema;
+import util.UUIDUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Optional;
 
 /**
  * Requests that are implemented in this class:

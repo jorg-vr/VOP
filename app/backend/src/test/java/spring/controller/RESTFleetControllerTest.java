@@ -1,7 +1,5 @@
 package spring.controller;
 
-import controller.CustomerController;
-import controller.FleetController;
 import dao.database.ProductionProvider;
 import dao.interfaces.DataAccessException;
 import model.fleet.Fleet;
@@ -18,6 +16,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import spring.model.RESTFleet;
+import util.UUIDUtil;
 
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -80,7 +79,7 @@ public class RESTFleetControllerTest {
 
     @Test
     public void post() throws Exception {
-        RESTFleet restFleet=new RESTFleet(null,UUIDUtil.UUIDToNumberString(customer.getUuid()),"newFleet",null,null,null,null);
+        RESTFleet restFleet=new RESTFleet(null, UUIDUtil.UUIDToNumberString(customer.getUuid()),"newFleet",null,null,null,null);
         MvcResult result =mvc.perform(MockMvcRequestBuilders.post("/fleets").header("Content-Type","application/json").content(TestUtil.convertObjectToJsonBytes(restFleet)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name",equalTo(restFleet.getName())))

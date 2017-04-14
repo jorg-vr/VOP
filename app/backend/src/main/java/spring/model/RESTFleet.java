@@ -5,8 +5,7 @@ import controller.exceptions.UnAuthorizedException;
 import dao.interfaces.DataAccessException;
 import model.account.Function;
 import model.fleet.Fleet;
-import model.identity.Customer;
-import spring.controller.UUIDUtil;
+import util.UUIDUtil;
 import spring.exceptions.InvalidInputException;
 import spring.exceptions.NotAuthorizedException;
 

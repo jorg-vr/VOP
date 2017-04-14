@@ -2,7 +2,7 @@ package spring.model;
 
 import model.account.Function;
 import model.fleet.VehicleType;
-import spring.controller.UUIDUtil;
+import util.UUIDUtil;
 
 import static util.MyProperties.PATH_TYPES;
 import static util.MyProperties.PATH_VEHICLES;
