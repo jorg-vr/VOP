@@ -34,16 +34,6 @@
                     return this.oldUser
                 }
             }
-        },
-        methods: {
-            proceed(){
-                this.$store.dispatch(action + 'User').then(() => {
-                    this.submit(this.user).then(() => {
-                        this.$router.push({name: 'users'})
-                    })
-                })
-
-            }
         }
     }
 </script>

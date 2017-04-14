@@ -7,7 +7,7 @@
     </form-component>
 </template>
 <script>
-    import {mapGetters, mapActions} from 'vuex'
+    import {mapGetters} from 'vuex'
     import resources from '../../../constants/resources'
     import formComponent from '../formComponent.vue'
     import fleetFormInput from './fleetFormInput.vue'
@@ -23,7 +23,7 @@
         },
         created(){
             if(this.isAuthorizedForOwnResourcesButNotAll(this.resource, this.actions)){
-
+                this.fleet.company = this.activeFunction.company
             }
         },
         props: {
@@ -38,21 +38,11 @@
             ]),
             fleet(){
                 if(this.oldFleet === null) {
-                    return {}
+                    return {company: this.clientId}
                 }
                 else {
                     return this.oldFleet
                 }
-            }
-        },
-        methods: {
-            proceed(){
-                this.$store.dispatch(action + 'Fleet').then(() => {
-                    this.submit(this.fleet).then(() => {
-                        this.$router.push({name: 'fleets'})
-                    })
-                })
-
             }
         }
     }

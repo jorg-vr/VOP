@@ -34,16 +34,6 @@
                     return this.oldClient
                 }
             }
-        },
-        methods: {
-            proceed(){
-                this.$store.dispatch(action + 'Client').then(() => {
-                    this.submit(this.client).then(() => {
-                        this.$router.push({name: 'clients'})
-                    })
-                })
-
-            }
         }
     }
 </script>

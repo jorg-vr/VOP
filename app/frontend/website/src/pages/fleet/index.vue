@@ -13,11 +13,10 @@
         <!-- Render an info-pane for every fleet. Once all the data is loaded, the table will be shown.-->
         <list-component v-for="fleet in filteredFleets"
                         v-if="fleet"
-                        :resource="resource",
+                        :resource="resource"
                         :object="fleet"
                         :visibleKeys="['name','companyName']"
-                        :key="fleet.id"
-                        rowClass="fleetrow">
+                        :key="fleet.id">
         </list-component>
     </div>
 </template>
@@ -39,9 +38,9 @@
         },
         created() {
             let p1 = this.fetchFleets()
-
             let p2 = this.fetchClients()
             Promise.all([p1, p2]).then(values => {
+                console.log(this.filteredFleets)
                 this.addClientNames({clients: values[1]})
             })
         },

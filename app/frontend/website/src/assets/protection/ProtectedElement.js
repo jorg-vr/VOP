@@ -9,7 +9,7 @@ import store from '../../store'
 export default Vue.component('protected-element', {
     functional: true,
     render(createElement, context) {
-        if(store.getters.hasPermissionWithActions(context.props.permission)){
+        if(store.getters.hasPermission(context.props.permission)){
             return context.children[0]
         }
     },

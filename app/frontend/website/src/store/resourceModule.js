@@ -102,6 +102,8 @@ export default {
             return new Promise((resolveSuccess, resolveFailure) => {
                 RequestHandler.getObjectsRequest(location).then(resources => {
                     context.commit(setResources, resources)
+                    //Initially the filtered resources should equal the actual resources.
+                    context.commit(setFilteredResources, resources)
                     resolveSuccess(resources)
                 }, response => {
                     resolveFailure(response)

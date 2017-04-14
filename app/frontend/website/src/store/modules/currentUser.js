@@ -26,7 +26,7 @@ export default {
 
         hasPermissionForRoute: (state, getters) => (routeName) => {
             if(pagePermissions[routeName]){
-                return getters.hasPermissionWithActions(pagePermissions[routeName])
+                return getters.hasPermission(pagePermissions[routeName])
             }
             else { //If there's no permissions for a route. The user should get access
                 return true
@@ -34,29 +34,23 @@ export default {
         },
 
         //Checks if the user has a given permission requirement. The permission requirement should have a resource key and actions value.
-        hasPermissionWithActions: (state) => (permissionRequirement) => {
-            let permissions = state.activePermissions
-            //Check if the user has the given permission requirement.
-            let filtered = permissions.filter(permission => {
-                if(permissionRequirement.resource.value === permission.resource
-                    && permissionRequirement.actions.values.indexOf(permission.action) !== -1){
-                    return permission
-                }
-            })
-            return filtered.length > 0
-        },
-
-        //Checks if the user has a given permission requirement. The permission requirement should have a resource key and action value.
-        hasPermission: (state, getters) => (permissionRequirement) => {
-            permissionRequirement.actions = new Array(permissionRequirement.action)
-            return getters.hasPermissionWithActions(permissionRequirement)
+        hasPermission: (state) => (permissionRequirement) => {
+            return findUserPermissions(state, permissionRequirement).length > 0
         },
 
         /**
          * Checks if the user can do the given action for only his own resources.
          */
         isAuthorizedForOwnResourcesButNotAll: (state, getters) => (resource, actions) => {
-            return isAuthorizedForOwnResources(getters, resource, actions) && !isAuthorizedForAllResources(getters, resource, actions)
+            let permissions = findUserPermissions(state, {resource: resource, actions: actions})
+            let actionMine = actions.values[0]
+            if(permissions.length === 1){
+                return permissions[0].action === actionMine
+            }
+            else {
+                return false
+            }
+
         }
     },
     mutations: {
@@ -188,18 +182,15 @@ export default {
     }
 }
 
-let isAuthorizedForOwnResources = function(getters, resource, actions) {
-    let permission = {
-        resource: resource,
-        actions: [actions.values[0]]
-    }
-    return getters.hasPermission(resource, actions)
-}
-
-let isAuthorizedForAllResources = function(getters, resource, actions) {
-    let permission = {
-        resource: resource,
-        actions: [actions.values[1]]
-    }
-    return getters.hasPermission(resource, actions)
+//Searches for a list of permissions which satisfy the given requirement
+let findUserPermissions = function(state, permissionRequirement){
+    let permissions = state.activePermissions
+    //Check if the user has the given permission requirement.
+    let filtered = permissions.filter(permission => {
+        if(permissionRequirement.resource.value === permission.resource
+            && permissionRequirement.actions.values.indexOf(permission.action) !== -1){
+            return permission
+        }
+    })
+    return filtered
 }

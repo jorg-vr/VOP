@@ -42,9 +42,7 @@
         methods: {
             submit(){
                 this.$store.dispatch(this.actions.name + this.resource.name.capitalize(), this.object).then(() => {
-                    this.submit(this.client).then(() => {
-                        this.$router.push({name: resource.plural()})
-                    })
+                    this.$router.push({name: this.resource.name.plural()})
                 })
             }
         }

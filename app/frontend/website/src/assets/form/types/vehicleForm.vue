@@ -34,16 +34,6 @@
                     return this.oldVehicle
                 }
             }
-        },
-        methods: {
-            proceed(){
-                this.$store.dispatch(action + 'Vehicle').then(() => {
-                    this.submit(this.vehicle).then(() => {
-                        this.$router.push({name: 'vehicles'})
-                    })
-                })
-
-            }
         }
     }
 </script>

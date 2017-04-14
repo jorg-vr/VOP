@@ -34,16 +34,6 @@
                     return this.oldInsurance
                 }
             }
-        },
-        methods: {
-            proceed(){
-                this.$store.dispatch(action + 'Insurance').then(() => {
-                    this.submit(this.insurance).then(() => {
-                        this.$router.push({name: 'insurances'})
-                    })
-                })
-
-            }
         }
     }
 </script>
