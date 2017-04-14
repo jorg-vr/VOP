@@ -18,9 +18,9 @@ import java.util.stream.Collectors;
 
 /**
  * Requests that are implemented in this class:
- *  1) GET /auth/permissions
- *  2) GET /auth/roles/{id}/permissions
- *  3) PUT /auth/roles/{id}/permissions
+ * 1) GET /auth/permissions
+ * 2) GET /auth/roles/{id}/permissions
+ * 3) PUT /auth/roles/{id}/permissions
  */
 @RestController
 public class RESTPermissionController extends RESTSimpleController {
@@ -42,7 +42,7 @@ public class RESTPermissionController extends RESTSimpleController {
                                           Integer page, Integer limit,
                                           String resource, String action,
                                           @RequestHeader(value = "Authorization") String token,
-                                          @RequestHeader(value = "Function") String function) {
+                                          @RequestHeader(value = "Function") String function) throws UnAuthorizedException {
         UUID uuid = UUIDUtil.toUUID(id);
         try (RoleController roleController = new RoleController(verifyToken(token, function))) {
             Role role = roleController.get(uuid);
@@ -51,8 +51,6 @@ public class RESTPermissionController extends RESTSimpleController {
             return new RESTSchema<>(filtered, page, limit, request);
         } catch (DataAccessException e) {
             throw new InvalidInputException("Role does not exist");
-        } catch (UnAuthorizedException e) {
-            throw new NotAuthorizedException();
         }
     }
 
@@ -60,7 +58,7 @@ public class RESTPermissionController extends RESTSimpleController {
     public void put(@PathVariable String id,
                     @RequestBody List<Long> permissions,
                     @RequestHeader(value = "Authorization") String token,
-                    @RequestHeader(value = "Function") String function) {
+                    @RequestHeader(value = "Function") String function) throws UnAuthorizedException {
         UUID uuid = UUIDUtil.toUUID(id);
         try (RoleController roleController = new RoleController(verifyToken(token, function))) {
             try {
@@ -69,17 +67,14 @@ public class RESTPermissionController extends RESTSimpleController {
                 roleController.update(role);
             } catch (DataAccessException e) {
                 throw new InvalidInputException("Role does not exist");
-            } catch (UnAuthorizedException e) {
-                throw new NotAuthorizedException();
             }
         }
     }
 
     /**
-     *
      * @param permissions collection of permissions that should be filtered. This method does NOT alter this collection in any way
-     * @param resource null if should not be filtered on resource. The filtering is case-insensitive contains
-     * @param action null if should not be filtered on action. The filtering is case-insensitive contains
+     * @param resource    null if should not be filtered on resource. The filtering is case-insensitive contains
+     * @param action      null if should not be filtered on action. The filtering is case-insensitive contains
      * @return a new collection with all the RESTPermissions of permissions that pass the filters
      */
     public Collection<RESTPermission> filter(Collection<RESTPermission> permissions, String resource, String action) {
@@ -92,10 +87,11 @@ public class RESTPermissionController extends RESTSimpleController {
 
     /**
      * Set the Permissions of a Role based on the ids.
+     *
      * @param role Role whose Permissions should be set. Note that is is set and not add.
-     * @param ids ids of all the RESTPermissions that should be set on the Role.
-     *            Note that a Role has Permissions and not RESTPermissions,
-     *            so a translation to Permissions happens in this method.
+     * @param ids  ids of all the RESTPermissions that should be set on the Role.
+     *             Note that a Role has Permissions and not RESTPermissions,
+     *             so a translation to Permissions happens in this method.
      * @throws InvalidInputException gets thrown when there is an invalid RESTPermission id
      */
     private void setPermissions(Role role, List<Long> ids) {

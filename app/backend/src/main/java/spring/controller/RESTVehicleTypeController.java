@@ -22,7 +22,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/${path.vehicles}/${path.types}")
-public class RESTVehicleTypeController extends RESTAbstractController<RESTVehicleType,VehicleType> {
+public class RESTVehicleTypeController extends RESTAbstractController<RESTVehicleType, VehicleType> {
 
     public RESTVehicleTypeController() {
         super(VehicleTypeController::new, RESTVehicleType::new);
@@ -30,22 +30,19 @@ public class RESTVehicleTypeController extends RESTAbstractController<RESTVehicl
 
     @RequestMapping(method = RequestMethod.GET)
     public RESTSchema<RESTVehicleType> getAllVehileTypes(HttpServletRequest request,
-            @RequestParam(required = false) Integer page,
-            @RequestParam(required = false) Integer limit,
-            @RequestHeader(value="Authorization") String token,
-            @RequestHeader(value="Function") String function){
-        List<RESTVehicleType> restVehicleTypes=new ArrayList<>();
-        try(VehicleTypeController controller=new VehicleTypeController(verifyToken(token,function))) {
+                                                         @RequestParam(required = false) Integer page,
+                                                         @RequestParam(required = false) Integer limit,
+                                                         @RequestHeader(value = "Authorization") String token,
+                                                         @RequestHeader(value = "Function") String function) throws UnAuthorizedException {
+        List<RESTVehicleType> restVehicleTypes = new ArrayList<>();
+        try (VehicleTypeController controller = new VehicleTypeController(verifyToken(token, function))) {
             for (VehicleType vehicleType : controller.getAll()) {
                 restVehicleTypes.add(new RESTVehicleType(vehicleType));
             }
 
         } catch (DataAccessException e) {
             throw new InvalidInputException("Some parameters where invalid");
-        }catch (UnAuthorizedException e) {
-            throw new NotAuthorizedException();
         }
-
         return new RESTSchema<>(restVehicleTypes, page, limit, request);
     }
 

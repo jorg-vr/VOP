@@ -52,33 +52,29 @@ public abstract class RESTAbstractController<R extends RESTAbstractModel<M>, M e
 
     @RequestMapping(method = RequestMethod.POST)
     public R post(@RequestBody R rest, @RequestHeader(value = "Authorization") String token,
-                  @RequestHeader(value = "Function") String function) {
+                  @RequestHeader(value = "Function") String function) throws UnAuthorizedException {
         try (AbstractController<M> controller = controllerFactory.create(verifyToken(token, function))) {
             M model = controller.create(rest.translate(verifyToken(token, function)));
             return factory.create(model);
         } catch (DataAccessException e) {
             throw new InvalidInputException(e);
-        } catch (UnAuthorizedException e) {
-            throw new NotAuthorizedException();
         }
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "{id}")
     public R getId(@PathVariable("id") String id, @RequestHeader(value = "Authorization") String token,
-                   @RequestHeader(value = "Function") String function) {
+                   @RequestHeader(value = "Function") String function) throws UnAuthorizedException {
         UUID uuid = UUIDUtil.toUUID(id);
         try (AbstractController<M> controller = controllerFactory.create(verifyToken(token, function))) {
             return factory.create(controller.get(uuid));
         } catch (DataAccessException e) {
             throw new NotFoundException();
-        } catch (UnAuthorizedException e) {
-            throw new NotAuthorizedException();
         }
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "{id}")
     public R putId(@PathVariable("id") String id, @RequestBody R rest, @RequestHeader(value = "Authorization") String token,
-                   @RequestHeader(value = "Function") String function) {
+                   @RequestHeader(value = "Function") String function) throws UnAuthorizedException {
         try (AbstractController<M> controller = controllerFactory.create(verifyToken(token, function))) {
             rest.setId(id);
             M model = rest.translate(verifyToken(token, function));
@@ -87,21 +83,17 @@ public abstract class RESTAbstractController<R extends RESTAbstractModel<M>, M e
         } catch (DataAccessException e) {
             e.printStackTrace();
             throw new InvalidInputException();
-        } catch (UnAuthorizedException e) {
-            throw new NotAuthorizedException();
         }
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "{id}")
     public void deleteId(@PathVariable("id") String id, @RequestHeader(value = "Authorization") String token,
-                         @RequestHeader(value = "Function") String function) {
+                         @RequestHeader(value = "Function") String function) throws UnAuthorizedException {
         UUID uuid = UUIDUtil.toUUID(id);
         try (AbstractController<M> controller = controllerFactory.create(verifyToken(token, function))) {
             controller.archive(uuid);
         } catch (DataAccessException e) {
             throw new NotFoundException();
-        } catch (UnAuthorizedException e) {
-            throw new NotAuthorizedException();
         }
     }
 }

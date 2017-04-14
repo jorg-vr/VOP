@@ -37,7 +37,7 @@ public class RESTUserMeController {
         for (Function function: getUser(token).getFunctions()) {
             functions.add(new RESTFunction(function));
         }
-        return new RESTSchema(functions, page, limit, request);
+        return new RESTSchema<>(functions, page, limit, request);
     }
 
     @RequestMapping(value = "/${path.functions}/{id}", method = RequestMethod.GET)
@@ -53,7 +53,7 @@ public class RESTUserMeController {
 
     @RequestMapping(method = RequestMethod.PUT)
     public RESTUser putId(@RequestBody RESTUser rest, @RequestHeader(value = "Authorization") String token,
-                   @RequestHeader(value = "Function") String function) {
+                   @RequestHeader(value = "Function") String function) throws UnAuthorizedException {
         String id = UUIDUtil.UUIDToNumberString(new AuthenticationToken(token).getAccountId());
         return new RESTUserController().putId(id, rest, token , function);
     }

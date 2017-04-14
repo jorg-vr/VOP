@@ -26,24 +26,20 @@ import java.util.Collection;
 public class RESTAuthController {
 
     @RequestMapping(value = "/${path.login}", method = RequestMethod.POST)
-    public String post(@RequestBody RESTAuth restAuth) {
+    public String post(@RequestBody RESTAuth restAuth) throws UnAuthorizedException {
         try (AuthController authController = new AuthController()) {
             return authController.getToken(restAuth.getLogin(), restAuth.getPassword()).toString();
         } catch (DataAccessException e) {
             throw new InvalidInputException(e);
-        } catch (UnAuthorizedException e) {
-            throw new NotAuthorizedException();
         }
     }
 
     @RequestMapping(value = "/${path.refresh}", method = RequestMethod.POST)
-    public String put(@RequestHeader(value = "Authorization") String token) {
+    public String put(@RequestHeader(value = "Authorization") String token) throws UnAuthorizedException {
         try (AuthController authController = new AuthController()) {
             return authController.refreshToken(new AuthenticationToken(token)).toString();
         } catch (DataAccessException e) {
             throw new InvalidInputException(e);
-        } catch (UnAuthorizedException e) {
-            throw new NotAuthorizedException();
         }
     }
 

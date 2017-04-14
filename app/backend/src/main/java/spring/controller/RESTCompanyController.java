@@ -54,7 +54,7 @@ public class RESTCompanyController extends RESTAbstractController<RESTCompany,Cu
                                        @RequestParam(required = false) String city,
                                        @RequestParam(required = false) String postalCode,
                                        @RequestHeader(value="Authorization") String token,
-                                       @RequestHeader(value="Function") String function) {
+                                       @RequestHeader(value="Function") String function) throws UnAuthorizedException {
 
 
         try(CustomerController controller= new CustomerController(verifyToken(token,function))) {
@@ -73,11 +73,7 @@ public class RESTCompanyController extends RESTAbstractController<RESTCompany,Cu
         } catch (DataAccessException e) {
             //API doesn't contain error
             throw new RuntimeException(e);
-        } catch (UnAuthorizedException e) {
-            throw new NotAuthorizedException();
         }
-
-
     }
 
 
