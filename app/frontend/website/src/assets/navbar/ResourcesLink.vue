@@ -4,26 +4,31 @@
 -->
 
 <template>
-    <protected-link :to="{name: resourceName + 's'}" :permission="permission">{{ $t(resourceName + '.' + resourceName + 's') | capitalize}}</protected-link>
+    <protected-link :to="{name: resource.name.plural()}" :permission="permission">
+        {{ $t(resource.name + '.' + resource.name.plural()) | capitalize}}
+    </protected-link>
 </template>
 <script>
     import ProtectedLink from '../protection/ProtectedLink.vue'
-    import * as actions from '../../constants/actions'
+    import actions from '../../constants/actions'
 
     export default {
         data(){
             return {
                 permission: {
-                    resource: this.resourceName.toUpperCase(),
-                    actions: actions.READ
+                    resource: this.resource,
+                    actions: actions.READ_ALL
                 }
             }
+        },
+        created(){
+            console.log(this.resource.name.plural())
         },
         components: {
             ProtectedLink
         },
         props: {
-            resourceName: String,
+            resource: Object
         }
     }
 </script>

@@ -79,8 +79,8 @@ String.prototype.rtrim = function(s) {
     return this.replace(new RegExp(s + "*$"),'');
 };
 
-String.prototype.plural = function(value) {
-    return value + 's'
+String.prototype.plural = function() {
+    return this + 's'
 };
 
 Vue.filter('capitalize', function(value){

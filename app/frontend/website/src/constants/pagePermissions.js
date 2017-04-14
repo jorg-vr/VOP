@@ -11,19 +11,19 @@ let addRoutesForResource = function(resource){
     let resourceValue = resource.value
     permissions[actions.READ_ALL.path(resourceName)] = {
         resource: resourceValue,
-        actions: actions.READ_ALL.values
+        actions: actions.READ_ALL
     }
     permissions[actions.CREATE.path(resourceName)] = {
         resource: resourceValue,
-        actions: actions.CREATE.values
+        actions: actions.CREATE
     }
     permissions[actions.READ_ONE.path(resourceName)] = {
         resource: resourceValue,
-        actions: actions.READ_ONE.values
+        actions: actions.READ_ONE
     }
     permissions[actions.UPDATE.path(resourceName)] = {
         resource: resourceValue,
-        actions: actions.UPDATE.values
+        actions: actions.UPDATE
     }
 }
 

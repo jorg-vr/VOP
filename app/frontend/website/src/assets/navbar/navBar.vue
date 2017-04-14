@@ -21,19 +21,19 @@
                      <!-- conditional group rendering for navbar links-->
                     <template v-if="hasActiveAccount">
                         <li>
-                            <resources-link resourceName="fleet"></resources-link>
+                            <resources-link :resource="resources.FLEET"></resources-link>
                         </li>
                         <li>
-                            <resources-link resourceName="user"></resources-link>
+                            <resources-link :resource="resources.USER"></resources-link>
                         </li>
                         <li>
-                            <resources-link resourceName="client"></resources-link>
+                            <resources-link :resource="resources.CLIENT"></resources-link>
                         </li>
                         <li>
-                            <resources-link resourceName="vehicle"></resources-link>
+                            <resources-link :resource="resources.VEHICLE"></resources-link>
                         </li>
                         <li>
-                            <resources-link resourceName="insurance"></resources-link>
+                            <resources-link :resource="resources.INSURANCE"></resources-link>
                         </li>
                     </template>
                 </ul><!-- /.navbar-nav -->
@@ -71,12 +71,18 @@
 </template>
 <script>
 import { mapGetters, mapActions, mapMutations } from 'vuex'
+import resources from '../../constants/resources'
 import languagePicker from './languagePicker.vue'
 import functionPicker from './functionPicker.vue'
 import formSelect from '../form/elements/formSelect.vue'
 import ResourcesLink from './ResourcesLink.vue'
 
     export default {
+        data(){
+            return {
+                resources: resources
+            }
+        },
         components: {
             languagePicker, functionPicker, formSelect, ResourcesLink
         },
