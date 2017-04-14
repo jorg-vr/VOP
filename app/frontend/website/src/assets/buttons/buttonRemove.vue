@@ -7,7 +7,7 @@
 
 </template>
 <script>
-    import * as actions from '../../constants/actions'
+    import actions from '../../constants/actions'
     import buttonAction from './buttonAction.vue'
     import ProtectedElement from '../protection/ProtectedElement.js'
 
@@ -15,7 +15,7 @@
         data() {
             return {
                 permission: {
-                    resource: this.resource.value,
+                    resource: this.resource,
                     actions: actions.DELETE
                 }
             }

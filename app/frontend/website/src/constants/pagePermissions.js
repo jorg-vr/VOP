@@ -7,22 +7,20 @@ import actions from './actions'
 //Binds a resource and an action to the name of a route.
 //For example: 'vehicles', 'new_vehicle', 'vehicle', 'edit_vehicle'
 let addRoutesForResource = function(resource){
-    let resourceName = resource.name
-    let resourceValue = resource.value
-    permissions[actions.READ_ALL.path(resourceName)] = {
-        resource: resourceValue,
+    permissions[actions.READ_ALL.path(resource.name)] = {
+        resource: resource,
         actions: actions.READ_ALL
     }
-    permissions[actions.CREATE.path(resourceName)] = {
-        resource: resourceValue,
+    permissions[actions.CREATE.path(resource.name)] = {
+        resource: resource,
         actions: actions.CREATE
     }
-    permissions[actions.READ_ONE.path(resourceName)] = {
-        resource: resourceValue,
+    permissions[actions.READ_ONE.path(resource.name)] = {
+        resource: resource,
         actions: actions.READ_ONE
     }
-    permissions[actions.UPDATE.path(resourceName)] = {
-        resource: resourceValue,
+    permissions[actions.UPDATE.path(resource.name)] = {
+        resource: resource,
         actions: actions.UPDATE
     }
 }

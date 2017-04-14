@@ -7,14 +7,14 @@
         <div class="page-header">
             <h1>
                 {{$t("user.user") | capitalize}}
-               <button-add resourceName="user"></button-add>
+               <button-add :resource="resource"></button-add>
             </h1>
         </div>
         <user-search-bar @search="updateUsers" @advancedSearch="updateUsersAdvanced"></user-search-bar>
         <!-- Render an info-pane for every user. Once all the data is loaded, the table will be shown.-->
         <list-component v-for="user in filteredUsers"
                         v-if="user"
-                        :resource="resources.USER"
+                        :resource="resource"
                         :object="user"
                         :visibleKeys="new Array('firstName', 'lastName')"
                         :key="user.id">
@@ -30,6 +30,11 @@
     import userSearchBar from '../../assets/search/types/userSearchBar.vue'
 
     export default {
+        data(){
+            return {
+                resource: resources.USER
+            }
+        },
         components: {
             listComponent, buttonAdd, userSearchBar
         },

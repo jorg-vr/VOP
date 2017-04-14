@@ -50,17 +50,21 @@
                             :key="fleet.id">
             </list-component>
             <button-back :route="{name: 'clients'}"></button-back>
-            <button-add resourceName="fleet" :params="{clientId: client.id}"></button-add>
+            <button-add :resource="resource" :params="{clientId: client.id}"></button-add>
         </div>
     </div>
 </template>
 <script>
     import {mapGetters, mapActions} from 'vuex'
+    import resources from '../../constants/resources'
     import listComponent from "../../assets/general/listComponent.vue"
     import buttonBack from '../../assets/buttons/buttonBack.vue'
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
 
     export default {
+        data(){
+            resource: resources.FLEET
+        },
         components: {
             buttonBack, listComponent, buttonAdd
         },

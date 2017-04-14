@@ -6,7 +6,7 @@
     </protected-element>
 </template>
 <script>
-    import * as actions from '../../constants/actions'
+    import actions from '../../constants/actions'
     import buttonLink from './buttonLink.vue'
     import ProtectedElement from '../protection/ProtectedElement.js'
 
@@ -14,7 +14,7 @@
         data() {
             return {
                 permission: {
-                    resource: this.resource.value,
+                    resource: this.resource,
                     actions: actions.CREATE
                 },
                 route: {

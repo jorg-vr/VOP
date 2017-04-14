@@ -2,6 +2,10 @@
 import Vue from 'vue'
 import store from '../../store'
 
+/**
+ * Important: this component can only take one child! Other children won't be rendered.
+ */
+
 export default Vue.component('protected-element', {
     functional: true,
     render(createElement, context) {

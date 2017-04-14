@@ -6,14 +6,14 @@
         <div class="page-header">
             <h1>
                 {{$t("fleet.fleets") | capitalize}}
-               <button-add resourceName="fleet"></button-add>
+               <button-add :resource="resource"></button-add>
             </h1>
         </div>
         <fleet-search-bar @search="updateFleets" :clients="clients" @advancedSearch="updateFleetsAdvanced"></fleet-search-bar>
         <!-- Render an info-pane for every fleet. Once all the data is loaded, the table will be shown.-->
         <list-component v-for="fleet in filteredFleets"
                         v-if="fleet"
-                        :resource="resources.FLEET",
+                        :resource="resource",
                         :object="fleet"
                         :visibleKeys="new Array('name','companyName')"
                         :key="fleet.id"
@@ -29,6 +29,11 @@
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
 
     export default {
+        data(){
+            return {
+                resource: resources.FLEET
+            }
+        },
         components: {
             listComponent, buttonAdd, fleetSearchBar
         },

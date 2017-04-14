@@ -5,12 +5,11 @@
  * a path which points to the name of the path in frontend and a list of values which can be used for permission checking
  */
 
-
 export default {
     READ_ALL: {
         name: 'read',
         path: function(resource){
-            return resource.plural
+            return resource + 's'
         },
         values: ['READ_MINE', 'READ_ALL']
     },

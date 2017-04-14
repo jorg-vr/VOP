@@ -7,14 +7,14 @@
         <div class="page-header">
             <h1>
                 {{$t("insurance.insurance") | capitalize}}
-               <button-add resourceName="insurance"></button-add>
+               <button-add :resource="resource"></button-add>
             </h1>
         </div>
         <insurance-search-bar @search="updateInsurance" @advancedSearch="updateInsurancesAdvanced"></insurance-search-bar>
         <!-- Render an info-pane for every insurance. Once all the data is loaded, the table will be shown.-->
         <list-component v-for="insurance in filteredInsurances"
                         v-if="insurance"
-                        :resource="resources.INSURANCE"
+                        :resource="resource"
                         :object="insurance"
                         :visibleKeys="new Array('type','vehicle')"
                         :key="insurance.id">
@@ -29,6 +29,11 @@
     import insuranceSearchBar from '../../assets/search/types/insuranceSearchBar.vue'
 
     export default {
+        data(){
+            return {
+                resource: resources.INSURANCE
+            }
+        },
         components: {
             listComponent, buttonAdd, insuranceSearchBar
         },

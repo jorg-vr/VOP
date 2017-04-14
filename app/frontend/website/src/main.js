@@ -17,6 +17,7 @@ Vue.use(VueResource);
 Vue.use(VueI18n);
 
 
+
 if(process.env.NODE_ENV){
     Vue.config.env = environments[process.env.NODE_ENV]
 }
