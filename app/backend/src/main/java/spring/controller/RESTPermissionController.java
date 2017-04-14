@@ -9,6 +9,7 @@ import model.account.Role;
 import org.springframework.web.bind.annotation.*;
 import spring.exceptions.InvalidInputException;
 import spring.exceptions.NotAuthorizedException;
+import spring.exceptions.NotFoundException;
 import spring.model.RESTPermission;
 import spring.model.RESTSchema;
 
@@ -50,7 +51,7 @@ public class RESTPermissionController extends RESTSimpleController {
             Collection<RESTPermission> filtered = filter(restPermissions, resource, action);
             return new RESTSchema<>(filtered, page, limit, request);
         } catch (DataAccessException e) {
-            throw new InvalidInputException("Role does not exist");
+            throw new NotFoundException();
         }
     }
 
@@ -66,7 +67,7 @@ public class RESTPermissionController extends RESTSimpleController {
                 setPermissions(role, permissions);
                 roleController.update(role);
             } catch (DataAccessException e) {
-                throw new InvalidInputException("Role does not exist");
+                throw new NotFoundException();
             }
         }
     }

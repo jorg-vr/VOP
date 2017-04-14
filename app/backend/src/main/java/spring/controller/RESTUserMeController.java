@@ -9,6 +9,7 @@ import model.account.User;
 import org.springframework.web.bind.annotation.*;
 import spring.exceptions.InvalidInputException;
 import spring.exceptions.NotAuthorizedException;
+import spring.exceptions.NotFoundException;
 import spring.model.AuthenticationToken;
 import spring.model.RESTFunction;
 import spring.model.RESTSchema;
@@ -63,7 +64,7 @@ public class RESTUserMeController {
         try (AuthController authController = new AuthController()) {
             return authController.getUser(new AuthenticationToken(token));
         } catch (DataAccessException e) {
-            throw new InvalidInputException(e);
+            throw new NotFoundException();
         }
     }
 
