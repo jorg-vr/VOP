@@ -28,7 +28,7 @@ export default {
         values: ['CREATE_MINE', 'CREATE_ALL']
     },
     UPDATE: {
-        name: 'create',
+        name: 'update',
         path: function(resource){
             return 'edit_' + resource
         },

@@ -5,35 +5,43 @@
             <button-link :route="failroute" buttonClass="pull-right btn btn-sm btn-default form-component-button">
                 {{ $t('common.cancel') | capitalize }}
             </button-link>
-            <button-action @click="proceed" buttonClass="pull-right btn btn-sm btn-primary form-component-button">
-                {{ $t('actions.' + action, {subject: $t(resource + '.' + resource)}) | capitalize }}
+            <button-action @click="submit" buttonClass="pull-right btn btn-sm btn-primary form-component-button">
+                {{ submitText }}
             </button-action>
         </div>
     </form>
 </template>
 <script>
+    import {getResourceActionText} from '../../utils/utils'
     import buttonLink from '../buttons/buttonLink.vue'
     import buttonAction from '../buttons/buttonAction.vue'
 
     export default {
+        data(){
+            return {
+                failroute: {name: this.resource.name.plural()}, //The failroute is the index page of the resource.
+                submitText:  getResourceActionText(this.resource.name, this.actions.name)
+
+            }
+        },
         components: {
             buttonLink, buttonAction
         },
         props: {
-            action: String, //The action of this form
-            resource: String, //The name of the resource configured by this form
+            actions: Object, //The action of this form
+            resource: Object, //The name of the resource configured by this form
             object: Object //The resource configured by this form
         },
         created(){
             document.addEventListener("keyup", e => {
                 if(e.keyCode === 13){
-                    this.proceed()
+                    this.submit()
                 }
             })
         },
         methods: {
-            proceed(){
-                this.$store.dispatch(this.action + this.resource.capitalize(), object).then(() => {
+            submit(){
+                this.$store.dispatch(this.actions.name + this.resource.name.capitalize(), this.object).then(() => {
                     this.submit(this.client).then(() => {
                         this.$router.push({name: resource.plural()})
                     })

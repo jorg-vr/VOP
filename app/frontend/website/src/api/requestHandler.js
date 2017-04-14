@@ -49,6 +49,7 @@ export default {
 
 
     putObjectRequest(location, object){
+        console.log(object)
         return new Promise((resolveSuccess, resolveFailure) => {
             Vue.http.put(location + object.id, object).then(response => {
                 resolveSuccess(response.body)

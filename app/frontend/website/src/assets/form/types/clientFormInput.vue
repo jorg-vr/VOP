@@ -29,6 +29,12 @@
     import formInput from '../elements/formInput.vue'
 
     export default {
+        data(){
+            types: {
+                {value: "CUSTOMER", name: ""},
+                {value: "LEASING_COMPANY", }
+            }
+        },
         props: {
             client: Object
         },

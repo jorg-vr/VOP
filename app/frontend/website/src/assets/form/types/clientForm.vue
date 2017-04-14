@@ -2,7 +2,7 @@
     This page is used to generate a form for a user.
 -->
 <template>
-    <form-component v-if="client" :action="this.action" :resource="resource" :object="client">
+    <form-component v-if="client" :actions="actions" :resource="resource" :object="client">
         <client-form-input v-if="client.address" :client="client"></client-form-input>
     </form-component>
 </template>
@@ -22,12 +22,12 @@
             formComponent, clientFormInput
         },
         props: {
-            actions: String,
+            actions: Object,
             oldClient: Object
         },
         computed: {
             client(){
-                if(this.oldClient === undefined) {
+                if(this.oldClient === null) {
                     return {address: {}}
                 }
                 else {

@@ -32,6 +32,9 @@ export default
             phoneNumber: 'phone number',
             vatNumber: 'VAT number'
         },
+        clientTypes: {
+            //TODO
+        },
         address: {
             country: 'country',
             address: 'address',
@@ -51,7 +54,7 @@ export default
         actions: {
             select: 'select {subject}',
             create: 'create {subject}',
-            edit: 'edit {subject}'
+            update: 'edit {subject}'
         },
         search_bar: {
             search_for: 'Search for',
@@ -123,6 +126,9 @@ export default
             phoneNumber: 'telefoonnummer',
             vatNumber: 'BTW-nummer'
         },
+        clientTypes: {
+            //TODO
+        },
         address: {
             country: 'land',
             address: 'adres',
@@ -143,7 +149,7 @@ export default
         actions: {
             select: 'selecteer {subject}',
             create: '{subject} aanmaken',
-            edit: '{subject} bewerken'
+            update: '{subject} bewerken'
         },
         search_bar: {
             search_for: 'Zoeken naar',

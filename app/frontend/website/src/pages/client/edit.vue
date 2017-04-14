@@ -2,37 +2,23 @@
     This page is used to edit a certain client.
 -->
 <template>
-    <div id="content-wrapper">
-        <div class="page-header">
-            <h1>{{ $t("client.client") | capitalize }} {{$t("actions_plural.edit") }}</h1>
-        </div>
-        <client-form :action="actions.UPDATE" :oldClient="client"></client-form>
-    </div>
+    <client-form-page :actions="actions" :id="id"></client-form-page>
 </template>
 <script>
-    import ClientForm from '../../assets/form/types/clientForm.vue'
-    import * as actions from '../../constants/actions'
-    import {mapGetters, mapActions} from 'vuex'
+    import ClientFormPage from '../../assets/form/pages/ClientFormPage.vue'
+    import actions from '../../constants/actions'
 
     export default {
+        data(){
+            return {
+                actions: actions.UPDATE
+            }
+        },
         components: {
-            ClientForm
+            ClientFormPage
         },
         props: {
             id: String
-        },
-        created(){
-            this.fetchClient({id: this.id})
-        },
-        computed: {
-            ...mapGetters([
-                'client'
-            ])
-        },
-        methods: {
-            ...mapActions([
-                'fetchClient',
-            ])
         }
     }
 </script>
