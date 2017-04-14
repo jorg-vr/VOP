@@ -15,13 +15,11 @@ import java.util.*;
  */
 public abstract class RESTSimpleController {
 
-    public Function verifyToken(String token,String functionId){
+public Function verifyToken(String token,String functionId) throws UnAuthorizedException {
         try (AuthController authController = new AuthController()){
             return authController.getFunction(new AuthenticationToken(token),UUIDUtil.toUUID(functionId));
         } catch (DataAccessException e) {
             throw new InvalidInputException(e);
-        } catch (UnAuthorizedException e) {
-            throw new NotAuthorizedException();
         }
     }
 }
