@@ -64,7 +64,7 @@
                 // hide modal
                 this.showModal=false
                 // remove object
-                this.$store.dispatch('delete' + this.resourceName, {id: this.object.id})
+                this.$store.dispatch('delete' + this.resource.name.capitalize(), {id: this.object.id})
             }
         }
     }

@@ -6,7 +6,7 @@
         <div class="page-header">
             <h1>{{ title }}</h1>
         </div>
-        <vehicle-form :actions="actions" :oldVehicle="vehicle"></vehicle-form>
+        <vehicle-form :actions="actions" :oldVehicle="vehicle" :fleetId="fleetId"></vehicle-form>
     </div>
 </template>
 <script>
@@ -31,6 +31,7 @@
         },
         props: {
             id: String,
+            fleetId: String,
             actions: Object //The action for this form.
         },
         computed: {

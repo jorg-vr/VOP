@@ -2,7 +2,7 @@
     This page is used to edit a certain vehicle.
 -->
 <template>
-    <vehicle-form-page :actions="actions"></vehicle-form-page>
+    <vehicle-form-page :actions="actions" :fleetId="fleetId"></vehicle-form-page>
 </template>
 <script>
     import VehicleFormPage from '../../assets/form/pages/VehicleFormPage.vue'
@@ -13,6 +13,9 @@
             return {
                 actions: actions.CREATE
             }
+        },
+        props: {
+            fleetId: String
         },
         components: {
             VehicleFormPage

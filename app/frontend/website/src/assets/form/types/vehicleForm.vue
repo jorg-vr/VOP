@@ -23,12 +23,13 @@
         },
         props: {
             actions: Object,
+            fleetId: String,
             oldVehicle: Object
         },
         computed: {
             vehicle(){
                 if(this.oldVehicle === null) {
-                    return {address: {}}
+                    return {fleet: this.fleetId}
                 }
                 else {
                     return this.oldVehicle

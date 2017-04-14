@@ -49,10 +49,6 @@
             ])
         },
         methods: {
-            onSubmit(value){
-                this.$emit('advancedSearch', value)
-            },
-
             ...mapActions([
                 'fetchClients',
                 'fetchVehicleTypes'

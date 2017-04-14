@@ -34,7 +34,7 @@ export default {
         }
     },
     mutations: {
-        updateFilteredSubfleets(state, {subfleets}){
+        setFilteredSubfleets(state, subfleets){
             state.filteredSubfleets = subfleets
         },
 
@@ -43,17 +43,16 @@ export default {
         },
 
         addSubfleet(state, {subfleet}){
-                state.subfleets.push(subfleet)
+            state.subfleets.push(subfleet)
         },
 
-        addVehicleToSubfleets(state, {vehicle}){
+
+        addVehicleToSubfleet(state, {vehicle}){
             addVehicleToSubfleets(state.subfleets, vehicle)
-            addVehicleToSubfleets(state.filteredSubfleets, vehicle)
         },
 
-        removeVehicleFromSubfleets(state, {vehicle}){
+        removeVehicleFromSubfleet(state, {vehicle}){
             removeVehicleFromSubfleets(state.subfleets, vehicle)
-            removeVehicleFromSubfleets(state.filteredSubfleets, vehicle)
         }
     },
     actions: {
@@ -68,7 +67,7 @@ export default {
         },
 
         addClientName(context, {client}){
-            Vue.set(context.state.fleet, 'companyName', client.name)
+            Vue.set(context.getters.fleet , 'companyName', client.name)
         },
 
         addClientNames(context, {clients}){
@@ -91,6 +90,7 @@ export default {
             for(let i=0; i < vehicles.length; i++) {
                 context.commit('addVehicleToSubfleet', {vehicle: vehicles[i]})
             }
+            context.commit('setFilteredSubfleets', context.getters.subfleets)
         },
     }
 }

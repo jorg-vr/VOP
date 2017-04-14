@@ -28,7 +28,7 @@
         computed: {
             insurance(){
                 if(this.oldInsurance === null) {
-                    return {address: {}}
+                    return {}
                 }
                 else {
                     return this.oldInsurance

@@ -28,7 +28,7 @@
         computed: {
             user(){
                 if(this.oldUser === null) {
-                    return {address: {}}
+                    return {}
                 }
                 else {
                     return this.oldUser

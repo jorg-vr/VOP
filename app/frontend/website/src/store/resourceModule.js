@@ -143,7 +143,7 @@ export default {
         module.actions[deleteResource] = (context, {id}) => {
             return new Promise((resolveSuccess, resolveFailure) => {
                 RequestHandler.deleteObjectRequest(location, id).then(() => {
-                    context.commit(types.DELETE_RESOURCE, {id})
+                    context.commit(removeResource, {id})
                     resolveSuccess()
                 }, response => {
                     resolveFailure(response)
