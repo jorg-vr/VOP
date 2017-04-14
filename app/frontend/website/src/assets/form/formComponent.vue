@@ -41,8 +41,13 @@
         },
         methods: {
             submit(){
-                this.$store.dispatch(this.actions.name + this.resource.name.capitalize(), this.object).then(() => {
-                    this.$router.push({name: this.resource.name.plural()})
+                this.$store.dispatch(this.actions.name + this.resource.name.capitalize(), this.object).then(object => {
+                    if(this.resource.name === 'vehicle'){ //Exception
+                        this.$router.push({name: 'fleet', params: {id: object.fleet} })
+                    }
+                    else {
+                        this.$router.push({name: this.resource.name.plural()})
+                    }
                 })
             }
         }
