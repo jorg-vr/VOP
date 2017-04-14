@@ -81,7 +81,8 @@ export default {
                 RequestHandler.getObjectRequest(locations.CURRENT_USER, '').then(account => {
                     context.commit('setActiveAccount', account)
                     let functionId = localStorage.getItem('functionId')
-                    if(functionId==='null'){
+                    if(functionId==='null'||functionId===null){
+                        console.log("if");
                         context.dispatch('fetchUserFunctions').then(activeFunctions => {
                             //Set a default function. At the moment this is the first function in the list.
                             context.commit('setActiveFunction', activeFunctions[0])
