@@ -29,17 +29,20 @@ public class MyProperties {
 
     private static Properties properties;
 
-    static {
-        properties = new Properties();
-        try (FileInputStream in = new FileInputStream(APPLICATION_PROPERTIES)) {
-            properties.load(in);
-        } catch (IOException e) {
-            System.err.println("Could not read properties file: " + APPLICATION_PROPERTIES);
-            e.printStackTrace();
-        }
-    }
-
     public static String getProperty(String property) {
-        return properties.getProperty(property);
+        if (properties == null) {
+            properties = new Properties();
+            try (FileInputStream in = new FileInputStream(APPLICATION_PROPERTIES)) {
+                properties.load(in);
+            } catch (IOException e) {
+                System.err.println("Could not read properties file: " + APPLICATION_PROPERTIES);
+                e.printStackTrace();
+            }
+        }
+        if (properties != null) {
+            return properties.getProperty(property);
+        } else {
+            return "problem with properties";
+        }
     }
 }

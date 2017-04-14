@@ -42,5 +42,4 @@ public class RESTAuthController {
             throw new InvalidInputException(e);
         }
     }
-
 }
