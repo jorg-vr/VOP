@@ -40,7 +40,7 @@ public class RESTUserMeController {
         return new RESTSchema(functions, page, limit, request);
     }
 
-    @RequestMapping(value = "/functions/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/${path.functions}/{id}", method = RequestMethod.GET)
     public RESTFunction getFunction(@PathVariable String id, @RequestHeader(value = "Authorization") String token) {
         UUID uuid = UUIDUtil.toUUID(id);
         for (Function function: getUser(token).getFunctions()) {
