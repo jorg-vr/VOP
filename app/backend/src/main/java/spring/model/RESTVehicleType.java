@@ -2,20 +2,24 @@ package spring.model;
 
 import model.account.Function;
 import model.fleet.VehicleType;
-import spring.controller.UUIDUtil;
+import util.UUIDUtil;
+
+import static util.MyProperties.PATH_TYPES;
+import static util.MyProperties.PATH_VEHICLES;
+import static util.MyProperties.getProperty;
 
 /**
  * Created by jorg on 3/14/17.
  */
 public class RESTVehicleType extends RESTAbstractModel<VehicleType> {
-    private static final String PATH_VEHICLE_TYPES = "/vehicle/types";
+
     private String name;
 
     public RESTVehicleType() {
     }
 
     public RESTVehicleType(VehicleType vehicleType){
-        super(vehicleType.getUuid(), PATH_VEHICLE_TYPES);
+        super(vehicleType.getUuid(), getProperty(PATH_VEHICLES) + "/" + getProperty(PATH_TYPES));
         setName(vehicleType.getType());
     }
 

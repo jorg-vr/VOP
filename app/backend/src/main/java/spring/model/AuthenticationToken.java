@@ -5,9 +5,10 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTDecodeException;
+import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import spring.controller.UUIDUtil;
-import spring.exceptions.NotAuthorizedException;
+import controller.exceptions.InvalidTokenException;
+import util.UUIDUtil;
 
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -45,15 +46,20 @@ public class AuthenticationToken {
         this.accountId = accountId;
     }
 
-    public AuthenticationToken(String token) {
+    /**
+     *
+     * @param token string representation of token
+     * @throws InvalidTokenException token is not valid
+     */
+    public AuthenticationToken(String token) throws InvalidTokenException {
         try {
             Algorithm algorithm = Algorithm.RSA256(publicKey);
             JWTVerifier verifier = JWT.require(algorithm)
                     .build(); //Reusable verifier instance
             DecodedJWT jwt = verifier.verify(token);
             accountId =UUIDUtil.toUUID(jwt.getSubject());
-        } catch (JWTDecodeException exception){
-            throw new NotAuthorizedException();
+        } catch (JWTDecodeException | SignatureVerificationException exception){
+            throw new InvalidTokenException();
         }
     }
 

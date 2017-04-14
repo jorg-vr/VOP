@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="model.insurance.Contract" table="contracts">
+        <meta attribute="class-description">
+            This class contains the contract detail.
+        </meta>
+        <id name="uuid" type="uuid-binary" column="id">
+            <generator class="uuid2"/>
+        </id>
+
+        <many-to-one name="company" column="company_id" class="model.identity.InsuranceCompany" lazy="proxy" fetch="select"/>
+        <many-to-one name="customer" column="customer_id" class="model.identity.Customer" lazy="proxy" fetch="select"/>
+        <property name="startDate" column="start_date" type="java.time.LocalDateTime"/>
+        <property name="endDate" column="end_date" type="java.time.LocalDateTime"/>
+        <bag name="vehicleInsurances" access="field" table="vehicles"
+             lazy="true" fetch="select">
+            <key column="contract_id" not-null="true"/>
+            <one-to-many class="model.insurance.VehicleInsurance" />
+        </bag>
+
+    </class>
+
+</hibernate-mapping>

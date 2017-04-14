@@ -8,16 +8,17 @@ import dao.interfaces.DataAccessException;
 import model.account.Function;
 import model.account.Role;
 import model.identity.Company;
-import spring.controller.UUIDUtil;
+import util.UUIDUtil;
 import spring.exceptions.InvalidInputException;
 import spring.exceptions.NotAuthorizedException;
+
+import static util.MyProperties.PATH_FUNCTIONS;
+import static util.MyProperties.getProperty;
 
 /**
  * Created by Jarre on 6-4-2017.
  */
 public class RESTFunction extends RESTAbstractModel<Function> {
-
-    private final static String PATH_FUNCTIONS = "/functions";
 
     private String company;
     private String companyName;
@@ -30,7 +31,7 @@ public class RESTFunction extends RESTAbstractModel<Function> {
     }
 
     public RESTFunction(Function function){
-        super(function.getUuid(), PATH_FUNCTIONS);
+        super(function.getUuid(), getProperty(PATH_FUNCTIONS));
         Company company = function.getCompany();
         if (company != null) {
             this.company = UUIDUtil.UUIDToNumberString(company.getUuid());

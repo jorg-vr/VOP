@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="model.insurance.VehicleInsurance" table="vehicleinsurances">
+        <meta attribute="class-description">
+            This class contains the vehicleInsurance detail.
+        </meta>
+        <id name="uuid" type="uuid-binary" column="id">
+            <generator class="uuid2"/>
+        </id>
+        <property name="franchise" column="franchise" type="int"/>
+        <property name="insuredValue" column="value" type="int"/>
+        <many-to-one name="vehicle" column="vehicle_id" class="model.fleet.Vehicle"/>
+        <many-to-one name="surety" column="surety_id" class="model.insurance.Surety"/>
+        <property name="startDate" column="start_date" type="java.time.LocalDateTime"/>
+        <property name="endDate" column="end_date" type="java.time.LocalDateTime"/>
+
+    </class>
+
+</hibernate-mapping>

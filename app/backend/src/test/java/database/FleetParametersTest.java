@@ -38,7 +38,7 @@ public class FleetParametersTest {
     }
 
     @Test
-    public void addressField() throws Exception {
+    public void ownerField() throws Exception {
         Fleet fleet = null;
         try (FleetDAO fleetDAO = daoProvider.getFleetDAO()) {
             fleet = fleetDAO.create(new Fleet("Name", null, address));

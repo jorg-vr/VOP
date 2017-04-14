@@ -1,4 +1,4 @@
-package spring.controller;
+package util;
 
 import java.math.BigInteger;
 import java.util.UUID;

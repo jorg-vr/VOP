@@ -1,8 +1,6 @@
 package spring.controller;
 
-import controller.CustomerController;
 import dao.database.ProductionProvider;
-import dao.interfaces.CustomerDAO;
 import dao.interfaces.DataAccessException;
 import model.identity.Address;
 import model.identity.Customer;
@@ -18,6 +16,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import spring.model.RESTAddress;
 import spring.model.RESTCompany;
+import util.UUIDUtil;
 
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -97,7 +96,7 @@ public class RESTCompanyControllerTest {
 
     @Test
     public void getId() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/companies/{id}",UUIDUtil.UUIDToNumberString(customer.getUuid())))
+        mvc.perform(MockMvcRequestBuilders.get("/companies/{id}", UUIDUtil.UUIDToNumberString(customer.getUuid())))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name",equalTo(customer.getName())))
                 .andExpect(jsonPath("$.vatNumber",equalTo(customer.getBtwNumber())))

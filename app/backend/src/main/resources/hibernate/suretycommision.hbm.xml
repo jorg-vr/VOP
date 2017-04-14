@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="model.insurance.SuretyCommision" table="suretycommisions">
+        <meta attribute="class-description">
+            This class contains the SuretyCommision detail.
+        </meta>
+        <id name="uuid" type="uuid-binary" column="id">
+            <generator class="uuid2"/>
+        </id>
+        <property name="commission" column="commision" type="double"/>
+        <property name="suretyType">
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">model.insurance.SuretyType</param>
+            </type>
+        </property>
+        <many-to-one name="vehicleType" column="vehicletype_id" class="model.fleet.VehicleType"/>
+        <many-to-one name="customer" column="customer_id" class="model.identity.Customer"/>
+
+
+    </class>
+
+</hibernate-mapping>

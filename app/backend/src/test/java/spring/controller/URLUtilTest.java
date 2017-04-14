@@ -1,7 +1,7 @@
 package spring.controller;
 
-import org.hibernate.validator.constraints.URL;
 import org.junit.Test;
+import util.URLUtil;
 
 import static org.junit.Assert.*;
 
@@ -13,7 +13,7 @@ public class URLUtilTest {
     @Test
     public void replace() throws Exception {
         String url = "/x?a=10";
-        assertEquals("/x?a=20",URLUtil.replace(url, "a", "20"));
+        assertEquals("/x?a=20", URLUtil.replace(url, "a", "20"));
 
         url = "/x?a=10&b=10";
         assertEquals("/x?a=20&b=10",URLUtil.replace(url, "a", "20"));

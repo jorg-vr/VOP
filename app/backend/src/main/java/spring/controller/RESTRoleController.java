@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
  * For more information about what the HTTP requests do, see the API specification
  */
 @RestController
-@RequestMapping("/auth/roles")
+@RequestMapping("/${path.auth}/${path.roles}")
 public class RESTRoleController extends RESTAbstractController<RESTRole, Role> {
 
 
@@ -47,7 +47,7 @@ public class RESTRoleController extends RESTAbstractController<RESTRole, Role> {
                                     @RequestParam(required = false) Integer page,
                                     @RequestParam(required = false) Integer limit,
                                     @RequestHeader(value = "Authorization") String token,
-                                    @RequestHeader(value = "Function") String fu) {
+                                    @RequestHeader(value = "Function") String fu) throws UnAuthorizedException {
         Function function = verifyToken(token, fu);
 
         Collection<RESTRole> restRoles = new ArrayList<>();
@@ -58,8 +58,6 @@ public class RESTRoleController extends RESTAbstractController<RESTRole, Role> {
             }
         } catch (DataAccessException e) {
             throw new InvalidInputException("Something is wrong with the database");
-        } catch (UnAuthorizedException e) {
-            throw new NotAuthorizedException();
         }
         return new RESTSchema<>(restRoles, page, limit, request);
     }

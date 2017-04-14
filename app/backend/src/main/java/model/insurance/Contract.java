@@ -3,9 +3,9 @@ package model.insurance;
 import model.history.EditableObject;
 import model.identity.Customer;
 import model.identity.InsuranceCompany;
-import model.identity.Periodicity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
 
@@ -24,6 +24,15 @@ public class Contract implements EditableObject {
     private UUID uuid;
 
     public Contract() {
+        this.vehicleInsurances = new ArrayList<>();
+    }
+
+    public Contract(InsuranceCompany company, Customer customer, LocalDateTime startDate, LocalDateTime endDate) {
+        this.company = company;
+        this.customer = customer;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.vehicleInsurances = new ArrayList<>();
     }
 
     public InsuranceCompany getCompany() {
