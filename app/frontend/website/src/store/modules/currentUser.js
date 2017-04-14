@@ -50,6 +50,13 @@ export default {
         hasPermission: (state, getters) => (permissionRequirement) => {
             permissionRequirement.actions = new Array(permissionRequirement.action)
             return getters.hasPermissionWithActions(permissionRequirement)
+        },
+
+        /**
+         * Checks if the user can do the given action for only his own resources.
+         */
+        isAuthorizedForOwnResourcesButNotAll: (state, getters) => (resource, actions) => {
+            return isAuthorizedForOwnResources(getters, resource, actions) && !isAuthorizedForAllResources(getters, resource, actions)
         }
     },
     mutations: {
@@ -179,4 +186,20 @@ export default {
         }
 
     }
+}
+
+let isAuthorizedForOwnResources = function(getters, resource, actions) {
+    let permission = {
+        resource: resource,
+        actions: [actions.values[0]]
+    }
+    return getters.hasPermission(resource, actions)
+}
+
+let isAuthorizedForAllResources = function(getters, resource, actions) {
+    let permission = {
+        resource: resource,
+        actions: [actions.values[1]]
+    }
+    return getters.hasPermission(resource, actions)
 }

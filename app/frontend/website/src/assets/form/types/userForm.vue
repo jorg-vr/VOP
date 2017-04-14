@@ -1,32 +1,34 @@
 <!--
-    This is a form to create/update a user.
+    This page is used to generate a form for a user.
 -->
 <template>
-    <div>
-        <form-component v-if="user" @submit="proceed" :failroute="{name: 'users'}" :successButtonText="successButtonText" :failButtonText="failButtonText">
-            <user-form-input :user="user"></user-form-input>
-        </form-component>
-    </div>
+    <form-component v-if="user" :actions="actions" :resource="resource" :object="user">
+        <user-form-input :user="user"></user-form-input>
+    </form-component>
 </template>
 <script>
+    import {mapActions} from 'vuex'
+    import resources from '../../../constants/resources'
     import formComponent from '../formComponent.vue'
     import userFormInput from './userFormInput.vue'
 
     export default {
+        data(){
+            return {
+                resource: resources.USER,
+            }
+        },
         components: {
             formComponent, userFormInput
         },
         props: {
-            failButtonText: String,
-            successButtonText: String,
-            submit: Function, //Function to create the fleet.
+            actions: Object,
             oldUser: Object
         },
         computed: {
             user(){
-                if(this.oldUser === undefined) {
+                if(this.oldUser === null) {
                     return {address: {}}
-
                 }
                 else {
                     return this.oldUser
@@ -35,9 +37,12 @@
         },
         methods: {
             proceed(){
-                this.submit(this.user).then(() => {
-                    this.$router.push({name: 'users'})
+                this.$store.dispatch(action + 'User').then(() => {
+                    this.submit(this.user).then(() => {
+                        this.$router.push({name: 'users'})
+                    })
                 })
+
             }
         }
     }

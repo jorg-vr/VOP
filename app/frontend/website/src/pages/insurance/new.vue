@@ -1,28 +1,21 @@
 <!--
-    This page is used to create a new insurance.
+    This page is used to edit a certain insurance.
 -->
 <template>
-    <div id="content-wrapper">
-       <div class="page-header">
-         <h1>{{ $t("insurance.insurance") | capitalize }} {{$t("actions_plural.create") }}</h1>
-     </div>  
-
-     <insurance-form :successButtonText="$t('insurance.insurance').capitalize() + ' ' +  $t('actions_plural.create')" :failButtonText="$t('common.cancel').capitalize()"  :submit="createInsurance"></insurance-form>
- </div>
+    <insurance-form-page :actions="actions"></insurance-form-page>
 </template>
 <script>
-    import InsuranceForm from '../../assets/form/types/insuranceForm.vue'
-    import {mapActions} from 'vuex'
+    import InsuranceFormPage from '../../assets/form/pages/InsuranceFormPage.vue'
+    import actions from '../../constants/actions'
 
     export default {
-        components: {
-            InsuranceForm
+        data(){
+            return {
+                actions: actions.CREATE
+            }
         },
-        methods: {
-            ...mapActions([
-                'createInsurance'
-            ])
+        components: {
+            InsuranceFormPage
         }
     }
 </script>
-

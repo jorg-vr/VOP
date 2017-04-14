@@ -11,9 +11,9 @@
         <!-- Render an info-pane for every vehicle. Once all the data is loaded, the table will be shown.-->
         <list-component v-for="vehicle in filteredVehicles"
                         v-if="vehicle"
-                        :resource="resources.VEHICLE",
+                        :resource="resource",
                         :object="vehicle"
-                        :visibleKeys="new Array('brand','model', 'licensePlate')"
+                        :visibleKeys="['brand','model', 'licensePlate']"
                         :key="vehicle.id">
         </list-component>
     </div>
@@ -26,6 +26,11 @@
     import vehicleSearchBar from '../../assets/search/types/vehicleSearchForm.vue'
 
     export default {
+        data(){
+            return {
+                resource: resources.VEHICLE
+            }
+        },
         components: {
             listComponent, buttonAdd, vehicleSearchBar
         },

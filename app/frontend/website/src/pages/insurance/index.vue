@@ -16,7 +16,7 @@
                         v-if="insurance"
                         :resource="resource"
                         :object="insurance"
-                        :visibleKeys="new Array('type','vehicle')"
+                        :visibleKeys="['type','vehicle']"
                         :key="insurance.id">
         </list-component>
     </div>

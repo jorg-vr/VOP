@@ -16,7 +16,7 @@
                         v-if="user"
                         :resource="resource"
                         :object="user"
-                        :visibleKeys="new Array('firstName', 'lastName')"
+                        :visibleKeys="['firstName', 'lastName']"
                         :key="user.id">
         </list-component>
     </div>

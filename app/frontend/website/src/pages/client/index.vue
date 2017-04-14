@@ -16,7 +16,7 @@
                         v-if="client"
                         :resource="resource"
                         :object="client"
-                        :visibleKeys="new Array('name')"
+                        :visibleKeys="['name']"
                         :key="client.id">
         </list-component>
     </div>

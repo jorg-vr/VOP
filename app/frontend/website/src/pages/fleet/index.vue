@@ -15,7 +15,7 @@
                         v-if="fleet"
                         :resource="resource",
                         :object="fleet"
-                        :visibleKeys="new Array('name','companyName')"
+                        :visibleKeys="['name','companyName']"
                         :key="fleet.id"
                         rowClass="fleetrow">
         </list-component>

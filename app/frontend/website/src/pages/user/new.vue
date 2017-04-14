@@ -1,27 +1,21 @@
 <!--
-    This page is used to create a new user based on userinput for a first name, last name and email.
+    This page is used to edit a certain user.
 -->
 <template>
-    <div id="content-wrapper">
-        <div class="page-header">
-            <h1>{{ $t("user.user") | capitalize }} {{$t("actions_plural.create") }}</h1>
-        </div>
-        <user-form :successButtonText="$t('user.user').capitalize() + ' ' +  $t('actions_plural.create')" :failButtonText="$t('common.cancel').capitalize()"  :submit="createUser"></user-form>
-    </div>
+    <user-form-page :actions="actions"></user-form-page>
 </template>
 <script>
-    import UserForm from '../../assets/form/types/userForm.vue'
-    import {mapActions} from 'vuex'
+    import UserFormPage from '../../assets/form/pages/UserFormPage.vue'
+    import actions from '../../constants/actions'
 
     export default {
-        components: {
-            UserForm
+        data(){
+            return {
+                actions: actions.CREATE
+            }
         },
-        methods: {
-            ...mapActions([
-                'createUser'
-            ])
+        components: {
+            UserFormPage
         }
     }
 </script>
-

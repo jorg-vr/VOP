@@ -3,7 +3,7 @@
 -->
 <template>
     <form-component v-if="client" :actions="actions" :resource="resource" :object="client">
-        <client-form-input v-if="client.address" :client="client"></client-form-input>
+        <client-form-input :client="client"></client-form-input>
     </form-component>
 </template>
 <script>
