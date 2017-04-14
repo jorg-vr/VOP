@@ -5,7 +5,11 @@
 export default {
     actions: {
         fetchClientsWithType(context, type){
-            //TODO
+            return new Promise(resolve => {
+                context.dispatch('fetchClientsBy', {type: type.value}).then(clients => {
+                    resolve(clients)
+                })
+            })
         }
     }
 }
