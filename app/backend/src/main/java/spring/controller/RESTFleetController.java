@@ -2,12 +2,14 @@ package spring.controller;
 
 import controller.CustomerController;
 import controller.FleetController;
-import dao.interfaces.FleetDAO;
+import controller.exceptions.UnAuthorizedException;
+import dao.interfaces.DataAccessException;
 import model.fleet.Fleet;
 import org.springframework.web.bind.annotation.*;
 import spring.exceptions.InvalidInputException;
 import spring.model.RESTFleet;
 import spring.model.RESTSchema;
+import util.UUIDUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -35,7 +37,7 @@ import java.util.Optional;
  * For more information about what the HTTP requests do, see the API specification
  */
 @RestController
-@RequestMapping(value = {"/fleets", "/companies/{companyId}/fleets"})
+@RequestMapping(value = {"/${path.fleets}", "/${path.companies}/{companyId}/${path.fleets}"})
 public class RESTFleetController extends RESTAbstractController<RESTFleet,Fleet>{
 
     public RESTFleetController() {
@@ -50,7 +52,7 @@ public class RESTFleetController extends RESTAbstractController<RESTFleet,Fleet>
                                      @RequestParam(required = false) Integer page,
                                      @RequestParam(required = false) Integer limit,
                                      @RequestHeader(value="Authorization") String token,
-                                     @RequestHeader(value="Function") String function) {
+                                     @RequestHeader(value="Function") String function) throws UnAuthorizedException {
         if (companyId.isPresent()) {
             company = companyId.get();
         }
@@ -70,11 +72,10 @@ public class RESTFleetController extends RESTAbstractController<RESTFleet,Fleet>
                 restFleets.add(new RESTFleet(f));
             }
             return new RESTSchema<>(restFleets, page, limit, request);
-        } catch (Exception e) {
+        } catch (DataAccessException e) {
             e.printStackTrace();
             throw new InvalidInputException();
         }
-
     }
 
 }

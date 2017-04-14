@@ -34,7 +34,7 @@ import java.util.*;
  * For more information about what the HTTP requests do, see the API specification
  */
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/${path.users}")
 public class RESTUserController extends RESTAbstractController<RESTUser, User> {
 
     public RESTUserController() {
@@ -53,16 +53,13 @@ public class RESTUserController extends RESTAbstractController<RESTUser, User> {
                                     Integer page,
                                     Integer limit,
                                     @RequestHeader(value="Authorization") String token,
-                                    @RequestHeader(value="Function") String function) {
+                                    @RequestHeader(value="Function") String function) throws UnAuthorizedException {
         Collection<RESTUser> restUsers = new ArrayList<>();
         try (UserController userController = new UserController(verifyToken(token, function))) {
             Collection<User> users = userController.getAll();
             for (User user: users) {
                 restUsers.add(new RESTUser(user));
             }
-
-        }catch (UnAuthorizedException e) {
-            throw new NotAuthorizedException();
         } catch (DataAccessException e) {
             throw new RuntimeException(e);
         }

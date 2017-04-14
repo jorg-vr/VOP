@@ -8,7 +8,7 @@ import model.account.Function;
 import model.fleet.Vehicle;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import spring.controller.UUIDUtil;
+import util.UUIDUtil;
 import spring.exceptions.InvalidInputException;
 import spring.exceptions.NotAuthorizedException;
 
@@ -16,13 +16,14 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
+import static util.MyProperties.PATH_VEHICLES;
+import static util.MyProperties.getProperty;
+
 /**
  * This is a bean class as specified in the API specification
  */
 @ResponseStatus(value = HttpStatus.OK, reason = "OK")
 public class RESTVehicle extends RESTAbstractModel<Vehicle> {
-
-    private static final String PATH_VEHICLES = "/vehicles";
 
     private static DateTimeFormatter yearFormat = DateTimeFormatter.ofPattern("yyyyMMdd").withLocale(Locale.forLanguageTag("NL"));
 
@@ -45,7 +46,7 @@ public class RESTVehicle extends RESTAbstractModel<Vehicle> {
      * @param vehicle the vehicle that this RESTVehicle is based on
      */
     public RESTVehicle(Vehicle vehicle) {
-        super(vehicle.getUuid(), PATH_VEHICLES);
+        super(vehicle.getUuid(), getProperty(PATH_VEHICLES));
         licensePlate = vehicle.getLicensePlate();
         vin = vehicle.getChassisNumber();
         brand = vehicle.getBrand();

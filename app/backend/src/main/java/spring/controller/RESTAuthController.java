@@ -22,28 +22,24 @@ import java.util.Collection;
  *  3) GET /auth (this one should be removed after /user/me is implemented)
  */
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/${path.auth}")
 public class RESTAuthController {
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String post(@RequestBody RESTAuth restAuth) {
+    @RequestMapping(value = "/${path.login}", method = RequestMethod.POST)
+    public String post(@RequestBody RESTAuth restAuth) throws UnAuthorizedException {
         try (AuthController authController = new AuthController()) {
             return authController.getToken(restAuth.getLogin(), restAuth.getPassword()).toString();
         } catch (DataAccessException e) {
             throw new InvalidInputException(e);
-        } catch (UnAuthorizedException e) {
-            throw new NotAuthorizedException();
         }
     }
 
-    @RequestMapping(value = "/refresh", method = RequestMethod.POST)
-    public String put(@RequestHeader(value = "Authorization") String token) {
+    @RequestMapping(value = "/${path.refresh}", method = RequestMethod.POST)
+    public String put(@RequestHeader(value = "Authorization") String token) throws UnAuthorizedException {
         try (AuthController authController = new AuthController()) {
             return authController.refreshToken(new AuthenticationToken(token)).toString();
         } catch (DataAccessException e) {
             throw new InvalidInputException(e);
-        } catch (UnAuthorizedException e) {
-            throw new NotAuthorizedException();
         }
     }
 

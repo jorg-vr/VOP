@@ -3,6 +3,7 @@ package spring.controller;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import util.UUIDUtil;
 
 import java.util.UUID;
 

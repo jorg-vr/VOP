@@ -1,6 +1,6 @@
 package spring.model;
 
-import spring.controller.URLUtil;
+import util.URLUtil;
 import spring.exceptions.InvalidInputException;
 
 import javax.servlet.http.HttpServletRequest;
