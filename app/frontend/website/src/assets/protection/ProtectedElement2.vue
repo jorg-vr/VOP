@@ -33,36 +33,3 @@ Place a component inside this component for permission checking.
     }
 
 </script>
-<!--
-export default {
-
-    ProtectedElement : {
-        functional: true,
-        render(createElement) {
-            if(store.getters.hasPermissionWithActions(this.props.permission)){
-                return createElement(this.slots)
-            }
-            else {
-                return {}
-            }
-        },
-        props: {
-            /**
-             * A permission contains 2 keys: a resource and actions (a list).
-             * The button will only be shown in the user has the given permission.
-             * If no permission is passed, the button will always be shown.
-             */
-            permission: {
-                type: Object,
-                default(){
-                    return null
-                }
-
-            }
-        }
-    }
-
-
-
-}
--->

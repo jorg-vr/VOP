@@ -4,7 +4,7 @@
     </button>
 </template>
 <script>
-    import ProtectedElement from '../protection/ProtectedElement.vue'
+    import ProtectedElement from '../protection/ProtectedElement.js'
     export default {
         props: {
             action: Function,

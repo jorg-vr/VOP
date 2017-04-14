@@ -6,11 +6,11 @@
     </protected-element>
 </template>
 <script>
-    import ProtectedElement from './ProtectedElement.vue'
+    import ProtectedElement from './ProtectedElement'
 
     export default {
         components: {
-                ProtectedElement
+                'protected-element': ProtectedElement
         },
         props: {
             permission: Object,

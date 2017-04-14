@@ -36,10 +36,10 @@ export default {
         //Checks if the user has a given permission requirement. The permission requirement should have a resource key and actions value.
         hasPermissionWithActions: (state) => (permissionRequirement) => {
             let permissions = state.activePermissions
-            console.log(permissionRequirement)
             //Check if the user has the given permission requirement.
             let filtered = permissions.filter(permission => {
-                if(permissionRequirement.resource.value === permission.resource && permissionRequirement.actions.values.indexOf(permission.action) !== -1){
+                if(permissionRequirement.resource.value === permission.resource
+                    && permissionRequirement.actions.values.indexOf(permission.action) !== -1){
                     return permission
                 }
             })

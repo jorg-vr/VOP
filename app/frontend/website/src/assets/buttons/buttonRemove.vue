@@ -9,7 +9,7 @@
 <script>
     import * as actions from '../../constants/actions'
     import buttonAction from './buttonAction.vue'
-    import ProtectedElement from '../protection/ProtectedElement.vue'
+    import ProtectedElement from '../protection/ProtectedElement.js'
 
     export default {
         data() {
