@@ -41,6 +41,7 @@ public class RESTContract extends RESTAbstractModel<Contract> {
     @Override
     public Contract translate(Function function) throws UnAuthorizedException {
         Contract contract = new Contract();
+        contract.setUuid(toUUID(getId()));
         try (CustomerController customerController = new CustomerController(function)) {
             contract.setCustomer(customerController.get(toUUID(customer)));
         } catch (DataAccessException e) {

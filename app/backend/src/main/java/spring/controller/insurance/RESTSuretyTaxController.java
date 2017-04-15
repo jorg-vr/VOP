@@ -14,8 +14,7 @@ public class RESTSuretyTaxController {
 
     @RequestMapping(method = RequestMethod.GET)
     public double get(@PathVariable String typeName, @PathVariable String contractType) {
-        return 0.00;
+        return 17.83;
     }
-
 
 }
