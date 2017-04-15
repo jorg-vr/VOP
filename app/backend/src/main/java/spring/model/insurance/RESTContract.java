@@ -38,6 +38,9 @@ public class RESTContract extends RESTAbstractModel<Contract> {
         this.endDate = contract.getEndDate();
     }
 
+    public RESTContract() {
+    }
+
     @Override
     public Contract translate(Function function) throws UnAuthorizedException {
         Contract contract = new Contract();
@@ -48,7 +51,7 @@ public class RESTContract extends RESTAbstractModel<Contract> {
             throw new InvalidInputException("Company with id " + customer + " does not exist");
         }
         try (InsuranceCompanyController insuranceCompanyController = new InsuranceCompanyController(function)) {
-            contract.setCompany(insuranceCompanyController.get(toUUID(customer)));
+            contract.setCompany(insuranceCompanyController.get(toUUID(insuranceCompany)));
         } catch (DataAccessException e) {
             throw new InvalidInputException("InsuranceCompany with id " + insuranceCompany + " does not exist");
         }

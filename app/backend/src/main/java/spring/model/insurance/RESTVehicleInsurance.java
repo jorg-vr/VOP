@@ -23,6 +23,9 @@ public class RESTVehicleInsurance extends RESTAbstractModel<VehicleInsurance> {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 
+    public RESTVehicleInsurance() {
+    }
+
     public RESTVehicleInsurance(VehicleInsurance insurance) {
         super(insurance.getUuid(), "TODO");
         vehicle = UUIDToNumberString(insurance.getVehicle().getUuid());
@@ -38,7 +41,7 @@ public class RESTVehicleInsurance extends RESTAbstractModel<VehicleInsurance> {
         try (VehicleController controller = new VehicleController(function)) {
             insurance.setVehicle(controller.get(toUUID(vehicle)));
         } catch (DataAccessException e) {
-            throw new InvalidInputException("vehicle");
+            throw new InvalidInputException("Vehicle with id " + vehicle + " does not exist");
         }
         // TODO surety
         insurance.setStartDate(startDate);
