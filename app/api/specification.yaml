@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: "2.0.1"
+  version: "2.0.2"
   title: Solvas Fleet API - Milestone 2
   description: |
     The API definitions for the first Milestone.
@@ -744,7 +744,7 @@ paths:
     get:
       produces:
         - application/json
-      summary: Get a list of all the posible vehicle types supported by the system.
+      summary: Get a list of all the posible vehicle types supported by the system. The possible values are "PersonalVehicle", "SemiHeavyTruck", "Truck", "Truck+12", "Van". Vehicles in the "SemiHeavyTruck" category are busses, cabs, tranport and trailers.
       responses:
         '200':
           description: OK
@@ -765,6 +765,65 @@ paths:
           $ref: '#/responses/Malformed'
         '401':
           $ref: '#/responses/Unauthorised'
+  /vehicles/types/{typeName}/taxes/{contractType}:
+    parameters:
+        - name: typeName
+          in: path
+          description: Name of Vehicle type. See GET /vehicles/types for all possibilities
+          required: true
+          type: string
+        - name: contractType
+          in: path
+          description: Name of Contract type. See GET /contracts/types for all possibilities.
+          required: true
+          type: string
+    get:
+      produces:
+        - application/json
+      summary: Get the tax percentage of the Vehicle type and Contract type combination.
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+            properties:
+              tax:
+                type: number
+                format: double
+                description: Tax in percentage
+        '400':
+          $ref: '#/responses/Malformed'
+        '401':
+          $ref: '#/responses/Unauthorised'
+        '404':
+          $ref: '#/responses/NotFound'
+    put:
+      produces:
+        - application/json
+      summary: Set the tax percentage of the Vehicle type and Contract type combination.
+      parameters:
+        - in: query
+          name: tax
+          description: tax percentage
+          required: true
+          type: number
+          format: double
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+            properties:
+              tax:
+                type: number
+                format: double
+                description: Tax in percentage
+        '400':
+          $ref: '#/responses/Malformed'
+        '401':
+          $ref: '#/responses/Unauthorised'
+        '404':
+          $ref: '#/responses/NotFound'
   /contracts:
     get:
       produces:
@@ -946,7 +1005,7 @@ paths:
     get:
       summary: Get all types of contracts.
       description: |
-        Get all contract types. These types are often fixed, e.g. `Burgerlijke aansprakelijkheid`, `Rechtsbijstand`.
+        Get all contract types. These types should be `CivilLiability`, `LegalAid`, `Omnium`, `DriverInsurance`, `TravelInsurance`.
       produces: 
         - application/json
       responses:
@@ -958,7 +1017,7 @@ paths:
             properties:
               data:
                 type: array
-                example: ["BA", "Omnium", "Rechtsbijstand"]
+                example: ["CivilLiability", "LegalAid", "Omnium", "DriverInsurance", "TravelInsurance"]
                 items:
                   type: string
               total:
@@ -2089,8 +2148,9 @@ definitions:
     required: [country, city, street, houseNumber, postalCode]
     properties:
       country:
+        description: This field should contain the 2-letter ISO 3166 code of the country
         type: string
-        example: "België"
+        example: "BE"
       city:
         type: string
         example: "Gent"
@@ -2240,19 +2300,6 @@ definitions:
           A common set of action will be defined by the API. They will mostly map to the available endpoints, e.g. `READ_ALL`
           would map to the endpoint that returns the list of items, while `READ` maps to the endpoint for a single item.
           Note that some actions may automatically give access to others, e.g. `READ_ALL` logically also enables `READ`.
-      createdAt:
-        description: This is a server-generated value.
-        type: string
-        format: date-time
-        example: 2016-08-29T09:12:33.001Z
-      updatedAt:
-        description: This is a server-generated value.
-        type: string
-        format: date-time
-        example: 2016-08-29T09:12:33.001Z
-      url:
-        description: This is a server-generated value.
-        type: string
   User:
     type: object
     required: [firstName, lastName, email, password]
@@ -2387,7 +2434,7 @@ definitions:
       type:
         description: Type of insurance contract.
         type: string
-        example: BA
+        example: Omnium
       franchise:
         description: Damages paid for by the client in case of an accident.
         type: integer
