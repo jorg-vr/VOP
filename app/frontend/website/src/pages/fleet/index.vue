@@ -44,7 +44,6 @@
                 let p2 = this.fetchClients()
                 Promise.all([p1, p2]).then(values => {
                     this.addClientNames({clients: values[1]})
-                    console.log(this.fleets)
                 })
             }
             else {

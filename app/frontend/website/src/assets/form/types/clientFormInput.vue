@@ -2,8 +2,11 @@
     <div>
         <form-input :placeholder="$t('common.name') | capitalize" :label="$t('common.name') | capitalize"
                     v-model="client.name"></form-input>
-        <form-se
+
+        <client-type-select v-model="client.type"></client-type-select>
+
         <form-input :placeholder="$t('address.country') | capitalize" :label="$t('address.country') | capitalize"
+
                     v-model="client.address.country"></form-input>
 
         <form-input :placeholder="$t('address.city') | capitalize" :label="$t('address.city') | capitalize"
@@ -24,18 +27,21 @@
         <form-input :placeholder="$t('client.phoneNumber') | capitalize" :label="$t('client.phoneNumber') | capitalize"
                     v-model="client.phoneNumber"></form-input>
     </div>
+
+
 </template>
 <script>
     import formInput from '../elements/formInput.vue'
+    import clientTypeSelect from '../elements/clientTypeSelect.vue'
 
     export default {
         props: {
-            client: Object
+            client: Object,
         },
         components: {
-            formInput
+            formInput, clientTypeSelect
         }
-
-
     }
+
+
 </script>

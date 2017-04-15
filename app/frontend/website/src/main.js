@@ -82,12 +82,11 @@ String.prototype.rtrim = function(s) {
 
 String.prototype.plural = function() {
     return this + 's'
-};
+}
 
 Vue.filter('capitalize', function(value){
     return value.capitalize()
 })
-
 
 new Vue({
     store,
