@@ -3,10 +3,17 @@ package dao.database.util;
 import dao.database.ProductionProvider;
 import dao.interfaces.*;
 import model.account.*;
+import model.billing.Invoice;
+import model.fleet.Fleet;
+import model.fleet.Vehicle;
 import model.fleet.VehicleType;
 import model.identity.Address;
 import model.identity.Customer;
 import model.identity.InsuranceCompany;
+import model.insurance.Contract;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * Created by sam on 4/13/17.
@@ -34,22 +41,54 @@ public class DatabaseFiller {
     private void initCompanies(DAOProvider provider) {
         try (CustomerDAO customerDAO = provider.getCustomerDAO();
              AddressDAO addressDAO = provider.getAddressDao();
-             InsuranceCompanyDAO insuranceCompanyDAO = provider.getInsuranceCompanyDao()) {
+             InsuranceCompanyDAO insuranceCompanyDAO = provider.getInsuranceCompanyDao();
+             FleetDAO fleetDAO = provider.getFleetDAO();
+             VehicleDAO vehicleDAO = provider.getVehicleDAO();
+             VehicleTypeDAO typeDAO = provider.getVehicleTypeDAO();
+             ContractDAO contractDAO = provider.getContractDao()) {
             for (int i = 1; i < 6; i++) {
                 Address address = new Address("mystreet", Integer.toString(i), "The town", "9850", "Belgium");
                 Customer customer = new Customer();
                 customer.setAddress(address);
                 customer.setName("Klant " + Integer.toString(i));
-
+                
                 Address address2 = new Address("mystreet",Integer.toString(i)+ Integer.toString(i), "The town", "9850", "Belgium");
                 InsuranceCompany insuranceCompany = new InsuranceCompany();
                 insuranceCompany.setAddress(address);
                 insuranceCompany.setName("Verzekeringsmaatschappij " + Integer.toString(i));
 
+                Contract contract = new Contract();
+                contract.setCustomer(customer);
+                contract.setCompany(insuranceCompany);
+                contract.setStartDate(LocalDateTime.now());
+
+
                 addressDAO.create(address);
                 customerDAO.create(customer);
                 addressDAO.create(address2);
                 insuranceCompanyDAO.create(insuranceCompany);
+                contractDAO.create(contract);
+                for (int j = 1; j < 3; j++) {
+                    Fleet fleet = new Fleet();
+                    fleet.setOwner(customer);
+                    fleet.setName("Vloot " + Integer.toString(j));
+                    fleetDAO.create(fleet);
+                    for(VehicleType type : typeDAO.listFiltered()){
+                        for (int k = 0; k < 8; k++) {
+                            Vehicle vehicle = new Vehicle();
+                            vehicle.setFleet(fleet);
+                            vehicle.setChassisNumber("AAAAAAAAAAAAAAAAA");
+                            vehicle.setMileage(k*10000);
+                            vehicle.setBrand("Merk " + Integer.toString(k));
+                            vehicle.setLicensePlate("ABC-00"+Integer.toString(k));
+                            vehicle.setType(type);
+                            vehicle.setModel("Model " + Integer.toString(k));
+                            vehicle.setProductionDate(LocalDate.now());
+                            vehicleDAO.create(vehicle);
+                        }
+                    }
+
+                }
             }
 
         } catch (Exception e) {
