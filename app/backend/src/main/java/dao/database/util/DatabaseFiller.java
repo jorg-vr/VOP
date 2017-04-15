@@ -6,6 +6,7 @@ import model.account.*;
 import model.fleet.VehicleType;
 import model.identity.Address;
 import model.identity.Customer;
+import model.identity.InsuranceCompany;
 
 /**
  * Created by sam on 4/13/17.
@@ -18,17 +19,111 @@ public class DatabaseFiller {
             ProductionProvider.initializeProvider("localtest");
             provider = ProductionProvider.getInstance();
             DatabaseFiller filler = new DatabaseFiller();
-            filler.initAdminRole(provider);
             filler.initVehicleTypes(provider);
-
-        } catch (Exception e){
+            filler.initAdminRole(provider);
+            filler.initCustomerRole(provider);
+            filler.initMoreRoles(provider);
+            filler.initCompanies(provider);
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             provider.close();
         }
     }
 
-    private void initAdminRole(DAOProvider provider){
+    private void initCompanies(DAOProvider provider) {
+        try (CustomerDAO customerDAO = provider.getCustomerDAO();
+             AddressDAO addressDAO = provider.getAddressDao();
+             InsuranceCompanyDAO insuranceCompanyDAO = provider.getInsuranceCompanyDao()) {
+            for (int i = 1; i < 6; i++) {
+                Address address = new Address("mystreet", Integer.toString(i), "The town", "9850", "Belgium");
+                Customer customer = new Customer();
+                customer.setAddress(address);
+                customer.setName("Klant " + Integer.toString(i));
+
+                Address address2 = new Address("mystreet",Integer.toString(i)+ Integer.toString(i), "The town", "9850", "Belgium");
+                InsuranceCompany insuranceCompany = new InsuranceCompany();
+                insuranceCompany.setAddress(address);
+                insuranceCompany.setName("Verzekeringsmaatschappij " + Integer.toString(i));
+
+                addressDAO.create(address);
+                customerDAO.create(customer);
+                addressDAO.create(address2);
+                insuranceCompanyDAO.create(insuranceCompany);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void initMoreRoles(DAOProvider provider) {
+        try (RoleDAO roleDAO = provider.getRoleDAO();
+             UserDAO userDAO = provider.getUserDAO();
+             FunctionDAO functionDAO = provider.getFunctionDAO();
+             AddressDAO addressDAO = provider.getAddressDao();
+             CustomerDAO customerDAO = provider.getCustomerDAO();) {
+
+            User user = new User();
+            user.setEmail("admin&insuranceagent@solvas.be");
+            user.setPassword("123");
+            user.setFirstName("Bill");
+            user.setLastName("kill");
+            user = userDAO.create(user);
+
+            Role role1 = new Role();
+            role1.setName("adminrole");
+            for (Resource resource : Resource.values()) {
+                role1.setAccess(resource, Action.CREATE_ALL);
+                role1.setAccess(resource, Action.READ_ALL);
+                role1.setAccess(resource, Action.REMOVE_ALL);
+                role1.setAccess(resource, Action.UPDATE_ALL);
+            }
+
+            Role role2 = new Role();
+            role2.setName("insuranceagentrole");
+            for (Resource resource : new Resource[]{Resource.VEHICLE, Resource.FLEET, Resource.INSURANCE, Resource.VEHICLETYPE, Resource.COMPANY, Resource.BILLING}) {
+                role2.setAccess(resource, Action.CREATE_ALL);
+                role2.setAccess(resource, Action.READ_ALL);
+                role2.setAccess(resource, Action.REMOVE_ALL);
+                role2.setAccess(resource, Action.UPDATE_ALL);
+            }
+            for (Resource resource : new Resource[]{Resource.USER, Resource.ROLE, Resource.FUNCTION}) {
+                role2.setAccess(resource, Action.READ_MINE);
+            }
+
+            Function function1 = new Function();
+            function1.setUser(user);
+            function1.setRole(role1);
+            function1.setName("Adminfunction");
+
+            Function function2 = new Function();
+            function2.setUser(user);
+            function2.setRole(role1);
+            function2.setName("Insurance_agent_function");
+
+            Address address = new Address("mystreet", "13", "The town", "9850", "Belgium");
+            Customer customer = new Customer();
+            customer.setAddress(address);
+            customer.setName("Solvas");
+            function2.setCompany(customer);
+
+
+            userDAO.create(user);
+            addressDAO.create(address);
+            customerDAO.create(customer);
+            roleDAO.create(role1);
+            roleDAO.create(role2);
+            functionDAO.create(function1);
+            functionDAO.create(function2);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void initAdminRole(DAOProvider provider) {
         try (RoleDAO roleDAO = provider.getRoleDAO();
              UserDAO userDAO = provider.getUserDAO();
              FunctionDAO functionDAO = provider.getFunctionDAO();
@@ -75,12 +170,56 @@ public class DatabaseFiller {
         }
     }
 
-    private void initVehicleTypes(DAOProvider provider){
-        try(VehicleTypeDAO dao = provider.getVehicleTypeDAO()){
-            dao.create(new VehicleType("Personenwagens",0));
-            dao.create(new VehicleType("Vrachauto",0));
-            dao.create(new VehicleType("Vrachtauto (+12)",0));
-            dao.create(new VehicleType("Lichte vrachtwagen",0));
+    private void initCustomerRole(DAOProvider provider) {
+        try (RoleDAO roleDAO = provider.getRoleDAO();
+             UserDAO userDAO = provider.getUserDAO();
+             FunctionDAO functionDAO = provider.getFunctionDAO();
+             AddressDAO addressDAO = provider.getAddressDao();
+             CustomerDAO customerDAO = provider.getCustomerDAO();) {
+
+            User user = new User();
+            user.setEmail("klant@solvas.be");
+            user.setPassword("123");
+            user.setFirstName("Bill");
+            user.setLastName("kill");
+            user = userDAO.create(user);
+
+            Role role = new Role();
+            role.setName("customerrole");
+            for (Resource resource : new Resource[]{Resource.FLEET, Resource.BILLING, Resource.USER, Resource.ROLE, Resource.FUNCTION, Resource.INSURANCE, Resource.VEHICLE}) {
+                role.setAccess(resource, Action.READ_MINE);
+            }
+
+            Function function = new Function();
+            function.setUser(user);
+            function.setRole(role);
+            function.setName("Customerfunction");
+
+            Address address = new Address("mystreet", "12", "The town", "9850", "Belgium");
+            Customer customer = new Customer();
+            customer.setAddress(address);
+            customer.setName("Solvas-klant");
+            function.setCompany(customer);
+
+
+            userDAO.create(user);
+            addressDAO.create(address);
+            customerDAO.create(customer);
+            roleDAO.create(role);
+            functionDAO.create(function);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void initVehicleTypes(DAOProvider provider) {
+        try (VehicleTypeDAO dao = provider.getVehicleTypeDAO()) {
+            dao.create(new VehicleType("Personenwagens", 0));
+            dao.create(new VehicleType("Vrachauto", 0));
+            dao.create(new VehicleType("Vrachtauto (+12)", 0));
+            dao.create(new VehicleType("Lichte vrachtwagen", 0));
         } catch (Exception e) {
             e.printStackTrace();
         }
