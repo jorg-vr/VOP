@@ -1,5 +1,6 @@
 package model.insurance;
 
+import model.billing.Invoice;
 import model.history.EditableObject;
 import model.identity.Customer;
 import model.identity.InsuranceCompany;
@@ -16,6 +17,7 @@ public class Contract implements EditableObject {
     /**
      * Company that offers surety to customer.
      */
+    private Invoice invoice;
     private InsuranceCompany company;
     private Customer customer;
     private Collection<VehicleInsurance> vehicleInsurances;
@@ -82,6 +84,14 @@ public class Contract implements EditableObject {
     @Override
     public UUID getUuid() {
         return uuid;
+    }
+
+    public Invoice getInvoice() {
+        return invoice;
+    }
+
+    public void setInvoice(Invoice invoice) {
+        this.invoice = invoice;
     }
 
     @Override

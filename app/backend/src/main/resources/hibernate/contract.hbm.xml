@@ -11,6 +11,7 @@
         <id name="uuid" type="uuid-binary" column="id">
             <generator class="uuid2"/>
         </id>
+        <many-to-one name="invoice" column="invoice_id" class="model.billing.Invoice" lazy="proxy" fetch="select"/>
 
         <many-to-one name="company" column="company_id" class="model.identity.InsuranceCompany" lazy="proxy" fetch="select"/>
         <many-to-one name="customer" column="customer_id" class="model.identity.Customer" lazy="proxy" fetch="select"/>
