@@ -29,6 +29,7 @@
 <script>
     import formInput from '../elements/formInput.vue'
     import formSelect from '../elements/formSelect.vue'
+    import clientTypes from '../../../constants/clientTypes'
     import {mapGetters, mapActions} from 'vuex'
 
     export default {
@@ -39,7 +40,7 @@
             formInput, formSelect
         },
         created(){
-            this.fetchClients()
+            this.fetchClientsWithType(clientTypes.LEASING_COMPANY)
             this.fetchVehicleTypes()
         },
         computed: {
@@ -50,7 +51,7 @@
         },
         methods: {
             ...mapActions([
-                'fetchClients',
+                'fetchClientsWithType',
                 'fetchVehicleTypes'
             ])
         }
