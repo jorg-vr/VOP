@@ -4,7 +4,7 @@
             <select :class="'form-control select-item '+selectClass" :value="value" @change="updateValue($event.target.value)" :id="inputId" ref="select">
                 <option v-if="hiddenOption" value="" disabled hidden>{{hiddenOption}}</option>
                 <option v-else value="" disabled hidden></option>
-                <option :selected="option.id === value" v-for="option in options" :value="option.id">
+                <option :selected="option[property] === value" v-for="option in options" :value="option[property]">
                     {{option[optionKey]}}
             </option>
             </select>
@@ -18,11 +18,12 @@
     export default {
         props: {
             label: String,
-            value: String,
+            value: String, //Initial value
             options: Array,
             hiddenOption: String,
             inputId: String,
             optionKey: String, //Key to show of an object
+            optionProperty: String, //Value of this select item
             resetButton: {
                 type: Boolean,
                 default: false
@@ -34,6 +35,16 @@
         },
         components: {
             formItem
+        },
+        computed: {
+            property() {
+                if(!this.optionProperty){
+                    return 'id'
+                }
+                else {
+                    return this.optionProperty
+                }
+            }
         },
         methods: {
             updateValue: function (value) {

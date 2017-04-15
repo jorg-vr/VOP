@@ -2,7 +2,7 @@
     <div>
         <form-input :placeholder="$t('common.name') | capitalize" :label="$t('common.name') | capitalize"
                     v-model="client.name"></form-input>
-
+        <form-se
         <form-input :placeholder="$t('address.country') | capitalize" :label="$t('address.country') | capitalize"
                     v-model="client.address.country"></form-input>
 

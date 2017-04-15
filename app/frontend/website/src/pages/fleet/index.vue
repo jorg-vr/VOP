@@ -15,7 +15,7 @@
                         v-if="fleet"
                         :resource="resource"
                         :object="fleet"
-                        :visibleKeys="['name']"
+                        :visibleKeys="visibleKeys"
                         :key="fleet.id">
         </list-component>
     </div>
@@ -44,6 +44,7 @@
                 let p2 = this.fetchClients()
                 Promise.all([p1, p2]).then(values => {
                     this.addClientNames({clients: values[1]})
+                    console.log(this.fleets)
                 })
             }
             else {
@@ -66,7 +67,7 @@
             },
 
             visibleKeys() {
-                return this.authorizedForAll() ? ['name','companyName'] : ['name']
+                return this.authorizedForAll ? ['name','companyName'] : ['name']
             }
 
         },
