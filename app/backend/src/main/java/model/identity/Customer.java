@@ -1,6 +1,7 @@
 package model.identity;
 
 import model.fleet.Fleet;
+import model.insurance.Contract;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,6 +10,8 @@ import java.util.UUID;
 public class Customer extends Company implements java.io.Serializable {
 
     private Collection<Fleet> fleets;
+
+    private Collection<Contract> contracts;
 
     public Customer() {
         this.fleets = new ArrayList<>();
@@ -40,5 +43,13 @@ public class Customer extends Company implements java.io.Serializable {
 
     public void setFleets(Collection<Fleet> fleets) {
         this.fleets = fleets;
+    }
+
+    public Collection<Contract> getContracts() {
+        return contracts;
+    }
+
+    public void setContracts(Collection<Contract> contracts) {
+        this.contracts = contracts;
     }
 }

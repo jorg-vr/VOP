@@ -13,6 +13,7 @@
         </id>
         <property name="franchise" column="franchise" type="int"/>
         <property name="insuredValue" column="value" type="int"/>
+        <many-to-one name="contract" column="contract_id" class="model.insurance.Contract"/>
         <many-to-one name="vehicle" column="vehicle_id" class="model.fleet.Vehicle"/>
         <many-to-one name="surety" column="surety_id" class="model.insurance.Surety"/>
         <property name="startDate" column="start_date" type="java.time.LocalDateTime"/>
