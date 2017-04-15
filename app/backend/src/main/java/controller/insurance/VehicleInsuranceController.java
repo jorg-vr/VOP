@@ -18,7 +18,6 @@ public class VehicleInsuranceController extends AbstractController<VehicleInsura
 
     @Override
     public boolean isOwner(VehicleInsurance insurance, Function function) {
-        // TODO
-        return true;
+        return insurance.getVehicle().getFleet().getOwner().equals(function.getCompany());
     }
 }
