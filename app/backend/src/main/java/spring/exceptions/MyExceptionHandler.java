@@ -48,6 +48,14 @@ public class MyExceptionHandler {
     protected ResponseEntity<Object> handleInvalidInputException(InvalidInputException ex) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(new RESTError(HttpStatus.UNAUTHORIZED.value(), ex.getMessage(), null));
+                .body(new RESTError(HttpStatus.BAD_REQUEST.value(), ex.getMessage(), null));
     }
+
+    @ExceptionHandler(ServerErrorException.class)
+    protected ResponseEntity<Object> handleServerErrorException(ServerErrorException ex) {
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new RESTError(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage(), null));
+    }
+
 }

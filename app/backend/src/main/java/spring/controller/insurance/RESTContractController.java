@@ -12,6 +12,7 @@ import model.insurance.Surety;
 import model.insurance.SuretyType;
 import org.springframework.web.bind.annotation.*;
 import spring.controller.RESTAbstractController;
+import spring.exceptions.ServerErrorException;
 import spring.model.RESTFunction;
 import spring.model.RESTModelFactory;
 import spring.model.RESTSchema;
@@ -45,14 +46,16 @@ public class RESTContractController extends RESTAbstractController<RESTContract,
                     .collect(Collectors.toList());
             return new RESTSchema<>(restContracts, page, limit, request);
         } catch (DataAccessException e) {
-            throw new RuntimeException(e);
+            throw new ServerErrorException("contracts could not be retrieved. This is a server error");
         }
     }
 
     @RequestMapping(value = "/${path.contract_types}", method = RequestMethod.GET)
     RESTSchema<String> getContractTypes(HttpServletRequest request,
                                         Integer page, Integer limit,
-                                        @RequestHeader(value = "Authorization") String token) {
+                                        @RequestHeader(value = "Authorization") String token,
+                                    @RequestHeader(value = "Function") String function) throws UnAuthorizedException {
+        verifyToken(token, function);
         Collection<String> result = new ArrayList<>();
         for (SuretyType suretyType : SuretyType.values()) {
             result.add(suretyType.toString());
