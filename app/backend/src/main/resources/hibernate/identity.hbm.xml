@@ -35,6 +35,11 @@
                     <key column="owner_id" not-null="true"/>
                     <one-to-many class="model.fleet.Fleet" />
                 </bag>
+                <bag name="contracts" access="field" table="contracts"
+                     lazy="true" fetch="select" inverse="true">
+                    <key column="customer_id" not-null="true"/>
+                    <one-to-many class="model.insurance.Contract" />
+                </bag>
             </joined-subclass>
             <joined-subclass name="model.identity.InsuranceCompany" table="insurancecompanies">
                 <key column="identity_id"/>
