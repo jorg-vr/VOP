@@ -1,7 +1,7 @@
 <!--
-A generic button which emits a click event when clicked.
-This button can be used to call a function when the button is clicked.
+A generic button which navigates to the given route once clicked.
 
+@param route: The route to navigate to once clicked.
 @param buttonClass (optional): The HTML class for this button
 @param buttonId (optional): The HTML id for this button
 -->
