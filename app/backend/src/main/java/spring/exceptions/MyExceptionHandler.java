@@ -40,7 +40,7 @@ public class MyExceptionHandler {
     protected ResponseEntity<Object> handleInvalidTokenException(InvalidTokenException ex) {
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
-                .body(new RESTError(HttpStatus.UNAUTHORIZED.value(), "Token is not valid. The token can be expired or have the wrong format", null));
+                .body(new RESTError(HttpStatus.UNAUTHORIZED.value(), "Token is not valid.", null));
     }
 
     // TODO this should probably be changed/removed after DAOs throw proper exceptions
