@@ -33,7 +33,9 @@ export default
             vatNumber: 'VAT number'
         },
         clientTypes: {
-            //TODO
+            customer: "customer",
+            leasingCompany: "leasing company",
+            insuranceCompany: "insurance company"
         },
         address: {
             country: 'country',
@@ -127,7 +129,9 @@ export default
             vatNumber: 'BTW-nummer'
         },
         clientTypes: {
-            //TODO
+            customer: "klant",
+            leasingCompany: "leasing bedrijf",
+            insuranceCompany: "verzekeringsbedrijf"
         },
         address: {
             country: 'land',

@@ -15,7 +15,7 @@
                         v-if="fleet"
                         :resource="resource"
                         :object="fleet"
-                        :visibleKeys="['name']"
+                        :visibleKeys="visibleKeys"
                         :key="fleet.id">
         </list-component>
     </div>
@@ -66,7 +66,7 @@
             },
 
             visibleKeys() {
-                return this.authorizedForAll() ? ['name','companyName'] : ['name']
+                return this.authorizedForAll ? ['name','companyName'] : ['name']
             }
 
         },
