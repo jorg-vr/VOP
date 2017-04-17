@@ -1,3 +1,6 @@
+<!--
+    Component in which most of the components will be rendered.
+-->
 <template>
     <div>
         <nav-bar></nav-bar>
