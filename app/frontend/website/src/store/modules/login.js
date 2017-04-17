@@ -1,5 +1,11 @@
 import * as locations from '../../constants/locations'
 
+/**
+ * TODO: This page contains logic concerning the View. This should not be part of the store.
+ * TODO: document this page.
+ * TODO: remove code in comments.
+ */
+
 export default {
 
 	state: {
