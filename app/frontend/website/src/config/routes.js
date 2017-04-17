@@ -1,3 +1,8 @@
+/**
+ * All possible routes in the web application.
+ * See VueRouter
+ */
+
 import App from '../app.vue'
 
 import indexUser from '../pages/user/index.vue'

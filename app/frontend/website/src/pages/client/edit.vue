@@ -1,5 +1,7 @@
 <!--
     This page is used to edit a certain client.
+
+    @param id: The id of the client which is edited.
 -->
 <template>
     <client-form-page :actions="actions" :id="id"></client-form-page>

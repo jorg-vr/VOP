@@ -1,5 +1,8 @@
 <!--
-    This page shows a certain insurance in detail. 
+    This page shows a certain insurance in detail.
+
+    @param id: The id of the insurance to be shown.
+
 -->
 <template>
     <div>

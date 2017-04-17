@@ -1,5 +1,7 @@
 <!--
     This page shows a certain fleet in detail.
+
+   @param id: The id of the fleet to be shown.
 -->
 <template>
     <div v-if="fleet">
@@ -57,7 +59,6 @@
                     vehicles: values[0],
                     vehicleTypes: values[1]
                 })
-                console.log(this.subfleets)
             })
         },
         computed: {

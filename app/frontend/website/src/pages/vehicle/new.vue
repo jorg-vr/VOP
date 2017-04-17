@@ -1,5 +1,7 @@
 <!--
-    This page is used to edit a certain vehicle.
+    This page is used to create a new vehicle.
+
+    @param fleetId (optional): The fleetId of  the new vehicle
 -->
 <template>
     <vehicle-form-page :actions="actions" :fleetId="fleetId"></vehicle-form-page>

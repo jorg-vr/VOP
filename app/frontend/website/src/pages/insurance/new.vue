@@ -1,5 +1,5 @@
 <!--
-    This page is used to edit a certain insurance.
+    This page is used to create a new insurance.
 -->
 <template>
     <insurance-form-page :actions="actions"></insurance-form-page>

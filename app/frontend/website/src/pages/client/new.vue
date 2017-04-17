@@ -1,5 +1,5 @@
 <!--
-    This page is used to edit a certain client.
+    This page is used to create a new client.
 -->
 <template>
     <client-form-page :actions="actions"></client-form-page>

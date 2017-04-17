@@ -1,3 +1,8 @@
+<!--
+    This page shows a certain vehicle in detail.
+
+    @param id: The id of the vehicle to be shown.
+-->
 <template>
     <div v-if="vehicle">
         <div class="page-header">

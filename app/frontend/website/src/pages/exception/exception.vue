@@ -1,3 +1,10 @@
+<!--
+    An exception page. For example if the user routes to a non existing page, this page should be shown instead.
+
+    @param statusCode: the code of the status of the exception.
+    @param message: A message shortly explaining the exception.
+    @param details: A detailed explanation of the exception.
+-->
 <template>
     <div class="container-fluid text-center exception-page">
         <div class="page-header"><h1>{{statusCode}}</h1><h2>{{$t('exception.e' + statusCode)}}</h2></div>

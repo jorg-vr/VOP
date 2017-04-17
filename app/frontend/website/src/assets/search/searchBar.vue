@@ -1,3 +1,8 @@
+<!--
+    A component usable for searching objects. Searchbars under types/ implement this searchbar for specific resources.
+
+    @param title: The name of what has to be searched for.
+-->
 <template>
     <div class="row search-bar">
         <div class="input-group">

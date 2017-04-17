@@ -1,5 +1,5 @@
 <!--
-    This page is used to edit a certain user.
+    This page is used to create a new user.
 -->
 <template>
     <user-form-page :actions="actions"></user-form-page>

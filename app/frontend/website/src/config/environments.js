@@ -1,3 +1,6 @@
+/**
+ * All possible environments for starting the web application.
+ */
 export default {
     production: {
         NODE_ENV: 'production',

@@ -1,5 +1,7 @@
 <!--
-    This page shows a certain user in detail. 
+    This page shows a certain user in detail.
+
+    @param id: The id of the user to be shown.
 -->
 <template>
     <div v-if="user">

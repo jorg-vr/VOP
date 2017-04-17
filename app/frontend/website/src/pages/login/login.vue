@@ -1,3 +1,6 @@
+<!--
+TODO: document this page.
+-->
 <template>
     <div class="modal-mask" transition="modal">
         <div class="modal-wrapper">
