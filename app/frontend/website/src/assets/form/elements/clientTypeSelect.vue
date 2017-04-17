@@ -1,3 +1,10 @@
+<!--
+This function is a specialized version of the formSelect component.
+It's a component usable for selecting a type of client. The value of the type can be bound to v-model.
+These values can be found in clientTypes.js
+
+@param value (optional): The initial client type value.
+-->
 <template>
     <form-item label="Type">
         <div class="select-row">
@@ -27,10 +34,6 @@
             return {
                 clientTypes: clientTypes
             }
-        },
-        created(){
-            console.log(this.clientTypes)
         }
-
     }
 </script>
