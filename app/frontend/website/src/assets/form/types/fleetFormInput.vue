@@ -1,3 +1,8 @@
+<!--
+All of the fields for user input for the fleet form
+
+@param fleet: This object will be configured with the input of this component.
+-->
 <template>
     <div>
         <form-input :placeholder="$t('common.name') + ' ' + $t('fleet.fleet') | capitalize" v-model="fleet.name"></form-input>

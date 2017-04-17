@@ -1,5 +1,9 @@
 <!--
-    This page is used to edit a certain vehicle.
+This page is used to edit or create a certain fleet.
+
+@param id (optional): ID of the old object
+@param actions: the action this form is intended for (create/update)
+@param fleetId (optional): The fleetId of new/updated vehicle
 -->
 <template>
     <div id="content-wrapper">

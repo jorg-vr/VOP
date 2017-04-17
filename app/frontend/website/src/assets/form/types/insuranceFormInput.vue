@@ -1,3 +1,8 @@
+<!--
+All of the fields for insurance input for the insurance form
+
+@param insurance: This object will be configured with the input of this component.
+-->
 <template>
     <div>
         <form-input :placeholder="$t('insurance.type') | capitalize" :label="$t('insurance.type') | capitalize"
