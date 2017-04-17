@@ -26,7 +26,11 @@ import static util.UUIDUtil.toUUID;
 public class RESTContract extends RESTAbstractModel<Contract> {
 
     private String insuranceCompany;
-    private String customer;
+    private String customer; // not in api, maybe useful?
+    private String vehicle;
+    private String type;
+    private int franchise;
+    private int premium;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 
