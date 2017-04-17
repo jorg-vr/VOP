@@ -1,5 +1,9 @@
 <!--
     This page is used to edit a certain user.
+
+    @param id: The id of the user which is edited.
+
+
 -->
 <template>
     <user-form-page :actions="actions" :id="id"></user-form-page>

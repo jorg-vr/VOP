@@ -3,7 +3,12 @@ import Vue from 'vue'
 import store from '../../store'
 
 /**
- * Important: this component can only take one child! Other children won't be rendered.
+ * A functional component. This component does not contain any HTML or CSS, only the script part.
+ * The goal of this component is to show the component only if the user has the correct permissions.
+ *
+ * Important: this component can only accept one child! Other children won't be rendered.
+ *
+ * @param permission: An object containing a resource and actions field which the user needs to view the component
  */
 
 export default Vue.component('protected-element', {

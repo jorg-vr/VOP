@@ -1,5 +1,8 @@
 <!--
-    This page is used to generate a form for a user.
+This page is used to show a form for a user.
+
+@param actions: the action this form is intended for (create/update)
+@param oldUser (optional): The old user if the form is intended to a update user
 -->
 <template>
     <form-component v-if="user" :actions="actions" :resource="resource" :object="user">

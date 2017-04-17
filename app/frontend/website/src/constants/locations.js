@@ -1,3 +1,7 @@
+/**
+ * All possible paths for API calls to the backend.
+ */
+
 export const FLEET = 'fleets/'
 export const CLIENT = 'companies/'
 export const USER = 'users/'

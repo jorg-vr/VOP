@@ -1,6 +1,8 @@
 <!--
     This is a protected link which is only shown if the user has READ access for the given resource.
     The name of the resource will be shown in the link.
+
+    @param resource: The resource to which this link navigates.
 -->
 
 <template>

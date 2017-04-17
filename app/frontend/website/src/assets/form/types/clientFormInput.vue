@@ -1,3 +1,8 @@
+<!--
+All of the fields for user input for the client form
+
+@param client: This object will be configured with the input of this component.
+-->
 <template>
     <div>
         <form-input :placeholder="$t('common.name') | capitalize" :label="$t('common.name') | capitalize"

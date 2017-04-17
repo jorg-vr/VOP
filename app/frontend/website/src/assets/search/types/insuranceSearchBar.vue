@@ -1,3 +1,6 @@
+<!--
+Searchbar to search for insurances.
+-->
 <template>
     <search-bar @input="$emit('search', $event)" @submit="onSubmit(insurance)" @reset="$emit('search', '')"  :title="$t('insurance.insurance')">
         <insurance-form-input :insurance="insurance"></insurance-form-input>

@@ -1,3 +1,18 @@
+<!--
+This component can be used to let the user select between a list of specified values.
+
+@param options: All of the option which can be selected
+@param optionKey: The property of the object to be displayed to the user
+@param optionProperty: the property of the object which is emitted to the parent component on change. Default: id
+@param label (optional): The label preceding the HTML select element
+@param value (optional): The initially selected value of the select element
+@param hiddenOption (optional): The displayed value if there's nothing selected.
+@param inputId (optional): The id of the HTML select element.
+@param resetButton (optional): If this boolean is true a reset button will be display. Default: False
+@param selectClass (optional): The class for the HTML select element.
+
+-->
+
 <template>
     <form-item :label="label">
         <div class="select-row">

@@ -1,5 +1,8 @@
 <!--
-    This page is used to generate a form for a user.
+This page is used to show a form for an insurance.
+
+@param actions: the action this form is intended for (create/update)
+@param oldInsurance (optional): The old insurnace if the form is intended to a update insurance
 -->
 <template>
     <form-component v-if="insurance" :actions="actions" :resource="resource" :object="insurance">

@@ -1,3 +1,6 @@
+<!--
+TODO: document this page.
+-->
 <template>
     <div class="modal-mask" transition="modal">
         <div class="modal-wrapper">
@@ -19,7 +22,7 @@
                             <input id="password" type="password" class="form-control" name="password" v-bind:placeholder="$t('login.password')"  v-model="credentials.password">
                         </div>
                         <br>
-                        <button-login id="login-button" @click="confirmLogin()"> {{$t("login.button") | capitalize }} </button-login>
+                        <button-action id="login-button" @click="confirmLogin()"> {{$t("login.button") | capitalize }} </button-action>
                     </form>
                 </div>
             </div>
@@ -31,7 +34,7 @@
 
 <script>
     import { mapActions, mapMutations, mapGetters } from 'vuex'
-    import buttonLogin from '../../assets/buttons/buttonLogin.vue'
+    import buttonAction from '../../assets/buttons/buttonAction.vue'
     export default {
         data() {
             return {
@@ -43,7 +46,7 @@
             }
         },
         components: {
-            buttonLogin
+            buttonAction
         },
         computed: {
             ...mapGetters([

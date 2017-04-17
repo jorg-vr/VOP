@@ -1,3 +1,8 @@
+<!--
+All of the fields for user input for the vehicle form
+
+@param vehicle: This object will be configured with the input of this component.
+-->
 <template>
     <div>
         <form-input :placeholder="$t('vehicle.licensePlate') | capitalize" :label="$t('vehicle.licensePlate') | capitalize"
@@ -40,6 +45,7 @@
             formInput, formSelect
         },
         created(){
+            //Fetch options for the select items.
             this.fetchClientsWithType(clientTypes.LEASING_COMPANY)
             this.fetchVehicleTypes()
         },

@@ -1,5 +1,7 @@
 <!--
     This page is used to edit a certain fleet.
+
+    @param id: the id of the old fleet.
 -->
 <template>
     <fleet-form-page :actions="actions" :id="id"></fleet-form-page>

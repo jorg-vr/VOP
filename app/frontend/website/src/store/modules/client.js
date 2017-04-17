@@ -4,6 +4,12 @@
 
 export default {
     actions: {
+        /**
+         * Fetches all of the clients with a given type.
+         * @param context
+         * @param type
+         * @returns {Promise}
+         */
         fetchClientsWithType(context, type){
             return new Promise(resolve => {
                 context.dispatch('fetchClientsBy', {type: type.value}).then(clients => {

@@ -1,5 +1,9 @@
 <!--
-    This page is used to generate a form for a user.
+This page is used to show a form for a vehicle.
+
+@param actions: the action this form is intended for (create/update)
+@param oldVehicle (optional): The old vehicle if the form is intended to a update vehicle
+@param fleetId (optional): The fleetId of new/updated vehicle
 -->
 <template>
     <form-component v-if="vehicle" :actions="actions" :resource="resource" :object="vehicle">

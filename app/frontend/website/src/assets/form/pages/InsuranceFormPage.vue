@@ -1,5 +1,8 @@
 <!--
-    This page is used to edit a certain insurance.
+This page is used to edit or create a certain insurance.
+
+@param id (optional): ID of the old object
+@param actions: the action this form is intended for (create/update)
 -->
 <template>
     <div id="content-wrapper">

@@ -1,5 +1,5 @@
 <!--
-    This page is used to edit a certain fleet.
+    This page is used to create a new fleet.
 -->
 <template>
     <fleet-form-page :actions="actions"></fleet-form-page>

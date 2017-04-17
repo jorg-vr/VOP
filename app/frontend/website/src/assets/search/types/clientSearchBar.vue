@@ -1,3 +1,6 @@
+<!--
+Searchbar to search for clients.
+-->
 <template>
     <search-bar @input="$emit('search', $event)" @submit="onSubmit(client)" @reset="$emit('search', '')" :title="$t('client.clients')">
         <client-form-input :client="client"></client-form-input>

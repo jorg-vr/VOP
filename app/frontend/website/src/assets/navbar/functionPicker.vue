@@ -1,5 +1,8 @@
+<!--
+    Component usable for letting the user select his function.
+    Once a function is chosen the page will reload and the user will be redirected to the home page in order to reset state.
+-->
 <template>
-    <!-- Wrap select into <p> to be able to add language flag -->
     <form-select selectClass="picker" optionKey="roleName" :options="userFunctions"
                  @input="updateActiveFunction(accountFunction.id)"
                  v-model="accountFunction.id"></form-select>

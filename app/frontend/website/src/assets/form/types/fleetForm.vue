@@ -1,5 +1,9 @@
 <!--
-    This page is used to generate a form for a user.
+This page is used to show a form for a client.
+
+@param actions: the action this form is intended for (create/update)
+@param oldFleet (optional): The old client if the form is intended to a update fleet
+@param clientId (optional): The ID of the client who owns this fleet.
 -->
 <template>
     <form-component v-if="fleet" :actions="actions" :resource="resource" :object="fleet">
@@ -22,6 +26,7 @@
             formComponent, fleetFormInput
         },
         created(){
+            //If the user can only create/update fleets for his own company then the company can already be configured.
             if(this.isAuthorizedForOwnResourcesButNotAll(this.resource, this.actions)){
                 this.fleet.company = this.activeFunction.company
             }

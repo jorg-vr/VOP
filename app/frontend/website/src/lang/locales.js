@@ -1,3 +1,6 @@
+/**
+ * A list of all translations for words used in the web application.
+ */
 export default
 {
     en : {

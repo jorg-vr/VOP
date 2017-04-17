@@ -1,3 +1,10 @@
+<!--
+Generic component for a form. Every form should be encapsulated in this component.
+
+@param actions: The action this form is intended for.
+@param resource: The name of the resource configured by this form
+@param object: The resource configured by this form
+-->
 <template>
     <form class="form-horizontal col-xs-12 col-sm-11 col-md-9 col-lg-7">
         <slot></slot>
@@ -40,9 +47,14 @@
             })
         },
         methods: {
+            /**
+             * Submit this form. This will create/update the object configured by this fleet and will navigate to the
+             * index page of the resource of the object.
+             */
             submit(){
                 this.$store.dispatch(this.actions.name + this.resource.name.capitalize(), this.object).then(object => {
-                    if(this.resource.name === 'vehicle'){ //Exception
+                    //Exception: the index page of vehicle is /fleet/{fleetId}
+                    if(this.resource.name === 'vehicle'){
                         this.$router.push({name: 'fleet', params: {id: object.fleet} })
                     }
                     else {

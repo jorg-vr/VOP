@@ -1,5 +1,8 @@
 <!--
-    This page shows a certain client in detail. 
+    This page shows a certain client in detail.
+
+    @param id: The id of the client to be shown.
+
 -->
 <template>
     <div v-if="client && client.address">
@@ -46,7 +49,7 @@
                             v-if="fleet"
                             :object="fleet"
                             :visibleKeys="new Array('name','companyName')"
-                            show="fleet"
+                            :resource="resource"
                             :key="fleet.id">
             </list-component>
             <button-back :route="{name: 'clients'}"></button-back>
