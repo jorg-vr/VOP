@@ -1,11 +1,10 @@
 <!--
-    Component used for showing an object in a list.
-    This component requires the following properties to function correctly:
-    - object: Object with values to show
-    - visibleKeys: Keys of values which have to be shown
-    - show: The name of the link to the show page of this object.
-    - edit: The name of the link to the edit page of this object.
-    - remove: A function which removes this object.
+Component used for showing an object in a list.
+
+@param object: Object with values to show
+@param visibleKeys: Keys of values which have to be shown
+@param resource: The resource of the object which is show
+@param rowClass (optional): the HTML class for the row of this component
 -->
 <template>
     <div :class="'row ' + rowClass" v-if="object">
@@ -22,6 +21,7 @@
         </router-link>
         <button-edit :resource="resource" :params="{id: object.id}"></button-edit>
         <button-remove :resource="resource" @click="showModal=true"></button-remove>
+        <!-- Modal used for submitting the remove action -->
         <confirm-modal v-show="showModal" @cancelModal="showModal=false" @confirmModal="confirmAction()"></confirm-modal>
     </div>
 </template>
@@ -48,6 +48,7 @@
             buttonEdit, buttonRemove,confirmModal
         },
         computed: {
+            //Compute the values of the object to be shown
             values() {
                 let values = []
                 for(let i=0; i<this.visibleKeys.length; i++){

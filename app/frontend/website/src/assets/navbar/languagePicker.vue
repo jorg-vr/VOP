@@ -1,5 +1,6 @@
 <!--
-    Based on https://gist.github.com/martinlindhe/f34489126eb635cb241f
+    Component usable for letting the user select the language of the website.
+    TODO: Make the language persistent on page reloads.
 -->
 <template>
     <!-- Wrap select into <p> to be able to add language flag -->
