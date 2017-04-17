@@ -1,3 +1,12 @@
+<!--
+A button used for navigating to the 'edit' page of the specified resource.
+The button will only be shown if the user has the correct permissions.
+
+@param resource: The resource to which has to be navigated
+@param params (optional): Parameters for the route
+@param buttonClass (optional): The HTML class for this button
+-->
+
 <template>
     <protected-element :permission="permission">
         <button-link :route="route"  buttonClass="btn btn-md btn-info" buttonId="edit">
