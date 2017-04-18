@@ -6,33 +6,33 @@
         <div class="page-header">
             <h1>{{ $t("invoice.invoice") | capitalize }} {{$t("actions_plural.edit") }}</h1>
         </div>
-        <client-form :oldClient=client :submit="updateClient"></client-form>
+        <invoice-form :successButtonText="$t('invoice.invoice').capitalize() + ' ' +  $t('actions_plural.create')" :failButtonText="$t('common.cancel').capitalize()"  :submit="updateInvoice"></invoice-form>
     </div>
 </template>
 <script>
-    import ClientForm from '../../assets/form/types/clientForm.vue'
+    import invoiceForm from '../../assets/form/types/invoiceForm.vue'
     import {mapGetters, mapActions} from 'vuex'
 
 
     export default {
         components: {
-            ClientForm
+            invoiceForm
         },
         props: {
             id: String
         },
         created(){
-            this.fetchClient({id: this.id})
+            this.fetchInvoice({id: this.id})
         },
         computed: {
             ...mapGetters([
-                'client'
+                'invoice'
             ])
         },
         methods: {
             ...mapActions([
-                'fetchClient',
-                'updateClient'
+                'fetchInvoice',
+                'updateInvoice'
             ])
         }
     }
