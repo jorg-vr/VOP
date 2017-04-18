@@ -14,6 +14,8 @@ import spring.model.RESTAbstractModel;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import static util.MyProperties.PATH_VEHICLE_INSURANCES;
+import static util.MyProperties.getProperty;
 import static util.UUIDUtil.UUIDToNumberString;
 import static util.UUIDUtil.toUUID;
 
@@ -33,7 +35,7 @@ public class RESTVehicleInsurance extends RESTAbstractModel<VehicleInsurance> {
     }
 
     public RESTVehicleInsurance(VehicleInsurance insurance) {
-        super(insurance.getUuid(), "TODO");
+        super(insurance.getUuid(), getProperty(PATH_VEHICLE_INSURANCES));
         vehicle = UUIDToNumberString(insurance.getVehicle().getUuid());
         surety = UUIDToNumberString(insurance.getSurety().getUuid());
         startDate = insurance.getStartDate();

@@ -17,6 +17,8 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.UUID;
 
+import static util.MyProperties.PATH_CONTRACTS;
+import static util.MyProperties.getProperty;
 import static util.UUIDUtil.UUIDToNumberString;
 import static util.UUIDUtil.toUUID;
 
@@ -33,7 +35,7 @@ public class RESTContract extends RESTAbstractModel<Contract> {
     private int totalTax;
 
     public RESTContract(Contract contract) {
-        super(contract.getUuid(), "TODO");
+        super(contract.getUuid(), getProperty(PATH_CONTRACTS));
         this.insuranceCompany = UUIDToNumberString(contract.getCompany().getUuid());
         this.customer = UUIDToNumberString(contract.getCustomer().getUuid());
         this.startDate = contract.getStartDate();
