@@ -40,6 +40,8 @@ public class RESTContract extends RESTAbstractModel<Contract> {
         this.customer = UUIDToNumberString(contract.getCustomer().getUuid());
         this.startDate = contract.getStartDate();
         this.endDate = contract.getEndDate();
+        this.totalCost = contract.calculateCost();
+        this.totalTax = contract.calculateTax();
     }
 
     public RESTContract() {
@@ -94,5 +96,21 @@ public class RESTContract extends RESTAbstractModel<Contract> {
 
     public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
+    }
+
+    public int getTotalCost() {
+        return totalCost;
+    }
+
+    public void setTotalCost(int totalCost) {
+        this.totalCost = totalCost;
+    }
+
+    public int getTotalTax() {
+        return totalTax;
+    }
+
+    public void setTotalTax(int totalTax) {
+        this.totalTax = totalTax;
     }
 }
