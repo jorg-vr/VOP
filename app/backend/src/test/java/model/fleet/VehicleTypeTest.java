@@ -6,9 +6,9 @@ import spring.exceptions.InvalidInputException;
 
 @Ignore
 public class VehicleTypeTest {
-    @Test(expected = InvalidInputException.class)
-    public void setTax() throws Exception {
-        VehicleType vehicleType = new VehicleType();
-    }
+//    @Test(expected = InvalidInputException.class)
+//    public void setTax() throws Exception {
+//        VehicleType vehicleType = new VehicleType();
+//    }
 
 }
