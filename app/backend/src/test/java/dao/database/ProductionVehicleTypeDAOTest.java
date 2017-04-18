@@ -1,14 +1,14 @@
-//package dao.database;
-//
-//import dao.interfaces.DAOProvider;
-//import dao.interfaces.VehicleTypeDAO;
-//import model.fleet.VehicleType;
-//import org.junit.*;
-//
-//import static org.junit.Assert.*;
-//
-//@Ignore
-//public class ProductionVehicleTypeDAOTest {
+package dao.database;
+
+import dao.interfaces.DAOProvider;
+import dao.interfaces.VehicleTypeDAO;
+import model.fleet.VehicleType;
+import org.junit.*;
+
+import static org.junit.Assert.*;
+
+@Ignore
+public class ProductionVehicleTypeDAOTest {
 //    private static DAOProvider daoProvider;
 //    private static VehicleTypeDAO vehicleTypeDAO;
 //
@@ -83,5 +83,5 @@
 ////
 ////        vehicleTypeDAO.remove(t1.getUuid());
 //    }
-//
-//}
+
+}

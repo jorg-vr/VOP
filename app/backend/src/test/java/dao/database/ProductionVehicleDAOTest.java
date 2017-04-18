@@ -1,21 +1,21 @@
-//package dao.database;
-//
-//import dao.interfaces.*;
-//import model.fleet.Fleet;
-//import model.fleet.Vehicle;
-//import model.fleet.VehicleType;
-//import model.identity.Address;
-//import model.identity.Customer;
-//import org.junit.AfterClass;
-//import org.junit.BeforeClass;
-//import org.junit.Test;
-//
-//import java.time.LocalDate;
-//
-//import static org.junit.Assert.*;
-//
-//
-//public class ProductionVehicleDAOTest {
+package dao.database;
+
+import dao.interfaces.*;
+import model.fleet.Fleet;
+import model.fleet.Vehicle;
+import model.fleet.VehicleType;
+import model.identity.Address;
+import model.identity.Customer;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import java.time.LocalDate;
+
+import static org.junit.Assert.*;
+
+
+public class ProductionVehicleDAOTest {
 //
 //    private static DAOProvider daoProvider;
 //    private static VehicleDAO vehicleDao;
@@ -164,5 +164,5 @@
 //        customerDAO.remove(cust1.getUuid());
 //        addressDAO.remove(a1.getUuid());
 //    }
-//
-//}
+
+}

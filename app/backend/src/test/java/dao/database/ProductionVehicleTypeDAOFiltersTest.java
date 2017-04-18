@@ -1,16 +1,16 @@
-//package dao.database;
-//
-//import dao.interfaces.DAOProvider;
-//import dao.interfaces.VehicleTypeDAO;
-//import model.fleet.VehicleType;
-//import org.junit.*;
-//
-//import java.util.Collection;
-//
-//import static org.junit.Assert.assertTrue;
-//
-//@Ignore
-//public class ProductionVehicleTypeDAOFiltersTest {
+package dao.database;
+
+import dao.interfaces.DAOProvider;
+import dao.interfaces.VehicleTypeDAO;
+import model.fleet.VehicleType;
+import org.junit.*;
+
+import java.util.Collection;
+
+import static org.junit.Assert.assertTrue;
+
+@Ignore
+public class ProductionVehicleTypeDAOFiltersTest {
 //    private static DAOProvider daoProvider;
 //    private static VehicleTypeDAO vehicleTypeDAO;
 //    private static VehicleType t1, t2;
@@ -58,4 +58,4 @@
 //    }
 //
 //    //TODO: test multiple filters in 1 request
-//}
+}
