@@ -25,7 +25,7 @@ import java.util.List;
  * Created by Billie Devolder on 17/04/2017.
  */
 @RestController
-@RequestMapping("/${path.fleets}/{fleetId}/${path.invoices}")
+@RequestMapping("/${path.companies}/{companyId}/${path.invoices}")
 public class RESTInvoiceController extends RESTAbstractController<RESTInvoice,Invoice> {
 
 
