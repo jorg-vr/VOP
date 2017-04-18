@@ -5,6 +5,7 @@ import fleet from './modules/fleet'
 import vehicle from './modules/vehicle'
 import login from './modules/login'
 import authentication from './modules/authentication'
+import invoice from './modules/invoice'
 
 import resource from './modules/resource'
 import * as locations from './constants/locations'
@@ -43,7 +44,8 @@ export default new Vuex.Store({
         fleet,
         vehicle,
         login,
-        authentication
+        authentication,
+        invoice
     },
     state,
     getters,
