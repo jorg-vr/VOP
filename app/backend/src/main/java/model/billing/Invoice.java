@@ -142,7 +142,9 @@ public class Invoice implements EditableObject, java.io.Serializable {
     }
 
     public  int getTotalAmount(){
+        for(Contract contract:contracts){
 
+        }
     }
 
     public  int getTotalTax(){
