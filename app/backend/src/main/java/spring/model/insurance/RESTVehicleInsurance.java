@@ -23,6 +23,11 @@ public class RESTVehicleInsurance extends RESTAbstractModel<VehicleInsurance> {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 
+    private int franchise;
+    private int insuredValue;
+    private int cost;
+    private int tax;
+
     public RESTVehicleInsurance() {
     }
 
@@ -32,6 +37,8 @@ public class RESTVehicleInsurance extends RESTAbstractModel<VehicleInsurance> {
         surety = "TODO";
         startDate = insurance.getStartDate();
         endDate = insurance.getEndDate();
+        franchise = insurance.getFranchise();
+        insuredValue = insurance.getInsuredValue();
     }
 
     @Override
@@ -46,6 +53,8 @@ public class RESTVehicleInsurance extends RESTAbstractModel<VehicleInsurance> {
         // TODO surety
         insurance.setStartDate(startDate);
         insurance.setEndDate(endDate);
+        insurance.setFranchise(franchise);
+        insurance.setInsuredValue(insuredValue);
         return insurance;
     }
 
@@ -79,5 +88,37 @@ public class RESTVehicleInsurance extends RESTAbstractModel<VehicleInsurance> {
 
     public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
+    }
+
+    public int getFranchise() {
+        return franchise;
+    }
+
+    public void setFranchise(int franchise) {
+        this.franchise = franchise;
+    }
+
+    public int getInsuredValue() {
+        return insuredValue;
+    }
+
+    public void setInsuredValue(int insuredValue) {
+        this.insuredValue = insuredValue;
+    }
+
+    public int getCost() {
+        return cost;
+    }
+
+    public void setCost(int cost) {
+        this.cost = cost;
+    }
+
+    public int getTax() {
+        return tax;
+    }
+
+    public void setTax(int tax) {
+        this.tax = tax;
     }
 }

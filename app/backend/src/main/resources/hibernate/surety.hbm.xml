@@ -21,12 +21,12 @@
             <key column="surety_id" not-null="true"/>
             <many-to-many class="model.insurance.SpecialCondition" />
         </bag>
-        <joined-subclass name="model.insurance.FlatSurety" table="flatsureties">
+        <joined-subclass name="model.insurance.NonFlatSurety" table="flatsureties">
             <key column="surety_id"/>
             <property name="premiumPercentage" column="premium_percentage" type="double"/>
             <property name="minPremium" column="minimum" type="double"/>
         </joined-subclass>
-        <joined-subclass name="model.insurance.NonFlatSurety" table="nonflatsureties">
+        <joined-subclass name="model.insurance.FlatSurety" table="nonflatsureties">
             <key column="surety_id"/>
             <property name="premium" column="premium" type="int"/>
         </joined-subclass>

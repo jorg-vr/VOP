@@ -24,6 +24,8 @@ public class MyProperties {
 
     public static final String PATH_COMPANIES = "path.companies";
 
+    public static final String PATH_SURETIES = "path.sureties";
+
 
     private static final String APPLICATION_PROPERTIES = "src/main/resources/application.properties";
 
