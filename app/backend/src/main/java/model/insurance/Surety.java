@@ -14,11 +14,7 @@ public  abstract class Surety implements EditableObject {
     private UUID uuid;
     private Collection<SpecialCondition> specialConditions;
 
-
-    /**
-     * Type of surety included
-     */
-
+    // Type of surety included
     private SuretyType suretyType;
 
     /**
@@ -26,6 +22,13 @@ public  abstract class Surety implements EditableObject {
      */
     public Surety() {
     }
+
+    /**
+     * Calculate the premium that has to be paid based on the given value
+     * @param value value of which the premium has to be calculated. This is e.g the insuredValue of a car
+     * @return premium based on value
+     */
+    public abstract int calculatePremium(int value);
 
     @Override
     public UUID getUuid() {
@@ -40,7 +43,6 @@ public  abstract class Surety implements EditableObject {
     public EditableObject copy() {
         return null;
     }
-
 
     public SuretyType getSuretyType() {
         return suretyType;

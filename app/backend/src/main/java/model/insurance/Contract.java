@@ -14,9 +14,8 @@ import java.util.UUID;
  * Created by jorg on 4/8/17.
  */
 public class Contract implements EditableObject {
-    /**
-     * Company that offers surety to customer.
-     */
+
+    // Company that offers surety to customer.
     private Invoice invoice;
     private InsuranceCompany company;
     private Customer customer;
@@ -35,6 +34,30 @@ public class Contract implements EditableObject {
         this.startDate = startDate;
         this.endDate = endDate;
         this.vehicleInsurances = new ArrayList<>();
+    }
+
+    /**
+     * Calculate the total cost of this contract.
+     * @return sum of costs of insurances. expressed in cents
+     */
+    public int calculateCost() {
+        int totalCost = 0;
+        for (VehicleInsurance insurance: vehicleInsurances) {
+            totalCost += insurance.calculateCost();
+        }
+        return totalCost;
+    }
+
+    /**
+     * Calculate the total tax of this contract.
+     * @return sum of taxes of insurances. expressed in cents
+     */
+    public int calculateTax() {
+        int totalTax = 0;
+        for (VehicleInsurance insurance: vehicleInsurances) {
+            totalTax += insurance.calculateTax();
+        }
+        return totalTax;
     }
 
     public InsuranceCompany getCompany() {
