@@ -12,7 +12,7 @@
                 </button-link>
             </h1>
         </div>
-        <client-search-bar @search="updateInvoices" @advancedSearch="updateInvoicesAdvanced"></client-search-bar>
+        <invoice-search-bar @search="updateInvoices" @advancedSearch="updateInvoicesAdvanced"></invoice-search-bar>
         <!-- Render an info-pane for every invoice. Once all the data is loaded, the table will be shown.-->
         <list-component v-for="invoice in filteredInvoices"
                         v-if="invoice"

@@ -27,7 +27,7 @@ let roleResource = resource.initializeModule(locations.ROLE, 'role')
 let permissionResource = resource.initializeModule(locations.PERMISSIONS, 'permission')
 let vehicleTypeResource = resource.initializeModule(locations.VEHICLE_TYPES, 'vehicleType')
 let insuranceResource = resource.initializeModule(locations.INSURANCE, 'insurance')
-let invoiceResource = resource.initializeModule(locations.INVOICES, 'invoice')
+let invoiceResource = resource.initializeModule(locations.INVOICE, 'invoice')
 
 export default new Vuex.Store({
     modules : {
