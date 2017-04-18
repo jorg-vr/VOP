@@ -7,7 +7,7 @@ import org.junit.*;
 
 import static org.junit.Assert.*;
 
-
+@Ignore
 public class ProductionVehicleTypeDAOTest {
     private static DAOProvider daoProvider;
     private static VehicleTypeDAO vehicleTypeDAO;

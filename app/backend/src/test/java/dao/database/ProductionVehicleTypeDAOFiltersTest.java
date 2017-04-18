@@ -9,7 +9,7 @@ import java.util.Collection;
 
 import static org.junit.Assert.assertTrue;
 
-
+@Ignore
 public class ProductionVehicleTypeDAOFiltersTest {
     private static DAOProvider daoProvider;
     private static VehicleTypeDAO vehicleTypeDAO;
