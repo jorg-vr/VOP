@@ -5,14 +5,28 @@ package model.insurance;
  */
 public class NonFlatSurety extends Surety {
 
-    /**
-     * percentage of value that has to be paid yearly
-     */
-
+    // Percentage of value that has to be paid yearly
     private double premiumPercentage;
 
+    // Minimum premium in cents
     private int minPremium;
 
+    public NonFlatSurety() {
+    }
+
+    public NonFlatSurety(double premiumPercentage, int minPremium) {
+        this.premiumPercentage = premiumPercentage;
+        this.minPremium = minPremium;
+    }
+
+    @Override
+    public int calculatePremium(int value) {
+        int premium = (int) Math.round(value * premiumPercentage);
+        if (premium < minPremium) {
+            return minPremium;
+        }
+        return premium;
+    }
 
     public double getPremiumPercentage() {
         return premiumPercentage;
