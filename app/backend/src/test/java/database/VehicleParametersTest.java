@@ -28,7 +28,7 @@ public class VehicleParametersTest {
         ProductionProvider.initializeProvider("unittest");
         daoProvider = ProductionProvider.getInstance();
         try (VehicleTypeDAO vehicleTypeDao = daoProvider.getVehicleTypeDAO()) {
-            vehicleType = vehicleTypeDao.create(new VehicleType("persoonswagen", 4.5));
+//            vehicleType = vehicleTypeDao.create(new VehicleType("persoonswagen", 4.5));
         }
     }
 
