@@ -125,15 +125,6 @@ public class ProductionProvider implements DAOProvider {
         return new ProductionSpecialConditionDAO(sessionFactory.openSession());
     }
 
-    @Override
-    public SuretyCommisionDAO getSuretyCommisionDao() {
-        return new ProductionSuretyCommisionDAO(sessionFactory.openSession());
-    }
-
-    @Override
-    public SuretyTaxDAO getSuretyTaxDao() {
-        return new ProductionSuretyTaxCommision(sessionFactory.openSession());
-    }
 
     @Override
     public VehicleInsuranceDAO getVehicleInsuranceDao() {
