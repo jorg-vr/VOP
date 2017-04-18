@@ -12,6 +12,27 @@
             <generator class="uuid2"/>
         </id>
         <property name="type" column="type" type="string"/>
-        <property name="tax" column="tax" type="double"/>
+        <map name="taxes"
+             table="taxes" cascade="all">
+            <key column="role_id"/>
+
+            <map-key column="surety_type">
+                <type name = "org.hibernate.type.EnumType" >
+                    <param name="enumClass" >model.insurance.SuretyType</param>
+                </type>
+            </map-key>
+            <element column="value" type="java.lang.Double"/>
+        </map>
+        <map name="commissions"
+             table="commisions" cascade="all">
+            <key column="role_id"/>
+
+            <map-key column="surety_type">
+                <type name = "org.hibernate.type.EnumType" >
+                    <param name="enumClass" >model.insurance.SuretyType</param>
+                </type>
+            </map-key>
+            <element column="value" type="java.lang.Double"/>
+        </map>
     </class>
 </hibernate-mapping>

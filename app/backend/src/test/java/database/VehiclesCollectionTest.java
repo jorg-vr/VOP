@@ -43,8 +43,10 @@ public class VehiclesCollectionTest {
             a1 = addressDAO.create(new Address("streettest n1", "59", "town 1", "9999", "country 1"));
             c1 = customerDAO.create(new Customer(a1, "911", "customername 1", "btw123"));
             f1 = fleetDAO.create(new Fleet("fleet 1", c1, a1));
-            t1 = vehicleTypeDAO.create(new VehicleType("type 1", 2.5));
-            t2 = vehicleTypeDAO.create(new VehicleType("type 2", 3.5));
+//            t1 = vehicleTypeDAO.create(new VehicleType("type 1", 2.5));
+//            t2 = vehicleTypeDAO.create(new VehicleType("type 2", 3.5));
+            t1 = null;
+            t2 = null;
         } catch (Exception e) {
 
         }
@@ -57,8 +59,8 @@ public class VehiclesCollectionTest {
              CustomerDAO customerDAO = daoProvider.getCustomerDAO();
              FleetDAO fleetDAO = daoProvider.getFleetDAO();
              AddressDAO addressDAO = daoProvider.getAddressDao()) {
-            vehicleTypeDAO.remove(t2.getUuid());
-            vehicleTypeDAO.remove(t1.getUuid());
+            //vehicleTypeDAO.remove(t2.getUuid());
+            //vehicleTypeDAO.remove(t1.getUuid());
             fleetDAO.remove(f1.getUuid());
             customerDAO.remove(c1.getUuid());
             addressDAO.remove(a1.getUuid());
