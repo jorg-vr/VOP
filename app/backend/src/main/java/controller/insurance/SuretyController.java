@@ -2,6 +2,7 @@ package controller.insurance;
 
 import controller.AbstractController;
 import dao.interfaces.DAO;
+import main.BackendApplication;
 import model.account.Function;
 import model.account.Resource;
 import model.insurance.Surety;
@@ -12,7 +13,7 @@ import model.insurance.Surety;
 public class SuretyController extends AbstractController<Surety> {
 
     public SuretyController(Function function) {
-        super(null, Resource.INSURANCE, function);
+        super(BackendApplication.getProvider().getSuretyDao(), Resource.INSURANCE, function);
     }
 
     @Override

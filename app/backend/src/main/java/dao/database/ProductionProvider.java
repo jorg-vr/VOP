@@ -1,6 +1,7 @@
 package dao.database;
 
 import dao.interfaces.*;
+import model.insurance.Surety;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
@@ -100,6 +101,11 @@ public class ProductionProvider implements DAOProvider {
     @Override
     public ContractDAO getContractDao() {
         return new ProductionContractDAO(sessionFactory.openSession());
+    }
+
+    @Override
+    public SuretyDAO<Surety> getSuretyDao() {
+        return new ProductionSuretyDAO(sessionFactory.openSession());
     }
 
     @Override

@@ -28,6 +28,16 @@ public class RESTSurety extends RESTAbstractModel<Surety> {
 
     public RESTSurety(Surety surety) {
         super(surety.getUuid(), getProperty(PATH_SURETIES));
+        if (surety instanceof FlatSurety) {
+            FlatSurety flatSurety = (FlatSurety) surety;
+            this.isFlat = true;
+            this.premium = flatSurety.getPremium();
+        } else if (surety instanceof NonFlatSurety) {
+            NonFlatSurety nonFlatSurety = (NonFlatSurety) surety;
+            this.isFlat = true;
+            this.premium = nonFlatSurety.getMinPremium();
+            this.premiumPercentage = nonFlatSurety.getPremiumPercentage();
+        }
     }
 
     public RESTSurety(FlatSurety surety) {
@@ -55,5 +65,29 @@ public class RESTSurety extends RESTAbstractModel<Surety> {
             surety.setPremiumPercentage(premiumPercentage);
             return surety;
         }
+    }
+
+    public boolean isFlat() {
+        return isFlat;
+    }
+
+    public void setFlat(boolean flat) {
+        isFlat = flat;
+    }
+
+    public int getPremium() {
+        return premium;
+    }
+
+    public void setPremium(int premium) {
+        this.premium = premium;
+    }
+
+    public double getPremiumPercentage() {
+        return premiumPercentage;
+    }
+
+    public void setPremiumPercentage(double premiumPercentage) {
+        this.premiumPercentage = premiumPercentage;
     }
 }

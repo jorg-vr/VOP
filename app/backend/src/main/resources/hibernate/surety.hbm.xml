@@ -24,7 +24,7 @@
         <joined-subclass name="model.insurance.NonFlatSurety" table="flatsureties">
             <key column="surety_id"/>
             <property name="premiumPercentage" column="premium_percentage" type="double"/>
-            <property name="minPremium" column="minimum" type="double"/>
+            <property name="minPremium" column="minimum" type="int"/>
         </joined-subclass>
         <joined-subclass name="model.insurance.FlatSurety" table="nonflatsureties">
             <key column="surety_id"/>

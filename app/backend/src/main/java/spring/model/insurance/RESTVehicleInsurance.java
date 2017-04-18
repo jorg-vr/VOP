@@ -2,6 +2,7 @@ package spring.model.insurance;
 
 import controller.VehicleController;
 import controller.exceptions.UnAuthorizedException;
+import controller.insurance.SuretyController;
 import dao.interfaces.DataAccessException;
 import model.account.Function;
 import model.fleet.Vehicle;
@@ -34,7 +35,7 @@ public class RESTVehicleInsurance extends RESTAbstractModel<VehicleInsurance> {
     public RESTVehicleInsurance(VehicleInsurance insurance) {
         super(insurance.getUuid(), "TODO");
         vehicle = UUIDToNumberString(insurance.getVehicle().getUuid());
-        surety = "TODO";
+        surety = UUIDToNumberString(insurance.getSurety().getUuid());
         startDate = insurance.getStartDate();
         endDate = insurance.getEndDate();
         franchise = insurance.getFranchise();
@@ -50,7 +51,11 @@ public class RESTVehicleInsurance extends RESTAbstractModel<VehicleInsurance> {
         } catch (DataAccessException e) {
             throw new InvalidInputException("Vehicle with id " + vehicle + " does not exist");
         }
-        // TODO surety
+        try (SuretyController controller = new SuretyController(function)) {
+            insurance.setSurety(controller.get(toUUID(surety)));
+        } catch (DataAccessException e) {
+            throw new InvalidInputException("Surety with id " + surety + " does not exist");
+        }
         insurance.setStartDate(startDate);
         insurance.setEndDate(endDate);
         insurance.setFranchise(franchise);

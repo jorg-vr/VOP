@@ -1,5 +1,7 @@
 package dao.interfaces;
 
+import model.insurance.Surety;
+
 /**
  * DAO provider to get DAO's
  * Created by sam on 3/7/17.
@@ -55,6 +57,8 @@ public interface DAOProvider extends AutoCloseable {
     RoleDAO getRoleDAO();
 
     ContractDAO getContractDao();
+
+    SuretyDAO<Surety> getSuretyDao();
 
     NonFlatSuretyDAO getFlatSuretyDao();
 

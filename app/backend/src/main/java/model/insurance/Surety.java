@@ -29,7 +29,7 @@ public  abstract class Surety implements EditableObject {
 
     @Override
     public UUID getUuid() {
-        return null;
+        return uuid;
     }
 
     public void setUuid(UUID uuid) {
