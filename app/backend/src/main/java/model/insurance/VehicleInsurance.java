@@ -20,15 +20,37 @@ public class VehicleInsurance implements EditableObject {
     private LocalDateTime endDate;
 
     private Contract contract;
+
     /**
      * Franchise of the surety. This is the amount that has to be paid by the one who holds the surety.
      * This is a fixed amount.
      */
     private int franchise;
 
+    // Insured value in cents
     private int insuredValue;
 
     public VehicleInsurance() {
+    }
+
+    /**
+     * Calculates the cost of this insurance in eurocents
+     * @return the cost of this insurance in eurocents
+     */
+    public int calculateCost() {
+        int premium = surety.calculatePremium(insuredValue);
+        SuretyType suretyType = surety.getSuretyType();
+        int commission = (int) Math.round(premium * vehicle.getType().getCommission(suretyType));
+        return premium + commission;
+    }
+
+    /**
+     * Calculates the tax of this insurance in eurocents
+     * @return the tax of this insurance in eurocents
+     */
+    public int calculateTax() {
+        int premium = surety.calculatePremium(insuredValue);
+        return (int) Math.round(premium * vehicle.getType().getTax(surety.getSuretyType()));
     }
 
     public void setUuid(UUID uuid) {

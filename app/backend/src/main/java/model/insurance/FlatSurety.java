@@ -4,7 +4,14 @@ package model.insurance;
  * Created by jorg on 4/12/17.
  */
 public class FlatSurety extends Surety {
+
+    // In cents
     private int premium;
+
+    @Override
+    public int calculatePremium(int value) {
+        return premium;
+    }
 
     public int getPremium() {
         return premium;

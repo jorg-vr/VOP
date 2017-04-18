@@ -22,6 +22,8 @@ public class VehicleType implements EditableObject, java.io.Serializable {
     private Map<SuretyType,Double> commissions;
 
     public VehicleType() {
+        taxes = new HashMap<>();
+        commissions = new HashMap<>();
     }
 
     public VehicleType(String type){
@@ -72,8 +74,16 @@ public class VehicleType implements EditableObject, java.io.Serializable {
         return getTaxes().get(suretyType);
     }
 
+    public void setTax(SuretyType suretyType, double tax) {
+        taxes.put(suretyType, tax);
+    }
+
     public double getCommission(SuretyType suretyType){
-        return getCommissions().get(suretyType);
+        return commissions.get(suretyType);
+    }
+
+    public void setCommission(SuretyType suretyType, double commission) {
+        commissions.put(suretyType, commission);
     }
 
 

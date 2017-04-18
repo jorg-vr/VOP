@@ -3,6 +3,7 @@ package model.billing;
 import model.history.EditableObject;
 import model.identity.Company;
 import model.insurance.Contract;
+import model.insurance.VehicleInsurance;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -71,6 +72,29 @@ public class Invoice implements EditableObject, java.io.Serializable {
         this.contracts = new ArrayList<>();
     }
 
+    /**
+     * Calculate the total cost of this contract.
+     * @return sum of costs of insurances. expressed in cents
+     */
+    public int calculateCost() {
+        int totalCost = 0;
+        for (Contract contract: contracts) {
+            totalCost += contract.calculateCost();
+        }
+        return totalCost;
+    }
+
+    /**
+     * Calculate the total tax of this contract.
+     * @return sum of taxes of insurances. expressed in cents
+     */
+    public int calculateTax() {
+        int totalTax = 0;
+        for (Contract contract: contracts) {
+            totalTax += contract.calculateTax();
+        }
+        return totalTax;
+    }
     @Override
     public EditableObject copy() {
         return null;

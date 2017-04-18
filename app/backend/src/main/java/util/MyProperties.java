@@ -26,6 +26,9 @@ public class MyProperties {
     public static final String PATH_COMPANIES = "path.companies";
 
     public static final String PATH_SURETIES = "path.sureties";
+    public static final String PATH_VEHICLE_INSURANCES = "path.vehicle_insurances";
+    public static final String PATH_CONTRACTS = "path.contracts";
+
 
 
     private static final String APPLICATION_PROPERTIES = "application.properties";
