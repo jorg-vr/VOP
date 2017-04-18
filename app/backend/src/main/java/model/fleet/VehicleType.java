@@ -64,6 +64,7 @@ public class VehicleType implements EditableObject, java.io.Serializable {
     }
 
     public double getTax(SuretyType suretyType){
+        if (suretyType == null) return 0.05;
         return getTaxes().get(suretyType);
     }
 
@@ -72,6 +73,7 @@ public class VehicleType implements EditableObject, java.io.Serializable {
     }
 
     public double getCommission(SuretyType suretyType){
+        if (suretyType == null) return 0.05;
         return commissions.get(suretyType);
     }
 

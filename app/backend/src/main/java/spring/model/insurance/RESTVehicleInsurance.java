@@ -2,6 +2,7 @@ package spring.model.insurance;
 
 import controller.VehicleController;
 import controller.exceptions.UnAuthorizedException;
+import controller.insurance.ContractController;
 import controller.insurance.SuretyController;
 import dao.interfaces.DataAccessException;
 import model.account.Function;
@@ -23,6 +24,7 @@ public class RESTVehicleInsurance extends RESTAbstractModel<VehicleInsurance> {
 
     private String vehicle;
     private String surety;
+    private String contract;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 
@@ -38,6 +40,7 @@ public class RESTVehicleInsurance extends RESTAbstractModel<VehicleInsurance> {
         super(insurance.getUuid(), getProperty(PATH_VEHICLE_INSURANCES));
         vehicle = UUIDToNumberString(insurance.getVehicle().getUuid());
         surety = UUIDToNumberString(insurance.getSurety().getUuid());
+        if (contract != null) contract = UUIDToNumberString(insurance.getContract().getUuid());
         startDate = insurance.getStartDate();
         endDate = insurance.getEndDate();
         franchise = insurance.getFranchise();
@@ -57,6 +60,11 @@ public class RESTVehicleInsurance extends RESTAbstractModel<VehicleInsurance> {
             insurance.setSurety(controller.get(toUUID(surety)));
         } catch (DataAccessException e) {
             throw new InvalidInputException("Surety with id " + surety + " does not exist");
+        }
+        try (ContractController controller = new ContractController(function)) {
+            insurance.setContract(controller.get(toUUID(contract)));
+        } catch (DataAccessException e) {
+            throw new InvalidInputException("Contract with id " + surety + " does not exist");
         }
         insurance.setStartDate(startDate);
         insurance.setEndDate(endDate);
@@ -79,6 +87,14 @@ public class RESTVehicleInsurance extends RESTAbstractModel<VehicleInsurance> {
 
     public void setSurety(String surety) {
         this.surety = surety;
+    }
+
+    public String getContract() {
+        return contract;
+    }
+
+    public void setContract(String contract) {
+        this.contract = contract;
     }
 
     public LocalDateTime getStartDate() {
