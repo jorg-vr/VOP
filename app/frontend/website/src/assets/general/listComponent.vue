@@ -9,7 +9,7 @@
 -->
 <template>
     <div :class="'row ' + rowClass" v-if="object">
-        <router-link :to="{name: this.show, params: {id: object.id}}">
+        <router-link :to="{name: this.show, params: {id: object.id, companyId: object.companyId}}">
             <div class="panel panel-default col-sm-10">
                 <div class="panel-body">
                     <table>
