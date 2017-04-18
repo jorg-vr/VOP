@@ -1,9 +1,7 @@
 package dao.database;
 
 import dao.interfaces.*;
-import model.account.*;
-import model.identity.Address;
-import model.identity.Customer;
+import model.insurance.Surety;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
@@ -106,8 +104,13 @@ public class ProductionProvider implements DAOProvider {
     }
 
     @Override
-    public FlatSuretyDAO getFlatSuretyDao() {
-        return new ProductionFlatSuretyDAO(sessionFactory.openSession());
+    public SuretyDAO<Surety> getSuretyDao() {
+        return new ProductionSuretyDAO(sessionFactory.openSession());
+    }
+
+    @Override
+    public NonFlatSuretyDAO getFlatSuretyDao() {
+        return new ProductionNonFlatSuretyDAO(sessionFactory.openSession());
     }
 
     @Override
@@ -116,8 +119,8 @@ public class ProductionProvider implements DAOProvider {
     }
 
     @Override
-    public NonFlatSuretyDAO getNonFlatSuretyDao() {
-        return new ProductionNonFlatSuretyDAO(sessionFactory.openSession());
+    public FlatSuretyDAO getNonFlatSuretyDao() {
+        return new ProductionFlatSuretyDAO(sessionFactory.openSession());
     }
 
     @Override

@@ -2,6 +2,7 @@ package util;
 
 import org.springframework.context.annotation.Configuration;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
@@ -24,12 +25,29 @@ public class MyProperties {
 
     public static final String PATH_COMPANIES = "path.companies";
 
+    public static final String PATH_SURETIES = "path.sureties";
 
-    private static final String APPLICATION_PROPERTIES = "src/main/resources/application.properties";
 
-    private static Properties properties;
+    private static final String APPLICATION_PROPERTIES = "application.properties";
+
+    private static MyProperties myProperties;
+    private Properties properties;
+
+
+    private MyProperties() {
+        properties = new Properties();
+        try {
+            properties.load(getClass().getClassLoader().getResourceAsStream(APPLICATION_PROPERTIES));
+        } catch (IOException e) {
+            System.err.println("Could not read properties file: " + APPLICATION_PROPERTIES);
+            e.printStackTrace();
+        }
+    }
 
     public static String getProperty(String property) {
-            return "problem with properties";
+        if (myProperties == null) {
+            myProperties = new MyProperties();
         }
+        return myProperties.properties.getProperty(property);
+    }
 }
