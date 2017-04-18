@@ -31,8 +31,6 @@ import editInsurance from '../pages/insurance/edit.vue'
 import showInsurance from '../pages/insurance/show.vue'
 
 import indexInvoice from '../pages/invoice/index.vue'
-import newInvoice from '../pages/invoice/new.vue'
-import editInvoice from '../pages/invoice/edit.vue'
 import showInvoice from '../pages/invoice/show.vue'
 
 
@@ -75,9 +73,7 @@ export default [
 
             // invoice
             {path: 'invoices', name: 'invoices', component: indexInvoice},
-            {path: 'invoices/new', name: 'new_invoice', component: newInvoice},
-            {path: 'invoices/:id(\\d+)', name: 'invoice', component: showInvoice, props: true},
-            {path: 'invoices/:id(\\d+)/edit', name: 'edit_invoice', component: editInvoice, props: true},
+            {path: 'invoices/:id(\\d+)', name: 'invoice', component: showInvoice, props: true}
         ],
     },
     {path: '/login', name: login, component: login},

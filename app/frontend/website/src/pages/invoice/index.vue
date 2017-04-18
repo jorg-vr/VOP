@@ -7,9 +7,6 @@
         <div class="page-header">
             <h1>
                 {{$t("invoice.invoice") | capitalize }}
-                <button-link :route="{name: 'new_invoice'}" buttonClass="pull-right btn btn-md btn-primary btn-add">
-                    {{$t("common.add") | capitalize }} {{$t("invoice.invoice")}}
-                </button-link>
             </h1>
         </div>
         <invoice-search-bar @search="updateInvoices" @advancedSearch="updateInvoicesAdvanced"></invoice-search-bar>
