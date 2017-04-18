@@ -99,9 +99,13 @@ export default
             beneficiary: 'beneficiary',
             type: 'type',
             paid: 'paid',
-            startDate: 'startDate',
-            endDate: 'endDate',
-            contracts: 'contracts'
+            startDate: 'start date',
+            endDate: 'end date',
+            contracts: 'contracts',
+            facturationPeriod: 'facturation period',
+            paymentPeriod: 'payment period',
+            totalAmount: 'total amount',
+            export: 'export as pdf'
 
         }
     },
@@ -207,7 +211,11 @@ export default
             paid: 'betaald',
             startDate: 'start datum',
             endDate: 'eind datum',
-            contracts: 'verzekeringen'
+            contracts: 'verzekeringen',
+            facturationPeriod: 'facturatieperiode',
+            paymentPeriod: 'afrekeningsperiode',
+            totalAmount: 'totaalbedrag',
+            export: 'exporteer als pdf'
 
         }
     }
