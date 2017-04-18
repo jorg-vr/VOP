@@ -44,6 +44,6 @@ export default {
     },
     INVOICE: {
         name: 'invoice',
-        value: 'INVOICE'
+        value: 'BILLING'
     }
 }

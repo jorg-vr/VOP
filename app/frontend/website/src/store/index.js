@@ -35,7 +35,7 @@ let permissionResource = resourceModule.initializeModule(locations.PERMISSIONS, 
 let vehicleTypeResource = resourceModule.initializeModule(locations.VEHICLE_TYPE, 'vehicleType')
 let insuranceResource = resourceModule.initializeModule(locations.INSURANCE, 'insurance')
 
-let invoiceResource = resource.initializeModule(locations.INVOICE, 'invoice')
+let invoiceResource = resourceModule.initializeModule(locations.INVOICE, 'invoice')
 
 
 export default new Vuex.Store({
@@ -49,6 +49,7 @@ export default new Vuex.Store({
         permissionResource,
         vehicleTypeResource,
         insuranceResource,
+        invoiceResource,
         //The following modules provide additional functions for the previous resources (or are completely new modules).
         client,
         fleet,
