@@ -21,8 +21,8 @@ public class ProductionVehicleTypeDAOFiltersTest {
         ProductionProvider.initializeProvider("unittest");
         daoProvider = ProductionProvider.getInstance();
         vehicleTypeDAO = daoProvider.getVehicleTypeDAO();
-        t1 = vehicleTypeDAO.create(new VehicleType("type 1", 2.5));
-        t2 = vehicleTypeDAO.create(new VehicleType("type 2", 5.7));
+//        t1 = vehicleTypeDAO.create(new VehicleType("type 1", 2.5));
+//        t2 = vehicleTypeDAO.create(new VehicleType("type 2", 5.7));
     }
 
     //Gets executed after all tests have been run
