@@ -1,11 +1,14 @@
 package spring.model;
 
+import controller.CustomerController;
 import controller.exceptions.UnAuthorizedException;
+import dao.interfaces.DataAccessException;
 import model.account.Function;
 import model.billing.Invoice;
 import model.billing.InvoiceType;
 import model.history.EditEvent;
 import model.identity.Company;
+import spring.exceptions.InvalidInputException;
 import util.UUIDUtil;
 
 import java.time.LocalDateTime;
@@ -60,12 +63,29 @@ public class RESTInvoice extends RESTAbstractModel<Invoice> {
         setPaid(invoice.isPaid());
         setEndDate(invoice.getEndDate());
         setStartDate(invoice.getStartDate());
-
-        setTotalAmount();
+        setTotalAmount(invoice.calculateCost());
+        setTotalTax(invoice.calculateTax());
+        setPayer(UUIDUtil.UUIDToNumberString(invoice.getPayer().getUuid()));
     }
 
     @Override
     public Invoice translate(Function function) throws UnAuthorizedException {
+        Invoice invoice=new Invoice();
+        invoice.setUuid(UUIDUtil.toUUID(getId()));
+        invoice.setEndDate(getEndDate());
+        invoice.setStartDate(getStartDate());
+        invoice.setPaid(isPaid());
+        try(CustomerController customerController=new CustomerController(function)) {
+            invoice.setBeneficiary(customerController.get(UUIDUtil.toUUID(getBeneficiary())));
+        } catch (DataAccessException e) {
+            throw new InvalidInputException("benificiary");
+        }
+        try(CustomerController customerController=new CustomerController(function)) {
+            invoice.setPayer(customerController.get(UUIDUtil.toUUID(getPayer())));
+        } catch (DataAccessException e) {
+            throw new InvalidInputException("payer");
+        }
+        invoice.setType(InvoiceType.valueOf(getType()));
         return null;
     }
 

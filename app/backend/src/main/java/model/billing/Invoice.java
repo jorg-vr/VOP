@@ -165,15 +165,6 @@ public class Invoice implements EditableObject, java.io.Serializable {
         this.contracts = contracts;
     }
 
-    public  int getTotalAmount(){
-        for(Contract contract:contracts){
-
-        }
-    }
-
-    public  int getTotalTax(){
-
-    }
 
     @Override
     public boolean equals(Object o) {
