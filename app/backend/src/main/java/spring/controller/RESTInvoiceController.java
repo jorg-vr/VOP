@@ -1,7 +1,10 @@
 package spring.controller;
 
+import controller.ControllerFactory;
+import model.billing.Invoice;
 import org.springframework.web.bind.annotation.*;
 import spring.model.RESTInvoice;
+import spring.model.RESTModelFactory;
 import spring.model.RESTSchema;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,7 +16,15 @@ import java.util.Collection;
  */
 @RestController
 @RequestMapping("/${path.fleets}/{fleetId}/${path.invoices}")
-public class RESTInvoiceController extends RESTSimpleController {
+public class RESTInvoiceController extends RESTAbstractController<RESTInvoice,Invoice> {
+
+    /**
+     * @param controllerFactory should be able to create a new controller for type M
+     * @param factory           should be able to translate an object of type M to type R
+     */
+    public RESTInvoiceController() {
+        super(InvoiceC, RESTInvoice::new);
+    }
 
     @RequestMapping(method = RequestMethod.GET)
     public RESTSchema<RESTInvoice> getAll(@PathVariable String fleetId,

@@ -3,7 +3,10 @@ package spring.model;
 import controller.exceptions.UnAuthorizedException;
 import model.account.Function;
 import model.billing.Invoice;
+import model.billing.InvoiceType;
 import model.history.EditEvent;
+import model.identity.Company;
+import util.UUIDUtil;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -12,21 +15,39 @@ import java.util.UUID;
  * Created by Billie Devolder on 16/04/2017.
  */
 public class RESTInvoice extends RESTAbstractModel<Invoice> {
+    /**
+     * Company that has to pay the invoice/is the receiver of the invoice
+     */
+    private String payer;
 
-    // The ID of the fleet this invoice belongs to.
-    private String fleet;
+    /**
+     * company that the amount has to be paid to (should normally be Solvas but adding this just in case)
+     */
+    private String beneficiary;
 
-    // Shows if the invoice is paid or not.
-    private boolean paid;
-
-    // The total amount of money that has to be paid in this invoice.
-    private int totalAmount;
-
-    // The type of the invoice. The only possible values are billing or payment
+    /**
+     * Type of Invoice. Can be either a billing (monthly payments), a statement at the end of a billing period or a correction invoice
+     */
     private String type;
 
+    /**
+     * indicates whether a bail has been paid for already or is still awaiting payment.
+     */
+    private boolean paid;
+
+    /**
+     * start-date of the billing period the invoice applies to
+     */
     private LocalDateTime startDate;
+
+    /**
+     * end-date of the billing period the invoice applies to
+     */
     private LocalDateTime endDate;
+
+    private int totalAmount;
+
+    private int totalTax;
 
     public RESTInvoice() {
 
@@ -34,6 +55,13 @@ public class RESTInvoice extends RESTAbstractModel<Invoice> {
 
     public RESTInvoice(Invoice invoice) {
         super(invoice.getUuid(), "invoices");
+        setType(invoice.getType().toString());
+        setBeneficiary(UUIDUtil.UUIDToNumberString(invoice.getBeneficiary().getUuid()));
+        setPaid(invoice.isPaid());
+        setEndDate(invoice.getEndDate());
+        setStartDate(invoice.getStartDate());
+
+        setTotalAmount();
     }
 
     @Override
@@ -41,13 +69,6 @@ public class RESTInvoice extends RESTAbstractModel<Invoice> {
         return null;
     }
 
-    public String getFleet() {
-        return fleet;
-    }
-
-    public void setFleet(String fleet) {
-        this.fleet = fleet;
-    }
 
     public boolean isPaid() {
         return paid;
@@ -87,5 +108,29 @@ public class RESTInvoice extends RESTAbstractModel<Invoice> {
 
     public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
+    }
+
+    public String getPayer() {
+        return payer;
+    }
+
+    public void setPayer(String payer) {
+        this.payer = payer;
+    }
+
+    public String getBeneficiary() {
+        return beneficiary;
+    }
+
+    public void setBeneficiary(String beneficiary) {
+        this.beneficiary = beneficiary;
+    }
+
+    public int getTotalTax() {
+        return totalTax;
+    }
+
+    public void setTotalTax(int totalTax) {
+        this.totalTax = totalTax;
     }
 }
