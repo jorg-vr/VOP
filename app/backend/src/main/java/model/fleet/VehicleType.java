@@ -23,6 +23,10 @@ public class VehicleType implements EditableObject, java.io.Serializable {
     public VehicleType() {
     }
 
+    @Deprecated
+    public VehicleType(String type, double tax){
+
+    }
 
     public UUID getUuid() {
         return uuid;
