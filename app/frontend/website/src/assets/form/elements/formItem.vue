@@ -1,3 +1,9 @@
+<!--
+A generic component for user input in a form.
+
+@param label (optional): The label which should precede the HTML select item.
+-->
+
 <template>
     <div class="row">
         <div class="form-group">

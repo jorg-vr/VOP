@@ -1,22 +1,36 @@
-import * as locations from '../constants/locations'
+import * as locations from '../../constants/locations'
 import RequestHandler from '../../api/requestHandler'
 import Vue from 'vue'
 
 export default {
     state: {
-        subfleets: [],
-        filteredSubfleets: [],
+        subfleets: [], //A list of subfleets
+        filteredSubfleets: [], //A subset of the list of subfleets.
     },
     getters: {
+        /**
+         * Get the list of subfleets
+         * @param state
+         * @returns {Array}
+         */
         subfleets(state) {
             return state.subfleets
         },
 
+        /**
+         * Get a subset of the list of subfleets (Every subfleet is a list aswell, these lists can be subsets aswell of the original list.)
+         * @param state
+         * @returns {Array}
+         */
         filteredSubfleets(state) {
             return state.filteredSubfleets
         },
 
-        //Filter the vehicles of the subfleets
+        /**
+         * Filter the vehicles of the subfleets with the given value.
+         * @param state
+         * @param value
+         */
         getSubfleetsByAll: (state, getters) => (value) => {
             let filteredSubfleets = []
             for(let i=0; i<state.subfleets.length; i++){
@@ -25,6 +39,10 @@ export default {
             return filteredSubfleets
         },
 
+        /**
+         * Filter the vehicles of the subfleets with the given object.
+         * @param value
+         */
         getSubfleetsByAllAdvanced: (state, getters) => (value) => {
             let filteredSubfleets = []
             for(let i=0; i<state.subfleets.length; i++){
@@ -34,42 +52,82 @@ export default {
         }
     },
     mutations: {
-        updateFilteredSubfleets(state, {subfleets}){
+        /**
+         * Sets the list of filtered subfleets
+         * @param state
+         * @param subfleets
+         */
+        setFilteredSubfleets(state, subfleets){
             state.filteredSubfleets = subfleets
         },
 
+        /**
+         * Clear the list of subfleets
+         * @param state
+         */
         clearSubfleets(state){
             state.subfleets = []
         },
 
+        /**
+         * Add a subfleets to the list of subfleets
+         * @param state
+         * @param subfleet
+         */
         addSubfleet(state, {subfleet}){
-                state.subfleets.push(subfleet)
+            state.subfleets.push(subfleet)
         },
 
-        addVehicleToSubfleets(state, {vehicle}){
+
+        /**
+         * Add a vehicle to the correct list of subfleets.
+         * @param state
+         * @param vehicle
+         */
+        addVehicleToSubfleet(state, {vehicle}){
             addVehicleToSubfleets(state.subfleets, vehicle)
-            addVehicleToSubfleets(state.filteredSubfleets, vehicle)
         },
 
-        removeVehicleFromSubfleets(state, {vehicle}){
+        /**
+         * Remove a vehicle from the correct list of subfleets.
+         * @param state
+         * @param vehicle
+         */
+        removeVehicleFromSubfleet(state, {vehicle}){
             removeVehicleFromSubfleets(state.subfleets, vehicle)
-            removeVehicleFromSubfleets(state.filteredSubfleets, vehicle)
         }
     },
     actions: {
+        /**
+         * Fetches all of the fleets of a particular client.
+         * @param context
+         * @param clientId
+         * @returns {Promise}
+         */
         fetchFleetsByClient(context, {clientId}){
             return new Promise(resolve => {
-                RequestHandler.getObjectsRequest(locations.FLEET + "?company=" + clientId).then(fleets => {
-                    context.commit('receiveFleets', {fleets})
+                RequestHandler.getObjectsRequestBy(locations.FLEET, {company: clientId}).then(fleets => {
+                    context.commit('setFleets', fleets)
+                    context.commit('setFilteredFleets', fleets)
                     resolve(fleets)
                 })
             })
         },
 
+        /**
+         * Adds the companyName property to the fleet which is currently in the store.
+         * @param context
+         * @param client The client of the fleet
+         */
         addClientName(context, {client}){
-            Vue.set(context.state.fleet, 'companyName', client.name)
+            Vue.set(context.getters.fleet , 'companyName', client.name)
         },
 
+        /**
+         * Adds the companyName property to the list of fleets currently in the store.
+         * @param context
+         * @param clients: A list of all of the clients.
+         */
         addClientNames(context, {clients}){
             let fleets = context.getters.fleets
             for(let i=0; i<fleets.length; i++){
@@ -82,6 +140,12 @@ export default {
             }
         },
 
+        /**
+         * Initialise a list of subfleets.
+         * @param context
+         * @param vehicles
+         * @param vehicleTypes: The types for all subfleets
+         */
         getSubfleets(context, {vehicles, vehicleTypes}){
             context.commit('clearSubfleets')
             for(let i=0; i < vehicleTypes.length; i++){
@@ -90,10 +154,16 @@ export default {
             for(let i=0; i < vehicles.length; i++) {
                 context.commit('addVehicleToSubfleet', {vehicle: vehicles[i]})
             }
+            context.commit('setFilteredSubfleets', context.getters.subfleets)
         },
     }
 }
 
+/**
+ * Add a vehicle to the given list of subfleets.
+ * @param subfleets
+ * @param vehicle
+ */
 let addVehicleToSubfleets = function(subfleets, vehicle){
     let finished = false
     for (let i = 0; i < subfleets.length && !finished; i++) {
@@ -104,6 +174,11 @@ let addVehicleToSubfleets = function(subfleets, vehicle){
     }
 }
 
+/**
+ * Remove a vehicle from the given list of subfleets.
+ * @param subfleets
+ * @param vehicle
+ */
 let removeVehicleFromSubfleets = function(subfleets, vehicle){
     for(let i=0; i<subfleets.length; i++){
         if(subfleets[i].type.id === vehicle.type){

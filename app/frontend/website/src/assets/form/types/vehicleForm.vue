@@ -1,49 +1,44 @@
 <!--
-    This is fleetForm.vue.vue for creating/updating a vehicle.
-    The form accepts the old vehicle and an update or create function.
+This page is used to show a form for a vehicle.
+
+@param actions: the action this form is intended for (create/update)
+@param oldVehicle (optional): The old vehicle if the form is intended to a update vehicle
+@param fleetId (optional): The fleetId of new/updated vehicle
 -->
 <template>
-    <form-component v-if="vehicle" @submit="proceed" :failroute="{name: 'fleet', params: {id: vehicle.fleet}}" :successButtonText="successButtonText" :failButtonText="failButtonText">
+    <form-component v-if="vehicle" :actions="actions" :resource="resource" :object="vehicle">
         <vehicle-form-input :vehicle="vehicle"></vehicle-form-input>
     </form-component>
 </template>
 <script>
+    import {mapActions} from 'vuex'
+    import resources from '../../../constants/resources'
     import formComponent from '../formComponent.vue'
     import vehicleFormInput from './vehicleFormInput.vue'
 
     export default {
+        data(){
+            return {
+                resource: resources.VEHICLE,
+            }
+        },
         components: {
             formComponent, vehicleFormInput
         },
         props: {
-            failButtonText: String,
-            successButtonText: String,
-            submit: Function, //Submit function to create/update the vehicle.
-            oldVehicle: Object, //Vehicle which should be created/updated with this form
-            fleetId: String
+            actions: Object,
+            fleetId: String,
+            oldVehicle: Object
         },
         computed: {
             vehicle(){
-                if(this.oldVehicle === undefined) {
+                if(this.oldVehicle === null) {
                     return {fleet: this.fleetId}
                 }
                 else {
                     return this.oldVehicle
                 }
             }
-        },
-        methods: {
-            proceed(){
-                this.submit(this.vehicle).then(vehicle => {
-                    if(vehicle.fleet){
-                        this.$router.push({name: 'fleet', params: {id: vehicle.fleet}})
-                    }
-                    else {
-                        this.$router.push({name: 'fleets'})
-                    }
-                })
-            }
         }
     }
-
 </script>

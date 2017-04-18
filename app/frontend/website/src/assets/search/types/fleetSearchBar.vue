@@ -1,6 +1,9 @@
+<!--
+Searchbar to search for fleets.
+-->
 <template>
     <search-bar @input="$emit('search', $event)" @submit="onSubmit(fleet)" @reset="$emit('search', '')"  :title="$t('fleet.fleets')">
-        <fleet-form-input :fleet="fleet" :clients="clients"></fleet-form-input>
+        <fleet-form-input :fleet="fleet" ></fleet-form-input>
     </search-bar>
 </template>
 <script>
@@ -14,9 +17,6 @@
         },
         components: {
             searchBar, fleetFormInput
-        },
-        props: {
-            clients: Array
         },
         methods: {
             onSubmit(value){

@@ -1,3 +1,6 @@
+<!--
+    Component in which most of the components will be rendered.
+-->
 <template>
     <div>
         <nav-bar></nav-bar>
@@ -14,7 +17,7 @@
     }
 </style>
 <script>
-    import NavBar from './assets/general/navBar.vue'
+    import NavBar from './assets/navbar/navBar.vue'
 
     export default {
         components: {

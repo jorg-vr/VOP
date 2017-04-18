@@ -1,39 +1,28 @@
 <!--
     This page is used to edit a certain user.
+
+    @param id: The id of the user which is edited.
+
+
 -->
 <template>
-    <div id="content-wrapper">
-        <div class="page-header">
-            <h1>{{ $t("user.user") | capitalize }} {{$t("actions_plural.edit") }}</h1>
-        </div>
-        <user-form :oldUser=user :submit="updateUser"></user-form>
-    </div>
+    <user-form-page :actions="actions" :id="id"></user-form-page>
 </template>
 <script>
-    import UserForm from '../../assets/form/types/userForm.vue'
-    import {mapGetters, mapActions} from 'vuex'
-
+    import UserFormPage from '../../assets/form/pages/UserFormPage.vue'
+    import actions from '../../constants/actions'
 
     export default {
+        data(){
+            return {
+                actions: actions.UPDATE
+            }
+        },
         components: {
-            UserForm
+            UserFormPage
         },
         props: {
             id: String
-        },
-        created(){
-            this.fetchUser({id: this.id})
-        },
-        computed: {
-            ...mapGetters([
-                'user'
-            ])
-        },
-        methods: {
-            ...mapActions([
-                'fetchUser',
-                'updateUser'
-            ])
         }
     }
 </script>

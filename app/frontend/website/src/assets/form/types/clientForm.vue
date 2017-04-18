@@ -1,40 +1,41 @@
 <!--
-    This page is used to generate a form for a user.
+This page is used to show a form for a client.
+
+@param actions: the action this form is intended for (create/update)
+@param oldClient (optional): The old client if the form is intended to a update client
 -->
 <template>
-    <form-component v-if="client" @submit="proceed" :failroute="{name: 'clients'}" :successButtonText="successButtonText" :failButtonText="failButtonText">
-        <client-form-input v-if="client.address" :client="client"></client-form-input>
+    <form-component v-if="client" :actions="actions" :resource="resource" :object="client">
+        <client-form-input :client="client"></client-form-input>
     </form-component>
 </template>
 <script>
+    import {mapActions} from 'vuex'
+    import resources from '../../../constants/resources'
     import formComponent from '../formComponent.vue'
     import clientFormInput from './clientFormInput.vue'
 
     export default {
+        data(){
+            return {
+                resource: resources.CLIENT,
+            }
+        },
         components: {
             formComponent, clientFormInput
         },
         props: {
-            failButtonText: String,
-            successButtonText: String,
-            submit: Function, //Function to create the fleet.
+            actions: Object,
             oldClient: Object
         },
         computed: {
             client(){
-                if(this.oldClient === undefined) {
+                if(this.oldClient === null) {
                     return {address: {}}
                 }
                 else {
                     return this.oldClient
                 }
-            }
-        },
-        methods: {
-            proceed(){
-                this.submit(this.client).then(() => {
-                    this.$router.push({name: 'clients'})
-                })
             }
         }
     }

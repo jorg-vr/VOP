@@ -1,5 +1,10 @@
+<!--
+    This page shows a certain vehicle in detail.
+
+    @param id: The id of the vehicle to be shown.
+-->
 <template>
-    <div>
+    <div v-if="vehicle">
         <div class="page-header">
             <h1> {{$t('vehicle.vehicle') | capitalize }} {{vehicle.licensePlate}}</h1>
         </div>
@@ -21,7 +26,7 @@
                     <td>{{$t('vehicle.model') | capitalize }}</td>
                     <td>{{vehicle.model}}</td>
                 </tr>
-                <tr>
+                <tr v-if="vehicleType">
                     <td>{{$t('vehicle.vehicleType') | capitalize }}</td>
                     <td>{{vehicleType.name}}</td>
                 </tr>

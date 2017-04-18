@@ -1,55 +1,54 @@
 <!--
-    This is a form for creating/updating a fleet.
-    The form accepts the old data and an update or create function.
+This page is used to show a form for a client.
+
+@param actions: the action this form is intended for (create/update)
+@param oldFleet (optional): The old client if the form is intended to a update fleet
+@param clientId (optional): The ID of the client who owns this fleet.
 -->
 <template>
-    <form-component v-if="fleet" @submit="proceed" :failroute="{name: 'fleets'}" :successButtonText="successButtonText" :failButtonText="failButtonText">
-        <fleet-form-input :clients=clients :fleet="fleet"></fleet-form-input>
+    <form-component v-if="fleet" :actions="actions" :resource="resource" :object="fleet">
+        <fleet-form-input :fleet="fleet"></fleet-form-input>
     </form-component>
 </template>
 <script>
+    import {mapGetters} from 'vuex'
+    import resources from '../../../constants/resources'
     import formComponent from '../formComponent.vue'
     import fleetFormInput from './fleetFormInput.vue'
-    import {mapGetters, mapActions} from 'vuex'
 
     export default {
+        data(){
+            return {
+                resource: resources.FLEET,
+            }
+        },
         components: {
             formComponent, fleetFormInput
         },
+        created(){
+            //If the user can only create/update fleets for his own company then the company can already be configured.
+            if(this.isAuthorizedForOwnResourcesButNotAll(this.resource, this.actions)){
+                this.fleet.company = this.activeFunction.company
+            }
+        },
         props: {
-            failButtonText: String,
-            successButtonText: String,
-            submit: Function, //Function to create the fleet.
+            actions: Object,
             oldFleet: Object,
             clientId: String
         },
-        created(){
-            this.fetchClients()
-        },
         computed: {
             ...mapGetters([
-                'clients'
+                'isAuthorizedForOwnResourcesButNotAll',
+                'activeFunction'
             ]),
-            fleet() {
-                if(this.oldFleet===undefined){
+            fleet(){
+                if(this.oldFleet === null) {
                     return {company: this.clientId}
                 }
                 else {
                     return this.oldFleet
                 }
             }
-        },
-        methods: {
-            ...mapActions([
-                'fetchClients'
-            ]),
-            proceed(){
-                this.submit(this.fleet).then(() => {
-                    this.$router.push({name: 'fleets'})
-                })
-
-            }
         }
-
     }
 </script>

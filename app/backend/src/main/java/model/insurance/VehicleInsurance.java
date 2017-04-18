@@ -18,6 +18,8 @@ public class VehicleInsurance implements EditableObject {
 
     private LocalDateTime startDate;
     private LocalDateTime endDate;
+
+    private Contract contract;
     /**
      * Franchise of the surety. This is the amount that has to be paid by the one who holds the surety.
      * This is a fixed amount.
@@ -79,6 +81,14 @@ public class VehicleInsurance implements EditableObject {
 
     public void setInsuredValue(int insuredValue) {
         this.insuredValue = insuredValue;
+    }
+
+    public Contract getContract() {
+        return contract;
+    }
+
+    public void setContract(Contract contract) {
+        this.contract = contract;
     }
 
     @Override

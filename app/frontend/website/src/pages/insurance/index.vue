@@ -5,34 +5,37 @@
 <template>
     <div class="col-lg-8 col-md-9 col-sm-11">
         <div class="page-header">
-            <h1>{{$t("insurance.insurances") | capitalize }}
-            <button-link :route="{name: 'new_insurance'}" buttonClass="pull-right btn btn-md btn-primary btn-add"> 
-            {{$t("common.add") | capitalize }} {{$t("insurance.insurance")}}
-            </button-link>
+            <h1>
+                {{$t("insurance.insurance") | capitalize}}
+               <button-add :resource="resource"></button-add>
             </h1>
         </div>
         <insurance-search-bar @search="updateInsurance" @advancedSearch="updateInsurancesAdvanced"></insurance-search-bar>
         <!-- Render an info-pane for every insurance. Once all the data is loaded, the table will be shown.-->
         <list-component v-for="insurance in filteredInsurances"
                         v-if="insurance"
+                        :resource="resource"
                         :object="insurance"
-                        :visibleKeys="new Array('type','vehicle')"
-                        :remove="deleteInsurance"
-                        edit="edit_insurance"
-                        show="insurance"
+                        :visibleKeys="['type','vehicle']"
                         :key="insurance.id">
         </list-component>
     </div>
 </template>
 <script>
     import { mapGetters, mapActions, mapMutations } from 'vuex'
+    import resources from '../../constants/resources'
     import listComponent from "../../assets/general/listComponent.vue"
-    import buttonLink from '../../assets/buttons/buttonLink.vue'
+    import buttonAdd from '../../assets/buttons/buttonAdd.vue'
     import insuranceSearchBar from '../../assets/search/types/insuranceSearchBar.vue'
 
     export default {
+        data(){
+            return {
+                resource: resources.INSURANCE
+            }
+        },
         components: {
-            listComponent, buttonLink, insuranceSearchBar
+            listComponent, buttonAdd, insuranceSearchBar
         },
         created() {
              this.fetchInsurances().then(insurances => {

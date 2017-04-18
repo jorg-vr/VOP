@@ -1,3 +1,6 @@
+<!--
+A collapsible form part of a searchbar. This form can be used for advanced searching objects.
+-->
 <template>
     <div class="panel-collapse collapse">
         <form class="form-horizontal collapse-form" @submit.prevent="onSubmit" @keyup.enter="onSubmit" role="form">

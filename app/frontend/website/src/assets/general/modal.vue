@@ -1,3 +1,7 @@
+<!--
+TODO: document this file
+-->
+
 <template>
 	<div class="modal-mask"  transition="modal">
 		<div class="modal-wrapper">
@@ -17,11 +21,6 @@
 		</div>
 	</div>
 </template>
-
-<script>
-	export default {}
-</script>
-
 <style scoped>
 
 

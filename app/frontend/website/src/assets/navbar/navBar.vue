@@ -20,21 +20,21 @@
                 <ul class="nav navbar-nav">
                      <!-- conditional group rendering for navbar links-->
                     <template v-if="hasActiveAccount">
-                    <li>
-                        <router-link :to="{name: 'fleets'}">{{$t("fleet.fleets") | capitalize}}</router-link>
-                    </li>
-                    <li>
-                        <router-link :to="{name: 'users'}">{{$t("user.users") | capitalize}}</router-link>
-                    </li>
-                    <li>
-                        <router-link :to="{name: 'clients'}">{{$t("client.clients") | capitalize}}</router-link>
-                    </li>
-                    <li>
-                        <router-link :to="{name: 'vehicles'}">{{$t("vehicle.vehicles") | capitalize}}</router-link>
-                    </li>
-                    <li>
-                        <router-link :to="{name: 'insurances'}"> {{$t("insurance.insurances") | capitalize}} </router-link>
-                    </li>
+                        <li>
+                            <resources-link :resource="resources.FLEET"></resources-link>
+                        </li>
+                        <li>
+                            <resources-link :resource="resources.USER"></resources-link>
+                        </li>
+                        <li>
+                            <resources-link :resource="resources.CLIENT"></resources-link>
+                        </li>
+                        <li>
+                            <resources-link :resource="resources.VEHICLE"></resources-link>
+                        </li>
+                        <li>
+                            <resources-link :resource="resources.INSURANCE"></resources-link>
+                        </li>
                     </template>
                 </ul><!-- /.navbar-nav -->
 
@@ -52,11 +52,11 @@
                     <template v-if="hasActiveAccount">
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" ariahaspopup="true" aria-expanded="false">
-                        {{account.email}}<span class="caret"></span></a>
+                        {{activeAccount.email}}<span class="caret"></span></a>
                         <ul class="dropdown-menu">  
                             <li role="separator" class="divider"></li>
                             <li>
-                                <a href="#">View account</a>
+                                <a href="#">View activeAccount</a>
                             </li>
                             <li>
                                 <a @click='confirmLogout()'> {{$t("login.logout") | capitalize }} </a>
@@ -71,17 +71,24 @@
 </template>
 <script>
 import { mapGetters, mapActions, mapMutations } from 'vuex'
+import resources from '../../constants/resources'
 import languagePicker from './languagePicker.vue'
 import functionPicker from './functionPicker.vue'
-import formSelect from '../../assets/form/elements/formSelect.vue'
+import formSelect from '../form/elements/formSelect.vue'
+import ResourcesLink from './ResourcesLink.vue'
 
     export default {
+        data(){
+            return {
+                resources: resources
+            }
+        },
         components: {
-            languagePicker, functionPicker, formSelect
+            languagePicker, functionPicker, formSelect, ResourcesLink
         },
         computed: {
             ...mapGetters([
-                'hasActiveAccount', 'account'
+                'hasActiveAccount', 'activeAccount'
             ])
         },
         methods:{

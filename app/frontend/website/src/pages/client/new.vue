@@ -1,27 +1,21 @@
 <!--
-    This page is used to create a new client based on userinput for a name, an address, a VAT number and a phone number.
+    This page is used to create a new client.
 -->
 <template>
-    <div id="content-wrapper">
-       <div class="page-header">
-         <h1>{{ $t("client.client") | capitalize }} {{$t("actions_plural.create") }}</h1>
-     </div>  
-     <client-form :successButtonText="$t('client.client').capitalize() + ' ' +  $t('actions_plural.create')" :failButtonText="$t('common.cancel').capitalize()"  :submit="createClient"></client-form>
- </div>
+    <client-form-page :actions="actions"></client-form-page>
 </template>
 <script>
-    import ClientForm from '../../assets/form/types/clientForm.vue'
-    import {mapActions} from 'vuex'
+    import ClientFormPage from '../../assets/form/pages/ClientFormPage.vue'
+    import actions from '../../constants/actions'
 
     export default {
-        components: {
-            ClientForm
+        data(){
+            return {
+                actions: actions.CREATE
+            }
         },
-        methods: {
-            ...mapActions([
-                'createClient'
-            ])
+        components: {
+            ClientFormPage
         }
     }
 </script>
-

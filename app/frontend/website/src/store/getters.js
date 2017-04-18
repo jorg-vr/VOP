@@ -1,9 +1,13 @@
 let nonAcceptedFilters = ['id', 'createdAt', 'lastUpdated', 'url', 'originalObject']
 
 export default {
-    finishedLoading(state){
-        return state.loading === false
-    },
+
+    /**
+     * Returns a subset of the given objects. Only the objects which have a property which is a substring of
+     * the given value are returned.
+     * @param objects: the list of objects to be filtered
+     * @param value: the value used for filtered
+     */
     filterByAll: () => (objects, value) => {
         let filteredObjects = []
         if(objects.length>0){
@@ -17,6 +21,12 @@ export default {
         return filteredObjects
     },
 
+    /**
+     * Returns a subset of the given objects. The objects of which its properties are substrings of the properties given
+     * by the object are returned.
+     * @param objects: the list of objects to be filtered
+     * @param value: the object used for filtered
+     */
     filterByAllAdvanced: () => (objects, object) => {
         let filteredObjects = []
         if(objects.length>0) {
@@ -26,6 +36,10 @@ export default {
     }
 }
 
+/**
+ * Remove doubles from an array
+ * @returns {Array.<*>}
+ */
 Array.prototype.unique = function() {
     var a = this.concat();
     for(var i=0; i<a.length; ++i) {
@@ -37,8 +51,11 @@ Array.prototype.unique = function() {
     return a;
 }
 
-//Returns if the values of this object equal (a part of) the values of the given object.
-//This is called recursively for nested objects.
+
+/**
+ * Returns if the values of this object equal (a part of) the values of the given object.
+ * This is called recursively for nested objects.
+ */
 Object.defineProperty(Object.prototype, 'hasPartialValues', {
     value: function(object){
         for(const property in object) {
@@ -68,12 +85,18 @@ Object.defineProperty(Object.prototype, 'hasPartialValues', {
     enumerable: false
 })
 
-/*
- objects: array of objects
- filteredObjects: array to which objects have to be concatenated
- object: the object which has the property
- property: the property which has to be checked
- value: the partial value for the property
+
+
+/**
+ * Concatenates a filtered list of objects to the filteredObjects list.
+ * The objects of which its property is a substring of the value given
+ * by object[property] are added to the filteredObjects list.
+ * @param objects: An array of objects
+ * @param filteredObjects: An array to which objects have to be concatenated
+ * @param object: The object which has the property
+ * @param property: The property which has to be checked
+ * @param value: The partial value for the property
+ * @returns {*}
  */
 let concatObjectsWithPartialValueForProperty = function(objects, filteredObjects, object, property, value){
     if(object.hasOwnProperty(property) && nonAcceptedFilters.indexOf(property)===-1){

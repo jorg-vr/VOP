@@ -1,3 +1,6 @@
+<!--
+Searchbar to search for users.
+-->
 <template>
     <search-bar @input="$emit('search', $event)" @submit="onSubmit(user)" @reset="$emit('search', '')"  :title="$t('user.users')">
         <user-form-input :user="user"></user-form-input>

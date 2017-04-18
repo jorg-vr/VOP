@@ -1,3 +1,9 @@
+<!--
+Special searchbar for searching vehicles, which only contains the advanced searching part of the searchbar (the form part).
+
+@param clients: A list of leasing companies.
+@param vehicleTypes: a list of possible vehicle types.
+-->
 <template>
     <div class="row search-bar">
         <button id="search-vehicle" type="button" class="btn btn-default btn-block" data-toggle="collapse" data-target=".panel-collapse" aria-expanded="false">

@@ -1,3 +1,8 @@
+<!--
+All of the fields for user input for the vehicle form
+
+@param vehicle: This object will be configured with the input of this component.
+-->
 <template>
     <div>
         <form-input :placeholder="$t('vehicle.licensePlate') | capitalize" :label="$t('vehicle.licensePlate') | capitalize"
@@ -29,6 +34,7 @@
 <script>
     import formInput from '../elements/formInput.vue'
     import formSelect from '../elements/formSelect.vue'
+    import clientTypes from '../../../constants/clientTypes'
     import {mapGetters, mapActions} from 'vuex'
 
     export default {
@@ -39,7 +45,8 @@
             formInput, formSelect
         },
         created(){
-            this.fetchClients()
+            //Fetch options for the select items.
+            this.fetchClientsWithType(clientTypes.LEASING_COMPANY)
             this.fetchVehicleTypes()
         },
         computed: {
@@ -49,12 +56,8 @@
             ])
         },
         methods: {
-            onSubmit(value){
-                this.$emit('advancedSearch', value)
-            },
-
             ...mapActions([
-                'fetchClients',
+                'fetchClientsWithType',
                 'fetchVehicleTypes'
             ])
         }

@@ -6,38 +6,37 @@
     <div class="col-lg-8 col-md-9 col-sm-11">
         <div class="page-header">
             <h1>
-                {{$t("user.users") | capitalize }}
-                <button-link :route="{name: 'new_user'}" buttonClass="pull-right btn btn-md btn-primary btn-add">
-                {{$t("common.add") | capitalize }} {{$t("user.user")}}</button-link>
+                {{$t("user.users") | capitalize}}
+               <button-add :resource="resource"></button-add>
             </h1>
         </div>
         <user-search-bar @search="updateUsers" @advancedSearch="updateUsersAdvanced"></user-search-bar>
         <!-- Render an info-pane for every user. Once all the data is loaded, the table will be shown.-->
         <list-component v-for="user in filteredUsers"
                         v-if="user"
+                        :resource="resource"
                         :object="user"
-                        :visibleKeys="new Array('firstName', 'lastName')"
-                        :remove="deleteUser"
-                        edit="edit_user"
-                        show="user"
+                        :visibleKeys="['firstName', 'lastName']"
                         :key="user.id">
         </list-component>
     </div>
 </template>
-<style>
-.btn-add {
-    margin-top: -2px;
-}
-</style>
+
 <script>
     import { mapGetters, mapActions, mapMutations } from 'vuex'
+    import resources from '../../constants/resources'
     import listComponent from "../../assets/general/listComponent.vue"
-    import buttonLink from '../../assets/buttons/buttonLink.vue'
+    import buttonAdd from '../../assets/buttons/buttonAdd.vue'
     import userSearchBar from '../../assets/search/types/userSearchBar.vue'
 
     export default {
+        data(){
+            return {
+                resource: resources.USER
+            }
+        },
         components: {
-            listComponent, buttonLink, userSearchBar
+            listComponent, buttonAdd, userSearchBar
         },
         created() {
             this.fetchUsers().then(users => {

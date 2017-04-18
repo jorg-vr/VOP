@@ -7,7 +7,6 @@ import VueI18n from 'vue-i18n'
 import routes from './config/routes'
 import locales from './lang/locales'
 import store from './store'
-
 import environments from './config/environments'
 
 //Routing support
@@ -16,6 +15,7 @@ Vue.use(VueRouter);
 Vue.use(VueResource);
 //Language support
 Vue.use(VueI18n);
+
 
 
 if(process.env.NODE_ENV){
@@ -48,8 +48,19 @@ router.beforeEach((to, from, next) => {
         if(token){
             store.commit('setAuthToken', {authToken: token})
             store.dispatch('refreshToken').then(() => {
-                next()
+                if(store.getters.hasPermissionForRoute(to.name)){
+                    next()
+                }
+                else {
+                    if(from.name !== null){
+                        next(false)
+                    }
+                    else {
+                        next({name: 'home'})
+                    }
+                }
             }, () => {
+                store.commit('setNextRoute' , {route: to})
                 next({path: '/login'});
             })
         }
@@ -58,19 +69,28 @@ router.beforeEach((to, from, next) => {
             next({path: '/login'});
         }
     }
+
 })
 
 String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
 }
 
+String.prototype.rtrim = function(s) {
+    return this.replace(new RegExp(s + "*$"),'');
+};
+
+String.prototype.plural = function() {
+    return this + 's'
+}
+
 Vue.filter('capitalize', function(value){
     return value.capitalize()
 })
-
 
 new Vue({
     store,
     router
 }).$mount('#app')
+
 

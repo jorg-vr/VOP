@@ -1,8 +1,11 @@
 <!--
-    This page shows a certain client in detail. 
+    This page shows a certain client in detail.
+
+    @param id: The id of the client to be shown.
+
 -->
 <template>
-    <div>
+    <div v-if="client && client.address">
         <div class="page-header">
             <h1>{{$t("client.client") | capitalize }}</h1>
         </div>
@@ -46,21 +49,27 @@
                             v-if="fleet"
                             :object="fleet"
                             :visibleKeys="new Array('name','companyName')"
-                            show="fleet"
+                            :resource="resource"
                             :key="fleet.id">
             </list-component>
             <button-back :route="{name: 'clients'}"></button-back>
-            <button-add :route="{name: 'new_fleet', params: {clientId: client.id}}"></button-add>
+            <button-add :resource="resource" :params="{clientId: client.id}"></button-add>
         </div>
     </div>
 </template>
 <script>
     import {mapGetters, mapActions} from 'vuex'
+    import resources from '../../constants/resources'
     import listComponent from "../../assets/general/listComponent.vue"
     import buttonBack from '../../assets/buttons/buttonBack.vue'
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
 
     export default {
+        data(){
+            return {
+                resource: resources.FLEET
+            }
+        },
         components: {
             buttonBack, listComponent, buttonAdd
         },

@@ -1,3 +1,6 @@
+/**
+ * A list of all translations for words used in the web application.
+ */
 export default
 {
     en : {
@@ -32,6 +35,11 @@ export default
             phoneNumber: 'phone number',
             vatNumber: 'VAT number'
         },
+        clientTypes: {
+            customer: "customer",
+            leasingCompany: "leasing company",
+            insuranceCompany: "insurance company"
+        },
         address: {
             country: 'country',
             address: 'address',
@@ -49,12 +57,9 @@ export default
             add: 'new'
         },
         actions: {
-            select: 'select',
-
-        },
-        actions_plural: {
-            create: 'create',
-            edit: 'edit'
+            select: 'select {subject}',
+            create: 'create {subject}',
+            update: 'edit {subject}'
         },
         search_bar: {
             search_for: 'Search for',
@@ -126,6 +131,11 @@ export default
             phoneNumber: 'telefoonnummer',
             vatNumber: 'BTW-nummer'
         },
+        clientTypes: {
+            customer: "klant",
+            leasingCompany: "leasing bedrijf",
+            insuranceCompany: "verzekeringsbedrijf"
+        },
         address: {
             country: 'land',
             address: 'adres',
@@ -135,7 +145,7 @@ export default
             houseNumber: 'huisnummer'
         },
         common: {
-            new: 'nieuw',
+            new: 'nieuwe',
             remove: 'verwijder',
             edit: 'wijzig',
             back: 'terug',
@@ -144,11 +154,9 @@ export default
             add: 'nieuwe'
         },
         actions: {
-            select: 'selecteer',
-        },
-        actions_plural: {
-            create: 'aanmaken',
-            edit: 'bewerken'
+            select: 'selecteer {subject}',
+            create: '{subject} aanmaken',
+            update: '{subject} bewerken'
         },
         search_bar: {
             search_for: 'Zoeken naar',

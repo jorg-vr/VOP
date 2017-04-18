@@ -1,3 +1,11 @@
+<!--
+A generic button which navigates to the given route once clicked.
+
+@param route: The route to navigate to once clicked.
+@param buttonClass (optional): The HTML class for this button
+@param buttonId (optional): The HTML id for this button
+-->
+
 <template>
     <router-link :to="route">
         <button type="button" :class="buttonClass" :id="buttonId">
@@ -11,6 +19,6 @@
             route: Object,
             buttonClass: String,
             buttonId: String
-        }
+        },
     }
 </script>
