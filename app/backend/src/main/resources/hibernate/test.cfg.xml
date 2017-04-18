@@ -28,8 +28,6 @@
         <mapping resource="hibernate/invoice.hbm.xml" />
         <mapping resource="hibernate/specialcondition.hbm.xml" />
         <mapping resource="hibernate/surety.hbm.xml" />
-        <mapping resource="hibernate/suretycommision.hbm.xml" />
-        <mapping resource="hibernate/suretytax.hbm.xml" />
         <mapping resource="hibernate/vehicleinsurance.hbm.xml" />
     </session-factory>
 </hibernate-configuration>

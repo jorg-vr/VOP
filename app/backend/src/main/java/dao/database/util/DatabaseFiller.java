@@ -11,9 +11,14 @@ import model.identity.Address;
 import model.identity.Customer;
 import model.identity.InsuranceCompany;
 import model.insurance.Contract;
+import model.insurance.SuretyType;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+
+import static model.insurance.SuretyType.*;
 
 /**
  * Created by sam on 4/13/17.
@@ -254,14 +259,45 @@ public class DatabaseFiller {
     }
 
     private void initVehicleTypes(DAOProvider provider) {
+        Map<SuretyType,Double> taxes=new HashMap<>();
+        taxes.put(CIVIL_LIABILITY,27.10);
+        taxes.put(OMNIUM_FULL,26.75);
+        taxes.put(OMNIUM_PARTIAL,26.75);
+        taxes.put(LEGAL_AID,16.75);
+        taxes.put(TRAVEL_AID,16.75);
+        taxes.put(SAFETY,16.75);
+        Map<SuretyType,Double> commissions=new HashMap<>();
+        commissions.put(CIVIL_LIABILITY,17.0);
+        commissions.put(OMNIUM_FULL,19.0);
+        commissions.put(OMNIUM_PARTIAL,19.0);
+        commissions.put(LEGAL_AID,25.0);
+        commissions.put(TRAVEL_AID,25.0);
+        commissions.put(SAFETY,19.0);
         try (VehicleTypeDAO dao = provider.getVehicleTypeDAO()) {
-            dao.create(new VehicleType("Personenwagens", 0));
-            dao.create(new VehicleType("Vrachauto", 0));
-            dao.create(new VehicleType("Vrachtauto (+12)", 0));
-            dao.create(new VehicleType("Lichte vrachtwagen", 0));
+            VehicleType vehicleType=new VehicleType();
+            vehicleType.setType("Personenwagen");
+            vehicleType.setCommissions(commissions);
+            vehicleType.setTaxes(taxes);
+            dao.create(vehicleType);
+            vehicleType=new VehicleType();
+            vehicleType.setType("Vrachauto");
+            vehicleType.setCommissions(commissions);
+            vehicleType.setTaxes(taxes);
+            dao.create(vehicleType);
+            vehicleType=new VehicleType();
+            vehicleType.setType("Vrachtauto (+12)");
+            vehicleType.setCommissions(commissions);
+            vehicleType.setTaxes(taxes);
+            dao.create(vehicleType);
+            vehicleType=new VehicleType();
+            vehicleType.setType("Lichte vrachtwagen");
+            vehicleType.setCommissions(commissions);
+            vehicleType.setTaxes(taxes);
+            dao.create(vehicleType);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
+
 }
