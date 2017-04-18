@@ -136,7 +136,8 @@ public class ProductionVehicleDAOTest {
 //        VehicleType t1 = vehicleTypeDAO.create(new VehicleType("type 1", 2.5));
 //        VehicleType t2 = vehicleTypeDAO.create(new VehicleType("type 2", 3.5));
         //add new vehicle to the database
-        Vehicle v1 = vehicleDao.create(new Vehicle("brand 2", "model A", "AZ0UZABCUKZ12345L", "ABR 569", 36000, 4900, t1, LocalDate.of(2015, 6, 17), fleet1, null));
+        //Vehicle v1 = vehicleDao.create(new Vehicle("brand 2", "model A", "AZ0UZABCUKZ12345L", "ABR 569", 36000, 4900, t1, LocalDate.of(2015, 6, 17), fleet1, null));
+        Vehicle v1 = vehicleDao.create(new Vehicle("brand 2", "model A", "AZ0UZABCUKZ12345L", "ABR 569", 36000, 4900, null, LocalDate.of(2015, 6, 17), fleet1, null));
         //try to update the vehicle's brand field in the database
         v1.setBrand("brand 3");
         v1.setModel("model B");
