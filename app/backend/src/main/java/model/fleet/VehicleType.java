@@ -2,9 +2,13 @@ package model.fleet;
 
 
 import model.history.EditableObject;
+import model.insurance.Surety;
+import model.insurance.SuretyType;
 import spring.exceptions.InvalidInputException;
 
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.atomic.DoubleAccumulator;
 
 public class VehicleType implements EditableObject, java.io.Serializable {
 
@@ -12,20 +16,16 @@ public class VehicleType implements EditableObject, java.io.Serializable {
 
     private String type;
 
-    // The tax in %
-    private double tax;
+
+    private Map<SuretyType,Double> taxes;
+    private Map<SuretyType,Double> commissions;
 
     public VehicleType() {
     }
 
-    public VehicleType(String type, double tax) {
-        this.type = type;
-        this.tax = tax;
-    }
+    @Deprecated
+    public VehicleType(String type, double tax){
 
-    public VehicleType(UUID uuid, String type, double tax) {
-        this(type, tax);
-        this.uuid = uuid;
     }
 
     public UUID getUuid() {
@@ -44,22 +44,31 @@ public class VehicleType implements EditableObject, java.io.Serializable {
         this.type = type;
     }
 
-    public double getTax() {
-        return tax;
+    public Map<SuretyType, Double> getTaxes() {
+        return taxes;
     }
 
-    /**
-     * set the tax value and checks if it is a valid percentage.
-     *
-     * @param tax road tax for the vehicle category
-     * @throws InvalidInputException if the given tax value is a negative value
-     */
-    public void setTax(double tax) throws InvalidInputException {
-        if (tax < 0) {
-            throw new InvalidInputException("Tax value has to be a positive percentage");
-        }
-        this.tax = tax;
+    public void setTaxes(Map<SuretyType, Double> taxes) {
+        this.taxes = taxes;
     }
+
+    public Map<SuretyType, Double> getCommissions() {
+        return commissions;
+    }
+
+    public void setCommissions(Map<SuretyType, Double> commissions) {
+        this.commissions = commissions;
+    }
+
+    public double getTax(SuretyType suretyType){
+        return getTaxes().get(suretyType);
+    }
+
+    public double getCommission(SuretyType suretyType){
+        return getCommissions().get(suretyType);
+    }
+
+
 
     @Override
     public boolean equals(Object o) {
@@ -87,6 +96,6 @@ public class VehicleType implements EditableObject, java.io.Serializable {
 
     @Override
     public EditableObject copy() {
-        return new VehicleType(uuid, type, tax);
+        return null;
     }
 }

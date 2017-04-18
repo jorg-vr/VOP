@@ -68,9 +68,7 @@ public interface DAOProvider extends AutoCloseable {
 
     SpecialConditionDAO getSpecialConditionDao();
 
-    SuretyCommisionDAO getSuretyCommisionDao();
 
-    SuretyTaxDAO getSuretyTaxDao();
 
     VehicleInsuranceDAO getVehicleInsuranceDao();
 
