@@ -4,30 +4,14 @@ package model.insurance;
  * Created by jorg on 4/12/17.
  */
 public class FlatSurety extends Surety {
+    private int premium;
 
-    /**
-     * percentage of value that has to be paid yearly
-     */
-
-    private double premiumPercentage;
-
-    private int minPremium;
-
-
-    public double getPremiumPercentage() {
-        return premiumPercentage;
+    public int getPremium() {
+        return premium;
     }
 
-    public void setPremiumPercentage(double premiumPercentage) {
-        this.premiumPercentage = premiumPercentage;
-    }
-
-    public int getMinPremium() {
-        return minPremium;
-    }
-
-    public void setMinPremium(int minPremium) {
-        this.minPremium = minPremium;
+    public void setPremium(int premium) {
+        this.premium = premium;
     }
 
     @Override

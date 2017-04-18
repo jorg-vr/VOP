@@ -2,6 +2,7 @@ package spring.model.insurance;
 
 import controller.VehicleController;
 import controller.exceptions.UnAuthorizedException;
+import controller.insurance.SuretyController;
 import dao.interfaces.DataAccessException;
 import model.account.Function;
 import model.fleet.Vehicle;
@@ -23,15 +24,22 @@ public class RESTVehicleInsurance extends RESTAbstractModel<VehicleInsurance> {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 
+    private int franchise;
+    private int insuredValue;
+    private int cost;
+    private int tax;
+
     public RESTVehicleInsurance() {
     }
 
     public RESTVehicleInsurance(VehicleInsurance insurance) {
         super(insurance.getUuid(), "TODO");
         vehicle = UUIDToNumberString(insurance.getVehicle().getUuid());
-        surety = "TODO";
+        surety = UUIDToNumberString(insurance.getSurety().getUuid());
         startDate = insurance.getStartDate();
         endDate = insurance.getEndDate();
+        franchise = insurance.getFranchise();
+        insuredValue = insurance.getInsuredValue();
     }
 
     @Override
@@ -43,9 +51,15 @@ public class RESTVehicleInsurance extends RESTAbstractModel<VehicleInsurance> {
         } catch (DataAccessException e) {
             throw new InvalidInputException("Vehicle with id " + vehicle + " does not exist");
         }
-        // TODO surety
+        try (SuretyController controller = new SuretyController(function)) {
+            insurance.setSurety(controller.get(toUUID(surety)));
+        } catch (DataAccessException e) {
+            throw new InvalidInputException("Surety with id " + surety + " does not exist");
+        }
         insurance.setStartDate(startDate);
         insurance.setEndDate(endDate);
+        insurance.setFranchise(franchise);
+        insurance.setInsuredValue(insuredValue);
         return insurance;
     }
 
@@ -79,5 +93,37 @@ public class RESTVehicleInsurance extends RESTAbstractModel<VehicleInsurance> {
 
     public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
+    }
+
+    public int getFranchise() {
+        return franchise;
+    }
+
+    public void setFranchise(int franchise) {
+        this.franchise = franchise;
+    }
+
+    public int getInsuredValue() {
+        return insuredValue;
+    }
+
+    public void setInsuredValue(int insuredValue) {
+        this.insuredValue = insuredValue;
+    }
+
+    public int getCost() {
+        return cost;
+    }
+
+    public void setCost(int cost) {
+        this.cost = cost;
+    }
+
+    public int getTax() {
+        return tax;
+    }
+
+    public void setTax(int tax) {
+        this.tax = tax;
     }
 }
