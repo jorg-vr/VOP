@@ -10,8 +10,7 @@ import model.fleet.VehicleType;
 import model.identity.Address;
 import model.identity.Customer;
 import model.identity.InsuranceCompany;
-import model.insurance.Contract;
-import model.insurance.SuretyType;
+import model.insurance.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -50,14 +49,16 @@ public class DatabaseFiller {
              FleetDAO fleetDAO = provider.getFleetDAO();
              VehicleDAO vehicleDAO = provider.getVehicleDAO();
              VehicleTypeDAO typeDAO = provider.getVehicleTypeDAO();
-             ContractDAO contractDAO = provider.getContractDao()) {
+             ContractDAO contractDAO = provider.getContractDao();
+             SuretyDAO<Surety> suretyDAO = provider.getSuretyDao();
+             VehicleInsuranceDAO vehicleInsuranceDAO = provider.getVehicleInsuranceDao()) {
             for (int i = 1; i < 6; i++) {
                 Address address = new Address("mystreet", Integer.toString(i), "The town", "9850", "Belgium");
                 Customer customer = new Customer();
                 customer.setAddress(address);
                 customer.setName("Klant " + Integer.toString(i));
-                
-                Address address2 = new Address("mystreet",Integer.toString(i)+ Integer.toString(i), "The town", "9850", "Belgium");
+
+                Address address2 = new Address("mystreet", Integer.toString(i) + Integer.toString(i), "The town", "9850", "Belgium");
                 InsuranceCompany insuranceCompany = new InsuranceCompany();
                 insuranceCompany.setAddress(address);
                 insuranceCompany.setName("Verzekeringsmaatschappij " + Integer.toString(i));
@@ -67,6 +68,9 @@ public class DatabaseFiller {
                 contract.setCompany(insuranceCompany);
                 contract.setStartDate(LocalDateTime.now());
 
+                Surety flatSurety = new FlatSurety(100);
+                flatSurety.setSuretyType(SuretyType.OMNIUM_FULL);
+                suretyDAO.create(flatSurety);
 
                 addressDAO.create(address);
                 customerDAO.create(customer);
@@ -78,18 +82,26 @@ public class DatabaseFiller {
                     fleet.setOwner(customer);
                     fleet.setName("Vloot " + Integer.toString(j));
                     fleetDAO.create(fleet);
-                    for(VehicleType type : typeDAO.listFiltered()){
+                    for (VehicleType type : typeDAO.listFiltered()) {
                         for (int k = 0; k < 8; k++) {
                             Vehicle vehicle = new Vehicle();
                             vehicle.setFleet(fleet);
                             vehicle.setChassisNumber("AAAAAAAAAAAAAAAAA");
-                            vehicle.setMileage(k*10000);
+                            vehicle.setMileage(k * 10000);
                             vehicle.setBrand("Merk " + Integer.toString(k));
-                            vehicle.setLicensePlate("ABC-00"+Integer.toString(k));
+                            vehicle.setLicensePlate("ABC-00" + Integer.toString(k));
                             vehicle.setType(type);
                             vehicle.setModel("Model " + Integer.toString(k));
                             vehicle.setProductionDate(LocalDate.now());
                             vehicleDAO.create(vehicle);
+
+                            VehicleInsurance insurance = new VehicleInsurance();
+                            insurance.setContract(contract);
+                            insurance.setSurety(flatSurety);
+                            insurance.setVehicle(vehicle);
+                            insurance.setStartDate(LocalDateTime.now().minusMonths(10));
+                            insurance.setStartDate(LocalDateTime.now().plusMonths(10));
+                            vehicleInsuranceDAO.create(insurance);
                         }
                     }
 
@@ -259,37 +271,37 @@ public class DatabaseFiller {
     }
 
     private void initVehicleTypes(DAOProvider provider) {
-        Map<SuretyType,Double> taxes=new HashMap<>();
-        taxes.put(CIVIL_LIABILITY,27.10);
-        taxes.put(OMNIUM_FULL,26.75);
-        taxes.put(OMNIUM_PARTIAL,26.75);
-        taxes.put(LEGAL_AID,16.75);
-        taxes.put(TRAVEL_AID,16.75);
-        taxes.put(SAFETY,16.75);
-        Map<SuretyType,Double> commissions=new HashMap<>();
-        commissions.put(CIVIL_LIABILITY,17.0);
-        commissions.put(OMNIUM_FULL,19.0);
-        commissions.put(OMNIUM_PARTIAL,19.0);
-        commissions.put(LEGAL_AID,25.0);
-        commissions.put(TRAVEL_AID,25.0);
-        commissions.put(SAFETY,19.0);
+        Map<SuretyType, Double> taxes = new HashMap<>();
+        taxes.put(CIVIL_LIABILITY, 0.2710);
+        taxes.put(OMNIUM_FULL, 0.2675);
+        taxes.put(OMNIUM_PARTIAL, 0.2675);
+        taxes.put(LEGAL_AID, 0.1675);
+        taxes.put(TRAVEL_AID, 0.1675);
+        taxes.put(SAFETY, 0.1675);
+        Map<SuretyType, Double> commissions = new HashMap<>();
+        commissions.put(CIVIL_LIABILITY, 0.170);
+        commissions.put(OMNIUM_FULL, 0.190);
+        commissions.put(OMNIUM_PARTIAL, 0.190);
+        commissions.put(LEGAL_AID, 0.250);
+        commissions.put(TRAVEL_AID, 0.250);
+        commissions.put(SAFETY, 0.190);
         try (VehicleTypeDAO dao = provider.getVehicleTypeDAO()) {
-            VehicleType vehicleType=new VehicleType();
+            VehicleType vehicleType = new VehicleType();
             vehicleType.setType("Personenwagen");
             vehicleType.setCommissions(commissions);
             vehicleType.setTaxes(taxes);
             dao.create(vehicleType);
-            vehicleType=new VehicleType();
+            vehicleType = new VehicleType();
             vehicleType.setType("Vrachauto");
             vehicleType.setCommissions(commissions);
             vehicleType.setTaxes(taxes);
             dao.create(vehicleType);
-            vehicleType=new VehicleType();
+            vehicleType = new VehicleType();
             vehicleType.setType("Vrachtauto (+12)");
             vehicleType.setCommissions(commissions);
             vehicleType.setTaxes(taxes);
             dao.create(vehicleType);
-            vehicleType=new VehicleType();
+            vehicleType = new VehicleType();
             vehicleType.setType("Lichte vrachtwagen");
             vehicleType.setCommissions(commissions);
             vehicleType.setTaxes(taxes);
