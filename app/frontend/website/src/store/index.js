@@ -5,6 +5,8 @@ import client from './modules/client'
 import fleet from './modules/fleet'
 import vehicle from './modules/vehicle'
 import login from './modules/login'
+import invoice from './modules/invoice'
+
 import currentUser from './modules/currentUser'
 
 import resourceModule from './resourceModule'
@@ -22,6 +24,7 @@ Vue.use(Vuex)
 
 
 //Basic operations for each resource
+
 let fleetResource = resourceModule.initializeModule(locations.FLEET, 'fleet')
 let vehicleResource = resourceModule.initializeModule(locations.VEHICLE, 'vehicle')
 let clientResource = resourceModule.initializeModule(locations.CLIENT, 'client')
@@ -31,6 +34,8 @@ let roleResource = resourceModule.initializeModule(locations.ROLE, 'role')
 let permissionResource = resourceModule.initializeModule(locations.PERMISSIONS, 'permission')
 let vehicleTypeResource = resourceModule.initializeModule(locations.VEHICLE_TYPE, 'vehicleType')
 let insuranceResource = resourceModule.initializeModule(locations.INSURANCE, 'insurance')
+
+let invoiceResource = resource.initializeModule(locations.INVOICE, 'invoice')
 
 
 export default new Vuex.Store({
@@ -49,7 +54,8 @@ export default new Vuex.Store({
         fleet,
         vehicle,
         login,
-        currentUser
+        currentUser,
+        invoice
     },
     state,
     getters,
