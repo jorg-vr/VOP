@@ -19,7 +19,6 @@ import java.util.Collection;
  * Requests that are implemented in this class:
  *  1) POST /auth/login
  *  2) POST /auth/refresh
- *  3) GET /auth (this one should be removed after /user/me is implemented)
  */
 @RestController
 @RequestMapping("/${path.auth}")

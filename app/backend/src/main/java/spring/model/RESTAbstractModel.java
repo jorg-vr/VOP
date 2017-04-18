@@ -1,5 +1,6 @@
 package spring.model;
 
+import controller.exceptions.UnAuthorizedException;
 import model.account.Function;
 import model.history.EditEvent;
 import model.history.EditableObject;
@@ -43,7 +44,7 @@ public abstract class RESTAbstractModel<T extends EditableObject> {
         this(uuid, null, null, url);
     }
 
-    public abstract T translate(Function function);
+    public abstract T translate(Function function) throws UnAuthorizedException;
 
     public String getId() {
         return id;
