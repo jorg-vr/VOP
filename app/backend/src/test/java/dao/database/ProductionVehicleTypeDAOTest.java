@@ -3,7 +3,11 @@ package dao.database;
 import dao.interfaces.DAOProvider;
 import dao.interfaces.VehicleTypeDAO;
 import model.fleet.VehicleType;
+import model.insurance.SuretyType;
 import org.junit.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -31,7 +35,23 @@ public class ProductionVehicleTypeDAOTest {
         boolean removed = false;
         //test if a vehicle can be succesfully added to the database
         try (VehicleTypeDAO vehicleTypeDAO = daoProvider.getVehicleTypeDAO();) {
-            t1 = vehicleTypeDAO.create(new VehicleType("type 14", 6.7));
+            Map<SuretyType, Double> taxes = new HashMap<>();
+            taxes.put(SuretyType.CIVIL_LIABILITY, 1.0);
+            taxes.put(SuretyType.OMNIUM_FULL, 2.0);
+            taxes.put(SuretyType.OMNIUM_PARTIAL, 3.0);
+            taxes.put(SuretyType.LEGAL_AID, 4.0);
+            taxes.put(SuretyType.TRAVEL_AID, 5.0);
+            taxes.put(SuretyType.SAFETY, 6.0);
+
+            Map<SuretyType, Double> commissions = new HashMap<>();
+            commissions.put(SuretyType.CIVIL_LIABILITY, 1.0);
+            commissions.put(SuretyType.OMNIUM_FULL, 2.0);
+            commissions.put(SuretyType.OMNIUM_PARTIAL, 3.0);
+            commissions.put(SuretyType.LEGAL_AID, 4.0);
+            commissions.put(SuretyType.TRAVEL_AID, 5.0);
+            commissions.put(SuretyType.SAFETY, 6.0);
+
+            t1 = vehicleTypeDAO.create(new VehicleType("type 14", taxes, commissions));
         } catch (Exception e) {
             fail("Failed trying to create a new vehicleType");
         }
@@ -40,7 +60,8 @@ public class ProductionVehicleTypeDAOTest {
             if (t1 != null) {
                 VehicleType t2 = vehicleTypeDAO.get(t1.getUuid());
                 assertEquals("type field not equal", t1.getType(), t2.getType());
-                assertTrue("tax field not equal", t1.getTax() == t2.getTax());
+                assertEquals("taxes field not equal", t1.getTaxes(), t2.getTaxes());
+                assertEquals("commissions field not equal", t1.getCommissions(), t2.getCommissions());
                 present = true;
             }
         } catch (Exception e) {
@@ -73,11 +94,32 @@ public class ProductionVehicleTypeDAOTest {
     @Test
     public void update() throws Exception {
         try (VehicleTypeDAO vehicleTypeDAO = daoProvider.getVehicleTypeDAO();) {
-            VehicleType t1 = vehicleTypeDAO.create(new VehicleType("type 14", 6.7));
-            VehicleType t2 = vehicleTypeDAO.update(new VehicleType(t1.getUuid(), "type 15", 6.8));
+            VehicleType t1 = vehicleTypeDAO.create(new VehicleType("type 14"));
+            t1.setType("type 15");
+
+            Map<SuretyType, Double> taxes = new HashMap<>();
+            taxes.put(SuretyType.CIVIL_LIABILITY, 1.0);
+            taxes.put(SuretyType.OMNIUM_FULL, 2.0);
+            taxes.put(SuretyType.OMNIUM_PARTIAL, 3.0);
+            taxes.put(SuretyType.LEGAL_AID, 4.0);
+            taxes.put(SuretyType.TRAVEL_AID, 5.0);
+            taxes.put(SuretyType.SAFETY, 6.0);
+            t1.setTaxes(taxes);
+
+            Map<SuretyType, Double> commissions = new HashMap<>();
+            commissions.put(SuretyType.CIVIL_LIABILITY, 1.0);
+            commissions.put(SuretyType.OMNIUM_FULL, 2.0);
+            commissions.put(SuretyType.OMNIUM_PARTIAL, 3.0);
+            commissions.put(SuretyType.LEGAL_AID, 4.0);
+            commissions.put(SuretyType.TRAVEL_AID, 5.0);
+            commissions.put(SuretyType.SAFETY, 6.0);
+            t1.setCommissions(commissions);
+
+            vehicleTypeDAO.update(t1);
             VehicleType t3 = vehicleTypeDAO.get(t1.getUuid());
-            assertEquals("returned vehicleType object is not updated correctly", "type 15", t3.getType());
-            assertTrue("returned vehicleType object is not updated correctly", 6.8 == t3.getTax());
+            assertEquals("returned vehicleType object is not updated correctly", t1.getType(), t3.getType());
+            assertEquals("taxes field not updated correctly", t1.getTaxes(), t3.getTaxes());
+            assertEquals("commissions field not updated correctly", t1.getCommissions(), t3.getCommissions());
 
             vehicleTypeDAO.remove(t1.getUuid());
         }
