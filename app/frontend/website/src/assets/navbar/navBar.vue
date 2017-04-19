@@ -35,9 +35,6 @@
                         <li>
                             <resources-link :resource="resources.INSURANCE"></resources-link>
                         </li>
-                        <li>
-                            <resources-link :resource="resources.INVOICE"></resources-link>
-                        </li>
                     </template>
                 </ul><!-- /.navbar-nav -->
 
