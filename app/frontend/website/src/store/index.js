@@ -49,7 +49,7 @@ export default new Vuex.Store({
         permissionResource,
         vehicleTypeResource,
         insuranceResource,
-        invoiceResource,
+        // invoiceResource,
         //The following modules provide additional functions for the previous resources (or are completely new modules).
         client,
         fleet,

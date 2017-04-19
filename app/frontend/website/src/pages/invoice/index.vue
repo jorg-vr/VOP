@@ -12,6 +12,7 @@
        <list-component v-for="invoice in filteredInvoices"
                         v-if="invoice"
                         :object="invoice"
+                        :resource="resource"
                         :visibleKeys="new Array('companyName','startDate','endDate','type','totalAmount')"
                         show="invoice"
                         :key="invoice.id">
@@ -26,12 +27,18 @@
 </style>
 <script>
     import { mapGetters, mapActions, mapMutations } from 'vuex'
+    import resources from '../../constants/resources'
+    import actions from '../../constants/actions'
     import listComponent from "../../assets/general/listComponent.vue"
     import buttonLink from '../../assets/buttons/buttonLink.vue'
     import invoiceSearchBar from '../../assets/search/types/invoiceSearchBar.vue'
 
     export default {
-        components: {
+        data(){
+            return {
+                resource: resources.INVOICE
+            }
+        },components: {
             listComponent, buttonLink, invoiceSearchBar
         },
         created() {
