@@ -1,6 +1,7 @@
 package controller;
 
 import controller.exceptions.UnAuthorizedException;
+import dao.interfaces.CompanyDAO;
 import dao.interfaces.DAO;
 import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
@@ -8,6 +9,7 @@ import main.BackendApplication;
 import model.account.Function;
 import model.account.Resource;
 import model.identity.Company;
+import model.identity.CompanyType;
 import model.identity.Customer;
 
 import java.util.ArrayList;
@@ -29,11 +31,11 @@ public class CompanyController extends AbstractController<Company> {
     }
 
     public Collection<Company> getFiltered(String nameContains, String country,
-                                    String city, String postalCode,
-                                    String type) throws DataAccessException, UnAuthorizedException {
+                                    String city, String postalCode) throws DataAccessException, UnAuthorizedException {
+        CompanyDAO<Company> dao = (CompanyDAO<Company>) getDao();
         List<Filter<Company>> filters = new ArrayList<>();
-        return getAll(
-                BackendApplication.getProvider().getCompanyDAO().byName(nameContains)
-                );
+        return getDao().listFiltered(
+                dao.containsName(nameContains)
+        );
     }
 }

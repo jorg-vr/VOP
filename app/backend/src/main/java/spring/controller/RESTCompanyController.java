@@ -9,8 +9,10 @@ import controller.insurance.VehicleInsuranceController;
 import dao.interfaces.CustomerDAO;
 import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
+import model.fleet.VehicleType;
 import model.identity.Address;
 import model.identity.Company;
+import model.identity.CompanyType;
 import model.identity.Customer;
 import org.springframework.web.bind.annotation.*;
 import spring.exceptions.InvalidInputException;
@@ -62,8 +64,9 @@ public class RESTCompanyController extends RESTAbstractController<RESTCompany, C
                                        @RequestHeader(value = "Authorization") String token,
                                        @RequestHeader(value = "Function") String function) throws UnAuthorizedException {
         try (CompanyController controller = new CompanyController(verifyToken(token, function))) {
-            Collection<RESTCompany> restModels = controller.getFiltered(nameContains, country, city, postalCode, type)
+            Collection<RESTCompany> restModels = controller.getFiltered(nameContains, country, city, postalCode)
                     .stream()
+                    .filter(c -> type == null || c.getCompanyType() == CompanyType.valueOf(type))
                     .map(RESTCompany::new)
                     .collect(Collectors.toList());
             return new RESTSchema<>(restModels, page, limit, request);
