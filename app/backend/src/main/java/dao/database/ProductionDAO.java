@@ -108,13 +108,18 @@ public abstract class ProductionDAO<T extends EditableObject> implements DAO<T> 
     }
 
     protected Filter<T> filterEqual(String fieldName, Object object) {
+        if(object==null){
+            return () -> {};
+        }
         return () ->
                 getPredicates().add(getCriteriaBuilder().equal(getRoot().get(fieldName), object));
     }
 
     protected Filter<T> filterContains(String fieldName, String string) {
-        return () ->
-                getPredicates().add(getCriteriaBuilder().like(getRoot().get(fieldName), "%" + string + "%"));
+        if(string==null){
+            return ()->{};
+        }
+        return () -> getPredicates().add(getCriteriaBuilder().like(getRoot().get(fieldName), "%" + string + "%")) ;
 
     }
 

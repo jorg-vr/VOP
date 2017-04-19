@@ -152,4 +152,5 @@ public class ProductionProvider implements DAOProvider {
         StandardServiceRegistryBuilder.destroy(this.registry);
         provider = null;
     }
+
 }
