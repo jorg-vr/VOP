@@ -4,14 +4,10 @@
 <template>
     <div>
         <div class="page-header">
-            <h1>{{$t("invoice.invoice") | capitalize }}</h1>
+            <h1>{{$t("invoice.invoice") | capitalize }} {{client.name}}</h1>
         </div>
         <div class="col-md-8">
             <table class="table show-table">
-                <tr>
-                    <td>{{$t('invoice.payer') | capitalize }}</td>
-                    <td>{{client.name}}</td>
-                </tr>
                 <tr>
                     <td>{{$t('invoice.type') | capitalize }}</td>
                     <td>{{invoice.type}}</td>
@@ -67,11 +63,8 @@
             this.fetchInvoice({id:invoiceId,companyId:companyId});
 
             this.fetchClient({id: companyId});
-            // fetch all contracts for this company
-            // TODO
 
             this.fetchInsurancesByInvoice({id:invoiceId,companyId:companyId});
-
 
         },
         computed: {

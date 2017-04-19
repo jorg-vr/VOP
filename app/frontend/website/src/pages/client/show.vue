@@ -9,7 +9,7 @@
         <div class="page-header">
             <h1>
                 {{$t("client.client") | capitalize }}
-                <button-invoice  :companyId="client.id" ></button-invoice>
+                <button-invoice  :id="client.id" ></button-invoice>
             </h1>
 
         </div>

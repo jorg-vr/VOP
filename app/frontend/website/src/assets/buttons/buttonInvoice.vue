@@ -1,5 +1,5 @@
 <template>
-    <router-link :to="{name: 'invoices', params: {companyId: companyId}, companyId: companyId}">
+    <router-link :to="{name: 'invoices', params: {companyId: id}}">
         <button type="button" :class="'pull-right btn btn-primary btn-add ' + buttonClass" :id="buttonId">
             {{$t("invoice.invoices") | capitalize }}
         </button>
@@ -8,7 +8,7 @@
 <script>
     export default {
         props: {
-            companyId: String,
+            id: String,
             buttonClass: String,
             buttonId: String
         },

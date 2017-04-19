@@ -6,7 +6,7 @@
     <div class="col-lg-8 col-md-9 col-sm-11">
         <div class="page-header">
             <h1>
-                {{$t("invoice.invoices") | capitalize }}
+                {{$t("invoice.invoices") | capitalize }} {{client.name}}
             </h1>
         </div>
        <invoice-list-component v-for="invoice in invoices"
@@ -17,6 +17,7 @@
                         show="invoice"
                         :key="invoice.id">
         </invoice-list-component>
+        <button-back :route="{name: 'client'}"></button-back>
 
     </div>
 </template>
@@ -30,6 +31,7 @@
     import resources from '../../constants/resources'
     import actions from '../../constants/actions'
     import invoiceListComponent from "../../assets/general/invoiceListComponent.vue"
+    import buttonBack from '../../assets/buttons/buttonBack.vue'
 
     export default {
         data(){
@@ -37,23 +39,26 @@
                 resource: resources.INVOICE
             }
         },components: {
-            invoiceListComponent
+            invoiceListComponent,buttonBack
         },
         props: {
             companyId: String
         },
         created() {
-            this.fetchInvoicesByCompany({companyId: this.companyId, companyName: ""})
+            this.companyId=this.client.id //TODO is this good practice?
+            this.fetchInvoicesByCompany({companyId: this.companyId})
         },
         computed: {
             ...mapGetters([
                 'invoices',
                 'clients',
+                'client'
             ])
         },
         methods: {
             ...mapActions([
                 'fetchClients',
+                'fetchClient',
                 'fetchInvoicesByCompany',
             ]),
             ...mapMutations([
