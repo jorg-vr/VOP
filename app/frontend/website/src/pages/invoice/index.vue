@@ -13,7 +13,6 @@
                         v-if="invoice"
                         :object="invoice"
                         :resource="resource"
-                        :visibleKeys="new Array('startDate','endDate','type','totalAmount')"
                         show="invoice"
                         :key="invoice.id">
         </invoice-list-component>

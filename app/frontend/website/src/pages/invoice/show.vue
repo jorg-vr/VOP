@@ -17,7 +17,7 @@
                     <td>€ {{invoice.totalAmount}}</td>
                 </tr>
                 <tr>
-                    <td>{{$t('invoice.totalAmount') | capitalize }}</td>
+                    <td>{{$t('invoice.totalTax') | capitalize }}</td>
                     <td>€ {{invoice.totalTax}}</td>
                 </tr>
                 <tr>

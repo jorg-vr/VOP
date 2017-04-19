@@ -13,7 +13,9 @@ Component used for showing an object in a list.
                 <div class="panel-body">
                     <table>
                         <tr>
-                            <td v-for="value in values"> {{value}}</td>
+                            <td> {{showDate(object.startDate)}}</td>
+                            <td> {{showDate(object.endDate)}}</td>
+                            <td> {{object.totalAmount}}</td>
                         </tr>
                     </table>
                 </div>
@@ -62,6 +64,10 @@ Component used for showing an object in a list.
                 this.showModal=false
                 // remove object
                 this.$store.dispatch('delete' + this.resource.name.capitalize(), {id: this.object.id})
+            },
+            showDate: function (date) {
+                var d=new Date(date)
+                return d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear()
             }
         }
     }
