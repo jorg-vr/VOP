@@ -20,6 +20,7 @@
  * ====================
  * setResource(resource):  Sets the resource as the given resource
  * setResources(resources) : Sets the list of resources as the given resources
+ * clearResources(): Clears the list of resources and the filtered list of resources
  * setFilteredResources(resources): Sets the filtered list of resources as the given resources
  * removeResource(resource): Removes the given resource from the list of resources
  * ====================
@@ -56,6 +57,7 @@ export default {
         let setResources = 'set' + capNames
         let setResource = 'set' + capName
         let setFilteredResources = 'setFiltered' + capNames
+        let clearResources = 'clear' + capNames
         let removeResource = 'remove' + capName
         let fetchResource = 'fetch' + capName
         let fetchResources = 'fetch' + capNames
@@ -96,11 +98,17 @@ export default {
         module.mutations[setFilteredResources] = (state, payload) => {
             state[filteredNames] = payload
         }
+        module.mutations[clearResources] = (state) => {
+            state[names] = []
+            state[filteredNames] = []
+        }
         module.mutations[removeResource] = (state, payload) => {
             state[names] = state[names].filter(resource => resource.id !== payload.id)
             state[filteredNames] = state[filteredNames].filter(resource => resource.id !== payload.id)
         }
         module.actions[fetchResources] = (context) => {
+            //Empty the previous list of resources.
+            context.commit(clearResources)
             return new Promise((resolveSuccess, resolveFailure) => {
                 RequestHandler.getObjectsRequest(location).then(resources => {
                     context.commit(setResources, resources)
@@ -113,6 +121,8 @@ export default {
             })
         }
         module.actions[fetchResourcesBy] = (context, filters) => {
+            //Empty the previous list of resources.
+            context.commit(clearResources)
             return new Promise((resolveSuccess, resolveFailure) => {
                 RequestHandler.getObjectsRequestBy(location, filters).then(resources => {
                     context.commit(setResources, resources)
@@ -137,7 +147,6 @@ export default {
         module.actions[createResource] = (context, resource) => {
             return new Promise((resolveSuccess, resolveFailure) => {
                 RequestHandler.postObjectRequest(location, resource).then(createdResource => {
-                    context.commit(setResource, createdResource)
                     resolveSuccess(createdResource)
                 }, response => {
                     resolveFailure(response)
@@ -147,7 +156,6 @@ export default {
         module.actions[updateResource] = (context, resource) => {
             return new Promise((resolveSuccess, resolveFailure) => {
                 RequestHandler.putObjectRequest(location, resource).then(updatedResource => {
-                    context.commit(setResource, updatedResource)
                     resolveSuccess(updatedResource)
                 }, response => {
                     resolveFailure(response)

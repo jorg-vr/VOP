@@ -28,6 +28,9 @@ This page is used to show a form for a client.
             actions: Object,
             oldClient: Object
         },
+        created(){
+            console.log(this.oldClient)
+        },
         computed: {
             client(){
                 if(this.oldClient === null) {

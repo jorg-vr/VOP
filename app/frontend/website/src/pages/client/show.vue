@@ -16,6 +16,10 @@
                     <td>{{client.name}}</td>
                 </tr>
                 <tr>
+                    <td>Type</td>
+                    <td>{{type | capitalize}}</td>
+                </tr>
+                <tr>
                     <td>{{$t('address.country') | capitalize }}</td>
                     <td>{{client.address.country}}</td>
                 </tr>
@@ -60,6 +64,7 @@
 <script>
     import {mapGetters, mapActions} from 'vuex'
     import resources from '../../constants/resources'
+    import clientTypes from '../../constants/clientTypes'
     import listComponent from "../../assets/general/listComponent.vue"
     import buttonBack from '../../assets/buttons/buttonBack.vue'
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
@@ -67,7 +72,8 @@
     export default {
         data(){
             return {
-                resource: resources.FLEET
+                resource: resources.FLEET,
+                type: ''
             }
         },
         components: {
@@ -78,7 +84,9 @@
         },
         created(){
             let clientId = this.id
-            this.fetchClient({id: clientId})
+            this.fetchClient({id: clientId}).then(client => {
+                this.type = clientTypes[client.type]['name']
+            })
             this.fetchFleetsByClient({clientId: clientId})
         },
         computed: {

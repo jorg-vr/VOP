@@ -28,6 +28,7 @@ This page is used to edit or create a certain client.
             ClientForm
         },
         created(){
+            console.log(this.id)
             if(this.id){
                 this.fetchClient({id: this.id})
             }
