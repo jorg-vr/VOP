@@ -87,7 +87,7 @@
             this.fetchClient({id: clientId}).then(client => {
                 this.type = clientTypes[client.type]['name']
             })
-            this.fetchFleetsByClient({clientId: clientId})
+            this.fetchFleetsBy({client: clientId})
         },
         computed: {
             ...mapGetters([
@@ -98,7 +98,7 @@
         methods: {
             ...mapActions([
                 'fetchClient',
-                'fetchFleetsByClient'
+                'fetchFleetsBy'
             ])
         },
     }
