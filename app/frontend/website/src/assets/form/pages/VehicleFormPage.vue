@@ -16,13 +16,14 @@ This page is used to edit or create a certain fleet.
 <script>
     import VehicleForm from '../../../assets/form/types/vehicleForm.vue'
     import actions from '../../../constants/actions'
-    import {mapGetters, mapActions} from 'vuex'
+    import {mapActions} from 'vuex'
     import {getResourceActionText} from '../../../utils/utils'
 
     export default {
         data(){
             return {
                 title: getResourceActionText('vehicle', this.actions.name)
+                oldVehicle: null
             }
         },
         components: {
@@ -30,18 +31,15 @@ This page is used to edit or create a certain fleet.
         },
         created(){
             if(this.id){
-                this.fetchVehicle({id: this.id})
+                this.fetchVehicle({id: this.id}).then(vehicle => {
+                    this.oldVehicle = vehicle
+                })
             }
         },
         props: {
             id: String,
             fleetId: String,
             actions: Object //The action for this form.
-        },
-        computed: {
-            ...mapGetters([
-                'vehicle'
-            ])
         },
         methods: {
             ...mapActions([

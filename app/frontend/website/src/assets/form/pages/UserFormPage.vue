@@ -15,13 +15,14 @@ This page is used to edit or create a certain user.
 <script>
     import UserForm from '../../../assets/form/types/userForm.vue'
     import actions from '../../../constants/actions'
-    import {mapGetters, mapActions} from 'vuex'
+    import {mapActions} from 'vuex'
     import {getResourceActionText} from '../../../utils/utils'
 
     export default {
         data(){
             return {
-                title: getResourceActionText('user', this.actions.name)
+                title: getResourceActionText('user', this.actions.name),
+                oldUser: null
             }
         },
         components: {
@@ -29,18 +30,15 @@ This page is used to edit or create a certain user.
         },
         created(){
             if(this.id){
-                this.fetchUser({id: this.id})
+                this.fetchUser({id: this.id}).then(user => {
+                    this.oldUser = user
+                })
             }
         },
         props: {
             id: String,
             actions: Object //The action for this form.
-        },
-        computed: {
-            ...mapGetters([
-                'user'
-            ])
-        },
+        }
         methods: {
             ...mapActions([
                 'fetchUser',

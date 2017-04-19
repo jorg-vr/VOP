@@ -15,13 +15,14 @@ This page is used to edit or create a certain insurance.
 <script>
     import InsuranceForm from '../../../assets/form/types/insuranceForm.vue'
     import actions from '../../../constants/actions'
-    import {mapGetters, mapActions} from 'vuex'
+    import {mapActions} from 'vuex'
     import {getResourceActionText} from '../../../utils/utils'
 
     export default {
         data(){
             return {
                 title: getResourceActionText('insurance', this.actions.name)
+                oldInsurance: null
             }
         },
         components: {
@@ -29,17 +30,14 @@ This page is used to edit or create a certain insurance.
         },
         created(){
             if(this.id){
-                this.fetchInsurance({id: this.id})
+                this.fetchInsurance({id: this.id}).then(insurance => {
+                    this.oldInsurance = insurance
+                })
             }
         },
         props: {
             id: String,
             actions: Object //The action for this form.
-        },
-        computed: {
-            ...mapGetters([
-                'insurance'
-            ])
         },
         methods: {
             ...mapActions([

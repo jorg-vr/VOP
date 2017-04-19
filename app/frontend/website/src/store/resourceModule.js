@@ -151,6 +151,9 @@ export default {
                 }, response => {
                     resolveFailure(response)
                 })
+
+
+
             })
         }
         module.actions[updateResource] = (context, resource) => {
