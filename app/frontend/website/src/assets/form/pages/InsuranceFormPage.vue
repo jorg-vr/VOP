@@ -9,7 +9,7 @@ This page is used to edit or create a certain insurance.
         <div class="page-header">
             <h1>{{ title }}</h1>
         </div>
-        <insurance-form :actions="actions" :oldInsurance="insurance"></insurance-form>
+        <insurance-form :actions="actions" :oldInsurance="oldInsurance"></insurance-form>
     </div>
 </template>
 <script>
@@ -21,7 +21,7 @@ This page is used to edit or create a certain insurance.
     export default {
         data(){
             return {
-                title: getResourceActionText('insurance', this.actions.name)
+                title: getResourceActionText('insurance', this.actions.name),
                 oldInsurance: null
             }
         },
@@ -41,7 +41,7 @@ This page is used to edit or create a certain insurance.
         },
         methods: {
             ...mapActions([
-                'fetchInsurance',
+                'fetchInsurance'
             ])
         }
     }

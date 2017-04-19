@@ -9,7 +9,7 @@ This page is used to edit or create a certain user.
         <div class="page-header">
             <h1>{{ title }}</h1>
         </div>
-        <user-form :actions="actions" :oldUser="user"></user-form>
+        <user-form :actions="actions" :oldUser="oldUser"></user-form>
     </div>
 </template>
 <script>
@@ -38,10 +38,10 @@ This page is used to edit or create a certain user.
         props: {
             id: String,
             actions: Object //The action for this form.
-        }
+        },
         methods: {
             ...mapActions([
-                'fetchUser',
+                'fetchUser'
             ])
         }
     }

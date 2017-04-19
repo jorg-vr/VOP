@@ -9,7 +9,7 @@ This page is used to edit or create a certain fleet.
         <div class="page-header">
             <h1>{{ title }}</h1>
         </div>
-        <fleet-form :actions="actions" :oldFleet="fleet"></fleet-form>
+        <fleet-form :actions="actions" :oldFleet="oldFleet"></fleet-form>
     </div>
 </template>
 <script>
@@ -41,7 +41,7 @@ This page is used to edit or create a certain fleet.
         },
         methods: {
             ...mapActions([
-                'fetchFleet',
+                'fetchFleet'
             ])
         }
     }

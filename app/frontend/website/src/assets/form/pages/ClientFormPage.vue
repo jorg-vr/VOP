@@ -9,7 +9,7 @@ This page is used to edit or create a certain client.
         <div class="page-header">
             <h1>{{ title }}</h1>
         </div>
-        <client-form :actions="actions" :oldClient="client"></client-form>
+        <client-form :actions="actions" :oldClient="oldClient"></client-form>
     </div>
 </template>
 <script>
@@ -21,7 +21,7 @@ This page is used to edit or create a certain client.
     export default {
         data(){
             return {
-                title: getResourceActionText('client', this.actions.name)
+                title: getResourceActionText('client', this.actions.name),
                 oldClient: null
             }
         },
@@ -41,7 +41,7 @@ This page is used to edit or create a certain client.
         },
         methods: {
             ...mapActions([
-                'fetchClient',
+                'fetchClient'
             ])
         }
     }

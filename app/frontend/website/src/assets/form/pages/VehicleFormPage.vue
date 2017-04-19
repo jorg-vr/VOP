@@ -10,7 +10,7 @@ This page is used to edit or create a certain fleet.
         <div class="page-header">
             <h1>{{ title }}</h1>
         </div>
-        <vehicle-form :actions="actions" :oldVehicle="vehicle" :fleetId="fleetId"></vehicle-form>
+        <vehicle-form :actions="actions" :oldVehicle="oldVehicle" :fleetId="fleetId"></vehicle-form>
     </div>
 </template>
 <script>
@@ -22,7 +22,7 @@ This page is used to edit or create a certain fleet.
     export default {
         data(){
             return {
-                title: getResourceActionText('vehicle', this.actions.name)
+                title: getResourceActionText('vehicle', this.actions.name),
                 oldVehicle: null
             }
         },
@@ -43,7 +43,7 @@ This page is used to edit or create a certain fleet.
         },
         methods: {
             ...mapActions([
-                'fetchVehicle',
+                'fetchVehicle'
             ])
         }
     }
