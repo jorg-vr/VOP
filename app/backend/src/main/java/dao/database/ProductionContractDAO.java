@@ -30,12 +30,18 @@ public class ProductionContractDAO extends ProductionDAO<Contract> implements Co
 
     @Override
     public Filter<Contract> startsBefore(LocalDate date) {
+        if(date==null){
+            return ()->{};
+        }
         return () ->
                 getPredicates().add(getCriteriaBuilder().lessThanOrEqualTo(getRoot().<LocalDate>get("startDate"), date));
     }
 
     @Override
     public Filter<Contract> endsAfter(LocalDate date) {
+        if(date==null){
+            return ()->{};
+        }
         return () ->
                 getPredicates().add(getCriteriaBuilder().lessThanOrEqualTo(getRoot().<LocalDate>get("endDate"), date));
     }
