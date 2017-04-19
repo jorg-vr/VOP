@@ -11,7 +11,7 @@
         <!-- Render an info-pane for every vehicle. Once all the data is loaded, the table will be shown.-->
         <list-component v-for="vehicle in filteredVehicles"
                         v-if="vehicle"
-                        :resource="resource",
+                        :resource="resource"
                         :object="vehicle"
                         :visibleKeys="['brand','model', 'licensePlate']"
                         :key="vehicle.id">
