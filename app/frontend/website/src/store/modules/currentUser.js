@@ -157,7 +157,9 @@ export default {
         authenticate(context, credentials){
             return new Promise(resolve => {
                 RequestHandler.postObjectRequest(locations.LOGIN, credentials).then(response => {
-                    context.commit('setAuthToken', {authToken:response.bodyText});
+                    response.bodyText.promise.then(token => {
+                        context.commit('setAuthToken', {authToken: token})
+                    })
                 }, () =>  { //failure
                     resolve()
                 }).then(() => {
@@ -197,9 +199,7 @@ export default {
         fetchAccount(context){
             return new Promise(resolve => {
                 RequestHandler.getObjectRequest(locations.CURRENT_USER, '').then(activeAccount => {
-                    response.bodyText.promise.then(token => {
-                         context.commit('setAuthToken', {authToken: token})
-                    })
+                    context.commit('setActiveAccount', activeAccount)
                     let functionId = localStorage.getItem('functionId')
                     /**
                      * Check if the user has already chosen a functionId before.
