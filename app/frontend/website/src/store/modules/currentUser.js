@@ -180,7 +180,7 @@ export default {
                 RequestHandler.postObjectRequest(locations.REFRESH, {}).then(response => {
                     response.bodyText.promise.then(token => {
                         context.commit('setAuthToken', {authToken: token})
-                    })
+                                           })
                 }, () => { //failure
                     resolveFailure()
                 }).then(() => {

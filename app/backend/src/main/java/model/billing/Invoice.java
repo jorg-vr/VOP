@@ -165,6 +165,7 @@ public class Invoice implements EditableObject, java.io.Serializable {
         this.contracts = contracts;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

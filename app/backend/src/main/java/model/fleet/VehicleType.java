@@ -26,9 +26,16 @@ public class VehicleType implements EditableObject, java.io.Serializable {
         commissions = new HashMap<>();
     }
 
-    @Deprecated
-    public VehicleType(String type, double tax){
+    public VehicleType(String type){
+        this.type = type;
+        taxes = new HashMap<>();
+        commissions = new HashMap<>();
+    }
 
+    public VehicleType(String type, Map<SuretyType,Double> taxes, Map<SuretyType,Double> commissions){
+        this.type = type;
+        this.taxes = taxes;
+        this.commissions = commissions;
     }
 
     public UUID getUuid() {
