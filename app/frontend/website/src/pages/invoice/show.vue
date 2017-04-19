@@ -14,23 +14,23 @@
                 </tr>
                 <tr>
                     <td>{{$t('invoice.type') | capitalize }}</td>
-                    <td>{{invoice.invoice.type}}</td>
+                    <td>{{invoice.type}}</td>
                 </tr>
                  <tr>
                     <td>{{$t('invoice.totalAmount') | capitalize }}</td>
-                    <td>€ {{invoice.invoice.totalAmount}}</td>
+                    <td>€ {{invoice.totalAmount}}</td>
                 </tr>
                 <tr>
                     <td>{{$t('invoice.totalAmount') | capitalize }}</td>
-                    <td>€ {{invoice.invoice.totalTax}}</td>
+                    <td>€ {{invoice.totalTax}}</td>
                 </tr>
                 <tr>
                     <td>{{$t('invoice.startDate') | capitalize }}</td>
-                    <td>{{showDate(invoice.invoice.startDate)}}</td>
+                    <td>{{showDate(invoice.startDate)}}</td>
                 </tr>
                 <tr>
                     <td>{{$t('invoice.endDate') | capitalize }}</td>
-                    <td>{{showDate(invoice.invoice.endDate)}}</td>
+                    <td>{{showDate(invoice.endDate)}}</td>
                 </tr>
             </table>
             <h2>{{$t("invoice.contracts") | capitalize }}</h2>

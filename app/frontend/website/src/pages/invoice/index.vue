@@ -9,7 +9,7 @@
                 {{$t("invoice.invoice") | capitalize }}
             </h1>
         </div>
-       <invoice-list-component v-for="invoice in filteredInvoices"
+       <invoice-list-component v-for="invoice in invoices"
                         v-if="invoice"
                         :object="invoice"
                         :resource="resource"
@@ -30,8 +30,6 @@
     import resources from '../../constants/resources'
     import actions from '../../constants/actions'
     import invoiceListComponent from "../../assets/general/invoiceListComponent.vue"
-    import buttonLink from '../../assets/buttons/buttonLink.vue'
-    import invoiceSearchBar from '../../assets/search/types/invoiceSearchBar.vue'
 
     export default {
         data(){
@@ -39,17 +37,14 @@
                 resource: resources.INVOICE
             }
         },components: {
-            invoiceListComponent, buttonLink, invoiceSearchBar
+            invoiceListComponent
         },
         created() {
-            this.addInvoicesCompany({companyId: "268061485634136044516596255853882581666", companyName: ""})
+            this.fetchInvoicesByCompany({companyId: "268061485634136044516596255853882581666", companyName: ""})
         },
         computed: {
             ...mapGetters([
                 'invoices',
-                'filteredInvoices',
-                'getInvoiceByAll',
-                'getInvoicesByAllAdvanced',
                 // companies
                 'clients',
             ])
@@ -57,27 +52,11 @@
         methods: {
             ...mapActions([
                 'fetchClients',
-                'addInvoicesCompany',
+                'fetchInvoicesByCompany',
             ]),
             ...mapMutations([
                 'setFilteredClients'
-            ]),
-            // for search bar functionality
-            updateInvoices(value){
-                if(value!==''){
-                    this.setFilteredInvoices(this.getInvoiceByAll(value))
-                    console.log(value)
-                    console.log(this.filteredInvoices)
-                }
-                else {
-                    console.log('no search input')
-                    this.setFilteredInvoices(this.invoices)
-                }
-            },
-            updateInvoicesAdvanced(filterInvoice){
-                this.setFilteredInvoices(this.getInvoicesByAllAdvanced(filterInvoice))
-
-            }
+            ])
 
         }
     }
