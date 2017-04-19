@@ -4,16 +4,17 @@ import dao.database.ProductionProvider;
 import dao.interfaces.*;
 import model.account.*;
 import model.billing.Invoice;
+import model.billing.InvoiceType;
 import model.fleet.Fleet;
 import model.fleet.Vehicle;
 import model.fleet.VehicleType;
-import model.identity.Address;
-import model.identity.Customer;
-import model.identity.InsuranceCompany;
+import model.identity.*;
 import model.insurance.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,7 +52,19 @@ public class DatabaseFiller {
              VehicleTypeDAO typeDAO = provider.getVehicleTypeDAO();
              ContractDAO contractDAO = provider.getContractDao();
              SuretyDAO<Surety> suretyDAO = provider.getSuretyDao();
-             VehicleInsuranceDAO vehicleInsuranceDAO = provider.getVehicleInsuranceDao()) {
+             VehicleInsuranceDAO vehicleInsuranceDAO = provider.getVehicleInsuranceDao();
+             CompanyDAO<Company> companyDAO = provider.getCompanyDAO();
+             InvoiceDAO invoiceDAO = provider.getInvoiceDao()) {
+
+            Surety flatSurety = new FlatSurety(100);
+            flatSurety.setSuretyType(SuretyType.OMNIUM_FULL);
+            suretyDAO.create(flatSurety);
+
+            Company solvas = new Company();
+            solvas.setName("solvas");
+            solvas.setCompanyType(CompanyType.CUSTOMER);
+            companyDAO.create(solvas);
+
             for (int i = 1; i < 6; i++) {
                 Address address = new Address("mystreet", Integer.toString(i), "The town", "9850", "Belgium");
                 Customer customer = new Customer();
@@ -68,15 +81,24 @@ public class DatabaseFiller {
                 contract.setCompany(insuranceCompany);
                 contract.setStartDate(LocalDateTime.now());
 
-                Surety flatSurety = new FlatSurety(100);
-                flatSurety.setSuretyType(SuretyType.OMNIUM_FULL);
-                suretyDAO.create(flatSurety);
+
 
                 addressDAO.create(address);
                 customerDAO.create(customer);
                 addressDAO.create(address2);
                 insuranceCompanyDAO.create(insuranceCompany);
                 contractDAO.create(contract);
+
+                Invoice invoice = new Invoice();
+                invoice.setContracts(new ArrayList<Contract>(Arrays.asList(new Contract[]{contract})));
+                invoice.setBeneficiary(solvas);
+                invoice.setPayer(customer);
+                invoice.setPaid(false);
+                invoice.setStartDate(LocalDateTime.now().minusMonths(1));
+                invoice.setEndDate(LocalDateTime.now().plusMonths(1));
+                invoice.setType(InvoiceType.BILLING);
+                invoiceDAO.create(invoice);
+
                 for (int j = 1; j < 3; j++) {
                     Fleet fleet = new Fleet();
                     fleet.setOwner(customer);
@@ -161,7 +183,7 @@ public class DatabaseFiller {
             Address address = new Address("mystreet", "13", "The town", "9850", "Belgium");
             Customer customer = new Customer();
             customer.setAddress(address);
-            customer.setName("Solvas");
+            customer.setName("Solvas-both");
             function2.setCompany(customer);
 
 
