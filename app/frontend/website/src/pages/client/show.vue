@@ -5,11 +5,15 @@
 
 -->
 <template>
-    <div v-if="client && client.address">
+    <div v-if="client && client.address" class="col-lg-8 col-md-9 col-sm-11">
         <div class="page-header">
-            <h1>{{$t("client.client") | capitalize }}</h1>
+            <h1>
+                {{$t("client.client") | capitalize }}
+                <button-invoice  :companyId="client.id" ></button-invoice>
+            </h1>
+
         </div>
-        <div class="col-md-8">
+        <div >
             <table class="table show-table" v-if="client.address">
                 <tr>
                     <td>{{$t('client.name') | capitalize }}</td>
@@ -68,6 +72,7 @@
     import listComponent from "../../assets/general/listComponent.vue"
     import buttonBack from '../../assets/buttons/buttonBack.vue'
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
+    import buttonInvoice from '../../assets/buttons/buttonInvoice.vue'
 
     export default {
         data(){
@@ -77,7 +82,7 @@
             }
         },
         components: {
-            buttonBack, listComponent, buttonAdd
+            buttonBack, listComponent, buttonAdd, buttonInvoice
         },
         props: {
             id: String

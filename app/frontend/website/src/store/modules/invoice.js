@@ -61,16 +61,24 @@ export default {
 	actions:{
 		/* Add invoices from a company to all invoices -> GET /company/{id}/invoices
 		payload must consist of two fields: companyId and companyName. This is for fetching and display purposes */
-		fetchInvoicesByCompany(context, payload){
-			// used for local testing
-			//context.commit('addInvoices',{data:[{endDate:'2016-08-29',id:payload.companyId,paid:'false',startDate:'2016-08-01',totalAmount:'44',type:'billing'}], companyId:payload.companyId,companyName:payload.companyName})
-			return new Promise(resolve => {
-			                RequestHandler.getObjectsRequest(locations.CLIENT+payload.companyId+'/'+locations.INVOICE).then(invoices => {
-								//invoices are an Array
-			                    context.commit('setInvoices', invoices)
-			                    resolve(invoices)
-				})
-			})
+        fetchInvoicesByCompany(context, payload){
+            // used for local testing
+            //context.commit('addInvoices',{data:[{endDate:'2016-08-29',id:payload.companyId,paid:'false',startDate:'2016-08-01',totalAmount:'44',type:'billing'}], companyId:payload.companyId,companyName:payload.companyName})
+            return new Promise(resolve => {
+                RequestHandler.getObjectsRequest(locations.CLIENT+payload.companyId+'/'+locations.INVOICE).then(invoices => {
+                    //invoices are an Array
+                    context.commit('setInvoices', invoices)
+                    resolve(invoices)
+                })
+            })
+        },fetchInsurancesByInvoice(context, payload){
+            return new Promise(resolve => {
+                RequestHandler.getObjectsRequest(locations.CLIENT+payload.companyId+'/'+locations.INVOICE+payload.id+'/'+locations.INSURANCE).then(insurances => {
+                    //invoices are an Array
+                    context.commit('setInsurances', insurances)
+                    resolve(insurances)
+                })
+            })
         },
         // Get one invoice
         fetchInvoice(context, payload){

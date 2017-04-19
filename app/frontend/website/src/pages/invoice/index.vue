@@ -6,7 +6,7 @@
     <div class="col-lg-8 col-md-9 col-sm-11">
         <div class="page-header">
             <h1>
-                {{$t("invoice.invoice") | capitalize }}
+                {{$t("invoice.invoices") | capitalize }}
             </h1>
         </div>
        <invoice-list-component v-for="invoice in invoices"
@@ -43,16 +43,12 @@
             companyId: String
         },
         created() {
-            this.fetchInvoicesByCompany({companyId: this.companyId, companyName: ""});
-            this.filterInsurance.companyId=this.companyId
-            this.setFilteredInsurances(this.getInsurancesByAllAdvanced(this.filterInsurance))
+            this.fetchInvoicesByCompany({companyId: this.companyId, companyName: ""})
         },
         computed: {
             ...mapGetters([
                 'invoices',
-                'filteredInsurances',
                 'clients',
-                'getInsurancesByAllAdvanced'
             ])
         },
         methods: {
@@ -61,8 +57,7 @@
                 'fetchInvoicesByCompany',
             ]),
             ...mapMutations([
-                'setFilteredClients',
-                'setFilteredInsurances'
+                'setFilteredClients'
             ])
 
         }

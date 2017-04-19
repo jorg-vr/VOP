@@ -70,6 +70,8 @@
             // fetch all contracts for this company
             // TODO
 
+            this.fetchInsurancesByInvoice({id:invoiceId,companyId:companyId});
+
 
         },
         computed: {
@@ -82,7 +84,8 @@
         methods: {
             ...mapActions([
                     'fetchInvoice',
-                    'fetchClient'
+                    'fetchClient',
+                    'fetchInsurancesByInvoice'
             ]),
             showDate: function (date) {
                 var d=new Date(date)
