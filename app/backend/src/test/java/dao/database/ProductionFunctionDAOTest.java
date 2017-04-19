@@ -43,11 +43,8 @@ public class ProductionFunctionDAOTest {
         boolean present = false;
         boolean removed = false;
         //test if a function can be succesfully added to the database
-        try (AddressDAO addressDAO = daoProvider.getAddressDao();) {
-            adr1 = addressDAO.create(new Address("streettest n1", "59", "town 1", "9999", "country 1"));
-        } catch (Exception e) {
-            fail("Failed trying to create a new address");
-        }
+        adr1 = new Address("streettest n1", "59", "town 1", "9999", "country 1");
+
         try (CustomerDAO customerDAO = daoProvider.getCustomerDAO();) {
             cust1 = customerDAO.create(new Customer(adr1, "911", "customername 1", "btw123"));
         } catch (Exception e) {
@@ -117,9 +114,6 @@ public class ProductionFunctionDAOTest {
             if (cust1 != null) {
                 customerDAO.remove(cust1.getUuid());
             }
-            if (adr1 != null) {
-                addressDAO.remove(adr1.getUuid());
-            }
         }
     }
 
@@ -163,8 +157,6 @@ public class ProductionFunctionDAOTest {
             userDAO.remove(usr2.getUuid());
             customerDAO.remove(cust1.getUuid());
             customerDAO.remove(cust2.getUuid());
-            addressDAO.remove(adr1.getUuid());
-            addressDAO.remove(adr2.getUuid());
         }
     }
 }

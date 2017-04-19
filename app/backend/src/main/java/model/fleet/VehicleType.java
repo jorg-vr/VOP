@@ -91,7 +91,6 @@ public class VehicleType implements EditableObject, java.io.Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        System.out.println(o instanceof VehicleType);
         if (o == null || !(o instanceof VehicleType)) {
             return false;
         }
