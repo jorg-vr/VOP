@@ -3,6 +3,7 @@ package spring.model;
 import model.Factory;
 import model.account.Function;
 import model.identity.*;
+import spring.exceptions.InvalidInputException;
 import util.UUIDUtil;
 
 import java.util.HashMap;
@@ -51,7 +52,12 @@ public class RESTCompany extends RESTAbstractModel<Company> {
     }
 
     public Company translate(Function function) {
-        Company company = CompanyType.valueOf(type).getFactory().create();
+        Company company;
+        try {
+            company = CompanyType.valueOf(type).getFactory().create();
+        } catch (IllegalArgumentException e) {
+            throw new InvalidInputException(type + " is not a valid Company type");
+        }
         company.setName(getName());
         company.setBtwNumber(getVatNumber());
         company.setPhoneNumber(getPhoneNumber());
