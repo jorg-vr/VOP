@@ -37,7 +37,9 @@ public class RESTCompany extends RESTAbstractModel<Company> {
         if (addr != null) {
             this.address = new RESTAddress(addr);
         }
-        this.type = company.getCompanyType().toString();
+        if (company.getCompanyType() != null) {
+            this.type = company.getCompanyType().toString();
+        }
     }
 
     public RESTCompany(String id, String name, String vatNumber, String phoneNumber, RESTAddress address) {
