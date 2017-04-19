@@ -76,9 +76,10 @@ public class RESTVehicleController extends RESTAbstractController<RESTVehicle, V
             fleet = fleetId.get();
         }
 
+        /*
         if (vin != null || leasingCompany != null || year != null || type != null)
             throw new InvalidInputException("One or more filters are not implemented");
-
+        */
         try (VehicleController controller = new VehicleController(verifyToken(token, function))) {
 
             Fleet fleetObject = fleet != null ? new Fleet(toUUID(fleet)) : null;
