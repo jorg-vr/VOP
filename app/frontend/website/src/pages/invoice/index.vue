@@ -9,14 +9,14 @@
                 {{$t("invoice.invoice") | capitalize }}
             </h1>
         </div>
-       <list-component v-for="invoice in filteredInvoices"
+       <invoice-list-component v-for="invoice in filteredInvoices"
                         v-if="invoice"
                         :object="invoice"
                         :resource="resource"
-                        :visibleKeys="new Array('companyName','startDate','endDate','type','totalAmount')"
+                        :visibleKeys="new Array('startDate','endDate','type','totalAmount')"
                         show="invoice"
                         :key="invoice.id">
-        </list-component>
+        </invoice-list-component>
 
     </div>
 </template>
@@ -29,7 +29,7 @@
     import { mapGetters, mapActions, mapMutations } from 'vuex'
     import resources from '../../constants/resources'
     import actions from '../../constants/actions'
-    import listComponent from "../../assets/general/listComponent.vue"
+    import invoiceListComponent from "../../assets/general/invoiceListComponent.vue"
     import buttonLink from '../../assets/buttons/buttonLink.vue'
     import invoiceSearchBar from '../../assets/search/types/invoiceSearchBar.vue'
 
@@ -39,10 +39,10 @@
                 resource: resources.INVOICE
             }
         },components: {
-            listComponent, buttonLink, invoiceSearchBar
+            invoiceListComponent, buttonLink, invoiceSearchBar
         },
         created() {
-            this.addInvoicesCompany({companyId: "314638493889344791017097203248093678568", companyName: ""})
+            this.addInvoicesCompany({companyId: "268061485634136044516596255853882581666", companyName: ""})
         },
         computed: {
             ...mapGetters([

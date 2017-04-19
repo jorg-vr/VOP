@@ -78,7 +78,7 @@ export default {
         	console.log('API CALL NAAR: '+locations.CLIENT+payload.companyId+'/'+locations.INVOICE+payload.id)
             return new Promise(resolve => {
                 RequestHandler.getObjectRequest(locations.CLIENT+payload.companyId+'/'+locations.INVOICE, payload.id).then(invoice => {
-                    context.commit(setInvoice, {invoice})
+                    context.commit('setInvoice', {invoice})
                     resolve(invoice)
                 })
             })
@@ -88,7 +88,7 @@ export default {
         	console.log(locations.FLEET+payload.fleetId+'/'+locations.INVOICE+payload.id)
 			return new Promise(resolve => {
                 RequestHandler.getObjectRequest(locations.CLIENT+payload.companyId+locations.INVOICE+payload.id, '.pdf').then(invoice => {
-                    context.commit(setInvoice, {invoice})
+                    context.commit('setInvoice', {invoice})
                     resolve(invoice)
                 })
             })

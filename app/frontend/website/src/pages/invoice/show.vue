@@ -10,35 +10,27 @@
             <table class="table show-table">
                 <tr>
                     <td>{{$t('invoice.payer') | capitalize }}</td>
-                    <td>{{invoice.payer}}</td>
-                </tr>
-                <tr>
-                    <td>{{$t('invoice.beneficiary') | capitalize }}</td>
-                    <td>{{invoice.beneficiary}}</td>
+                    <td>{{client.name}}</td>
                 </tr>
                 <tr>
                     <td>{{$t('invoice.type') | capitalize }}</td>
-                    <td>{{invoice.type}}</td>
+                    <td>{{invoice.invoice.type}}</td>
                 </tr>
                  <tr>
                     <td>{{$t('invoice.totalAmount') | capitalize }}</td>
-                    <td>€ {{invoice.totalAmount}}</td>
+                    <td>€ {{invoice.invoice.totalAmount}}</td>
                 </tr>
                 <tr>
                     <td>{{$t('invoice.totalAmount') | capitalize }}</td>
-                    <td>€ {{invoice.totalTax}}</td>
-                </tr>
-                <tr>
-                    <td>{{$t('invoice.paid') | capitalize }}</td>
-                    <td>{{invoice.paid}}</td>
+                    <td>€ {{invoice.invoice.totalTax}}</td>
                 </tr>
                 <tr>
                     <td>{{$t('invoice.startDate') | capitalize }}</td>
-                    <td>{{invoice.startDate}}</td>
+                    <td>{{showDate(invoice.invoice.startDate)}}</td>
                 </tr>
                 <tr>
                     <td>{{$t('invoice.endDate') | capitalize }}</td>
-                    <td>{{invoice.endDate}}</td>
+                    <td>{{showDate(invoice.invoice.endDate)}}</td>
                 </tr>
             </table>
             <h2>{{$t("invoice.contracts") | capitalize }}</h2>
@@ -68,25 +60,34 @@
             companyId: String
         },
         created(){
-            console.log()
-            let invoiceId = this.id
-            let companyId= this.companyId
+            console.log();
+            let invoiceId = this.id;
+            let companyId= this.companyId;
             // fetch information about this invoice
-            this.fetchInvoice({id:invoiceId,companyId:companyId})
+            this.fetchInvoice({id:invoiceId,companyId:companyId});
+
+            this.fetchClient({id: companyId});
             // fetch all contracts for this company
             // TODO
+
 
         },
         computed: {
             ...mapGetters([
+                'client',
                 'invoice',
                 'insurances'
             ])
         },
         methods: {
             ...mapActions([
-                'fetchInvoice'
-            ])
+                    'fetchInvoice',
+                    'fetchClient'
+            ]),
+            showDate: function (date) {
+                var d=new Date(date)
+                return d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear()
+            }
         },
     }
 </script>
