@@ -40,11 +40,13 @@ public class RESTVehicleInsurance extends RESTAbstractModel<VehicleInsurance> {
         super(insurance.getUuid(), getProperty(PATH_VEHICLE_INSURANCES));
         vehicle = UUIDToNumberString(insurance.getVehicle().getUuid());
         surety = UUIDToNumberString(insurance.getSurety().getUuid());
-        if (contract != null) contract = UUIDToNumberString(insurance.getContract().getUuid());
+        contract = UUIDToNumberString(insurance.getContract().getUuid());
         startDate = insurance.getStartDate();
         endDate = insurance.getEndDate();
         franchise = insurance.getFranchise();
         insuredValue = insurance.getInsuredValue();
+        cost = insurance.calculateCost();
+        tax = insurance.calculateTax();
     }
 
     @Override
