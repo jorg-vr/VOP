@@ -47,7 +47,7 @@
                 })
             }
             else {
-                this.fetchFleetsByClient({clientId: this.activeFunction.company})
+                this.fetchFleetsBy({client: this.activeFunction.company})
             }
         },
 
@@ -76,7 +76,7 @@
                 'deleteFleet',
                 'fetchClients',
                 'addClientNames',
-                'fetchFleetsByClient'
+                'fetchFleetsBy'
             ]),
             ...mapMutations([
                 'setFilteredFleets'
