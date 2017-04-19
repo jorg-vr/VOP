@@ -56,14 +56,13 @@ public class RESTCompanyController extends RESTAbstractController<RESTCompany, C
     @RequestMapping(method = RequestMethod.GET)
     public RESTSchema<RESTCompany> get(HttpServletRequest request,
                                        Integer page, Integer limit,
-                                       @RequestParam(required = false) String nameContains,
-                                       @RequestParam(required = false) String country,
-                                       @RequestParam(required = false) String city,
-                                       @RequestParam(required = false) String postalCode,
+                                       String nameContains, String country,
+                                       String city, String postalCode,
+                                       String type,
                                        @RequestHeader(value = "Authorization") String token,
                                        @RequestHeader(value = "Function") String function) throws UnAuthorizedException {
         try (CompanyController controller = new CompanyController(verifyToken(token, function))) {
-            Collection<RESTCompany> restModels = controller.getAll()
+            Collection<RESTCompany> restModels = controller.getFiltered(nameContains, country, city, postalCode, type)
                     .stream()
                     .map(RESTCompany::new)
                     .collect(Collectors.toList());
