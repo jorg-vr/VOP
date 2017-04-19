@@ -31,12 +31,18 @@ public class ProductionInvoiceDAO extends ProductionDAO<Invoice> implements Invo
 
     @Override
     public Filter<Invoice> startsBefore(LocalDate date) {
+        if(date==null){
+            return ()->{};
+        }
         return () ->
                 getPredicates().add(getCriteriaBuilder().lessThanOrEqualTo(getRoot().<LocalDate>get("startDate"), date));
     }
 
     @Override
     public Filter<Invoice> endsAfter(LocalDate date) {
+        if(date==null){
+            return ()->{};
+        }
         return () ->
                 getPredicates().add(getCriteriaBuilder().lessThanOrEqualTo(getRoot().<LocalDate>get("endDate"), date));
     }

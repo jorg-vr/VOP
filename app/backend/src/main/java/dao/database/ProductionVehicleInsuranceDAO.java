@@ -25,12 +25,18 @@ public class ProductionVehicleInsuranceDAO extends ProductionDAO<VehicleInsuranc
 
     @Override
     public Filter<VehicleInsurance> startsBefore(LocalDate date) {
+        if(date==null){
+            return ()->{};
+        }
         return () ->
                 getPredicates().add(getCriteriaBuilder().lessThanOrEqualTo(getRoot().<LocalDate>get("startDate"), date));
     }
 
     @Override
     public Filter<VehicleInsurance> endsAfter(LocalDate date) {
+        if(date==null){
+            return ()->{};
+        }
         return () ->
                 getPredicates().add(getCriteriaBuilder().lessThanOrEqualTo(getRoot().<LocalDate>get("endDate"), date));
     }

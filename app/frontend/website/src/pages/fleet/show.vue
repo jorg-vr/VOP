@@ -6,9 +6,13 @@
 <template>
     <div v-if="fleet">
         <div class="page-header">
-            <h1>{{$t('fleet.fleet') | capitalize}} {{fleet.name}} <span v-if="fleet.companyName">- {{fleet.companyName }}</span> </h1>
+            <h1>{{fleet.name}} <span v-if="fleet.companyName">- {{fleet.companyName }}</span>
+                <button-add :resource="resource" :params="{fleetId: fleet.id}"></button-add>
+            </h1>
         </div>
         <vehicle-search-bar @search="updateSubfleets" @advancedSearch="updateSubfleetsAdvanced"></vehicle-search-bar>
+
+
         <div v-for="subfleet in filteredSubfleets">
             <div v-if="subfleet.vehicles.length > 0">
                 <h3>{{subfleet.type.name | capitalize }}</h3>
@@ -22,7 +26,6 @@
             </div>
         </div>
         <button-back :route="{name: 'fleets'}"></button-back>
-        <button-add :resource="resource" :params="{fleetId: fleet.id}"></button-add>
     </div>
 </template>
 <script>
