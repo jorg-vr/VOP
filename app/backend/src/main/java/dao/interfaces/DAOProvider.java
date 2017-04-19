@@ -1,5 +1,6 @@
 package dao.interfaces;
 
+import model.identity.Company;
 import model.insurance.Surety;
 
 /**
@@ -19,6 +20,8 @@ public interface DAOProvider extends AutoCloseable {
      * @return a CustomerDAO
      */
     CustomerDAO getCustomerDAO();
+
+    CompanyDAO<Company> getCompanyDAO();
 
     /**
      * Gets a FleetDAO
