@@ -39,14 +39,20 @@
         },components: {
             invoiceListComponent
         },
+        props: {
+            companyId: String
+        },
         created() {
-            this.fetchInvoicesByCompany({companyId: "268061485634136044516596255853882581666", companyName: ""})
+            this.fetchInvoicesByCompany({companyId: this.companyId, companyName: ""});
+            this.filterInsurance.companyId=this.companyId
+            this.setFilteredInsurances(this.getInsurancesByAllAdvanced(this.filterInsurance))
         },
         computed: {
             ...mapGetters([
                 'invoices',
-                // companies
+                'filteredInsurances',
                 'clients',
+                'getInsurancesByAllAdvanced'
             ])
         },
         methods: {
@@ -55,7 +61,8 @@
                 'fetchInvoicesByCompany',
             ]),
             ...mapMutations([
-                'setFilteredClients'
+                'setFilteredClients',
+                'setFilteredInsurances'
             ])
 
         }
