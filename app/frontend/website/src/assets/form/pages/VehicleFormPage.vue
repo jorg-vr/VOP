@@ -10,19 +10,20 @@ This page is used to edit or create a certain fleet.
         <div class="page-header">
             <h1>{{ title }}</h1>
         </div>
-        <vehicle-form :actions="actions" :oldVehicle="vehicle" :fleetId="fleetId"></vehicle-form>
+        <vehicle-form :actions="actions" :oldVehicle="oldVehicle" :fleetId="fleetId"></vehicle-form>
     </div>
 </template>
 <script>
     import VehicleForm from '../../../assets/form/types/vehicleForm.vue'
     import actions from '../../../constants/actions'
-    import {mapGetters, mapActions} from 'vuex'
+    import {mapActions} from 'vuex'
     import {getResourceActionText} from '../../../utils/utils'
 
     export default {
         data(){
             return {
-                title: getResourceActionText('vehicle', this.actions.name)
+                title: getResourceActionText('vehicle', this.actions.name),
+                oldVehicle: null
             }
         },
         components: {
@@ -30,7 +31,9 @@ This page is used to edit or create a certain fleet.
         },
         created(){
             if(this.id){
-                this.fetchVehicle({id: this.id})
+                this.fetchVehicle({id: this.id}).then(vehicle => {
+                    this.oldVehicle = vehicle
+                })
             }
         },
         props: {
@@ -38,14 +41,9 @@ This page is used to edit or create a certain fleet.
             fleetId: String,
             actions: Object //The action for this form.
         },
-        computed: {
-            ...mapGetters([
-                'vehicle'
-            ])
-        },
         methods: {
             ...mapActions([
-                'fetchVehicle',
+                'fetchVehicle'
             ])
         }
     }

@@ -26,8 +26,8 @@ public class ProductionCustomerDAOFiltersTest {
         try (AddressDAO addressDAO = daoProvider.getAddressDao();
              CustomerDAO customerDAO = daoProvider.getCustomerDAO();) {
 
-            a1 = addressDAO.create(new Address("streettest n1", "59", "town 1", "9999", "country 1"));
-            a2 = addressDAO.create(new Address("streettest n2", "60", "town 2", "99999", "country 2"));
+            a1 = new Address("streettest n1", "59", "town 1", "9999", "country 1");
+            a2 = new Address("streettest n2", "60", "town 2", "99999", "country 2");
             v1 = customerDAO.create(new Customer(a1, "911", "customername 1", "btw123"));
             v2 = customerDAO.create(new Customer(a1, "911", "customername 2", "btw123"));
             v3 = customerDAO.create(new Customer(a2, "912", "customername 2", "btw124"));
@@ -41,8 +41,6 @@ public class ProductionCustomerDAOFiltersTest {
             customerDAO.remove(v1.getUuid());
             customerDAO.remove(v2.getUuid());
             customerDAO.remove(v3.getUuid());
-            addressDAO.remove(a1.getUuid());
-            addressDAO.remove(a2.getUuid());
         }
         daoProvider.close();
     }

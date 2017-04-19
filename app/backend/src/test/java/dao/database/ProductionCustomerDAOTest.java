@@ -40,11 +40,8 @@ public class ProductionCustomerDAOTest {
         boolean present = false;
         boolean removed = false;
         //test if a customer can be succesfully added to the database
-        try (AddressDAO addressDAO = daoProvider.getAddressDao();) {
-            adr1 = addressDAO.create(new Address("streettest n1", "59", "town 1", "9999", "country 1"));
-        } catch (Exception e) {
-            fail("Failed trying to create a new address");
-        }
+        adr1 = new Address("streettest n1", "59", "town 1", "9999", "country 1");
+
         try (CustomerDAO customerDAO = daoProvider.getCustomerDAO();) {
             cust1 = customerDAO.create(new Customer(adr1, "911", "customername 1", "btw123"));
         } catch (Exception e) {
@@ -84,12 +81,6 @@ public class ProductionCustomerDAOTest {
         //In case the get method returns an exception when given a uuid that's not present in the database.
         catch (Exception e) {
             //Nothing because the test passed in this case
-        }
-        //make sure everything is removed from the database again
-        try (AddressDAO addressDAO = daoProvider.getAddressDao();) {
-            if (adr1 != null) {
-                addressDAO.remove(adr1.getUuid());
-            }
         }
     }
 

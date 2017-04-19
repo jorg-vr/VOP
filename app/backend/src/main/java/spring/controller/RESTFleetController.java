@@ -57,14 +57,16 @@ public class RESTFleetController extends RESTAbstractController<RESTFleet,Fleet>
             company = companyId.get();
         }
 
-        try(FleetController controller= new FleetController(verifyToken(token,function))) {
+        try(FleetController controller= new FleetController(verifyToken(token,function));
+            CustomerController customerController= new CustomerController(verifyToken(token,function))) {
 
             Collection<RESTFleet> restFleets = new ArrayList<>();
             Collection<Fleet> fleets;
+
+
             if (company != null) {
-                try(CustomerController customerController= new CustomerController(verifyToken(token,function))) {
-                    fleets = customerController.get(UUIDUtil.toUUID(company)).getFleets();
-                }
+                fleets = customerController.get(UUIDUtil.toUUID(company)).getFleets();
+
             } else {
                 fleets = controller.getAll();
             }

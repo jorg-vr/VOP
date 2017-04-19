@@ -3,7 +3,6 @@ import Vuex from 'vuex'
 
 import client from './modules/client'
 import fleet from './modules/fleet'
-import vehicle from './modules/vehicle'
 import login from './modules/login'
 import invoice from './modules/invoice'
 
@@ -53,7 +52,6 @@ export default new Vuex.Store({
         //The following modules provide additional functions for the previous resources (or are completely new modules).
         client,
         fleet,
-        vehicle,
         login,
         currentUser,
         invoice

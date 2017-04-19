@@ -45,6 +45,9 @@ All of the fields for user input for the client form
         },
         components: {
             formInput, clientTypeSelect
+        },
+        created(){
+            console.log(this.client)
         }
     }
 

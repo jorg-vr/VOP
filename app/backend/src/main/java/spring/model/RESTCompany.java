@@ -1,10 +1,13 @@
 package spring.model;
 
+import model.Factory;
 import model.account.Function;
-import model.identity.Address;
-import model.identity.Company;
-import model.identity.Customer;
+import model.identity.*;
+import spring.exceptions.InvalidInputException;
 import util.UUIDUtil;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static util.MyProperties.PATH_COMPANIES;
 import static util.MyProperties.getProperty;
@@ -12,12 +15,13 @@ import static util.MyProperties.getProperty;
 /**
  * This is a bean class as specified in the API specification
  */
-public class RESTCompany extends RESTAbstractModel<Customer>{
+public class RESTCompany extends RESTAbstractModel<Company> {
 
     private String name;
     private String vatNumber;
     private String phoneNumber;
     private RESTAddress address;
+    private String type;
 
     public RESTCompany() {
     }
@@ -34,6 +38,9 @@ public class RESTCompany extends RESTAbstractModel<Customer>{
         if (addr != null) {
             this.address = new RESTAddress(addr);
         }
+        if (company.getCompanyType() != null) {
+            this.type = company.getCompanyType().toString();
+        }
     }
 
     public RESTCompany(String id, String name, String vatNumber, String phoneNumber, RESTAddress address) {
@@ -44,14 +51,19 @@ public class RESTCompany extends RESTAbstractModel<Customer>{
         this.address = address;
     }
 
-    public Customer translate(Function function){
-        Customer customer= new Customer();
-        customer.setName(getName());
-        customer.setBtwNumber(getVatNumber());
-        customer.setPhoneNumber(getPhoneNumber());
-        customer.setAddress(getAddress().translate());
-        customer.setUuid(UUIDUtil.toUUID(getId()));
-        return customer;
+    public Company translate(Function function) {
+        Company company;
+        try {
+            company = CompanyType.valueOf(type).getFactory().create();
+        } catch (IllegalArgumentException e) {
+            throw new InvalidInputException(type + " is not a valid Company type");
+        }
+        company.setName(getName());
+        company.setBtwNumber(getVatNumber());
+        company.setPhoneNumber(getPhoneNumber());
+        company.setAddress(getAddress().translate());
+        company.setUuid(UUIDUtil.toUUID(getId()));
+        return company;
     }
 
     public String getName() {
@@ -86,6 +98,13 @@ public class RESTCompany extends RESTAbstractModel<Customer>{
         this.address = address;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 }
 
 
