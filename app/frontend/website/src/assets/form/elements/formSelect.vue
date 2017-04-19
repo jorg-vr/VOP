@@ -63,6 +63,7 @@ This component can be used to let the user select between a list of specified va
         },
         methods: {
             updateValue: function (value) {
+                console.log(value)
                 this.$emit('input', value);
             },
             reset(){
