@@ -25,8 +25,9 @@
  * ====================
  * ACTIONS:
  * ====================
- * fetchResource({id}): Fetches the resource with the given ID.
- * fetchResources(): Fetches all a list with all of the resources
+ * fetchResource({id}): Fetches the resource with the given ID
+ * fetchResources(): Fetches a list with all of the resources
+ * fetchResourcesBy(filters): Fetches a list with all of the resources filtered with the given filter object
  * createResource(resource): Creates a resource with the values of the given resource
  * updateResource(resource): Updates a resource with the values of the given resource
  * deleteResource({id}): Deletes the resource with the given ID
@@ -58,6 +59,7 @@ export default {
         let removeResource = 'remove' + capName
         let fetchResource = 'fetch' + capName
         let fetchResources = 'fetch' + capNames
+        let fetchResourcesBy = fetchResources + 'By'
         let createResource = 'create' + capName
         let updateResource = 'update' + capName
         let deleteResource = 'delete' + capName
@@ -101,6 +103,18 @@ export default {
         module.actions[fetchResources] = (context) => {
             return new Promise((resolveSuccess, resolveFailure) => {
                 RequestHandler.getObjectsRequest(location).then(resources => {
+                    context.commit(setResources, resources)
+                    //Initially the filtered resources should equal the actual resources.
+                    context.commit(setFilteredResources, resources)
+                    resolveSuccess(resources)
+                }, response => {
+                    resolveFailure(response)
+                })
+            })
+        }
+        module.actions[fetchResourcesBy] = (context, filters) => {
+            return new Promise((resolveSuccess, resolveFailure) => {
+                RequestHandler.getObjectsRequestBy(location, filters).then(resources => {
                     context.commit(setResources, resources)
                     //Initially the filtered resources should equal the actual resources.
                     context.commit(setFilteredResources, resources)
