@@ -27,21 +27,21 @@ public abstract class RESTSimpleController {
      */
     public Function verifyToken(String token, String functionId) throws UnAuthorizedException {
         try (AuthController authController = new AuthController()) {
-            if ( 1 == 2) throw new DataAccessException();
-            Function function = new Function();
-            Role role = new Role();
-            Map<Resource, Permission> rights = new HashMap<>();
-            for (Resource resource : Resource.values()) {
-                Permission permission = new Permission();
-                Set<Action> actionSet = new HashSet<>();
-                Collections.addAll(actionSet, Action.values());
-                permission.setActions(actionSet);
-                rights.put(resource, permission);
-            }
-            role.setRights(rights);
-            function.setRole(role);
-            return function;
-//            return authController.getFunction(new AuthenticationToken(token), UUIDUtil.toUUID(functionId));
+//            if ( 1 == 2) throw new DataAccessException();
+//            Function function = new Function();
+//            Role role = new Role();
+//            Map<Resource, Permission> rights = new HashMap<>();
+//            for (Resource resource : Resource.values()) {
+//                Permission permission = new Permission();
+//                Set<Action> actionSet = new HashSet<>();
+//                Collections.addAll(actionSet, Action.values());
+//                permission.setActions(actionSet);
+//                rights.put(resource, permission);
+//            }
+//            role.setRights(rights);
+//            function.setRole(role);
+//            return function;
+            return authController.getFunction(new AuthenticationToken(token), UUIDUtil.toUUID(functionId));
         } catch (DataAccessException | NumberFormatException e) {
             throw new InvalidInputException("Value of function header is invalid");
         }
