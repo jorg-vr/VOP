@@ -65,7 +65,7 @@ public class TestRunner {
 
     private static void runDAOTests() {
         Result daoResult1 = JUnitCore.runClasses(ProductionAddressDAOTest.class);
-        Result daoResult2 = JUnitCore.runClasses(ProductionCustomerDAO.class);
+        Result daoResult2 = JUnitCore.runClasses(ProductionCustomerDAOTest.class);
         Result daoResult3 = JUnitCore.runClasses(ProductionFleetDAOTest.class);
         Result daoResult4 = JUnitCore.runClasses(ProductionFunctionDAOTest.class);
         Result daoResult5 = JUnitCore.runClasses(ProductionRoleDAOTest.class);
