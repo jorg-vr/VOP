@@ -6,16 +6,17 @@
     <div class="col-lg-8 col-md-9 col-sm-11">
         <div class="page-header">
             <h1>
-                {{$t("invoice.invoice") | capitalize }}
+                {{$t("invoice.invoices") | capitalize }} {{client.name}}
             </h1>
         </div>
-       <list-component v-for="invoice in filteredInvoices"
+       <invoice-list-component v-for="invoice in invoices"
                         v-if="invoice"
                         :object="invoice"
-                        :visibleKeys="new Array('companyName','startDate','endDate','type','totalAmount')"
+                        :resource="resource"
                         show="invoice"
                         :key="invoice.id">
-        </list-component>
+        </invoice-list-component>
+        <button-back :route="{name: 'client'}"></button-back>
 
     </div>
 </template>
@@ -26,51 +27,42 @@
 </style>
 <script>
     import { mapGetters, mapActions, mapMutations } from 'vuex'
-    import listComponent from "../../assets/general/listComponent.vue"
-    import buttonLink from '../../assets/buttons/buttonLink.vue'
-    import invoiceSearchBar from '../../assets/search/types/invoiceSearchBar.vue'
+    import resources from '../../constants/resources'
+    import actions from '../../constants/actions'
+    import invoiceListComponent from "../../assets/general/invoiceListComponent.vue"
+    import buttonBack from '../../assets/buttons/buttonBack.vue'
 
     export default {
-        components: {
-            listComponent, buttonLink, invoiceSearchBar
+        data(){
+            return {
+                resource: resources.INVOICE
+            }
+        },components: {
+            invoiceListComponent,buttonBack
+        },
+        props: {
+            companyId: String
         },
         created() {
-            this.addInvoicesCompany({companyId: "314638493889344791017097203248093678568", companyName: ""})
+            this.companyId=this.client.id //TODO is this good practice?
+            this.fetchInvoicesByCompany({companyId: this.companyId})
         },
         computed: {
             ...mapGetters([
                 'invoices',
-                'filteredInvoices',
-                'getInvoiceByAll',
-                'getInvoicesByAllAdvanced',
-                // companies
                 'clients',
+                'client'
             ])
         },
         methods: {
             ...mapActions([
                 'fetchClients',
-                'addInvoicesCompany',
+                'fetchClient',
+                'fetchInvoicesByCompany',
             ]),
             ...mapMutations([
                 'setFilteredClients'
-            ]),
-            // for search bar functionality
-            updateInvoices(value){
-                if(value!==''){
-                    this.setFilteredInvoices(this.getInvoiceByAll(value))
-                    console.log(value)
-                    console.log(this.filteredInvoices)
-                }
-                else {
-                    console.log('no search input')
-                    this.setFilteredInvoices(this.invoices)
-                }
-            },
-            updateInvoicesAdvanced(filterInvoice){
-                this.setFilteredInvoices(this.getInvoicesByAllAdvanced(filterInvoice))
-
-            }
+            ])
 
         }
     }
