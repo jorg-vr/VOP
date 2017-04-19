@@ -13,4 +13,5 @@ import java.util.UUID;
  */
 public interface FleetDAO extends DAO<Fleet> {
 
+    Filter<Fleet> byOwner(Customer customer);
 }

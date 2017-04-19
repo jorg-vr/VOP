@@ -63,10 +63,21 @@ public class RESTCompanyController extends RESTAbstractController<RESTCompany, C
                                        String type,
                                        @RequestHeader(value = "Authorization") String token,
                                        @RequestHeader(value = "Function") String function) throws UnAuthorizedException {
+        if (city != null || postalCode != null ||country != null)
+            throw new InvalidInputException("Certain filters that you use are not implemented");
         try (CompanyController controller = new CompanyController(verifyToken(token, function))) {
-            Collection<RESTCompany> restModels = controller.getFiltered(nameContains, country, city, postalCode)
+
+            CompanyType companyType = null;
+            try {
+                if (type != null) {
+                    companyType = CompanyType.valueOf(type);
+                }
+            } catch (IllegalArgumentException e) {
+                throw new InvalidInputException(type + " is not a valid CompanyType");
+            }
+
+            Collection<RESTCompany> restModels = controller.getFiltered(nameContains, country, city, postalCode, companyType)
                     .stream()
-                    .filter(c -> type == null || c.getCompanyType() == CompanyType.valueOf(type))
                     .map(RESTCompany::new)
                     .collect(Collectors.toList());
             return new RESTSchema<>(restModels, page, limit, request);

@@ -3,6 +3,7 @@ package spring.controller;
 import controller.AbstractController;
 import controller.ControllerFactory;
 import controller.exceptions.UnAuthorizedException;
+import dao.interfaces.DAO;
 import dao.interfaces.DataAccessException;
 
 import model.history.EditableObject;
