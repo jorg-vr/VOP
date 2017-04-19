@@ -10,7 +10,11 @@
             <table class="table show-table">
                 <tr>
                     <td>{{$t('invoice.payer') | capitalize }}</td>
-                    <td>{{invoice.companyName}}</td>
+                    <td>{{invoice.payer}}</td>
+                </tr>
+                <tr>
+                    <td>{{$t('invoice.beneficiary') | capitalize }}</td>
+                    <td>{{invoice.beneficiary}}</td>
                 </tr>
                 <tr>
                     <td>{{$t('invoice.type') | capitalize }}</td>
@@ -19,6 +23,10 @@
                  <tr>
                     <td>{{$t('invoice.totalAmount') | capitalize }}</td>
                     <td>€ {{invoice.totalAmount}}</td>
+                </tr>
+                <tr>
+                    <td>{{$t('invoice.totalAmount') | capitalize }}</td>
+                    <td>€ {{invoice.totalTax}}</td>
                 </tr>
                 <tr>
                     <td>{{$t('invoice.paid') | capitalize }}</td>

@@ -9,9 +9,7 @@
                 {{$t("invoice.invoice") | capitalize }}
             </h1>
         </div>
-        <invoice-search-bar @search="updateInvoices" @advancedSearch="updateInvoicesAdvanced"></invoice-search-bar>
-        <!-- Render an info-pane for every invoice. Once all the data is loaded, the table will be shown.-->
-        <list-component v-for="invoice in filteredInvoices"
+       <list-component v-for="invoice in filteredInvoices"
                         v-if="invoice"
                         :object="invoice"
                         :visibleKeys="new Array('companyName','startDate','endDate','type','totalAmount')"
@@ -37,31 +35,7 @@
             listComponent, buttonLink, invoiceSearchBar
         },
         created() {
-            var i
-            //var fleetsArray = [{company: 'bedrijf1', facturationPeriod:'3',id:'55',name:'fleetbedrijf1',paymentPeriod:'1'},{company: 'bedrijf2', facturationPeriod:'3',id:'56',name:'fleetbedrijf2',paymentPeriod:'1'}]
-            //var invoiceArray = [{companyName:'bedrijf1', companyId:'1', fleetName: 'fleetbedrijf1', fleetId: '55' ,endDate:'2016-08-29',fleet:'55',id:'75',paid:'false',startDate:'2016-08-01',totalAmount:'44',type:'billing'}]
-            // LOCAL TESTING
-            // add test companies
-            //this.setClients([{name:'bedrijf1',id:'1'},{name: 'bedrijf2',id:'2'}])
-            // add test invoices
-            //this.setFilteredInvoices(invoiceArray)
-            // for show.vue
-            //this.setInvoice({companyName:'bedrijf1', companyId:'1',endDate:'2016-08-29',id:'75',paid:'false',startDate:'2016-08-01',totalAmount:'44',type:'billing'})
-
-
-
-            /* List all invoices
-                fetch companies
-                for each company, fetch all invoices
-            */
-            this.fetchClients().then(clients => {
-                this.setFilteredClients(clients)
-            })
-            for (i = 0; i < this.clients.length; i++) { 
-                // Add all invoices from company to list of invoices
-                this.addInvoicesCompany({companyId: this.clients[i].id, companyName: this.clients[i].name})
-                console.log('for client:'+this.clients[i].id)                
-            }    
+            this.addInvoicesCompany({companyId: "314638493889344791017097203248093678568", companyName: ""})
         },
         computed: {
             ...mapGetters([
