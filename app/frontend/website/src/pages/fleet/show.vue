@@ -55,7 +55,7 @@
                     this.addClientName({client})
                 })
             })
-            let p1 = this.fetchVehiclesBy({fleetId: id})
+            let p1 = this.fetchVehiclesBy({fleet: id})
             let p2 = this.fetchVehicleTypes()
             Promise.all([p1, p2]).then(values => {
                 this.getSubfleets({

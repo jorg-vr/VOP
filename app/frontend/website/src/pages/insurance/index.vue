@@ -53,7 +53,7 @@
                 })
             }
             else {
-                this.fetchInsurancesByCompany(this.activeFunction.company.id)
+                this.fetchInsurancesByCompany(this.activeFunction.company)
             }
         },
         computed: {

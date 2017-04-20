@@ -5,6 +5,8 @@
 
 import App from '../app.vue'
 
+import homeClient from '../pages/homeClient.vue'
+
 import indexUser from '../pages/user/index.vue'
 import newUser from '../pages/user/new.vue'
 import editUser from '../pages/user/edit.vue'
@@ -47,6 +49,7 @@ export default [
         component: App,
         name: 'home',
         children: [
+            {path: '', name: 'homeclient', component: homeClient},
             //User
             {path: 'users', name: 'users', component: indexUser},
             {path: 'users/new', name: 'new_user', component: newUser},
