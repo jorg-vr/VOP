@@ -21,7 +21,6 @@ import java.util.UUID;
  * Created by sam on 4/4/17.
  */
 public abstract class ProductionDAO<T extends EditableObject> implements DAO<T> {
-
     private final Session session;
     private final Class<T> cl;
 

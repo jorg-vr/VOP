@@ -36,7 +36,7 @@ public class AuthController implements AutoCloseable {
     }
 
     public User getUser(AuthenticationToken token) throws DataAccessException {
-        return provider.getUserDAO().get(token.getAccountId());
+        return init(userDAO.get(token.getAccountId()));
     }
 
     public Collection<Function> getFunctions(AuthenticationToken token) throws DataAccessException {
@@ -62,6 +62,13 @@ public class AuthController implements AutoCloseable {
             }
         }
         function.getUser();
+    }
+
+    private User init(User user){
+        for(Function function:user.getFunctions()){
+            init(function);
+        }
+        return user;
     }
 
     @Override

@@ -15,6 +15,8 @@ import model.identity.Customer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
+
 
 /**
  * Created by Billie Devolder on 19/04/2017.
@@ -31,11 +33,14 @@ public class CompanyController extends AbstractController<Company> {
     }
 
     public Collection<Company> getFiltered(String nameContains, String country,
-                                    String city, String postalCode) throws DataAccessException, UnAuthorizedException {
+                                           String city, String postalCode, CompanyType type) throws DataAccessException, UnAuthorizedException {
         CompanyDAO<Company> dao = (CompanyDAO<Company>) getDao();
-        List<Filter<Company>> filters = new ArrayList<>();
-        return getDao().listFiltered(
-                dao.containsName(nameContains)
-        );
+
+        Collection<Company> result = getAll(dao.containsName(nameContains));
+
+        // Filter companies on criteria that are not supported by the database
+        return result.stream()
+                .filter(c -> type == null || c.getCompanyType() == type)
+                .collect(Collectors.toList());
     }
 }
