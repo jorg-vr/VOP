@@ -18,6 +18,10 @@ public class Customer extends Company implements java.io.Serializable {
         super.setCompanyType(CompanyType.CUSTOMER);
     }
 
+    public Customer(UUID uuid) {
+        super(uuid);
+    }
+
     public Customer(Address address, String phoneNumber, String name, String btwNumber) {
         super(address, phoneNumber, name, btwNumber, CompanyType.CUSTOMER);
         this.fleets = new ArrayList<Fleet>();

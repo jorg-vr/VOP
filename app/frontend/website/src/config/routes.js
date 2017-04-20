@@ -72,8 +72,8 @@ export default [
             {path: 'insurances/:id(\\d+)/edit', name: 'edit_insurance', component: editInsurance, props: true},
 
             // invoice
-            {path: 'invoices', name: 'invoices', component: indexInvoice},
-            {path: 'invoices/:id(\\d+)', name: 'invoice', component: showInvoice, props: true}
+            {path: 'clients/:companyId(\\d+)/invoices', name: 'invoices', component: indexInvoice},
+            {path: 'clients/:companyId(\\d+)/invoices/:id(\\d+)', name: 'invoice', component: showInvoice, props: true}
         ],
     },
     {path: '/login', name: login, component: login},

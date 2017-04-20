@@ -110,6 +110,7 @@ export default
             facturationPeriod: 'facturation period',
             paymentPeriod: 'payment period',
             totalAmount: 'total amount',
+            totalTax: 'total tax',
             export: 'export as pdf'
 
         }
@@ -223,6 +224,7 @@ export default
             facturationPeriod: 'facturatieperiode',
             paymentPeriod: 'afrekeningsperiode',
             totalAmount: 'totaalbedrag',
+            totalTax: 'totale belasting',
             export: 'exporteer als pdf'
 
         }

@@ -20,6 +20,10 @@ public class Fleet implements EditableObject, java.io.Serializable {
     public Fleet() {
     }
 
+    public Fleet(UUID uuid) {
+        this.uuid = uuid;
+    }
+
     public Fleet(String name, Customer owner, Address address) {
         this.name = name;
         this.owner = owner;

@@ -23,7 +23,11 @@ import java.util.UUID;
 public class ProductionFleetDAO extends ProductionDAO<Fleet> implements FleetDAO {
 
     public ProductionFleetDAO(Session session) {
-        super(session,Fleet.class);
+        super(session, Fleet.class);
     }
 
+    @Override
+    public Filter<Fleet> byOwner(Customer customer) {
+        return filterEqual("owner", customer);
+    }
 }

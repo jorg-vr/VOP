@@ -1,6 +1,7 @@
 package dao.interfaces;
 
 import model.identity.Company;
+import model.identity.CompanyType;
 
 /**
  * DAO for the bean Company extending IdentityDAO
@@ -35,4 +36,5 @@ public interface CompanyDAO<T extends Company> extends IdentityDAO<T>{
      * @return A useable Filter for listFiltered
      */
     Filter<T> byBankAccountNummber(String bankAccountNumber);
+
 }

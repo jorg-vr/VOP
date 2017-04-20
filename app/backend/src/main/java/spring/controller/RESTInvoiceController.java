@@ -9,11 +9,13 @@ import dao.interfaces.Filter;
 import dao.interfaces.InvoiceDAO;
 import model.billing.Invoice;
 import model.identity.Company;
+import model.insurance.Contract;
 import org.springframework.web.bind.annotation.*;
 import spring.exceptions.NotAuthorizedException;
 import spring.model.RESTInvoice;
 import spring.model.RESTModelFactory;
 import spring.model.RESTSchema;
+import spring.model.insurance.RESTContract;
 import util.UUIDUtil;
 
 import javax.servlet.http.HttpServletRequest;
@@ -48,6 +50,28 @@ public class RESTInvoiceController extends RESTAbstractController<RESTInvoice,In
                 invoices.add(new RESTInvoice(invoice));
             }
             return new RESTSchema<>(invoices, page, limit, request);
+        } catch (UnAuthorizedException e) {
+            throw new NotAuthorizedException();
+        } catch (DataAccessException e) {
+            throw  new RuntimeException(e);
+        }
+
+
+    }
+
+    @RequestMapping(value = "/{invoiceId}/${path.contracts}",method = RequestMethod.GET)
+    public RESTSchema<RESTContract> getAllContracts(@PathVariable String companyId,
+                                                    @PathVariable String invoiceId,
+                                                    HttpServletRequest request,
+                                                    Integer page, Integer limit,
+                                                    @RequestHeader(value = "Authorization") String token,
+                                                    @RequestHeader(value = "Function") String authorityFunction) {
+        try(InvoiceController controller=new InvoiceController(verifyToken(token,authorityFunction))) {
+            Collection<RESTContract> contracts=new ArrayList<>();
+            for (Contract contract: controller.get(UUIDUtil.toUUID(invoiceId)).getContracts()){
+                contracts.add(new RESTContract(contract));
+            }
+            return new RESTSchema<>(contracts, page, limit, request);
         } catch (UnAuthorizedException e) {
             throw new NotAuthorizedException();
         } catch (DataAccessException e) {
