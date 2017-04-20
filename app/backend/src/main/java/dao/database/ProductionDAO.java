@@ -21,7 +21,6 @@ import java.util.UUID;
  * Created by sam on 4/4/17.
  */
 public abstract class ProductionDAO<T extends EditableObject> implements DAO<T> {
-    private static int count = 0;
     private final Session session;
     private final Class<T> cl;
 
@@ -32,8 +31,6 @@ public abstract class ProductionDAO<T extends EditableObject> implements DAO<T> 
 
 
     public ProductionDAO(Session session, Class<T> cl) {
-        count++;
-        System.out.println(count);
         this.session = session;
         this.cl = cl;
     }
@@ -128,8 +125,6 @@ public abstract class ProductionDAO<T extends EditableObject> implements DAO<T> 
     @Override
     public void close() throws Exception {
         session.close();
-        count--;
-        System.out.println(count);
     }
 
     @Override
