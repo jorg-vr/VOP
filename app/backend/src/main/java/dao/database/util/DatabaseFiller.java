@@ -261,7 +261,14 @@ public class DatabaseFiller {
              FleetDAO fleetDAO = provider.getFleetDAO();
              VehicleInsuranceDAO vehicleInsuranceDAO = provider.getVehicleInsuranceDao();
              VehicleTypeDAO vehicleTypeDAO = provider.getVehicleTypeDAO();
-             FlatSuretyDAO suretyDAO = provider.getNonFlatSuretyDao()) {
+             SuretyDAO suretyDAO = provider.getSuretyDao(); CompanyDAO companyDAO = provider.getCompanyDAO();
+             ) {
+
+
+            Company solvas = new Company();
+            solvas.setName("solvas");
+            solvas.setCompanyType(CompanyType.CUSTOMER);
+            companyDAO.create(solvas);
 
             Surety flatSurety = new FlatSurety(100);
             flatSurety.setSuretyType(SuretyType.OMNIUM_FULL);
@@ -297,10 +304,10 @@ public class DatabaseFiller {
             customerDAO.create(customer);
             roleDAO.create(role);
             functionDAO.create(function);
-            Address address2 = new Address("mystreet", Integer.toString(i) + Integer.toString(i), "The town", "9850", "Belgium");
+            Address address2 = new Address("mystreet", "54A", "The town", "9850", "Belgium");
             InsuranceCompany insuranceCompany = new InsuranceCompany();
             insuranceCompany.setAddress(address);
-            insuranceCompany.setName("Verzekeringsmaatschappij " + Integer.toString(i));
+            insuranceCompany.setName("Verzekeringsmaatschappij EastBirds");
 
             Contract contract = new Contract();
             contract.setCustomer(customer);
@@ -317,7 +324,7 @@ public class DatabaseFiller {
 
             Invoice invoice = new Invoice();
             invoice.setContracts(new ArrayList<Contract>(Arrays.asList(new Contract[]{contract})));
-            invoice.setBeneficiary();
+            invoice.setBeneficiary(solvas);
             invoice.setPayer(customer);
             invoice.setPaid(false);
             invoice.setStartDate(LocalDateTime.now().minusMonths(1));
