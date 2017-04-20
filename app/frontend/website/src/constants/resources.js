@@ -45,5 +45,10 @@ export default {
     INVOICE: {
         name: 'invoice',
         value: 'BILLING'
-    }
+    },
+     SURETY: {
+        name: 'surety',
+        value: 'INSURANCE'
+    },
+
 }
