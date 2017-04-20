@@ -1,15 +1,11 @@
 package dao.database;
 
-import dao.interfaces.AddressDAO;
-import dao.interfaces.CustomerDAO;
-import dao.interfaces.DAOProvider;
-import dao.interfaces.FleetDAO;
+import dao.interfaces.*;
 import model.fleet.Fleet;
 import model.identity.Address;
 import model.identity.Customer;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -32,15 +28,16 @@ public class ProductionFleetDAOTest {
     }
 
     @Test
-    @Ignore
     public void createGetRemoveTest() throws Exception {
         Fleet fleet1 = null;
         Customer cust1 = null;
         Address a1 = null;
+        Address a2 = null;
         boolean present = false;
         boolean removed = false;
         //test if an address can be succesfully added to the database
         a1 = new Address("streettest n1", "59", "town 1", "9999", "country 1");
+        a2 = new Address("streettest n1", "59", "town 1", "9999", "country 1");
 
         //test if a fleet can be succesfully added to the database
         try (CustomerDAO customerDAO = daoProvider.getCustomerDAO();) {
@@ -49,7 +46,7 @@ public class ProductionFleetDAOTest {
             fail("Failed trying to create a new customer");
         }
         try (FleetDAO fleetDAO = daoProvider.getFleetDAO();) {
-            fleet1 = new Fleet("fleet 1", cust1, a1);
+            fleet1 = new Fleet("fleet 1", cust1, a2);
             fleetDAO.create(fleet1);
             fleet1.getAddress();
         } catch (Exception e) {
@@ -95,6 +92,19 @@ public class ProductionFleetDAOTest {
             if (cust1 != null) {
                 customerDAO.remove(cust1.getUuid());
             }
+        }
+
+        try (AddressDAO addressDAO = daoProvider.getAddressDao();) {
+            if (a1 != null) {
+                addressDAO.remove(a1.getUuid());
+            }
+        } catch (DataAccessException e) {
+        }
+        try (AddressDAO addressDAO = daoProvider.getAddressDao();) {
+            if (a2 != null) {
+                addressDAO.remove(a2.getUuid());
+            }
+        } catch (DataAccessException e) {
         }
     }
 

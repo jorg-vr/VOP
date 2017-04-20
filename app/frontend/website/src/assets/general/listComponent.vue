@@ -8,7 +8,7 @@ Component used for showing an object in a list.
 -->
 <template>
     <div :class="'row ' + rowClass" v-if="object">
-        <router-link :to="{name: resource.name, params: {id: object.id}}">
+           <router-link :to="{name: resource.name, params: {id: object.id}}">
             <div class="panel panel-default col-sm-10">
                 <div class="panel-body">
                     <table>
@@ -26,7 +26,7 @@ Component used for showing an object in a list.
     </div>
 </template>
 <script>
-    import {mapActions} from 'vuex'
+    import {mapActions,mapGetters} from 'vuex'
     import buttonEdit from '../../assets/buttons/buttonEdit.vue'
     import buttonRemove from '../../assets/buttons/buttonRemove.vue'
     import confirmModal from './modal.vue'
@@ -58,14 +58,23 @@ Component used for showing an object in a list.
                     }
                 }
                 return values
-            }
+            },
+            ...mapGetters([
+                'contractId'
+            ])
         },
         methods:{
             confirmAction: function(){
                 // hide modal
                 this.showModal=false
                 // remove object
-                this.$store.dispatch('delete' + this.resource.name.capitalize(), {id: this.object.id})
+                // special case deletion of insurance
+                if(this.resource.name == 'surety'){
+                    this.$store.dispatch('delete' + this.resource.name.capitalize(), {id: this.object.id, contractId:this.contractId})
+                }
+                else{
+                    this.$store.dispatch('delete' + this.resource.name.capitalize(), {id: this.object.id})
+                }
             }
         }
     }

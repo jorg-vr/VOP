@@ -15,7 +15,7 @@ This page is used to edit or create a certain insurance.
 <script>
     import InsuranceForm from '../../../assets/form/types/insuranceForm.vue'
     import actions from '../../../constants/actions'
-    import {mapActions} from 'vuex'
+    import {mapGetters, mapActions,mapMutations} from 'vuex'
     import {getResourceActionText} from '../../../utils/utils'
 
     export default {
@@ -28,22 +28,42 @@ This page is used to edit or create a certain insurance.
         components: {
             InsuranceForm
         },
-        created(){
+         created(){
+            // this.id is id of insurance, contractId is id of contract
+            this.clearSurety()
             if(this.id){
-                this.fetchInsurance({id: this.id}).then(insurance => {
-                    this.oldInsurance = insurance
-                })
+                console.log(this.actions.name)
+                this.fetchSurety({id: this.id, contractId:this.contractId})
+                let suretyInfo = this.suretyData.surety
+                console.log(suretyInfo)
+                this.fetchSuretyDetail(suretyInfo)
+                console.log(this.suretyDetail)
+               // this.suretyData.surety = this.suretyDetail
+                console.log(this.suretyData)
             }
+           
         },
         props: {
             id: String,
             actions: Object //The action for this form.
         },
+        computed: {
+            ...mapGetters([
+                'suretyData',
+                'suretyDetail',
+                'insurance',
+                'contractId'
+            ])
+        },
         methods: {
             ...mapActions([
-                'fetchInsurance'
-            ])
+                'fetchSurety',
+                'fetchSuretyDetail'
+            ]),
+            ...mapMutations([
+                'clearSurety'
+                
+            ]),
         }
     }
 </script>
-

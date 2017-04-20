@@ -47,7 +47,7 @@
                 })
             }
             else {
-                this.fetchFleetsBy({client: this.activeFunction.company})
+                this.fetchFleetsBy({company: this.activeFunction.company})
             }
         },
 
