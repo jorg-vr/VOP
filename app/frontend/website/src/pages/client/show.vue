@@ -8,17 +8,13 @@
     <div v-if="client && client.address" class="col-lg-8 col-md-9 col-sm-11">
         <div class="page-header">
             <h1>
-                {{$t("client.client") | capitalize }}
+                {{client.name| capitalize }}
                 <button-invoice  :id="client.id" ></button-invoice>
             </h1>
 
         </div>
         <div >
             <table class="table show-table" v-if="client.address">
-                <tr>
-                    <td>{{$t('client.name') | capitalize }}</td>
-                    <td>{{client.name}}</td>
-                </tr>
                 <tr>
                     <td>Type</td>
                     <td>{{type | capitalize}}</td>
