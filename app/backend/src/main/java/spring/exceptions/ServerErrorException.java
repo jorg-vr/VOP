@@ -1,7 +1,9 @@
 package spring.exceptions;
 
 /**
- * Created by Billie Devolder on 15/04/2017.
+ * An exception that gets thrown when there are certain problems with the server.
+ * These problems are not intended and point to programming errors and/or inconsistencies in the database.
+ * This exception gets translated to a HTTP response code in the ExceptionHandler
  */
 public class ServerErrorException extends RuntimeException {
 
