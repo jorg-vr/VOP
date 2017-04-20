@@ -264,10 +264,10 @@ public class DatabaseFiller {
 
             Role role = new Role();
             role.setName("customerrole");
-            for (Resource resource : new Resource[]{Resource.FLEET, Resource.BILLING, Resource.USER, Resource.ROLE, Resource.FUNCTION, Resource.INSURANCE, Resource.VEHICLE, Resource.VEHICLETYPE}) {
+            for (Resource resource : new Resource[]{Resource.FLEET, Resource.BILLING, Resource.USER, Resource.ROLE, Resource.FUNCTION, Resource.INSURANCE, Resource.VEHICLE}) {
                 role.setAccess(resource, Action.READ_MINE);
             }
-
+            role.setAccess(Resource.VEHICLETYPE,Action.READ_ALL);
             Function function = new Function();
             function.setUser(user);
             function.setRole(role);
