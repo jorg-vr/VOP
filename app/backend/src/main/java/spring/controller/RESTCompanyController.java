@@ -63,8 +63,9 @@ public class RESTCompanyController extends RESTAbstractController<RESTCompany, C
                                        String type,
                                        @RequestHeader(value = "Authorization") String token,
                                        @RequestHeader(value = "Function") String function) throws UnAuthorizedException {
+        /*
         if (city != null || postalCode != null ||country != null)
-            throw new InvalidInputException("Certain filters that you use are not implemented");
+            throw new InvalidInputException("Certain filters that you use are not implemented");*/
         try (CompanyController controller = new CompanyController(verifyToken(token, function))) {
 
             CompanyType companyType = null;
