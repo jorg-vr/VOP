@@ -55,6 +55,7 @@ public class RESTVehicleInsurance extends RESTAbstractModel<VehicleInsurance> {
         insurance.setUuid(toUUID(getId()));
         try (VehicleController controller = new VehicleController(function)) {
             insurance.setVehicle(controller.get(toUUID(vehicle)));
+            insurance.getVehicle().getType().getCommissions();
         } catch (DataAccessException e) {
             throw new InvalidInputException("Vehicle with id " + vehicle + " does not exist");
         }

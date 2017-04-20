@@ -10,10 +10,6 @@ All of the fields for insurance input for the insurance form
       v-model="insurance.startDate"></form-input>
       <form-input :placeholder="$t('insurance.enddate') | capitalize" :label="$t('insurance.enddate') | capitalize"
       v-model="insurance.endDate"></form-input>
-      <form-input :placeholder="$t('insurance.totalCost') | capitalize" :label="$t('insurance.totalCost') | capitalize"
-      v-model="insurance.cost"></form-input>
-      <form-input :placeholder="$t('insurance.tax') | capitalize" :label="$t('insurance.tax') | capitalize"
-      v-model="insurance.tax"></form-input>
       <form-input :placeholder="$t('insurance.insurancedAmount') | capitalize" :label="$t('insurance.insurancedAmount') | capitalize"
       v-model="insurance.insuredValue"></form-input>
        <form-input :placeholder="$t('insurance.franchise') | capitalize" :label="$t('insurance.franchise') | capitalize"
