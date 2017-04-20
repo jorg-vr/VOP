@@ -1,7 +1,7 @@
 <!--
     This page is used to edit a certain insurance.
 
-    @param id: the id of the fleet which is edited.
+    @param id: the id of the insurance which is edited.
 -->
 <template>
     <insurance-form-page :actions="actions" :id="id"></insurance-form-page>

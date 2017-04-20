@@ -1,6 +1,6 @@
 <!--
-    This page shows all insurances in the database.
-    From this page a new insurance can be added or an existing insurance can be edited or removed.
+    This page shows all contracts in the database.
+    From this page all invoices from a contract can be viewed.
 -->
 <template>
     <div class="col-lg-8 col-md-9 col-sm-11">
@@ -47,7 +47,7 @@
                    // insurances[i].customerName = this.client.name
                    // insuranceCompany not supported yet
                 }  
-                this.setFilteredInsurances({insurances: insurances})
+                this.setFilteredInsurances(insurances)
             })
         },
         computed: {

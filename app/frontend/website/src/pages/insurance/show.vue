@@ -9,6 +9,7 @@
             <h1>{{$t("insurance.types") | capitalize }} </h1>
             <button-add :resource="resource"></button-add>
         </div>
+        <insurance-search-bar @search="updateContractInsurances" @advancedSearch="updateContractInsurancesAdvanced"></insurance-search-bar>
                 <list-component v-for="insurance in filteredcontractInsurances"
                                 v-if="insurance"
                                 :resource="resource"
@@ -26,7 +27,7 @@
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
     import buttonBack from '../../assets/buttons/buttonBack.vue'
     import buttonLink from '../../assets/buttons/buttonLink.vue'
-    import vehicleSearchBar from '../../assets/search/types/vehicleSearchBar.vue'
+    import insuranceSearchBar from '../../assets/search/types/insuranceSearchBar.vue'
     import {mapGetters, mapActions, mapMutations} from 'vuex'
 
     export default {
@@ -36,27 +37,53 @@
             }
         },
         components: {
-            buttonBack,buttonAdd,listComponent,buttonLink
+            buttonBack,buttonAdd,listComponent,buttonLink,insuranceSearchBar
         },
         props: {
             id: String
         },
         created(){
+            // get contract id 
              let contractId = this.id
+             // get all insurances from the contract with contract Id
              this.fetchInsurancesByContract(contractId)
-             console.log('check')
+             // set value in contractId (used for API calls to contracts/id/insurances/)
+             this.setContractId(contractId)
              console.log(this.filteredcontractInsurances)
+             // test
+             console.log(this.contractId)
         },
         computed: {
             ...mapGetters([
                 'insurance',
-                'filteredcontractInsurances'
+                'contractInsurances',
+                'filteredcontractInsurances',
+                'contractId',
+                'getContractInsurancesByAll',
+                'getContractInsurancesByAllAdvanced'
             ])
         },
         methods: {
             ...mapActions([
                 'fetchInsurancesByContract'
-            ])
+            ]),
+            ...mapMutations([
+                'setContractId',
+                'setFilteredcontractInsurances'
+                
+            ]),
+            updateContractInsurances(value){
+                console.log(value)
+                if(value!==''){
+                    this.setFilteredcontractInsurances(this.getContractInsurancesByAll(value))
+                }
+                else {
+                    this.setFilteredcontractInsurances(this.contractInsurances)
+                }
+            },
+            updateContractInsurancesAdvanced(filterInsurance){
+                this.setFilteredInsurances(this.getContractInsurancesByAllAdvanced(filterInsurance))
+            }
         },
     }
 </script>

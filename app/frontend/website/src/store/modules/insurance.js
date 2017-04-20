@@ -11,7 +11,9 @@ export default {
         suretyDetail: {},
         suretyVehicle: {},
         suretyDetailId: '',
-        vehicleId: ''
+        vehicleId: '',
+        contractId: '',
+        sureties:[]
     },
     getters: {
         /**
@@ -45,6 +47,20 @@ export default {
         },
         vehicleId(state) {
             return state.vehicleId
+        },
+         contractId(state){
+            return state.contractId
+        },
+        sureties(state){
+            return state.sureties
+        },
+
+        getContractInsurancesByAll: (state, getters) => (value) => {
+            return getters.filterByAll(state.contractInsurances, value)
+        },
+
+        getContractInsurancesByAllAdvanced: (state, getters) => (user) => {
+            return getters.filterByAllAdvanced(state.contractInsurances, user)
         }
 
 
@@ -75,6 +91,12 @@ export default {
         setSuretyTypes(state,suretyTypes){
             return state.suretyTypes=suretyTypes
         },
+         setContractId(state,id){
+            return state.contractId = id
+        },
+        setSureties(state,sureties){
+            return state.sureties = sureties
+        },
         /**
          * Clear the list of insurances
          * @param state
@@ -94,7 +116,17 @@ export default {
             state.contractInsurances.push(insurance)
             state.filteredcontractInsurances.push(insurance)
         },
+        clearSurety(state){
+            console.log('clearSurety called')
+            state.suretyData = {}
+            state.suretyDetail = {}
+        },
+        removeSurety(state,payload){
+            console.log(payload.id)
+            state.contractInsurances = state.contractInsurances.filter(insurance => insurance.id !== payload.id)
+            state.filteredcontractInsurances = state.filteredcontractInsurances.filter(insurance => insurance.id !== payload.id)
 
+        }
     },
     actions: {
         /**
@@ -127,7 +159,18 @@ export default {
             Also fetch information about insurance surety and insured vehicle
             @param payload: data containting id of insurance and id of contract
         */
-
+        fetchSureties(context){
+            console.log('fetching sureties')
+            return new Promise((resolveSuccess, resolveFailure) => {
+                RequestHandler.getObjectsRequest(locations.SURETYDETAIL).then(sureties => {
+                    context.commit('setSureties',sureties)
+                    console.log(sureties)
+                    resolveSuccess(sureties)
+                }, response => {
+                    resolveFailure(response)
+                })
+            })
+        },
         fetchSurety(context,payload){
             // fetch Surety
             return new Promise((resolveSuccess, resolveFailure) => {
@@ -166,16 +209,42 @@ export default {
                 })
             })
         },
-        // payload consist of contract id and input data
+         // payload consist of contract id and input data
         deleteSurety(context,payload){
+            console.log('DELETE API CALL NAAR: '+locations.INSURANCE+payload.contractId+'/'+locations.SURETY+payload.id)
+            return new Promise((resolveSuccess, resolveFailure) => {
+                RequestHandler.deleteObjectRequest(locations.INSURANCE+payload.contractId+'/'+locations.SURETY, payload.id).then(() => {
+                    context.commit('removeSurety', {id: payload.id})
+                    resolveSuccess()
+                }, response => {
+                    resolveFailure(response)
+                }, payload.id)
+            })
 
         },
 
         updateSurety(context,payload){
-
+            console.log('PUT API CALL NAAR: '+locations.INSURANCE+payload.contractId+'/'+locations.SURETY+payload.object.id)
+            return new Promise((resolveSuccess, resolveFailure) => {
+                RequestHandler.putObjectRequest(locations.INSURANCE+payload.contractId+'/'+locations.SURETY+payload.object.id, payload.object).then(updatedSurety => {
+                    context.commit('setSurety', updatedSurety)
+                    resolveSuccess(updatedSurety)
+                }, response => {
+                    resolveFailure(response)
+                })
+            })
         },
 
         createSurety(context,payload){
+            console.log('POST API CALL NAAR: '+locations.INSURANCE+payload.contractId+'/'+locations.SURETY)
+            return new Promise((resolveSuccess, resolveFailure) => {
+                RequestHandler.postObjectRequest(locations.INSURANCE+payload.contractId+'/'+locations.SURETY, payload.object).then(createdSurety => {
+                    context.commit('addContractInsurance', createdSurety)
+                    resolveSuccess(createdSurety)
+                }, response => {
+                    resolveFailure(response)
+                })
+            })
 
         }
     }

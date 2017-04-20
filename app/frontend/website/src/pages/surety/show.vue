@@ -104,7 +104,7 @@
         },
         props: {
             id: String,
-            contractId: String
+            //contractId: String
         },
         created(){
              let suretyId = this.id
@@ -121,20 +121,27 @@
               let vehicleId= this.suretyData.vehicle
             //  console.log('GETTING DETAILED INFO FOR: '+vehicleId)
               this.fetchVehicle({id: vehicleId})
+              // test 
+              this.fetchSureties()
+              console.log('TESTTEST')
+              console.log(this.sureties)
 
         },
         computed: {
             ...mapGetters([
                 'suretyData',
                 'suretyDetail',
-                'vehicle'
+                'vehicle',
+                'contractId',
+                'sureties'
             ])
         },
         methods: {
             ...mapActions([
                 'fetchSurety',
                 'fetchSuretyDetail',
-                'fetchVehicle'
+                'fetchVehicle',
+                'fetchSureties'
             ])
         },
     }
