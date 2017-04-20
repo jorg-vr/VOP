@@ -16,8 +16,9 @@ public class VehicleTypeController extends AbstractController<VehicleType> {
         super(BackendApplication.getProvider().getVehicleTypeDAO(), Resource.VEHICLETYPE, function);
     }
 
+
     @Override
     public boolean isOwner(VehicleType vehicleType, Function function) {
-        return false;//Vehicletypes can't be owned
+        return true;
     }
 }

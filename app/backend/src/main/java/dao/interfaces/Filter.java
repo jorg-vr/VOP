@@ -9,5 +9,5 @@ public interface Filter<T> {
     /**
      * Filter to use (created by lambda), used like Runnable
      */
-    public void filter();
+    void filter();
 }

@@ -32,6 +32,17 @@ public class CompanyController extends AbstractController<Company> {
         return function.getCompany().equals(company);
     }
 
+    /**
+     * When you don't want to filter on a certain argument, pass a null value
+     * @param nameContains Only return companies whose name contains nameContains
+     * @param country      NOT implemented TODO
+     * @param city         NOT implemented TODO
+     * @param postalCode   NOT implemented TODO
+     * @param type         only return companies of this type
+     * @return all companies, filtered on the arguments
+     * @throws DataAccessException   Something went horribly wrong with the database
+     * @throws UnAuthorizedException Function is not authorized to get all the objects.
+     */
     public Collection<Company> getFiltered(String nameContains, String country,
                                            String city, String postalCode, CompanyType type) throws DataAccessException, UnAuthorizedException {
         CompanyDAO<Company> dao = (CompanyDAO<Company>) getDao();

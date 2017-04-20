@@ -4,8 +4,9 @@ import model.account.Function;
 import model.history.EditableObject;
 
 /**
- * Created by jorg on 3/30/17.
+ * A simple functional factory interface for creating controllers
  */
 public interface ControllerFactory<T extends EditableObject> {
-    public AbstractController<T> create(Function function);
+
+    AbstractController<T> create(Function function);
 }
