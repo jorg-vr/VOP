@@ -21,6 +21,11 @@ public interface DAOProvider extends AutoCloseable {
      */
     CustomerDAO getCustomerDAO();
 
+
+    /**
+     * Gets a companyDAO
+     * @return a CompanyDAO
+     */
     CompanyDAO<Company> getCompanyDAO();
 
     /**
@@ -59,22 +64,54 @@ public interface DAOProvider extends AutoCloseable {
      */
     RoleDAO getRoleDAO();
 
+
+    /**
+     * Gets a ContractDao
+     * @return a ContractDAO
+     */
     ContractDAO getContractDao();
 
+    /**
+     * Gets a SuretyDAO
+     * @return a SuretyDAO
+     */
     SuretyDAO<Surety> getSuretyDao();
 
+    /**
+     * Gets a FlatSuretyDAO
+     * @return a FlatSuretyDAO
+     */
     NonFlatSuretyDAO getFlatSuretyDao();
 
+    /**
+     * Gets an InvoiceDAO
+     * @return an InvoiceDAO
+     */
     InvoiceDAO getInvoiceDao();
 
+    /**
+     * Gets a NonFlatSuretyDAO
+     * @return a NonFlatSuretyDAO
+     */
     FlatSuretyDAO getNonFlatSuretyDao();
 
+    /**
+     * Gets a SpecialConditionDAO
+     * @return a SpecialConditionDAO
+     */
     SpecialConditionDAO getSpecialConditionDao();
 
 
-
+    /**
+     * Gets a VehicleInsuranceDAO
+     * @return a VehicleInsuranceDAO
+     */
     VehicleInsuranceDAO getVehicleInsuranceDao();
 
+    /**
+     * Gets an InsuranceCompanyDAO
+     * @return an InsuranceCompanyDAO
+     */
     InsuranceCompanyDAO getInsuranceCompanyDao();
 
 

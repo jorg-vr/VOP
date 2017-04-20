@@ -1,6 +1,7 @@
 package dao.database;
 
 import dao.interfaces.*;
+import model.billing.Invoice;
 import model.identity.Company;
 import model.insurance.Surety;
 import org.hibernate.SessionFactory;
@@ -152,5 +153,4 @@ public class ProductionProvider implements DAOProvider {
         StandardServiceRegistryBuilder.destroy(this.registry);
         provider = null;
     }
-    
 }

@@ -34,6 +34,10 @@ repositories {
 	mavenCentral()
 }
 
+compileJava {
+	options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+}
+
 dependencies {
 	compile group: 'org.postgresql', name: 'postgresql', version: '9.4-1200-jdbc41'
 	compile('org.springframework.boot:spring-boot-starter-web') {

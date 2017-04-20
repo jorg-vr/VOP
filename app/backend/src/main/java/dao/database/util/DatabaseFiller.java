@@ -80,7 +80,7 @@ public class DatabaseFiller {
                 contract.setCustomer(customer);
                 contract.setCompany(insuranceCompany);
                 contract.setStartDate(LocalDateTime.now());
-
+                contract.setEndDate(LocalDateTime.now().plusMonths(10));
 
 
                 addressDAO.create(address);
@@ -264,7 +264,7 @@ public class DatabaseFiller {
 
             Role role = new Role();
             role.setName("customerrole");
-            for (Resource resource : new Resource[]{Resource.FLEET, Resource.BILLING, Resource.USER, Resource.ROLE, Resource.FUNCTION, Resource.INSURANCE, Resource.VEHICLE}) {
+            for (Resource resource : new Resource[]{Resource.FLEET, Resource.BILLING, Resource.USER, Resource.ROLE, Resource.FUNCTION, Resource.INSURANCE, Resource.VEHICLE, Resource.VEHICLETYPE}) {
                 role.setAccess(resource, Action.READ_MINE);
             }
 

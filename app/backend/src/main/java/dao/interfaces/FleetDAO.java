@@ -13,5 +13,10 @@ import java.util.UUID;
  */
 public interface FleetDAO extends DAO<Fleet> {
 
+    /**
+     * Returns a Filter to use in ListFiltered in this class, which returns all Fleets the given owner has.
+     * @param customer the customer to use in the filter
+     * @return a usable filter for ListFiltered
+     */
     Filter<Fleet> byOwner(Customer customer);
 }

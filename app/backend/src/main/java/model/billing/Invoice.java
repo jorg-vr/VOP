@@ -8,6 +8,7 @@ import model.insurance.VehicleInsurance;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.UUID;
 
 /**
@@ -163,6 +164,13 @@ public class Invoice implements EditableObject, java.io.Serializable {
 
     public void setContracts(Collection<Contract> contracts) {
         this.contracts = contracts;
+    }
+
+    public void addContract(Contract contract){
+        if(contracts==null){
+            contracts = new HashSet<>();
+        }
+        contracts.add(contract);
     }
 
 
