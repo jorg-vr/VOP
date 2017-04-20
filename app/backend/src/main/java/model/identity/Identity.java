@@ -15,6 +15,10 @@ public class Identity implements EditableObject, java.io.Serializable {
     public Identity() {
     }
 
+    public Identity(UUID uuid) {
+        this.uuid = uuid;
+    }
+
     public Identity(Address address, String phoneNumber) {
         this.address = address;
         this.phoneNumber = phoneNumber;

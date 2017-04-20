@@ -4,6 +4,7 @@ import dao.interfaces.CompanyDAO;
 import dao.interfaces.Filter;
 import model.identity.Address;
 import model.identity.Company;
+import model.identity.CompanyType;
 import model.identity.Customer;
 import org.hibernate.Session;
 

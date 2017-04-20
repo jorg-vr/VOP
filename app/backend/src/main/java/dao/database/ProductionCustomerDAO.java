@@ -5,6 +5,8 @@ import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
 import model.fleet.Fleet;
 import model.identity.Address;
+import model.identity.Company;
+import model.identity.CompanyType;
 import model.identity.Customer;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
