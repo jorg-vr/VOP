@@ -126,8 +126,6 @@ public abstract class ProductionDAO<T extends EditableObject> implements DAO<T> 
     @Override
     public void close() throws Exception {
         session.close();
-        session.flush();
-        session.disconnect();
     }
 
     @Override
