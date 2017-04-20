@@ -1,7 +1,7 @@
 package controller.exceptions;
 
 /**
- * Created by Billie Devolder on 14/04/2017.
+ * This exception should be thrown when the token has an invalid format.
  */
 public class InvalidTokenException extends RuntimeException {
 }

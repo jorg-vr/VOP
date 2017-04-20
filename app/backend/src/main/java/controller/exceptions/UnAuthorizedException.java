@@ -1,7 +1,7 @@
 package controller.exceptions;
 
 /**
- * Created by jorg on 3/30/17.
+ * This exception should get thrown when a function is not authorized to perform an action of a controller
  */
 public class UnAuthorizedException extends Exception {
 }

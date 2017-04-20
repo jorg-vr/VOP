@@ -140,7 +140,7 @@ public class DatabaseFiller {
              UserDAO userDAO = provider.getUserDAO();
              FunctionDAO functionDAO = provider.getFunctionDAO();
              AddressDAO addressDAO = provider.getAddressDao();
-             CustomerDAO customerDAO = provider.getCustomerDAO();) {
+             CustomerDAO customerDAO = provider.getCustomerDAO()) {
 
             User user = new User();
             user.setEmail("admin&insuranceagent@solvas.be");
@@ -206,7 +206,7 @@ public class DatabaseFiller {
              UserDAO userDAO = provider.getUserDAO();
              FunctionDAO functionDAO = provider.getFunctionDAO();
              AddressDAO addressDAO = provider.getAddressDao();
-             CustomerDAO customerDAO = provider.getCustomerDAO();) {
+             CustomerDAO customerDAO = provider.getCustomerDAO()) {
 
             User user = new User();
             user.setEmail("admin@solvas.be");
@@ -253,7 +253,7 @@ public class DatabaseFiller {
              UserDAO userDAO = provider.getUserDAO();
              FunctionDAO functionDAO = provider.getFunctionDAO();
              AddressDAO addressDAO = provider.getAddressDao();
-             CustomerDAO customerDAO = provider.getCustomerDAO();) {
+             CustomerDAO customerDAO = provider.getCustomerDAO()) {
 
             User user = new User();
             user.setEmail("klant@solvas.be");
