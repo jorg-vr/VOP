@@ -1,6 +1,7 @@
 package dao.database;
 
 import dao.interfaces.*;
+import model.billing.Invoice;
 import model.identity.Company;
 import model.insurance.Surety;
 import org.hibernate.SessionFactory;
@@ -151,6 +152,18 @@ public class ProductionProvider implements DAOProvider {
         sessionFactory.close();
         StandardServiceRegistryBuilder.destroy(this.registry);
         provider = null;
+    }
+
+    public static void main(String[] args) {
+        initializeProvider("localtest");
+        try (DAOProvider provider = getInstance();
+             InvoiceDAO invoiceDAO = provider.getInvoiceDao()) {
+            for (Invoice invoice : invoiceDAO.listFiltered()) {
+                System.out.println(invoice.getContracts().size());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
