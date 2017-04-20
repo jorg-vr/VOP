@@ -22,6 +22,7 @@ Generic component for a form. Every form should be encapsulated in this componen
     import {getResourceActionText} from '../../utils/utils'
     import buttonLink from '../buttons/buttonLink.vue'
     import buttonAction from '../buttons/buttonAction.vue'
+    import { mapGetters, mapActions, mapMutations } from 'vuex'
 
     export default {
         data(){
@@ -45,6 +46,15 @@ Generic component for a form. Every form should be encapsulated in this componen
                     this.submit()
                 }
             })
+            // set failroute to other path in case of surety
+            if(this.resource.name == 'insurance'){
+                this.failroute = {name: 'insurance', params: {id:this.contractId} }
+            }
+        },
+         computed: {
+            ...mapGetters([
+                'contractId'
+            ])
         },
         methods: {
             /**
@@ -52,15 +62,26 @@ Generic component for a form. Every form should be encapsulated in this componen
              * index page of the resource of the object.
              */
             submit(){
-                this.$store.dispatch(this.actions.name + this.resource.name.capitalize(), this.object).then(object => {
-                    //Exception: the index page of vehicle is /fleet/{fleetId}
-                    if(this.resource.name === 'vehicle'){
-                        this.$router.push({name: 'fleet', params: {id: object.fleet} })
-                    }
-                    else {
-                        this.$router.push({name: this.resource.name.plural()})
-                    }
-                })
+                console.log(this.resource.name)
+                console.log(this.object)
+                if(this.resource.name == 'insurance'){
+                    console.log('speciale dispatch voor insurance')
+                    console.log(this.actions.name+'Surety')
+                    this.$store.dispatch(this.actions.name + 'Surety', {object: this.object, contractId:this.contractId}).then(object =>{
+                        this.$router.push({name: 'insurance', params: {id:this.contractId} })
+                    })
+                }
+                else{
+                    this.$store.dispatch(this.actions.name + this.resource.name.capitalize(), this.object).then(object => {
+                        //Exception: the index page of vehicle is /fleet/{fleetId}
+                        if(this.resource.name === 'vehicle'){
+                            this.$router.push({name: 'fleet', params: {id: object.fleet} })
+                        }
+                        else {
+                            this.$router.push({name: this.resource.name.plural()})
+                        }
+                    })
+                }
             }
         }
     }

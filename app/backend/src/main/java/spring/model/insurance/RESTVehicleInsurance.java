@@ -8,6 +8,7 @@ import dao.interfaces.DataAccessException;
 import model.account.Function;
 import model.fleet.Vehicle;
 import model.insurance.Surety;
+import model.insurance.SuretyType;
 import model.insurance.VehicleInsurance;
 import spring.exceptions.InvalidInputException;
 import spring.model.RESTAbstractModel;
@@ -55,6 +56,10 @@ public class RESTVehicleInsurance extends RESTAbstractModel<VehicleInsurance> {
         insurance.setUuid(toUUID(getId()));
         try (VehicleController controller = new VehicleController(function)) {
             insurance.setVehicle(controller.get(toUUID(vehicle)));
+            for (SuretyType suretyType: SuretyType.values()) {
+                insurance.getVehicle().getType().getCommission(suretyType);
+                insurance.getVehicle().getType().getTax(suretyType);
+            }
         } catch (DataAccessException e) {
             throw new InvalidInputException("Vehicle with id " + vehicle + " does not exist");
         }

@@ -5,7 +5,7 @@ import client from './modules/client'
 import fleet from './modules/fleet'
 import login from './modules/login'
 import invoice from './modules/invoice'
-
+import insurance from './modules/insurance'
 import currentUser from './modules/currentUser'
 
 import resourceModule from './resourceModule'
@@ -54,7 +54,8 @@ export default new Vuex.Store({
         fleet,
         login,
         currentUser,
-        invoice
+        invoice,
+        insurance
     },
     state,
     getters,

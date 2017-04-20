@@ -12,7 +12,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <router-link :to="{name: 'home'}" class="navbar-brand">SOLVAS FLEET</router-link>
+                <router-link :to="{name: 'homeClient'}" class="navbar-brand">SOLVAS FLEET</router-link>
             </div><!-- /.navbar-header -->
             
             <!-- Navbar with toggable links -->
