@@ -37,18 +37,24 @@
             listComponent, buttonAdd, insuranceSearchBar
         },
         created() {
-             var i 
-            // contracts/id/insurances
-            // fetch Contracts 
-             this.fetchInsurances().then(insurances => {
-                for(i=0; i<insurances.length;i++){
-                   // for each contract add customer name for display purposes
-                   console.log(insurances[i])
-                   // insurances[i].customerName = this.client.name
-                   // insuranceCompany not supported yet
-                }  
-                this.setFilteredInsurances(insurances)
-            })
+
+            if(this.authorizedForAll) { //Then the user is authorized for all, else the user can't get on this page.
+                var i
+                // contracts/id/insurances
+                // fetch Contracts
+                this.fetchInsurances().then(insurances => {
+                    for(i=0; i<insurances.length;i++){
+                        // for each contract add customer name for display purposes
+                        console.log(insurances[i])
+                        // insurances[i].customerName = this.client.name
+                        // insuranceCompany not supported yet
+                    }
+                    this.setFilteredInsurances(insurances)
+                })
+            }
+            else {
+                this.fetchInsurancesByCompany(this.activeFunction.company.id)
+            }
         },
         computed: {
             ...mapGetters([
@@ -56,7 +62,9 @@
                 'insurances',
                 'filteredInsurances',
                 'getInsurancesByAll',
-                'getInsurancesByAllAdvanced'
+                'getInsurancesByAllAdvanced',
+                'activeFunction',
+                'isAuthorizedForAllResources'
             ])
         },
         methods: {
@@ -64,7 +72,8 @@
                 'fetchInsurances',
                 'deleteInsurance',
                 'fetchClient',
-                'fetchInsuranceByContract'
+                'fetchInsuranceByContract',
+                'fetchInsurancesByCompany'
             ]),
 
             ...mapMutations([
@@ -81,6 +90,9 @@
             },
             updateInsurancesAdvanced(filterInsurance){
                 this.setFilteredInsurances(this.getInsurancesByAllAdvanced(filterInsurance))
+            },
+            authorizedForAll(){
+                return this.isAuthorizedForAllResources(this.resource, actions.READ_ALL)
             }
         }
     }

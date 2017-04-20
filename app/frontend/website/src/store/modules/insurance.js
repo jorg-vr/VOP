@@ -145,11 +145,20 @@ export default {
                 RequestHandler.getObjectsRequestBy(locations.INSURANCE+contractId+'/insurances').then(insurances => {
                     context.commit('setContractInsurances',insurances)
                     context.commit('setFilteredcontractInsurances',insurances)
-                   //console.log(insurances)
+                    //console.log(insurances)
                     //  for(i=0;i<insurances.length;i++){
                     //      context.commit('addContractInsurance',insurances[i])
                     //  }
                     // resolve(insurances)
+                })
+            })
+        },fetchInsurancesByCompany(context,  companyId){
+            var i
+            // fetch all insurances from a contract
+            return new Promise(resolve => {
+                RequestHandler.getObjectsRequestBy(locations.INSURANCE,{company:companyId}).then(insurances => {
+                    context.commit('setContractInsurances',insurances)
+                    context.commit('setFilteredcontractInsurances',insurances)
                 })
             })
         },
