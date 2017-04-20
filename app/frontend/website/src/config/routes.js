@@ -25,6 +25,10 @@ import newVehicle from '../pages/vehicle/new.vue'
 import editVehicle from '../pages/vehicle/edit.vue'
 import showVehicle from '../pages/vehicle/show.vue'
 
+import newSurety from '../pages/surety/new.vue'
+import editSurety from '../pages/surety/edit.vue'
+import showSurety from '../pages/surety/show.vue'
+
 import indexInsurance from '../pages/insurance/index.vue'
 import newInsurance from '../pages/insurance/new.vue'
 import editInsurance from '../pages/insurance/edit.vue'
@@ -64,6 +68,12 @@ export default [
             {path: 'vehicles/new', name: 'new_vehicle', component: newVehicle, props: true},
             {path: 'vehicles/:id(\\d+)', name: 'vehicle', component: showVehicle, props: true},
             {path: 'vehicles/:id(\\d+)/edit', name: 'edit_vehicle', component: editVehicle, props: true},
+
+
+            // sureties
+            {path: 'surety/new', name: 'new_surety', component: newSurety},
+            {path: 'surety/:id(\\d+)', name: 'surety', component: showSurety, props: true},
+            {path: 'surety/:id(\\d+)/edit', name: 'edit_surety', component: editSurety, props: true},   
 
             // insurance
             {path: 'insurances', name: 'insurances', component: indexInsurance},
