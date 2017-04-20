@@ -20,7 +20,6 @@ public class UUIDUtil {
             return null;
         }
         String string = String.format("%040d", new BigInteger(uuid.toString().replace("-", ""), 16)).replaceAll("^0+", "");
-        // TODO try to do this in regex
         if (string.equals("")) {
             string = "0";
         }

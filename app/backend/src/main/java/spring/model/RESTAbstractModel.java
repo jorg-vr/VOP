@@ -44,6 +44,14 @@ public abstract class RESTAbstractModel<T extends EditableObject> {
         this(uuid, null, null, url);
     }
 
+    /**
+     * Translate a RESTModel to a Model
+     * @param function this gets used to retrieve certain objects of the controllers.
+     *                 In RESTModels relations are expressed as ids and in Models this is expressed as references.
+     *                 This means that certain objects have to be retrieved from the controllers.
+     * @return the model corresponding to te RESTModel
+     * @throws UnAuthorizedException the function is not authorized to retrieve certain objects.
+     */
     public abstract T translate(Function function) throws UnAuthorizedException;
 
     public String getId() {

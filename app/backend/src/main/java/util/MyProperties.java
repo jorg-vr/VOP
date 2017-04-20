@@ -30,7 +30,6 @@ public class MyProperties {
     public static final String PATH_CONTRACTS = "path.contracts";
 
 
-
     private static final String APPLICATION_PROPERTIES = "application.properties";
 
     private static MyProperties myProperties;
@@ -47,6 +46,13 @@ public class MyProperties {
         }
     }
 
+    /**
+     * Searches for the property with the specified key in this property list.
+     * The method returns {@code null} if the property is not found.
+     *
+     * @param property the property key.
+     * @return the value in this property list with the specified key value.
+     */
     public static String getProperty(String property) {
         if (myProperties == null) {
             myProperties = new MyProperties();
