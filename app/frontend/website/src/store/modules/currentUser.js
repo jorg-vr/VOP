@@ -157,9 +157,9 @@ export default {
         authenticate(context, credentials){
             return new Promise(resolve => {
                 RequestHandler.postObjectRequest(locations.LOGIN, credentials).then(response => {
-                    // response.bodyText.promise.then(token => {
-                        context.commit('setAuthToken', {authToken: response.bodyText});
-                    // })
+                    response.bodyText.promise.then(token => {
+                        context.commit('setAuthToken', {authToken: token});
+                    })
                 }, () =>  { //failure
                     resolve()
                 }).then(() => {
@@ -178,9 +178,9 @@ export default {
         refreshToken(context){
             return new Promise((resolveSuccess, resolveFailure) => {
                 RequestHandler.postObjectRequest(locations.REFRESH, {}).then(response => {
-                    // response.bodyText.promise.then(token => {
-                    context.commit('setAuthToken', {authToken: response.bodyText});
-                    // })
+                    response.bodyText.promise.then(token => {
+                        context.commit('setAuthToken', {authToken: token})
+                                           })
                 }, () => { //failure
                     resolveFailure()
                 }).then(() => {
