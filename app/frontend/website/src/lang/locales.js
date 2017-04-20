@@ -14,7 +14,8 @@ export default
             vehicleType: 'type',
             mileage: 'mileage',
             year: 'year',
-            leasingCompany: 'leasing company'
+            leasingCompany: 'leasing company',
+            value: 'value'
         },
         fleet: {
             fleet: 'fleet',
@@ -90,12 +91,20 @@ export default
             insurance: 'insurance',
             insurances: 'insurances',
             type:'insurance surety',
+            types:'insurance sureties',
             vehicle: 'vehicle',
             company: 'insurance company',
             premium: 'insurance premium',
             franchise: 'franchise',
             startdate: 'startdate',
-            enddate: 'enddate'
+            enddate: 'enddate',
+            insurancedAmount: 'insuranced amount',
+            percentage: 'percentage',
+            coverageClauses: 'coverage clauses',
+            exemptions: 'exemptions',
+            contract: 'contract',
+            totalCost: 'total cost',
+            tax: 'tax'
         },
         invoice:{
             invoice: 'invoice',
@@ -113,6 +122,9 @@ export default
             totalTax: 'total tax',
             export: 'export as pdf'
 
+        },
+        surety:{
+            surety:'insurance surety'
         }
     },
     nl : {
@@ -127,6 +139,7 @@ export default
             mileage: 'kilometerstand',
             year: 'jaar',
             leasingCompany:  'leasing bedrijf',
+            value: 'waarde'
         },
         fleet: {
             fleet: 'vloot',
@@ -204,12 +217,20 @@ export default
             insurance: 'verzekering',
             insurances: 'verzekeringen',
             type:'verzekeringswaarborg',
+            types:'verzekeringswaarborgen',
             vehicle: 'voertuig',
             company: 'verzekeringsmaatschappij',
             premium: 'verzekeringspremie',
             franchise: 'makelaarsloon',
             startdate: 'startdatum',
-            enddate: 'einddatum'
+            enddate: 'einddatum',
+            insurancedAmount: 'verzekerd bedrag',
+            percentage: 'percentage',
+            coverageClauses: 'dekkingsclausules',
+            exemptions: 'vrijstellingen',
+            contract: 'contract',
+            totalCost: 'totaalbedrag',
+            tax: 'tax'
         },
         invoice:{
             invoice: 'factuur',
@@ -227,6 +248,9 @@ export default
             totalTax: 'totale belasting',
             export: 'exporteer als pdf'
 
+        },
+        surety:{
+            surety:'verzekeringswaarborg'
         }
     }
 }
