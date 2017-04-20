@@ -221,7 +221,7 @@ export default
             vehicle: 'voertuig',
             company: 'verzekeringsmaatschappij',
             premium: 'verzekeringspremie',
-            franchise: 'makelaarsloon',
+            franchise: 'franchise',
             startdate: 'startdatum',
             enddate: 'einddatum',
             insurancedAmount: 'verzekerd bedrag',
