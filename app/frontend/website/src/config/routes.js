@@ -49,7 +49,7 @@ export default [
         component: App,
         name: 'home',
         children: [
-            {path: '', name: 'homeclient', component: homeClient},
+            {path: '', name: 'homeClient', component: homeClient},
             //User
             {path: 'users', name: 'users', component: indexUser},
             {path: 'users/new', name: 'new_user', component: newUser},
