@@ -5,8 +5,10 @@ import controller.FleetController;
 import controller.exceptions.UnAuthorizedException;
 import dao.interfaces.DataAccessException;
 import model.fleet.Fleet;
+import model.identity.Customer;
 import org.springframework.web.bind.annotation.*;
 import spring.exceptions.InvalidInputException;
+import spring.exceptions.ServerErrorException;
 import spring.model.RESTFleet;
 import spring.model.RESTSchema;
 import util.UUIDUtil;
@@ -15,6 +17,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
+import static util.UUIDUtil.toUUID;
 
 /**
  * This controller is responsible for handling the HTTP requests of the URLs /fleets and /companies/{companyId}/fleets.
@@ -38,7 +43,7 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping(value = {"/${path.fleets}", "/${path.companies}/{companyId}/${path.fleets}"})
-public class RESTFleetController extends RESTAbstractController<RESTFleet,Fleet>{
+public class RESTFleetController extends RESTAbstractController<RESTFleet, Fleet> {
 
     public RESTFleetController() {
         super(FleetController::new, RESTFleet::new);
@@ -51,30 +56,22 @@ public class RESTFleetController extends RESTAbstractController<RESTFleet,Fleet>
                                      @RequestParam(required = false) String company,
                                      @RequestParam(required = false) Integer page,
                                      @RequestParam(required = false) Integer limit,
-                                     @RequestHeader(value="Authorization") String token,
-                                     @RequestHeader(value="Function") String function) throws UnAuthorizedException {
+                                     @RequestHeader(value = "Authorization") String token,
+                                     @RequestHeader(value = "Function") String function) throws UnAuthorizedException {
         if (companyId.isPresent()) {
             company = companyId.get();
         }
 
-        try(FleetController controller= new FleetController(verifyToken(token,function))) {
+        try (FleetController controller = new FleetController(verifyToken(token, function))) {
+            Customer owner = company != null ? new Customer(toUUID(company)) : null;
 
-            Collection<RESTFleet> restFleets = new ArrayList<>();
-            Collection<Fleet> fleets;
-            if (company != null) {
-                try(CustomerController customerController= new CustomerController(verifyToken(token,function))) {
-                    fleets = customerController.get(UUIDUtil.toUUID(company)).getFleets();
-                }
-            } else {
-                fleets = controller.getAll();
-            }
-            for (Fleet f : fleets) {
-                restFleets.add(new RESTFleet(f));
-            }
-            return new RESTSchema<>(restFleets, page, limit, request);
+            Collection<RESTFleet> result = controller.getFiltered(owner)
+                    .stream()
+                    .map(RESTFleet::new)
+                    .collect(Collectors.toList());
+            return new RESTSchema<>(result, page, limit, request);
         } catch (DataAccessException e) {
-            e.printStackTrace();
-            throw new InvalidInputException();
+            throw new ServerErrorException("Could not retrieve fleets. This is a server error.");
         }
     }
 

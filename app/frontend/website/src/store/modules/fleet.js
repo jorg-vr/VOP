@@ -99,22 +99,6 @@ export default {
     },
     actions: {
         /**
-         * Fetches all of the fleets of a particular client.
-         * @param context
-         * @param clientId
-         * @returns {Promise}
-         */
-        fetchFleetsByClient(context, {clientId}){
-            return new Promise(resolve => {
-                RequestHandler.getObjectsRequestBy(locations.FLEET, {company: clientId}).then(fleets => {
-                    context.commit('setFleets', fleets)
-                    context.commit('setFilteredFleets', fleets)
-                    resolve(fleets)
-                })
-            })
-        },
-
-        /**
          * Adds the companyName property to the fleet which is currently in the store.
          * @param context
          * @param client The client of the fleet

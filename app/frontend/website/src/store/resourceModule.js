@@ -20,13 +20,15 @@
  * ====================
  * setResource(resource):  Sets the resource as the given resource
  * setResources(resources) : Sets the list of resources as the given resources
+ * clearResources(): Clears the list of resources and the filtered list of resources
  * setFilteredResources(resources): Sets the filtered list of resources as the given resources
  * removeResource(resource): Removes the given resource from the list of resources
  * ====================
  * ACTIONS:
  * ====================
- * fetchResource({id}): Fetches the resource with the given ID.
- * fetchResources(): Fetches all a list with all of the resources
+ * fetchResource({id}): Fetches the resource with the given ID
+ * fetchResources(): Fetches a list with all of the resources
+ * fetchResourcesBy(filters): Fetches a list with all of the resources filtered with the given filter object
  * createResource(resource): Creates a resource with the values of the given resource
  * updateResource(resource): Updates a resource with the values of the given resource
  * deleteResource({id}): Deletes the resource with the given ID
@@ -55,9 +57,11 @@ export default {
         let setResources = 'set' + capNames
         let setResource = 'set' + capName
         let setFilteredResources = 'setFiltered' + capNames
+        let clearResources = 'clear' + capNames
         let removeResource = 'remove' + capName
         let fetchResource = 'fetch' + capName
         let fetchResources = 'fetch' + capNames
+        let fetchResourcesBy = fetchResources + 'By'
         let createResource = 'create' + capName
         let updateResource = 'update' + capName
         let deleteResource = 'delete' + capName
@@ -94,13 +98,33 @@ export default {
         module.mutations[setFilteredResources] = (state, payload) => {
             state[filteredNames] = payload
         }
+        module.mutations[clearResources] = (state) => {
+            state[names] = []
+            state[filteredNames] = []
+        }
         module.mutations[removeResource] = (state, payload) => {
             state[names] = state[names].filter(resource => resource.id !== payload.id)
             state[filteredNames] = state[filteredNames].filter(resource => resource.id !== payload.id)
         }
         module.actions[fetchResources] = (context) => {
+            //Empty the previous list of resources.
+            context.commit(clearResources)
             return new Promise((resolveSuccess, resolveFailure) => {
                 RequestHandler.getObjectsRequest(location).then(resources => {
+                    context.commit(setResources, resources)
+                    //Initially the filtered resources should equal the actual resources.
+                    context.commit(setFilteredResources, resources)
+                    resolveSuccess(resources)
+                }, response => {
+                    resolveFailure(response)
+                })
+            })
+        }
+        module.actions[fetchResourcesBy] = (context, filters) => {
+            //Empty the previous list of resources.
+            context.commit(clearResources)
+            return new Promise((resolveSuccess, resolveFailure) => {
+                RequestHandler.getObjectsRequestBy(location, filters).then(resources => {
                     context.commit(setResources, resources)
                     //Initially the filtered resources should equal the actual resources.
                     context.commit(setFilteredResources, resources)
@@ -123,17 +147,18 @@ export default {
         module.actions[createResource] = (context, resource) => {
             return new Promise((resolveSuccess, resolveFailure) => {
                 RequestHandler.postObjectRequest(location, resource).then(createdResource => {
-                    context.commit(setResource, createdResource)
                     resolveSuccess(createdResource)
                 }, response => {
                     resolveFailure(response)
                 })
+
+
+
             })
         }
         module.actions[updateResource] = (context, resource) => {
             return new Promise((resolveSuccess, resolveFailure) => {
                 RequestHandler.putObjectRequest(location, resource).then(updatedResource => {
-                    context.commit(setResource, updatedResource)
                     resolveSuccess(updatedResource)
                 }, response => {
                     resolveFailure(response)

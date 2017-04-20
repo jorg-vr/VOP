@@ -21,7 +21,7 @@ TODO: document this file
 		</div>
 	</div>
 </template>
-<style scoped>
+<style>
 
 
 	.modal-body p{

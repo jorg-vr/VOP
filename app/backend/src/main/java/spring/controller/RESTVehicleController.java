@@ -22,6 +22,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import java.util.*;
+import java.util.stream.Collectors;
+
+import static util.UUIDUtil.toUUID;
 
 /**
  * This controller is responsible for handling the HTTP requests of the URLs /vehicles and /companies/{companyId}/fleets/{fleetId}/vehicles.
@@ -59,10 +62,10 @@ public class RESTVehicleController extends RESTAbstractController<RESTVehicle, V
     @RequestMapping(method = RequestMethod.GET)
     public RESTSchema<RESTVehicle> get(HttpServletRequest request,
                                        @PathVariable Optional<String> fleetId,
-                                       @RequestParam(required = false) String licensPlate,
+                                       @RequestParam(required = false) String licensePlate,
                                        @RequestParam(required = false) String vin,
                                        @RequestParam(required = false) String leasingCompany,
-                                       @RequestParam(required = false) String year,
+                                       @RequestParam(required = false) Integer year,
                                        @RequestParam(required = false) String fleet,
                                        @RequestParam(required = false) String type,
                                        @RequestParam(required = false) Integer page,
@@ -73,47 +76,19 @@ public class RESTVehicleController extends RESTAbstractController<RESTVehicle, V
             fleet = fleetId.get();
         }
 
+        /*
+        if (vin != null || leasingCompany != null || year != null || type != null)
+            throw new InvalidInputException("One or more filters are not implemented");
+        */
         try (VehicleController controller = new VehicleController(verifyToken(token, function))) {
-            VehicleDAO vehicleDAO = (VehicleDAO) controller.getDao();
-            List<Filter<Vehicle>> filters = new ArrayList<>();
-            if (licensPlate != null) {
-                filters.add(vehicleDAO.byLicensePlate(licensPlate));
-            }
-            if (vin != null) {
-                //TODO after issue #87
-            }
-            if (leasingCompany != null) {
-                //TODO after issue #88
-            }
-            if (year != null) {
-                filters.add(vehicleDAO.atProductionDate(LocalDate.parse(year + "0101", yearFormat)));
-            }
-            if (fleet != null) {
-                Fleet fl;
-                try (FleetController fleetController = new FleetController(verifyToken(token, function))) {
-                    fl = fleetController.get(UUIDUtil.toUUID(fleet));
-                } catch (DataAccessException e) {
-                    throw new InvalidInputException("Something went wrong when getting the fleet from the database");
-                } catch (UnAuthorizedException e) {
-                    throw new NotAuthorizedException();
-                }
-                filters.add(vehicleDAO.byFleet(fl));
-            }
-            if (type != null) {
-                try (VehicleTypeController vehicleTypeController = new VehicleTypeController(verifyToken(token, function))) {
-                    filters.add(vehicleDAO.byType(vehicleTypeController.get(UUIDUtil.toUUID(type))));
-                } catch (DataAccessException e) {
-                    throw new InvalidInputException("Could not find requested type");
-                } catch (UnAuthorizedException e) {
-                    throw new NotAuthorizedException();
-                }
-            }
-            List<RESTVehicle> result = new ArrayList<>();
-            for (Vehicle vehicle : controller.getAll(filters.toArray(new Filter[filters.size()]))) {
-                result.add(new RESTVehicle(vehicle));
-            }
-            return new RESTSchema<>(result, page, limit, request);
 
+            Fleet fleetObject = fleet != null ? new Fleet(toUUID(fleet)) : null;
+
+            Collection<RESTVehicle> result = controller.getFiltered(licensePlate, vin, null, year, fleetObject, type)
+                    .stream()
+                    .map(RESTVehicle::new)
+                    .collect(Collectors.toList());
+            return new RESTSchema<>(result, page, limit, request);
         } catch (DataAccessException e) {
             throw new InvalidInputException("Some parameters where invalid");
         }

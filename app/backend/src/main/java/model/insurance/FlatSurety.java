@@ -8,6 +8,13 @@ public class FlatSurety extends Surety {
     // In cents
     private int premium;
 
+    public FlatSurety() {
+    }
+
+    public FlatSurety(int premium) {
+        this.premium = premium;
+    }
+
     @Override
     public int calculatePremium(int value) {
         return premium;

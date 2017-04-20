@@ -50,12 +50,18 @@ public class ProductionVehicleDAO extends ProductionDAO<Vehicle> implements Vehi
 
     @Override
     public Filter<Vehicle> beforeProductionDate(LocalDate productionDate) {
+        if(productionDate==null){
+            return ()->{};
+        }
         return () ->
                 getPredicates().add(getCriteriaBuilder().lessThanOrEqualTo(getRoot().<LocalDate>get("productionDate"), productionDate));
     }
 
     @Override
     public Filter<Vehicle> afterProductionDate(LocalDate productionDate) {
+        if(productionDate==null){
+            return ()->{};
+        }
         return () ->
                 getPredicates().add(getCriteriaBuilder().greaterThanOrEqualTo(getRoot().<LocalDate>get("productionDate"), productionDate));
     }

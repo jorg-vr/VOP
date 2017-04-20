@@ -5,15 +5,23 @@
 
 -->
 <template>
-    <div v-if="client && client.address">
+    <div v-if="client && client.address" class="col-lg-8 col-md-9 col-sm-11">
         <div class="page-header">
-            <h1>{{$t("client.client") | capitalize }}</h1>
+            <h1>
+                {{$t("client.client") | capitalize }}
+                <button-invoice  :id="client.id" ></button-invoice>
+            </h1>
+
         </div>
-        <div class="col-md-8">
+        <div >
             <table class="table show-table" v-if="client.address">
                 <tr>
                     <td>{{$t('client.name') | capitalize }}</td>
                     <td>{{client.name}}</td>
+                </tr>
+                <tr>
+                    <td>Type</td>
+                    <td>{{type | capitalize}}</td>
                 </tr>
                 <tr>
                     <td>{{$t('address.country') | capitalize }}</td>
@@ -60,26 +68,31 @@
 <script>
     import {mapGetters, mapActions} from 'vuex'
     import resources from '../../constants/resources'
+    import clientTypes from '../../constants/clientTypes'
     import listComponent from "../../assets/general/listComponent.vue"
     import buttonBack from '../../assets/buttons/buttonBack.vue'
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
+    import buttonInvoice from '../../assets/buttons/buttonInvoice.vue'
 
     export default {
         data(){
             return {
-                resource: resources.FLEET
+                resource: resources.FLEET,
+                type: ''
             }
         },
         components: {
-            buttonBack, listComponent, buttonAdd
+            buttonBack, listComponent, buttonAdd, buttonInvoice
         },
         props: {
             id: String
         },
         created(){
             let clientId = this.id
-            this.fetchClient({id: clientId})
-            this.fetchFleetsByClient({clientId: clientId})
+            this.fetchClient({id: clientId}).then(client => {
+                this.type = clientTypes[client.type]['name']
+            })
+            this.fetchFleetsBy({client: clientId})
         },
         computed: {
             ...mapGetters([
@@ -90,7 +103,7 @@
         methods: {
             ...mapActions([
                 'fetchClient',
-                'fetchFleetsByClient'
+                'fetchFleetsBy'
             ])
         },
     }

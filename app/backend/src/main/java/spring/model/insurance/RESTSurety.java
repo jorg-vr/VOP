@@ -5,6 +5,7 @@ import model.account.Function;
 import model.insurance.NonFlatSurety;
 import model.insurance.FlatSurety;
 import model.insurance.Surety;
+import model.insurance.SuretyType;
 import spring.model.RESTAbstractModel;
 
 import static util.MyProperties.PATH_SURETIES;
@@ -23,6 +24,8 @@ public class RESTSurety extends RESTAbstractModel<Surety> {
     // Only applies to NonFlatSurety
     private double premiumPercentage;
 
+    private SuretyType suretyType;
+
     public RESTSurety() {
     }
 
@@ -34,23 +37,11 @@ public class RESTSurety extends RESTAbstractModel<Surety> {
             this.premium = flatSurety.getPremium();
         } else if (surety instanceof NonFlatSurety) {
             NonFlatSurety nonFlatSurety = (NonFlatSurety) surety;
-            this.isFlat = true;
+            this.isFlat = false;
             this.premium = nonFlatSurety.getMinPremium();
             this.premiumPercentage = nonFlatSurety.getPremiumPercentage();
         }
-    }
-
-    public RESTSurety(FlatSurety surety) {
-        super(surety.getUuid(), getProperty(PATH_SURETIES));
-        this.isFlat = true;
-        this.premium = surety.getPremium();
-    }
-
-    public RESTSurety(NonFlatSurety surety) {
-        super(surety.getUuid(), getProperty(PATH_SURETIES));
-        this.isFlat = true;
-        this.premium = surety.getMinPremium();
-        this.premiumPercentage = surety.getPremiumPercentage();
+        this.suretyType = surety.getSuretyType();
     }
 
     @Override
@@ -89,5 +80,13 @@ public class RESTSurety extends RESTAbstractModel<Surety> {
 
     public void setPremiumPercentage(double premiumPercentage) {
         this.premiumPercentage = premiumPercentage;
+    }
+
+    public SuretyType getSuretyType() {
+        return suretyType;
+    }
+
+    public void setSuretyType(SuretyType suretyType) {
+        this.suretyType = suretyType;
     }
 }

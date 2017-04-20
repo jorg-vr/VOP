@@ -95,7 +95,23 @@ export default
             premium: 'insurance premium',
             franchise: 'franchise',
             startdate: 'startdate',
-            enddate: 'enddate',
+            enddate: 'enddate'
+        },
+        invoice:{
+            invoice: 'invoice',
+            invoices: 'invoices',
+            payer: 'payer',
+            beneficiary: 'beneficiary',
+            type: 'type',
+            paid: 'paid',
+            startDate: 'start date',
+            endDate: 'end date',
+            contracts: 'contracts',
+            facturationPeriod: 'facturation period',
+            paymentPeriod: 'payment period',
+            totalAmount: 'total amount',
+            totalTax: 'total tax',
+            export: 'export as pdf'
 
         }
     },
@@ -194,6 +210,23 @@ export default
             franchise: 'makelaarsloon',
             startdate: 'startdatum',
             enddate: 'einddatum'
+        },
+        invoice:{
+            invoice: 'factuur',
+            invoices: 'facturen',
+            payer: 'betaler',
+            beneficiary: 'begunstigde',
+            type: 'type',
+            paid: 'betaald',
+            startDate: 'start datum',
+            endDate: 'eind datum',
+            contracts: 'verzekeringen',
+            facturationPeriod: 'facturatieperiode',
+            paymentPeriod: 'afrekeningsperiode',
+            totalAmount: 'totaalbedrag',
+            totalTax: 'totale belasting',
+            export: 'exporteer als pdf'
+
         }
     }
 }

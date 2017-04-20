@@ -30,6 +30,10 @@ import newInsurance from '../pages/insurance/new.vue'
 import editInsurance from '../pages/insurance/edit.vue'
 import showInsurance from '../pages/insurance/show.vue'
 
+import indexInvoice from '../pages/invoice/index.vue'
+import showInvoice from '../pages/invoice/show.vue'
+
+
 import exception from '../pages/exception/exception.vue'
 import login from '../pages/login/login.vue'
 
@@ -65,7 +69,11 @@ export default [
             {path: 'insurances', name: 'insurances', component: indexInsurance},
             {path: 'insurances/new', name: 'new_insurance', component: newInsurance},
             {path: 'insurances/:id(\\d+)', name: 'insurance', component: showInsurance, props: true},
-            {path: 'insurances/:id(\\d+)/edit', name: 'edit_insurance', component: editInsurance, props: true},    
+            {path: 'insurances/:id(\\d+)/edit', name: 'edit_insurance', component: editInsurance, props: true},
+
+            // invoice
+            {path: 'clients/:companyId(\\d+)/invoices', name: 'invoices', component: indexInvoice},
+            {path: 'clients/:companyId(\\d+)/invoices/:id(\\d+)', name: 'invoice', component: showInvoice, props: true}
         ],
     },
     {path: '/login', name: login, component: login},

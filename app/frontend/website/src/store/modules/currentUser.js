@@ -158,7 +158,7 @@ export default {
             return new Promise(resolve => {
                 RequestHandler.postObjectRequest(locations.LOGIN, credentials).then(response => {
                     response.bodyText.promise.then(token => {
-                        context.commit('setAuthToken', {authToken: token})
+                        context.commit('setAuthToken', {authToken: token});
                     })
                 }, () =>  { //failure
                     resolve()
