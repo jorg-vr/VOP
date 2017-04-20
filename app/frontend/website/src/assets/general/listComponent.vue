@@ -8,7 +8,7 @@ Component used for showing an object in a list.
 -->
 <template>
     <div :class="'row ' + rowClass" v-if="object">
-        <router-link :to="{name: resource.name, params: {id: object.id}}">
+           <router-link :to="{name: resource.name, params: {id: object.id, contractId: object.contract}}">
             <div class="panel panel-default col-sm-10">
                 <div class="panel-body">
                     <table>
