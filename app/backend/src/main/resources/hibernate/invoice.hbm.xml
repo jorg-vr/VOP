@@ -18,10 +18,10 @@
                      fetch="select"/>
         <property name="startDate" column="start_data" type="java.time.LocalDateTime"/>
         <property name="endDate" column="end_data" type="java.time.LocalDateTime"/>
-        <bag name="contracts" access="field" table="contracts" inverse="true"
+        <bag name="contracts" access="field" table="contracts" cascade="save-update"
              lazy="true" fetch="select">
             <key column="invoice_id" not-null="true"/>
-            <one-to-many class="model.insurance.Contract"/>
+            <many-to-many class="model.insurance.Contract"/>
         </bag>
         <property name="type">
             <type name="org.hibernate.type.EnumType">
