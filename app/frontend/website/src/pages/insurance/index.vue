@@ -7,7 +7,6 @@
         <div class="page-header">
             <h1>
                 {{$t("insurance.insurance") | capitalize}}
-               <button-add :resource="resource"></button-add>
             </h1>
         </div>
         <insurance-search-bar @search="updateInsurance" @advancedSearch="updateInsurancesAdvanced"></insurance-search-bar>
@@ -16,7 +15,7 @@
                         v-if="insurance"
                         :resource="resource"
                         :object="insurance"
-                        :visibleKeys="['type','vehicle']"
+                        :visibleKeys="['name','startDate','totalCost','totalTax']"
                         :key="insurance.id">
         </list-component>
     </div>
@@ -38,12 +37,22 @@
             listComponent, buttonAdd, insuranceSearchBar
         },
         created() {
+             var i 
+            // contracts/id/insurances
+            // fetch Contracts 
              this.fetchInsurances().then(insurances => {
-                 this.setFilteredInsurances({insurances: insurances})
+                for(i=0; i<insurances.length;i++){
+                   // for each contract add customer name for display purposes
+                   console.log(insurances[i])
+                   // insurances[i].customerName = this.client.name
+                   // insuranceCompany not supported yet
+                }  
+                this.setFilteredInsurances({insurances: insurances})
             })
         },
         computed: {
             ...mapGetters([
+                'client',
                 'insurances',
                 'filteredInsurances',
                 'getInsurancesByAll',
@@ -54,6 +63,8 @@
             ...mapActions([
                 'fetchInsurances',
                 'deleteInsurance',
+                'fetchClient',
+                'fetchInsuranceByContract'
             ]),
 
             ...mapMutations([
