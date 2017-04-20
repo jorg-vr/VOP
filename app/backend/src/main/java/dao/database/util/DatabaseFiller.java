@@ -80,7 +80,7 @@ public class DatabaseFiller {
                 contract.setCustomer(customer);
                 contract.setCompany(insuranceCompany);
                 contract.setStartDate(LocalDateTime.now());
-
+                contract.setEndDate(LocalDateTime.now().plusMonths(10));
 
 
                 addressDAO.create(address);
