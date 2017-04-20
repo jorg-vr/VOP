@@ -16,7 +16,7 @@ import java.util.Collection;
 public class FleetController extends AbstractController<Fleet> {
 
     public FleetController(Function function) {
-        super(BackendApplication.getProvider().getFleetDAO(), Resource.FLEET,function);
+        super(BackendApplication.getProvider().getFleetDAO(), Resource.FLEET, function);
     }
 
     @Override
@@ -24,6 +24,12 @@ public class FleetController extends AbstractController<Fleet> {
         return fleet.getOwner().equals(function.getCompany());
     }
 
+    /**
+     * @param owner Only return the fleets of this owner. If this owner does not exist or has no fleets, an empty list will be returned
+     * @return all fleets filtered by the arguments
+     * @throws DataAccessException   Something went horribly wrong with the database
+     * @throws UnAuthorizedException Function is not authorized to get all the objects.
+     */
     public Collection<Fleet> getFiltered(Customer owner) throws DataAccessException, UnAuthorizedException {
         FleetDAO dao = (FleetDAO) getDao();
         return getAll(

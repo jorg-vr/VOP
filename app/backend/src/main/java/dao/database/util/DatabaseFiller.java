@@ -140,7 +140,7 @@ public class DatabaseFiller {
              UserDAO userDAO = provider.getUserDAO();
              FunctionDAO functionDAO = provider.getFunctionDAO();
              AddressDAO addressDAO = provider.getAddressDao();
-             CustomerDAO customerDAO = provider.getCustomerDAO();) {
+             CustomerDAO customerDAO = provider.getCustomerDAO()) {
 
             User user = new User();
             user.setEmail("admin&insuranceagent@solvas.be");
@@ -206,7 +206,7 @@ public class DatabaseFiller {
              UserDAO userDAO = provider.getUserDAO();
              FunctionDAO functionDAO = provider.getFunctionDAO();
              AddressDAO addressDAO = provider.getAddressDao();
-             CustomerDAO customerDAO = provider.getCustomerDAO();) {
+             CustomerDAO customerDAO = provider.getCustomerDAO()) {
 
             User user = new User();
             user.setEmail("admin@solvas.be");
@@ -253,7 +253,27 @@ public class DatabaseFiller {
              UserDAO userDAO = provider.getUserDAO();
              FunctionDAO functionDAO = provider.getFunctionDAO();
              AddressDAO addressDAO = provider.getAddressDao();
-             CustomerDAO customerDAO = provider.getCustomerDAO();) {
+             CustomerDAO customerDAO = provider.getCustomerDAO();
+             InsuranceCompanyDAO insuranceCompanyDAO = provider.getInsuranceCompanyDao();
+             InvoiceDAO invoiceDAO = provider.getInvoiceDao();
+             ContractDAO contractDAO = provider.getContractDao();
+             VehicleDAO vehicleDAO = provider.getVehicleDAO();
+             FleetDAO fleetDAO = provider.getFleetDAO();
+             VehicleInsuranceDAO vehicleInsuranceDAO = provider.getVehicleInsuranceDao();
+             VehicleTypeDAO vehicleTypeDAO = provider.getVehicleTypeDAO();
+             SuretyDAO suretyDAO = provider.getSuretyDao(); CompanyDAO companyDAO = provider.getCompanyDAO();
+             ) {
+
+
+            Company solvas = new Company();
+            solvas.setName("solvas");
+            solvas.setCompanyType(CompanyType.CUSTOMER);
+            companyDAO.create(solvas);
+
+            Surety flatSurety = new FlatSurety(100);
+            flatSurety.setSuretyType(SuretyType.OMNIUM_FULL);
+            suretyDAO.create(flatSurety);
+
 
             User user = new User();
             user.setEmail("klant@solvas.be");
@@ -264,10 +284,10 @@ public class DatabaseFiller {
 
             Role role = new Role();
             role.setName("customerrole");
-            for (Resource resource : new Resource[]{Resource.FLEET, Resource.BILLING, Resource.USER, Resource.ROLE, Resource.FUNCTION, Resource.INSURANCE, Resource.VEHICLE, Resource.VEHICLETYPE}) {
+            for (Resource resource : new Resource[]{Resource.FLEET, Resource.BILLING, Resource.USER, Resource.ROLE, Resource.FUNCTION, Resource.INSURANCE, Resource.VEHICLE}) {
                 role.setAccess(resource, Action.READ_MINE);
             }
-
+            role.setAccess(Resource.VEHICLETYPE,Action.READ_ALL);
             Function function = new Function();
             function.setUser(user);
             function.setRole(role);
@@ -285,7 +305,63 @@ public class DatabaseFiller {
             customerDAO.create(customer);
             roleDAO.create(role);
             functionDAO.create(function);
+            Address address2 = new Address("mystreet", "54A", "The town", "9850", "Belgium");
+            InsuranceCompany insuranceCompany = new InsuranceCompany();
+            insuranceCompany.setAddress(address);
+            insuranceCompany.setName("Verzekeringsmaatschappij EastBirds");
 
+            Contract contract = new Contract();
+            contract.setCustomer(customer);
+            contract.setCompany(insuranceCompany);
+            contract.setStartDate(LocalDateTime.now());
+            contract.setEndDate(LocalDateTime.now().plusMonths(10));
+
+
+            addressDAO.create(address);
+            customerDAO.create(customer);
+            addressDAO.create(address2);
+            insuranceCompanyDAO.create(insuranceCompany);
+            contractDAO.create(contract);
+
+            Invoice invoice = new Invoice();
+            invoice.setContracts(new ArrayList<Contract>(Arrays.asList(new Contract[]{contract})));
+            invoice.setBeneficiary(solvas);
+            invoice.setPayer(customer);
+            invoice.setPaid(false);
+            invoice.setStartDate(LocalDateTime.now().minusMonths(1));
+            invoice.setEndDate(LocalDateTime.now().plusMonths(1));
+            invoice.setType(InvoiceType.BILLING);
+            invoiceDAO.create(invoice);
+
+            for (int j = 1; j < 3; j++) {
+                Fleet fleet = new Fleet();
+                fleet.setOwner(customer);
+                fleet.setName("Vloot " + Integer.toString(j));
+                fleetDAO.create(fleet);
+                for (VehicleType type : vehicleTypeDAO.listFiltered()) {
+                    for (int k = 0; k < 8; k++) {
+                        Vehicle vehicle = new Vehicle();
+                        vehicle.setFleet(fleet);
+                        vehicle.setChassisNumber("AAAAAAAAAAAAAAAAA");
+                        vehicle.setMileage(k * 10000);
+                        vehicle.setBrand("Merk " + Integer.toString(k));
+                        vehicle.setLicensePlate("ABC-00" + Integer.toString(k));
+                        vehicle.setType(type);
+                        vehicle.setModel("Model " + Integer.toString(k));
+                        vehicle.setProductionDate(LocalDate.now());
+                        vehicleDAO.create(vehicle);
+
+                        VehicleInsurance insurance = new VehicleInsurance();
+                        insurance.setContract(contract);
+                        insurance.setSurety(flatSurety);
+                        insurance.setVehicle(vehicle);
+                        insurance.setStartDate(LocalDateTime.now().minusMonths(10));
+                        insurance.setStartDate(LocalDateTime.now().plusMonths(10));
+                        vehicleInsuranceDAO.create(insurance);
+                    }
+                }
+
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
