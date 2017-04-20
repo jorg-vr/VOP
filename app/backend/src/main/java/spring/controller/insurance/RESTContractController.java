@@ -7,6 +7,7 @@ import controller.exceptions.UnAuthorizedException;
 import controller.insurance.ContractController;
 import dao.interfaces.DataAccessException;
 import model.account.Function;
+import model.identity.Customer;
 import model.insurance.Contract;
 import model.insurance.Surety;
 import model.insurance.SuretyType;
@@ -26,6 +27,8 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static util.UUIDUtil.toUUID;
+
 @RestController
 @RequestMapping("/${path.contracts}")
 public class RESTContractController extends RESTAbstractController<RESTContract, Contract> {
@@ -37,10 +40,14 @@ public class RESTContractController extends RESTAbstractController<RESTContract,
     @RequestMapping(method = RequestMethod.GET)
     public RESTSchema<RESTContract> get(HttpServletRequest request,
                                         Integer page, Integer limit,
+                                        String company,
                                         @RequestHeader(value = "Authorization") String token,
                                         @RequestHeader(value = "Function") String function) throws UnAuthorizedException {
         try (ContractController contractController = new ContractController(verifyToken(token, function))) {
-            Collection<RESTContract> restContracts = contractController.getAll()
+
+            Customer customer = company != null ? new Customer(toUUID(company)): null;
+
+            Collection<RESTContract> restContracts = contractController.getFiltered(customer)
                     .stream()
                     .map(RESTContract::new)
                     .collect(Collectors.toList());
