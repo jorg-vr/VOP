@@ -8,7 +8,6 @@ export default {
 		invoice: {},
 		invoices: [],
 		filteredInvoices: [],
-
 	},
 	getters:{
 		invoice(state) {
@@ -23,7 +22,6 @@ export default {
 		getInvoiceByAll: (state, getters) => (value) => {
             return getters.filterByAll(state.invoices, value)
         },
-
         getInvoicesByAllAdvanced: (state, getters) => (invoice) => {
             return getters.filterByAllAdvanced(state.invoices, invoice)
         }
@@ -51,6 +49,7 @@ export default {
 	    	state.invoice=payload
 	    },
 	    setInvoices(state,payload){
+	        addShowableDates(payload)
 	    	state.invoices=payload
 	    },
 	    setFilteredInvoices(state,payload){
@@ -71,7 +70,8 @@ export default {
                     resolve(invoices)
                 })
             })
-        },fetchInsurancesByInvoice(context, payload){
+        },
+		fetchInsurancesByInvoice(context, payload){
             return new Promise(resolve => {
                 RequestHandler.getObjectsRequest(locations.CLIENT+payload.companyId+'/'+locations.INVOICE+payload.id+'/'+locations.INSURANCE).then(insurances => {
                     //invoices are an Array
@@ -105,4 +105,11 @@ export default {
 
 	}
 
+}
+
+let addShowableDates = function(invoices){
+    for(let i=0; i<invoices.length; i++){
+        invoices[i].showableStartDate = invoices[i].startDate.showableDate()
+        invoices[i].showableEndDate = invoices[i].endDate.showableDate()
+    }
 }

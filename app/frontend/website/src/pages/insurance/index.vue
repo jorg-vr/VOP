@@ -11,7 +11,7 @@
         </div>
         <insurance-search-bar @search="updateInsurance" @advancedSearch="updateInsurancesAdvanced"></insurance-search-bar>
         <!-- Render an info-pane for every insurance. Once all the data is loaded, the table will be shown.-->
-        <list-component :resource="resource" :objects="filteredInsurances" :visibleKeys="['startDate','totalCost','totalTax']">
+        <list-component :resource="resource" :objects="filteredInsurances" :visibleKeys="['showableStartDate','totalCost','totalTax']">
         </list-component>
     </div>
 </template>

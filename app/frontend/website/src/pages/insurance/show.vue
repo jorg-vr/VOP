@@ -6,20 +6,22 @@
 <template>
     <div>
         <div class="page-header">
-            <h1>{{$t("insurance.types") | capitalize }} </h1>
-            <button-add :resource="resource"></button-add>
+            <h1>
+                {{$t("insurance.types") | capitalize }}
+                <button-add :resource="resource"></button-add>
+            </h1>
         </div>
         <insurance-search-bar @search="updateContractInsurances" @advancedSearch="updateContractInsurancesAdvanced"></insurance-search-bar>
         <list-component :resource="resource"
                         :objects="filteredcontractInsurances"
-                        :visibleKeys="['cost','tax','startDate']">
+                        :visibleKeys="['cost','tax','showableStartDate']">
         </list-component>
         <button-back :route="{name: 'insurances'}"></button-back>
     </div>
 </template>
 <script>
     import resources from '../../constants/resources'
-    import listComponent from '../../assets/list/listItem.vue'
+    import listComponent from '../../assets/list/listComponent.vue'
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
     import buttonBack from '../../assets/buttons/buttonBack.vue'
     import buttonLink from '../../assets/buttons/buttonLink.vue'

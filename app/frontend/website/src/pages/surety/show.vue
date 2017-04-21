@@ -127,8 +127,6 @@
               this.fetchVehicle({id: vehicleId})
               // test 
               this.fetchSureties()
-              console.log('TESTTEST')
-              console.log(this.sureties)
 
         },
         computed: {

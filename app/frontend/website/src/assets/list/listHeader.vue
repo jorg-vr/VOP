@@ -6,7 +6,6 @@
                 <table>
                     <tr>
                         <th v-for="key in visibleKeys">{{$t(resource.name + '.' + key).capitalize()}}</th>
-
                     </tr>
                 </table>
             </div>
