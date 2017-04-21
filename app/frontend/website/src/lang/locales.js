@@ -102,6 +102,8 @@ export default
             premium: 'insurance premium',
             franchise: 'franchise',
             endDate: 'end date',
+            showableStartDate: 'start date',
+            showableEndDate: 'end date',
             insurancedAmount: 'insuranced amount',
             percentage: 'percentage',
             coverageClauses: 'coverage clauses',
@@ -120,6 +122,8 @@ export default
             paid: 'paid',
             startDate: 'start date',
             endDate: 'end date',
+            showableStartDate: 'start date',
+            showableEndDate: 'end date',
             contracts: 'contracts',
             facturationPeriod: 'facturation period',
             paymentPeriod: 'payment period',
@@ -129,7 +133,11 @@ export default
 
         },
         surety:{
-            surety:'insurance surety'
+            surety:'insurance surety',
+            cost: 'cost',
+            tax: 'tax',
+            startDate: 'start date',
+            showableStartDate: 'start date'
         }
     },
     nl : {
@@ -233,6 +241,8 @@ export default
             franchise: 'franchise',
             startDate: 'startdatum',
             endDate: 'einddatum',
+            showableStartDate: 'startdatum',
+            showableEndDate: 'einddatum ',
             insurancedAmount: 'verzekerd bedrag',
             percentage: 'percentage',
             coverageClauses: 'dekkingsclausules',
@@ -249,8 +259,10 @@ export default
             beneficiary: 'begunstigde',
             type: 'type',
             paid: 'betaald',
-            startDate: 'start datum',
-            endDate: 'eind datum',
+            startDate: 'startdatum',
+            endDate: 'einddatum',
+            showableStartDate: 'startdatum',
+            showableEndDate: 'einddatum ',
             contracts: 'verzekeringen',
             facturationPeriod: 'facturatieperiode',
             paymentPeriod: 'afrekeningsperiode',
@@ -259,8 +271,12 @@ export default
             export: 'exporteer als pdf'
 
         },
-        surety:{
-            surety:'verzekeringswaarborg'
+        surety: {
+            surety:'verzekeringswaarborg',
+            cost: 'prijs',
+            tax: 'taks',
+            startDate: 'startdatum',
+            showableStartDate: 'startdatum'
         }
     }
 }

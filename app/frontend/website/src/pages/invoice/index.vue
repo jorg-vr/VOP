@@ -10,7 +10,7 @@
             </h1>
         </div>
 
-        <list-component :objects="invoices" :resource="resource" :visibleKeys="['startDate', 'endDate', 'totalAmount']">
+        <list-component :objects="invoices" :resource="resource" :visibleKeys="['showableStartDate', 'showableEndDate', 'totalAmount']">
         </list-component>
         <button-back :route="{name: 'client'}"></button-back>
 

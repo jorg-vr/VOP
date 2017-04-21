@@ -75,6 +75,7 @@ export default {
          * @param insurances
          */
         setFilteredcontractInsurances(state, insurances){
+            addShowableDates(insurances)
             state.filteredcontractInsurances = insurances
         },
 
@@ -220,7 +221,6 @@ export default {
         },
          // payload consist of contract id and input data
         deleteSurety(context,payload){
-            console.log('DELETE API CALL NAAR: '+locations.INSURANCE+payload.contractId+'/'+locations.SURETY+payload.id)
             return new Promise((resolveSuccess, resolveFailure) => {
                 RequestHandler.deleteObjectRequest(locations.INSURANCE+payload.contractId+'/'+locations.SURETY, payload.id).then(() => {
                     context.commit('removeSurety', {id: payload.id})
@@ -233,7 +233,6 @@ export default {
         },
 
         updateSurety(context,payload){
-            console.log('PUT API CALL NAAR: '+locations.INSURANCE+payload.contractId+'/'+locations.SURETY+payload.object.id)
             return new Promise((resolveSuccess, resolveFailure) => {
                 RequestHandler.putObjectRequest(locations.INSURANCE+payload.contractId+'/'+locations.SURETY+payload.object.id, payload.object).then(updatedSurety => {
                     context.commit('setSurety', updatedSurety)
@@ -245,7 +244,6 @@ export default {
         },
 
         createSurety(context,payload){
-            console.log('POST API CALL NAAR: '+locations.INSURANCE+payload.contractId+'/'+locations.SURETY)
             return new Promise((resolveSuccess, resolveFailure) => {
                 RequestHandler.postObjectRequest(locations.INSURANCE+payload.contractId+'/'+locations.SURETY, payload.object).then(createdSurety => {
                     context.commit('addContractInsurance', createdSurety)
@@ -259,3 +257,9 @@ export default {
     }
 }
 
+
+let addShowableDates = function(insurances){
+    for(let i=0; i<insurances.length; i++){
+        insurances[i].showableStartDate = insurances[i].startDate.showableDate()
+    }
+}

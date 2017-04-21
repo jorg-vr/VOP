@@ -93,9 +93,11 @@ export default {
             state[name] = payload
         }
         module.mutations[setResources] = (state, payload) => {
+            addShowableDates(payload) //This function will add showable dates if the objects have dates.
             state[names] = payload
         }
         module.mutations[setFilteredResources] = (state, payload) => {
+            addShowableDates(payload) //This function will add showable dates if the objects have dates.
             state[filteredNames] = payload
         }
         module.mutations[clearResources] = (state) => {
@@ -176,6 +178,17 @@ export default {
             })
         }
         return module
+    }
+}
+
+let addShowableDates = function(payload){
+    for(let i=0; i<payload.length; i++){
+        if(payload[i].startDate){
+            payload[i].showableStartDate = payload[i].startDate.showableDate()
+        }
+        if(payload[i].endDate){
+            payload[i].showableEndDate = payload[i].endDate.showableDate()
+        }
     }
 }
 

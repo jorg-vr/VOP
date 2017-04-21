@@ -80,6 +80,11 @@ String.prototype.rtrim = function(s) {
     return this.replace(new RegExp(s + "*$"),'');
 };
 
+String.prototype.showableDate = function() {
+    var d = new Date(this)
+    return d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear()
+}
+
 String.prototype.plural = function() {
     return this + 's'
 }
