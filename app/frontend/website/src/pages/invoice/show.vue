@@ -30,9 +30,9 @@
                 </tr>
             </table>
             <h2>{{$t("invoice.contracts") | capitalize }}</h2>
-            <list-component :object="insurances"
+            <list-component :objects="insurances"
                             :visibleKeys="new Array('insuranceCompany','type','vehicle')"
-                            :key="insurance.id">
+                            :resource="resource">
             </list-component>
             <button-back :route="{name: 'invoices'}"></button-back>
         </div>
@@ -40,11 +40,17 @@
 </template>
 <script>
     import {mapGetters, mapActions} from 'vuex'
-    import listComponent from "../../assets/list/listItem.vue"
+    import resources from '../../constants/resources'
+    import listComponent from '../../assets/list/listComponent.vue'
     import buttonBack from '../../assets/buttons/buttonBack.vue'
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
 
     export default {
+        data() {
+            return {
+                resource: resources.INSURANCE
+            }
+        },
         components: {
             buttonBack, listComponent, buttonAdd
         },
@@ -53,7 +59,6 @@
             companyId: String
         },
         created(){
-            console.log();
             let invoiceId = this.id;
             let companyId= this.companyId;
             // fetch information about this invoice

@@ -11,14 +11,14 @@
         </div>
         <insurance-search-bar @search="updateInsurance" @advancedSearch="updateInsurancesAdvanced"></insurance-search-bar>
         <!-- Render an info-pane for every insurance. Once all the data is loaded, the table will be shown.-->
-        <list-component :resource="resource" :objects="filteredInsurances" :visibleKeys="['name','startDate','totalCost','totalTax']">
+        <list-component :resource="resource" :objects="filteredInsurances" :visibleKeys="['startDate','totalCost','totalTax']">
         </list-component>
     </div>
 </template>
 <script>
     import { mapGetters, mapActions, mapMutations } from 'vuex'
     import resources from '../../constants/resources'
-    import listComponent from "../../assets/list/listItem.vue"
+    import listComponent from "../../assets/list/listComponent.vue"
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
     import insuranceSearchBar from '../../assets/search/types/insuranceSearchBar.vue'
 

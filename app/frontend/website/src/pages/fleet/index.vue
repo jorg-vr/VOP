@@ -18,7 +18,7 @@
     import { mapGetters, mapActions, mapMutations } from 'vuex'
     import resources from '../../constants/resources'
     import actions from '../../constants/actions'
-    import listComponent from "../../assets/list/listItem.vue"
+    import listComponent from "../../assets/list/listComponent.vue"
     import fleetSearchBar from '../../assets/search/types/fleetSearchBar.vue'
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
 

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <list-header :visibleKeys="visibleKeys"></list-header>
+        <list-header :visibleKeys="visibleKeys" :resource="resource"></list-header>
         <list-item v-for="object in objects"
                         v-if="object"
                         :resource="resource"
