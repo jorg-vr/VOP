@@ -38,8 +38,12 @@
                 </tr>
                  <tr>
                     <td>{{$t('insurance.startdate') | capitalize }}</td>
-                    <td> {{suretyData.startDate}}</td>
+                    <td> {{showDate(suretyData.startDate)}}</td>
                 </tr>
+                 <tr v-if="suretyData.endDate">
+                     <td>{{$t('insurance.enddate') | capitalize }}</td>
+                     <td> {{showDate(suretyData.endDate)}}</td>
+                 </tr>
                 <!-- Insuranced vehicle -->
             </table>
              <h2>{{$t("insurance.vehicle") | capitalize }}</h2>
@@ -142,7 +146,11 @@
                 'fetchSuretyDetail',
                 'fetchVehicle',
                 'fetchSureties'
-            ])
+            ]),
+            showDate: function (date) {
+                var d=new Date(date)
+                return d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear()
+            }
         },
     }
 </script>
