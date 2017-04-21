@@ -37,11 +37,11 @@
                     <td> {{suretyData.tax}} % </td>
                 </tr>
                  <tr>
-                    <td>{{$t('insurance.startdate') | capitalize }}</td>
+                    <td>{{$t('insurance.startDate') | capitalize }}</td>
                     <td> {{showDate(suretyData.startDate)}}</td>
                 </tr>
                  <tr v-if="suretyData.endDate">
-                     <td>{{$t('insurance.enddate') | capitalize }}</td>
+                     <td>{{$t('insurance.endDate') | capitalize }}</td>
                      <td> {{showDate(suretyData.endDate)}}</td>
                  </tr>
                 <!-- Insuranced vehicle -->

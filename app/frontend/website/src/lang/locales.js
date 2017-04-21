@@ -101,7 +101,7 @@ export default
             company: 'insurance company',
             premium: 'insurance premium',
             franchise: 'franchise',
-            endDate: 'enddate',
+            endDate: 'end date',
             insurancedAmount: 'insuranced amount',
             percentage: 'percentage',
             coverageClauses: 'coverage clauses',
