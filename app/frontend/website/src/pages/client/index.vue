@@ -12,20 +12,14 @@
         </div>
         <client-search-bar @search="updateClients" @advancedSearch="updateClientsAdvanced"></client-search-bar>
         <!-- Render an info-pane for every client. Once all the data is loaded, the table will be shown.-->
-        <list-component v-for="client in filteredClients"
-                        v-if="client"
-                        :resource="resource"
-                        :object="client"
-                        :visibleKeys="['name']"
-                        :key="client.id">
-        </list-component>
+        <list-component :resource="resource" :objects="filteredClients" :visibleKeys="['name']"></list-component>
     </div>
 </template>
 
 <script>
     import { mapGetters, mapActions, mapMutations } from 'vuex'
     import resources from '../../constants/resources'
-    import listComponent from "../../assets/general/listComponent.vue"
+    import listComponent from "../../assets/list/listComponent.vue"
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
     import clientSearchBar from '../../assets/search/types/clientSearchBar.vue'
 

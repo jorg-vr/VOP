@@ -5,25 +5,21 @@
 -->
 <template>
     <div>
-         <div class="page-header">
+        <div class="page-header">
             <h1>{{$t("insurance.types") | capitalize }} </h1>
             <button-add :resource="resource"></button-add>
         </div>
         <insurance-search-bar @search="updateContractInsurances" @advancedSearch="updateContractInsurancesAdvanced"></insurance-search-bar>
-                <list-component v-for="insurance in filteredcontractInsurances"
-                                v-if="insurance"
-                                :resource="resource"
-                                :object="insurance"
-                                :visibleKeys="['cost','tax','startDate']"
-                                :key="insurance.id">
-                </list-component>
+        <list-component :resource="resource"
+                        :objects="filteredcontractInsurances"
+                        :visibleKeys="['cost','tax','startDate']">
+        </list-component>
         <button-back :route="{name: 'insurances'}"></button-back>
-        </div>
     </div>
 </template>
 <script>
     import resources from '../../constants/resources'
-    import listComponent from '../../assets/general/listComponent.vue'
+    import listComponent from '../../assets/list/listItem.vue'
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
     import buttonBack from '../../assets/buttons/buttonBack.vue'
     import buttonLink from '../../assets/buttons/buttonLink.vue'
@@ -44,14 +40,14 @@
         },
         created(){
             // get contract id 
-             let contractId = this.id
-             // get all insurances from the contract with contract Id
-             this.fetchInsurancesByContract(contractId)
-             // set value in contractId (used for API calls to contracts/id/insurances/)
-             this.setContractId(contractId)
-             console.log(this.filteredcontractInsurances)
-             // test
-             console.log(this.contractId)
+            let contractId = this.id
+            // get all insurances from the contract with contract Id
+            this.fetchInsurancesByContract(contractId)
+            // set value in contractId (used for API calls to contracts/id/insurances/)
+            this.setContractId(contractId)
+            console.log(this.filteredcontractInsurances)
+            // test
+            console.log(this.contractId)
         },
         computed: {
             ...mapGetters([
@@ -70,7 +66,7 @@
             ...mapMutations([
                 'setContractId',
                 'setFilteredcontractInsurances'
-                
+
             ]),
             updateContractInsurances(value){
                 console.log(value)

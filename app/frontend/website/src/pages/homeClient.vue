@@ -7,11 +7,6 @@
     import clientShow from './client/show.vue'
 
     export default {
-        data() {
-            return {
-                resource: resources.CLIENT
-            }
-        },
         components: {
             clientShow
         },

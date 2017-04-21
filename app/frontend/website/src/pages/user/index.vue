@@ -12,12 +12,9 @@
         </div>
         <user-search-bar @search="updateUsers" @advancedSearch="updateUsersAdvanced"></user-search-bar>
         <!-- Render an info-pane for every user. Once all the data is loaded, the table will be shown.-->
-        <list-component v-for="user in filteredUsers"
-                        v-if="user"
-                        :resource="resource"
-                        :object="user"
-                        :visibleKeys="['firstName', 'lastName']"
-                        :key="user.id">
+        <list-component :resource="resource"
+                        :objects="filteredUsers"
+                        :visibleKeys="['firstName', 'lastName']">
         </list-component>
     </div>
 </template>
@@ -25,7 +22,7 @@
 <script>
     import { mapGetters, mapActions, mapMutations } from 'vuex'
     import resources from '../../constants/resources'
-    import listComponent from "../../assets/general/listComponent.vue"
+    import listComponent from "../../assets/list/listComponent.vue"
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
     import userSearchBar from '../../assets/search/types/userSearchBar.vue'
 

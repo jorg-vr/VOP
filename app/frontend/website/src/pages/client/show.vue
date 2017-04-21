@@ -49,12 +49,9 @@
                 </tr>
             </table>
             <h2>{{$t("fleet.fleets") | capitalize }}</h2>
-            <list-component v-for="fleet in fleets"
-                            v-if="fleet"
-                            :object="fleet"
-                            :visibleKeys="new Array('name','companyName')"
-                            :resource="resource"
-                            :key="fleet.id">
+            <list-component :objects="fleets"
+                            :visibleKeys="['name','companyName']"
+                            :resource="resource">
             </list-component>
             <button-back :route="{name: 'clients'}"></button-back>
             <button-add :resource="resource" :params="{clientId: client.id}"></button-add>
@@ -65,7 +62,7 @@
     import {mapGetters, mapActions} from 'vuex'
     import resources from '../../constants/resources'
     import clientTypes from '../../constants/clientTypes'
-    import listComponent from "../../assets/general/listComponent.vue"
+    import listComponent from "../../assets/list/listComponent.vue"
     import buttonBack from '../../assets/buttons/buttonBack.vue'
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
     import buttonInvoice from '../../assets/buttons/buttonInvoice.vue'

@@ -11,20 +11,14 @@
         </div>
         <fleet-search-bar @search="updateFleets" @advancedSearch="updateFleetsAdvanced"></fleet-search-bar>
         <!-- Render an info-pane for every fleet. Once all the data is loaded, the table will be shown.-->
-        <list-component v-for="fleet in filteredFleets"
-                        v-if="fleet"
-                        :resource="resource"
-                        :object="fleet"
-                        :visibleKeys="visibleKeys"
-                        :key="fleet.id">
-        </list-component>
+        <list-component :resource="resource" :objects="filteredFleets" :visibleKeys="visibleKeys"></list-component>
     </div>
 </template>
 <script>
     import { mapGetters, mapActions, mapMutations } from 'vuex'
     import resources from '../../constants/resources'
     import actions from '../../constants/actions'
-    import listComponent from "../../assets/general/listComponent.vue"
+    import listComponent from "../../assets/list/listComponent.vue"
     import fleetSearchBar from '../../assets/search/types/fleetSearchBar.vue'
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
 

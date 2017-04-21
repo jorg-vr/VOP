@@ -18,8 +18,11 @@ export default
             value: 'value'
         },
         fleet: {
+            name: 'fleet name',
+            companyName: 'company name',
             fleet: 'fleet',
             fleets: 'fleets'
+
         },
         user: {
             user: 'user',
@@ -90,21 +93,23 @@ export default
         insurance:{
             insurance: 'insurance',
             insurances: 'insurances',
+            startDate: 'start date',
+            totalTax: 'total tax',
             type:'insurance surety',
             types:'insurance sureties',
             vehicle: 'vehicle',
             company: 'insurance company',
             premium: 'insurance premium',
             franchise: 'franchise',
-            startdate: 'startdate',
-            enddate: 'enddate',
+            endDate: 'end date',
             insurancedAmount: 'insuranced amount',
             percentage: 'percentage',
             coverageClauses: 'coverage clauses',
             exemptions: 'exemptions',
             contract: 'contract',
             totalCost: 'total cost',
-            tax: 'tax'
+            tax: 'tax',
+            insuranceCompany: 'insurance company'
         },
         invoice:{
             invoice: 'invoice',
@@ -142,10 +147,13 @@ export default
             value: 'waarde'
         },
         fleet: {
+            name: 'vlootnaam',
+            companyName: 'bedrijfsnaam',
             fleet: 'vloot',
             fleets: 'vloten'
         },
         user: {
+
             user: 'gebruiker',
             users: 'gebruikers',
             firstName: 'voornaam',
@@ -221,16 +229,18 @@ export default
             vehicle: 'voertuig',
             company: 'verzekeringsmaatschappij',
             premium: 'verzekeringspremie',
+            totalTax: 'Totale taks',
             franchise: 'franchise',
-            startdate: 'startdatum',
-            enddate: 'einddatum',
+            startDate: 'startdatum',
+            endDate: 'einddatum',
             insurancedAmount: 'verzekerd bedrag',
             percentage: 'percentage',
             coverageClauses: 'dekkingsclausules',
             exemptions: 'vrijstellingen',
             contract: 'contract',
-            totalCost: 'totaalbedrag',
-            tax: 'tax'
+            totalCost: 'totaal bedrag',
+            tax: 'tax',
+            insuranceCompany: 'verzekeringsbedrijf'
         },
         invoice:{
             invoice: 'factuur',
@@ -244,7 +254,7 @@ export default
             contracts: 'verzekeringen',
             facturationPeriod: 'facturatieperiode',
             paymentPeriod: 'afrekeningsperiode',
-            totalAmount: 'totaalbedrag',
+            totalAmount: 'totaal bedrag',
             totalTax: 'totale belasting',
             export: 'exporteer als pdf'
 
