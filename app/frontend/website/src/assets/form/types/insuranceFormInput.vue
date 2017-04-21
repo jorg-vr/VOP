@@ -6,10 +6,10 @@ All of the fields for insurance input for the insurance form
 <template>
     <div>
       <!--surety type select-->
-      <form-input :placeholder="$t('insurance.startdate') | capitalize" :label="$t('insurance.startdate') | capitalize"
-      v-model="insurance.startDate"></form-input>
-      <form-input :placeholder="$t('insurance.enddate') | capitalize" :label="$t('insurance.enddate') | capitalize"
-      v-model="insurance.endDate"></form-input>
+      <form-date-input :placeholder="$t('insurance.startdate') | capitalize" :label="$t('insurance.startdate') | capitalize"
+      v-model="insurance.startDate"></form-date-input>
+      <form-date-input :placeholder="$t('insurance.enddate') | capitalize" :label="$t('insurance.enddate') | capitalize"
+      v-model="insurance.endDate"></form-date-input>
       <form-input :placeholder="$t('insurance.insurancedAmount') | capitalize" :label="$t('insurance.insurancedAmount') | capitalize"
       v-model="insurance.insuredValue"></form-input>
        <form-input :placeholder="$t('insurance.franchise') | capitalize" :label="$t('insurance.franchise') | capitalize"
@@ -33,6 +33,7 @@ All of the fields for insurance input for the insurance form
 <script>
     import {mapGetters, mapActions} from 'vuex'
     import formInput from '../elements/formInput.vue'
+    import formDateInput from '../elements/formDateInput.vue'
     import formSelect from '../elements/formSelect.vue'
     import clientTypes from '../../../constants/clientTypes'
 
@@ -49,7 +50,7 @@ All of the fields for insurance input for the insurance form
             contractId: String
         },
         components: {
-            formInput,formSelect
+            formInput,formSelect,formDateInput
         },
         computed: {
             ...mapGetters([
