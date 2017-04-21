@@ -21,7 +21,7 @@
 <script>
     import { mapGetters, mapActions, mapMutations } from 'vuex'
     import resources from '../../constants/resources'
-    import listComponent from "../../assets/general/listComponent.vue"
+    import listComponent from "../../assets/list/listItem.vue"
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
     import vehicleSearchBar from '../../assets/search/types/vehicleSearchForm.vue'
 

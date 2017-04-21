@@ -16,12 +16,9 @@
         <div v-for="subfleet in filteredSubfleets">
             <div v-if="subfleet.vehicles.length > 0">
                 <h3>{{subfleet.type.name | capitalize }}</h3>
-                <list-component v-for="fleet in subfleet.vehicles"
-                                v-if="fleet"
-                                :resource="resource"
-                                :object="fleet"
-                                :visibleKeys="['brand','model', 'licensePlate']"
-                                :key="fleet.id">
+                <list-component :resource="resource"
+                                :objects="subfleet.vehicles"
+                                :visibleKeys="['brand','model', 'licensePlate']">
                 </list-component>
             </div>
         </div>
@@ -30,7 +27,7 @@
 </template>
 <script>
     import resources from '../../constants/resources'
-    import listComponent from '../../assets/general/listComponent.vue'
+    import listComponent from '../../assets/list/listItem.vue'
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
     import buttonBack from '../../assets/buttons/buttonBack.vue'
     import vehicleSearchBar from '../../assets/search/types/vehicleSearchBar.vue'

@@ -9,27 +9,18 @@
                 {{$t("invoice.invoices") | capitalize }} {{client.name}}
             </h1>
         </div>
-       <invoice-list-component v-for="invoice in invoices"
-                        v-if="invoice"
-                        :object="invoice"
-                        :resource="resource"
-                        show="invoice"
-                        :key="invoice.id">
-        </invoice-list-component>
+
+        <list-component :objects="invoices" :resource="resource" :visibleKeys="['startDate', 'endDate', 'totalAmount']">
+        </list-component>
         <button-back :route="{name: 'client'}"></button-back>
 
     </div>
 </template>
-<style>
-.btn-add {
-    margin-top: -2px;
-}
-</style>
 <script>
     import { mapGetters, mapActions, mapMutations } from 'vuex'
     import resources from '../../constants/resources'
     import actions from '../../constants/actions'
-    import invoiceListComponent from "../../assets/general/invoiceListComponent.vue"
+    import listComponent from '../../assets/list/listComponent.vue'
     import buttonBack from '../../assets/buttons/buttonBack.vue'
 
     export default {
@@ -38,7 +29,7 @@
                 resource: resources.INVOICE
             }
         },components: {
-            invoiceListComponent,buttonBack
+            listComponent,buttonBack
         },
         props: {
             companyId: String

@@ -30,11 +30,8 @@
                 </tr>
             </table>
             <h2>{{$t("invoice.contracts") | capitalize }}</h2>
-            <list-component v-for="insurance in insurances"
-                            v-if="insurance"
-                            :object="insurance"
+            <list-component :object="insurances"
                             :visibleKeys="new Array('insuranceCompany','type','vehicle')"
-                            show="insurance"
                             :key="insurance.id">
             </list-component>
             <button-back :route="{name: 'invoices'}"></button-back>
@@ -43,7 +40,7 @@
 </template>
 <script>
     import {mapGetters, mapActions} from 'vuex'
-    import listComponent from "../../assets/general/listComponent.vue"
+    import listComponent from "../../assets/list/listItem.vue"
     import buttonBack from '../../assets/buttons/buttonBack.vue'
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
 

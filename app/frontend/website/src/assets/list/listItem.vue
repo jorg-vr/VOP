@@ -27,9 +27,9 @@ Component used for showing an object in a list.
 </template>
 <script>
     import {mapActions,mapGetters} from 'vuex'
-    import buttonEdit from '../../assets/buttons/buttonEdit.vue'
-    import buttonRemove from '../../assets/buttons/buttonRemove.vue'
-    import confirmModal from './modal.vue'
+    import buttonEdit from '../buttons/buttonEdit.vue'
+    import buttonRemove from '../buttons/buttonRemove.vue'
+    import confirmModal from '../general/modal.vue'
 
     export default {
         data(){
