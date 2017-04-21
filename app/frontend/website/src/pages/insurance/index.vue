@@ -18,6 +18,7 @@
 <script>
     import { mapGetters, mapActions, mapMutations } from 'vuex'
     import resources from '../../constants/resources'
+    import actions from '../../constants/actions'
     import listComponent from "../../assets/list/listComponent.vue"
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
     import insuranceSearchBar from '../../assets/search/types/insuranceSearchBar.vue'
@@ -33,15 +34,12 @@
         },
         created() {
 
-
-                var i
-                // contracts/id/insurances
-                // fetch Contracts
-                this.fetchInsurances().then(insurances => {
-                    this.setFilteredInsurances(insurances)
-                })
-
-
+            if(this.authorizedForAll){
+                this.fetchInsurances()
+            }
+            else {
+                this.fetchInsurancesBy({company: this.activeFunction.company})
+            }
         },
         computed: {
             ...mapGetters([
@@ -59,6 +57,7 @@
         },
         methods: {
             ...mapActions([
+                'fetchInsurancesBy',
                 'fetchInsurances',
                 'deleteInsurance',
                 'fetchClient',
