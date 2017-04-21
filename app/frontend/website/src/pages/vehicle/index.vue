@@ -33,6 +33,7 @@
             listComponent, buttonAdd, vehicleSearchBar
         },
         created() {
+            this.clearVehicles()
             this.fetchVehicleTypes()
         },
         computed: {
@@ -49,6 +50,7 @@
             ]),
 
             ...mapMutations([
+                'clearVehicles',
                 'setFilteredVehicles'
             ]),
 
