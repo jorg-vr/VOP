@@ -35,7 +35,6 @@
             companyId: String
         },
         created() {
-            this.companyId=this.client.id //TODO is this good practice?
             this.fetchInvoicesByCompany({companyId: this.companyId})
         },
         computed: {

@@ -22,7 +22,7 @@ TODO: document this page.
                             <input id="password" type="password" class="form-control" name="password" v-bind:placeholder="$t('login.password')"  v-model="credentials.password">
                         </div>
                         <br>
-                        <button-action id="login-button" @click="confirmLogin()"> {{$t("login.button") | capitalize }} </button-action>
+                        <button type="button" id="login-button" @click="confirmLogin()"> {{$t("login.button") | capitalize }} </button>
                     </form>
                 </div>
             </div>
@@ -75,7 +75,7 @@ TODO: document this page.
                             this.$router.push({name: this.nextRoute.name, params: this.nextRoute.params})
                         }
                         else {
-                            this.$router.push({name: 'home'})
+                            this.$router.push({name: 'homeClient'})
                         }
                     }
                 })
