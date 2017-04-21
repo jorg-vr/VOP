@@ -27,7 +27,7 @@
 </template>
 <script>
     import resources from '../../constants/resources'
-    import listComponent from '../../assets/list/listItem.vue'
+    import listComponent from '../../assets/list/listComponent.vue'
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
     import buttonBack from '../../assets/buttons/buttonBack.vue'
     import vehicleSearchBar from '../../assets/search/types/vehicleSearchBar.vue'
