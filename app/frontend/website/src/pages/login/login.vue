@@ -75,7 +75,7 @@ TODO: document this page.
                             this.$router.push({name: this.nextRoute.name, params: this.nextRoute.params})
                         }
                         else {
-                            this.$router.push({name: 'home'})
+                            this.$router.push({name: 'homeClient'})
                         }
                     }
                 })
