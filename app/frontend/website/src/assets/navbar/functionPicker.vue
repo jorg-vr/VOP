@@ -41,7 +41,8 @@
                 this.setActiveFunction(userFunction)
                 //Navigate back to home once the function has changed.
                 //This method is used, and not the router, as the page has to reload in order to remove unwanted state
-                document.location.href = "/"
+                location.reload();
+                this.$router.push({name:'homeClient'})
             }
         }
     }
