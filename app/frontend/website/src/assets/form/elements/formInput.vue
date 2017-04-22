@@ -11,7 +11,7 @@ Component usable for requesting user input with a text field.
     <form-item :label="label">
         <!--$event.target.value is the value of this input item-->
         <input type="text" class="form-control" :placeholder="placeholder"
-               :value="value" @input="updateValue($event.target.value)">
+               :value="value" @input="$emit('input', $event.target.value)">
     </form-item>
 </template>
 <script>
@@ -24,12 +24,6 @@ Component usable for requesting user input with a text field.
         },
         components: {
             formItem
-        },
-        methods: {
-            updateValue (value) {
-                // Emit the formatted value through the input event
-                this.$emit('input', value)
-            }
         }
     }
 </script>

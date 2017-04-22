@@ -2,11 +2,19 @@
 All of the fields for user input for the client form
 
 @param client: This object will be configured with the input of this component.
+
+
+TODO: ADD VALIDATIONS
+See: https://vuejs.org/v2/guide/class-and-style.html
+See: http://vee-validate.logaretm.com/
 -->
 <template>
     <div>
-        <form-input :placeholder="$t('common.name') | capitalize" :label="$t('common.name') | capitalize"
-                    v-model="client.name"></form-input>
+
+        <form-input :placeholder="$t('common.name') | capitalize" :label="$t('common.name') | capitalize" v-model="client.name"
+                     v-validate="'required'"  data-vv-name="name" :has-error="errors.has('name')">
+        </form-input>
+        <span v-show="errors.has('name')" class="help is-danger">{{ errors.first('name') }}</span>
 
         <client-type-select v-model="client.type"></client-type-select>
 
