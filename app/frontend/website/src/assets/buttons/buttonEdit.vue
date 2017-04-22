@@ -9,11 +9,16 @@ The button will only be shown if the user has the correct permissions.
 
 <template>
     <protected-element :permission="permission">
-        <button-link :route="route"  buttonClass="btn btn-md btn-info" buttonId="edit">
+        <button-link :route="route"  buttonClass="btn btn-xs btn-info">
             <i aria-hidden="true" class="fa fa-pencil"></i>
         </button-link>
     </protected-element>
 </template>
+<style>
+.btn-info {
+    margin-top: 17px;
+}
+</style>
 <script>
     import actions from '../../constants/actions'
     import buttonLink from './buttonLink.vue'

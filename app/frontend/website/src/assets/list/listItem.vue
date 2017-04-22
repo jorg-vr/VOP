@@ -7,22 +7,22 @@ Component used for showing an object in a list.
 @param rowClass (optional): the HTML class for the row of this component
 -->
 <template>
-    <div :class="'row ' + rowClass" v-if="object">
-           <router-link :to="{name: resource.name, params: {id: object.id}}">
-            <div class="panel panel-default col-sm-10">
-                <div class="panel-body">
-                    <table>
-                        <tr>
-                            <td v-for="value in values"> {{value}}</td>
-                        </tr>
-                    </table>
-                </div>
+    <div v-if="object">
+        <router-link :to="{name: resource.name, params: {id: object.id}}">
+            <div class="col-md-10 col-sm-9 col-xs-9 list-group-item link-group-item">
+                <table>
+                    <tr>
+                        <td v-for="value in values"> {{value}}</td>
+                    </tr>
+                </table>
             </div>
         </router-link>
-        <button-edit :resource="resource" :params="{id: object.id}"></button-edit>
-        <button-remove :resource="resource" @click="showModal=true"></button-remove>
-        <!-- Modal used for submitting the remove action -->
-        <confirm-modal v-show="showModal" @cancelModal="showModal=false" @confirmModal="confirmAction()"></confirm-modal>
+        <div class="col-md-2 col-sm-33 col-xs-3">
+            <button-edit :resource="resource" :params="{id: object.id}"></button-edit>
+            <button-remove :resource="resource" @click="showModal=true"></button-remove>
+            <!-- Modal used for submitting the remove action -->
+            <confirm-modal v-show="showModal" @cancelModal="showModal=false" @confirmModal="confirmAction()"></confirm-modal>
+        </div>
     </div>
 </template>
 <script>
@@ -81,26 +81,22 @@ Component used for showing an object in a list.
 
 </script>
 <style>
-        .btn-md {
-            margin-left: 5px;
-            margin-top: 8px;
-        }
+table  {
+    /* Create columns with equal width */
+    width: 100%;
+    table-layout: fixed;
+}
 
-        .panel {
-            margin-right: 5px;
-        }
+.btn-info .btn-danger {
+    margin-top: 17px;
+}
+.link-group-item {
+    border-width: 0 0 1px 0;
+    padding: 20px 0 20px 20px;
+}
 
-        .panel table  {
-            /* Create columns with equal width */
-            width: 100%;
-            table-layout: fixed;
-        }
-        a td {
-            color: black;
-            /* Trigger columns with equal width */
-        }
-        a div.panel:hover {
-            background-color: #eee;
-        }
+.link-group-item:hover {
+    background-color: #e7eaec;
+}
 
 </style>

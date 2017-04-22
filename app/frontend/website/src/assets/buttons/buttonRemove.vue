@@ -8,11 +8,16 @@ The button will only be shown if the user has the correct permissions.
 
 <template>
     <protected-element :permission="permission">
-        <button-action @click="$emit('click')" buttonClass="btn btn-md btn-danger" buttonId="remove">
+        <button-action @click="$emit('click')" buttonClass="btn btn-xs btn-danger" buttonId="remove">
             <i aria-hidden="true" class="fa fa-trash"></i>
         </button-action>
     </protected-element>
 </template>
+<style>
+.btn-danger {
+    margin-top: 17px;
+}
+</style>
 <script>
     import actions from '../../constants/actions'
     import buttonAction from './buttonAction.vue'
