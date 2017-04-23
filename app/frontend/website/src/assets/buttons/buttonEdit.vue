@@ -14,11 +14,6 @@ The button will only be shown if the user has the correct permissions.
         </button-link>
     </protected-element>
 </template>
-<style>
-.btn-info {
-    margin-top: 17px;
-}
-</style>
 <script>
     import actions from '../../constants/actions'
     import buttonLink from './buttonLink.vue'
