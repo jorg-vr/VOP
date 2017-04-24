@@ -21,6 +21,14 @@
     <!-- Bootstrap JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <!-- This script has to be in the end of the body as the DOM has to be loaded first -->
-    <script src="dist/build.js"></script>
+    <script>
+        let buildScript = document.createElement('script');
+        let buildScriptSrc = 'dist/build.js';
+        if(window.document.base){
+            buildScriptSrc = window.document.base;
+        }
+        buildScript.setAttribute('src', '/' + buildScriptSrc);
+        document.head.appendChild(buildScript);
+    </script>
 </body>
 </html>
