@@ -16,6 +16,7 @@ export const USER_FUNCTION = CURRENT_USER + 'functions/'
 export const INSURANCE ='contracts/'
 export const PERMISSIONS = 'permissions/'
 export const INVOICE = "invoices/"
+export const SURETY = 'insurances/'
 export const SURETYDETAIL = 'sureties/'
 
 //Example location for updated resources: export const SURETY = 'contracts/{contract}/insurances'

@@ -199,6 +199,8 @@ let addShowableDates = function(payload){
     }
 }
 
+
+//This could probably be used aswell: http://es6-features.org/#CustomInterpolation
 let formatString = function(str, data) {
     data = data || {};
     var match = str.match(/{(.+?)}/g)
