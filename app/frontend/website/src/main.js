@@ -16,15 +16,13 @@ Vue.use(VueResource);
 //Language support
 Vue.use(VueI18n);
 
-
-
 if(process.env.NODE_ENV){
     Vue.config.env = environments[process.env.NODE_ENV]
 }
 else {
     Vue.config.env = environments['development']
 }
-
+console.log('check')
 Vue.config.lang = 'nl';
 Vue.http.options.root = Vue.config.env.API_KEY
 Vue.http.headers.common['Accept'] = 'application/json'
@@ -32,6 +30,7 @@ Vue.http.headers.common['Accept'] = 'application/json'
 Object.keys(locales).forEach(function (lang) {
     Vue.locale(lang, locales[lang])
 })
+window.document.base = Vue.config.env.BASE
 
 const router = new VueRouter({
     mode: 'history',
