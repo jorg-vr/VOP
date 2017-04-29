@@ -11,7 +11,7 @@
         </div>
         <fleet-search-bar @search="updateFleets" @advancedSearch="updateFleetsAdvanced"></fleet-search-bar>
         <!-- Render an info-pane for every fleet. Once all the data is loaded, the table will be shown.-->
-        <list-component :resource="resource" :objects="filteredFleets" :visibleKeys="visibleKeys"></list-component>
+        <list-component :listObject="listObject" :resource="resource"></list-component>
     </div>
 </template>
 <script>
@@ -58,11 +58,16 @@
             authorizedForAll(){
                 return this.isAuthorizedForAllResources(this.resource, actions.READ_ALL)
             },
-
-            visibleKeys() {
-                return this.authorizedForAll ? ['name','companyName'] : ['name']
+            listObject() {
+                var listObj = {};
+                listObj.values = this.filteredFleets;
+                if (this.authorizedForAll) {
+                   listObj.headers = ['name', 'companyName']; 
+               } else {
+                   listObj.headers = ['name'];
+               }
+                return listObj;
             }
-
         },
         methods: {
             ...mapActions([
