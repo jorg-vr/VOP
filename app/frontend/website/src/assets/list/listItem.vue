@@ -25,6 +25,26 @@ Component used for showing an object in a list.
         </div>
     </div>
 </template>
+<style>
+table  {
+    /* Create columns with equal width */
+    width: 100%;
+    table-layout: fixed;
+}
+
+.btn-info .btn-danger {
+    margin-top: 17px;
+}
+.link-group-item {
+    border-width: 0 0 1px 0;
+    padding: 20px 0 20px 20px;
+}
+
+.link-group-item:hover {
+    background-color: #e7eaec;
+}
+
+</style>
 <script>
     import {mapActions,mapGetters} from 'vuex'
     import buttonEdit from '../buttons/buttonEdit.vue'
@@ -80,23 +100,3 @@ Component used for showing an object in a list.
     }
 
 </script>
-<style>
-table  {
-    /* Create columns with equal width */
-    width: 100%;
-    table-layout: fixed;
-}
-
-.btn-info .btn-danger {
-    margin-top: 17px;
-}
-.link-group-item {
-    border-width: 0 0 1px 0;
-    padding: 20px 0 20px 20px;
-}
-
-.link-group-item:hover {
-    background-color: #e7eaec;
-}
-
-</style>
