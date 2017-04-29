@@ -19,3 +19,4 @@ export const INVOICE = "invoices/"
 export const SURETY = 'insurances/'
 export const SURETYDETAIL = 'sureties/'
 
+//Example location for updated resources: export const SURETY = 'contracts/{contract}/insurances'
