@@ -62,11 +62,6 @@ if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'testing')
     module.exports.plugins = (module.exports.plugins || []).concat([
         new HtmlWebpackPlugin({
             template: 'production.html',
-            "chunks": {
-                "main": {
-                    "entry": path.resolve(__dirname, './dist/') + "build.js"
-                }
-            }
         }),
         new webpack.optimize.UglifyJsPlugin({
             sourceMap: true,
@@ -78,8 +73,5 @@ if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'testing')
             minimize: true
         })
     ])
-}
-else {
-
 }
 
