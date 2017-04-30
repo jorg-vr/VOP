@@ -77,7 +77,7 @@ public class RESTCompanyControllerTest {
     @Test
     public void post() throws Exception {
         RESTCompany restCompany = new RESTCompany(null, "frank", "sinatra", "0123456", new RESTAddress("a", "b", "c", "d", "e"));
-        restCompany.setType("Customer");
+        restCompany.setType("CUSTOMER");
         MvcResult result = mvc.perform(MockMvcRequestBuilders.post("/companies")
                 .header("Content-Type", "application/json")
                 .header("Authorization", authPair[0])
