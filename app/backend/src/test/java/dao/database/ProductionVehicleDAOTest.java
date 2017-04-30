@@ -173,7 +173,7 @@ public class ProductionVehicleDAOTest {
         customerDAO.remove(cust1.getUuid());
         addressDAO.remove(a1.getUuid());
 
-        
+
     }
 
 }
