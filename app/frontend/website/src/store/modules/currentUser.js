@@ -216,6 +216,8 @@ export default {
                     }
                     else {
                         context.dispatch('fetchUserFunction', {id: functionId}).then(activeFunction => {
+                            console.log('error here')
+                            console.log(activeFunction)
                             context.dispatch('setActiveFunction', activeFunction).then(() => {
                                 resolve(activeAccount)
                             })

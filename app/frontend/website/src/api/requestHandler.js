@@ -35,7 +35,6 @@ export default {
     getObjectRequest(location, id){
         return new Promise((resolveSuccess, resolveFailure) => {
             Vue.http.get(location + id).then(response => {
-                console.log(response)
                 resolveSuccess(response.body)
             }, response => {
                 resolveFailure(response)
