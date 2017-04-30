@@ -43,13 +43,13 @@
         created(){
             // get contract id 
             let contractId = this.id
+            this.setLoading({loading: true })
             // get all insurances from the contract with contract Id
-            this.fetchInsurancesByContract(contractId)
+            this.fetchInsurancesByContract(contractId).then(() => {
+                this.setLoading({loading: false })
+            })
             // set value in contractId (used for API calls to contracts/id/insurances/)
             this.setContractId(contractId)
-            console.log(this.filteredcontractInsurances)
-            // test
-            console.log(this.contractId)
         },
         computed: {
             ...mapGetters([
@@ -67,8 +67,8 @@
             ]),
             ...mapMutations([
                 'setContractId',
-                'setFilteredcontractInsurances'
-
+                'setFilteredcontractInsurances',
+                'setLoading'
             ]),
             updateContractInsurances(value){
                 console.log(value)

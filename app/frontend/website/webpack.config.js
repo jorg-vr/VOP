@@ -2,11 +2,24 @@ var path = require('path')
 var webpack = require('webpack')
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
+var base;
+switch(process.env.NODE_ENV){
+    case 'production':
+        base = '/app'
+        break;
+    case 'testing':
+        base = '/test/app'
+        break;
+    default:
+        base = ''
+}
+
+
 module.exports = {
     entry: './src/main.js',
     output: {
         path: path.resolve(__dirname, './dist'),
-        publicPath: process.env.NODE_ENV === 'production' ? '/app' : '/test/app' + '/dist' ,
+        publicPath: base + '/dist' ,
         filename: 'build.js',
     },
     module: {
