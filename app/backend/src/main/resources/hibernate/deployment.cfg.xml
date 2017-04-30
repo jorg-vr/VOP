@@ -13,7 +13,7 @@
         <property name="hibernate.connection.password">ny5rfg8scu7p3c9h7gef</property>
         <property name="hibernate.connection.url">jdbc:postgresql://localhost:5430/production</property>
 
-        <property name="hbm2ddl.auto">create</property>
+        <property name="hbm2ddl.auto">none</property>
         <property name="show_sql">true</property>
 
         <property name="hibernate.c3p0.min_size">5</property>
