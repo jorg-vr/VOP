@@ -17,29 +17,16 @@ import java.util.UUID;
  */
 public class AuthController implements AutoCloseable {
 
-    private DAOManager provider = BackendApplication.getProvider().getDaoManager();
+    private DAOManager provider;
+    private UserDAO userDAO;
 
-    private FunctionDAO functionDAO=provider.getFunctionDAO();
-    private  UserDAO userDAO=provider.getUserDAO();
-
-    public Function getFunction(AuthenticationToken token, UUID functionId) throws DataAccessException, UnAuthorizedException {
-        User account = userDAO.get(token.getAccountId());
-        Function function = functionDAO.get(functionId);
-        init(function);
-        if (function.getUser().equals(account)) {
-            return function;
-        } else {
-            throw new UnAuthorizedException();
-        }
+    public AuthController() {
+        provider = BackendApplication.getProvider().getDaoManager();
+        userDAO = provider.getUserDAO();
     }
 
     public User getUser(AuthenticationToken token) throws DataAccessException {
-        return init(userDAO.get(token.getAccountId()));
-    }
-
-    public Collection<Function> getFunctions(AuthenticationToken token) throws DataAccessException {
-        User user = getUser(token);
-        return user.getFunctions();
+        return userDAO.get(token.getAccountId());
     }
 
     public AuthenticationToken getToken(String login, String password) throws DataAccessException, UnAuthorizedException {
@@ -52,24 +39,9 @@ public class AuthController implements AutoCloseable {
         return new AuthenticationToken(user.getUuid());
     }
 
-    private void init(Function function){
-        function.getCompany().getAddress();
-        for(Action action:Action.values()){
-            for(Resource resource: Resource.values()){
-                function.getRole().hasAccess(resource,action);
-            }
-        }
-        function.getUser();
-    }
-
-    private User init(User user){
-        for(Function function:user.getFunctions()){
-            init(function);
-        }
-        return user;
-    }
 
     @Override
     public void close() {
+        provider.close();
     }
 }

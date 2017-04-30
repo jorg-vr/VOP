@@ -1,6 +1,7 @@
 package spring.controller;
 
 import controller.AuthController;
+import controller.ControllerManager;
 import controller.exceptions.UnAuthorizedException;
 import dao.interfaces.DataAccessException;
 import model.account.Function;
