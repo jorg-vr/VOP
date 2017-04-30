@@ -33,8 +33,9 @@
             listComponent, buttonAdd, clientSearchBar
         },
         created() {
-            this.fetchClients().then(clients => {
-                this.setFilteredClients(clients)
+            this.setLoading({loading: true})
+            this.fetchClients().then(() => {
+                this.setLoading({loading: false })
             })
         },
         computed: {
@@ -51,6 +52,7 @@
                 'deleteClient',
             ]),
             ...mapMutations([
+                'setLoading',
                 'setFilteredClients'
             ]),
             updateClients(value){
