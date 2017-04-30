@@ -1,7 +1,7 @@
 package database;
 
-import dao.database.ProductionProvider;
-import dao.interfaces.DAOProvider;
+import dao.database.ProductionManager;
+import dao.interfaces.DAOManager;
 import dao.interfaces.DataAccessException;
 import dao.interfaces.VehicleDAO;
 import dao.interfaces.VehicleTypeDAO;
@@ -19,15 +19,15 @@ import static org.junit.Assert.fail;
 @Ignore
 public class VehicleParametersTest {
 
-    private static DAOProvider daoProvider;
+    private static DAOManager daoManager;
     private static VehicleType vehicleType;
 
     //Setup before any of the tests are started
     @BeforeClass
     public static void initProvider() throws Exception {
-        ProductionProvider.initializeProvider("unittest");
-        daoProvider = ProductionProvider.getInstance();
-        try (VehicleTypeDAO vehicleTypeDao = daoProvider.getVehicleTypeDAO()) {
+        ProductionManager.initializeProvider("unittest");
+        daoManager = ProductionManager.getInstance();
+        try (VehicleTypeDAO vehicleTypeDao = daoManager.getVehicleTypeDAO()) {
             vehicleType = vehicleTypeDao.create(new VehicleType("persoonswagen"));
         }
     }
@@ -35,16 +35,16 @@ public class VehicleParametersTest {
     //Gets executed after all tests have been run
     @AfterClass
     public static void closeProvider() throws Exception {
-        try (VehicleTypeDAO vehicleTypeDao = daoProvider.getVehicleTypeDAO()) {
+        try (VehicleTypeDAO vehicleTypeDao = daoManager.getVehicleTypeDAO()) {
             vehicleTypeDao.remove(vehicleType.getUuid());
         }
-        daoProvider.close();
+        daoManager.close();
     }
 
     @Test
     public void allFields() throws Exception {
         Vehicle vehicle = null;
-        try (VehicleDAO vehicleDAO = daoProvider.getVehicleDAO()) {
+        try (VehicleDAO vehicleDAO = daoManager.getVehicleDAO()) {
             vehicle = vehicleDAO.create(new Vehicle("Volkswagen", "Golf 7", "AAAAAAAAAAAAAAAAA",null, 5000, 300, vehicleType, LocalDate.of(2015, 6, 17), null, null));
             vehicleDAO.remove(vehicle.getUuid());
         } catch (DataAccessException d) {
@@ -57,7 +57,7 @@ public class VehicleParametersTest {
     @Test
     public void brandField() throws Exception {
         Vehicle vehicle = null;
-        try (VehicleDAO vehicleDAO = daoProvider.getVehicleDAO()) {
+        try (VehicleDAO vehicleDAO = daoManager.getVehicleDAO()) {
             vehicle = vehicleDAO.create(new Vehicle(null, "Golf 7", "AAAAAAAAAAAAAAAAA",null, 5000, 300, vehicleType, LocalDate.of(2015, 6, 17), null, null));
             vehicleDAO.remove(vehicle.getUuid());
             fail("Vehicle succesfully created with brand field null when an exception was expected");
@@ -71,7 +71,7 @@ public class VehicleParametersTest {
     @Test
     public void modelField() throws Exception {
         Vehicle vehicle = null;
-        try (VehicleDAO vehicleDAO = daoProvider.getVehicleDAO()) {
+        try (VehicleDAO vehicleDAO = daoManager.getVehicleDAO()) {
             vehicle = vehicleDAO.create(new Vehicle("Volkswagen", null, "AAAAAAAAAAAAAAAAA",null, 5000, 300, vehicleType, LocalDate.of(2015, 6, 17), null, null));
             vehicleDAO.remove(vehicle.getUuid());
             fail("Vehicle succesfully created with model field null when an exception was expected");
@@ -85,7 +85,7 @@ public class VehicleParametersTest {
     @Test
     public void chassisNumberField() throws Exception {
         Vehicle vehicle = null;
-        try (VehicleDAO vehicleDAO = daoProvider.getVehicleDAO()) {
+        try (VehicleDAO vehicleDAO = daoManager.getVehicleDAO()) {
             vehicle = vehicleDAO.create(new Vehicle("Volkswagen", "Golf 7", null,null, 5000, 300, vehicleType, LocalDate.of(2015, 6, 17), null, null));
             vehicleDAO.remove(vehicle.getUuid());
             fail("Vehicle succesfully created with chassisNumber field null when an exception was expected");
@@ -99,7 +99,7 @@ public class VehicleParametersTest {
     @Test
     public void typeField() throws Exception {
         Vehicle vehicle = null;
-        try (VehicleDAO vehicleDAO = daoProvider.getVehicleDAO()) {
+        try (VehicleDAO vehicleDAO = daoManager.getVehicleDAO()) {
             vehicle = vehicleDAO.create(new Vehicle("Volkswagen", "Golf 7", "AAAAAAAAAAAAAAAAA",null, 5000, 300, null, LocalDate.of(2015, 6, 17), null, null));
             vehicleDAO.remove(vehicle.getUuid());
             fail("Vehicle succesfully created with type field null when an exception was expected");
@@ -113,7 +113,7 @@ public class VehicleParametersTest {
     @Test
     public void productionDateField() throws Exception {
         Vehicle vehicle = null;
-        try (VehicleDAO vehicleDAO = daoProvider.getVehicleDAO()) {
+        try (VehicleDAO vehicleDAO = daoManager.getVehicleDAO()) {
             vehicle = vehicleDAO.create(new Vehicle("Volkswagen", "Golf 7", "AAAAAAAAAAAAAAAAA",null, 5000, 300, vehicleType, null, null, null));
             vehicleDAO.remove(vehicle.getUuid());
             fail("Vehicle succesfully created with productionDate field null when an exception was expected");

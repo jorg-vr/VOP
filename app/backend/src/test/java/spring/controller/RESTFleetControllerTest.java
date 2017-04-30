@@ -1,6 +1,6 @@
 package spring.controller;
 
-import dao.database.ProductionProvider;
+import dao.database.ProductionManager;
 import dao.interfaces.DataAccessException;
 import model.fleet.Fleet;
 import model.identity.Address;
@@ -38,7 +38,7 @@ public class RESTFleetControllerTest {
 
     @BeforeClass
     public static void setup() {
-        ProductionProvider.initializeProvider("unittest");
+        ProductionManager.initializeProvider("unittest");
         try {
             address= new Address("mystreet","123","lala","12345","land");
             customer= new Customer();
@@ -46,11 +46,11 @@ public class RESTFleetControllerTest {
             customer.setName("anita");
             customer.setPhoneNumber("04789456123");
             customer.setBtwNumber("123456789");
-            customer=ProductionProvider.getInstance().getCustomerDAO().create(customer);
+            customer= ProductionManager.getInstance().getCustomerDAO().create(customer);
             fleet=new Fleet();
             fleet.setOwner(customer);
             fleet.setName("myFleet");
-            fleet=ProductionProvider.getInstance().getFleetDAO().create(fleet);
+            fleet= ProductionManager.getInstance().getFleetDAO().create(fleet);
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
@@ -59,12 +59,12 @@ public class RESTFleetControllerTest {
     @AfterClass
     public static void afterTransaction() {
         try {
-            ProductionProvider.getInstance().getFleetDAO().remove(fleet.getUuid());
-            ProductionProvider.getInstance().getCustomerDAO().remove(customer.getUuid());
+            ProductionManager.getInstance().getFleetDAO().remove(fleet.getUuid());
+            ProductionManager.getInstance().getCustomerDAO().remove(customer.getUuid());
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
-        ProductionProvider.getInstance().close();
+        ProductionManager.getInstance().close();
     }
 
     @Test

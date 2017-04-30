@@ -1,7 +1,6 @@
 package dao.database;
 
 import dao.interfaces.*;
-import model.billing.Invoice;
 import model.identity.Company;
 import model.insurance.Surety;
 import org.hibernate.SessionFactory;
@@ -11,14 +10,14 @@ import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
 
-public class ProductionProvider implements DAOProvider {
+public class ProductionManager implements DAOManager {
 
-    private static ProductionProvider provider = null;
+    private static ProductionManager provider = null;
     private StandardServiceRegistry registry;
     private SessionFactory sessionFactory;
 
 
-    private ProductionProvider(String configLocation) {
+    private ProductionManager(String configLocation) {
 
         registry = new StandardServiceRegistryBuilder()
                 .configure(configLocation)
@@ -42,21 +41,21 @@ public class ProductionProvider implements DAOProvider {
      */
     public synchronized static void initializeProvider(String environment) {
         if (environment.equals("production")) {
-            provider = new ProductionProvider("hibernate/deployment.cfg.xml");
+            provider = new ProductionManager("hibernate/deployment.cfg.xml");
         } else if (environment.equals("localtest")) {
-            provider = new ProductionProvider("hibernate/localtest.cfg.xml");
+            provider = new ProductionManager("hibernate/localtest.cfg.xml");
         } else if (environment.equals("test")) {
-            provider = new ProductionProvider("hibernate/test.cfg.xml");
+            provider = new ProductionManager("hibernate/test.cfg.xml");
         } else if (environment.equals("unittest")) {
-            provider = new ProductionProvider("hibernate/test-in-memory.cfg.xml");
+            provider = new ProductionManager("hibernate/test-in-memory.cfg.xml");
         }
 
     }
 
     /**
-     * @return the DAOProvider
+     * @return the DAOManager
      */
-    public synchronized static DAOProvider getInstance() {
+    public synchronized static DAOManager getInstance() {
         return provider;
     }
 
@@ -156,7 +155,7 @@ public class ProductionProvider implements DAOProvider {
 
     public static void main(String[] args) {
         initializeProvider("localtest");
-        try(DAOProvider p = getInstance(); UserDAO dao = p.getUserDAO()){
+        try(DAOManager p = getInstance(); UserDAO dao = p.getUserDAO()){
             dao.listFiltered();
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,8 +1,7 @@
 package controller;
 
 import controller.exceptions.UnAuthorizedException;
-import dao.database.ProductionProvider;
-import dao.interfaces.DAOProvider;
+import dao.interfaces.DAOManager;
 import dao.interfaces.DataAccessException;
 import dao.interfaces.FunctionDAO;
 import dao.interfaces.UserDAO;
@@ -10,7 +9,6 @@ import main.BackendApplication;
 import model.account.*;
 import spring.model.AuthenticationToken;
 
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.UUID;
 
@@ -19,7 +17,7 @@ import java.util.UUID;
  */
 public class AuthController implements AutoCloseable {
 
-    private DAOProvider provider = BackendApplication.getProvider();
+    private DAOManager provider = BackendApplication.getProvider();
 
     private FunctionDAO functionDAO=provider.getFunctionDAO();
     private  UserDAO userDAO=provider.getUserDAO();

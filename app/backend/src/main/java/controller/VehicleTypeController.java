@@ -1,6 +1,5 @@
 package controller;
 
-import dao.database.ProductionProvider;
 import main.BackendApplication;
 import model.account.Function;
 import model.account.Resource;

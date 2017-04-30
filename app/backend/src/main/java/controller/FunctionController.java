@@ -7,18 +7,16 @@ import model.account.*;
 import model.identity.Company;
 import spring.exceptions.NotImplementedException;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * For more information of what this class does, see AbstractController
  */
 public class FunctionController extends AbstractController<Function> {
 
-    private DAOProvider provider;
+    private DAOManager provider;
     private FunctionDAO functionDAO;
     //todo function should not be authorized by function
     public FunctionController(Function function) {

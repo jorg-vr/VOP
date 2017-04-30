@@ -1,8 +1,7 @@
 package main;
 
-import dao.database.ProductionProvider;
-import dao.interfaces.DAO;
-import dao.interfaces.DAOProvider;
+import dao.database.ProductionManager;
+import dao.interfaces.DAOManager;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -21,9 +20,9 @@ public class BackendApplication {
 	public static void main(String[] args) throws Exception {
 
         if (args.length == 1) {
-            ProductionProvider.initializeProvider(args[0]);
+            ProductionManager.initializeProvider(args[0]);
         } else if (args.length == 2) {
-            ProductionProvider.initializeProvider(args[1]);
+            ProductionManager.initializeProvider(args[1]);
         }
         else {
             System.err.println("Wrong number of arguments");
@@ -43,12 +42,12 @@ public class BackendApplication {
         };
 	}
 
-    public static DAOProvider getProvider() {
-        return ProductionProvider.getInstance();
+    public static DAOManager getProvider() {
+        return ProductionManager.getInstance();
     }
 
 	@PreDestroy
     public void preDestroy() {
-        ProductionProvider.getInstance().close();
+        ProductionManager.getInstance().close();
     }
 }

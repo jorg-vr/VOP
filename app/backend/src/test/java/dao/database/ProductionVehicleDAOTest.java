@@ -17,19 +17,19 @@ import static org.junit.Assert.*;
 
 public class ProductionVehicleDAOTest {
 
-    private static DAOProvider daoProvider;
+    private static DAOManager daoManager;
 
     //Setup before any of the tests are started
     @BeforeClass
     public static void initProvider() throws Exception {
-        ProductionProvider.initializeProvider("unittest");
-        daoProvider = ProductionProvider.getInstance();
+        ProductionManager.initializeProvider("unittest");
+        daoManager = ProductionManager.getInstance();
     }
 
     //Gets executed after all tests have been run
     @AfterClass
     public static void closeProvider() throws Exception {
-        daoProvider.close();
+        daoManager.close();
     }
 
     @Test
@@ -42,33 +42,33 @@ public class ProductionVehicleDAOTest {
         boolean present = false;
         boolean removed = false;
         //test if a vehicle can be succesfully added to the database
-        try (AddressDAO addressDAO = daoProvider.getAddressDao();) {
+        try (AddressDAO addressDAO = daoManager.getAddressDao();) {
             a1 = addressDAO.create(new Address("streettest n1", "59", "town 1", "9999", "country 1"));
         } catch (Exception e) {
             fail("Failed trying to create a new address");
         }
-        try (CustomerDAO customerDAO = daoProvider.getCustomerDAO();) {
+        try (CustomerDAO customerDAO = daoManager.getCustomerDAO();) {
             cust1 = customerDAO.create(new Customer(a1, "911", "customername 1", "btw123"));
         } catch (Exception e) {
             fail("Failed trying to create a new customer");
         }
-        try (FleetDAO fleetDAO = daoProvider.getFleetDAO();) {
+        try (FleetDAO fleetDAO = daoManager.getFleetDAO();) {
             fleet1 = fleetDAO.create(new Fleet("fleet 1", cust1, a1));
         } catch (Exception e) {
             fail("Failed trying to create a new fleet");
         }
-        try (VehicleTypeDAO vehicleTypeDAO = daoProvider.getVehicleTypeDAO();) {
+        try (VehicleTypeDAO vehicleTypeDAO = daoManager.getVehicleTypeDAO();) {
             t1 = vehicleTypeDAO.create(new VehicleType("type 1"));
         } catch (Exception e) {
             fail("Failed trying to create a new vehicleType");
         }
-        try (VehicleDAO vehicleDao = daoProvider.getVehicleDAO();) {
+        try (VehicleDAO vehicleDao = daoManager.getVehicleDAO();) {
             vehicle1 = vehicleDao.create(new Vehicle("brand 1", "model A", "UZ0UZABCUKZ12345L", "ABC 123", 30000, 2500, t1, LocalDate.now(), fleet1, null));
         } catch (Exception e) {
             fail("Failed trying to create a new vehicle");
         }
         //If a vehicle was succesfully added, test if it can be retrieved succesfully
-        try (VehicleDAO vehicleDao = daoProvider.getVehicleDAO();) {
+        try (VehicleDAO vehicleDao = daoManager.getVehicleDAO();) {
             if (vehicle1 != null) {
                 Vehicle vehicle2 = vehicleDao.get(vehicle1.getUuid());
                 assertEquals("type field not equal", vehicle1.getType(), vehicle2.getType());
@@ -87,7 +87,7 @@ public class ProductionVehicleDAOTest {
             fail("Failed trying to get an existing vehicle from the database");
         }
         //If the vehicle is confirmed to be present in the database, try to remove it
-        try (VehicleDAO vehicleDao = daoProvider.getVehicleDAO();) {
+        try (VehicleDAO vehicleDao = daoManager.getVehicleDAO();) {
             if (vehicle1 != null && present) {
                 vehicleDao.remove(vehicle1.getUuid());
                 removed = true;
@@ -96,7 +96,7 @@ public class ProductionVehicleDAOTest {
             fail("Failed trying to remove a vehicle from the database");
         }
         //Check if the vehicle is effectively removed (if create, get and remove tests passed)
-        try (VehicleDAO vehicleDao = daoProvider.getVehicleDAO();) {
+        try (VehicleDAO vehicleDao = daoManager.getVehicleDAO();) {
             if (vehicle1 != null && present && removed) {
                 Vehicle vehicle3 = vehicleDao.get(vehicle1.getUuid());
                 //adding this because I'm not sure if the get method returns a null object or an error for a non existing uuid
@@ -107,10 +107,10 @@ public class ProductionVehicleDAOTest {
         catch (Exception e) {
             //Nothing because the test passed in this case
         }
-        try (AddressDAO addressDAO = daoProvider.getAddressDao();
-             CustomerDAO customerDAO = daoProvider.getCustomerDAO();
-             FleetDAO fleetDAO = daoProvider.getFleetDAO();
-             VehicleTypeDAO vehicleTypeDAO = daoProvider.getVehicleTypeDAO();) {
+        try (AddressDAO addressDAO = daoManager.getAddressDao();
+             CustomerDAO customerDAO = daoManager.getCustomerDAO();
+             FleetDAO fleetDAO = daoManager.getFleetDAO();
+             VehicleTypeDAO vehicleTypeDAO = daoManager.getVehicleTypeDAO();) {
 
             vehicleTypeDAO.remove(t1.getUuid());
             fleetDAO.remove(fleet1.getUuid());
@@ -122,11 +122,11 @@ public class ProductionVehicleDAOTest {
 
     @Test
     public void update() throws Exception {
-        try (AddressDAO addressDAO = daoProvider.getAddressDao();
-             CustomerDAO customerDAO = daoProvider.getCustomerDAO();
-             FleetDAO fleetDAO = daoProvider.getFleetDAO();
-             VehicleTypeDAO vehicleTypeDAO = daoProvider.getVehicleTypeDAO();
-             VehicleDAO vehicleDAO = daoProvider.getVehicleDAO();) {
+        try (AddressDAO addressDAO = daoManager.getAddressDao();
+             CustomerDAO customerDAO = daoManager.getCustomerDAO();
+             FleetDAO fleetDAO = daoManager.getFleetDAO();
+             VehicleTypeDAO vehicleTypeDAO = daoManager.getVehicleTypeDAO();
+             VehicleDAO vehicleDAO = daoManager.getVehicleDAO();) {
 
             Address a1 = addressDAO.create(new Address("streettest n1", "59", "town 1", "9999", "country 1"));
             Customer cust1 = customerDAO.create(new Customer(a1, "911", "customername 1", "btw123"));

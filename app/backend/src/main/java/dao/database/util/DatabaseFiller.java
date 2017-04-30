@@ -1,6 +1,6 @@
 package dao.database.util;
 
-import dao.database.ProductionProvider;
+import dao.database.ProductionManager;
 import dao.interfaces.*;
 import model.account.*;
 import model.billing.Invoice;
@@ -25,11 +25,11 @@ import static model.insurance.SuretyType.*;
  */
 public class DatabaseFiller {
     public static void main(String[] args) throws DataAccessException {
-        DAOProvider provider = null;
+        DAOManager provider = null;
         try {
 
-            ProductionProvider.initializeProvider("localtest");
-            provider = ProductionProvider.getInstance();
+            ProductionManager.initializeProvider("localtest");
+            provider = ProductionManager.getInstance();
             DatabaseFiller filler = new DatabaseFiller();
             filler.initVehicleTypes(provider);
             filler.initAdminRole(provider);
@@ -43,7 +43,7 @@ public class DatabaseFiller {
         }
     }
 
-    private void initCompanies(DAOProvider provider) {
+    private void initCompanies(DAOManager provider) {
         try (CustomerDAO customerDAO = provider.getCustomerDAO();
              AddressDAO addressDAO = provider.getAddressDao();
              InsuranceCompanyDAO insuranceCompanyDAO = provider.getInsuranceCompanyDao();
@@ -135,7 +135,7 @@ public class DatabaseFiller {
         }
     }
 
-    private void initMoreRoles(DAOProvider provider) {
+    private void initMoreRoles(DAOManager provider) {
         try (RoleDAO roleDAO = provider.getRoleDAO();
              UserDAO userDAO = provider.getUserDAO();
              FunctionDAO functionDAO = provider.getFunctionDAO();
@@ -201,7 +201,7 @@ public class DatabaseFiller {
         }
     }
 
-    private void initAdminRole(DAOProvider provider) {
+    private void initAdminRole(DAOManager provider) {
         try (RoleDAO roleDAO = provider.getRoleDAO();
              UserDAO userDAO = provider.getUserDAO();
              FunctionDAO functionDAO = provider.getFunctionDAO();
@@ -248,7 +248,7 @@ public class DatabaseFiller {
         }
     }
 
-    private void initCustomerRole(DAOProvider provider) {
+    private void initCustomerRole(DAOManager provider) {
         try (RoleDAO roleDAO = provider.getRoleDAO();
              UserDAO userDAO = provider.getUserDAO();
              FunctionDAO functionDAO = provider.getFunctionDAO();
@@ -368,7 +368,7 @@ public class DatabaseFiller {
         }
     }
 
-    private void initVehicleTypes(DAOProvider provider) {
+    private void initVehicleTypes(DAOManager provider) {
         Map<SuretyType, Double> taxes = new HashMap<>();
         taxes.put(CIVIL_LIABILITY, 0.2710);
         taxes.put(OMNIUM_FULL, 0.2675);

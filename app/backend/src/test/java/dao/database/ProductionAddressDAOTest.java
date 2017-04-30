@@ -1,7 +1,7 @@
 package dao.database;
 
 import dao.interfaces.AddressDAO;
-import dao.interfaces.DAOProvider;
+import dao.interfaces.DAOManager;
 import model.identity.Address;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -11,19 +11,19 @@ import static org.junit.Assert.*;
 
 
 public class ProductionAddressDAOTest {
-    private static DAOProvider daoProvider;
+    private static DAOManager daoManager;
 
     //Setup before any of the tests are started
     @BeforeClass
     public static void initProvider() throws Exception {
-        ProductionProvider.initializeProvider("unittest");
-        daoProvider = ProductionProvider.getInstance();
+        ProductionManager.initializeProvider("unittest");
+        daoManager = ProductionManager.getInstance();
     }
 
     //Gets executed after all tests have been run
     @AfterClass
     public static void closeProvider() throws Exception {
-        daoProvider.close();
+        daoManager.close();
     }
 
     @Test
@@ -32,13 +32,13 @@ public class ProductionAddressDAOTest {
         boolean present = false;
         boolean removed = false;
         //test if a address can be succesfully added to the database
-        try (AddressDAO addressDAO = daoProvider.getAddressDao();) {
+        try (AddressDAO addressDAO = daoManager.getAddressDao();) {
             a1 = addressDAO.create(new Address("streettest n1", "59", "town 1", "9999", "country 1"));
         } catch (Exception e) {
             fail("Failed trying to create a new address");
         }
         //If a address was succesfully added, test if it can be retrieved succesfully
-        try (AddressDAO addressDAO = daoProvider.getAddressDao();) {
+        try (AddressDAO addressDAO = daoManager.getAddressDao();) {
             if (a1 != null) {
                 Address a2 = addressDAO.get(a1.getUuid());
                 assertEquals("street field not created correctly", a1.getStreet(), a2.getStreet());
@@ -52,7 +52,7 @@ public class ProductionAddressDAOTest {
             fail("Failed trying to get an existing address from the database");
         }
         //If the address is confirmed to be present in the database, try to remove it
-        try (AddressDAO addressDAO = daoProvider.getAddressDao();) {
+        try (AddressDAO addressDAO = daoManager.getAddressDao();) {
             if (a1 != null && present) {
                 addressDAO.remove(a1.getUuid());
                 removed = true;
@@ -61,7 +61,7 @@ public class ProductionAddressDAOTest {
             fail("Failed trying to remove an address from the database");
         }
         //Check if the address is effectively removed (if create, get and remove tests passed)
-        try (AddressDAO addressDAO = daoProvider.getAddressDao();) {
+        try (AddressDAO addressDAO = daoManager.getAddressDao();) {
             if (a1 != null && present && removed) {
                 Address t2 = addressDAO.get(a1.getUuid());
                 //adding this because I'm not sure if the get method returns a null object or an error for a non existing uuid
@@ -77,7 +77,7 @@ public class ProductionAddressDAOTest {
 
     @Test
     public void update() throws Exception {
-        try (AddressDAO addressDAO = daoProvider.getAddressDao();) {
+        try (AddressDAO addressDAO = daoManager.getAddressDao();) {
             Address a1 = addressDAO.create(new Address("streettest n1", "59", "town 1", "9999", "country 1"));
             Address a2 = new Address("streettest n2", "60", "town 2", "99999", "country 2");
             a1.setStreet("streettest n2");

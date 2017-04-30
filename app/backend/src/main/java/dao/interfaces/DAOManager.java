@@ -7,7 +7,7 @@ import model.insurance.Surety;
  * DAO provider to get DAO's
  * Created by sam on 3/7/17.
  */
-public interface DAOProvider extends AutoCloseable {
+public interface DAOManager extends AutoCloseable {
 
     /**
      * Gets a UserDAO

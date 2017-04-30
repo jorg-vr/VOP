@@ -1,6 +1,6 @@
 package dao.database;
 
-import dao.interfaces.DAOProvider;
+import dao.interfaces.DAOManager;
 import dao.interfaces.VehicleTypeDAO;
 import model.fleet.VehicleType;
 import model.insurance.SuretyType;
@@ -13,19 +13,19 @@ import static org.junit.Assert.*;
 
 
 public class ProductionVehicleTypeDAOTest {
-    private static DAOProvider daoProvider;
+    private static DAOManager daoManager;
 
     //Setup before any of the tests are started
     @BeforeClass
     public static void initProvider() throws Exception {
-        ProductionProvider.initializeProvider("unittest");
-        daoProvider = ProductionProvider.getInstance();
+        ProductionManager.initializeProvider("unittest");
+        daoManager = ProductionManager.getInstance();
     }
 
     //Gets executed after all tests have been run
     @AfterClass
     public static void closeProvider() throws Exception {
-        daoProvider.close();
+        daoManager.close();
     }
 
     @Test
@@ -34,7 +34,7 @@ public class ProductionVehicleTypeDAOTest {
         boolean present = false;
         boolean removed = false;
         //test if a vehicle can be succesfully added to the database
-        try (VehicleTypeDAO vehicleTypeDAO = daoProvider.getVehicleTypeDAO();) {
+        try (VehicleTypeDAO vehicleTypeDAO = daoManager.getVehicleTypeDAO();) {
             Map<SuretyType, Double> taxes = new HashMap<>();
             taxes.put(SuretyType.CIVIL_LIABILITY, 1.0);
             taxes.put(SuretyType.OMNIUM_FULL, 2.0);
@@ -56,7 +56,7 @@ public class ProductionVehicleTypeDAOTest {
             fail("Failed trying to create a new vehicleType");
         }
         //If a vehicleType was succesfully added, test if it can be retrieved succesfully
-        try (VehicleTypeDAO vehicleTypeDAO = daoProvider.getVehicleTypeDAO();) {
+        try (VehicleTypeDAO vehicleTypeDAO = daoManager.getVehicleTypeDAO();) {
             if (t1 != null) {
                 VehicleType t2 = vehicleTypeDAO.get(t1.getUuid());
                 assertEquals("type field not equal", t1.getType(), t2.getType());
@@ -68,7 +68,7 @@ public class ProductionVehicleTypeDAOTest {
             fail("Failed trying to get an existing vehicleType from the database");
         }
         //If the vehicle is confirmed to be present in the database, try to remove it
-        try (VehicleTypeDAO vehicleTypeDAO = daoProvider.getVehicleTypeDAO();) {
+        try (VehicleTypeDAO vehicleTypeDAO = daoManager.getVehicleTypeDAO();) {
             if (t1 != null && present) {
                 vehicleTypeDAO.remove(t1.getUuid());
                 removed = true;
@@ -77,7 +77,7 @@ public class ProductionVehicleTypeDAOTest {
             fail("Failed trying to remove a vehicleType from the database");
         }
         //Check if the vehicleType is effectively removed (if create, get and remove tests passed)
-        try (VehicleTypeDAO vehicleTypeDAO = daoProvider.getVehicleTypeDAO();) {
+        try (VehicleTypeDAO vehicleTypeDAO = daoManager.getVehicleTypeDAO();) {
             if (t1 != null && present && removed) {
                 VehicleType t2 = vehicleTypeDAO.get(t1.getUuid());
                 //adding this because I'm not sure if the get method returns a null object or an error for a non existing uuid
@@ -93,7 +93,7 @@ public class ProductionVehicleTypeDAOTest {
 
     @Test
     public void update() throws Exception {
-        try (VehicleTypeDAO vehicleTypeDAO = daoProvider.getVehicleTypeDAO();) {
+        try (VehicleTypeDAO vehicleTypeDAO = daoManager.getVehicleTypeDAO();) {
             VehicleType t1 = vehicleTypeDAO.create(new VehicleType("type 14"));
             t1.setType("type 15");
 

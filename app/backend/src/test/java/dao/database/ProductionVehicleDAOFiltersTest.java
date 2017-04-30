@@ -17,7 +17,7 @@ import static org.junit.Assert.assertTrue;
 
 
 public class ProductionVehicleDAOFiltersTest {
-    private static DAOProvider daoProvider;
+    private static DAOManager daoManager;
     private static Vehicle v1, v2, v3;
     private static VehicleType t1, t2;
     private static Fleet fleet1, fleet2;
@@ -27,13 +27,13 @@ public class ProductionVehicleDAOFiltersTest {
     //Setup before any of the tests are started
     @BeforeClass
     public static void initProvider() throws Exception {
-        ProductionProvider.initializeProvider("unittest");
-        daoProvider = ProductionProvider.getInstance();
-        try (AddressDAO addressDAO = daoProvider.getAddressDao();
-             CustomerDAO customerDAO = daoProvider.getCustomerDAO();
-             FleetDAO fleetDAO = daoProvider.getFleetDAO();
-             VehicleTypeDAO vehicleTypeDAO = daoProvider.getVehicleTypeDAO();
-             VehicleDAO vehicleDAO = daoProvider.getVehicleDAO();) {
+        ProductionManager.initializeProvider("unittest");
+        daoManager = ProductionManager.getInstance();
+        try (AddressDAO addressDAO = daoManager.getAddressDao();
+             CustomerDAO customerDAO = daoManager.getCustomerDAO();
+             FleetDAO fleetDAO = daoManager.getFleetDAO();
+             VehicleTypeDAO vehicleTypeDAO = daoManager.getVehicleTypeDAO();
+             VehicleDAO vehicleDAO = daoManager.getVehicleDAO();) {
 
             a1 = addressDAO.create(new Address("streettest n1", "59", "town 1", "9999", "country 1"));
             t1 = vehicleTypeDAO.create(new VehicleType("type 1"));
@@ -50,11 +50,11 @@ public class ProductionVehicleDAOFiltersTest {
     //Gets executed after all tests have been run
     @AfterClass
     public static void closeProvider() throws Exception {
-        try (AddressDAO addressDAO = daoProvider.getAddressDao();
-             CustomerDAO customerDAO = daoProvider.getCustomerDAO();
-             FleetDAO fleetDAO = daoProvider.getFleetDAO();
-             VehicleTypeDAO vehicleTypeDAO = daoProvider.getVehicleTypeDAO();
-             VehicleDAO vehicleDAO = daoProvider.getVehicleDAO();) {
+        try (AddressDAO addressDAO = daoManager.getAddressDao();
+             CustomerDAO customerDAO = daoManager.getCustomerDAO();
+             FleetDAO fleetDAO = daoManager.getFleetDAO();
+             VehicleTypeDAO vehicleTypeDAO = daoManager.getVehicleTypeDAO();
+             VehicleDAO vehicleDAO = daoManager.getVehicleDAO();) {
             vehicleDAO.remove(v1.getUuid());
             vehicleDAO.remove(v2.getUuid());
             vehicleDAO.remove(v3.getUuid());
@@ -65,13 +65,13 @@ public class ProductionVehicleDAOFiltersTest {
             vehicleTypeDAO.remove(t2.getUuid());
             addressDAO.remove(a1.getUuid());
         }
-        daoProvider.close();
+        daoManager.close();
     }
 
 
     @Test
     public void byBrand() throws Exception {
-        try (VehicleDAO vehicleDAO = daoProvider.getVehicleDAO();) {
+        try (VehicleDAO vehicleDAO = daoManager.getVehicleDAO();) {
             Collection<Vehicle> c1 = vehicleDAO.listFiltered(vehicleDAO.byBrand("brand 1"));
             Collection<Vehicle> c2 = vehicleDAO.listFiltered(vehicleDAO.byBrand("brand 2"));
             assertTrue("byBrand filter werkt niet", c1.contains(v1) && c1.contains(v2) && !c1.contains(v3));
@@ -81,7 +81,7 @@ public class ProductionVehicleDAOFiltersTest {
 
     @Test
     public void byModel() throws Exception {
-        try (VehicleDAO vehicleDAO = daoProvider.getVehicleDAO();) {
+        try (VehicleDAO vehicleDAO = daoManager.getVehicleDAO();) {
             Collection<Vehicle> c1 = vehicleDAO.listFiltered(vehicleDAO.byModel("model 1"));
             Collection<Vehicle> c2 = vehicleDAO.listFiltered(vehicleDAO.byModel("model 2"));
             assertTrue("byModel filter werkt niet", c1.contains(v1) && !c1.contains(v2) && !c1.contains(v3));
@@ -91,7 +91,7 @@ public class ProductionVehicleDAOFiltersTest {
 
     @Test
     public void byLicensePlate() throws Exception {
-        try (VehicleDAO vehicleDAO = daoProvider.getVehicleDAO();) {
+        try (VehicleDAO vehicleDAO = daoManager.getVehicleDAO();) {
             Collection<Vehicle> c1 = vehicleDAO.listFiltered(vehicleDAO.byLicensePlate("ABC-123"));
             Collection<Vehicle> c2 = vehicleDAO.listFiltered(vehicleDAO.byLicensePlate("ABC-456"));
             assertTrue("byLicensePlate filter werkt niet", c1.contains(v1) && !c1.contains(v2) && !c1.contains(v3));
@@ -101,7 +101,7 @@ public class ProductionVehicleDAOFiltersTest {
 
     @Test
     public void atProductionDate() throws Exception {
-        try (VehicleDAO vehicleDAO = daoProvider.getVehicleDAO();) {
+        try (VehicleDAO vehicleDAO = daoManager.getVehicleDAO();) {
             Collection<Vehicle> c1 = vehicleDAO.listFiltered(vehicleDAO.atProductionDate(LocalDate.of(2016, 7, 15)));
             Collection<Vehicle> c2 = vehicleDAO.listFiltered(vehicleDAO.atProductionDate(LocalDate.of(2016, 9, 26)));
             assertTrue("atProductionDate filter werkt niet", c1.contains(v1) && !c1.contains(v2) && !c1.contains(v3));
@@ -111,7 +111,7 @@ public class ProductionVehicleDAOFiltersTest {
 
     @Test
     public void beforeProductionDate() throws Exception {
-        try (VehicleDAO vehicleDAO = daoProvider.getVehicleDAO();) {
+        try (VehicleDAO vehicleDAO = daoManager.getVehicleDAO();) {
             Collection<Vehicle> c1 = vehicleDAO.listFiltered(vehicleDAO.beforeProductionDate(LocalDate.of(2016, 7, 27)));
             Collection<Vehicle> c2 = vehicleDAO.listFiltered(vehicleDAO.beforeProductionDate(LocalDate.of(2017, 7, 15)));
             assertTrue("beforeProductionDate filter werkt niet", c1.contains(v1) && c1.contains(v2) && !c1.contains(v3));
@@ -122,7 +122,7 @@ public class ProductionVehicleDAOFiltersTest {
 
     @Test
     public void afterProductionDate() throws Exception {
-        try (VehicleDAO vehicleDAO = daoProvider.getVehicleDAO();) {
+        try (VehicleDAO vehicleDAO = daoManager.getVehicleDAO();) {
             Collection<Vehicle> c1 = vehicleDAO.listFiltered(vehicleDAO.afterProductionDate(LocalDate.of(2016, 7, 16)));
             Collection<Vehicle> c2 = vehicleDAO.listFiltered(vehicleDAO.afterProductionDate(LocalDate.of(2017, 7, 15)));
             assertTrue("afterProductionDate filter werkt niet", !c1.contains(v1) && c1.contains(v2) && c1.contains(v3));
@@ -132,7 +132,7 @@ public class ProductionVehicleDAOFiltersTest {
 
     @Test
     public void atLeastMileage() throws Exception {
-        try (VehicleDAO vehicleDAO = daoProvider.getVehicleDAO();) {
+        try (VehicleDAO vehicleDAO = daoManager.getVehicleDAO();) {
             Collection<Vehicle> c1 = vehicleDAO.listFiltered(vehicleDAO.atLeastMileage(3500));
             Collection<Vehicle> c2 = vehicleDAO.listFiltered(vehicleDAO.atLeastMileage(4500));
             assertTrue("atLeastMileage filter werkt niet", !c1.contains(v1) && c1.contains(v2) && c1.contains(v3));
@@ -142,7 +142,7 @@ public class ProductionVehicleDAOFiltersTest {
 
     @Test
     public void maxMileage() throws Exception {
-        try (VehicleDAO vehicleDAO = daoProvider.getVehicleDAO();) {
+        try (VehicleDAO vehicleDAO = daoManager.getVehicleDAO();) {
             Collection<Vehicle> c1 = vehicleDAO.listFiltered(vehicleDAO.maxMileage(3000));
             Collection<Vehicle> c2 = vehicleDAO.listFiltered(vehicleDAO.maxMileage(4500));
             assertTrue("maxMileage filter werkt niet", c1.contains(v1) && !c1.contains(v2) && !c1.contains(v3));
@@ -152,7 +152,7 @@ public class ProductionVehicleDAOFiltersTest {
 
     @Test
     public void byType() throws Exception {
-        try (VehicleDAO vehicleDAO = daoProvider.getVehicleDAO();) {
+        try (VehicleDAO vehicleDAO = daoManager.getVehicleDAO();) {
             Collection<Vehicle> c1 = vehicleDAO.listFiltered(vehicleDAO.byType(t1));
             Collection<Vehicle> c2 = vehicleDAO.listFiltered(vehicleDAO.byType(t2));
             assertTrue("byType filter werkt niet", c1.contains(v1) && !c1.contains(v2) && c1.contains(v3));
@@ -162,7 +162,7 @@ public class ProductionVehicleDAOFiltersTest {
 
     @Test
     public void byFleet() throws Exception {
-        try (VehicleDAO vehicleDAO = daoProvider.getVehicleDAO();) {
+        try (VehicleDAO vehicleDAO = daoManager.getVehicleDAO();) {
             Collection<Vehicle> c1 = vehicleDAO.listFiltered(vehicleDAO.byFleet(fleet1));
             Collection<Vehicle> c2 = vehicleDAO.listFiltered(vehicleDAO.byFleet(fleet2));
             assertTrue("byFleet filter werkt niet", c1.contains(v1) && !c1.contains(v2) && !c1.contains(v3));
@@ -172,7 +172,7 @@ public class ProductionVehicleDAOFiltersTest {
 
     @Test
     public void multipleFilters() throws Exception {
-        try (VehicleDAO vehicleDAO = daoProvider.getVehicleDAO();) {
+        try (VehicleDAO vehicleDAO = daoManager.getVehicleDAO();) {
             Vehicle v4 = new Vehicle("brand 1", "model 2", "FAAAAAAAAAAAAAAAA", "ABC-123", 500, 4000, t2, LocalDate.of(2016, 9, 28), fleet2, null);
             Vehicle v5 = new Vehicle("brand 2", "model 1", "FBBBBBBBBBBBBBBBB", "DEF-123", 1000, 4500, t1, LocalDate.of(2017, 7, 26), fleet1, null);
             Vehicle v6 = new Vehicle("brand 1", "model 2", "FCCCCCCCCCCCCCCCC", "DEF-456", 1500, 5000, t2, LocalDate.of(2017, 9, 26), fleet1, null);
