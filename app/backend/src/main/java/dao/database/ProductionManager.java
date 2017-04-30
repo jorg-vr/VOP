@@ -152,13 +152,4 @@ public class ProductionManager implements DAOManager {
         StandardServiceRegistryBuilder.destroy(this.registry);
         provider = null;
     }
-
-    public static void main(String[] args) {
-        initializeProvider("localtest");
-        try(DAOManager p = getInstance(); UserDAO dao = p.getUserDAO()){
-            dao.listFiltered();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }
