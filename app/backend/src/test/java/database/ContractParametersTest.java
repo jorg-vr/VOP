@@ -44,13 +44,14 @@ public class ContractParametersTest {
         addressDAO.remove(address.getUuid());
 
         daoManager.close();
+        ProductionProvider.getInstance().close();
     }
 
     @Test
     public void allFields() throws Exception {
         Contract contract = null;
         try {
-            ContractDAO contractDAO = daoManager.getContractDao());
+            ContractDAO contractDAO = daoManager.getContractDao();
             contract = contractDAO.create(new Contract(insuranceCompany, null, LocalDateTime.of(2017, 7, 15, 0, 0), LocalDateTime.of(2017, 9, 15, 0, 0)));
             contractDAO.remove(contract.getUuid());
         } catch (DataAccessException d) {
