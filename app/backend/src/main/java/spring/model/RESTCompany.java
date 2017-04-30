@@ -1,5 +1,6 @@
 package spring.model;
 
+import controller.ControllerManager;
 import model.Factory;
 import model.account.Function;
 import model.identity.*;
@@ -51,7 +52,7 @@ public class RESTCompany extends RESTAbstractModel<Company> {
         this.address = address;
     }
 
-    public Company translate(Function function) {
+    public Company translate(ControllerManager manager) {
         Company company;
         try {
             company = CompanyType.valueOf(type).getFactory().create();

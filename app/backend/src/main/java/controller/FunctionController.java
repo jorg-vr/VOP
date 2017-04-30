@@ -2,7 +2,6 @@ package controller;
 
 import controller.exceptions.UnAuthorizedException;
 import dao.interfaces.*;
-import main.BackendApplication;
 import model.account.*;
 import model.identity.Company;
 import spring.exceptions.NotImplementedException;
@@ -16,13 +15,13 @@ import java.util.List;
  */
 public class FunctionController extends AbstractController<Function> {
 
-    private DAOManager provider;
+    private DAOManager manager;
     private FunctionDAO functionDAO;
-    //todo function should not be authorized by function
-    public FunctionController(Function function) {
-        super(BackendApplication.getProvider().getFunctionDAO(), Resource.FUNCTION,function);
-        provider = BackendApplication.getProvider();
-        functionDAO = provider.getFunctionDAO();
+
+    public FunctionController(Function function, DAOManager manager) {
+        super(manager.getFunctionDAO(), Resource.FUNCTION,function);
+        this.manager = manager;
+        functionDAO = this.manager.getFunctionDAO();
     }
 
 

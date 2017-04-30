@@ -1,6 +1,7 @@
 package spring.model;
 
 
+import controller.ControllerManager;
 import model.account.Role;
 
 import model.account.Function;
@@ -24,7 +25,7 @@ public class RESTRole extends RESTAbstractModel<Role> {
         this.name = role.getName();
     }
 
-    public Role translate(Function f) {
+    public Role translate(ControllerManager manager) {
         Role role = new Role();
         role.setName(name);
         return role;

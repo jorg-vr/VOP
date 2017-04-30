@@ -1,5 +1,6 @@
 package spring.model;
 
+import controller.ControllerManager;
 import controller.FleetController;
 import controller.VehicleTypeController;
 import controller.exceptions.UnAuthorizedException;
@@ -43,6 +44,7 @@ public class RESTVehicle extends RESTAbstractModel<Vehicle> {
 
     /**
      * Create a new RESTVehicle based on the fields of the vehicle object
+     *
      * @param vehicle the vehicle that this RESTVehicle is based on
      */
     public RESTVehicle(Vehicle vehicle) {
@@ -62,7 +64,7 @@ public class RESTVehicle extends RESTAbstractModel<Vehicle> {
     /**
      * @return a new Vehicle object that has fields that are based on this object
      */
-    public Vehicle translate(Function function) {
+    public Vehicle translate(ControllerManager manager) throws UnAuthorizedException {
         Vehicle vehicle = new Vehicle();
         vehicle.setUuid(UUIDUtil.toUUID(getId()));
         vehicle.setBrand(brand);
@@ -73,20 +75,23 @@ public class RESTVehicle extends RESTAbstractModel<Vehicle> {
         vehicle.setChassisNumber(vin);
         vehicle.setValue(value);
         vehicle.setMileage(mileage);
-        try(VehicleTypeController vehicleTypeController=new VehicleTypeController(function)) {
-            vehicle.setType( vehicleTypeController.get(UUIDUtil.toUUID(getType())));
+
+        try {
+            VehicleTypeController vehicleTypeController = manager.getVehicleTypeController();
+            vehicle.setType(vehicleTypeController.get(UUIDUtil.toUUID(getType())));
         } catch (DataAccessException e) {
             throw new InvalidInputException("type");
-        }  catch (UnAuthorizedException e) {
-            throw new NotAuthorizedException();
         }
-        try(FleetController fleetController=new FleetController(function)) {
+
+        try {
+            FleetController fleetController = manager.getFleetController();
             vehicle.setFleet(fleetController.get(UUIDUtil.toUUID(getFleet())));
-        }catch (DataAccessException e) {
+        } catch (DataAccessException e) {
             throw new InvalidInputException("fleet");
-        }  catch (UnAuthorizedException e) {
+        } catch (UnAuthorizedException e) {
             throw new NotAuthorizedException();
         }
+
         return vehicle;
     }
 

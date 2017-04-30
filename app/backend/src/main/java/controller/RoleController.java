@@ -1,5 +1,6 @@
 package controller;
 
+import dao.interfaces.DAOManager;
 import main.BackendApplication;
 import model.account.Function;
 import model.account.Resource;
@@ -10,8 +11,8 @@ import model.account.Role;
  */
 public class RoleController extends AbstractController<Role> {
 
-    public RoleController(Function function) {
-        super(BackendApplication.getProvider().getRoleDAO(), Resource.ROLE,function);
+    public RoleController(Function function, DAOManager manager) {
+        super(manager.getRoleDAO(), Resource.ROLE,function);
     }
 
     @Override

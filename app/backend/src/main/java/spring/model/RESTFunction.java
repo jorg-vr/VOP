@@ -1,5 +1,6 @@
 package spring.model;
 
+import controller.ControllerManager;
 import controller.CustomerController;
 import controller.RoleController;
 import controller.UserController;
@@ -26,11 +27,11 @@ public class RESTFunction extends RESTAbstractModel<Function> {
     private String roleName;
     private String user;
 
-    public RESTFunction(){
+    public RESTFunction() {
 
     }
 
-    public RESTFunction(Function function){
+    public RESTFunction(Function function) {
         super(function.getUuid(), getProperty(PATH_FUNCTIONS));
         Company company = function.getCompany();
         if (company != null) {
@@ -43,7 +44,7 @@ public class RESTFunction extends RESTAbstractModel<Function> {
         this.user = UUIDUtil.UUIDToNumberString(function.getUser().getUuid());
     }
 
-    public RESTFunction(String id, String company, String role, String user, String updatedAt, String lastUpdatedBy, String url){
+    public RESTFunction(String id, String company, String role, String user, String updatedAt, String lastUpdatedBy, String url) {
         setId(id);
         this.company = company;
         this.role = role;
@@ -51,28 +52,31 @@ public class RESTFunction extends RESTAbstractModel<Function> {
     }
 
     @Override
-    public Function translate(Function authorityFunction) {
+    public Function translate(ControllerManager manager) {
         Function function = new Function();
+        function.setUuid(UUIDUtil.toUUID(getId()));
         try {
-            try (CustomerController customerController = new CustomerController(authorityFunction)) {
+            try {
+                CustomerController customerController = manager.getCustomerController();
                 function.setCompany(customerController.get(UUIDUtil.toUUID(getCompany())));
             } catch (DataAccessException e) {
                 throw new InvalidInputException("company");
             }
-            try (RoleController roleController = new RoleController(authorityFunction)) {
+            try {
+                RoleController roleController = manager.getRoleController();
                 function.setRole(roleController.get(UUIDUtil.toUUID(getRole())));
             } catch (DataAccessException e) {
                 throw new InvalidInputException("role");
             }
-            try (UserController userController = new UserController(authorityFunction)) {
+            try {
+                UserController userController = manager.getUserController();
                 function.setUser(userController.get(UUIDUtil.toUUID(getUser())));
             } catch (DataAccessException e) {
                 throw new InvalidInputException("user");
             }
-        } catch (UnAuthorizedException e){
+        } catch (UnAuthorizedException e) {
             throw new NotAuthorizedException();
         }
-        function.setUuid(UUIDUtil.toUUID(getId()));
         return function;
     }
 
