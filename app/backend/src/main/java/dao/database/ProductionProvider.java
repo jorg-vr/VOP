@@ -55,7 +55,7 @@ public class ProductionProvider implements DAOProvider {
 
     @Override
     public DAOManager getDaoManager() {
-        return null;
+        return new ProductionManager(sessionFactory.openSession());
     }
 
     @Override
