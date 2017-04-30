@@ -3,6 +3,7 @@ package dao.database;
 
 import dao.interfaces.AddressDAO;
 import dao.interfaces.DAOManager;
+import dao.interfaces.DAOProvider;
 import model.identity.Address;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -15,13 +16,15 @@ import static org.junit.Assert.assertTrue;
 
 public class ProductionAddressDAOFiltersTest {
     private static DAOManager daoManager;
+    private static DAOProvider daoProvider;
     private static Address a1, a2, a3;
 
     //Setup before any of the tests are started
     @BeforeClass
     public static void initProvider() throws Exception {
-        ProductionManager.initializeProvider("unittest");
-        daoManager = ProductionManager.getInstance();
+        ProductionProvider.initializeProvider("unittest");
+        daoProvider = ProductionProvider.getInstance();
+        daoManager = daoProvider.getDaoManager();
 
         try (AddressDAO addressDAO = daoManager.getAddressDao();) {
             a1 = addressDAO.create(new Address("streettest n1", "59", "town 1", "9999", "country 1"));
