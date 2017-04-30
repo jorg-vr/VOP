@@ -26,14 +26,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Created by jorg on 3/15/17.
  */
-@Ignore
 @RunWith(SpringJUnit4ClassRunner.class)
 //@ContextConfiguration(classes = {WebAppContext.class})
 //@WebAppConfiguration
 //@TestPropertySource(locations = {"classpath:/application.properties"})
 public class RESTFleetControllerTest {
 
-    private MockMvc mvc;
+    private MockMvc mvc = MockMvcBuilders.standaloneSetup(new RESTFleetController())
+            .addPlaceholderValue("path.fleets", "fleets")
+            .addPlaceholderValue("path.companies", "companies")
+            .build();
 
     //@Autowired
     //private WebApplicationContext wac;
@@ -42,14 +44,6 @@ public class RESTFleetControllerTest {
     private static Customer customer;
     private static Fleet fleet;
     private static String[] authPair;
-
-    @Before
-    public void setUp() {
-        mvc = MockMvcBuilders.standaloneSetup(new RESTFleetController())
-                .addPlaceholderValue("path.fleets", "fleets")
-                .addPlaceholderValue("path.companies", "companies")
-                .build();
-    }
 
     @BeforeClass
     public static void classSetup() throws Exception {
@@ -117,7 +111,7 @@ public class RESTFleetControllerTest {
                 .andReturn();
 
     }
-    
+
     @Test
     public void post() throws Exception {
         RESTFleet restFleet = new RESTFleet(null, UUIDUtil.UUIDToNumberString(customer.getUuid()), "newFleet", null, null, null, null);
