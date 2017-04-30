@@ -179,13 +179,14 @@ public class DatabaseFiller {
 
             Function function2 = new Function();
             function2.setUser(user);
-            function2.setRole(role1);
+            function2.setRole(role2);
             function2.setName("Insurance agent");
 
             Address address = new Address("Hoofdstraat", "13", "Hamme", "8500", "Belgium");
             Customer customer = new Customer();
             customer.setAddress(address);
-            customer.setName("Meerdere rollen");
+            customer.setName("Solvas");
+            function1.setCompany(customer);
             function2.setCompany(customer);
 
 

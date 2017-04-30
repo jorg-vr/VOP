@@ -1,6 +1,8 @@
 package dao.database;
 
 import dao.interfaces.*;
+import model.account.Function;
+import model.account.User;
 import model.billing.Invoice;
 import model.identity.Company;
 import model.insurance.Surety;
@@ -152,14 +154,5 @@ public class ProductionProvider implements DAOProvider {
         sessionFactory.close();
         StandardServiceRegistryBuilder.destroy(this.registry);
         provider = null;
-    }
-
-    public static void main(String[] args) {
-        initializeProvider("localtest");
-        try(DAOProvider p = getInstance(); UserDAO dao = p.getUserDAO()){
-            dao.listFiltered();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }
