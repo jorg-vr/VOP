@@ -11,18 +11,11 @@ import model.identity.Customer;
 import model.identity.Periodicity;
 import org.junit.*;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
-import spring.MyConfiguration;
-import spring.WebAppContext;
 import spring.model.RESTFleet;
 import util.UUIDUtil;
 
@@ -115,40 +108,49 @@ public class RESTFleetControllerTest {
 
     @Test
     public void get() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/fleets?").header("Authorization", authPair[0]).header("Function", authPair[1]))
+        mvc.perform(MockMvcRequestBuilders.get("/fleets?")
+                .header("Authorization", authPair[0])
+                .header("Function", authPair[1]))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath(".data", hasSize(greaterThanOrEqualTo(1))))
                 .andExpect(jsonPath("$.total", greaterThanOrEqualTo(1)))
                 .andReturn();
 
     }
-
-    @Ignore
+    
     @Test
     public void post() throws Exception {
         RESTFleet restFleet = new RESTFleet(null, UUIDUtil.UUIDToNumberString(customer.getUuid()), "newFleet", null, null, null, null);
-        MvcResult result = mvc.perform(MockMvcRequestBuilders.post("/fleets").header("Content-Type", "application/json").content(TestUtil.convertObjectToJsonBytes(restFleet)))
+        MvcResult result = mvc.perform(MockMvcRequestBuilders.post("/fleets")
+                .header("Content-Type", "application/json")
+                .header("Authorization", authPair[0])
+                .header("Function", authPair[1])
+                .content(TestUtil.convertObjectToJsonBytes(restFleet)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name", equalTo(restFleet.getName())))
                 .andExpect(jsonPath("$.company", equalTo(restFleet.getCompany()))).andReturn();
         RESTFleet restFleet1 = TestUtil.convertJsonBytesToObject(result.getResponse().getContentAsByteArray(), RESTFleet.class);
-        mvc.perform(MockMvcRequestBuilders.delete("/fleets/{id}", restFleet1.getId()))
+        mvc.perform(MockMvcRequestBuilders.delete("/fleets/{id}", restFleet1.getId())
+                .header("Authorization", authPair[0])
+                .header("Function", authPair[1]))
                 .andExpect(status().isOk());
-        mvc.perform(MockMvcRequestBuilders.get("/fleets/{id}", restFleet1.getId()))
+        mvc.perform(MockMvcRequestBuilders.get("/fleets/{id}", restFleet1.getId())
+                .header("Authorization", authPair[0])
+                .header("Function", authPair[1]))
                 .andExpect(status().isNotFound());
     }
 
-    @Ignore
     @Test
     public void getId() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/fleets/{id}", UUIDUtil.UUIDToNumberString(fleet.getUuid())))
+        mvc.perform(MockMvcRequestBuilders.get("/fleets/{id}", UUIDUtil.UUIDToNumberString(fleet.getUuid()))
+                .header("Authorization", authPair[0])
+                .header("Function", authPair[1]))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name", equalTo(fleet.getName())))
                 .andExpect(jsonPath("$.company", equalTo(UUIDUtil.UUIDToNumberString(fleet.getOwner().getUuid()))))
                 .andReturn();
     }
 
-    @Ignore
     @Test
     public void putId() throws Exception {
         fleet.setName("newName");
@@ -158,6 +160,8 @@ public class RESTFleetControllerTest {
 
         MvcResult result = mvc.perform(MockMvcRequestBuilders.put("/fleets/{id}", UUIDUtil.UUIDToNumberString(fleet.getUuid()))
                 .header("Content-Type", "application/json")
+                .header("Authorization", authPair[0])
+                .header("Function", authPair[1])
                 .content(TestUtil.convertObjectToJsonBytes(restFleet))
         )
                 .andExpect(status().isOk())
@@ -165,7 +169,9 @@ public class RESTFleetControllerTest {
                 .andExpect(jsonPath("$.company", equalTo(restFleet.getCompany())))
                 .andReturn();
         //tests if changes ar preserved
-        mvc.perform(MockMvcRequestBuilders.get("/fleets/{id}", UUIDUtil.UUIDToNumberString(fleet.getUuid())))
+        mvc.perform(MockMvcRequestBuilders.get("/fleets/{id}", UUIDUtil.UUIDToNumberString(fleet.getUuid()))
+                .header("Authorization", authPair[0])
+                .header("Function", authPair[1]))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name", equalTo(restFleet.getName())))
                 .andExpect(jsonPath("$.company", equalTo(restFleet.getCompany())))
