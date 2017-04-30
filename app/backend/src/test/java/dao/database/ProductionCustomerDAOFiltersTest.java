@@ -44,7 +44,7 @@ public class ProductionCustomerDAOFiltersTest {
         customerDAO.remove(v1.getUuid());
         customerDAO.remove(v2.getUuid());
         customerDAO.remove(v3.getUuid());
-
+        daoProvider.close();
         daoManager.close();
     }
 

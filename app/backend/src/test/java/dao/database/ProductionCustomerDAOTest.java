@@ -32,6 +32,7 @@ public class ProductionCustomerDAOTest {
     @AfterClass
     public static void closeProvider() throws Exception {
         daoManager.close();
+        daoProvider.close();
     }
 
 
