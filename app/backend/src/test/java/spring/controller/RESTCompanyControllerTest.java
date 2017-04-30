@@ -1,6 +1,8 @@
 package spring.controller;
 
 import dao.database.ProductionManager;
+import dao.database.ProductionProvider;
+import dao.interfaces.DAOManager;
 import dao.interfaces.DataAccessException;
 import model.identity.Address;
 import model.identity.Customer;
@@ -23,29 +25,30 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-
 @Ignore
 @RunWith(SpringJUnit4ClassRunner.class)
 public class RESTCompanyControllerTest {
 
 
-
-    private MockMvc mvc= MockMvcBuilders.standaloneSetup(new RESTCompanyController()).build();
+    private MockMvc mvc = MockMvcBuilders.standaloneSetup(new RESTCompanyController()).build();
 
     private static Address address;
     private static Customer customer;
 
+    private static DAOManager manager;
+
     @BeforeClass
     public static void setup() {
-        ProductionManager.initializeProvider("unittest");
+        ProductionProvider.initializeProvider("unittest");
+        manager = ProductionProvider.getInstance().getDaoManager();
         try {
-            address= new Address("mystreet","123","lala","12345","land");
-            customer= new Customer();
+            address = new Address("mystreet", "123", "lala", "12345", "land");
+            customer = new Customer();
             customer.setAddress(address);
             customer.setName("anita");
             customer.setPhoneNumber("04789456123");
             customer.setBtwNumber("123456789");
-            customer= ProductionManager.getInstance().getCustomerDAO().create(customer);
+            customer = manager.getCustomerDAO().create(customer);
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
@@ -55,12 +58,12 @@ public class RESTCompanyControllerTest {
     @AfterClass
     public static void afterTransaction() {
         try {
-            ProductionManager.getInstance().getCustomerDAO().remove(customer.getUuid());
+            manager.getCustomerDAO().remove(customer.getUuid());
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
 
-        ProductionManager.getInstance().close();
+        manager.close();
     }
 
 
@@ -68,29 +71,29 @@ public class RESTCompanyControllerTest {
     public void get() throws Exception {
         mvc.perform(MockMvcRequestBuilders.get("/companies"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath(".data",hasSize(greaterThanOrEqualTo(1))))
-                .andExpect(jsonPath("$.total",greaterThanOrEqualTo(1)))
+                .andExpect(jsonPath(".data", hasSize(greaterThanOrEqualTo(1))))
+                .andExpect(jsonPath("$.total", greaterThanOrEqualTo(1)))
                 .andReturn();
 
     }
 
     @Test
     public void post() throws Exception {
-        RESTCompany restCompany=new RESTCompany(null,"frank","sinatra","0123456",new RESTAddress("a","b","c","d","e"));
-        MvcResult result =mvc.perform(MockMvcRequestBuilders.post("/companies").header("Content-Type","application/json").content(TestUtil.convertObjectToJsonBytes(restCompany)))
+        RESTCompany restCompany = new RESTCompany(null, "frank", "sinatra", "0123456", new RESTAddress("a", "b", "c", "d", "e"));
+        MvcResult result = mvc.perform(MockMvcRequestBuilders.post("/companies").header("Content-Type", "application/json").content(TestUtil.convertObjectToJsonBytes(restCompany)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name",equalTo("frank")))
-                .andExpect(jsonPath("$.vatNumber",equalTo("sinatra")))
-                .andExpect(jsonPath("$.phoneNumber",equalTo("0123456")))
-                .andExpect(jsonPath("$.address.country",equalTo("a")))
-                .andExpect(jsonPath("$.address.city",equalTo("b")))
-                .andExpect(jsonPath("$.address.street",equalTo("c")))
-                .andExpect(jsonPath("$.address.houseNumber",equalTo("d")))
-                .andExpect(jsonPath("$.address.postalCode",equalTo("e"))).andReturn();
-        RESTCompany restCompany1 =  TestUtil.convertJsonBytesToObject(result.getResponse().getContentAsByteArray(),RESTCompany.class);
-        mvc.perform(MockMvcRequestBuilders.delete("/companies/{id}",restCompany1.getId()))
+                .andExpect(jsonPath("$.name", equalTo("frank")))
+                .andExpect(jsonPath("$.vatNumber", equalTo("sinatra")))
+                .andExpect(jsonPath("$.phoneNumber", equalTo("0123456")))
+                .andExpect(jsonPath("$.address.country", equalTo("a")))
+                .andExpect(jsonPath("$.address.city", equalTo("b")))
+                .andExpect(jsonPath("$.address.street", equalTo("c")))
+                .andExpect(jsonPath("$.address.houseNumber", equalTo("d")))
+                .andExpect(jsonPath("$.address.postalCode", equalTo("e"))).andReturn();
+        RESTCompany restCompany1 = TestUtil.convertJsonBytesToObject(result.getResponse().getContentAsByteArray(), RESTCompany.class);
+        mvc.perform(MockMvcRequestBuilders.delete("/companies/{id}", restCompany1.getId()))
                 .andExpect(status().isOk());
-        mvc.perform(MockMvcRequestBuilders.get("/companies/{id}",restCompany1.getId()))
+        mvc.perform(MockMvcRequestBuilders.get("/companies/{id}", restCompany1.getId()))
                 .andExpect(status().isNotFound());
     }
 
@@ -98,45 +101,45 @@ public class RESTCompanyControllerTest {
     public void getId() throws Exception {
         mvc.perform(MockMvcRequestBuilders.get("/companies/{id}", UUIDUtil.UUIDToNumberString(customer.getUuid())))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name",equalTo(customer.getName())))
-                .andExpect(jsonPath("$.vatNumber",equalTo(customer.getBtwNumber())))
-                .andExpect(jsonPath("$.phoneNumber",equalTo(customer.getPhoneNumber())))
-                .andExpect(jsonPath("$.address.country",equalTo(address.getCountry())))
-                .andExpect(jsonPath("$.address.city",equalTo(address.getTown())))
-                .andExpect(jsonPath("$.address.street",equalTo(address.getStreet())))
-                .andExpect(jsonPath("$.address.houseNumber",equalTo(address.getStreetNumber())))
-                .andExpect(jsonPath("$.address.postalCode",equalTo(address.getPostalCode()))).andReturn();
+                .andExpect(jsonPath("$.name", equalTo(customer.getName())))
+                .andExpect(jsonPath("$.vatNumber", equalTo(customer.getBtwNumber())))
+                .andExpect(jsonPath("$.phoneNumber", equalTo(customer.getPhoneNumber())))
+                .andExpect(jsonPath("$.address.country", equalTo(address.getCountry())))
+                .andExpect(jsonPath("$.address.city", equalTo(address.getTown())))
+                .andExpect(jsonPath("$.address.street", equalTo(address.getStreet())))
+                .andExpect(jsonPath("$.address.houseNumber", equalTo(address.getStreetNumber())))
+                .andExpect(jsonPath("$.address.postalCode", equalTo(address.getPostalCode()))).andReturn();
     }
 
     @Test
     public void putId() throws Exception {
         customer.setBtwNumber("new");
-        RESTCompany restCompany=new RESTCompany(customer);
+        RESTCompany restCompany = new RESTCompany(customer);
 
-        MvcResult result =mvc.perform(MockMvcRequestBuilders.put("/companies/{id}",UUIDUtil.UUIDToNumberString(customer.getUuid()))
-                .header("Content-Type","application/json")
+        MvcResult result = mvc.perform(MockMvcRequestBuilders.put("/companies/{id}", UUIDUtil.UUIDToNumberString(customer.getUuid()))
+                .header("Content-Type", "application/json")
                 .content(TestUtil.convertObjectToJsonBytes(restCompany))
         )
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name",equalTo(customer.getName())))
-                .andExpect(jsonPath("$.vatNumber",equalTo(customer.getBtwNumber())))
-                .andExpect(jsonPath("$.phoneNumber",equalTo(customer.getPhoneNumber())))
-                .andExpect(jsonPath("$.address.country",equalTo(address.getCountry())))
-                .andExpect(jsonPath("$.address.city",equalTo(address.getTown())))
-                .andExpect(jsonPath("$.address.street",equalTo(address.getStreet())))
-                .andExpect(jsonPath("$.address.houseNumber",equalTo(address.getStreetNumber())))
-                .andExpect(jsonPath("$.address.postalCode",equalTo(address.getPostalCode())))
+                .andExpect(jsonPath("$.name", equalTo(customer.getName())))
+                .andExpect(jsonPath("$.vatNumber", equalTo(customer.getBtwNumber())))
+                .andExpect(jsonPath("$.phoneNumber", equalTo(customer.getPhoneNumber())))
+                .andExpect(jsonPath("$.address.country", equalTo(address.getCountry())))
+                .andExpect(jsonPath("$.address.city", equalTo(address.getTown())))
+                .andExpect(jsonPath("$.address.street", equalTo(address.getStreet())))
+                .andExpect(jsonPath("$.address.houseNumber", equalTo(address.getStreetNumber())))
+                .andExpect(jsonPath("$.address.postalCode", equalTo(address.getPostalCode())))
                 .andReturn();
         //tests if changes ar preserved
-        mvc.perform(MockMvcRequestBuilders.get("/companies/{id}",UUIDUtil.UUIDToNumberString(customer.getUuid())))
+        mvc.perform(MockMvcRequestBuilders.get("/companies/{id}", UUIDUtil.UUIDToNumberString(customer.getUuid())))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name",equalTo(customer.getName())))
-                .andExpect(jsonPath("$.vatNumber",equalTo(customer.getBtwNumber())))
-                .andExpect(jsonPath("$.phoneNumber",equalTo(customer.getPhoneNumber())))
-                .andExpect(jsonPath("$.address.country",equalTo(address.getCountry())))
-                .andExpect(jsonPath("$.address.city",equalTo(address.getTown())))
-                .andExpect(jsonPath("$.address.street",equalTo(address.getStreet())))
-                .andExpect(jsonPath("$.address.houseNumber",equalTo(address.getStreetNumber())))
-                .andExpect(jsonPath("$.address.postalCode",equalTo(address.getPostalCode()))).andReturn();
+                .andExpect(jsonPath("$.name", equalTo(customer.getName())))
+                .andExpect(jsonPath("$.vatNumber", equalTo(customer.getBtwNumber())))
+                .andExpect(jsonPath("$.phoneNumber", equalTo(customer.getPhoneNumber())))
+                .andExpect(jsonPath("$.address.country", equalTo(address.getCountry())))
+                .andExpect(jsonPath("$.address.city", equalTo(address.getTown())))
+                .andExpect(jsonPath("$.address.street", equalTo(address.getStreet())))
+                .andExpect(jsonPath("$.address.houseNumber", equalTo(address.getStreetNumber())))
+                .andExpect(jsonPath("$.address.postalCode", equalTo(address.getPostalCode()))).andReturn();
     }
 }
