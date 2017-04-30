@@ -37,7 +37,9 @@ public class VehicleParametersTest {
     public static void closeProvider() throws Exception {
         VehicleTypeDAO vehicleTypeDao = daoManager.getVehicleTypeDAO();
         vehicleTypeDao.remove(vehicleType.getUuid());
+
         daoManager.close();
+        ProductionProvider.getInstance().close();
     }
 
     @Test

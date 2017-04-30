@@ -54,7 +54,9 @@ public class FunctionParametersTest {
         roleDAO.remove(role.getUuid());
         customerDAO.remove(customer.getUuid());
         addressDAO.remove(address.getUuid());
+
         daoManager.close();
+        ProductionProvider.getInstance().close();
     }
 
     @Test

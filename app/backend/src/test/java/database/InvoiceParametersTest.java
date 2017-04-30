@@ -45,6 +45,7 @@ public class InvoiceParametersTest {
         addressDAO.remove(address.getUuid());
 
         daoManager.close();
+        ProductionProvider.getInstance().close();
     }
 
     @Test

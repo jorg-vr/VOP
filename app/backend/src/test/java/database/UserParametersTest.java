@@ -29,6 +29,8 @@ public class UserParametersTest {
     @AfterClass
     public static void closeProvider() throws Exception {
         daoManager.close();
+        ProductionProvider.getInstance().close();
+
     }
 
     @Test
