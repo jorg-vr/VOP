@@ -26,22 +26,23 @@ public class ProductionAddressDAOFiltersTest {
         daoProvider = ProductionProvider.getInstance();
         daoManager = daoProvider.getDaoManager();
 
-        try (AddressDAO addressDAO = daoManager.getAddressDao();) {
-            a1 = addressDAO.create(new Address("streettest n1", "59", "town 1", "9999", "country 1"));
-            a2 = addressDAO.create(new Address("streettest n2", "59", "town 2", "9999", "country 2"));
-            a3 = addressDAO.create(new Address("streettest n2", "60", "town 2", "99999", "country 2"));
-        }
+        AddressDAO addressDAO = daoManager.getAddressDao()
+        a1 = addressDAO.create(new Address("streettest n1", "59", "town 1", "9999", "country 1"));
+        a2 = addressDAO.create(new Address("streettest n2", "59", "town 2", "9999", "country 2"));
+        a3 = addressDAO.create(new Address("streettest n2", "60", "town 2", "99999", "country 2"));
+
     }
 
     //Gets executed after all tests have been run
     @AfterClass
     public static void closeProvider() throws Exception {
-        try (AddressDAO addressDAO = daoManager.getAddressDao();) {
-            addressDAO.remove(a1.getUuid());
-            addressDAO.remove(a2.getUuid());
-            addressDAO.remove(a3.getUuid());
-        }
+        AddressDAO addressDAO = daoManager.getAddressDao();
+        addressDAO.remove(a1.getUuid());
+        addressDAO.remove(a2.getUuid());
+        addressDAO.remove(a3.getUuid());
+
         daoManager.close();
+        daoProvider.close();
     }
 
     @Test

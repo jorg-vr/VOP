@@ -41,17 +41,18 @@ public class DatabaseFiller {
     }
 
     private void initCompanies(DAOManager provider) {
-        try {CustomerDAO customerDAO = provider.getCustomerDAO();
-             AddressDAO addressDAO = provider.getAddressDao();
-             InsuranceCompanyDAO insuranceCompanyDAO = provider.getInsuranceCompanyDao();
-             FleetDAO fleetDAO = provider.getFleetDAO();
-             VehicleDAO vehicleDAO = provider.getVehicleDAO();
-             VehicleTypeDAO typeDAO = provider.getVehicleTypeDAO();
-             ContractDAO contractDAO = provider.getContractDao();
-             SuretyDAO<Surety> suretyDAO = provider.getSuretyDao();
-             VehicleInsuranceDAO vehicleInsuranceDAO = provider.getVehicleInsuranceDao();
-             CompanyDAO<Company> companyDAO = provider.getCompanyDAO();
-             InvoiceDAO invoiceDAO = provider.getInvoiceDao();
+        try {
+            CustomerDAO customerDAO = provider.getCustomerDAO();
+            AddressDAO addressDAO = provider.getAddressDao();
+            InsuranceCompanyDAO insuranceCompanyDAO = provider.getInsuranceCompanyDao();
+            FleetDAO fleetDAO = provider.getFleetDAO();
+            VehicleDAO vehicleDAO = provider.getVehicleDAO();
+            VehicleTypeDAO typeDAO = provider.getVehicleTypeDAO();
+            ContractDAO contractDAO = provider.getContractDao();
+            SuretyDAO<Surety> suretyDAO = provider.getSuretyDao();
+            VehicleInsuranceDAO vehicleInsuranceDAO = provider.getVehicleInsuranceDao();
+            CompanyDAO<Company> companyDAO = provider.getCompanyDAO();
+            InvoiceDAO invoiceDAO = provider.getInvoiceDao();
 
             Surety flatSurety = new FlatSurety(100);
             flatSurety.setSuretyType(SuretyType.OMNIUM_FULL);
@@ -99,7 +100,7 @@ public class DatabaseFiller {
                 for (int j = 1; j < 3; j++) {
                     Fleet fleet = new Fleet();
                     fleet.setOwner(customer);
-                    fleet.setName("Vloot " + Integer.toString(i)+Integer.toString(j));
+                    fleet.setName("Vloot " + Integer.toString(i) + Integer.toString(j));
                     fleetDAO.create(fleet);
                     for (VehicleType type : typeDAO.listFiltered()) {
                         for (int k = 1; k < 3; k++) {
@@ -118,7 +119,7 @@ public class DatabaseFiller {
                             insurance.setContract(contract);
                             insurance.setSurety(flatSurety);
                             insurance.setFranchise(1000);
-                            insurance.setInsuredValue(10000*j*k);
+                            insurance.setInsuredValue(10000 * j * k);
                             insurance.setVehicle(vehicle);
                             insurance.setStartDate(LocalDateTime.now().minusMonths(10));
                             insurance.setStartDate(LocalDateTime.now().plusMonths(10));
@@ -135,11 +136,12 @@ public class DatabaseFiller {
     }
 
     private void initMoreRoles(DAOManager provider) {
-        try {RoleDAO roleDAO = provider.getRoleDAO();
-             UserDAO userDAO = provider.getUserDAO();
-             FunctionDAO functionDAO = provider.getFunctionDAO();
-             AddressDAO addressDAO = provider.getAddressDao();
-             CustomerDAO customerDAO = provider.getCustomerDAO();
+        try {
+            RoleDAO roleDAO = provider.getRoleDAO();
+            UserDAO userDAO = provider.getUserDAO();
+            FunctionDAO functionDAO = provider.getFunctionDAO();
+            AddressDAO addressDAO = provider.getAddressDao();
+            CustomerDAO customerDAO = provider.getCustomerDAO();
 
             User user = new User();
             user.setEmail("admin&insuranceagent@solvas.be");
@@ -202,11 +204,12 @@ public class DatabaseFiller {
     }
 
     private void initAdminRole(DAOManager provider) {
-        try{ RoleDAO roleDAO = provider.getRoleDAO();
-             UserDAO userDAO = provider.getUserDAO();
-             FunctionDAO functionDAO = provider.getFunctionDAO();
-             AddressDAO addressDAO = provider.getAddressDao();
-             CustomerDAO customerDAO = provider.getCustomerDAO();
+        try {
+            RoleDAO roleDAO = provider.getRoleDAO();
+            UserDAO userDAO = provider.getUserDAO();
+            FunctionDAO functionDAO = provider.getFunctionDAO();
+            AddressDAO addressDAO = provider.getAddressDao();
+            CustomerDAO customerDAO = provider.getCustomerDAO();
 
             User user = new User();
             user.setEmail("admin@solvas.be");
@@ -249,19 +252,21 @@ public class DatabaseFiller {
     }
 
     private void initCustomerRole(DAOManager provider) {
-        try {RoleDAO roleDAO = provider.getRoleDAO();
-             UserDAO userDAO = provider.getUserDAO();
-             FunctionDAO functionDAO = provider.getFunctionDAO();
-             AddressDAO addressDAO = provider.getAddressDao();
-             CustomerDAO customerDAO = provider.getCustomerDAO();
-             InsuranceCompanyDAO insuranceCompanyDAO = provider.getInsuranceCompanyDao();
-             InvoiceDAO invoiceDAO = provider.getInvoiceDao();
-             ContractDAO contractDAO = provider.getContractDao();
-             VehicleDAO vehicleDAO = provider.getVehicleDAO();
-             FleetDAO fleetDAO = provider.getFleetDAO();
-             VehicleInsuranceDAO vehicleInsuranceDAO = provider.getVehicleInsuranceDao();
-             VehicleTypeDAO vehicleTypeDAO = provider.getVehicleTypeDAO();
-             SuretyDAO suretyDAO = provider.getSuretyDao(); CompanyDAO companyDAO = provider.getCompanyDAO();
+        try {
+            RoleDAO roleDAO = provider.getRoleDAO();
+            UserDAO userDAO = provider.getUserDAO();
+            FunctionDAO functionDAO = provider.getFunctionDAO();
+            AddressDAO addressDAO = provider.getAddressDao();
+            CustomerDAO customerDAO = provider.getCustomerDAO();
+            InsuranceCompanyDAO insuranceCompanyDAO = provider.getInsuranceCompanyDao();
+            InvoiceDAO invoiceDAO = provider.getInvoiceDao();
+            ContractDAO contractDAO = provider.getContractDao();
+            VehicleDAO vehicleDAO = provider.getVehicleDAO();
+            FleetDAO fleetDAO = provider.getFleetDAO();
+            VehicleInsuranceDAO vehicleInsuranceDAO = provider.getVehicleInsuranceDao();
+            VehicleTypeDAO vehicleTypeDAO = provider.getVehicleTypeDAO();
+            SuretyDAO suretyDAO = provider.getSuretyDao();
+            CompanyDAO companyDAO = provider.getCompanyDAO();
 
 
             Company solvas = new Company();
@@ -286,7 +291,7 @@ public class DatabaseFiller {
             for (Resource resource : new Resource[]{Resource.FLEET, Resource.BILLING, Resource.USER, Resource.ROLE, Resource.FUNCTION, Resource.INSURANCE, Resource.VEHICLE}) {
                 role.setAccess(resource, Action.READ_MINE);
             }
-            role.setAccess(Resource.VEHICLETYPE,Action.READ_ALL);
+            role.setAccess(Resource.VEHICLETYPE, Action.READ_ALL);
             Function function = new Function();
             function.setUser(user);
             function.setRole(role);
@@ -355,7 +360,7 @@ public class DatabaseFiller {
                         insurance.setSurety(flatSurety);
                         insurance.setVehicle(vehicle);
                         insurance.setFranchise(600);
-                        insurance.setInsuredValue(k*20000);
+                        insurance.setInsuredValue(k * 20000);
                         insurance.setStartDate(LocalDateTime.now().minusMonths(10));
                         insurance.setStartDate(LocalDateTime.now().plusMonths(10));
                         vehicleInsuranceDAO.create(insurance);
@@ -384,7 +389,8 @@ public class DatabaseFiller {
         commissions.put(LEGAL_AID, 0.250);
         commissions.put(TRAVEL_AID, 0.250);
         commissions.put(SAFETY, 0.190);
-        try {VehicleTypeDAO dao = provider.getVehicleTypeDAO();
+        try {
+            VehicleTypeDAO dao = provider.getVehicleTypeDAO();
             VehicleType vehicleType = new VehicleType();
             vehicleType.setType("Personenwagen");
             vehicleType.setCommissions(commissions);
