@@ -1,6 +1,7 @@
 package dao.database.util;
 
 import dao.database.ProductionManager;
+import dao.database.ProductionProvider;
 import dao.interfaces.*;
 import model.account.*;
 import model.billing.Invoice;
@@ -25,26 +26,17 @@ import static model.insurance.SuretyType.*;
  */
 public class DatabaseFiller {
     public static void main(String[] args) throws DataAccessException {
-        DAOManager provider = null;
-        try {
 
-<<<<<<< HEAD
-            ProductionManager.initializeProvider("localtest");
-            provider = ProductionManager.getInstance();
-=======
-            ProductionProvider.initializeProvider("production");
-            provider = ProductionProvider.getInstance();
->>>>>>> fillproduction
+        ProductionProvider.initializeProvider("localtest");
+        try (DAOProvider provider = ProductionProvider.getInstance(); DAOManager manager = provider.getDaoManager()) {
             DatabaseFiller filler = new DatabaseFiller();
-            filler.initVehicleTypes(provider);
-            filler.initAdminRole(provider);
-            filler.initCustomerRole(provider);
-            filler.initMoreRoles(provider);
-            filler.initCompanies(provider);
+            filler.initVehicleTypes(manager);
+            filler.initAdminRole(manager);
+            filler.initCustomerRole(manager);
+            filler.initMoreRoles(manager);
+            filler.initCompanies(manager);
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            provider.close();
         }
     }
 
