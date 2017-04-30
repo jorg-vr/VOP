@@ -63,7 +63,7 @@ public class ProductionVehicleTypeDAOFiltersTest {
         for (VehicleType type : c2) {
             assertTrue("nameContains('2') filter regex test does not pas", type.getType().matches(".*2.*"));
         }
-        
+
     }
 
     //TODO: test multiple filters in 1 request
