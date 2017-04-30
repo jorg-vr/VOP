@@ -274,6 +274,58 @@ paths:
           $ref: '#/responses/NotFound'
         '409':
           $ref: '#/responses/Conflict'
+  '/companies/{id}/commission':
+    parameters:
+      - in: path
+        name: id
+        description: ID of Company
+        required: true
+        type: integer
+        format: int64
+    get:
+      produces:
+        - application/json
+      summary: Get the default Commission of the company.
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Commission'
+        '401':
+          $ref: '#/responses/Unauthorised'
+    put:
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      summary: Update default Commission of the company.
+      description: >
+        Attributes described as 'server-generated' will be ignored by the
+        server. Non-required attributes that are not present will not be
+        updated.
+      parameters:
+        - in: body
+          name: Commission
+          description: Commission to update
+          required: true
+          schema:
+            $ref: '#/definitions/Commission'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Contract'
+        '400':
+          $ref: '#/responses/Malformed'
+        '401':
+          $ref: '#/responses/Unauthorised'
+    delete:
+      summary: Reset the default Commission of the company.
+      responses:
+        '204':
+          description: Commission
+        '401':
+          $ref: '#/responses/Unauthorised'
   '/companies/{id}/contracts':
     parameters:
       - in: path
@@ -848,6 +900,58 @@ paths:
           $ref: '#/responses/NotFound'
         '409':
           $ref: '#/responses/Conflict'
+  '/vehicles/{id}/commission':
+    parameters:
+      - in: path
+        name: id
+        description: ID of Vehicle
+        required: true
+        type: integer
+        format: int64
+    get:
+      produces:
+        - application/json
+      summary: Get the Commission of the vehicle.
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Commission'
+        '401':
+          $ref: '#/responses/Unauthorised'
+    put:
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      summary: Update Commission of the vehicle.
+      description: >
+        Attributes described as 'server-generated' will be ignored by the
+        server. Non-required attributes that are not present will not be
+        updated.
+      parameters:
+        - in: body
+          name: Commission
+          description: Commission to update
+          required: true
+          schema:
+            $ref: '#/definitions/Commission'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Contract'
+        '400':
+          $ref: '#/responses/Malformed'
+        '401':
+          $ref: '#/responses/Unauthorised'
+    delete:
+      summary: Reset the Commission of the vehicle to the default value.
+      responses:
+        '204':
+          description: Commission
+        '401':
+          $ref: '#/responses/Unauthorised'
   /vehicles/types:
     get:
       produces:
@@ -888,6 +992,57 @@ paths:
                 description: Total number of items.
                 example: 5
                 type: integer
+        '401':
+          $ref: '#/responses/Unauthorised'
+  '/vehicles/types/{vehicleType}/commission':
+    parameters:
+      - name: vehicleType
+        in: path
+        description: ID of a vehicle type.
+        required: true
+        type: integer
+    get:
+      produces:
+        - application/json
+      summary: Get the Commission of the vehicle type.
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Commission'
+        '401':
+          $ref: '#/responses/Unauthorised'
+    put:
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      summary: Update the Commission of the vehicle type.
+      description: >
+        Attributes described as 'server-generated' will be ignored by the
+        server. Non-required attributes that are not present will not be
+        updated.
+      parameters:
+        - in: body
+          name: Commission
+          description: Commission to update
+          required: true
+          schema:
+            $ref: '#/definitions/Commission'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Contract'
+        '400':
+          $ref: '#/responses/Malformed'
+        '401':
+          $ref: '#/responses/Unauthorised'
+    delete:
+      summary: Reset the Commission to the default value.
+      responses:
+        '204':
+          description: Commission
         '401':
           $ref: '#/responses/Unauthorised'
   '/vehicles/types/{typeName}/taxes/{contractType}':
@@ -2698,6 +2853,28 @@ definitions:
         type: string
         format: url
         example: /vehicles/1
+  Commission:
+    type: object
+    required:
+      - value
+    properties:
+      value:
+        description: A percentage value representing the commission.
+        type: number
+        format: double
+      createdAt:
+        description: This is a server-generated value.
+        type: string
+        format: date-time
+        example: 2016-08-29T09:12:33.001Z
+      updatedAt:
+        description: This is a server-generated value.
+        type: string
+        format: date-time
+        example: 2016-08-29T09:12:33.001Z
+      url:
+        description: This is a server-generated value.
+        type: string
   Role:
     description: >
       A `Role` represents a collection of permissions that are granted together.
