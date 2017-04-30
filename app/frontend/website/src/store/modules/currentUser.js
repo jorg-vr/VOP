@@ -207,6 +207,7 @@ export default {
                      * Else fetch the old function.
                      */
                     if(functionId==='null' || functionId === null){
+                        console.log('1')
                         context.dispatch('fetchUserFunctions').then(activeFunctions => {
                             //Set a default function. At the moment this is the first function in the list.
                             context.dispatch('setActiveFunction', activeFunctions[0]).then(() => {
@@ -215,9 +216,9 @@ export default {
                         })
                     }
                     else {
+                        console.log('2')
                         context.dispatch('fetchUserFunction', {id: functionId}).then(activeFunction => {
-                            console.log('error here')
-                            console.log(activeFunction)
+                            console.log('4')
                             context.dispatch('setActiveFunction', activeFunction).then(() => {
                                 resolve(activeAccount)
                             })
@@ -226,6 +227,7 @@ export default {
                              * If fetching current user fails, fetch any other function. This will be replaced with
                              * going to a page for choosing a function.
                              */
+                            console.log('3')
                             context.dispatch('fetchUserFunctions').then(activeFunctions => {
                                 //Set a default function. At the moment this is the first function in the list.
                                 context.dispatch('setActiveFunction', activeFunctions[0]).then(() => {
