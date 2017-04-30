@@ -6,12 +6,12 @@ import controller.insurance.SuretyController;
 import controller.insurance.VehicleInsuranceController;
 import dao.interfaces.*;
 import main.BackendApplication;
-import model.account.Function;
+import model.account.*;
 import model.identity.Company;
 import model.insurance.Surety;
 import spring.exceptions.InvalidInputException;
 
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author Billie Devolder
@@ -30,11 +30,27 @@ public class ControllerManager implements AutoCloseable {
     public ControllerManager(UUID userId, UUID functionId) throws UnAuthorizedException, InvalidInputException {
         daoManager = BackendApplication.getProvider().getDaoManager();
         try {
-            FunctionDAO functionDAO = daoManager.getFunctionDAO();
-            function = functionDAO.get(functionId);
-            if (!function.getUser().getUuid().equals(userId)) {
-                throw new InvalidInputException();
+
+//            FunctionDAO functionDAO = daoManager.getFunctionDAO();
+//            function = functionDAO.get(functionId);
+//            if (!function.getUser().getUuid().equals(userId)) {
+//                throw new InvalidInputException();
+//            }
+
+            if (1 == 2) throw new DataAccessException();
+            function = new Function();
+            Role role = new Role();
+            Map<Resource, Permission> rights = new HashMap<>();
+            for (Resource resource : Resource.values()) {
+                Permission permission = new Permission();
+                Set<Action> actionSet = new HashSet<>();
+               Collections.addAll(actionSet, Action.values());
+                permission.setActions(actionSet);
+                rights.put(resource, permission);
             }
+           role.setRights(rights);
+            function.setRole(role);
+
         } catch (DataAccessException e) {
             throw new InvalidInputException();
         }
