@@ -33,15 +33,20 @@
             listComponent, buttonAdd, fleetSearchBar
         },
         created() {
+            this.setLoading({loading: true })
             if(this.authorizedForAll) { //Then the user is authorized for all, else the user can't get on this page.
                 let p1 = this.fetchFleets()
                 let p2 = this.fetchClients()
                 Promise.all([p1, p2]).then(values => {
-                    this.addClientNames({clients: values[1]})
+                    this.addClientNames({clients: values[1]}).then(() => {
+                        this.setLoading({loading: false })
+                    })
                 })
             }
             else {
-                this.fetchFleetsBy({company: this.activeFunction.company})
+                this.fetchFleetsBy({company: this.activeFunction.company}).then(() => {
+                    this.setLoading({loading: false })
+                })
             }
         },
 
@@ -73,7 +78,8 @@
                 'fetchFleetsBy'
             ]),
             ...mapMutations([
-                'setFilteredFleets'
+                'setFilteredFleets',
+                'setLoading'
             ]),
             updateFleets(value){
                 if(value!==''){

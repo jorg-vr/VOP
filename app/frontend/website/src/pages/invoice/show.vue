@@ -12,7 +12,7 @@
                     <td>{{$t('invoice.type') | capitalize }}</td>
                     <td>{{invoice.type}}</td>
                 </tr>
-                 <tr>
+                <tr>
                     <td>{{$t('invoice.totalAmount') | capitalize }}</td>
                     <td>€ {{invoice.totalAmount}}</td>
                 </tr>
@@ -39,7 +39,7 @@
     </div>
 </template>
 <script>
-    import {mapGetters, mapActions} from 'vuex'
+    import {mapGetters, mapActions, mapMutations} from 'vuex'
     import resources from '../../constants/resources'
     import listComponent from '../../assets/list/listComponent.vue'
     import buttonBack from '../../assets/buttons/buttonBack.vue'
@@ -61,12 +61,14 @@
         created(){
             let invoiceId = this.id;
             let companyId= this.companyId;
+            this.setLoading({loading: true })
             // fetch information about this invoice
-            this.fetchInvoice({id:invoiceId,companyId:companyId});
-
-            this.fetchClient({id: companyId});
-
-            this.fetchInsurancesByInvoice({id:invoiceId,companyId:companyId});
+            let p1 = this.fetchInvoice({id:invoiceId,companyId:companyId});
+            let p2 = this.fetchClient({id: companyId});
+            let p3 = this.fetchInsurancesByInvoice({id:invoiceId,companyId:companyId});
+            Promise.all([p1, p2, p3]).then(() => {
+                this.setLoading({loading: false })
+            })
 
         },
         computed: {
@@ -78,9 +80,12 @@
         },
         methods: {
             ...mapActions([
-                    'fetchInvoice',
-                    'fetchClient',
-                    'fetchInsurancesByInvoice'
+                'fetchInvoice',
+                'fetchClient',
+                'fetchInsurancesByInvoice'
+            ]),
+            ...mapMutations([
+                'setLoading'
             ]),
             showDate: function (date) {
                 var d=new Date(date)
