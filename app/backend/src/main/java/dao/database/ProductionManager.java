@@ -24,32 +24,32 @@ public class ProductionManager implements DAOManager {
     }
 
     @Override
-    public synchronized CustomerDAO getCustomerDAO() {
+    public CustomerDAO getCustomerDAO() {
         return new ProductionCustomerDAO(session);
     }
 
     @Override
-    public synchronized CompanyDAO<Company> getCompanyDAO() {
+    public CompanyDAO<Company> getCompanyDAO() {
         return new ProductionCompanyDAO(session);
     }
 
     @Override
-    public synchronized FleetDAO getFleetDAO() {
+    public FleetDAO getFleetDAO() {
         return new ProductionFleetDAO(session);
     }
 
     @Override
-    public synchronized FunctionDAO getFunctionDAO() {
+    public FunctionDAO getFunctionDAO() {
         return new ProductionFunctionDAO(session);
     }
 
     @Override
-    public synchronized VehicleDAO getVehicleDAO() {
+    public VehicleDAO getVehicleDAO() {
         return new ProductionVehicleDAO(session);
     }
 
     @Override
-    public synchronized VehicleTypeDAO getVehicleTypeDAO() {
+    public VehicleTypeDAO getVehicleTypeDAO() {
         return new ProductionVehicleTypeDAO(session);
     }
 
