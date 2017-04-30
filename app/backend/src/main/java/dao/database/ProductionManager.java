@@ -80,28 +80,28 @@ public class ProductionManager implements DAOManager {
 
     @Override
     public InvoiceDAO getInvoiceDao() {
-        return new ProductionInvoiceDAO(session.openSession());
+        return new ProductionInvoiceDAO(session);
     }
 
     @Override
     public FlatSuretyDAO getNonFlatSuretyDao() {
-        return new ProductionFlatSuretyDAO(session.openSession());
+        return new ProductionFlatSuretyDAO(session);
     }
 
     @Override
     public SpecialConditionDAO getSpecialConditionDao() {
-        return new ProductionSpecialConditionDAO(session.openSession());
+        return new ProductionSpecialConditionDAO(session);
     }
 
 
     @Override
     public VehicleInsuranceDAO getVehicleInsuranceDao() {
-        return new ProductionVehicleInsuranceDAO(session.openSession());
+        return new ProductionVehicleInsuranceDAO(session);
     }
 
     @Override
     public InsuranceCompanyDAO getInsuranceCompanyDao() {
-        return new ProductionInsuranceCompanyDAO(session.openSession());
+        return new ProductionInsuranceCompanyDAO(session);
     }
 
 
