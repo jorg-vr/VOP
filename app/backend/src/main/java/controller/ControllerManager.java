@@ -31,28 +31,28 @@ public class ControllerManager implements AutoCloseable {
         daoManager = BackendApplication.getProvider().getDaoManager();
         try {
 
-//            FunctionDAO functionDAO = daoManager.getFunctionDAO();
-//            function = functionDAO.get(functionId);
-//            if (!function.getUser().getUuid().equals(userId)) {
-//                throw new InvalidInputException();
-//            }
-
-            if (1 == 2) throw new DataAccessException();
-            function = new Function();
-            Role role = new Role();
-            Map<Resource, Permission> rights = new HashMap<>();
-            for (Resource resource : Resource.values()) {
-                Permission permission = new Permission();
-                Set<Action> actionSet = new HashSet<>();
-               Collections.addAll(actionSet, Action.values());
-                permission.setActions(actionSet);
-                rights.put(resource, permission);
+            FunctionDAO functionDAO = daoManager.getFunctionDAO();
+            function = functionDAO.get(functionId);
+            if (!function.getUser().getUuid().equals(userId)) {
+                throw new InvalidInputException();
             }
-           role.setRights(rights);
-            function.setRole(role);
+
+//            if (1 == 2) throw new DataAccessException();
+//            function = new Function();
+//            Role role = new Role();
+//            Map<Resource, Permission> rights = new HashMap<>();
+//            for (Resource resource : Resource.values()) {
+//                Permission permission = new Permission();
+//                Set<Action> actionSet = new HashSet<>();
+//                Collections.addAll(actionSet, Action.values());
+//                permission.setActions(actionSet);
+//                rights.put(resource, permission);
+//            }
+//            role.setRights(rights);
+//            function.setRole(role);
 
         } catch (DataAccessException e) {
-            throw new InvalidInputException();
+            throw new InvalidInputException("User/Function does not exist or user has no function with that id");
         }
     }
 
@@ -61,51 +61,52 @@ public class ControllerManager implements AutoCloseable {
     }
 
     public CustomerController getCustomerController() {
-        return null;
+        return new CustomerController(function, daoManager);
+
     }
 
     public FleetController getFleetController() {
-        return null;
+        return new FleetController(function, daoManager);
     }
 
     public FunctionController getFunctionController() {
-        return null;
+        return new FunctionController(function, daoManager);
     }
 
     public InsuranceCompanyController getInsuranceCompanyController() {
-        return null;
+        return new InsuranceCompanyController(function, daoManager);
     }
 
     public InvoiceController getInvoiceController() {
-        return null;
+        return new InvoiceController(function, daoManager);
     }
 
     public RoleController getRoleController() {
-        return null;
+        return new RoleController(function, daoManager);
     }
 
     public UserController getUserController() {
-        return null;
+        return new UserController(function, daoManager);
     }
 
     public VehicleController getVehicleController() {
-        return null;
+        return new VehicleController(function, daoManager);
     }
 
     public VehicleTypeController getVehicleTypeController() {
-        return null;
+        return new VehicleTypeController(function, daoManager);
     }
 
     public ContractController getContractController() {
-        return null;
+        return new ContractController(function, daoManager);
     }
 
     public SuretyController getSuretyController() {
-        return null;
+        return new SuretyController(function, daoManager);
     }
 
     public VehicleInsuranceController getVehicleInsuranceController() {
-        return null;
+        return new VehicleInsuranceController(function, daoManager);
     }
 
     public void close() {
