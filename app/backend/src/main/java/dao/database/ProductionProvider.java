@@ -34,6 +34,13 @@ public class ProductionProvider implements DAOProvider {
 
     }
 
+    public static ProductionProvider getInstance(){
+        if(provider==null){
+            throw new RuntimeException("ProductionProvider is not initialized yet");
+        }
+        return provider;
+    }
+
     /**
      * SHOULD BE CALLED BEFORE getInstance()
      * initializes the provider with the right hibernate configuration
