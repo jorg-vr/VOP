@@ -1,6 +1,7 @@
 package database;
 
 import dao.database.ProductionManager;
+import dao.database.ProductionProvider;
 import dao.interfaces.DAOManager;
 import dao.interfaces.DataAccessException;
 import dao.interfaces.RoleDAO;
@@ -19,8 +20,8 @@ public class RoleParametersTest {
     //Setup before any of the tests are started
     @BeforeClass
     public static void initProvider() throws Exception {
-        ProductionManager.initializeProvider("unittest");
-        daoManager = ProductionManager.getInstance();
+        ProductionProvider.initializeProvider("unittest");
+        daoManager = ProductionProvider.getInstance().getDaoManager();
     }
 
     //Gets executed after all tests have been run
@@ -32,7 +33,8 @@ public class RoleParametersTest {
     @Test
     public void nameField() throws Exception {
         Role role = null;
-        try (RoleDAO roleDAO = daoManager.getRoleDAO()) {
+        try {
+            RoleDAO roleDAO = daoManager.getRoleDAO();
             role = roleDAO.create(new Role(null));
             roleDAO.remove(role.getUuid());
             fail("Role succesfully created with name field null when an exception was expected");
