@@ -2192,6 +2192,61 @@ paths:
           $ref: '#/responses/NotFound'
         '409':
           $ref: '#/responses/Conflict'
+  /users/me:
+    get:
+      produces:
+        - application/json
+      summary: Get current user.
+      description: >
+        Get information of the current user, based on the Authorization header.
+        This path does not require a 
+
+        Function header.
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/User'
+        '401':
+          $ref: '#/responses/Unauthorised'
+        '404':
+          $ref: '#/responses/NotFound'
+    put:
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      summary: Update current user.
+      description: >
+        Read-only attributes will be ignored by the server. Non-required
+        attributes that are
+
+        not present will not be updated. This path does require a Function
+        header!
+      parameters:
+        - in: body
+          name: User
+          description: User to add
+          required: true
+          schema:
+            $ref: '#/definitions/User'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/User'
+        '400':
+          $ref: '#/responses/Malformed'
+        '401':
+          $ref: '#/responses/Unauthorised'
+        '404':
+          $ref: '#/responses/NotFound'
+        '409':
+          $ref: '#/responses/Conflict'
+        '415':
+          $ref: '#/responses/WrongType'
+        '422':
+          $ref: '#/responses/WrongContent'
   '/users/{id}/functions':
     parameters:
       - name: id
@@ -2337,6 +2392,120 @@ paths:
       responses:
         '204':
           description: Function archived successfully
+        '401':
+          $ref: '#/responses/Unauthorised'
+        '404':
+          $ref: '#/responses/NotFound'
+  /users/me/functions:
+    get:
+      produces:
+        - application/json
+      summary: Get all functions for the current user.
+      description: >
+        Get a list of `Function` objects for a `User`, eventually filtered by
+        the query
+
+        parameters. When combining parameters, the conditions are joined by
+
+        AND. This means the resulting objects must satisfy all filters.
+
+        All the string filter operations are case insensitive. This path does
+        not require a Function header.
+      parameters:
+        - in: query
+          name: company
+          description: Filter by company
+          type: integer
+        - in: query
+          name: role
+          description: Filter by role
+          type: integer
+        - in: query
+          name: page
+          type: integer
+          description: The page to query.
+          default: 0
+        - in: query
+          name: limit
+          type: integer
+          description: The number of elements in a page.
+        - in: query
+          name: sort
+          type: string
+          description: >
+            Sort parameter. Support for this parameter is optional. If
+            supported, any field in the json reprensentation
+
+            may be used to sort, as follows: ?sort=field,order. For example:
+            `?sort=name,asc`.
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+            required:
+              - data
+              - total
+              - offset
+              - limit
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/definitions/Function'
+              total:
+                description: Total number of items.
+                example: 50
+                type: integer
+              offset:
+                description: |
+                  The number of items before this page (exclusive). This means
+                  that when offset = 20, this page will contains items 20 to
+                  20 + limit. For limit = 10, it will be 20 - 29 (including 29).
+                example: 20
+                type: integer
+              limit:
+                description: The maximum number of items on a page.
+                example: 10
+                type: integer
+              previous:
+                description: 'Link to the previous page, if applicable.'
+                example: /roles&page=1
+                type: string
+              next:
+                description: 'Link to the next page, if applicable.'
+                type: string
+                example: /roles&page=20
+              first:
+                description: 'Link to the first page, if applicable.'
+                type: string
+                example: /roles&page=0
+              last:
+                description: 'Link to the last page, if applicable.'
+                type: string
+                example: /roles&page=100
+        '400':
+          $ref: '#/responses/WrongQuery'
+        '401':
+          $ref: '#/responses/Unauthorised'
+  '/users/me/functions/{id}':
+    parameters:
+      - name: id
+        in: path
+        description: ID of Function
+        required: true
+        type: integer
+    get:
+      produces:
+        - application/json
+      summary: Get one function.
+      description: |
+        This path does not require a Function header.
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Function'
         '401':
           $ref: '#/responses/Unauthorised'
         '404':
