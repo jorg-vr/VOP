@@ -41,7 +41,7 @@ public class DatabaseFiller {
     }
 
     private void initCompanies(DAOManager provider) {
-        try (CustomerDAO customerDAO = provider.getCustomerDAO();
+        try {CustomerDAO customerDAO = provider.getCustomerDAO();
              AddressDAO addressDAO = provider.getAddressDao();
              InsuranceCompanyDAO insuranceCompanyDAO = provider.getInsuranceCompanyDao();
              FleetDAO fleetDAO = provider.getFleetDAO();
@@ -51,7 +51,7 @@ public class DatabaseFiller {
              SuretyDAO<Surety> suretyDAO = provider.getSuretyDao();
              VehicleInsuranceDAO vehicleInsuranceDAO = provider.getVehicleInsuranceDao();
              CompanyDAO<Company> companyDAO = provider.getCompanyDAO();
-             InvoiceDAO invoiceDAO = provider.getInvoiceDao()) {
+             InvoiceDAO invoiceDAO = provider.getInvoiceDao();
 
             Surety flatSurety = new FlatSurety(100);
             flatSurety.setSuretyType(SuretyType.OMNIUM_FULL);
@@ -135,11 +135,11 @@ public class DatabaseFiller {
     }
 
     private void initMoreRoles(DAOManager provider) {
-        try (RoleDAO roleDAO = provider.getRoleDAO();
+        try {RoleDAO roleDAO = provider.getRoleDAO();
              UserDAO userDAO = provider.getUserDAO();
              FunctionDAO functionDAO = provider.getFunctionDAO();
              AddressDAO addressDAO = provider.getAddressDao();
-             CustomerDAO customerDAO = provider.getCustomerDAO()) {
+             CustomerDAO customerDAO = provider.getCustomerDAO();
 
             User user = new User();
             user.setEmail("admin&insuranceagent@solvas.be");
@@ -202,11 +202,11 @@ public class DatabaseFiller {
     }
 
     private void initAdminRole(DAOManager provider) {
-        try (RoleDAO roleDAO = provider.getRoleDAO();
+        try{ RoleDAO roleDAO = provider.getRoleDAO();
              UserDAO userDAO = provider.getUserDAO();
              FunctionDAO functionDAO = provider.getFunctionDAO();
              AddressDAO addressDAO = provider.getAddressDao();
-             CustomerDAO customerDAO = provider.getCustomerDAO()) {
+             CustomerDAO customerDAO = provider.getCustomerDAO();
 
             User user = new User();
             user.setEmail("admin@solvas.be");
@@ -249,7 +249,7 @@ public class DatabaseFiller {
     }
 
     private void initCustomerRole(DAOManager provider) {
-        try (RoleDAO roleDAO = provider.getRoleDAO();
+        try {RoleDAO roleDAO = provider.getRoleDAO();
              UserDAO userDAO = provider.getUserDAO();
              FunctionDAO functionDAO = provider.getFunctionDAO();
              AddressDAO addressDAO = provider.getAddressDao();
@@ -262,7 +262,6 @@ public class DatabaseFiller {
              VehicleInsuranceDAO vehicleInsuranceDAO = provider.getVehicleInsuranceDao();
              VehicleTypeDAO vehicleTypeDAO = provider.getVehicleTypeDAO();
              SuretyDAO suretyDAO = provider.getSuretyDao(); CompanyDAO companyDAO = provider.getCompanyDAO();
-             ) {
 
 
             Company solvas = new Company();
@@ -385,7 +384,7 @@ public class DatabaseFiller {
         commissions.put(LEGAL_AID, 0.250);
         commissions.put(TRAVEL_AID, 0.250);
         commissions.put(SAFETY, 0.190);
-        try (VehicleTypeDAO dao = provider.getVehicleTypeDAO()) {
+        try {VehicleTypeDAO dao = provider.getVehicleTypeDAO();
             VehicleType vehicleType = new VehicleType();
             vehicleType.setType("Personenwagen");
             vehicleType.setCommissions(commissions);
