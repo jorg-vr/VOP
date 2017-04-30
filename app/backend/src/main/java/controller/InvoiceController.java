@@ -2,6 +2,7 @@ package controller;
 
 import controller.exceptions.UnAuthorizedException;
 import dao.database.ProductionManager;
+import dao.interfaces.DAOManager;
 import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
 import dao.interfaces.InvoiceDAO;
@@ -20,8 +21,8 @@ import java.util.List;
 public class InvoiceController extends AbstractController<Invoice> {
 
 
-    public InvoiceController(Function function) {
-        super(ProductionManager.getInstance().getInvoiceDao(), Resource.BILLING, function);
+    public InvoiceController(Function function, DAOManager manager) {
+        super(manager.getInvoiceDao(), Resource.BILLING, function);
     }
 
     public Collection<Invoice> getFiltered(Company company) throws UnAuthorizedException {

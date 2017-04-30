@@ -1,5 +1,6 @@
 package spring.model.insurance;
 
+import controller.ControllerManager;
 import controller.exceptions.UnAuthorizedException;
 import model.account.Function;
 import model.insurance.NonFlatSurety;
@@ -45,7 +46,7 @@ public class RESTSurety extends RESTAbstractModel<Surety> {
     }
 
     @Override
-    public Surety translate(Function function) throws UnAuthorizedException {
+    public Surety translate(ControllerManager manager) throws UnAuthorizedException {
         if (isFlat) {
             FlatSurety surety = new FlatSurety();
             surety.setPremium(premium);

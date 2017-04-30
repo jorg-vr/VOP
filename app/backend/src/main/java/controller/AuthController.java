@@ -17,7 +17,7 @@ import java.util.UUID;
  */
 public class AuthController implements AutoCloseable {
 
-    private DAOManager provider = BackendApplication.getProvider();
+    private DAOManager provider = BackendApplication.getProvider().getDaoManager();
 
     private FunctionDAO functionDAO=provider.getFunctionDAO();
     private  UserDAO userDAO=provider.getUserDAO();
@@ -71,12 +71,5 @@ public class AuthController implements AutoCloseable {
 
     @Override
     public void close() {
-        try {
-            userDAO.close();
-            functionDAO.close();
-        } catch (Exception e) {
-            //TODO
-            e.printStackTrace();
-        }
     }
 }

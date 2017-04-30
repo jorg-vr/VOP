@@ -1,7 +1,9 @@
 package spring.controller.insurance;
 
 
+import controller.AbstractController;
 import controller.ControllerFactory;
+import controller.ControllerManager;
 import controller.UserController;
 import controller.exceptions.UnAuthorizedException;
 import controller.insurance.ContractController;
@@ -14,6 +16,7 @@ import model.insurance.SuretyType;
 import org.springframework.web.bind.annotation.*;
 import spring.controller.RESTAbstractController;
 import spring.exceptions.ServerErrorException;
+import spring.model.AuthenticationToken;
 import spring.model.RESTFunction;
 import spring.model.RESTModelFactory;
 import spring.model.RESTSchema;
@@ -21,10 +24,7 @@ import spring.model.insurance.RESTContract;
 import util.UUIDUtil;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static util.UUIDUtil.toUUID;
@@ -34,7 +34,12 @@ import static util.UUIDUtil.toUUID;
 public class RESTContractController extends RESTAbstractController<RESTContract, Contract> {
 
     public RESTContractController() {
-        super(ContractController::new, RESTContract::new);
+        super(RESTContract::new);
+    }
+
+    @Override
+    public AbstractController<Contract> getController(ControllerManager manager) {
+        return manager.getContractController();
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -43,11 +48,13 @@ public class RESTContractController extends RESTAbstractController<RESTContract,
                                         String company,
                                         @RequestHeader(value = "Authorization") String token,
                                         @RequestHeader(value = "Function") String function) throws UnAuthorizedException {
-        try (ContractController contractController = new ContractController(verifyToken(token, function))) {
+        UUID user = new AuthenticationToken(token).getAccountId();
+        try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
+            ContractController controller = manager.getContractController();
 
-            Customer customer = company != null ? new Customer(toUUID(company)): null;
+            Customer customer = company != null ? new Customer(toUUID(company)) : null;
 
-            Collection<RESTContract> restContracts = contractController.getFiltered(customer)
+            Collection<RESTContract> restContracts = controller.getFiltered(customer)
                     .stream()
                     .map(RESTContract::new)
                     .collect(Collectors.toList());
@@ -61,8 +68,12 @@ public class RESTContractController extends RESTAbstractController<RESTContract,
     RESTSchema<String> getContractTypes(HttpServletRequest request,
                                         Integer page, Integer limit,
                                         @RequestHeader(value = "Authorization") String token,
-                                    @RequestHeader(value = "Function") String function) throws UnAuthorizedException {
-        verifyToken(token, function);
+                                        @RequestHeader(value = "Function") String function) throws UnAuthorizedException {
+        // Check authentication and authorization
+        UUID user = new AuthenticationToken(token).getAccountId();
+        try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
+        }
+
         Collection<String> result = new ArrayList<>();
         for (SuretyType suretyType : SuretyType.values()) {
             result.add(suretyType.toString());

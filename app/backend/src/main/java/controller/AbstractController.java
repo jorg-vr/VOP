@@ -165,11 +165,6 @@ public abstract class AbstractController<T extends EditableObject> implements Au
      * Close the dao that was passed in the constructor in the creation of this object.
      */
     public void close() {
-        try {
-            dao.close();
-        } catch (Exception e) {
-            System.err.println("Could not close DAO!");
-            e.printStackTrace();
-        }
+
     }
 }
