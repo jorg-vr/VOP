@@ -207,9 +207,7 @@ export default {
                      * Else fetch the old function.
                      */
                     if(functionId==='null' || functionId === null){
-                        console.log('test3')
                         context.dispatch('fetchUserFunctions').then(activeFunctions => {
-                            console.log(activeFunctions)
                             //Set a default function. At the moment this is the first function in the list.
                             context.dispatch('setActiveFunction', activeFunctions[0]).then(() => {
                                 resolve(activeAccount)
