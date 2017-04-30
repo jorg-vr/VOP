@@ -118,11 +118,12 @@ export default {
             state[names] = state[names].filter(resource => resource.id !== payload.id)
             state[filteredNames] = state[filteredNames].filter(resource => resource.id !== payload.id)
         }
-        module.actions[fetchResources] = (context) => ({ids}) => {
+        module.actions[fetchResources] = function(context, payload) {
+            payload = payload || {} //Set payload to empty object if undefined
             //Empty the previous list of resources.
             context.commit(clearResources)
             return new Promise((resolveSuccess, resolveFailure) => {
-                RequestHandler.getObjectsRequest(formatString(location, ids)).then(resources => {
+                RequestHandler.getObjectsRequest(formatString(location, payload.ids)).then(resources => {
                     context.commit(setResources, resources)
                     //Initially the filtered resources should equal the actual resources.
                     context.commit(setFilteredResources, resources)
@@ -132,11 +133,11 @@ export default {
                 })
             })
         }
-        module.actions[fetchResourcesBy] = (context, {ids, filters}) => {
+        module.actions[fetchResourcesBy] = function(context, payload){
             //Empty the previous list of resources.
             context.commit(clearResources)
             return new Promise((resolveSuccess, resolveFailure) => {
-                RequestHandler.getObjectsRequestBy(formatString(location, ids), filters).then(resources => {
+                RequestHandler.getObjectsRequestBy(formatString(location, payload.ids), payload.filters).then(resources => {
                     context.commit(setResources, resources)
                     //Initially the filtered resources should equal the actual resources.
                     context.commit(setFilteredResources, resources)
@@ -146,9 +147,9 @@ export default {
                 })
             })
         }
-        module.actions[fetchResource] = (context, {id, ids}) => {
+        module.actions[fetchResource] = function(context, payload){
             return new Promise((resolveSuccess, resolveFailure) => {
-                RequestHandler.getObjectRequest(formatString(location, ids), id).then(resource => {
+                RequestHandler.getObjectRequest(formatString(location, payload.ids), payload.id).then(resource => {
                     context.commit(setResource, resource)
                     resolveSuccess(resource)
                 }, response => {
@@ -156,28 +157,28 @@ export default {
                 })
             })
         }
-        module.actions[createResource] = (context, {resource, ids}) => {
+        module.actions[createResource] = function(context, payload){
             return new Promise((resolveSuccess, resolveFailure) => {
-                RequestHandler.postObjectRequest(formatString(location, ids), resource).then(createdResource => {
+                RequestHandler.postObjectRequest(formatString(location, payload.ids), payload.resource).then(createdResource => {
                     resolveSuccess(createdResource)
                 }, response => {
                     resolveFailure(response)
                 })
             })
         }
-        module.actions[updateResource] = (context, {resource, ids}) => {
+        module.actions[updateResource] = function(context, payload){
             return new Promise((resolveSuccess, resolveFailure) => {
-                RequestHandler.putObjectRequest(formatString(location, ids), resource).then(updatedResource => {
+                RequestHandler.putObjectRequest(formatString(location, payload.ids), payload.resource).then(updatedResource => {
                     resolveSuccess(updatedResource)
                 }, response => {
                     resolveFailure(response)
                 })
             })
         }
-        module.actions[deleteResource] = (context, {id, ids}) => {
+        module.actions[deleteResource] = function(context, payload){
             return new Promise((resolveSuccess, resolveFailure) => {
-                RequestHandler.deleteObjectRequest(formatString(location, ids), id).then(() => {
-                    context.commit(removeResource, {id})
+                RequestHandler.deleteObjectRequest(formatString(location, payload.ids), payload.id).then(() => {
+                    context.commit(removeResource, {id: payload.id})
                     resolveSuccess()
                 }, response => {
                     resolveFailure(response)
@@ -202,12 +203,12 @@ let addShowableDates = function(payload){
 
 //This could probably be used aswell: http://es6-features.org/#CustomInterpolation
 let formatString = function(str, data) {
-    data = data || {};
+    data = data || {}
     var match = str.match(/{(.+?)}/g)
     if(match){
         match.forEach(function(key) {
-            str.replace(key, data[key.replace('{','').replace('}', '')]);
-        });
+            str.replace(key, data[key.replace('{','').replace('}', '')])
+        })
     }
-    return str;
+    return str
 }
