@@ -99,6 +99,6 @@ public class ProductionUserDAOTest {
         assertEquals("email field not updated correctly", "Email@address2.com", usr2.getEmail());
         assertEquals("password field not updated correctly", "hashedPassword2", usr2.getPassword());
         userDAO.remove(usr1.getUuid());
-        
+
     }
 }
