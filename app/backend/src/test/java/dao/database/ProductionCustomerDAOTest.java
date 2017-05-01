@@ -94,10 +94,9 @@ public class ProductionCustomerDAOTest {
 
     @Test
     public void update() throws Exception {
-        AddressDAO addressDAO = daoManager.getAddressDao();
         CustomerDAO customerDAO = daoManager.getCustomerDAO();
-        Address adr1 = addressDAO.create(new Address("streettest n1", "59", "town 1", "9999", "country 1"));
-        Address adr2 = addressDAO.create(new Address("streettest n2", "60", "town 2", "99999", "country 2"));
+        Address adr1 = new Address("streettest n1", "59", "town 1", "9999", "country 1");
+        Address adr2 = new Address("streettest n2", "60", "town 2", "99999", "country 2");
         Customer cust1 = customerDAO.create(new Customer(adr1, "911", "customername 1", "btw123"));
         cust1.setAddress(adr2);
         cust1.setPhoneNumber("912");
@@ -105,14 +104,12 @@ public class ProductionCustomerDAOTest {
         cust1.setBtwNumber("btw124");
         customerDAO.update(cust1);
         Customer cust3 = customerDAO.get(cust1.getUuid());
-        assertEquals("address field not updated correctly", adr2, cust3.getAddress());
+        assertEquals("address field not updated correctly", cust1.getAddress(), cust3.getAddress());
         assertEquals("phoneNumber field not updated correctly", "912", cust3.getPhoneNumber());
         assertEquals("name field not updated correctly", "customername 2", cust3.getName());
         assertEquals("btwNumber field not updated correctly", "btw124", cust3.getBtwNumber());
 
         customerDAO.remove(cust1.getUuid());
-        addressDAO.remove(adr1.getUuid());
-        addressDAO.remove(adr2.getUuid());
 
     }
 }
