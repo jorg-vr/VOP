@@ -1,12 +1,10 @@
 package spring.controller.insurance;
 
 import controller.AbstractController;
-import controller.ControllerFactory;
 import controller.ControllerManager;
 import controller.exceptions.UnAuthorizedException;
-import controller.insurance.ContractController;
 import controller.insurance.SuretyController;
-import dao.interfaces.DataAccessException;
+import dao.exceptions.DataAccessException;
 import model.insurance.Surety;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,9 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import spring.controller.RESTAbstractController;
 import spring.exceptions.ServerErrorException;
 import spring.model.AuthenticationToken;
-import spring.model.RESTModelFactory;
 import spring.model.RESTSchema;
-import spring.model.insurance.RESTContract;
 import spring.model.insurance.RESTSurety;
 
 import javax.servlet.http.HttpServletRequest;

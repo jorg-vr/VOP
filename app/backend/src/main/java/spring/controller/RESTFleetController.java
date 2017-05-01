@@ -2,22 +2,18 @@ package spring.controller;
 
 import controller.AbstractController;
 import controller.ControllerManager;
-import controller.CustomerController;
 import controller.FleetController;
 import controller.exceptions.UnAuthorizedException;
-import dao.interfaces.DataAccessException;
+import dao.exceptions.DataAccessException;
 import model.fleet.Fleet;
 import model.identity.Customer;
 import org.springframework.web.bind.annotation.*;
-import spring.exceptions.InvalidInputException;
 import spring.exceptions.ServerErrorException;
 import spring.model.AuthenticationToken;
 import spring.model.RESTFleet;
 import spring.model.RESTSchema;
-import util.UUIDUtil;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;

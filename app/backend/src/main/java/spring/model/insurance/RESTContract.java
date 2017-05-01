@@ -4,19 +4,12 @@ import controller.ControllerManager;
 import controller.CustomerController;
 import controller.InsuranceCompanyController;
 import controller.exceptions.UnAuthorizedException;
-import dao.interfaces.DataAccessException;
-import model.account.Function;
-import model.identity.Customer;
-import model.identity.InsuranceCompany;
+import dao.exceptions.DataAccessException;
 import model.insurance.Contract;
-import model.insurance.VehicleInsurance;
 import spring.exceptions.InvalidInputException;
 import spring.model.RESTAbstractModel;
-import util.UUIDUtil;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.UUID;
 
 import static util.MyProperties.PATH_CONTRACTS;
 import static util.MyProperties.getProperty;

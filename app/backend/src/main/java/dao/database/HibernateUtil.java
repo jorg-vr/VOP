@@ -1,8 +1,7 @@
 package dao.database;
 
-import dao.interfaces.DataAccessException;
+import dao.exceptions.DataAccessException;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 /**

@@ -1,6 +1,8 @@
 package dao.interfaces;
 
 
+import dao.exceptions.DataAccessException;
+
 import java.util.Collection;
 import java.util.UUID;
 

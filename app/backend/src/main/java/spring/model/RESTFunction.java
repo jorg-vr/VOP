@@ -5,7 +5,7 @@ import controller.CustomerController;
 import controller.RoleController;
 import controller.UserController;
 import controller.exceptions.UnAuthorizedException;
-import dao.interfaces.DataAccessException;
+import dao.exceptions.DataAccessException;
 import model.account.Function;
 import model.account.Role;
 import model.identity.Company;

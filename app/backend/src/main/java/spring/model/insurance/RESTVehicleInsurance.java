@@ -5,17 +5,13 @@ import controller.VehicleController;
 import controller.exceptions.UnAuthorizedException;
 import controller.insurance.ContractController;
 import controller.insurance.SuretyController;
-import dao.interfaces.DataAccessException;
-import model.account.Function;
-import model.fleet.Vehicle;
-import model.insurance.Surety;
+import dao.exceptions.DataAccessException;
 import model.insurance.SuretyType;
 import model.insurance.VehicleInsurance;
 import spring.exceptions.InvalidInputException;
 import spring.model.RESTAbstractModel;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 import static util.MyProperties.PATH_VEHICLE_INSURANCES;
 import static util.MyProperties.getProperty;

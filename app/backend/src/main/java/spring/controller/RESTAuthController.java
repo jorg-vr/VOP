@@ -1,20 +1,12 @@
 package spring.controller;
 
 import controller.AuthController;
-import controller.ControllerManager;
 import controller.exceptions.UnAuthorizedException;
-import dao.interfaces.DataAccessException;
-import model.account.Function;
+import dao.exceptions.DataAccessException;
 import org.springframework.web.bind.annotation.*;
 import spring.exceptions.InvalidInputException;
-import spring.exceptions.NotAuthorizedException;
 import spring.model.AuthenticationToken;
 import spring.model.RESTAuth;
-import spring.model.RESTFunction;
-import spring.model.RESTRole;
-
-import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * Requests that are implemented in this class:

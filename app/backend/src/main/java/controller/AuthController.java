@@ -2,15 +2,11 @@ package controller;
 
 import controller.exceptions.UnAuthorizedException;
 import dao.interfaces.DAOManager;
-import dao.interfaces.DataAccessException;
-import dao.interfaces.FunctionDAO;
+import dao.exceptions.DataAccessException;
 import dao.interfaces.UserDAO;
 import main.BackendApplication;
 import model.account.*;
 import spring.model.AuthenticationToken;
-
-import java.util.Collection;
-import java.util.UUID;
 
 /**
  * Created by jorg on 3/30/17.

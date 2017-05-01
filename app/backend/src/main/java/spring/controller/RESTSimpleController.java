@@ -1,12 +1,8 @@
 package spring.controller;
 
-import controller.AuthController;
 import controller.exceptions.UnAuthorizedException;
-import dao.interfaces.DataAccessException;
-import model.account.*;
 import spring.exceptions.InvalidInputException;
 import spring.model.AuthenticationToken;
-import util.UUIDUtil;
 
 import java.util.*;
 

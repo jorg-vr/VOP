@@ -2,14 +2,10 @@ package spring.controller;
 
 import controller.*;
 import controller.exceptions.UnAuthorizedException;
-import dao.interfaces.DataAccessException;
-import model.account.Function;
+import dao.exceptions.DataAccessException;
 import model.account.User;
 import org.springframework.web.bind.annotation.*;
-import spring.exceptions.InvalidInputException;
-import spring.exceptions.NotAuthorizedException;
 import spring.model.AuthenticationToken;
-import spring.model.RESTModelFactory;
 import spring.model.RESTSchema;
 import spring.model.RESTUser;
 

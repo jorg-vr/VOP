@@ -3,7 +3,7 @@ package spring.controller;
 import controller.ControllerManager;
 import controller.RoleController;
 import controller.exceptions.UnAuthorizedException;
-import dao.interfaces.DataAccessException;
+import dao.exceptions.DataAccessException;
 import model.account.Action;
 import model.account.Resource;
 import model.account.Role;

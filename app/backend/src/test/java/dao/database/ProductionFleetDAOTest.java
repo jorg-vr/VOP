@@ -1,5 +1,6 @@
 package dao.database;
 
+import dao.exceptions.DataAccessException;
 import dao.interfaces.*;
 import model.fleet.Fleet;
 import model.identity.Address;

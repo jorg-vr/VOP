@@ -4,11 +4,10 @@ import controller.exceptions.UnAuthorizedException;
 import controller.insurance.ContractController;
 import controller.insurance.SuretyController;
 import controller.insurance.VehicleInsuranceController;
+import dao.exceptions.DataAccessException;
 import dao.interfaces.*;
 import main.BackendApplication;
 import model.account.*;
-import model.identity.Company;
-import model.insurance.Surety;
 import spring.exceptions.InvalidInputException;
 
 import java.util.*;

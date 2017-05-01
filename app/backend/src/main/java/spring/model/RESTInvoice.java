@@ -2,19 +2,14 @@ package spring.model;
 
 import controller.CompanyController;
 import controller.ControllerManager;
-import controller.CustomerController;
 import controller.exceptions.UnAuthorizedException;
-import dao.interfaces.DataAccessException;
-import model.account.Function;
+import dao.exceptions.DataAccessException;
 import model.billing.Invoice;
 import model.billing.InvoiceType;
-import model.history.EditEvent;
-import model.identity.Company;
 import spring.exceptions.InvalidInputException;
 import util.UUIDUtil;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 /**
  * Created by Billie Devolder on 16/04/2017.

@@ -1,11 +1,9 @@
 package spring.controller;
 
 import controller.AbstractController;
-import controller.ControllerFactory;
 import controller.ControllerManager;
 import controller.exceptions.UnAuthorizedException;
-import dao.interfaces.DAO;
-import dao.interfaces.DataAccessException;
+import dao.exceptions.DataAccessException;
 
 import model.history.EditableObject;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +12,6 @@ import spring.exceptions.NotFoundException;
 import spring.model.AuthenticationToken;
 import spring.model.RESTAbstractModel;
 import spring.model.RESTModelFactory;
-import util.UUIDUtil;
 
 import java.util.*;
 

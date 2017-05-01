@@ -1,7 +1,7 @@
 package dao.database;
 
 import dao.interfaces.DAO;
-import dao.interfaces.DataAccessException;
+import dao.exceptions.DataAccessException;
 import dao.interfaces.Filter;
 import model.history.EditableObject;
 import org.hibernate.Session;
