@@ -1,8 +1,14 @@
 package dao.database;
 
+import dao.database.util.unique.ConstraintValidatorFactoryImpl;
 import dao.exceptions.DataAccessException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+
+import javax.validation.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Util class to communicate with the database using Hibernate
@@ -73,5 +79,25 @@ public class HibernateUtil {
             e.printStackTrace();
             throw new DataAccessException();
         }
+    }
+
+    private synchronized static Map<String,String> validate(Session session, Object object){
+        Map<String,String> map = new HashMap<>();
+        ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+        ValidatorContext validatorContext = validatorFactory.usingContext();
+        validatorContext.constraintValidatorFactory(
+                new ConstraintValidatorFactoryImpl
+                        (session));
+        Validator validator = validatorContext.getValidator();
+
+
+        Set<ConstraintViolation<Object>> violations = validator.validate(object);
+
+        for(ConstraintViolation<Object> violation: violations){
+            map.put(violation.getPropertyPath().toString(),violation.getMessage());
+            System.out.println(violation.getPropertyPath() + " " + violation.getMessage());
+        }
+        throw new RuntimeException();
+        //return map;
     }
 }
