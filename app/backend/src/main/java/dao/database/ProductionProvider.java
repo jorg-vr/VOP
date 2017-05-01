@@ -1,16 +1,18 @@
 package dao.database;
 
-import dao.interfaces.*;
-import model.billing.Invoice;
-import model.identity.Company;
-import model.insurance.Surety;
+
+import dao.interfaces.DAOManager;
+import dao.interfaces.DAOProvider;
+
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
-
+/**
+ * Created by sam on 4/30/17.
+ */
 public class ProductionProvider implements DAOProvider {
 
     private static ProductionProvider provider = null;
@@ -34,6 +36,13 @@ public class ProductionProvider implements DAOProvider {
 
     }
 
+    public static ProductionProvider getInstance(){
+        if(provider==null){
+            throw new RuntimeException("ProductionProvider is not initialized yet");
+        }
+        return provider;
+    }
+
     /**
      * SHOULD BE CALLED BEFORE getInstance()
      * initializes the provider with the right hibernate configuration
@@ -53,113 +62,15 @@ public class ProductionProvider implements DAOProvider {
 
     }
 
-    /**
-     * @return the DAOProvider
-     */
-    public synchronized static DAOProvider getInstance() {
-        return provider;
+    @Override
+    public DAOManager getDaoManager() {
+        return new ProductionManager(sessionFactory.openSession());
     }
 
     @Override
-    public UserDAO getUserDAO() {
-        return new ProductionUserDAO(sessionFactory.openSession());
-    }
-
-    @Override
-    public synchronized CustomerDAO getCustomerDAO() {
-        return new ProductionCustomerDAO(sessionFactory.openSession());
-    }
-
-    @Override
-    public synchronized CompanyDAO<Company> getCompanyDAO() {
-        return new ProductionCompanyDAO(sessionFactory.openSession());
-    }
-
-    @Override
-    public synchronized FleetDAO getFleetDAO() {
-        return new ProductionFleetDAO(sessionFactory.openSession());
-    }
-
-    @Override
-    public synchronized FunctionDAO getFunctionDAO() {
-        return new ProductionFunctionDAO(sessionFactory.openSession());
-    }
-
-    @Override
-    public synchronized VehicleDAO getVehicleDAO() {
-        return new ProductionVehicleDAO(sessionFactory.openSession());
-    }
-
-    @Override
-    public synchronized VehicleTypeDAO getVehicleTypeDAO() {
-        return new ProductionVehicleTypeDAO(sessionFactory.openSession());
-    }
-
-    @Override
-    public AddressDAO getAddressDao() {
-        return new ProductionAddressDAO(sessionFactory.openSession());
-    }
-
-    @Override
-    public RoleDAO getRoleDAO() {
-        return new ProductionRoleDAO(sessionFactory.openSession());
-    }
-
-    @Override
-    public ContractDAO getContractDao() {
-        return new ProductionContractDAO(sessionFactory.openSession());
-    }
-
-    @Override
-    public SuretyDAO<Surety> getSuretyDao() {
-        return new ProductionSuretyDAO(sessionFactory.openSession());
-    }
-
-    @Override
-    public NonFlatSuretyDAO getFlatSuretyDao() {
-        return new ProductionNonFlatSuretyDAO(sessionFactory.openSession());
-    }
-
-    @Override
-    public InvoiceDAO getInvoiceDao() {
-        return new ProductionInvoiceDAO(sessionFactory.openSession());
-    }
-
-    @Override
-    public FlatSuretyDAO getNonFlatSuretyDao() {
-        return new ProductionFlatSuretyDAO(sessionFactory.openSession());
-    }
-
-    @Override
-    public SpecialConditionDAO getSpecialConditionDao() {
-        return new ProductionSpecialConditionDAO(sessionFactory.openSession());
-    }
-
-
-    @Override
-    public VehicleInsuranceDAO getVehicleInsuranceDao() {
-        return new ProductionVehicleInsuranceDAO(sessionFactory.openSession());
-    }
-
-    @Override
-    public InsuranceCompanyDAO getInsuranceCompanyDao() {
-        return new ProductionInsuranceCompanyDAO(sessionFactory.openSession());
-    }
-
-
-    @Override
-    public void close() {
+    public void close() throws Exception {
         sessionFactory.close();
         StandardServiceRegistryBuilder.destroy(this.registry);
         provider = null;
-    }
-
-    public static void main(String[] args) {
-        initializeProvider("localtest");
-        try(DAOProvider p = getInstance(); UserDAO dao = p.getUserDAO()){
-            dao.listFiltered();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }

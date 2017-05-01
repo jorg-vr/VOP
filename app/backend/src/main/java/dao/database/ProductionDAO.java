@@ -122,10 +122,6 @@ public abstract class ProductionDAO<T extends EditableObject> implements DAO<T> 
 
     }
 
-    @Override
-    public void close() throws Exception {
-        session.close();
-    }
 
     @Override
     public void refresh(T t) throws Exception{

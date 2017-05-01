@@ -1,6 +1,8 @@
 package spring.controller;
 
+import dao.database.ProductionManager;
 import dao.database.ProductionProvider;
+import dao.interfaces.DAOManager;
 import dao.interfaces.DataAccessException;
 import model.identity.Address;
 import model.identity.Customer;
@@ -32,9 +34,12 @@ public class RESTCompanyControllerTest {
     private static Customer customer;
     private static String[] authPair;
 
+    private static DAOManager manager;
+
     @BeforeClass
     public static void setup() throws Exception {
         ProductionProvider.initializeProvider("unittest");
+        manager = ProductionProvider.getInstance().getDaoManager();
         authPair = AuthUtil.getAdminToken();
         try {
             address = new Address("mystreet", "123", "lala", "12345", "land");
@@ -43,7 +48,8 @@ public class RESTCompanyControllerTest {
             customer.setName("anita");
             customer.setPhoneNumber("04789456123");
             customer.setBtwNumber("123456789");
-            customer = ProductionProvider.getInstance().getCustomerDAO().create(customer);
+            customer = manager.getCustomerDAO().create(customer);
+
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
@@ -53,12 +59,12 @@ public class RESTCompanyControllerTest {
     @AfterClass
     public static void afterTransaction() {
         try {
-            ProductionProvider.getInstance().getCustomerDAO().remove(customer.getUuid());
+            manager.getCustomerDAO().remove(customer.getUuid());
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
 
-        ProductionProvider.getInstance().close();
+        manager.close();
     }
 
 
@@ -85,6 +91,7 @@ public class RESTCompanyControllerTest {
                 .content(TestUtil.convertObjectToJsonBytes(restCompany)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name", equalTo(restCompany.getName())))
+
                 .andExpect(jsonPath("$.vatNumber", equalTo("sinatra")))
                 .andExpect(jsonPath("$.phoneNumber", equalTo("0123456")))
                 .andExpect(jsonPath("$.address.country", equalTo("a")))

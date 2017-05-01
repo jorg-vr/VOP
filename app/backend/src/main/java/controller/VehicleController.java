@@ -1,6 +1,7 @@
 package controller;
 
 import controller.exceptions.UnAuthorizedException;
+import dao.interfaces.DAOManager;
 import dao.interfaces.DataAccessException;
 import dao.interfaces.VehicleDAO;
 import main.BackendApplication;
@@ -18,8 +19,8 @@ import java.util.Collection;
  */
 public class VehicleController extends AbstractController<Vehicle> {
 
-    public VehicleController(Function function) {
-        super(BackendApplication.getProvider().getVehicleDAO(), Resource.VEHICLE, function);
+    public VehicleController(Function function, DAOManager manager) {
+        super(manager.getVehicleDAO(), Resource.VEHICLE, function);
     }
 
 

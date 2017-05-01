@@ -1,6 +1,8 @@
 package spring.controller;
 
+import dao.database.ProductionManager;
 import dao.database.ProductionProvider;
+import dao.interfaces.DAOManager;
 import dao.interfaces.AddressDAO;
 import dao.interfaces.CustomerDAO;
 import dao.interfaces.DataAccessException;
@@ -37,6 +39,7 @@ public class RESTFleetControllerTest {
             .addPlaceholderValue("path.companies", "companies")
             .build();
 
+
     //@Autowired
     //private WebApplicationContext wac;
 
@@ -45,13 +48,17 @@ public class RESTFleetControllerTest {
     private static Fleet fleet;
     private static String[] authPair;
 
+    private static DAOManager manager;
+
     @BeforeClass
     public static void classSetup() throws Exception {
         ProductionProvider.initializeProvider("unittest");
+        manager = ProductionProvider.getInstance().getDaoManager();
         authPair = AuthUtil.getAdminToken();
-        try (AddressDAO addressDAO = ProductionProvider.getInstance().getAddressDao();
-             CustomerDAO customerDAO = ProductionProvider.getInstance().getCustomerDAO();
-             FleetDAO fleetDAO = ProductionProvider.getInstance().getFleetDAO()) {
+        try {
+            AddressDAO addressDAO = manager.getAddressDao();
+            CustomerDAO customerDAO = manager.getCustomerDAO();
+            FleetDAO fleetDAO = manager.getFleetDAO();
             address1 = new Address();
             address1.setStreet("mystreet");
             address1.setStreetNumber("123");
@@ -71,6 +78,11 @@ public class RESTFleetControllerTest {
             customer.setPhoneNumber("04789456123");
             customer.setName("anita");
             customer.setBtwNumber("123456789");
+            customer = manager.getCustomerDAO().create(customer);
+            fleet = new Fleet();
+            fleet.setOwner(customer);
+            fleet.setName("myFleet");
+            fleet = manager.getFleetDAO().create(fleet);
             customer.setInvoicePeriodicity(Periodicity.QUARTERLY);
             customer.setStatementPeriodicity(Periodicity.QUARTERLY);
             customer = customerDAO.create(customer);
@@ -86,10 +98,12 @@ public class RESTFleetControllerTest {
     }
 
     @AfterClass
+
     public static void afterTransaction() throws Exception {
-        try (AddressDAO addressDAO = ProductionProvider.getInstance().getAddressDao();
-             CustomerDAO customerDAO = ProductionProvider.getInstance().getCustomerDAO();
-             FleetDAO fleetDAO = ProductionProvider.getInstance().getFleetDAO()) {
+        try {
+            AddressDAO addressDAO = manager.getAddressDao();
+            CustomerDAO customerDAO = manager.getCustomerDAO();
+            FleetDAO fleetDAO = manager.getFleetDAO();
             fleetDAO.remove(fleet.getUuid());
             customerDAO.remove(customer.getUuid());
             //addressDAO.remove(address1.getUuid());
@@ -97,7 +111,7 @@ public class RESTFleetControllerTest {
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
-        ProductionProvider.getInstance().close();
+        manager.close();
     }
 
     @Test
