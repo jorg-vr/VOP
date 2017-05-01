@@ -40,9 +40,9 @@ public class RESTCompanyControllerTest {
     private static DAOManager manager;
     private static CompanyDAO<Company> dao;
 
-    private static List<Customer> companies;
+    private static List<Company> companies;
     private static Address address;
-    private static Customer company;
+    private static Company company;
 
     private static String[] NAMES = new String[]{"anita", "i", "b"};
     private static String[] COUNTRIES = new String[]{"Tanzania", "Sierra Leone", "Sierra Leone"};
@@ -62,8 +62,7 @@ public class RESTCompanyControllerTest {
         try {
             for (int i = 0; i < NAMES.length; i++) {
                 Address a = new Address("mystreet", "123", CITIES[i], POSTAL_CODES[i], COUNTRIES[i]);
-                Customer c = new Customer();
-                //c.setCompanyType(COMPANY_TYPES[i]);
+                Company c = COMPANY_TYPES[i].getFactory().create();
                 c.setAddress(a);
                 c.setName(NAMES[i]);
                 c.setPhoneNumber("04789456123");
@@ -107,7 +106,7 @@ public class RESTCompanyControllerTest {
     @Test
     public void post() throws Exception {
         RESTCompany restCompany = new RESTCompany(null, "frank", "sinatra", "0123456", new RESTAddress("a", "b", "c", "d", "e"));
-        restCompany.setType("CUSTOMER");
+        restCompany.setType(CompanyType.CUSTOMER.toString());
         MvcResult result = mvc.perform(MockMvcRequestBuilders.post("/companies")
                 .header("Content-Type", "application/json")
                 .header("Authorization", authPair[0])
@@ -115,7 +114,6 @@ public class RESTCompanyControllerTest {
                 .content(TestUtil.convertObjectToJsonBytes(restCompany)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name", equalTo(restCompany.getName())))
-
                 .andExpect(jsonPath("$.vatNumber", equalTo("sinatra")))
                 .andExpect(jsonPath("$.phoneNumber", equalTo("0123456")))
                 .andExpect(jsonPath("$.address.country", equalTo("a")))
@@ -156,12 +154,11 @@ public class RESTCompanyControllerTest {
         company.setBtwNumber("new");
         RESTCompany restCompany = new RESTCompany(company);
 
-        MvcResult result = mvc.perform(MockMvcRequestBuilders.put("/companies/{id}", UUIDUtil.UUIDToNumberString(company.getUuid()))
+        mvc.perform(MockMvcRequestBuilders.put("/companies/{id}", UUIDUtil.UUIDToNumberString(company.getUuid()))
                 .header("Content-Type", "application/json")
                 .header("Authorization", authPair[0])
                 .header("Function", authPair[1])
-                .content(TestUtil.convertObjectToJsonBytes(restCompany))
-        )
+                .content(TestUtil.convertObjectToJsonBytes(restCompany)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name", equalTo(company.getName())))
                 .andExpect(jsonPath("$.vatNumber", equalTo(company.getBtwNumber())))
@@ -170,22 +167,10 @@ public class RESTCompanyControllerTest {
                 .andExpect(jsonPath("$.address.city", equalTo(address.getTown())))
                 .andExpect(jsonPath("$.address.street", equalTo(address.getStreet())))
                 .andExpect(jsonPath("$.address.houseNumber", equalTo(address.getStreetNumber())))
-                .andExpect(jsonPath("$.address.postalCode", equalTo(address.getPostalCode())))
-                .andReturn();
+                .andExpect(jsonPath("$.address.postalCode", equalTo(address.getPostalCode())));
 
-        //tests if changes ar preserved
-        mvc.perform(MockMvcRequestBuilders.get("/companies/{id}", UUIDUtil.UUIDToNumberString(company.getUuid()))
-                .header("Authorization", authPair[0])
-                .header("Function", authPair[1]))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", equalTo(company.getName())))
-                .andExpect(jsonPath("$.vatNumber", equalTo(company.getBtwNumber())))
-                .andExpect(jsonPath("$.phoneNumber", equalTo(company.getPhoneNumber())))
-                .andExpect(jsonPath("$.address.country", equalTo(address.getCountry())))
-                .andExpect(jsonPath("$.address.city", equalTo(address.getTown())))
-                .andExpect(jsonPath("$.address.street", equalTo(address.getStreet())))
-                .andExpect(jsonPath("$.address.houseNumber", equalTo(address.getStreetNumber())))
-                .andExpect(jsonPath("$.address.postalCode", equalTo(address.getPostalCode()))).andReturn();
+        // Test if changes are preserved
+        getId();
     }
 
     @Test
@@ -194,7 +179,6 @@ public class RESTCompanyControllerTest {
                 .header("Authorization", authPair[0])
                 .header("Function", authPair[1]))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data[*].name", everyItem(containsString("i"))))
-                .andReturn();
+                .andExpect(jsonPath("$.data[*].name", everyItem(containsString("i"))));
     }
 }
