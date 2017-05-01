@@ -174,11 +174,48 @@ public class RESTCompanyControllerTest {
     }
 
     @Test
-    public void nameContains() throws Exception {
+    public void nameContainsFilter() throws Exception {
         mvc.perform(MockMvcRequestBuilders.get("/companies?nameContains=i")
                 .header("Authorization", authPair[0])
                 .header("Function", authPair[1]))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data[*].name", everyItem(containsString("i"))));
     }
+
+    @Test
+    public void typeFilter() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get("/companies?type=" + CompanyType.INSURANCE_COMPANY.toString())
+                .header("Authorization", authPair[0])
+                .header("Function", authPair[1]))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data[*].type", everyItem(equalTo(CompanyType.INSURANCE_COMPANY.toString()))));
+    }
+
+    @Test
+    public void countryFilter() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get("/companies?country=tanzania")
+                .header("Authorization", authPair[0])
+                .header("Function", authPair[1]))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data[*].address.country", everyItem(containsString("Tanzania"))));
+    }
+
+    @Test
+    public void cityFilter() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get("/companies?city=freetown")
+                .header("Authorization", authPair[0])
+                .header("Function", authPair[1]))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data[*].address.city", everyItem(containsString("Freetown"))));
+    }
+
+    @Test
+    public void postalCodeFilter() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get("/companies?postalCode=1234")
+                .header("Authorization", authPair[0])
+                .header("Function", authPair[1]))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data[*].address.postalCode", everyItem(containsString("1234"))));
+    }
+
 }
