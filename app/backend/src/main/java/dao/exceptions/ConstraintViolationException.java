@@ -18,8 +18,9 @@ public class ConstraintViolationException extends Exception {
         StringBuilder builder = new StringBuilder();
         builder.append("One or more constrains are violated:\n");
         for(Map.Entry<String,String> entry: violationMap.entrySet()){
+            builder.append("'");
             builder.append(entry.getKey());
-            builder.append(": ");
+            builder.append("': ");
             builder.append(entry.getValue());
             builder.append("\n");
         }
