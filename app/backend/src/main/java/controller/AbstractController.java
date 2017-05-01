@@ -25,7 +25,7 @@ import static model.account.Action.*;
  * <p>
  * Currently there is a generic implementation for the get, update, create and archive methods.
  */
-public abstract class AbstractController<T extends EditableObject> implements AutoCloseable {
+public abstract class AbstractController<T extends EditableObject> {
 
     private DAO<T> dao;
     private Resource resource;
@@ -161,10 +161,4 @@ public abstract class AbstractController<T extends EditableObject> implements Au
         return dao;
     }
 
-    /**
-     * Close the dao that was passed in the constructor in the creation of this object.
-     */
-    public void close() {
-
-    }
 }
