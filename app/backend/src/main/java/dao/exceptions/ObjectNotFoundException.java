@@ -9,14 +9,8 @@ import java.util.UUID;
  */
 public class ObjectNotFoundException extends Exception {
 
-    private final EditableObject object;
-
-    public ObjectNotFoundException(EditableObject e ){
-        super(String.format("Object with UUID '%s' was not found in the database.",e.getUuid().toString()));
-        this.object =e ;
+    public ObjectNotFoundException(UUID uuid ){
+        super(String.format("Object with UUID '%s' was not found in the database.",uuid.toString()));
     }
 
-    public EditableObject getObject() {
-        return object;
-    }
 }

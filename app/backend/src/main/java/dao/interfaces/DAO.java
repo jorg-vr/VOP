@@ -2,6 +2,7 @@ package dao.interfaces;
 
 
 import dao.exceptions.DataAccessException;
+import dao.exceptions.ObjectNotFoundException;
 
 import java.util.Collection;
 import java.util.UUID;
@@ -23,14 +24,14 @@ public interface DAO<T>  {
      * @return the object matching the given UUID
      * @throws DataAccessException Thrown when something goes wrong retrieving the object
      */
-    T get(UUID id) throws DataAccessException;
+    T get(UUID id) throws DataAccessException, ObjectNotFoundException;
 
     /**
      * Removes an object using its unique id
      * @param id the id of the object
      * @throws DataAccessException Thrown when something goes wrong retrieving the object
      */
-    void remove(UUID id) throws DataAccessException;
+    void remove(UUID id) throws DataAccessException, ObjectNotFoundException;
 
     /**
      * Gets all objects of the DAO using filters
