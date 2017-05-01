@@ -1,5 +1,7 @@
 package dao.exceptions;
 
+import model.history.EditableObject;
+
 import java.util.UUID;
 
 /**
@@ -7,11 +9,14 @@ import java.util.UUID;
  */
 public class ObjectNotFoundException extends Exception {
 
-    public ObjectNotFoundException(){
-        super();
+    private final EditableObject object;
+
+    public ObjectNotFoundException(EditableObject e ){
+        super(String.format("Object with UUID '%s' was not found.",e.getUuid().toString()));
+        this.object =e ;
     }
 
-    public ObjectNotFoundException(UUID uuid){
-        super(String.format("Object with UUID '%s' was not found.",uuid.toString()));
+    public EditableObject getObject() {
+        return object;
     }
 }
