@@ -35,7 +35,10 @@
             companyId: String
         },
         created() {
-            this.fetchInvoicesByCompany({companyId: this.companyId})
+            this.setLoading({loading: true })
+            this.fetchInvoicesByCompany({companyId: this.companyId}).then(() => {
+                this.setLoading({loading: false })
+            })
         },
         computed: {
             ...mapGetters([
@@ -51,7 +54,8 @@
                 'fetchInvoicesByCompany',
             ]),
             ...mapMutations([
-                'setFilteredClients'
+                'setFilteredClients',
+                'setLoading'
             ])
 
         }

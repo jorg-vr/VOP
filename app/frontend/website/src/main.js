@@ -22,7 +22,7 @@ if(process.env.NODE_ENV){
 else {
     Vue.config.env = environments['development']
 }
-console.log('check')
+
 Vue.config.lang = 'nl';
 Vue.http.options.root = Vue.config.env.API_KEY
 Vue.http.headers.common['Accept'] = 'application/json'

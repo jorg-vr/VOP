@@ -1,6 +1,9 @@
 let nonAcceptedFilters = ['id', 'createdAt', 'lastUpdated', 'url', 'originalObject']
 
 export default {
+    loading(state){
+        return state.loading;
+    },
 
     /**
      * Returns a subset of the given objects. Only the objects which have a property which is a substring of
