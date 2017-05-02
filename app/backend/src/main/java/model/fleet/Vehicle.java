@@ -36,7 +36,7 @@ public class Vehicle implements EditableObject, java.io.Serializable {
 
     private Fleet fleet;
 
-    private Map<SuretyType, Double> specificCommissions = new HashMap<>();
+    private Map<SuretyType, Double> commissions = new HashMap<>();
 
     public Vehicle() {
 
@@ -227,19 +227,19 @@ public class Vehicle implements EditableObject, java.io.Serializable {
      * If the vehicle does not have a specific commission for that type, null will be returned
      */
     public Double getSpecificCommission(SuretyType suretyType) {
-        return specificCommissions.get(suretyType);
+        return commissions.get(suretyType);
     }
 
     public void setSpecificCommission(SuretyType suretyType, double commission) {
-        specificCommissions.put(suretyType, commission);
+        commissions.put(suretyType, commission);
     }
 
-    public Map<SuretyType, Double> getSpecificCommissions() {
-        return specificCommissions;
+    public Map<SuretyType, Double> getCommissions() {
+        return commissions;
     }
 
-    public void setSpecificCommissions(Map<SuretyType, Double> specificCommissions) {
-        this.specificCommissions = specificCommissions;
+    public void setCommissions(Map<SuretyType, Double> commissions) {
+        this.commissions = commissions;
     }
 
     @Override

@@ -12,7 +12,7 @@ public class Customer extends Company implements java.io.Serializable {
 
     private Collection<Contract> contracts;
 
-    private Map<SuretyType, Double> specificCommissions = new HashMap<>();
+    private Map<SuretyType, Double> commissions = new HashMap<>();
 
 
     public Customer() {
@@ -61,12 +61,12 @@ public class Customer extends Company implements java.io.Serializable {
         this.contracts = contracts;
     }
 
-    public Map<SuretyType, Double> getSpecificCommissions() {
-        return specificCommissions;
+    public Map<SuretyType, Double> getCommissions() {
+        return commissions;
     }
 
-    public void setSpecificCommissions(Map<SuretyType, Double> commissions) {
-        this.specificCommissions = commissions;
+    public void setCommissions(Map<SuretyType, Double> commissions) {
+        this.commissions = commissions;
     }
 
     /**
@@ -74,10 +74,10 @@ public class Customer extends Company implements java.io.Serializable {
      * @return the value of the specific commission for the customer for given suretyType. null if there is no specific commission
      */
     public Double getSpecificCommission(SuretyType suretyType) {
-        return specificCommissions.get(suretyType);
+        return commissions.get(suretyType);
     }
 
     public void setSpecificCommission(SuretyType suretyType, double commission) {
-        specificCommissions.put(suretyType, commission);
+        commissions.put(suretyType, commission);
     }
 }

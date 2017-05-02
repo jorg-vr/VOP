@@ -40,8 +40,8 @@
                     <key column="customer_id" not-null="true"/>
                     <one-to-many class="model.insurance.Contract" />
                 </bag>
-                <map name="specificCommissions"
-                     table="specificCommissions" cascade="all">
+                <map name="commissions"
+                     table="commissions" cascade="all">
                     <key column="role_id"/>
 
                     <map-key column="surety_type">
