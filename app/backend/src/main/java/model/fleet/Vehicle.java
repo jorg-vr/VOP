@@ -234,6 +234,13 @@ public class Vehicle implements EditableObject, java.io.Serializable {
         specificCommissions.put(suretyType, commission);
     }
 
+    public Map<SuretyType, Double> getSpecificCommissions() {
+        return specificCommissions;
+    }
+
+    public void setSpecificCommissions(Map<SuretyType, Double> specificCommissions) {
+        this.specificCommissions = specificCommissions;
+    }
 
     @Override
     public boolean equals(Object o) {
