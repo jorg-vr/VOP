@@ -11,7 +11,7 @@
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
         <property name="hibernate.connection.username">production</property>
         <property name="hibernate.connection.password">ny5rfg8scu7p3c9h7gef</property>
-        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/production</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5430/production</property>
 
         <property name="hbm2ddl.auto">none</property>
         <property name="show_sql">true</property>

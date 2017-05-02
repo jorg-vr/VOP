@@ -1,9 +1,9 @@
 import Vue from 'vue'
 
 import VueResource from 'vue-resource'
+import VeeValidate from 'vee-validate'
 import VueRouter from 'vue-router'
 import VueI18n from 'vue-i18n'
-import VeeValidate from 'vee-validate'
 
 import routes from './config/routes'
 import locales from './lang/locales'
@@ -11,15 +11,13 @@ import store from './store'
 import environments from './config/environments'
 
 //Routing support
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 //Backend support
-Vue.use(VueResource)
+Vue.use(VueResource);
 //Language support
-Vue.use(VueI18n)
+Vue.use(VueI18n);
 //Validation support
-Vue.use(VeeValidate)
-
-
+Vue.use(VeeValidate);
 
 if(process.env.NODE_ENV){
     Vue.config.env = environments[process.env.NODE_ENV]
@@ -35,6 +33,7 @@ Vue.http.headers.common['Accept'] = 'application/json'
 Object.keys(locales).forEach(function (lang) {
     Vue.locale(lang, locales[lang])
 })
+window.document.base = Vue.config.env.BASE
 
 const router = new VueRouter({
     mode: 'history',
@@ -84,7 +83,7 @@ String.prototype.rtrim = function(s) {
 };
 
 String.prototype.showableDate = function() {
-    var d = new Date(this)
+    let d = new Date(this)
     return d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear()
 }
 
@@ -100,5 +99,4 @@ new Vue({
     store,
     router
 }).$mount('#app')
-
 

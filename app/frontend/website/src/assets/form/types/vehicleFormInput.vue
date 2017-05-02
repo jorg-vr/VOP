@@ -46,9 +46,7 @@ All of the fields for user input for the vehicle form
         },
         created(){
             //Fetch options for the select items.
-            this.fetchClientsWithType(clientTypes.LEASING_COMPANY).then(response => {
-                console.log(response)
-            })
+            this.fetchClientsBy({type: clientTypes.LEASING_COMPANY.value})
             this.fetchVehicleTypes()
         },
         computed: {
@@ -59,7 +57,7 @@ All of the fields for user input for the vehicle form
         },
         methods: {
             ...mapActions([
-                'fetchClientsWithType',
+                'fetchClientsBy',
                 'fetchVehicleTypes'
             ])
         }

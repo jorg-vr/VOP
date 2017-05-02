@@ -1,5 +1,6 @@
 package spring.model;
 
+import controller.ControllerManager;
 import model.account.Function;
 import model.account.User;
 import util.UUIDUtil;
@@ -33,7 +34,7 @@ public class RESTUser extends RESTAbstractModel<User> {
         password = user.getPassword();
     }
 
-    public User translate(Function f) {
+    public User translate(ControllerManager manager) {
         User user = new User();
         user.setUuid(UUIDUtil.toUUID(getId()));
         user.setFirstName(firstName);

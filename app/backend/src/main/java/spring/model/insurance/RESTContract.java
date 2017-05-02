@@ -1,5 +1,6 @@
 package spring.model.insurance;
 
+import controller.ControllerManager;
 import controller.CustomerController;
 import controller.InsuranceCompanyController;
 import controller.exceptions.UnAuthorizedException;
@@ -48,15 +49,17 @@ public class RESTContract extends RESTAbstractModel<Contract> {
     }
 
     @Override
-    public Contract translate(Function function) throws UnAuthorizedException {
+    public Contract translate(ControllerManager manager) throws UnAuthorizedException {
         Contract contract = new Contract();
         contract.setUuid(toUUID(getId()));
-        try (CustomerController customerController = new CustomerController(function)) {
+        try {
+            CustomerController customerController = manager.getCustomerController();
             contract.setCustomer(customerController.get(toUUID(customer)));
         } catch (DataAccessException e) {
             throw new InvalidInputException("Company with id " + customer + " does not exist");
         }
-        try (InsuranceCompanyController insuranceCompanyController = new InsuranceCompanyController(function)) {
+        try {
+            InsuranceCompanyController insuranceCompanyController = manager.getInsuranceCompanyController();
             contract.setCompany(insuranceCompanyController.get(toUUID(insuranceCompany)));
         } catch (DataAccessException e) {
             throw new InvalidInputException("InsuranceCompany with id " + insuranceCompany + " does not exist");

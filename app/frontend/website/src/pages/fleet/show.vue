@@ -47,6 +47,7 @@
         },
         created() {
             let id = this.id
+            this.setLoading({loading: true })
             this.fetchFleet({id: id}).then(fleet => {
                 this.fetchClient({id: fleet.company}).then(client => {
                     this.addClientName({client})
@@ -58,6 +59,8 @@
                 this.getSubfleets({
                     vehicles: values[0],
                     vehicleTypes: values[1]
+                }).then(() => {
+                    this.setLoading({loading: false })
                 })
             })
         },
@@ -82,7 +85,8 @@
             ]),
 
             ...mapMutations([
-                'updateFilteredSubfleets'
+                'updateFilteredSubfleets',
+                'setLoading'
             ]),
 
             updateSubfleets(value){

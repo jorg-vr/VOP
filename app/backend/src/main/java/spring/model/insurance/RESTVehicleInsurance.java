@@ -1,5 +1,6 @@
 package spring.model.insurance;
 
+import controller.ControllerManager;
 import controller.VehicleController;
 import controller.exceptions.UnAuthorizedException;
 import controller.insurance.ContractController;
@@ -51,24 +52,27 @@ public class RESTVehicleInsurance extends RESTAbstractModel<VehicleInsurance> {
     }
 
     @Override
-    public VehicleInsurance translate(Function function) throws UnAuthorizedException {
+    public VehicleInsurance translate(ControllerManager manager) throws UnAuthorizedException {
         VehicleInsurance insurance = new VehicleInsurance();
         insurance.setUuid(toUUID(getId()));
-        try (VehicleController controller = new VehicleController(function)) {
+        try {
+            VehicleController controller = manager.getVehicleController();
             insurance.setVehicle(controller.get(toUUID(vehicle)));
-            for (SuretyType suretyType: SuretyType.values()) {
+            for (SuretyType suretyType : SuretyType.values()) {
                 insurance.getVehicle().getType().getCommission(suretyType);
                 insurance.getVehicle().getType().getTax(suretyType);
             }
         } catch (DataAccessException e) {
             throw new InvalidInputException("Vehicle with id " + vehicle + " does not exist");
         }
-        try (SuretyController controller = new SuretyController(function)) {
+        try {
+            SuretyController controller = manager.getSuretyController();
             insurance.setSurety(controller.get(toUUID(surety)));
         } catch (DataAccessException e) {
             throw new InvalidInputException("Surety with id " + surety + " does not exist");
         }
-        try (ContractController controller = new ContractController(function)) {
+        try {
+            ContractController controller = manager.getContractController();
             insurance.setContract(controller.get(toUUID(contract)));
         } catch (DataAccessException e) {
             throw new InvalidInputException("Contract with id " + surety + " does not exist");
