@@ -3,9 +3,10 @@
     Once a function is chosen the page will reload and the user will be redirected to the home page in order to reset state.
 -->
 <template>
+    <!--TODO update this component to new formSelect
     <form-select selectClass="picker" optionKey="roleName" :options="userFunctions"
                  @input="updateActiveFunction(accountFunction.id)"
-                 v-model="accountFunction.id"></form-select>
+                 v-model="accountFunction.id"></form-select>-->
 </template>
 <script>
     import formSelect from '../form/elements/formSelect.vue'

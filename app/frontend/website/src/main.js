@@ -1,7 +1,7 @@
 import Vue from 'vue'
 
-import VueResource from 'vue-resource'
 import VeeValidate from 'vee-validate'
+import VueResource from 'vue-resource'
 import VueRouter from 'vue-router'
 import VueI18n from 'vue-i18n'
 
@@ -10,14 +10,16 @@ import locales from './lang/locales'
 import store from './store'
 import environments from './config/environments'
 
+//Validation support
+Vue.use(VeeValidate);
 //Routing support
 Vue.use(VueRouter);
 //Backend support
 Vue.use(VueResource);
 //Language support
 Vue.use(VueI18n);
-//Validation support
-Vue.use(VeeValidate);
+
+
 
 if(process.env.NODE_ENV){
     Vue.config.env = environments[process.env.NODE_ENV]

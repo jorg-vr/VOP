@@ -10,65 +10,59 @@ This component can be used to let the user select between a list of specified va
 @param inputId (optional): The id of the HTML select element.
 @param resetButton (optional): If this boolean is true a reset button will be display. Default: False
 @param selectClass (optional): The class for the HTML select element.
-
 -->
-
 <template>
-    <form-item :label="label">
-        <div class="select-row">
-            <select :class="'form-control select-item '+selectClass" :value="value" @change="updateValue($event.target.value)" :id="inputId" ref="select">
-                <option v-if="hiddenOption" value="" disabled hidden>{{hiddenOption}}</option>
-                <option v-else value="" disabled hidden></option>
-                <option :selected="option[property] === value" v-for="option in options" :value="option[property]">
-                    {{option[optionKey]}}
-            </option>
-            </select>
-            <button v-if="resetButton" type="button" id="reset" class="btn btn-xs" @click="reset"><i class="fa fa-times"></i></button>
+    <div class="row">
+        <div class="form-group">
+            <label class="col-xs-3 control-label" :for="name">{{text}}</label>
+            <p class="col-xs-9  select-row">
+                <select class="form-control select-item" ref="select"
+                        :value="object[name]"
+                        @change="onInput($event.target.value)"
+                        v-validate="rules"
+                        :data-vv-name="name"
+                        :data-vv-as="text"
+                        :has-error="errors.has(name)">
+                    <option v-if="hiddenOption" value="" disabled hidden>{{hiddenOption}}</option>
+                    <option v-else value="" disabled hidden></option>
+                    <option :selected="option[name] === object[name]" v-for="option in options" :value="option[name]">
+                        {{option[visibleKey ? visibleKey : name]}}
+                    </option>
+                </select>
+                <button v-if="resetButton" type="button" id="reset" class="btn btn-xs" @click="reset"><i class="fa fa-times"></i></button>
+            </p>
         </div>
-    </form-item>
-
+        <span v-show="errors.has(name)" class="help is-danger col-xs-offset-3">{{ errors.first(name) }}</span>
+    </div>
 </template>
 <script>
     import formItem from './formItem.vue'
     export default {
         props: {
-            label: String,
-            value: String, //Initial value
+            rules: String,
+            name: String,
+            text: String,
+            object: Object,
             options: Array,
             hiddenOption: String,
-            inputId: String,
-            optionKey: String, //Key to show of an object
-            optionProperty: String, //Value of this select item
+            visibleKey: String, //Key to show of an object
             resetButton: {
                 type: Boolean,
-                default: false
-            },
-            selectClass: {
-                type: String,
-                default: ''
+                default: true
             }
         },
         components: {
             formItem
         },
-        computed: {
-            property() {
-                if(!this.optionProperty){
-                    return 'id'
-                }
-                else {
-                    return this.optionProperty
-                }
-            }
-        },
         methods: {
-            updateValue: function (value) {
-                console.log(value)
-                this.$emit('input', value);
+            onInput: function (value) {
+                this.$set(this.object, this.name, value)
             },
             reset(){
-                this.updateValue('')
-                this.$refs.select.value = ''
+                //TODO: DOM is not being refreshed when this function is called, this is a bug and has effects and validations
+                //and selected index
+                this.$set(this.object, this.name, '')
+                this.$refs.select.selectedIndex=0
             }
         }
     }

@@ -34,6 +34,7 @@ export default
         client: {
             client: 'client',
             clients: 'clients',
+            type: 'type',
             company: 'company',
             name: 'name',
             phoneNumber: 'phone number',
@@ -171,6 +172,7 @@ export default
         client: {
             client: 'klant',
             clients: 'klanten',
+            type: 'type',
             company: 'bedrijf',
             name: 'naam',
             phoneNumber: 'telefoonnummer',

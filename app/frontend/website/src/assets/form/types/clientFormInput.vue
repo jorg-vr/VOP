@@ -10,14 +10,10 @@ See: http://vee-validate.logaretm.com/
 -->
 <template>
     <div>
-
-        <form-input :placeholder="$t('common.name') | capitalize" :label="$t('common.name') | capitalize" v-model="client.name"
-                     v-validate="'required'"  data-vv-name="name" :has-error="errors.has('name')">
-        </form-input>
-        <span v-show="errors.has('name')" class="help is-danger">{{ errors.first('name') }}</span>
-
-        <client-type-select v-model="client.type"></client-type-select>
-
+        <form-input :object="client" name="name" :text="$t('client.name')" :rules="'required'"></form-input>
+        <form-select :object="client" name="type" :text="$t('client.type')" :rules="'required'"
+                     :options="clientTypes"></form-select>
+        <!--
         <form-input :placeholder="$t('address.country') | capitalize" :label="$t('address.country') | capitalize"
 
                     v-model="client.address.country"></form-input>
@@ -39,23 +35,28 @@ See: http://vee-validate.logaretm.com/
 
         <form-input :placeholder="$t('client.phoneNumber') | capitalize" :label="$t('client.phoneNumber') | capitalize"
                     v-model="client.phoneNumber"></form-input>
-    </div>
+                    -->
 
+    </div>
 
 </template>
 <script>
     import formInput from '../elements/formInput.vue'
-    import clientTypeSelect from '../elements/clientTypeSelect.vue'
-
+    import formSelect from '../elements/formSelect.vue'
+    import clientTypes from '../../../constants/clientTypes'
     export default {
+        data(){
+            return {
+                clientTypes: $.map(clientTypes, function (value, index) {
+                    return [value]
+                })
+            }
+        },
         props: {
             client: Object,
         },
         components: {
-            formInput, clientTypeSelect
-        },
-        created(){
-            console.log(this.client)
+            formInput, formSelect
         }
     }
 

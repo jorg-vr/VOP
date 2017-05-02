@@ -6,6 +6,7 @@ These values can be found in clientTypes.js
 @param value (optional): The initial client type value.
 -->
 <template>
+    <!-- TODO update this to new formSelect
     <form-item label="Type">
         <div class="select-row">
             <select class="form-control select-item" :value="value" @change="updateValue($event.target.value)" :id="inputId" ref="select">
@@ -16,7 +17,7 @@ These values can be found in clientTypes.js
             </select>
         </div>
     </form-item>
-
+       -->
 </template>
 <script>
     import formItem from './formItem.vue'
