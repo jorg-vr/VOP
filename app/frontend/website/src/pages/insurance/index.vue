@@ -33,12 +33,16 @@
             listComponent, buttonAdd, insuranceSearchBar
         },
         created() {
-
+            this.setLoading({loading: true })
             if(this.authorizedForAll){
-                this.fetchInsurances()
+                this.fetchInsurances().then(() => {
+                    this.setLoading({loading: false })
+                })
             }
             else {
-                this.fetchInsurancesBy({company: this.activeFunction.company})
+                this.fetchInsurancesBy({company: this.activeFunction.company}).then(() => {
+                    this.setLoading({loading: false })
+                })
             }
         },
         computed: {
@@ -66,10 +70,10 @@
             ]),
 
             ...mapMutations([
-                'setFilteredInsurances'
+                'setFilteredInsurances',
+                'setLoading'
             ]),
             updateInsurance(value){
-                console.log(value)
                 if(value!==''){
                     this.setFilteredInsurances(this.getInsurancesByAll(value))
                 }

@@ -2,6 +2,7 @@ package spring.controller;
 
 import controller.AbstractController;
 import controller.CompanyController;
+import controller.ControllerManager;
 import controller.CustomerController;
 import controller.exceptions.UnAuthorizedException;
 import controller.insurance.ContractController;
@@ -30,6 +31,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static util.UUIDUtil.toUUID;
+
 /**
  * This controller is responsible for handling the HTTP requests of the URL /companies.
  * Currently, the following HTTP requests are supported:
@@ -51,9 +54,13 @@ public class RESTCompanyController extends RESTAbstractController<RESTCompany, C
 
 
     public RESTCompanyController() {
-        super(CompanyController::new, RESTCompany::new);
+        super(RESTCompany::new);
     }
 
+    @Override
+    public AbstractController<Company> getController(ControllerManager manager) {
+        return manager.getCompanyController();
+    }
 
     @RequestMapping(method = RequestMethod.GET)
     public RESTSchema<RESTCompany> get(HttpServletRequest request,
@@ -63,10 +70,9 @@ public class RESTCompanyController extends RESTAbstractController<RESTCompany, C
                                        String type,
                                        @RequestHeader(value = "Authorization") String token,
                                        @RequestHeader(value = "Function") String function) throws UnAuthorizedException {
-        /*
-        if (city != null || postalCode != null ||country != null)
-            throw new InvalidInputException("Certain filters that you use are not implemented");*/
-        try (CompanyController controller = new CompanyController(verifyToken(token, function))) {
+        UUID user = new AuthenticationToken(token).getAccountId();
+        try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
+            CompanyController controller = manager.getCompanyController();
 
             CompanyType companyType = null;
             try {

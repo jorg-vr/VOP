@@ -14,7 +14,7 @@
         <property name="name" type="string" column="name"/>
         <many-to-one name="address" column="address_id" class="model.identity.Address" lazy="proxy" fetch="select" cascade="all"/>
         <many-to-one name="owner" column="owner_id"  class="model.identity.Customer" not-null="true" lazy="proxy" fetch="select" />
-        <bag name="vehicles" access="field" table="vehicles" cascade="all"
+        <bag name="vehicles" access="field" table="vehicles"
              lazy="true" fetch="select">
             <key column="fleet_id" not-null="false"/>
             <one-to-many class="model.fleet.Vehicle" />

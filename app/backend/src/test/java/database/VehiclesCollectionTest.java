@@ -1,5 +1,6 @@
 package database;
 
+import dao.database.ProductionManager;
 import dao.database.ProductionProvider;
 import dao.interfaces.*;
 import model.fleet.Fleet;
@@ -20,7 +21,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class VehiclesCollectionTest {
 
-    private static DAOProvider daoProvider;
+    private static DAOManager daoManager;
     private static boolean notLocalTest = false;
     private static Address a1;
     private static Customer c1;
@@ -30,16 +31,14 @@ public class VehiclesCollectionTest {
     //Setup before any of the tests are started
     @BeforeClass
     public static void initProvider() throws Exception {
-        daoProvider = ProductionProvider.getInstance();
-        if (daoProvider == null) {
-            ProductionProvider.initializeProvider("unittest");
-            daoProvider = ProductionProvider.getInstance();
-            notLocalTest = true;
-        }
-        try (VehicleTypeDAO vehicleTypeDAO = daoProvider.getVehicleTypeDAO();
-             CustomerDAO customerDAO = daoProvider.getCustomerDAO();
-             FleetDAO fleetDAO = daoProvider.getFleetDAO();
-             AddressDAO addressDAO = daoProvider.getAddressDao()) {
+        ProductionProvider.initializeProvider("unittest");
+        daoManager = ProductionProvider.getInstance().getDaoManager();
+        try {
+            VehicleTypeDAO vehicleTypeDAO = daoManager.getVehicleTypeDAO();
+            CustomerDAO customerDAO = daoManager.getCustomerDAO();
+            FleetDAO fleetDAO = daoManager.getFleetDAO();
+            AddressDAO addressDAO = daoManager.getAddressDao();
+
             a1 = addressDAO.create(new Address("streettest n1", "59", "town 1", "9999", "country 1"));
             c1 = customerDAO.create(new Customer(a1, "911", "customername 1", "btw123"));
             f1 = fleetDAO.create(new Fleet("fleet 1", c1, a1));
@@ -53,10 +52,12 @@ public class VehiclesCollectionTest {
     //Gets executed after all tests have been run
     @AfterClass
     public static void closeProvider() throws Exception {
-        try (VehicleTypeDAO vehicleTypeDAO = daoProvider.getVehicleTypeDAO();
-             CustomerDAO customerDAO = daoProvider.getCustomerDAO();
-             FleetDAO fleetDAO = daoProvider.getFleetDAO();
-             AddressDAO addressDAO = daoProvider.getAddressDao()) {
+        try {
+            VehicleTypeDAO vehicleTypeDAO = daoManager.getVehicleTypeDAO();
+            CustomerDAO customerDAO = daoManager.getCustomerDAO();
+            FleetDAO fleetDAO = daoManager.getFleetDAO();
+            AddressDAO addressDAO = daoManager.getAddressDao();
+
             vehicleTypeDAO.remove(t2.getUuid());
             vehicleTypeDAO.remove(t1.getUuid());
             fleetDAO.remove(f1.getUuid());
@@ -65,9 +66,8 @@ public class VehiclesCollectionTest {
         } catch (Exception e) {
 
         }
-        if (notLocalTest) {
-            daoProvider.close();
-        }
+
+        daoManager.close();
     }
 
     /**
@@ -78,8 +78,9 @@ public class VehiclesCollectionTest {
     @Test
     public void setFleetOfVehicle() throws Exception {
         Vehicle v1 = null, v2 = null;
-        try (FleetDAO fleetDAO = daoProvider.getFleetDAO();
-             VehicleDAO vehicleDAO = daoProvider.getVehicleDAO()) {
+        try {
+            FleetDAO fleetDAO = daoManager.getFleetDAO();
+            VehicleDAO vehicleDAO = daoManager.getVehicleDAO();
 
             //create vehicles
             f1 = fleetDAO.get(f1.getUuid());
@@ -101,14 +102,13 @@ public class VehiclesCollectionTest {
         } catch (Exception e) {
 
         } finally {
-            VehicleDAO vehicleDAO = daoProvider.getVehicleDAO();
+            VehicleDAO vehicleDAO = daoManager.getVehicleDAO();
             if (v1 != null) {
                 vehicleDAO.remove(v1.getUuid());
             }
             if (v2 != null) {
                 vehicleDAO.remove(v2.getUuid());
             }
-            vehicleDAO.close();
         }
     }
 
@@ -121,8 +121,9 @@ public class VehiclesCollectionTest {
     public void removeVehicle() throws Exception {
 
         Vehicle v1 = null;
-        try (FleetDAO fleetDAO = daoProvider.getFleetDAO();
-             VehicleDAO vehicleDAO = daoProvider.getVehicleDAO()) {
+        try {
+            FleetDAO fleetDAO = daoManager.getFleetDAO();
+            VehicleDAO vehicleDAO = daoManager.getVehicleDAO();
 
             //create vehicle
             f1 = fleetDAO.get(f1.getUuid());
@@ -144,11 +145,10 @@ public class VehiclesCollectionTest {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            VehicleDAO vehicleDAO = daoProvider.getVehicleDAO();
+            VehicleDAO vehicleDAO = daoManager.getVehicleDAO();
             if (v1 != null) {
                 vehicleDAO.remove(v1.getUuid());
             }
-            vehicleDAO.close();
         }
     }
 

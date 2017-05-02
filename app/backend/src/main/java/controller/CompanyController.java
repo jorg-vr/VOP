@@ -1,10 +1,7 @@
 package controller;
 
 import controller.exceptions.UnAuthorizedException;
-import dao.interfaces.CompanyDAO;
-import dao.interfaces.DAO;
-import dao.interfaces.DataAccessException;
-import dao.interfaces.Filter;
+import dao.interfaces.*;
 import main.BackendApplication;
 import model.account.Function;
 import model.account.Resource;
@@ -23,8 +20,8 @@ import java.util.stream.Collectors;
  */
 public class CompanyController extends AbstractController<Company> {
 
-    public CompanyController(Function function) {
-        super(BackendApplication.getProvider().getCompanyDAO(), Resource.COMPANY, function);
+    public CompanyController(Function function, DAOManager manager) {
+        super(manager.getCompanyDAO(), Resource.COMPANY, function);
     }
 
     @Override

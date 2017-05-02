@@ -1,5 +1,6 @@
 package spring.model;
 
+import controller.ControllerManager;
 import controller.CustomerController;
 import controller.exceptions.UnAuthorizedException;
 import dao.interfaces.DataAccessException;
@@ -35,18 +36,19 @@ public class RESTFleet extends RESTAbstractModel<Fleet> {
         this.name = name;
     }
 
-    public Fleet translate(Function function){
-        Fleet fleet=new Fleet();
+    public Fleet translate(ControllerManager manager) {
+        Fleet fleet = new Fleet();
         fleet.setName(getName());
-        try (CustomerController customerController=new CustomerController(function)){
-            fleet.setOwner(customerController.get(UUIDUtil.toUUID(getCompany())));
+        try {
+            CustomerController controller = manager.getCustomerController();
+            fleet.setOwner(controller.get(UUIDUtil.toUUID(getCompany())));
         } catch (DataAccessException e) {
             throw new InvalidInputException("company");
         } catch (UnAuthorizedException e) {
             throw new NotAuthorizedException();
         }
         fleet.setUuid(UUIDUtil.toUUID(getId()));
-        return  fleet;
+        return fleet;
     }
 
     public String getCompany() {

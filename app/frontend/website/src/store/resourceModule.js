@@ -26,15 +26,18 @@
  * ====================
  * ACTIONS:
  * ====================
- * fetchResource({id}): Fetches the resource with the given ID
- * fetchResources(): Fetches a list with all of the resources
- * fetchResourcesBy(filters): Fetches a list with all of the resources filtered with the given filter object
- * createResource(resource): Creates a resource with the values of the given resource
- * updateResource(resource): Updates a resource with the values of the given resource
- * deleteResource({id}): Deletes the resource with the given ID
+ * NOTE!!! The ids property in payload represents an object with id values based on the location of this resource.
+ * E.g. Location: '/companies/{company_id}/invoices/' => ids: {company_id: 5}
+ * fetchResource({id, ids}): Fetches the resource with the given ID
+ * fetchResources({ids}): Fetches a list with all of the resources
+ * fetchResourcesBy({filters, ids}): Fetches a list with all of the resources filtered with the given filter object
+ * createResource({resource, ids}): Creates a resource with the values of the given resource
+ * updateResource({resource, ids}): Updates a resource with the values of the given resource
+ * deleteResource({id, ids}): Deletes the resource with the given ID
  * ====================
  *
- * A module can be created with the function "intializeModule(location, name)"
+ * A module can be created with the function "intializeModule(location, name)" or
+ * "intializeModule(location, name, names)" if the plural is deviant.
  * This function takes the location of the resource, for example: "fleets/",
  * and takes the name of the resource as argument, for example "fleet".
  * */
@@ -46,9 +49,16 @@ let capitalize = function(value) {
 }
 
 export default {
-    //Create a new module with all of the basic operations 
-    initializeModule(location, name){
-        let names = name + 's'
+    //Create a new module with all of the basic operations
+    /**
+     * Create a module for a resource
+     * @param location The location of the resource of API calls
+     * @param name The name of the resource
+     * @param optionalNames - optional: Plural name of the resource
+     * @returns {{state: {}, getters: {}, mutations: {}, actions: {}}|*}
+     */
+    initializeModule(location, name, optionalNames){
+        let names = (typeof optionalNames === 'undefined') ? name + 's' : optionalNames;
         let capName = capitalize(name)
         let capNames = capitalize(names)
         let filteredNames ='filtered' + capNames
@@ -108,11 +118,12 @@ export default {
             state[names] = state[names].filter(resource => resource.id !== payload.id)
             state[filteredNames] = state[filteredNames].filter(resource => resource.id !== payload.id)
         }
-        module.actions[fetchResources] = (context) => {
+        module.actions[fetchResources] = function(context, payload) {
+            payload = payload || {} //Set payload to empty object if undefined
             //Empty the previous list of resources.
             context.commit(clearResources)
             return new Promise((resolveSuccess, resolveFailure) => {
-                RequestHandler.getObjectsRequest(location).then(resources => {
+                RequestHandler.getObjectsRequest(formatString(location, payload.ids)).then(resources => {
                     context.commit(setResources, resources)
                     //Initially the filtered resources should equal the actual resources.
                     context.commit(setFilteredResources, resources)
@@ -122,11 +133,11 @@ export default {
                 })
             })
         }
-        module.actions[fetchResourcesBy] = (context, filters) => {
+        module.actions[fetchResourcesBy] = function(context, payload){
             //Empty the previous list of resources.
             context.commit(clearResources)
             return new Promise((resolveSuccess, resolveFailure) => {
-                RequestHandler.getObjectsRequestBy(location, filters).then(resources => {
+                RequestHandler.getObjectsRequestBy(formatString(location, payload.ids), payload.filters).then(resources => {
                     context.commit(setResources, resources)
                     //Initially the filtered resources should equal the actual resources.
                     context.commit(setFilteredResources, resources)
@@ -136,9 +147,9 @@ export default {
                 })
             })
         }
-        module.actions[fetchResource] = (context, {id}) => {
+        module.actions[fetchResource] = function(context, payload){
             return new Promise((resolveSuccess, resolveFailure) => {
-                RequestHandler.getObjectRequest(location, id).then(resource => {
+                RequestHandler.getObjectRequest(formatString(location, payload.ids), payload.id).then(resource => {
                     context.commit(setResource, resource)
                     resolveSuccess(resource)
                 }, response => {
@@ -146,31 +157,28 @@ export default {
                 })
             })
         }
-        module.actions[createResource] = (context, resource) => {
+        module.actions[createResource] = function(context, payload){
             return new Promise((resolveSuccess, resolveFailure) => {
-                RequestHandler.postObjectRequest(location, resource).then(createdResource => {
+                RequestHandler.postObjectRequest(formatString(location, payload.ids), payload.resource).then(createdResource => {
                     resolveSuccess(createdResource)
                 }, response => {
                     resolveFailure(response)
                 })
-
-
-
             })
         }
-        module.actions[updateResource] = (context, resource) => {
+        module.actions[updateResource] = function(context, payload){
             return new Promise((resolveSuccess, resolveFailure) => {
-                RequestHandler.putObjectRequest(location, resource).then(updatedResource => {
+                RequestHandler.putObjectRequest(formatString(location, payload.ids), payload.resource).then(updatedResource => {
                     resolveSuccess(updatedResource)
                 }, response => {
                     resolveFailure(response)
                 })
             })
         }
-        module.actions[deleteResource] = (context, {id}) => {
+        module.actions[deleteResource] = function(context, payload){
             return new Promise((resolveSuccess, resolveFailure) => {
-                RequestHandler.deleteObjectRequest(location, id).then(() => {
-                    context.commit(removeResource, {id})
+                RequestHandler.deleteObjectRequest(formatString(location, payload.ids), payload.id).then(() => {
+                    context.commit(removeResource, {id: payload.id})
                     resolveSuccess()
                 }, response => {
                     resolveFailure(response)
@@ -192,3 +200,15 @@ let addShowableDates = function(payload){
     }
 }
 
+
+//This could probably be used aswell: http://es6-features.org/#CustomInterpolation
+let formatString = function(str, data) {
+    data = data || {}
+    var match = str.match(/{(.+?)}/g)
+    if(match){
+        match.forEach(function(key) {
+            str.replace(key, data[key.replace('{','').replace('}', '')])
+        })
+    }
+    return str
+}

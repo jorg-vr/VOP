@@ -15,8 +15,8 @@ import java.util.Collection;
  */
 public class FleetController extends AbstractController<Fleet> {
 
-    public FleetController(Function function) {
-        super(BackendApplication.getProvider().getFleetDAO(), Resource.FLEET, function);
+    public FleetController(Function function, DAOManager manager) {
+        super(manager.getFleetDAO(), Resource.FLEET, function);
     }
 
     @Override
