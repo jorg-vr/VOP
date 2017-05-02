@@ -49,9 +49,11 @@ public class RESTTaxesController {
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
             VehicleTypeController controller = manager.getVehicleTypeController();
             VehicleType type = controller.get(toUUID(typeName));
-            type.setTax(SuretyType.valueOf(contractType), tax);
+
+            SuretyType suretyType = SuretyType.valueOf(contractType);
+            type.setTax(suretyType, tax);
             type = controller.update(type);
-            return type.getTax(SuretyType.valueOf(contractType));
+            return type.getTax(suretyType);
         } catch (DataAccessException e) {
             throw new NotFoundException();
         } catch (IllegalArgumentException e) {
