@@ -27,7 +27,8 @@ public class ConstraintValidatorFactoryImpl implements ConstraintValidatorFactor
             // could not instantiate class
             e.printStackTrace();
         }
-
+        System.out.println(key.toString());
+        System.out.println(EntityManagerAwareValidator.class.isAssignableFrom(key));
         if(EntityManagerAwareValidator.class.isAssignableFrom(key)) {
             EntityManagerAwareValidator validator = (EntityManagerAwareValidator) instance;
             System.out.println("isAssignableFrom");

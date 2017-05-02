@@ -2,6 +2,10 @@ package dao.database;
 
 import dao.database.util.unique.ConstraintValidatorFactoryImpl;
 import dao.exceptions.DataAccessException;
+import dao.interfaces.DAOManager;
+import dao.interfaces.DAOProvider;
+import dao.interfaces.UserDAO;
+import model.account.User;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -17,14 +21,16 @@ import java.util.Set;
 public class HibernateUtil {
     /**
      * Using Hibernate make the given object persistent in the database
-     * @param session The Session to use
+     *
+     * @param session      The Session to use
      * @param objectToSave The object to save
      * @throws DataAccessException Thrown when constraints are violated or session
      */
     public synchronized static void create(Session session, Object objectToSave) throws DataAccessException {
         Transaction transaction = null;
-        try  {
+        try {
             transaction = session.beginTransaction();
+            //validate(session,objectToSave);
             session.save(objectToSave);
             transaction.commit();
         } catch (Exception e) {
@@ -62,7 +68,7 @@ public class HibernateUtil {
     /**
      * Using Hibernate update the given object in the database
      *
-     * @param session       The Session to use
+     * @param session        The Session to use
      * @param objectToUpdate The object to update
      * @throws DataAccessException Thrown when constraints are violated or session
      */
@@ -81,8 +87,8 @@ public class HibernateUtil {
         }
     }
 
-    private synchronized static Map<String,String> validate(Session session, Object object){
-        Map<String,String> map = new HashMap<>();
+    private synchronized static Map<String, String> validate(Session session, Object object) {
+        Map<String, String> map = new HashMap<>();
         ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
         ValidatorContext validatorContext = validatorFactory.usingContext();
         validatorContext.constraintValidatorFactory(
@@ -93,11 +99,32 @@ public class HibernateUtil {
 
         Set<ConstraintViolation<Object>> violations = validator.validate(object);
 
-        for(ConstraintViolation<Object> violation: violations){
-            map.put(violation.getPropertyPath().toString(),violation.getMessage());
+        for (ConstraintViolation<Object> violation : violations) {
+            map.put(violation.getPropertyPath().toString(), violation.getMessage());
             System.out.println(violation.getPropertyPath() + " " + violation.getMessage());
         }
-        throw new RuntimeException();
-        //return map;
+//        throw new RuntimeException();
+        return map;
+    }
+
+    public static void main(String[] args) {
+        ProductionProvider.initializeProvider("unittest");
+        try (DAOProvider provider = ProductionProvider.getInstance();
+             DAOManager daoManager = provider.getDaoManager()) {
+            UserDAO userDAO = daoManager.getUserDAO();
+            User user = new User();
+            user.setFirstName("test");
+            user.setLastName("test");
+            user.setEmail("test,test");
+            userDAO.create(user);
+            //userDAO.remove(user.getUuid());
+            User user1 = new User();
+            user1.setFirstName("test");
+            user1.setLastName("test");
+            user1.setEmail("test,test");
+            userDAO.create(user1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

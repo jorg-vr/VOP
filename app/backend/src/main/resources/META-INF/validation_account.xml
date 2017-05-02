@@ -4,6 +4,11 @@
                      xmlns="http://jboss.org/xml/ns/javax/validation/mapping">
 
     <bean class="model.account.User" ignore-annotations="true">
+        <class>
+            <constraint annotation="dao.database.util.unique.UniqueKey" >
+                <element name="columnNames">email</element>
+            </constraint>
+        </class>
         <field name="email">
             <constraint annotation="javax.validation.constraints.NotNull"/>
         </field>

@@ -50,12 +50,17 @@ public abstract class ProductionDAO<T extends EditableObject> implements DAO<T> 
     }
 
     @Override
-    public T get(UUID id) throws ObjectNotFoundException {
-        return Optional.ofNullable(session.get(cl, id)).orElseThrow(() -> new ObjectNotFoundException(id));
+    public T get(UUID id)  {
+        try {
+            return Optional.ofNullable(session.get(cl, id)).orElseThrow(() -> new ObjectNotFoundException(id));
+        } catch (ObjectNotFoundException e) {
+            //TODO throws
+        }
+        return null;
     }
 
     @Override
-    public void remove(UUID id) throws DataAccessException, ObjectNotFoundException {
+    public void remove(UUID id) throws DataAccessException {
         HibernateUtil.remove(session, get(id));
     }
 
