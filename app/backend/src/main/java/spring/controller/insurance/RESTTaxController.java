@@ -22,7 +22,7 @@ import static util.UUIDUtil.toUUID;
  */
 @RestController
 @RequestMapping("${path.vehicles}/${path.types}/{typeName}/${path.taxes}/{contractType}")
-public class RESTTaxesController {
+public class RESTTaxController {
 
     @RequestMapping(method = RequestMethod.GET)
     public double get(@PathVariable String typeName, @PathVariable String contractType,
