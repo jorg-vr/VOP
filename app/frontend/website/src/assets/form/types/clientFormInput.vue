@@ -41,13 +41,23 @@ All of the fields for user input for the client form
 
     export default {
         props: {
-            client: Object,
+            object: Object,
         },
         components: {
             formInput, clientTypeSelect
         },
         created(){
             console.log(this.client)
+        },
+        computed: {
+            client(){
+                if(this.object === null) {
+                    return {address: {}}
+                }
+                else {
+                    return this.object
+                }
+            }
         }
     }
 
