@@ -1,5 +1,6 @@
 package dao.database.util.unique;
 
+import dao.database.ProductionProvider;
 import org.hibernate.Session;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -29,6 +30,7 @@ public class UniqueKeyValidator implements ConstraintValidator<UniqueKey, Serial
     @Override
     public void initialize(UniqueKey constraintAnnotation) {
         this.columnNames = constraintAnnotation.columnNames();
+        this.session = ProductionProvider.getInstance().getDaoManager().getSession();
 
     }
 

@@ -11,8 +11,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
 public class ProductionManager implements DAOManager {
 
-    private Session session;
-
+    Session session;
 
     ProductionManager(Session session) {
         this.session = session;
@@ -103,7 +102,6 @@ public class ProductionManager implements DAOManager {
     public InsuranceCompanyDAO getInsuranceCompanyDao() {
         return new ProductionInsuranceCompanyDAO(session);
     }
-
 
     @Override
     public void close() {

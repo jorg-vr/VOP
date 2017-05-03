@@ -19,6 +19,7 @@ import java.util.Set;
  * Created by sam on 3/13/17.
  */
 public class HibernateUtil {
+
     /**
      * Using Hibernate make the given object persistent in the database
      *
