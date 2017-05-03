@@ -69,8 +69,7 @@ public abstract class AbstractController<T extends EditableObject> {
         T t = dao.get(uuid);
         if (role.hasAccess(resource, READ_ALL) ||
                 (role.hasAccess(resource, READ_MINE) && isOwner(t, function))) {
-            Collection<LogEntry> entries = t.logCreate(function.getUser());
-            for (LogEntry entry: entries) {
+            for (LogEntry entry : t.logGet(function.getUser())) {
                 System.out.println(entry);
             }
             return t;
@@ -95,6 +94,7 @@ public abstract class AbstractController<T extends EditableObject> {
         Collection<T> collection = dao.listFiltered(filters);
         if (role.hasAccess(resource, READ_ALL) ||
                 (role.hasAccess(resource, READ_MINE) && collection.stream().allMatch((t) -> isOwner(t, function)))) {
+            //TODO log get of every object
             return collection;
         } else {
             throw new UnAuthorizedException();
@@ -116,6 +116,9 @@ public abstract class AbstractController<T extends EditableObject> {
         if (role.hasAccess(resource, REMOVE_ALL) ||
                 (role.hasAccess(resource, REMOVE_MINE) && isOwner(t, function))) {
             dao.remove(uuid);
+            for (LogEntry entry : t.logDelete(function.getUser())) {
+                System.out.println(entry);
+            }
         } else {
             throw new UnAuthorizedException();
         }
@@ -134,6 +137,9 @@ public abstract class AbstractController<T extends EditableObject> {
     public T create(T t) throws DataAccessException, UnAuthorizedException {
         if (role.hasAccess(resource, CREATE_ALL) ||
                 (role.hasAccess(resource, CREATE_MINE) && isOwner(t, function))) {
+            for (LogEntry entry : t.logCreate(function.getUser())) {
+                System.out.println(entry);
+            }
             return dao.create(t);
         } else {
             throw new UnAuthorizedException();
@@ -152,11 +158,16 @@ public abstract class AbstractController<T extends EditableObject> {
      */
     public T update(T t) throws DataAccessException, UnAuthorizedException {
         T tOld = dao.get(t.getUuid());
+        EditableObject copy = tOld.copy();
         if (role.hasAccess(resource, UPDATE_ALL) ||
                 (role.hasAccess(resource, UPDATE_MINE) &&
                         isOwner(tOld, function) &&
                         isOwner(t, function))) {
-            return dao.update(t);
+            T result = dao.update(t);
+            for (LogEntry entry : t.logUpdate(function.getUser(), copy)) {
+                System.out.println(entry);
+            }
+            return result;
         } else {
             throw new UnAuthorizedException();
         }

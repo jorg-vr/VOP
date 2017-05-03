@@ -1,9 +1,7 @@
 package model.fleet;
 
 import model.account.User;
-import model.history.EditableObject;
-import model.history.LogAction;
-import model.history.LogEntry;
+import model.history.*;
 import model.identity.LeasingCompany;
 import spring.exceptions.InvalidInputException;
 
@@ -11,6 +9,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
+
+import static model.history.FieldsComparator.compareFields;
 
 public class Vehicle implements EditableObject, java.io.Serializable {
 
@@ -232,12 +232,28 @@ public class Vehicle implements EditableObject, java.io.Serializable {
 
     @Override
     public EditableObject copy() {
-        return new Vehicle(uuid, brand, model, licensePlate, productionDate, chassisNumber, value, mileage, (VehicleType) type.copy(), fleet);
+        return new Vehicle(uuid, brand, model, licensePlate, productionDate, chassisNumber, value, mileage, type, fleet);
     }
 
     public Collection<LogEntry> logCreate(User user) {
         Collection<LogEntry> entries = EditableObject.super.logCreate(user);
-        // TODO Add update entry for fleet
+
+        Collection<Description> descriptions = new ArrayList<>();
+        Description description = new Description();
+        description.setField("vehicles");
+        description.setOldValue("null");
+        description.setNewValue(uuid + "");
+        descriptions.add(description);
+
+        LogEntry entry = new LogEntry(fleet.getUuid(),user, LogAction.UPDATE, descriptions );
+        entries.add(entry);
+        return entries;
+    }
+
+    @Override
+    public Collection<LogEntry> logUpdate(User user, Object old) {
+        Collection<LogEntry> entries = new ArrayList<>();
+        entries.add(new LogEntry(uuid, user, LogAction.UPDATE, compareFields(old, this)));
         return entries;
     }
 }

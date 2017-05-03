@@ -12,10 +12,23 @@ public interface EditableObject {
 
     EditableObject copy();
 
+    default Collection<LogEntry> logGet(User user) {
+       return LogEntry.createSimpleLogCollection(getUuid(), user, LogAction.GET);
+    }
+
     default Collection<LogEntry> logCreate(User user) {
-        Collection<LogEntry> entries = new ArrayList<>();
-        LogEntry entry = new LogEntry(getUuid(), user, LogAction.CREATE);
-        entries.add(entry);
-        return entries;
+        return LogEntry.createSimpleLogCollection(getUuid(), user, LogAction.CREATE);
+
+    }
+
+    default Collection<LogEntry> logDelete(User user) {
+        return LogEntry.createSimpleLogCollection(getUuid(), user, LogAction.DELETE);
+    }
+
+    /**
+     * TODO use generics
+     */
+    default Collection<LogEntry> logUpdate(User user, Object old) {
+        return new ArrayList<>();
     }
 }

@@ -1,6 +1,7 @@
 package model.history;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
 
@@ -92,5 +93,12 @@ public class LogEntry {
                 ", action=" + action +
                 ", descriptions=" + descriptions +
                 '}';
+    }
+
+    public static Collection<LogEntry> createSimpleLogCollection(UUID uuid, User user, LogAction action) {
+        Collection<LogEntry> entries = new ArrayList<>();
+        LogEntry entry = new LogEntry(uuid, user, action);
+        entries.add(entry);
+        return entries;
     }
 }
