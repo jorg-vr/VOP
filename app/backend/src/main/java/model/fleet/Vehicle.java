@@ -36,7 +36,7 @@ public class Vehicle implements EditableObject, java.io.Serializable {
 
     private Fleet fleet;
 
-    private Map<SuretyType, Double> commissions = new HashMap<>();
+    private Map<SuretyType, Double> commissions;
 
     public Vehicle() {
 
@@ -53,6 +53,7 @@ public class Vehicle implements EditableObject, java.io.Serializable {
         this.type = type;
         this.leasingCompany = leasingCompany;
         this.fleet = fleet;
+        commissions = new HashMap<>();
     }
 
     public Vehicle(UUID uuid, String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int value, int mileage, VehicleType type, Fleet fleet) throws InvalidInputException {
@@ -66,11 +67,13 @@ public class Vehicle implements EditableObject, java.io.Serializable {
         setMileage(mileage);
         this.type = type;
         this.fleet = fleet;
+        commissions = new HashMap<>();
     }
 
     public Vehicle(UUID uuid, String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int value, int mileage, VehicleType type, Fleet fleet, LeasingCompany leasingCompany) throws InvalidInputException {
         this(uuid, brand, model, licensePlate, productionDate, chassisNumber, value, mileage, type, fleet);
         this.leasingCompany = leasingCompany;
+        commissions = new HashMap<>();
     }
 
     public Fleet getFleet() {
@@ -232,6 +235,10 @@ public class Vehicle implements EditableObject, java.io.Serializable {
 
     public void setSpecificCommission(SuretyType suretyType, double commission) {
         commissions.put(suretyType, commission);
+    }
+
+    public void removeSpecificCommission(SuretyType suretyType) {
+        commissions.remove(suretyType);
     }
 
     public Map<SuretyType, Double> getCommissions() {

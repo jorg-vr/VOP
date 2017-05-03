@@ -12,37 +12,43 @@ public class Customer extends Company implements java.io.Serializable {
 
     private Collection<Contract> contracts;
 
-    private Map<SuretyType, Double> commissions = new HashMap<>();
+    private Map<SuretyType, Double> commissions;
 
 
     public Customer() {
         super.setCompanyType(CompanyType.CUSTOMER);
         this.fleets = new ArrayList<>();
+        commissions = new HashMap<>();
     }
 
     public Customer(UUID uuid) {
         super(uuid);
         this.fleets = new ArrayList<>();
+        commissions = new HashMap<>();
     }
 
     public Customer(Address address, String phoneNumber, String name, String btwNumber) {
         super(address, phoneNumber, name, btwNumber, CompanyType.CUSTOMER);
         this.fleets = new ArrayList<>();
+        commissions = new HashMap<>();
     }
 
     public Customer(Address address, String phoneNumber, String name, String btwNumber, Periodicity invoicePeriodicity, Periodicity statementPeriodicity) {
         super(address, phoneNumber, name, btwNumber, CompanyType.CUSTOMER, invoicePeriodicity, statementPeriodicity);
         this.fleets = new ArrayList<>();
+        commissions = new HashMap<>();
     }
 
     public Customer(Address address, String phoneNumber, String name, String btwNumber, CompanyType companyType) {
         super(address, phoneNumber, name, btwNumber, companyType);
         this.fleets = new ArrayList<>();
+        commissions = new HashMap<>();
     }
 
     public Customer(UUID id, Address address, String phoneNumber, String name, String btwNumber, CompanyType companyType) {
         super(id, address, phoneNumber, name, btwNumber, companyType);
         this.fleets = new ArrayList<>();
+        commissions = new HashMap<>();
     }
 
     public Collection<Fleet> getFleets() {
@@ -79,5 +85,9 @@ public class Customer extends Company implements java.io.Serializable {
 
     public void setSpecificCommission(SuretyType suretyType, double commission) {
         commissions.put(suretyType, commission);
+    }
+
+    public void removeSpecificCommission(SuretyType suretyType) {
+        commissions.remove(suretyType);
     }
 }
