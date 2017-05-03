@@ -1,10 +1,15 @@
 package model.fleet;
 
+import model.account.User;
 import model.history.EditableObject;
+import model.history.LogAction;
+import model.history.LogEntry;
 import model.identity.LeasingCompany;
 import spring.exceptions.InvalidInputException;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.UUID;
 
 public class Vehicle implements EditableObject, java.io.Serializable {
@@ -228,5 +233,11 @@ public class Vehicle implements EditableObject, java.io.Serializable {
     @Override
     public EditableObject copy() {
         return new Vehicle(uuid, brand, model, licensePlate, productionDate, chassisNumber, value, mileage, (VehicleType) type.copy(), fleet);
+    }
+
+    public Collection<LogEntry> logCreate(User user) {
+        Collection<LogEntry> entries = EditableObject.super.logCreate(user);
+        // TODO Add update entry for fleet
+        return entries;
     }
 }

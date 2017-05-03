@@ -9,6 +9,7 @@ import model.account.Function;
 import model.account.Resource;
 import model.account.Role;
 import model.history.EditableObject;
+import model.history.LogEntry;
 
 import java.util.Collection;
 import java.util.UUID;
@@ -68,6 +69,10 @@ public abstract class AbstractController<T extends EditableObject> {
         T t = dao.get(uuid);
         if (role.hasAccess(resource, READ_ALL) ||
                 (role.hasAccess(resource, READ_MINE) && isOwner(t, function))) {
+            Collection<LogEntry> entries = t.logCreate(function.getUser());
+            for (LogEntry entry: entries) {
+                System.out.println(entry);
+            }
             return t;
         } else {
             throw new UnAuthorizedException();

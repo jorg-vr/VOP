@@ -28,9 +28,17 @@ public class LogEntry {
     public LogEntry() {
     }
 
+    public LogEntry(UUID object, User user, LogAction action) {
+        this.object = object;
+        this.user = user;
+        this.time = LocalDateTime.now();
+        this.action = action;
+    }
+
     public LogEntry(UUID object, User user, LogAction action, Collection<Description> descriptions) {
         this.object = object;
         this.user = user;
+        this.time = LocalDateTime.now();
         this.action = action;
         this.descriptions = descriptions;
     }
@@ -73,5 +81,16 @@ public class LogEntry {
 
     public void setDescriptions(Collection<Description> descriptions) {
         this.descriptions = descriptions;
+    }
+
+    @Override
+    public String toString() {
+        return "LogEntry{" +
+                "object=" + object +
+                ", user=" + user +
+                ", time=" + time +
+                ", action=" + action +
+                ", descriptions=" + descriptions +
+                '}';
     }
 }
