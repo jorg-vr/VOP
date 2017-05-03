@@ -3156,6 +3156,63 @@ definitions:
         readOnly: true
         type: string
         example: /fleet/15/invoice/20
+  Correction:
+    type: object
+    required:
+      - vehicle
+      - contract
+      - date
+      - paid
+      - amount
+      - type
+    properties:
+      id:
+        readOnly: true
+        type: integer
+        format: int64
+      vehicle:
+        description: The ID of the vehicle this correction is for
+        type: integer
+        format: int64
+      contract:
+        description: The ID of the contract this correction belongs to.
+        type: integer
+        format: int64
+      date:
+        description: The date of the correction was submitted.
+        type: string
+        format: date-time
+        example: 2016-08-29T09:12:33.001Z
+      paid:
+        description: Shows if the correction is paid or not.
+        type: boolean
+      amount:
+        description: >-
+          The amount of money in cents this correction adds or subtracts to the
+          contract.
+        type: integer
+        format: int64
+      type:
+        description: >-
+          The type of the correction. The only possible values are `removal` or
+          `registration`
+        type: string
+        enum:
+          - removal
+      createdAt:
+        readOnly: true
+        type: string
+        format: date-time
+        example: 2016-08-29T09:12:33.001Z
+      updatedAt:
+        readOnly: true
+        type: string
+        format: date-time
+        example: 2016-08-29T09:12:33.001Z
+      url:
+        readOnly: true
+        type: string
+        example: /fleet/15/invoice/20
   Contract:
     type: object
     required:
