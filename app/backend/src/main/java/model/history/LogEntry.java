@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.UUID;
 
-import model.account.Action;
 import model.account.User;
 
 /**
@@ -27,6 +26,13 @@ public class LogEntry {
     private Collection<Description> descriptions;
 
     public LogEntry() {
+    }
+
+    public LogEntry(UUID object, User user, LogAction action, Collection<Description> descriptions) {
+        this.object = object;
+        this.user = user;
+        this.action = action;
+        this.descriptions = descriptions;
     }
 
     public UUID getObject() {

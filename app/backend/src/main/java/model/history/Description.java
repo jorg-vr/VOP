@@ -1,15 +1,36 @@
 package model.history;
 
 /**
+ * This class gives more information of what the value of a certain field changed to in a certain action.
+ *
  * @author Billie Devolder
  */
 public class Description {
 
+    // The name of the field that has been changed
     private String field;
 
+    // String representation of the old value of the field
     private String oldValue;
 
+    // String representation of the new value of the field
     private String newValue;
+
+    public Description() {
+    }
+
+    public Description(String field, Object oldObject, Object newObject) {
+        this.field = field;
+        oldValue = "null";
+        if (oldObject != null) {
+            oldValue = oldObject.toString();
+        }
+
+        newValue = "null";
+        if (newObject != null) {
+            newValue = newObject.toString();
+        }
+    }
 
     public String getField() {
         return field;
@@ -33,5 +54,10 @@ public class Description {
 
     public void setNewValue(String newValue) {
         this.newValue = newValue;
+    }
+
+    @Override
+    public String toString() {
+        return field + ": " + oldValue + " -> " + newValue;
     }
 }
