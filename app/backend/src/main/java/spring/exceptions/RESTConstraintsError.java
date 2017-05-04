@@ -1,27 +1,63 @@
 package spring.exceptions;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
- * Created by Billie Devolder on 4/05/2017.
+ * @author Billie Devolder
  */
 public class RESTConstraintsError extends RESTError {
 
-    private Map<String, String> errors;
+    private List<ErrorItem> errors;
 
     public RESTConstraintsError(int code, String message, Map<String, String> errors) {
         super(code, message);
-        this.errors = errors;
+        setErrors(errors);
     }
 
     public RESTConstraintsError() {
     }
 
-    public Map<String, String> getErrors() {
+    public List<ErrorItem> getErrors() {
         return errors;
     }
 
-    public void setErrors(Map<String, String> errors) {
+    public void setErrors(List<ErrorItem> errors) {
         this.errors = errors;
+    }
+
+    public void setErrors(Map<String, String> violations) {
+        errors = new ArrayList<>();
+        for (String field : violations.keySet()) {
+            errors.add(new ErrorItem(field, violations.get(field)));
+        }
+    }
+
+    private class ErrorItem {
+
+        private String field;
+        private String message;
+
+        public ErrorItem(String field, String message) {
+            this.field = field;
+            this.message = message;
+        }
+
+        public String getField() {
+            return field;
+        }
+
+        public void setField(String field) {
+            this.field = field;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+
+        public void setMessage(String message) {
+            this.message = message;
+        }
     }
 }
