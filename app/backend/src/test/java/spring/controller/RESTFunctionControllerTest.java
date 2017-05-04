@@ -25,11 +25,13 @@ import util.UUIDUtil;
 
 import java.time.LocalDateTime;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.hasSize;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.junit.Assert.*;
 
 /**
  * Created by Ponti on 4/05/2017.
@@ -75,6 +77,9 @@ public class RESTFunctionControllerTest {
     public static void afterTransaction() throws Exception {
         try {
             manager.getCustomerDAO().remove(customer.getUuid());
+            manager.getRoleDAO().remove(role1.getUuid());
+            manager.getRoleDAO().remove(role2.getUuid());
+            manager.getUserDAO().remove(user.getUuid());
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
@@ -97,10 +102,9 @@ public class RESTFunctionControllerTest {
                     .header("Function", authPair[1])
             )
                     .andExpect(status().isOk())
-                    .andDo(print())
                     //Expect 3 instead of 2 because there's 1 extra Function in the database for authentication purposes while testing
-                    .andExpect(jsonPath("$.total", greaterThanOrEqualTo(3)))
                     .andExpect(jsonPath("$.data", hasSize(greaterThanOrEqualTo(3))))
+                    .andExpect(jsonPath("$.total", greaterThanOrEqualTo(3)))
                     .andReturn();
         } finally {
             //Clean up database for other tests
