@@ -77,6 +77,7 @@ public class HibernateUtil {
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
+            validate(session,objectToUpdate);
             session.merge(objectToUpdate);
             tx.commit();
         } catch (Exception e) {
