@@ -5,14 +5,18 @@ import controller.VehicleController;
 import controller.exceptions.UnAuthorizedException;
 import controller.insurance.ContractController;
 import controller.insurance.SuretyController;
+import dao.exceptions.ConstraintViolationException;
 import dao.exceptions.DataAccessException;
 import dao.exceptions.ObjectNotFoundException;
 import model.insurance.SuretyType;
 import model.insurance.VehicleInsurance;
+import spring.exceptions.ErrorCode;
 import spring.exceptions.InvalidInputException;
 import spring.model.RESTAbstractModel;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 import static util.MyProperties.PATH_VEHICLE_INSURANCES;
 import static util.MyProperties.getProperty;
@@ -49,9 +53,15 @@ public class RESTVehicleInsurance extends RESTAbstractModel<VehicleInsurance> {
     }
 
     @Override
-    public VehicleInsurance translate(ControllerManager manager) throws UnAuthorizedException, DataAccessException {
+    public VehicleInsurance translate(ControllerManager manager) throws UnAuthorizedException, DataAccessException, ConstraintViolationException {
         VehicleInsurance insurance = new VehicleInsurance();
         insurance.setUuid(toUUID(getId()));
+        insurance.setStartDate(startDate);
+        insurance.setEndDate(endDate);
+        insurance.setFranchise(franchise);
+        insurance.setInsuredValue(insuredValue);
+
+        Map<String, String> violations = new HashMap<>();
         try {
             VehicleController controller = manager.getVehicleController();
             insurance.setVehicle(controller.get(toUUID(vehicle)));
@@ -60,24 +70,24 @@ public class RESTVehicleInsurance extends RESTAbstractModel<VehicleInsurance> {
                 insurance.getVehicle().getType().getTax(suretyType);
             }
         } catch (ObjectNotFoundException e) {
-            throw new InvalidInputException("Vehicle with id " + vehicle + " does not exist");
+            violations.put("vehicle", ErrorCode.NOT_FOUND.toString());
         }
         try {
             SuretyController controller = manager.getSuretyController();
             insurance.setSurety(controller.get(toUUID(surety)));
         } catch (ObjectNotFoundException e) {
-            throw new InvalidInputException("Surety with id " + surety + " does not exist");
+            violations.put("surety", ErrorCode.NOT_FOUND.toString());
         }
         try {
             ContractController controller = manager.getContractController();
             insurance.setContract(controller.get(toUUID(contract)));
         } catch (ObjectNotFoundException e) {
-            throw new InvalidInputException("Contract with id " + surety + " does not exist");
+            violations.put("contract", ErrorCode.NOT_FOUND.toString());
         }
-        insurance.setStartDate(startDate);
-        insurance.setEndDate(endDate);
-        insurance.setFranchise(franchise);
-        insurance.setInsuredValue(insuredValue);
+        if (violations.size() > 0) {
+            throw new ConstraintViolationException(violations);
+        }
+
         return insurance;
     }
 

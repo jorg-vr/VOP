@@ -13,8 +13,6 @@ import model.account.Role;
 import model.identity.Company;
 import spring.exceptions.ErrorCode;
 import util.UUIDUtil;
-import spring.exceptions.InvalidInputException;
-import spring.exceptions.NotAuthorizedException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -67,19 +65,19 @@ public class RESTFunction extends RESTAbstractModel<Function> {
             CustomerController customerController = manager.getCustomerController();
             function.setCompany(customerController.get(UUIDUtil.toUUID(getCompany())));
         } catch (ObjectNotFoundException e) {
-            violations.put("company", ErrorCode.DOES_NOT_EXIST.toString());
+            violations.put("company", ErrorCode.NOT_FOUND.toString());
         }
         try {
             RoleController roleController = manager.getRoleController();
             function.setRole(roleController.get(UUIDUtil.toUUID(getRole())));
         } catch (ObjectNotFoundException e) {
-            violations.put("role", ErrorCode.DOES_NOT_EXIST.toString());
+            violations.put("role", ErrorCode.NOT_FOUND.toString());
         }
         try {
             UserController userController = manager.getUserController();
             function.setUser(userController.get(UUIDUtil.toUUID(getUser())));
         } catch (ObjectNotFoundException e) {
-            violations.put("user", ErrorCode.DOES_NOT_EXIST.toString());
+            violations.put("user", ErrorCode.NOT_FOUND.toString());
         }
         if (violations.size() > 0) {
             throw new ConstraintViolationException(violations);

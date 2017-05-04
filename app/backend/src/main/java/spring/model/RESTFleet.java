@@ -3,9 +3,11 @@ package spring.model;
 import controller.ControllerManager;
 import controller.CustomerController;
 import controller.exceptions.UnAuthorizedException;
+import dao.exceptions.ConstraintViolationException;
 import dao.exceptions.DataAccessException;
 import dao.exceptions.ObjectNotFoundException;
 import model.fleet.Fleet;
+import spring.exceptions.ErrorCode;
 import util.UUIDUtil;
 import spring.exceptions.InvalidInputException;
 import spring.exceptions.NotAuthorizedException;
@@ -36,14 +38,14 @@ public class RESTFleet extends RESTAbstractModel<Fleet> {
         this.name = name;
     }
 
-    public Fleet translate(ControllerManager manager) throws UnAuthorizedException, DataAccessException {
+    public Fleet translate(ControllerManager manager) throws UnAuthorizedException, DataAccessException, ConstraintViolationException {
         Fleet fleet = new Fleet();
         fleet.setName(getName());
         try {
             CustomerController controller = manager.getCustomerController();
             fleet.setOwner(controller.get(UUIDUtil.toUUID(getCompany())));
         } catch (ObjectNotFoundException e) {
-            throw new InvalidInputException("company");
+            throw new ConstraintViolationException("company", ErrorCode.NOT_FOUND.toString());
         }
         fleet.setUuid(UUIDUtil.toUUID(getId()));
         return fleet;

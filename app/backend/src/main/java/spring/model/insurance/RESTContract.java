@@ -4,13 +4,17 @@ import controller.ControllerManager;
 import controller.CustomerController;
 import controller.InsuranceCompanyController;
 import controller.exceptions.UnAuthorizedException;
+import dao.exceptions.ConstraintViolationException;
 import dao.exceptions.DataAccessException;
 import dao.exceptions.ObjectNotFoundException;
 import model.insurance.Contract;
+import spring.exceptions.ErrorCode;
 import spring.exceptions.InvalidInputException;
 import spring.model.RESTAbstractModel;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 import static util.MyProperties.PATH_CONTRACTS;
 import static util.MyProperties.getProperty;
@@ -43,23 +47,29 @@ public class RESTContract extends RESTAbstractModel<Contract> {
     }
 
     @Override
-    public Contract translate(ControllerManager manager) throws UnAuthorizedException, DataAccessException {
+    public Contract translate(ControllerManager manager) throws UnAuthorizedException, DataAccessException, ConstraintViolationException {
         Contract contract = new Contract();
         contract.setUuid(toUUID(getId()));
+        contract.setStartDate(startDate);
+        contract.setEndDate(endDate);
+
+        Map<String, String> violations = new HashMap<>();
         try {
             CustomerController customerController = manager.getCustomerController();
             contract.setCustomer(customerController.get(toUUID(customer)));
         } catch (ObjectNotFoundException e) {
-            throw new InvalidInputException("Company with id " + customer + " does not exist");
+            violations.put("customer", ErrorCode.NOT_FOUND.toString());
         }
         try {
             InsuranceCompanyController insuranceCompanyController = manager.getInsuranceCompanyController();
             contract.setCompany(insuranceCompanyController.get(toUUID(insuranceCompany)));
         } catch (ObjectNotFoundException e) {
-            throw new InvalidInputException("InsuranceCompany with id " + insuranceCompany + " does not exist");
+            violations.put("insuranceCompany", ErrorCode.NOT_FOUND.toString());
         }
-        contract.setStartDate(startDate);
-        contract.setEndDate(endDate);
+        if (violations.size() > 0) {
+            throw new ConstraintViolationException(violations);
+        }
+
         return contract;
     }
 
