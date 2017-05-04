@@ -84,6 +84,9 @@ public class Customer extends Company implements java.io.Serializable {
     }
 
     public void setSpecificCommission(SuretyType suretyType, double commission) {
+        if(commissions == null ){
+            commissions = new HashMap<>();
+        }
         commissions.put(suretyType, commission);
     }
 

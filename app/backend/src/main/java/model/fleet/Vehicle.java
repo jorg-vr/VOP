@@ -234,6 +234,9 @@ public class Vehicle implements EditableObject, java.io.Serializable {
     }
 
     public void setSpecificCommission(SuretyType suretyType, double commission) {
+        if(commissions==null){
+            commissions = new HashMap<>();
+        }
         commissions.put(suretyType, commission);
     }
 

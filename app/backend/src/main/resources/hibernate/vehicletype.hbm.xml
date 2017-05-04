@@ -24,8 +24,8 @@
             <element column="value" type="java.lang.Double"/>
         </map>
         <map name="commissions"
-             table="commisions" cascade="all">
-            <key column="id"/>
+             table="commissions" cascade="all">
+            <key column="vehicletype_id"/>
 
             <map-key column="surety_type">
                 <type name = "org.hibernate.type.EnumType" >

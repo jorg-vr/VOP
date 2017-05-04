@@ -42,7 +42,7 @@
                 </bag>
                 <map name="commissions"
                      table="commissions" cascade="all">
-                    <key column="id"/>
+                    <key column="customer_id"/>
 
                     <map-key column="surety_type">
                         <type name = "org.hibernate.type.EnumType" >
