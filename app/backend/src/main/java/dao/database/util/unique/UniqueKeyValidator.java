@@ -1,6 +1,7 @@
 package dao.database.util.unique;
 
 import dao.database.ProductionProvider;
+import dao.exceptions.ObjectNotFoundException;
 import org.hibernate.Session;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -11,6 +12,7 @@ import javax.validation.ConstraintValidatorContext;
 import java.beans.PropertyDescriptor;
 import java.io.Serializable;
 import java.lang.reflect.Method;
+import java.util.Collection;
 
 /**
  * Created by sam on 4/18/17.
@@ -48,9 +50,9 @@ public class UniqueKeyValidator implements ConstraintValidator<UniqueKey, Serial
                 Method readMethod = desc.getReadMethod();
                 Object propertyValue = readMethod.invoke(target);
                 criteriaQuery.where(criteriaBuilder.equal(root.get(propertyName), propertyValue));
+                Collection<Object> collection = session.createQuery(criteriaQuery).getResultList();
 
-
-                boolean valid =  session.createQuery(criteriaQuery).getResultList().size() == 0;
+                boolean valid =  collection.size() == 0;
                 if ( !valid ) {
                     context.disableDefaultConstraintViolation();
                     context.buildConstraintViolationWithTemplate("should be unique")

@@ -1,5 +1,6 @@
 package dao.database;
 
+import dao.exceptions.ConstraintViolationException;
 import dao.exceptions.ObjectNotFoundException;
 import dao.interfaces.DAO;
 import dao.exceptions.DataAccessException;
@@ -39,13 +40,21 @@ public abstract class ProductionDAO<T extends EditableObject> implements DAO<T> 
 
     @Override
     public T create(T t) throws DataAccessException {
-        HibernateUtil.create(session, t);
+        try {
+            HibernateUtil.create(session, t);
+        } catch (ConstraintViolationException e) {
+            e.printStackTrace();
+        }
         return t;
     }
 
     @Override
     public T update(T t) throws DataAccessException {
-        HibernateUtil.update(session, t);
+        try {
+            HibernateUtil.update(session, t);
+        } catch (ConstraintViolationException e) {
+            e.printStackTrace();
+        }
         return t;
     }
 

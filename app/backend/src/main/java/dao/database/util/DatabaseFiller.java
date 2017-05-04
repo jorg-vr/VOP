@@ -189,7 +189,7 @@ public class DatabaseFiller {
             function2.setCompany(customer);
 
 
-            userDAO.create(user);
+            //userDAO.create(user);
             addressDAO.create(address);
             customerDAO.create(customer);
             roleDAO.create(role1);
@@ -239,7 +239,7 @@ public class DatabaseFiller {
             function.setCompany(customer);
 
 
-            userDAO.create(user);
+            //userDAO.create(user);
             addressDAO.create(address);
             customerDAO.create(customer);
             roleDAO.create(role);
@@ -304,7 +304,7 @@ public class DatabaseFiller {
             function.setCompany(customer);
 
 
-            userDAO.create(user);
+            //userDAO.create(user);
             addressDAO.create(address);
             customerDAO.create(customer);
             roleDAO.create(role);
