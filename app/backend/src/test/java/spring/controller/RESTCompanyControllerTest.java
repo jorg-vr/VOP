@@ -2,14 +2,14 @@ package spring.controller;
 
 import dao.database.ProductionProvider;
 import dao.interfaces.CompanyDAO;
-import dao.interfaces.CustomerDAO;
 import dao.interfaces.DAOManager;
 import dao.interfaces.DataAccessException;
 import model.identity.Address;
 import model.identity.Company;
 import model.identity.CompanyType;
-import model.identity.Customer;
-import org.junit.*;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -80,7 +80,7 @@ public class RESTCompanyControllerTest {
 
 
     @AfterClass
-    public static void afterTransaction() {
+    public static void afterTransaction() throws Exception {
         try {
             for (Company company : companies) {
                 dao.remove(company.getUuid());
@@ -89,6 +89,7 @@ public class RESTCompanyControllerTest {
             e.printStackTrace();
         }
         manager.close();
+        ProductionProvider.getInstance().close();
     }
 
 

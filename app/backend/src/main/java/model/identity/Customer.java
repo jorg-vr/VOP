@@ -33,6 +33,15 @@ public class Customer extends Company implements java.io.Serializable {
         commissions = new HashMap<>();
     }
 
+    /**
+     *
+     * @param address
+     * @param phoneNumber
+     * @param name
+     * @param btwNumber
+     * @param invoicePeriodicity
+     * @param statementPeriodicity
+     */
     public Customer(Address address, String phoneNumber, String name, String btwNumber, Periodicity invoicePeriodicity, Periodicity statementPeriodicity) {
         super(address, phoneNumber, name, btwNumber, CompanyType.CUSTOMER, invoicePeriodicity, statementPeriodicity);
         this.fleets = new ArrayList<>();
