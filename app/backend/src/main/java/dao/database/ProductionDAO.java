@@ -39,37 +39,24 @@ public abstract class ProductionDAO<T extends EditableObject> implements DAO<T> 
 
 
     @Override
-    public T create(T t) throws DataAccessException {
-        try {
-            HibernateUtil.create(session, t);
-        } catch (ConstraintViolationException e) {
-            e.printStackTrace();
-        }
+    public T create(T t) throws DataAccessException, ConstraintViolationException {
+        HibernateUtil.create(session, t);
         return t;
     }
 
     @Override
-    public T update(T t) throws DataAccessException {
-        try {
-            HibernateUtil.update(session, t);
-        } catch (ConstraintViolationException e) {
-            e.printStackTrace();
-        }
+    public T update(T t) throws DataAccessException, ConstraintViolationException {
+        HibernateUtil.update(session, t);
         return t;
     }
 
     @Override
-    public T get(UUID id)  {
-        try {
-            return Optional.ofNullable(session.get(cl, id)).orElseThrow(() -> new ObjectNotFoundException(id));
-        } catch (ObjectNotFoundException e) {
-            //TODO throws
-        }
-        return null;
+    public T get(UUID id) throws ObjectNotFoundException {
+        return Optional.ofNullable(session.get(cl, id)).orElseThrow(() -> new ObjectNotFoundException(id));
     }
 
     @Override
-    public void remove(UUID id) throws DataAccessException {
+    public void remove(UUID id) throws DataAccessException, ObjectNotFoundException {
         HibernateUtil.remove(session, get(id));
     }
 
