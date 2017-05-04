@@ -137,10 +137,11 @@ public abstract class AbstractController<T extends EditableObject> {
     public T create(T t) throws DataAccessException, UnAuthorizedException {
         if (role.hasAccess(resource, CREATE_ALL) ||
                 (role.hasAccess(resource, CREATE_MINE) && isOwner(t, function))) {
+            T result = dao.create(t);
             for (LogEntry entry : t.logCreate(function.getUser())) {
                 System.out.println(entry);
             }
-            return dao.create(t);
+            return result;
         } else {
             throw new UnAuthorizedException();
         }
