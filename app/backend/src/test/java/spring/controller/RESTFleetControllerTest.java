@@ -21,6 +21,7 @@ import util.UUIDUtil;
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 /**
  * Created by jorg on 3/15/17.
@@ -109,7 +110,7 @@ public class RESTFleetControllerTest {
                 .header("Authorization", authPair[0])
                 .header("Function", authPair[1]))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath(".data", hasSize(greaterThanOrEqualTo(1))))
+                .andExpect(jsonPath("$.data", hasSize(greaterThanOrEqualTo(1))))
                 .andExpect(jsonPath("$.total", greaterThanOrEqualTo(1)))
                 .andReturn();
 
@@ -125,7 +126,9 @@ public class RESTFleetControllerTest {
                 .content(TestUtil.convertObjectToJsonBytes(restFleet)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name", equalTo(restFleet.getName())))
-                .andExpect(jsonPath("$.company", equalTo(restFleet.getCompany()))).andReturn();
+                .andExpect(jsonPath("$.company", equalTo(restFleet.getCompany())))
+                .andDo(print())
+                .andReturn();
         RESTFleet restFleet1 = TestUtil.convertJsonBytesToObject(result.getResponse().getContentAsByteArray(), RESTFleet.class);
         mvc.perform(MockMvcRequestBuilders.delete("/fleets/{id}", restFleet1.getId())
                 .header("Authorization", authPair[0])
