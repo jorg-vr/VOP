@@ -65,25 +65,12 @@ Generic component for a form. Every form should be encapsulated in this componen
             submit(){
                 console.log(this.resource.name)
                 console.log(this.object)
-                if(this.resource.name == 'insurance'){
-                    console.log('speciale dispatch voor insurance')
-                    console.log(this.actions.name+'Surety')
-                    this.$store.dispatch(this.actions.name + 'Surety', {object: this.object, contractId:this.contractId}).then(object =>{
-                        this.$router.push({name: 'insurance', params: {id:this.contractId} })
-                    })
-                }
-                else{
-                    this.$store.dispatch(this.actions.name + this.resource.name.capitalize(), this.object).then(object => {
-                        //Exception: the index page of vehicle is /fleet/{fleetId}
-                        if(this.resource.name === 'vehicle'){
-                            this.$router.push({name: 'fleet', params: {id: object.fleet} })
-                        }
-                        else {
-                            this.$router.push({name: this.resource.name.plural()})
-                        }
-                    })
-                }
+
+                this.$store.dispatch(this.actions.name + this.resource.name.capitalize(), this.object).then(object => {
+                    this.$router.push({name: this.resource.name.plural()})
+                })
             }
+
         }
     }
 </script>
