@@ -1,7 +1,10 @@
 package dao.database;
 
 import dao.interfaces.*;
+import model.fleet.VehicleType;
+import model.identity.Address;
 import model.identity.Company;
+import model.identity.InsuranceCompany;
 import model.insurance.Surety;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -13,6 +16,23 @@ public class ProductionManager implements DAOManager {
 
     private Session session;
 
+    private UserDAO userDAO;
+    private CustomerDAO customerDAO;
+    private CompanyDAO<Company> companyDAO;
+    private FleetDAO fleetDAO;
+    private FunctionDAO functionDAO;
+    private VehicleDAO vehicleDAO;
+    private VehicleTypeDAO vehicleTypeDAO;
+    private AddressDAO addressDAO;
+    private RoleDAO roleDAO;
+    private ContractDAO contractDAO;
+    private SuretyDAO<Surety> suretyDAO;
+    private FlatSuretyDAO flatSuretyDAO;
+    private InvoiceDAO invoiceDAO;
+    private NonFlatSuretyDAO nonFlatSuretyDAO;
+    private SpecialConditionDAO specialConditionDAO;
+    private VehicleInsuranceDAO vehicleInsuranceDAO;
+    private InsuranceCompanyDAO insuranceCompanyDAO;
 
     ProductionManager(Session session) {
         this.session = session;
@@ -20,90 +40,139 @@ public class ProductionManager implements DAOManager {
 
     @Override
     public UserDAO getUserDAO() {
-        return new ProductionUserDAO(session);
+        if (userDAO == null) {
+            userDAO = new ProductionUserDAO(session);
+        }
+        return userDAO;
     }
 
     @Override
     public CustomerDAO getCustomerDAO() {
-        return new ProductionCustomerDAO(session);
+        if (customerDAO == null) {
+            customerDAO = new ProductionCustomerDAO(session);
+        }
+        return customerDAO;
     }
 
     @Override
     public CompanyDAO<Company> getCompanyDAO() {
-        return new ProductionCompanyDAO(session);
+        if (companyDAO == null) {
+            companyDAO = new ProductionCompanyDAO(session);
+        }
+        return companyDAO;
     }
 
     @Override
     public FleetDAO getFleetDAO() {
-        return new ProductionFleetDAO(session);
+        if (fleetDAO == null) {
+            fleetDAO = new ProductionFleetDAO(session);
+        }
+        return fleetDAO;
     }
 
     @Override
     public FunctionDAO getFunctionDAO() {
-        return new ProductionFunctionDAO(session);
+        if (functionDAO == null) {
+            functionDAO = new ProductionFunctionDAO(session);
+        }
+        return functionDAO;
     }
 
     @Override
     public VehicleDAO getVehicleDAO() {
-        return new ProductionVehicleDAO(session);
+        if (vehicleDAO == null) {
+            vehicleDAO = new ProductionVehicleDAO(session);
+        }
+        return vehicleDAO;
     }
 
     @Override
     public VehicleTypeDAO getVehicleTypeDAO() {
-        return new ProductionVehicleTypeDAO(session);
+        if (vehicleTypeDAO == null) {
+            vehicleTypeDAO = new ProductionVehicleTypeDAO(session);
+        }
+        return vehicleTypeDAO;
     }
 
     @Override
     public AddressDAO getAddressDao() {
-        return new ProductionAddressDAO(session);
+        if (addressDAO == null) {
+            addressDAO = new ProductionAddressDAO(session);
+        }
+        return addressDAO;
     }
 
     @Override
     public RoleDAO getRoleDAO() {
-        return new ProductionRoleDAO(session);
+        if (roleDAO == null) {
+            roleDAO = new ProductionRoleDAO(session);
+        }
+        return roleDAO;
     }
 
     @Override
     public ContractDAO getContractDao() {
-        return new ProductionContractDAO(session);
+        if (contractDAO == null) {
+            contractDAO = new ProductionContractDAO(session);
+        }
+        return contractDAO;
     }
 
     @Override
     public SuretyDAO<Surety> getSuretyDao() {
-        return new ProductionSuretyDAO(session);
+        if (suretyDAO == null) {
+            suretyDAO = new ProductionSuretyDAO(session);
+        }
+        return suretyDAO;
     }
 
     @Override
     public NonFlatSuretyDAO getFlatSuretyDao() {
-        return new ProductionNonFlatSuretyDAO(session);
+        if (nonFlatSuretyDAO == null) {
+            nonFlatSuretyDAO = new ProductionNonFlatSuretyDAO(session);
+        }
+        return nonFlatSuretyDAO;
     }
 
     @Override
     public InvoiceDAO getInvoiceDao() {
-        return new ProductionInvoiceDAO(session);
+        if (invoiceDAO == null) {
+            invoiceDAO = new ProductionInvoiceDAO(session);
+        }
+        return invoiceDAO;
     }
 
     @Override
     public FlatSuretyDAO getNonFlatSuretyDao() {
-        return new ProductionFlatSuretyDAO(session);
+        if (flatSuretyDAO == null) {
+            flatSuretyDAO = new ProductionFlatSuretyDAO(session);
+        }
+        return flatSuretyDAO;
     }
 
     @Override
     public SpecialConditionDAO getSpecialConditionDao() {
-        return new ProductionSpecialConditionDAO(session);
+        if (specialConditionDAO == null) {
+            specialConditionDAO = new ProductionSpecialConditionDAO(session);
+        }
+        return specialConditionDAO;
     }
-
 
     @Override
     public VehicleInsuranceDAO getVehicleInsuranceDao() {
-        return new ProductionVehicleInsuranceDAO(session);
+        if (vehicleInsuranceDAO == null) {
+            vehicleInsuranceDAO = new ProductionVehicleInsuranceDAO(session);
+        }
+        return vehicleInsuranceDAO;
     }
 
     @Override
     public InsuranceCompanyDAO getInsuranceCompanyDao() {
-        return new ProductionInsuranceCompanyDAO(session);
+        if (insuranceCompanyDAO == null) {
+            insuranceCompanyDAO = new ProductionInsuranceCompanyDAO(session);
+        }
+        return insuranceCompanyDAO;
     }
-
 
     @Override
     public void close() {
