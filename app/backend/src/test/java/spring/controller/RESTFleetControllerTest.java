@@ -1,17 +1,14 @@
 package spring.controller;
 
-import dao.database.ProductionManager;
 import dao.database.ProductionProvider;
-import dao.interfaces.DAOManager;
-import dao.interfaces.AddressDAO;
-import dao.interfaces.CustomerDAO;
-import dao.interfaces.DataAccessException;
-import dao.interfaces.FleetDAO;
+import dao.interfaces.*;
 import model.fleet.Fleet;
 import model.identity.Address;
 import model.identity.Customer;
 import model.identity.Periodicity;
-import org.junit.*;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -78,11 +75,6 @@ public class RESTFleetControllerTest {
             customer.setPhoneNumber("04789456123");
             customer.setName("anita");
             customer.setBtwNumber("123456789");
-            customer = manager.getCustomerDAO().create(customer);
-            fleet = new Fleet();
-            fleet.setOwner(customer);
-            fleet.setName("myFleet");
-            fleet = manager.getFleetDAO().create(fleet);
             customer.setInvoicePeriodicity(Periodicity.QUARTERLY);
             customer.setStatementPeriodicity(Periodicity.QUARTERLY);
             customer = customerDAO.create(customer);
@@ -101,13 +93,10 @@ public class RESTFleetControllerTest {
 
     public static void afterTransaction() throws Exception {
         try {
-            AddressDAO addressDAO = manager.getAddressDao();
             CustomerDAO customerDAO = manager.getCustomerDAO();
             FleetDAO fleetDAO = manager.getFleetDAO();
             fleetDAO.remove(fleet.getUuid());
             customerDAO.remove(customer.getUuid());
-            //addressDAO.remove(address1.getUuid());
-            //addressDAO.remove(address2.getUuid());
         } catch (DataAccessException e) {
             e.printStackTrace();
         }

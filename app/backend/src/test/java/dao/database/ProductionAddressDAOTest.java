@@ -87,14 +87,12 @@ public class ProductionAddressDAOTest {
     public void update() throws Exception {
         AddressDAO addressDAO = daoManager.getAddressDao();
         Address a1 = addressDAO.create(new Address("streettest n1", "59", "town 1", "9999", "country 1"));
-        Address a2 = new Address("streettest n2", "60", "town 2", "99999", "country 2");
         a1.setStreet("streettest n2");
         a1.setStreet("60");
         a1.setStreet("town 2");
         a1.setStreet("99999");
         a1.setStreet("country 2");
-        a2.setUuid(a1.getUuid());
-        addressDAO.update(a2);
+        addressDAO.update(a1);
         Address a3 = addressDAO.get(a1.getUuid());
         assertEquals("street field not updated correctly", "streettest n2", a3.getStreet());
         assertEquals("streetNumber field not updated correctly", "60", a3.getStreetNumber());
