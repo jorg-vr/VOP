@@ -3,7 +3,9 @@ package spring.controller;
 import controller.ControllerManager;
 import controller.RoleController;
 import controller.exceptions.UnAuthorizedException;
+import dao.exceptions.ConstraintViolationException;
 import dao.exceptions.DataAccessException;
+import dao.exceptions.ObjectNotFoundException;
 import model.account.Action;
 import model.account.Resource;
 import model.account.Role;
@@ -47,7 +49,7 @@ public class RESTPermissionController extends RESTSimpleController {
                                           Integer page, Integer limit,
                                           String resource, String action,
                                           @RequestHeader(value = "Authorization") String token,
-                                          @RequestHeader(value = "Function") String function) throws UnAuthorizedException {
+                                          @RequestHeader(value = "Function") String function) throws UnAuthorizedException, ObjectNotFoundException {
         UUID uuid = UUIDUtil.toUUID(id);
         UUID user = new AuthenticationToken(token).getAccountId();
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
@@ -67,7 +69,7 @@ public class RESTPermissionController extends RESTSimpleController {
     public void put(@PathVariable String id,
                     @RequestBody List<Long> permissions,
                     @RequestHeader(value = "Authorization") String token,
-                    @RequestHeader(value = "Function") String function) throws UnAuthorizedException {
+                    @RequestHeader(value = "Function") String function) throws UnAuthorizedException, ObjectNotFoundException, ConstraintViolationException {
         UUID uuid = UUIDUtil.toUUID(id);
         UUID user = new AuthenticationToken(token).getAccountId();
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {

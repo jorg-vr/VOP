@@ -5,6 +5,7 @@ import controller.insurance.ContractController;
 import controller.insurance.SuretyController;
 import controller.insurance.VehicleInsuranceController;
 import dao.exceptions.DataAccessException;
+import dao.exceptions.ObjectNotFoundException;
 import dao.interfaces.*;
 import main.BackendApplication;
 import model.account.*;
@@ -26,7 +27,7 @@ public class ControllerManager implements AutoCloseable {
      * @param functionId id of the function that the user wants to use
      * @throws InvalidInputException there is no function/user with that id or the user does not have that function
      */
-    public ControllerManager(UUID userId, UUID functionId) throws UnAuthorizedException, InvalidInputException {
+    public ControllerManager(UUID userId, UUID functionId) throws UnAuthorizedException, DataAccessException, InvalidInputException {
         daoManager = BackendApplication.getProvider().getDaoManager();
         try {
             FunctionDAO functionDAO = daoManager.getFunctionDAO();
@@ -47,7 +48,7 @@ public class ControllerManager implements AutoCloseable {
 //            }
 //            role.setRights(rights);
 //            function.setRole(role);
-        } catch (DataAccessException e) {
+        } catch (ObjectNotFoundException e) {
             throw new InvalidInputException("User/Function does not exist or user has no function with that id");
         }
     }

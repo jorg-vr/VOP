@@ -11,7 +11,6 @@ import model.insurance.Contract;
 import model.insurance.SuretyType;
 import org.springframework.web.bind.annotation.*;
 import spring.controller.RESTAbstractController;
-import spring.exceptions.ServerErrorException;
 import spring.model.AuthenticationToken;
 import spring.model.RESTSchema;
 import spring.model.insurance.RESTContract;
@@ -40,7 +39,7 @@ public class RESTContractController extends RESTAbstractController<RESTContract,
                                         Integer page, Integer limit,
                                         String company,
                                         @RequestHeader(value = "Authorization") String token,
-                                        @RequestHeader(value = "Function") String function) throws UnAuthorizedException {
+                                        @RequestHeader(value = "Function") String function) throws UnAuthorizedException, DataAccessException {
         UUID user = new AuthenticationToken(token).getAccountId();
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
             ContractController controller = manager.getContractController();
@@ -52,8 +51,6 @@ public class RESTContractController extends RESTAbstractController<RESTContract,
                     .map(RESTContract::new)
                     .collect(Collectors.toList());
             return new RESTSchema<>(restContracts, page, limit, request);
-        } catch (DataAccessException e) {
-            throw new ServerErrorException("contracts could not be retrieved. This is a server error");
         }
     }
 
@@ -61,11 +58,10 @@ public class RESTContractController extends RESTAbstractController<RESTContract,
     RESTSchema<String> getContractTypes(HttpServletRequest request,
                                         Integer page, Integer limit,
                                         @RequestHeader(value = "Authorization") String token,
-                                        @RequestHeader(value = "Function") String function) throws UnAuthorizedException {
+                                        @RequestHeader(value = "Function") String function) throws UnAuthorizedException, DataAccessException {
         // Check authentication and authorization
         UUID user = new AuthenticationToken(token).getAccountId();
-        try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
-        }
+        try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {}
 
         Collection<String> result = new ArrayList<>();
         for (SuretyType suretyType : SuretyType.values()) {

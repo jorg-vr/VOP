@@ -1,6 +1,7 @@
 package controller;
 
 import controller.exceptions.UnAuthorizedException;
+import dao.exceptions.ObjectNotFoundException;
 import dao.interfaces.DAOManager;
 import dao.exceptions.DataAccessException;
 import dao.interfaces.UserDAO;
@@ -21,7 +22,7 @@ public class AuthController implements AutoCloseable {
         userDAO = provider.getUserDAO();
     }
 
-    public User getUser(AuthenticationToken token) throws DataAccessException {
+    public User getUser(AuthenticationToken token) throws DataAccessException, ObjectNotFoundException {
         return userDAO.get(token.getAccountId());
     }
 
@@ -30,7 +31,7 @@ public class AuthController implements AutoCloseable {
         return new AuthenticationToken(account.getUuid());
     }
 
-    public AuthenticationToken refreshToken(AuthenticationToken token) throws DataAccessException, UnAuthorizedException {
+    public AuthenticationToken refreshToken(AuthenticationToken token) throws DataAccessException, UnAuthorizedException, ObjectNotFoundException {
         User user = userDAO.get(token.getAccountId());
         return new AuthenticationToken(user.getUuid());
     }

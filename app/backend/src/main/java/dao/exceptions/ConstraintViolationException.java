@@ -1,5 +1,6 @@
 package dao.exceptions;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -25,5 +26,9 @@ public class ConstraintViolationException extends Exception {
             builder.append("\n");
         }
         return builder.toString();
+    }
+
+    public Map<String, String> getViolationMap() {
+        return violationMap;
     }
 }

@@ -1,6 +1,7 @@
 package spring.controller;
 
 import dao.database.ProductionProvider;
+import dao.exceptions.ObjectNotFoundException;
 import dao.interfaces.DAOManager;
 import dao.exceptions.DataAccessException;
 import model.identity.Address;
@@ -59,7 +60,7 @@ public class RESTCompanyControllerTest {
     public static void afterTransaction() {
         try {
             manager.getCustomerDAO().remove(customer.getUuid());
-        } catch (DataAccessException e) {
+        } catch (DataAccessException | ObjectNotFoundException e) {
             e.printStackTrace();
         }
 

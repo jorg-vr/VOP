@@ -3,6 +3,7 @@ package spring.controller;
 import controller.*;
 import controller.exceptions.UnAuthorizedException;
 import dao.exceptions.DataAccessException;
+import dao.exceptions.ObjectNotFoundException;
 import model.billing.Invoice;
 import model.identity.Company;
 import org.springframework.web.bind.annotation.*;
@@ -42,7 +43,7 @@ public class RESTInvoiceController extends RESTAbstractController<RESTInvoice, I
                                           HttpServletRequest request,
                                           Integer page, Integer limit,
                                           @RequestHeader(value = "Authorization") String token,
-                                          @RequestHeader(value = "Function") String function) {
+                                          @RequestHeader(value = "Function") String function) throws ObjectNotFoundException {
         UUID user = new AuthenticationToken(token).getAccountId();
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
             InvoiceController controller = manager.getInvoiceController();
@@ -71,7 +72,7 @@ public class RESTInvoiceController extends RESTAbstractController<RESTInvoice, I
                                                     HttpServletRequest request,
                                                     Integer page, Integer limit,
                                                     @RequestHeader(value = "Authorization") String token,
-                                                    @RequestHeader(value = "Function") String function) {
+                                                    @RequestHeader(value = "Function") String function) throws ObjectNotFoundException {
         UUID user = new AuthenticationToken(token).getAccountId();
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
             InvoiceController controller = manager.getInvoiceController();

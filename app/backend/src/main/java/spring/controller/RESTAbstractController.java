@@ -3,8 +3,10 @@ package spring.controller;
 import controller.AbstractController;
 import controller.ControllerManager;
 import controller.exceptions.UnAuthorizedException;
+import dao.exceptions.ConstraintViolationException;
 import dao.exceptions.DataAccessException;
 
+import dao.exceptions.ObjectNotFoundException;
 import model.history.EditableObject;
 import org.springframework.web.bind.annotation.*;
 import spring.exceptions.InvalidInputException;
@@ -42,7 +44,7 @@ public abstract class RESTAbstractController<R extends RESTAbstractModel<M>, M e
 
     @RequestMapping(method = RequestMethod.POST)
     public R post(@RequestBody R rest, @RequestHeader(value = "Authorization") String token,
-                  @RequestHeader(value = "Function") String function) throws UnAuthorizedException {
+                  @RequestHeader(value = "Function") String function) throws UnAuthorizedException, ConstraintViolationException, ObjectNotFoundException {
         UUID user = new AuthenticationToken(token).getAccountId();
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
             AbstractController<M> controller = getController(manager);
@@ -55,7 +57,7 @@ public abstract class RESTAbstractController<R extends RESTAbstractModel<M>, M e
 
     @RequestMapping(method = RequestMethod.GET, value = "{id}")
     public R getId(@PathVariable("id") String id, @RequestHeader(value = "Authorization") String token,
-                   @RequestHeader(value = "Function") String function) throws UnAuthorizedException {
+                   @RequestHeader(value = "Function") String function) throws UnAuthorizedException, ObjectNotFoundException {
         UUID uuid = toUUID(id);
         UUID user = new AuthenticationToken(token).getAccountId();
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
@@ -68,7 +70,7 @@ public abstract class RESTAbstractController<R extends RESTAbstractModel<M>, M e
 
     @RequestMapping(method = RequestMethod.PUT, value = "{id}")
     public R putId(@PathVariable("id") String id, @RequestBody R rest, @RequestHeader(value = "Authorization") String token,
-                   @RequestHeader(value = "Function") String function) throws UnAuthorizedException {
+                   @RequestHeader(value = "Function") String function) throws UnAuthorizedException, ConstraintViolationException, ObjectNotFoundException {
         UUID user = new AuthenticationToken(token).getAccountId();
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
             AbstractController<M> controller = getController(manager);
@@ -84,7 +86,7 @@ public abstract class RESTAbstractController<R extends RESTAbstractModel<M>, M e
 
     @RequestMapping(method = RequestMethod.DELETE, value = "{id}")
     public void deleteId(@PathVariable("id") String id, @RequestHeader(value = "Authorization") String token,
-                         @RequestHeader(value = "Function") String function) throws UnAuthorizedException {
+                         @RequestHeader(value = "Function") String function) throws UnAuthorizedException, ObjectNotFoundException {
         UUID uuid = toUUID(id);
         UUID user = new AuthenticationToken(token).getAccountId();
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {

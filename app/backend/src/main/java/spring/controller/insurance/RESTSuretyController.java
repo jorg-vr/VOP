@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import spring.controller.RESTAbstractController;
-import spring.exceptions.ServerErrorException;
 import spring.model.AuthenticationToken;
 import spring.model.RESTSchema;
 import spring.model.insurance.RESTSurety;
@@ -43,7 +42,7 @@ public class RESTSuretyController extends RESTAbstractController<RESTSurety, Sur
     public RESTSchema<RESTSurety> get(HttpServletRequest request,
                                         Integer page, Integer limit,
                                         @RequestHeader(value = "Authorization") String token,
-                                        @RequestHeader(value = "Function") String function) throws UnAuthorizedException {
+                                        @RequestHeader(value = "Function") String function) throws UnAuthorizedException, DataAccessException {
         UUID user = new AuthenticationToken(token).getAccountId();
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
             SuretyController controller = manager.getSuretyController();
@@ -52,8 +51,6 @@ public class RESTSuretyController extends RESTAbstractController<RESTSurety, Sur
                     .map(RESTSurety::new)
                     .collect(Collectors.toList());
             return new RESTSchema<>(restSureties, page, limit, request);
-        } catch (DataAccessException e) {
-            throw new ServerErrorException("sureties could not be retrieved. This is a server error");
         }
     }
 }

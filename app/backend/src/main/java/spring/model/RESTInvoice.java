@@ -4,6 +4,7 @@ import controller.CompanyController;
 import controller.ControllerManager;
 import controller.exceptions.UnAuthorizedException;
 import dao.exceptions.DataAccessException;
+import dao.exceptions.ObjectNotFoundException;
 import model.billing.Invoice;
 import model.billing.InvoiceType;
 import spring.exceptions.InvalidInputException;
@@ -66,7 +67,7 @@ public class RESTInvoice extends RESTAbstractModel<Invoice> {
     }
 
     @Override
-    public Invoice translate(ControllerManager manager) throws UnAuthorizedException {
+    public Invoice translate(ControllerManager manager) throws UnAuthorizedException, DataAccessException {
         Invoice invoice = new Invoice();
         invoice.setUuid(UUIDUtil.toUUID(getId()));
         invoice.setEndDate(getEndDate());
@@ -78,13 +79,13 @@ public class RESTInvoice extends RESTAbstractModel<Invoice> {
 
         try {
             invoice.setBeneficiary(controller.get(UUIDUtil.toUUID(getBeneficiary())));
-        } catch (DataAccessException e) {
+        } catch (ObjectNotFoundException e) {
             throw new InvalidInputException("benificiary");
         }
 
         try {
             invoice.setPayer(controller.get(UUIDUtil.toUUID(getPayer())));
-        } catch (DataAccessException e) {
+        } catch (ObjectNotFoundException e) {
             throw new InvalidInputException("payer");
         }
 

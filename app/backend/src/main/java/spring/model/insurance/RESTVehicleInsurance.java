@@ -6,6 +6,7 @@ import controller.exceptions.UnAuthorizedException;
 import controller.insurance.ContractController;
 import controller.insurance.SuretyController;
 import dao.exceptions.DataAccessException;
+import dao.exceptions.ObjectNotFoundException;
 import model.insurance.SuretyType;
 import model.insurance.VehicleInsurance;
 import spring.exceptions.InvalidInputException;
@@ -48,7 +49,7 @@ public class RESTVehicleInsurance extends RESTAbstractModel<VehicleInsurance> {
     }
 
     @Override
-    public VehicleInsurance translate(ControllerManager manager) throws UnAuthorizedException {
+    public VehicleInsurance translate(ControllerManager manager) throws UnAuthorizedException, DataAccessException {
         VehicleInsurance insurance = new VehicleInsurance();
         insurance.setUuid(toUUID(getId()));
         try {
@@ -58,19 +59,19 @@ public class RESTVehicleInsurance extends RESTAbstractModel<VehicleInsurance> {
                 insurance.getVehicle().getType().getCommission(suretyType);
                 insurance.getVehicle().getType().getTax(suretyType);
             }
-        } catch (DataAccessException e) {
+        } catch (ObjectNotFoundException e) {
             throw new InvalidInputException("Vehicle with id " + vehicle + " does not exist");
         }
         try {
             SuretyController controller = manager.getSuretyController();
             insurance.setSurety(controller.get(toUUID(surety)));
-        } catch (DataAccessException e) {
+        } catch (ObjectNotFoundException e) {
             throw new InvalidInputException("Surety with id " + surety + " does not exist");
         }
         try {
             ContractController controller = manager.getContractController();
             insurance.setContract(controller.get(toUUID(contract)));
-        } catch (DataAccessException e) {
+        } catch (ObjectNotFoundException e) {
             throw new InvalidInputException("Contract with id " + surety + " does not exist");
         }
         insurance.setStartDate(startDate);

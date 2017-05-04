@@ -5,6 +5,7 @@ import controller.FleetController;
 import controller.VehicleTypeController;
 import controller.exceptions.UnAuthorizedException;
 import dao.exceptions.DataAccessException;
+import dao.exceptions.ObjectNotFoundException;
 import model.fleet.Vehicle;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -63,7 +64,7 @@ public class RESTVehicle extends RESTAbstractModel<Vehicle> {
     /**
      * @return a new Vehicle object that has fields that are based on this object
      */
-    public Vehicle translate(ControllerManager manager) throws UnAuthorizedException {
+    public Vehicle translate(ControllerManager manager) throws UnAuthorizedException, DataAccessException {
         Vehicle vehicle = new Vehicle();
         vehicle.setUuid(UUIDUtil.toUUID(getId()));
         vehicle.setBrand(brand);
@@ -78,14 +79,14 @@ public class RESTVehicle extends RESTAbstractModel<Vehicle> {
         try {
             VehicleTypeController vehicleTypeController = manager.getVehicleTypeController();
             vehicle.setType(vehicleTypeController.get(UUIDUtil.toUUID(getType())));
-        } catch (DataAccessException e) {
+        } catch (ObjectNotFoundException e) {
             throw new InvalidInputException("type");
         }
 
         try {
             FleetController fleetController = manager.getFleetController();
             vehicle.setFleet(fleetController.get(UUIDUtil.toUUID(getFleet())));
-        } catch (DataAccessException e) {
+        } catch (ObjectNotFoundException e) {
             throw new InvalidInputException("fleet");
         } catch (UnAuthorizedException e) {
             throw new NotAuthorizedException();

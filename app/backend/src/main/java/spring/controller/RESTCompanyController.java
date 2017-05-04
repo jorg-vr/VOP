@@ -9,7 +9,6 @@ import model.identity.Company;
 import model.identity.CompanyType;
 import org.springframework.web.bind.annotation.*;
 import spring.exceptions.InvalidInputException;
-import spring.exceptions.ServerErrorException;
 import spring.model.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -55,7 +54,7 @@ public class RESTCompanyController extends RESTAbstractController<RESTCompany, C
                                        String city, String postalCode,
                                        String type,
                                        @RequestHeader(value = "Authorization") String token,
-                                       @RequestHeader(value = "Function") String function) throws UnAuthorizedException {
+                                       @RequestHeader(value = "Function") String function) throws UnAuthorizedException, DataAccessException {
         UUID user = new AuthenticationToken(token).getAccountId();
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
             CompanyController controller = manager.getCompanyController();
@@ -74,8 +73,6 @@ public class RESTCompanyController extends RESTAbstractController<RESTCompany, C
                     .map(RESTCompany::new)
                     .collect(Collectors.toList());
             return new RESTSchema<>(restModels, page, limit, request);
-        } catch (DataAccessException e) {
-            throw new ServerErrorException("contracts could not be retrieved. This is a server error");
         }
     }
 

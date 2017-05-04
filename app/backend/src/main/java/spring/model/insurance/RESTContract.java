@@ -5,6 +5,7 @@ import controller.CustomerController;
 import controller.InsuranceCompanyController;
 import controller.exceptions.UnAuthorizedException;
 import dao.exceptions.DataAccessException;
+import dao.exceptions.ObjectNotFoundException;
 import model.insurance.Contract;
 import spring.exceptions.InvalidInputException;
 import spring.model.RESTAbstractModel;
@@ -42,19 +43,19 @@ public class RESTContract extends RESTAbstractModel<Contract> {
     }
 
     @Override
-    public Contract translate(ControllerManager manager) throws UnAuthorizedException {
+    public Contract translate(ControllerManager manager) throws UnAuthorizedException, DataAccessException {
         Contract contract = new Contract();
         contract.setUuid(toUUID(getId()));
         try {
             CustomerController customerController = manager.getCustomerController();
             contract.setCustomer(customerController.get(toUUID(customer)));
-        } catch (DataAccessException e) {
+        } catch (ObjectNotFoundException e) {
             throw new InvalidInputException("Company with id " + customer + " does not exist");
         }
         try {
             InsuranceCompanyController insuranceCompanyController = manager.getInsuranceCompanyController();
             contract.setCompany(insuranceCompanyController.get(toUUID(insuranceCompany)));
-        } catch (DataAccessException e) {
+        } catch (ObjectNotFoundException e) {
             throw new InvalidInputException("InsuranceCompany with id " + insuranceCompany + " does not exist");
         }
         contract.setStartDate(startDate);

@@ -3,6 +3,7 @@ package spring.controller;
 import controller.AuthController;
 import controller.exceptions.UnAuthorizedException;
 import dao.exceptions.DataAccessException;
+import dao.exceptions.ObjectNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import spring.exceptions.InvalidInputException;
 import spring.model.AuthenticationToken;
@@ -27,7 +28,7 @@ public class RESTAuthController {
     }
 
     @RequestMapping(value = "/${path.refresh}", method = RequestMethod.POST)
-    public String put(@RequestHeader(value = "Authorization") String token) throws UnAuthorizedException {
+    public String put(@RequestHeader(value = "Authorization") String token) throws UnAuthorizedException, ObjectNotFoundException {
         try (AuthController authController = new AuthController()) {
             return authController.refreshToken(new AuthenticationToken(token)).toString();
         } catch (DataAccessException e) {
