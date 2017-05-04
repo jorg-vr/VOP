@@ -68,6 +68,11 @@ public class ProductionProvider implements DAOProvider {
     }
 
     @Override
+    public SessionFactory getSessionFactory() {
+        return sessionFactory;
+    }
+
+    @Override
     public void close() throws Exception {
         sessionFactory.close();
         StandardServiceRegistryBuilder.destroy(this.registry);

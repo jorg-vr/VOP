@@ -117,6 +117,8 @@ public class User implements EditableObject, java.io.Serializable {
 
     @Override
     public int hashCode() {
-        return getUuid().hashCode();
+        if(uuid!=null){
+        return getUuid().hashCode();}
+        return super.hashCode();
     }
 }

@@ -31,7 +31,7 @@ public class HibernateUtil {
         Transaction transaction = null;
         try {
             transaction = session.beginTransaction();
-            //validate(session,objectToSave);
+            validate(session,objectToSave);
             session.save(objectToSave);
             transaction.commit();
         } catch (Exception e) {
@@ -94,9 +94,8 @@ public class HibernateUtil {
         ValidatorContext validatorContext = validatorFactory.usingContext();
         validatorContext.constraintValidatorFactory(
                 new ConstraintValidatorFactoryImpl
-                        (session));
+                        ());
         Validator validator = validatorContext.getValidator();
-
 
         Set<ConstraintViolation<Object>> violations = validator.validate(object);
 
@@ -116,7 +115,7 @@ public class HibernateUtil {
             User user = new User();
             user.setFirstName("test");
             user.setLastName("test");
-            user.setEmail("test,test");
+            //user.setEmail("test,test");
             userDAO.create(user);
             //userDAO.remove(user.getUuid());
             User user1 = new User();

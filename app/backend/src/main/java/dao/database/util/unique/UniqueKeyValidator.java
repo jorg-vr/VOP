@@ -30,14 +30,12 @@ public class UniqueKeyValidator implements ConstraintValidator<UniqueKey, Serial
     @Override
     public void initialize(UniqueKey constraintAnnotation) {
         this.columnNames = constraintAnnotation.columnNames();
-        this.session = ProductionProvider.getInstance().getDaoManager().getSession();
 
     }
 
     @Override
     public boolean isValid(Serializable target, ConstraintValidatorContext context) {
         Class<?> entityClass = target.getClass();
-        System.out.println("isValid" + Boolean.toString(session == null));
         CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
         CriteriaQuery criteriaQuery = criteriaBuilder.createQuery(entityClass);
 
@@ -55,7 +53,7 @@ public class UniqueKeyValidator implements ConstraintValidator<UniqueKey, Serial
                 boolean valid =  session.createQuery(criteriaQuery).getResultList().size() == 0;
                 if ( !valid ) {
                     context.disableDefaultConstraintViolation();
-                    context.buildConstraintViolationWithTemplate("")
+                    context.buildConstraintViolationWithTemplate("should be unique")
                             .addPropertyNode( propertyName ).addConstraintViolation();
                     finalValid = false;
                 }

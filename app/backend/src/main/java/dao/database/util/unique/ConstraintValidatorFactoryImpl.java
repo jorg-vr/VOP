@@ -1,5 +1,6 @@
 package dao.database.util.unique;
 
+import dao.database.ProductionProvider;
 import org.hibernate.Session;
 
 import javax.validation.ConstraintValidator;
@@ -12,13 +13,13 @@ public class ConstraintValidatorFactoryImpl implements ConstraintValidatorFactor
 
     private Session session;
 
-    public ConstraintValidatorFactoryImpl(Session session) {
-        this.session = session;
+    public ConstraintValidatorFactoryImpl() {
+        this.session = ProductionProvider.getInstance().getSessionFactory().openSession();
     }
 
     @Override
     public <T extends ConstraintValidator<?, ?>> T getInstance(Class<T> key) {
-        System.out.println("getting");
+
         T instance = null;
 
         try {
@@ -27,11 +28,9 @@ public class ConstraintValidatorFactoryImpl implements ConstraintValidatorFactor
             // could not instantiate class
             e.printStackTrace();
         }
-        System.out.println(key.toString());
-        System.out.println(EntityManagerAwareValidator.class.isAssignableFrom(key));
+
         if(EntityManagerAwareValidator.class.isAssignableFrom(key)) {
             EntityManagerAwareValidator validator = (EntityManagerAwareValidator) instance;
-            System.out.println("isAssignableFrom");
             if (validator != null) {
                 validator.setSession(session);
             }
