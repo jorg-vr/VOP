@@ -94,7 +94,7 @@ public class HibernateUtil {
         ValidatorContext validatorContext = validatorFactory.usingContext();
         validatorContext.constraintValidatorFactory(
                 new ConstraintValidatorFactoryImpl
-                        ());
+                        (session));
         Validator validator = validatorContext.getValidator();
 
         Set<ConstraintViolation<Object>> violations = validator.validate(object);

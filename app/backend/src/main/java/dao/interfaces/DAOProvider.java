@@ -10,8 +10,4 @@ public interface DAOProvider extends AutoCloseable {
 
     DAOManager getDaoManager();
 
-    //TODO use injection
-    @Deprecated
-    SessionFactory getSessionFactory();
-
 }

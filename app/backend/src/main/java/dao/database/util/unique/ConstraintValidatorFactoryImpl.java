@@ -13,8 +13,8 @@ public class ConstraintValidatorFactoryImpl implements ConstraintValidatorFactor
 
     private Session session;
 
-    public ConstraintValidatorFactoryImpl() {
-        this.session = ProductionProvider.getInstance().getSessionFactory().openSession();
+    public ConstraintValidatorFactoryImpl(Session session) {
+        this.session = session;
     }
 
     @Override
