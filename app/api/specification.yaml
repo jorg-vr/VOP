@@ -274,7 +274,7 @@ paths:
           $ref: '#/responses/NotFound'
         '409':
           $ref: '#/responses/Conflict'
-  '/companies/{id}/commission':
+  '/companies/{id}/commissions/{contractType}':
     parameters:
       - in: path
         name: id
@@ -282,10 +282,18 @@ paths:
         required: true
         type: integer
         format: int64
+      - name: contractType
+        in: path
+        description: Name of Contract type. See GET /contracts/types for all possibilities.
+        required: true
+        type: string
     get:
       produces:
         - application/json
-      summary: Get the default Commission of the company.
+      summary: Get specific commission of the company.
+      description: >
+        If this vehicle does not have a specific commission, value of commission
+        will be null.
       responses:
         '200':
           description: OK
@@ -298,15 +306,15 @@ paths:
         - application/json
       consumes:
         - application/json
-      summary: Update default Commission of the company.
+      summary: Set specific commission of the company.
       description: >
         Attributes described as 'server-generated' will be ignored by the
         server. Non-required attributes that are not present will not be
         updated.
       parameters:
         - in: body
-          name: Commission
-          description: Commission to update
+          name: commission
+          description: commission to set
           required: true
           schema:
             $ref: '#/definitions/Commission'
@@ -320,7 +328,7 @@ paths:
         '401':
           $ref: '#/responses/Unauthorised'
     delete:
-      summary: Reset the default Commission of the company.
+      summary: Remove the specific commission of the company.
       responses:
         '204':
           description: Commission
@@ -900,7 +908,7 @@ paths:
           $ref: '#/responses/NotFound'
         '409':
           $ref: '#/responses/Conflict'
-  '/vehicles/{id}/commission':
+  '/vehicles/{id}/commissions/{contractType}':
     parameters:
       - in: path
         name: id
@@ -908,10 +916,18 @@ paths:
         required: true
         type: integer
         format: int64
+      - name: contractType
+        in: path
+        description: Name of Contract type. See GET /contracts/types for all possibilities.
+        required: true
+        type: string
     get:
       produces:
         - application/json
-      summary: Get the Commission of the vehicle.
+      summary: Get the commission of the vehicle.
+      description: >
+        If this vehicle does not have a specific commission, value of commission
+        will be null.
       responses:
         '200':
           description: OK
@@ -924,15 +940,15 @@ paths:
         - application/json
       consumes:
         - application/json
-      summary: Update Commission of the vehicle.
+      summary: Set specific commission of the vehicle.
       description: >
         Attributes described as 'server-generated' will be ignored by the
         server. Non-required attributes that are not present will not be
         updated.
       parameters:
         - in: body
-          name: Commission
-          description: Commission to update
+          name: commission
+          description: Commission to set
           required: true
           schema:
             $ref: '#/definitions/Commission'
@@ -946,7 +962,7 @@ paths:
         '401':
           $ref: '#/responses/Unauthorised'
     delete:
-      summary: Reset the Commission of the vehicle to the default value.
+      summary: Reset the commission of the vehicle to the default value.
       responses:
         '204':
           description: Commission
@@ -994,17 +1010,22 @@ paths:
                 type: integer
         '401':
           $ref: '#/responses/Unauthorised'
-  '/vehicles/types/{vehicleType}/commission':
+  '/vehicles/types/{vehicleType}/commissions/{contractType}':
     parameters:
       - name: vehicleType
         in: path
         description: ID of a vehicle type.
         required: true
         type: integer
+      - name: contractType
+        in: path
+        description: Name of Contract type. See GET /contracts/types for all possibilities.
+        required: true
+        type: string
     get:
       produces:
         - application/json
-      summary: Get the Commission of the vehicle type.
+      summary: Get the commission of the vehicle type.
       responses:
         '200':
           description: OK
@@ -1017,15 +1038,15 @@ paths:
         - application/json
       consumes:
         - application/json
-      summary: Update the Commission of the vehicle type.
+      summary: Update the commission of the vehicle type.
       description: >
         Attributes described as 'server-generated' will be ignored by the
         server. Non-required attributes that are not present will not be
         updated.
       parameters:
         - in: body
-          name: Commission
-          description: Commission to update
+          name: commission
+          description: Commission to set
           required: true
           schema:
             $ref: '#/definitions/Commission'
@@ -1036,13 +1057,6 @@ paths:
             $ref: '#/definitions/Contract'
         '400':
           $ref: '#/responses/Malformed'
-        '401':
-          $ref: '#/responses/Unauthorised'
-    delete:
-      summary: Reset the Commission to the default value.
-      responses:
-        '204':
-          description: Commission
         '401':
           $ref: '#/responses/Unauthorised'
   '/vehicles/types/{typeName}/taxes/{contractType}':
@@ -2859,7 +2873,9 @@ definitions:
       - value
     properties:
       value:
-        description: A percentage value representing the commission.
+        description: >-
+          A percentage value representing the commission. null if there is no
+          commission
         type: number
         format: double
       createdAt:
@@ -2897,11 +2913,8 @@ definitions:
       permissions:
         type: array
         items:
-          type: string
-        description: A list of permissions this role has. This is a server-generated value.
-        example:
-          - 'read:vehicles'
-          - 'write:company'
+          type: integer
+        description: IDs of the permissions this role has.
       createdAt:
         readOnly: true
         type: string
