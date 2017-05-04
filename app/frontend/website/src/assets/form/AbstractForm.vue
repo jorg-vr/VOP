@@ -66,7 +66,7 @@ Generic component for a form. Every form should be encapsulated in this componen
                 console.log(this.resource.name)
                 console.log(this.object)
 
-                this.$store.dispatch(this.actions.name + this.resource.name.capitalize(), this.object).then(object => {
+                this.$store.dispatch(this.actions.name + this.resource.name.capitalize(), {resource:this.object,ids:{}}).then(object => {
                     this.$router.push({name: this.resource.name.plural()})
                 })
             }
