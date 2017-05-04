@@ -41,7 +41,7 @@
                     <one-to-many class="model.insurance.Contract" />
                 </bag>
                 <map name="commissions"
-                     table="commissions" cascade="all">
+                     table="customer_commissions" cascade="all">
                     <key column="customer_id"/>
 
                     <map-key column="surety_type">

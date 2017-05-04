@@ -24,7 +24,7 @@
             <element column="value" type="java.lang.Double"/>
         </map>
         <map name="commissions"
-             table="commissions" cascade="all">
+             table="vehicletype_commissions" cascade="all">
             <key column="vehicletype_id"/>
 
             <map-key column="surety_type">
