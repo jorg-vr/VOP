@@ -39,7 +39,7 @@ public class Vehicle implements EditableObject, java.io.Serializable {
     private Map<SuretyType, Double> commissions;
 
     public Vehicle() {
-
+        commissions = new HashMap<>();
     }
 
     public Vehicle(String brand, String model, String chassisNumber, String licensePlate, int value, int mileage, VehicleType type, LocalDate productionDate, Fleet fleet, LeasingCompany leasingCompany) throws InvalidInputException {
