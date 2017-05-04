@@ -14,6 +14,11 @@ public class ConstraintViolationException extends Exception {
         this.violationMap = violationMap;
     }
 
+    public ConstraintViolationException(String field, String message) {
+        violationMap = new HashMap<>();
+        violationMap.put(field, message);
+    }
+
     @Override
     public String getMessage() {
         StringBuilder builder = new StringBuilder();
