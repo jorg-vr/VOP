@@ -4,13 +4,13 @@
     @param id: The id of the client which is edited.
 -->
 <template>
-    <abstract-form-page :actions="actions" :id="id" :object="client" :resource="resource">
+    <abstract-form :actions="actions" :object="client" :back="back" :resource="resource">
         <client-form-input :object="client"></client-form-input>
-    </abstract-form-page>
+    </abstract-form>
 </template>
 <script>
     import {mapActions} from 'vuex'
-    import abstractFormPage from '../../assets/form/AbstractFormPage.vue'
+    import abstractForm from '../../assets/form/AbstractForm.vue'
     import actions from '../../constants/actions'
     import resources from '../../constants/resources'
     import clientFormInput from '../../assets/form/types/clientFormInput.vue'
@@ -20,7 +20,8 @@
             return {
                 resource: resources.CLIENT,
                 actions: actions.UPDATE,
-                client: null
+                client: null,
+                back:{name:resources.CLIENT.name}
             }
         },
         created(){
@@ -29,10 +30,9 @@
                     this.client = cl;
                 })
             }
-
         },
         components: {
-            abstractFormPage,clientFormInput
+            abstractForm,clientFormInput
         },
         props: {
             id: String

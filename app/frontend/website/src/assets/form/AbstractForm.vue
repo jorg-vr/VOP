@@ -6,17 +6,22 @@ Generic component for a form. Every form should be encapsulated in this componen
 @param object: The resource configured by this form
 -->
 <template>
-    <form class="form-horizontal col-xs-12 col-sm-11 col-md-9 col-lg-7">
-        <slot></slot>
-        <div class="row">
-            <button-link :route="failroute" buttonClass="pull-right btn btn-sm btn-default form-component-button">
-                {{ $t('common.cancel') | capitalize }}
-            </button-link>
-            <button-action @click="submit" buttonClass="pull-right btn btn-sm btn-primary form-component-button">
-                {{ submitText }}
-            </button-action>
+    <div id="content-wrapper">
+        <div class="page-header">
+            <h1>{{ submitText }}</h1>
         </div>
-    </form>
+        <form class="form-horizontal col-xs-12 col-sm-11 col-md-9 col-lg-7">
+            <slot></slot>
+            <div class="row">
+                <button-link :route="back" buttonClass="pull-right btn btn-sm btn-default form-component-button">
+                    {{ $t('common.cancel') | capitalize }}
+                </button-link>
+                <button-action @click="submit" buttonClass="pull-right btn btn-sm btn-primary form-component-button">
+                    {{ submitText }}
+                </button-action>
+            </div>
+        </form>
+    </div>
 </template>
 <script>
     import {getResourceActionText} from '../../utils/utils'
@@ -27,15 +32,14 @@ Generic component for a form. Every form should be encapsulated in this componen
     export default {
         data(){
             return {
-                failroute: {name: this.resource.name.plural()}, //The failroute is the index page of the resource.
                 submitText:  getResourceActionText(this.resource.name, this.actions.name)
-
             }
         },
         components: {
             buttonLink, buttonAction
         },
         props: {
+            back: Object, //link to previous page
             actions: Object, //The action of this form
             resource: Object, //The name of the resource configured by this form
             object: Object //The resource configured by this form
@@ -46,10 +50,6 @@ Generic component for a form. Every form should be encapsulated in this componen
                     this.submit()
                 }
             })
-            // set failroute to other path in case of surety
-            if(this.resource.name == 'insurance'){
-                this.failroute = {name: 'insurance', params: {id:this.contractId} }
-            }
         },
 
         computed: {
@@ -63,9 +63,6 @@ Generic component for a form. Every form should be encapsulated in this componen
              * index page of the resource of the object.
              */
             submit(){
-                console.log(this.resource.name)
-                console.log(this.object)
-
                 this.$store.dispatch(this.actions.name + this.resource.name.capitalize(), {resource:this.object,ids:{}}).then(object => {
                     this.$router.push({name: this.resource.name.plural()})
                 })
