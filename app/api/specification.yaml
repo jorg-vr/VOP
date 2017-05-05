@@ -1100,6 +1100,43 @@ paths:
           $ref: '#/responses/NotFound'
         '409':
           $ref: '#/responses/Conflict'
+  '/vehicles/{id}/green_card/{extention}':
+    parameters:
+      - in: path
+        name: id
+        description: ID of Vehicle
+        required: true
+        type: integer
+        format: int64
+      - in: path
+        name: extention
+        description: >-
+          Format of the green card. This should be in the extension format, e.g.
+          `pdf` or `xml`.
+        required: true
+        type: string
+    get:
+      produces:
+        - application/json
+      summary: Get the green card of the vehicle in a specified format.
+      description: >
+        Returns an invoice in the requested format. The response will be a file
+        of the requested type, if the server supports that type. 
+      responses:
+        '200':
+          description: OK
+          schema:
+            description: A file with the requested extention
+            type: file
+            example: green_card.pdf
+        '401':
+          $ref: '#/responses/Unauthorised'
+        '404':
+          $ref: '#/responses/NotFound'
+        '415':
+          description: >-
+            Invalid or unknown format. The server does not support the requested
+            format.
   '/vehicles/{id}/commissions/{contractType}':
     parameters:
       - in: path
@@ -1160,6 +1197,134 @@ paths:
           description: Commission
         '401':
           $ref: '#/responses/Unauthorised'
+  '/vehicles/{vehicle_id}/logs':
+    parameters:
+      - in: path
+        name: vehicle_id
+        description: ID of Vehicle
+        required: true
+        type: integer
+        format: int64
+    get:
+      produces:
+        - application/json
+      summary: |
+        Get the logs of a vehicle.
+      description: >
+        Get a list of `LogEntry` objects, eventually filtered by the query
+        parameters. When combining parameters, the conditions are joined by AND.
+        This means the resulting objects must satisfy all filters. All the
+        string filter operations are case insensitive.
+      parameters:
+        - in: query
+          name: user
+          type: integer
+          format: int64
+          description: Filter by user.
+        - in: query
+          name: resource
+          type: string
+          description: Filter by resource.
+        - in: query
+          name: action
+          type: string
+          description: Filter by action.
+        - in: query
+          name: datetime
+          type: string
+          format: date-time
+          description: Filter by datetime.
+        - in: query
+          name: object
+          type: integer
+          format: int64
+          description: Filter by object.
+        - in: query
+          name: page
+          type: integer
+          description: The page to query.
+          default: 0
+        - in: query
+          name: limit
+          type: integer
+          description: The number of elements in a page.
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+            required:
+              - data
+              - total
+              - offset
+              - limit
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/definitions/LogEntry'
+              total:
+                description: Total number of items.
+                example: 50
+                type: integer
+              offset:
+                description: |
+                  The number of items before this page (exclusive). This means
+                  that when offset = 20, this page will contains items 20 to
+                  20 + limit. For limit = 10, it will be 20 - 29 (including 29).
+                example: 20
+                type: integer
+              limit:
+                description: The maximum number of items on a page.
+                example: 10
+                type: integer
+              previous:
+                description: 'Link to the previous page, if applicable.'
+                example: /companies&page=1
+                type: string
+              next:
+                description: 'Link to the next page, if applicable.'
+                type: string
+                example: /companies&page=20
+              first:
+                description: 'Link to the first page, if applicable.'
+                type: string
+                example: /companies&page=0
+              last:
+                description: 'Link to the last page, if applicable.'
+                type: string
+                example: /companies&page=100
+        '400':
+          $ref: '#/responses/WrongQuery'
+        '401':
+          $ref: '#/responses/Unauthorised'
+  '/vehicles/{vehicle_id}/logs/{entry_id}':
+    parameters:
+      - in: path
+        name: vehicle_id
+        description: ID of Vehicle
+        required: true
+        type: integer
+        format: int64
+      - in: path
+        name: entry_id
+        description: ID of LogEntry
+        required: true
+        type: integer
+        format: int64
+    get:
+      produces:
+        - application/json
+      summary: Get one correction.
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/LogEntry'
+        '401':
+          $ref: '#/responses/Unauthorised'
+        '404':
+          $ref: '#/responses/NotFound'
   /vehicles/types:
     get:
       produces:
@@ -3644,3 +3809,60 @@ definitions:
       sub:
         type: integer
         description: The ID of the user.
+  LogEntry:
+    type: object
+    required:
+      - resource
+      - action
+      - description
+      - datetime
+      - user
+      - object
+    description: |
+      Describes an action on a resource.
+    properties:
+      id:
+        readOnly: true
+        type: integer
+      resource:
+        type: string
+        description: >-
+          Which resource this LogEntry describes. This MUST be one of the
+          objects defined in this API.
+      action:
+        type: string
+        description: >-
+          Which resource this LogEntry describes. The possible values are
+          "READ", "EDIT", "CREATE" and "REMOVE".
+      description:
+        type: array
+        items:
+          type: object
+        description: An array with key-value pairs describing the changed object.
+      datetime:
+        type: string
+        format: date-time
+        description: The time of the action.
+      user:
+        type: integer
+        format: int64
+        description: The user who called the action.
+      object:
+        type: integer
+        format: int64
+        description: >-
+          The object affected by the action. This object is of the type
+          indicated by the resource.
+      createdAt:
+        readOnly: true
+        type: string
+        format: date-time
+        example: 2016-08-29T09:12:33.001Z
+      updatedAt:
+        readOnly: true
+        type: string
+        format: date-time
+        example: 2016-08-29T09:12:33.001Z
+      url:
+        readOnly: true
+        type: string
