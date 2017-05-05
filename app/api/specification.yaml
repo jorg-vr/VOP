@@ -274,6 +274,198 @@ paths:
           $ref: '#/responses/NotFound'
         '409':
           $ref: '#/responses/Conflict'
+  '/companies/{company_id}/corrections':
+    parameters:
+      - in: path
+        name: company_id
+        description: ID of Company
+        required: true
+        type: integer
+        format: int64
+    get:
+      produces:
+        - application/json
+      summary: |
+        Get all corrections of a company.
+      description: >
+        Get a list of `Correction` objects, eventually filtered by the query
+        parameters. When combining parameters, the conditions are joined by AND.
+        This means the resulting objects must satisfy all filters. All the
+        string filter operations are case insensitive.
+      parameters:
+        - in: query
+          name: nameContains
+          type: string
+          description: Filter objects whose name attribute contains nameContains.
+        - in: query
+          name: paid
+          type: boolean
+          description: Filter by paid.
+        - in: query
+          name: date
+          type: string
+          description: Filter by date.
+        - in: query
+          name: vehicle
+          type: integer
+          description: Filter by vehicle
+        - in: query
+          name: type
+          type: integer
+          description: Filter by company.
+        - in: query
+          name: page
+          type: integer
+          description: The page to query.
+          default: 0
+        - in: query
+          name: limit
+          type: integer
+          description: The number of elements in a page.
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+            required:
+              - data
+              - total
+              - offset
+              - limit
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/definitions/Company'
+              total:
+                description: Total number of items.
+                example: 50
+                type: integer
+              offset:
+                description: |
+                  The number of items before this page (exclusive). This means
+                  that when offset = 20, this page will contains items 20 to
+                  20 + limit. For limit = 10, it will be 20 - 29 (including 29).
+                example: 20
+                type: integer
+              limit:
+                description: The maximum number of items on a page.
+                example: 10
+                type: integer
+              previous:
+                description: 'Link to the previous page, if applicable.'
+                example: /companies&page=1
+                type: string
+              next:
+                description: 'Link to the next page, if applicable.'
+                type: string
+                example: /companies&page=20
+              first:
+                description: 'Link to the first page, if applicable.'
+                type: string
+                example: /companies&page=0
+              last:
+                description: 'Link to the last page, if applicable.'
+                type: string
+                example: /companies&page=100
+        '400':
+          $ref: '#/responses/WrongQuery'
+        '401':
+          $ref: '#/responses/Unauthorised'
+    post:
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      summary: Add a new correction to the  company.
+      description: >
+        Read-only attributes will be ignored by the server. Non-required
+        attributes that are
+
+        not present will be filled in by the server, using default values.
+      parameters:
+        - in: body
+          name: Correction
+          required: true
+          schema:
+            $ref: '#/definitions/Correction'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Company'
+        '400':
+          $ref: '#/responses/Malformed'
+        '401':
+          $ref: '#/responses/Unauthorised'
+        '422':
+          $ref: '#/responses/WrongContent'
+  '/companies/{company_id}/corrections/{correction_id}':
+    parameters:
+      - in: path
+        name: company_id
+        description: ID of Company
+        required: true
+        type: integer
+        format: int64
+      - in: path
+        name: correction_id
+        description: ID of Correction
+        required: true
+        type: integer
+        format: int64
+    get:
+      produces:
+        - application/json
+      summary: Get one correction.
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Correction'
+        '401':
+          $ref: '#/responses/Unauthorised'
+        '404':
+          $ref: '#/responses/NotFound'
+    put:
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      summary: Update a correction.
+      description: >
+        Read-only attributes will be ignored by the server. Non-required
+        attributes that are
+
+        not present will not be updated.
+      parameters:
+        - in: body
+          name: Correction
+          required: true
+          schema:
+            $ref: '#/definitions/Correction'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Correction'
+        '400':
+          $ref: '#/responses/Malformed'
+        '401':
+          $ref: '#/responses/Unauthorised'
+        '404':
+          $ref: '#/responses/NotFound'
+        '422':
+          $ref: '#/responses/WrongContent'
+    delete:
+      summary: Archive a correction.
+      responses:
+        '204':
+          description: Correction archived successfully.
+        '401':
+          $ref: '#/responses/Unauthorised'
+        '404':
+          $ref: '#/responses/NotFound'
   '/companies/{id}/commissions/{contractType}':
     parameters:
       - in: path
