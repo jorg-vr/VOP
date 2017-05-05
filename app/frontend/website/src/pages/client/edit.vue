@@ -20,8 +20,8 @@
             return {
                 resource: resources.CLIENT,
                 actions: actions.UPDATE,
-                client: null,
-                back:{name:resources.CLIENT.name}
+                client: {address:{}},
+                back:{name:resources.CLIENT.name.plural()}
             }
         },
         created(){
