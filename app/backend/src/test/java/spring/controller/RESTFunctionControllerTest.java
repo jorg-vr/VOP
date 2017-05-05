@@ -2,27 +2,51 @@ package spring.controller;
 
 import dao.database.ProductionProvider;
 import dao.interfaces.DAOManager;
+import dao.interfaces.DataAccessException;
+import dao.interfaces.FunctionDAO;
+import model.account.Function;
+import model.account.Role;
+import model.account.User;
+import model.identity.Address;
+import model.identity.Customer;
+import model.identity.Periodicity;
+import org.hibernate.UnresolvableObjectException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import spring.model.RESTFunction;
+import util.UUIDUtil;
+
+import java.time.LocalDateTime;
+
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.hasSize;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * Created by jorg on 3/15/17.
- *
+ * Created by Ponti on 4/05/2017.
  */
-@Ignore
 @RunWith(SpringJUnit4ClassRunner.class)
-public class RESTRoleControllerTest {
+public class RESTFunctionControllerTest {
 
     private MockMvc mvc = MockMvcBuilders.standaloneSetup(new RESTFunctionController())
             .addPlaceholderValue("path.users", "users")
             .addPlaceholderValue("path.functions", "functions")
             .build();
 
+    private static Customer customer;
+    private static Role role1, role2;
+    private static User user;
     private static String[] authPair;
 
     private static DAOManager manager;
@@ -32,17 +56,39 @@ public class RESTRoleControllerTest {
         ProductionProvider.initializeProvider("unittest");
         manager = ProductionProvider.getInstance().getDaoManager();
         authPair = AuthUtil.getAdminToken();
+        try {
+            Address address = new Address("mystreet", "123", "lala", "12345", "land");
+            customer = new Customer(address, "04789456123", "anita", "123456789", Periodicity.QUARTERLY, Periodicity.QUARTERLY);
+            customer = manager.getCustomerDAO().create(customer);
+            role1 = new Role("role1");
+            role1 = manager.getRoleDAO().create(role1);
+            role2 = new Role("role2");
+            role2 = manager.getRoleDAO().create(role2);
+            user = new User("firstname", "lastname", "email", "password");
+            user = manager.getUserDAO().create(user);
+
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+        }
     }
 
 
     @AfterClass
     public static void afterTransaction() throws Exception {
+        try {
+            manager.getCustomerDAO().remove(customer.getUuid());
+            manager.getRoleDAO().remove(role1.getUuid());
+            manager.getRoleDAO().remove(role2.getUuid());
+            manager.getUserDAO().remove(user.getUuid());
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+        }
         manager.close();
         ProductionProvider.getInstance().close();
     }
 
 
-    /*@Test
+    @Test
     public void get() throws Exception {
         FunctionDAO functionDAO = manager.getFunctionDAO();
         Function function1 = new Function(customer, role1, user, LocalDateTime.of(2016, 7, 15, 0, 0), LocalDateTime.of(2200, 8, 3, 0, 0));
@@ -186,5 +232,5 @@ public class RESTRoleControllerTest {
         } catch (DataAccessException e) {
             fail("Could not retrieve the put object from the actual database");
         }
-    }*/
+    }
 }
