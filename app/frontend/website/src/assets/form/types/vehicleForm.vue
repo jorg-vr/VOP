@@ -14,7 +14,7 @@ This page is used to show a form for a vehicle.
     import {mapActions} from 'vuex'
     import resources from '../../../constants/resources'
     import formComponent from '../formComponent.vue'
-    import vehicleFormInput from './vehicleFormInput.vue'
+    import vehicleFormInput from './VehicleFormInput.vue'
 
     export default {
         data(){

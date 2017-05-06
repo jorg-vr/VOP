@@ -5,8 +5,8 @@
     </div>
 </template>
 <script>
-    import formInput from '../elements/formInput.vue'
-    import formSelect from '../elements/formSelect.vue'
+    import formInput from '../FormGroups/TextInputFormGroup.vue'
+    import formSelect from '../FormGroups/SelectInputFormGroup.vue'
 
     export default {
         props: {

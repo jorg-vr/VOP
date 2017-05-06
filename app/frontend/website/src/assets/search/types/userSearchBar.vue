@@ -8,7 +8,7 @@ Searchbar to search for users.
 </template>
 <script>
     import searchBar from '../searchBar.vue'
-    import userFormInput from '../../form/types/userFormInput.vue'
+    import userFormInput from '../../form/types/UserFormInput.vue'
     export default {
         data() {
             return {

@@ -17,8 +17,8 @@ All of the fields for user input for the fleet form
     import resources from '../../../constants/resources'
     import actions from '../../../constants/actions'
     import {mapGetters, mapActions} from 'vuex'
-    import formInput from '../elements/formInput.vue'
-    import formSelect from '../elements/formSelect.vue'
+    import TextInputFormGroup from '../FormGroups/TextInputFormGroup.vue'
+    import SelectInputFormGroup from '../FormGroups/SelectInputFormGroup.vue'
     export default {
         data() {
             return {
@@ -29,7 +29,7 @@ All of the fields for user input for the fleet form
         created(){
             if(this.isAuthorizedForAllResources(resources.FLEET, actions.READ_ALL)){
                 this.fetchClients()
-                if(!this.object.company){
+                if(this.object && !this.object.company){
                     this.showCompanySelect = true
                 }
             }
@@ -38,7 +38,7 @@ All of the fields for user input for the fleet form
             object: Object,
         },
         components: {
-            formInput, formSelect
+            TextInputFormGroup, SelectInputFormGroup
         },
         computed: {
             ...mapGetters([

@@ -11,21 +11,12 @@ import store from './store'
 import environments from './config/environments'
 
 import nl from 'vee-validate/dist/locale/nl';
+import check_vin from './validators/check_vin'
+import length from './validators/length'
 
-const validator = {
-    messages: {
-        en: (field, [length]) => `The ${field} field must exactly contain ${length} characters.`,
-        nl: (field, [length]) => `${field} moet exact ${length} tekens bevatten.`
-    },
-    validate(value, [length]) {
-        if (value === undefined || value === null) {
-            return false;
-        }
-        return String(value).length == length;
-    }
-};
 
-Validator.extend('length', validator);
+Validator.extend('length', length)
+Validator.extend('check_vin', check_vin)
 Validator.addLocale(nl)
 
 //Validation support

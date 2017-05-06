@@ -1,12 +1,12 @@
 <!--
-This function is a specialized version of the formSelect component.
+This function is a specialized version of SelectInputFormGrouplect component.
 It's a component usable for selecting a type of client. The value of the type can be bound to v-model.
 These values can be found in clientTypes.js
 
 @param value (optional): The initial client type value.
 -->
 <template>
-    <!-- TODO update this to new formSelect
+    <!-- TODO update this to SelectInputFormGrouplect
     <form-item label="Type">
         <div class="select-row">
             <select class="form-control select-item" :value="value" @change="updateValue($event.target.value)" :id="inputId" ref="select">
@@ -20,17 +20,13 @@ These values can be found in clientTypes.js
        -->
 </template>
 <script>
-    import formItem from './formItem.vue'
-    import formSelect from './formSelect.vue'
+    import formSelect from './SelectInputFormGroup.vue'
     import clientTypes from '../../../constants/clientTypes'
     export default {
         props: {
             value: String, //Initial value
         },
         mixins: [formSelect],
-        components: {
-            formItem
-        },
         data(){
             return {
                 clientTypes: clientTypes

@@ -74,7 +74,7 @@ import { mapGetters, mapActions, mapMutations } from 'vuex'
 import resources from '../../constants/resources'
 import languagePicker from './languagePicker.vue'
 import functionPicker from './functionPicker.vue'
-import formSelect from '../form/elements/formSelect.vue'
+import formSelect from '../form/FormGroups/SelectInputFormGroup.vue'
 import ResourcesLink from './ResourcesLink.vue'
 
     export default {

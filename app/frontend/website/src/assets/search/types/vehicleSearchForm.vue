@@ -18,7 +18,7 @@ Special searchbar for searching vehicles, which only contains the advanced searc
 
 <script>
     import searchForm from '../searchForm.vue'
-    import vehicleFormInput from '../../form/types/vehicleFormInput.vue'
+    import vehicleFormInput from '../../form/types/VehicleFormInput.vue'
     export default {
         data() {
             return {

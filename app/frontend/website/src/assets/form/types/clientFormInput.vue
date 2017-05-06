@@ -5,20 +5,20 @@ All of the fields for user input for the client form
 -->
 <template>
     <div v-if="client">
-        <form-input :object="client" name="name" :text="$t('client.name')" :rules="'required'"></form-input>
-        <form-select :object="client" name="type" :text="$t('client.type')" :rules="'required'" :options="clientTypes"></form-select>
-        <form-input :object="client.address" name="country" :text="$t('address.country')" :rules="'required|length:2'"></form-input>
-        <form-input :object="client.address" name="city" :text="$t('address.city')" :rules="'required'"></form-input>
-        <form-input :object="client.address" name="street" :text="$t('address.street')" :rules="'required'"></form-input>
-        <form-input :object="client.address" name="postalCode" :text="$t('address.postalCode')" :rules="'required|numeric'"></form-input>
-        <form-input :object="client.address" name="houseNumber" :text="$t('address.houseNumber')" :rules="'required|numeric'"></form-input>
-        <form-input :object="client" name="vatNumber" :text="$t('client.vatNumber')" :rules="'required|min:8'"></form-input>
-        <form-input :object="client" name="phoneNumber" :text="$t('client.phoneNumber')" :rules="'required|min:6'"></form-input>
+        <text-input-form-group :object="client" name="name" :text="$t('client.name')" :rules="'required'"></text-input-form-group>
+        <select-input-form-group :object="client" name="type" :text="$t('client.type')" :rules="'required'" :options="clientTypes"></select-input-form-group>
+        <text-input-form-group :object="client.address" name="country" :text="$t('address.country')" :rules="'required|length:2'"></text-input-form-group>
+        <text-input-form-group :object="client.address" name="city" :text="$t('address.city')" :rules="'required'"></text-input-form-group>
+        <text-input-form-group :object="client.address" name="street" :text="$t('address.street')" :rules="'required'"></text-input-form-group>
+        <text-input-form-group :object="client.address" name="postalCode" :text="$t('address.postalCode')" :rules="'required|numeric'"></text-input-form-group>
+        <text-input-form-group :object="client.address" name="houseNumber" :text="$t('address.houseNumber')" :rules="'required|numeric'"></text-input-form-group>
+        <text-input-form-group :object="client" name="vatNumber" :text="$t('client.vatNumber')" :rules="'required|min:8'"></text-input-form-group>
+        <text-input-form-group :object="client" name="phoneNumber" :text="$t('client.phoneNumber')" :rules="'required|min:6'"></text-input-form-group>
     </div>
 </template>"
 <script>
-    import formInput from '../elements/formInput.vue'
-    import formSelect from '../elements/formSelect.vue'
+    import TextInputFormGroup from '../FormGroups/TextInputFormGroup.vue'
+    import SelectInputFormGroup from '../FormGroups/SelectInputFormGroup.vue'
     import clientTypes from '../../../constants/clientTypes'
     export default {
         data(){
@@ -32,7 +32,7 @@ All of the fields for user input for the client form
             object: Object,
         },
         components: {
-            formInput, formSelect
+            TextInputFormGroup, SelectInputFormGroup
         },
         computed: {
             client(){

@@ -30,7 +30,8 @@ export default
             users: 'users',
             firstName: 'first name',
             lastName: 'last name',
-            email: 'email'
+            email: 'email',
+            password: 'password',
         },
         client: {
             client: 'client',
@@ -169,6 +170,7 @@ export default
             firstName: 'voornaam',
             lastName: 'achternaam',
             email: 'e-mail',
+            password: 'wachtwoord',
         },
         client: {
             client: 'klant',

@@ -24,8 +24,8 @@ This component can be used to let the user select between a list of specified va
                         :data-vv-as="text"
                         :has-error="errors.has(name)">
                     <option value="" disabled hidden>{{$t('actions.select', {subject: text}).capitalize()}}</option>
-                    <option :selected="option[optionPropertyName] === object[name]"
-                            v-for="option in options" :value="option[optionPropertyName]">
+                    <option :selected="option[property] === object[name]"
+                            v-for="option in options" :value="option[property]">
                         {{option[visibleKey ? visibleKey : name]}}
                     </option>
                 </select>
@@ -38,7 +38,6 @@ This component can be used to let the user select between a list of specified va
     </div>
 </template>
 <script>
-    import formItem from './formItem.vue'
     export default {
         props: {
             rules: String,
@@ -54,8 +53,10 @@ This component can be used to let the user select between a list of specified va
                 default: true
             }
         },
-        components: {
-            formItem
+        computed: {
+            property() {
+                return this.optionPropertyName ? this.optionPropertyName : this.name
+            }
         },
         methods: {
             onInput: function (value) {

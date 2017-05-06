@@ -13,7 +13,7 @@ This page is used to show a form for a user.
     import {mapActions} from 'vuex'
     import resources from '../../../constants/resources'
     import formComponent from '../formComponent.vue'
-    import userFormInput from './userFormInput.vue'
+    import userFormInput from './UserFormInput.vue'
 
     export default {
         data(){

@@ -5,25 +5,21 @@ All of the fields for user input for the user form
 -->
 <template>
     <div>
-        <form-input :placeholder="$t('user.firstName') | capitalize" :label="$t('user.firstName') | capitalize"
-                    v-model="user.firstName"></form-input>
-
-        <form-input :placeholder="$t('user.lastName') | capitalize" :label="$t('user.lastName') | capitalize"
-                    v-model="user.lastName"></form-input>
-
-        <form-input :placeholder="$t('user.email') | capitalize" :label="$t('user.email') | capitalize"
-                    v-model="user.email"></form-input>
+        <text-input-form-group :object="user" name="firstName" :text="$t('user.firstName')" :rules="'required'"></text-input-form-group>
+        <text-input-form-group :object="user" name="firstName" :text="$t('user.lastName')" :rules="'required'"></text-input-form-group>
+        <text-input-form-group :object="user" name="email" :text="$t('user.email')" :rules="'required|email'"></text-input-form-group>
+        <text-input-form-group type="password" :object="user" name="password" :text="$t('user.password')" :rules="'required'"></text-input-form-group>
     </div>
 </template>
 <script>
-    import formInput from '../elements/formInput.vue'
+    import TextInputFormGroup from '../FormGroups/TextInputFormGroup.vue'
 
     export default {
         props: {
             user: Object
         },
         components: {
-            formInput
+            TextInputFormGroup
         }
     }
 </script>
