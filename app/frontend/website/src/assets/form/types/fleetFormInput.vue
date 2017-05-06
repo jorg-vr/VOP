@@ -5,11 +5,11 @@ All of the fields for user input for the fleet form
 -->
 <template>
     <div v-if="object">
-        <form-input :object="object" name="name" :text="$t('fleet.name')" :rules="'required'"></form-input>
-        <form-select v-if="showCompanySelect"
+        <text-input-form-group :object="object" name="name" :text="$t('fleet.name')" :rules="'required'"></text-input-form-group >
+        <select-input-form-group v-if="showCompanySelect"
                      :object="object" name="company" optionPropertyName="id" visibleKey="name"
                      :text="$t('fleet.company')" :rules="'required'" :options="clients">
-        </form-select>
+        </select-input-form-group>
     </div>
 
 </template>
