@@ -10,8 +10,8 @@ import locales from './lang/locales'
 import store from './store'
 import environments from './config/environments'
 
-import dutch from 'vee-validate/dist/locale/nl';
-Validator.addLocale(dutch)
+import nl from 'vee-validate/dist/locale/nl';
+Validator.addLocale(nl)
 
 
 //Validation support

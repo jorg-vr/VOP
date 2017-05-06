@@ -22,7 +22,7 @@ Component usable for requesting user input with a text field.
                        :has-error="errors.has(name)"
                        :placeholder="text">
             </p>
-            <span v-show="errors.has(name)" class="help is-danger col-xs-offset-3 col-xs-9">{{ errors.first(name) }}</span>
+            <span v-show="errors.has(name)" class="help is-danger col-xs-offset-3 col-xs-9">{{ errors.has(name) ? errors.first(name) : '' | capitalize   }}</span>
         </div>
     </div>
 </template>

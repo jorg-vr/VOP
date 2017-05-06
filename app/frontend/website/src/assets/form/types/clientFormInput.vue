@@ -11,8 +11,13 @@ See: http://vee-validate.logaretm.com/
 <template>
     <div>
         <form-input :object="client" name="name" :text="$t('client.name')" :rules="'required'"></form-input>
-        <form-select :object="client" name="type" :text="$t('client.type')" :rules="'required'"
-                     :options="clientTypes"></form-select>
+        <form-select :object="client" name="type" :text="$t('client.type')" :rules="'required'" :options="clientTypes"></form-select>
+        <form-input :object="client.address" name="country" :text="$t('address.country')" :rules="'required|alpha_dash|min:2|max:2'"></form-input>
+        <form-input :object="client.address" name="city" :text="$t('address.city')" :rules="'required|alpha_dash'"></form-input>
+        <form-input :object="client.address" name="street" :text="$t('address.street')" :rules="'required'"></form-input>
+        <form-input :object="client.address" name="postalCode" :text="$t('address.postalCode')" :rules="'required'"></form-input>
+        <form-input :object="client.address" name="houseNumber" :text="$t('address.houseNumber')" :rules="'required'"></form-input>
+
         <!--
         <form-input :placeholder="$t('address.country') | capitalize" :label="$t('address.country') | capitalize"
 
