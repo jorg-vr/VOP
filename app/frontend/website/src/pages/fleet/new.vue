@@ -21,6 +21,12 @@
                 back:{name:resources.FLEET.name.plural()}
             }
         },
+        created(){
+            //If the user can only create/update fleets for his own company then the company can already be configured.
+            if(this.isAuthorizedForOwnResourcesButNotAll(this.resource, this.actions)){
+                this.fleet.company = this.activeFunction.company
+            }
+        },
         components: {
             abstractForm,fleetFormInput
         }
