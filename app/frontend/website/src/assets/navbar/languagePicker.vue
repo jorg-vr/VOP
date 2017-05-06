@@ -14,6 +14,8 @@
 
 <script>
     import Vue from 'vue';
+    import { Validator } from 'vee-validate';
+
     export default {
         data() {
             return {
@@ -43,6 +45,7 @@
             updateLanguage(name){
                 let lang = this.languages.filter(lang => lang.name === name)[0]
                 Vue.config.lang = lang.code
+                Validator.setLocale(lang.code)
             }
         }
     }

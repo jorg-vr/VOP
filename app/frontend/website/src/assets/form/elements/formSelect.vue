@@ -1,4 +1,4 @@
-<!--
+np<!--
 This component can be used to let the user select between a list of specified values.
 
 @param options: All of the option which can be selected
@@ -31,8 +31,8 @@ This component can be used to let the user select between a list of specified va
                 </select>
                 <button v-if="resetButton" type="button" id="reset" class="btn btn-xs" @click="reset"><i class="fa fa-times"></i></button>
             </p>
+            <span v-show="errors.has(name)" class="help is-danger col-xs-offset-3 col-xs-9">{{ errors.first(name) }}</span>
         </div>
-        <span v-show="errors.has(name)" class="help is-danger col-xs-offset-3">{{ errors.first(name) }}</span>
     </div>
 </template>
 <script>

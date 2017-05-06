@@ -22,8 +22,8 @@ Component usable for requesting user input with a text field.
                        :has-error="errors.has(name)"
                        :placeholder="text">
             </p>
+            <span v-show="errors.has(name)" class="help is-danger col-xs-offset-3 col-xs-9">{{ errors.first(name) }}</span>
         </div>
-        <span v-show="errors.has(name)" class="help is-danger col-xs-offset-3">{{ errors.first(name) }}</span>
     </div>
 </template>
 <script>
@@ -45,14 +45,16 @@ Component usable for requesting user input with a text field.
     .form-control, input {
         border-width: 1.5px;
     }
-    [has-error='true'] input,
-    [has-error='true'] input:focus{
+    .form-group .col-xs-9 {
+        margin-bottom: 0;
+    }
+    [has-error='true'],
+    [has-error='true']:focus{
         border-color: #ff3860;
     }
-    [has-error='true'] span {
+    .help.is-danger {
         display: block;
         font-size: 14px;
-        margin-top: 5px;
         color: #ff3860;
     }
 </style>

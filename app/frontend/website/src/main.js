@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-import VeeValidate from 'vee-validate'
+import VeeValidate, {Validator} from 'vee-validate'
 import VueResource from 'vue-resource'
 import VueRouter from 'vue-router'
 import VueI18n from 'vue-i18n'
@@ -10,16 +10,20 @@ import locales from './lang/locales'
 import store from './store'
 import environments from './config/environments'
 
+import dutch from 'vee-validate/dist/locale/nl';
+Validator.addLocale(dutch)
+
+
 //Validation support
-Vue.use(VeeValidate);
+Vue.use(VeeValidate, {
+    locale: 'nl'
+});
 //Routing support
 Vue.use(VueRouter);
 //Backend support
 Vue.use(VueResource);
 //Language support
 Vue.use(VueI18n);
-
-
 
 if(process.env.NODE_ENV){
     Vue.config.env = environments[process.env.NODE_ENV]
