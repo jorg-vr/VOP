@@ -1,13 +1,9 @@
 package spring.controller;
 
 import dao.database.ProductionProvider;
-
-import dao.exceptions.ObjectNotFoundException;
-
-import dao.interfaces.CompanyDAO;
-
-import dao.interfaces.DAOManager;
 import dao.exceptions.DataAccessException;
+import dao.interfaces.CompanyDAO;
+import dao.interfaces.DAOManager;
 import model.identity.Address;
 import model.identity.Company;
 import model.identity.CompanyType;
