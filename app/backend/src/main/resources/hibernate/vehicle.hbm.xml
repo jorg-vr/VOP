@@ -20,7 +20,17 @@
         <property name="mileage" column="mileage" type="int"/>
         <many-to-one name="fleet" column="fleet_id" class="model.fleet.Fleet" lazy="proxy" fetch="select"/>
         <many-to-one name="type" column="type" lazy="proxy" fetch="select" class="model.fleet.VehicleType"/>
+        <map name="commissions"
+             table="vehicle_commissions" cascade="all">
+            <key column="vehicle_id"/>
 
+            <map-key column="surety_type">
+                <type name = "org.hibernate.type.EnumType" >
+                    <param name="enumClass" >model.insurance.SuretyType</param>
+                </type>
+            </map-key>
+            <element column="value" type="java.lang.Double"/>
+        </map>
     </class>
 
 </hibernate-mapping>
