@@ -32,8 +32,6 @@ All of the fields for user input for the vehicle form
             TextInputFormGroup, SelectInputFormGroup
         },
         created(){
-            //Fetch options for the select items.
-            this.fetchClientsBy({type: clientTypes.LEASING_COMPANY.type})
             this.fetchVehicleTypes()
         },
         computed: {

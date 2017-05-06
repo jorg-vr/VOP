@@ -40,7 +40,7 @@
                 })
             }
             else {
-                this.fetchInsurancesBy({company: this.activeFunction.company}).then(() => {
+                this.fetchInsurancesBy({filters: {company: this.activeFunction.company}}).then(() => {
                     this.setLoading({loading: false })
                 })
             }
