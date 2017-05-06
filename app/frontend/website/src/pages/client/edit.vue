@@ -5,7 +5,7 @@
 -->
 <template>
     <abstract-form :actions="actions" :object="client" :back="back" :resource="resource">
-        <client-form-input :object="client"></client-form-input>
+        <form-input :object="client"></form-input>
     </abstract-form>
 </template>
 <script>
@@ -13,7 +13,7 @@
     import abstractForm from '../../assets/form/AbstractForm.vue'
     import actions from '../../constants/actions'
     import resources from '../../constants/resources'
-    import clientFormInput from '../../assets/form/types/clientFormInput.vue'
+    import formInput from '../../assets/form/types/clientFormInput.vue'
 
     export default {
         data(){
@@ -26,13 +26,13 @@
         },
         created(){
             if(this.id){
-                this.fetchClient({id: this.id}).then(cl => {
-                    this.client = cl;
+                this.fetchClient({id: this.id}).then(o => {
+                    this.client = o;
                 })
             }
         },
         components: {
-            abstractForm,clientFormInput
+            abstractForm,formInput
         },
         props: {
             id: String
