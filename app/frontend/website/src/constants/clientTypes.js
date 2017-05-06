@@ -10,13 +10,13 @@ export default {
         translation: function(){
             return Vue.t('clientTypes.customer')
         },
-        value: 'Customer'
+        value: 'CUSTOMER'
     },
     INSURANCE_COMPANY: {
         name: 'insurance company',
         translation: function(){
             return Vue.t('clientTypes.insuranceCompany')
         },
-        value: 'InsuranceCompany'
+        value: 'INSURANCE_COMPANY'
     }
 }
