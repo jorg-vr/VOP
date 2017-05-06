@@ -11,7 +11,7 @@ Component usable for requesting user input with a text field.
 <template>
     <div class="row">
         <div class="form-group">
-            <label class="col-xs-3 control-label" :for="name">{{text}}</label>
+            <label class="col-xs-3 control-label" :for="name">{{text | capitalize}}</label>
             <p class="col-xs-9">
                 <input type="text" class="form-control" ref="input"
                        :value="object[name]"
@@ -20,7 +20,7 @@ Component usable for requesting user input with a text field.
                        :data-vv-name="name"
                        :data-vv-as="text"
                        :has-error="errors.has(name)"
-                       :placeholder="text">
+                       :placeholder="text.capitalize()">
             </p>
             <span v-show="errors.has(name)" class="help is-danger col-xs-offset-3 col-xs-9">{{ errors.has(name) ? errors.first(name) : '' | capitalize   }}</span>
         </div>

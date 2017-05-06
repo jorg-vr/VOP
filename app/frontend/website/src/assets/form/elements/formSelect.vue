@@ -14,7 +14,7 @@ This component can be used to let the user select between a list of specified va
 <template>
     <div class="row">
         <div class="form-group">
-            <label class="col-xs-3 control-label" :for="name">{{text}}</label>
+            <label class="col-xs-3 control-label" :for="name">{{text | capitalize}}</label>
             <p class="col-xs-9  select-row">
                 <select class="form-control select-item" ref="select"
                         :value="object[name]"
