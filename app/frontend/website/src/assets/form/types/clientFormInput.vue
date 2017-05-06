@@ -2,11 +2,6 @@
 All of the fields for user input for the client form
 
 @param client: This object will be configured with the input of this component.
-
-
-TODO: ADD VALIDATIONS
-See: https://vuejs.org/v2/guide/class-and-style.html
-See: http://vee-validate.logaretm.com/
 -->
 <template>
     <div>
@@ -18,9 +13,9 @@ See: http://vee-validate.logaretm.com/
         <form-input :object="client.address" name="postalCode" :text="$t('address.postalCode')" :rules="'required|numeric'"></form-input>
         <form-input :object="client.address" name="houseNumber" :text="$t('address.houseNumber')" :rules="'required|numeric'"></form-input>
         <form-input :object="client" name="vatNumber" :text="$t('client.vatNumber')" :rules="'required|min:8'"></form-input>
-        <form-input :object="client" name="phoneNumber" :text="$t('client.phoneNumber')" :rules="'required'"></form-input>
+        <form-input :object="client" name="phoneNumber" :text="$t('client.phoneNumber')" :rules="'required|min:6'"></form-input>
     </div>
-</template>
+</template>"
 <script>
     import formInput from '../elements/formInput.vue'
     import formSelect from '../elements/formSelect.vue'
