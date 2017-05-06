@@ -17,6 +17,11 @@ public class LeasingCompany extends Company implements java.io.Serializable {
         super.setCompanyType(CompanyType.LEASING_COMPANY);
     }
 
+    public LeasingCompany(Address address, String phoneNumber, String name, String btwNumber) {
+        super(address, phoneNumber, name, btwNumber, CompanyType.LEASING_COMPANY);
+        this.vehicles = new ArrayList<>();
+    }
+
     public LeasingCompany(Address address, String phoneNumber, String name, String btwNumber, Collection<Vehicle> vehicles) {
         super(address, phoneNumber, name, btwNumber, CompanyType.LEASING_COMPANY);
         this.vehicles = vehicles;
