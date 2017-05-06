@@ -86,7 +86,7 @@
             this.fetchClient({id: clientId}).then(client => {
                 this.type = clientTypes[client.type]['name']
             })
-            this.fetchFleetsBy({company: clientId}).then(() => {
+            this.fetchFleetsBy({filters: {company: clientId}}).then(() => {
                 this.setLoading({loading: false })
             })
         },
