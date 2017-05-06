@@ -23,15 +23,17 @@ This component can be used to let the user select between a list of specified va
                         :data-vv-name="name"
                         :data-vv-as="text"
                         :has-error="errors.has(name)">
-                    <option v-if="hiddenOption" value="" disabled hidden>{{hiddenOption}}</option>
-                    <option v-else value="" disabled hidden></option>
-                    <option :selected="option[name] === object[name]" v-for="option in options" :value="option[name]">
+                    <option value="" disabled hidden>{{$t('actions.select', {subject: text}).capitalize()}}</option>
+                    <option :selected="option[optionPropertyName] === object[name]"
+                            v-for="option in options" :value="option[optionPropertyName]">
                         {{option[visibleKey ? visibleKey : name]}}
                     </option>
                 </select>
                 <button v-if="resetButton" type="button" id="reset" class="btn btn-xs" @click="reset"><i class="fa fa-times"></i></button>
             </p>
-            <span v-show="errors.has(name)" class="help is-danger col-xs-offset-3 col-xs-9">{{ errors.has(name) ? errors.first(name) : '' | capitalize  }}</span>
+            <span v-show="errors.has(name)" class="help is-danger col-xs-offset-3 col-xs-9">
+                {{ errors.has(name) ? errors.first(name) : '' | capitalize  }}
+            </span>
         </div>
     </div>
 </template>
@@ -41,6 +43,7 @@ This component can be used to let the user select between a list of specified va
         props: {
             rules: String,
             name: String,
+            optionPropertyName: String, //Name of the property in the object.
             text: String,
             object: Object,
             options: Array,
@@ -59,10 +62,9 @@ This component can be used to let the user select between a list of specified va
                 this.$set(this.object, this.name, value)
             },
             reset(){
-                //TODO: DOM is not being refreshed when this function is called, this is a bug and has effects and validations
-                //and selected index
                 this.$set(this.object, this.name, '')
                 this.$refs.select.selectedIndex=0
+                this.$validator.validate(this.name, '')
             }
         }
     }

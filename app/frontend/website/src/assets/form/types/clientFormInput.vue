@@ -4,7 +4,7 @@ All of the fields for user input for the client form
 @param client: This object will be configured with the input of this component.
 -->
 <template>
-    <div>
+    <div v-if="client">
         <form-input :object="client" name="name" :text="$t('client.name')" :rules="'required'"></form-input>
         <form-select :object="client" name="type" :text="$t('client.type')" :rules="'required'" :options="clientTypes"></form-select>
         <form-input :object="client.address" name="country" :text="$t('address.country')" :rules="'required|length:2'"></form-input>
@@ -29,12 +29,20 @@ All of the fields for user input for the client form
             }
         },
         props: {
-            client: Object,
+            object: Object,
         },
         components: {
             formInput, formSelect
+        },
+        computed: {
+            client(){
+                if(this.object) {
+                    return this.object
+                }
+                else {
+                    return {address: {}}
+                }
+            }
         }
     }
-
-
 </script>

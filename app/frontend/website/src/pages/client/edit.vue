@@ -4,23 +4,44 @@
     @param id: The id of the client which is edited.
 -->
 <template>
-    <client-form-page :actions="actions" :id="id"></client-form-page>
+    <abstract-form :actions="actions" :object="client" :back="back" :resource="resource">
+        <form-input :object="client"></form-input>
+    </abstract-form>
 </template>
 <script>
-    import ClientFormPage from '../../assets/form/pages/ClientFormPage.vue'
+    import {mapActions} from 'vuex'
+    import abstractForm from '../../assets/form/AbstractForm.vue'
     import actions from '../../constants/actions'
+    import resources from '../../constants/resources'
+    import formInput from '../../assets/form/types/clientFormInput.vue'
 
     export default {
         data(){
             return {
-                actions: actions.UPDATE
+                resource: resources.CLIENT,
+                actions: actions.UPDATE,
+                client: {address:{}},
+                back:{name:resources.CLIENT.name.plural()}
+            }
+        },
+        created(){
+            if(this.id){
+                this.fetchClient({id: this.id}).then(o => {
+                    this.client = o;
+                })
             }
         },
         components: {
-            ClientFormPage
+            abstractForm,formInput
         },
         props: {
             id: String
+        },
+        methods: {
+            ...mapActions([
+                'fetchClient'
+            ])
+
         }
     }
 </script>

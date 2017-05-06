@@ -19,6 +19,7 @@ export default
         },
         fleet: {
             name: 'fleet name',
+            company: 'company',
             companyName: 'company name',
             fleet: 'fleet',
             fleets: 'fleets'
@@ -157,12 +158,12 @@ export default
         },
         fleet: {
             name: 'vlootnaam',
+            company: 'bedrijf',
             companyName: 'bedrijfsnaam',
             fleet: 'vloot',
             fleets: 'vloten'
         },
         user: {
-
             user: 'gebruiker',
             users: 'gebruikers',
             firstName: 'voornaam',
