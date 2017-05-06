@@ -26,8 +26,6 @@ All of the fields for user input for the vehicle form
         <form-input :placeholder="$t('vehicle.year') | capitalize" :label="$t('vehicle.year') | capitalize"
                     v-model="vehicle.year"></form-input>
 
-        <form-select optionKey="name" :options="clients" :label="$t('vehicle.leasingCompany') | capitalize "
-                     v-model="vehicle.leasingCompany"></form-select>
     </div>
 
 </template>
