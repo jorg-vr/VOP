@@ -6,7 +6,9 @@ All of the fields for user input for the client form
 <template>
     <div v-if="client">
         <text-input-form-group :object="client" name="name" :text="$t('client.name')" :rules="'required'"></text-input-form-group>
-        <select-input-form-group :object="client" name="type" :text="$t('client.type')" :rules="'required'" :options="clientTypes"></select-input-form-group>
+        <select-input-form-group :object="client" name="type" :text="$t('client.type')" :rules="'required'"
+                                 :options="clientTypes" visibleKey="translation">
+        </select-input-form-group>
         <text-input-form-group :object="client.address" name="country" :text="$t('address.country')" :rules="'required|length:2'"></text-input-form-group>
         <text-input-form-group :object="client.address" name="city" :text="$t('address.city')" :rules="'required'"></text-input-form-group>
         <text-input-form-group :object="client.address" name="street" :text="$t('address.street')" :rules="'required'"></text-input-form-group>

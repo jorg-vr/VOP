@@ -7,6 +7,9 @@
     <form-select selectClass="picker" optionKey="roleName" :options="userFunctions"
                  @input="updateActiveFunction(accountFunction.id)"
                  v-model="accountFunction.id"></form-select>-->
+    <select class="picker form-control" :value="accountFunction.id" @change="onInput($event.target.value)" >
+        <option v-for="userFunction in userFunctions" :selected="accountFunction.id===userFunction.id">{{userFunction.roleName}}</option>
+    </select>
 </template>
 <script>
     import formSelect from '../form/FormGroups/SelectInputFormGroup.vue'
@@ -37,7 +40,7 @@
                 'setActiveFunction',
                 'fetchUserFunctions'
             ]),
-            updateActiveFunction(functionId){
+            onInput(functionId){
                 let userFunction = this.userFunctions.filter(obj => obj.id === functionId)[0]
                 this.setActiveFunction(userFunction)
                 //Navigate back to home once the function has changed.

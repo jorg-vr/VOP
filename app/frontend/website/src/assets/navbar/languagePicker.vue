@@ -1,6 +1,7 @@
 <!--
     Component usable for letting the user select the language of the website.
     TODO: Make the language persistent on page reloads.
+    TODO: language flag is not showing
 -->
 <template>
     <!-- Wrap select into <p> to be able to add language flag -->

@@ -24,9 +24,11 @@ This component can be used to let the user select between a list of specified va
                         :data-vv-as="text"
                         :has-error="errors.has(name)">
                     <option value="" disabled hidden>{{$t('actions.select', {subject: text}).capitalize()}}</option>
-                    <option :selected="option[property] === object[name]"
-                            v-for="option in options" :value="option[property]">
-                        {{option[visibleKey ? visibleKey : name]}}
+                    <option  v-for="optionObject in options"
+                             :selected="optionObject[property] === object[name]"
+                             :value="optionObject[property]">
+                        {{optionText(optionObject)}}
+
                     </option>
                 </select>
                 <button v-if="resetButton" type="button" id="reset" class="btn btn-xs" @click="reset"><i class="fa fa-times"></i></button>
@@ -47,7 +49,7 @@ This component can be used to let the user select between a list of specified va
             object: Object,
             options: Array,
             hiddenOption: String,
-            visibleKey: String, //Key to show of an object
+            visibleKey: [Function, String], //Key to show of an object
             resetButton: {
                 type: Boolean,
                 default: true
@@ -66,6 +68,14 @@ This component can be used to let the user select between a list of specified va
                 this.$set(this.object, this.name, '')
                 this.$refs.select.selectedIndex=0
                 this.$validator.validate(this.name, '')
+            },
+            optionText(option){
+                if (option[this.visibleKey] instanceof Function) {
+                    return option[this.visibleKey]().capitalize();
+                }
+                else {
+                    return option[this.visibleKey ? this.visibleKey : this.name].capitalize()
+                }
             }
         }
     }
