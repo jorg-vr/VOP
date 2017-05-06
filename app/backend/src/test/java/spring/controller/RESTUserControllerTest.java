@@ -3,12 +3,11 @@ package spring.controller;
 import dao.database.ProductionProvider;
 import dao.interfaces.DAOManager;
 import dao.interfaces.DataAccessException;
-import dao.interfaces.RoleDAO;
-import model.account.Role;
+import dao.interfaces.UserDAO;
+import model.account.User;
 import org.hibernate.UnresolvableObjectException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -16,7 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import spring.model.RESTRole;
+import spring.model.RESTUser;
 import util.UUIDUtil;
 
 import static org.hamcrest.Matchers.*;
@@ -26,15 +25,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * Created by jorg on 3/15/17.
- *
+ * Created by Ponti on 6/05/2017.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-public class RESTRoleControllerTest {
+public class RESTUserControllerTest {
 
-    private MockMvc mvc = MockMvcBuilders.standaloneSetup(new RESTRoleController())
-            .addPlaceholderValue("path.auth", "auth")
-            .addPlaceholderValue("path.roles", "roles")
+    private MockMvc mvc = MockMvcBuilders.standaloneSetup(new RESTUserController())
+            .addPlaceholderValue("path.users", "users")
             .build();
 
     private static String[] authPair;
@@ -58,49 +55,54 @@ public class RESTRoleControllerTest {
 
     @Test
     public void get() throws Exception {
-        RoleDAO roleDAO = manager.getRoleDAO();
-        Role role = roleDAO.create(new Role("roleName"));
+        UserDAO userDAO = manager.getUserDAO();
+        User user = userDAO.create(new User("firstNameTest", "lastNameTest", "emailTest", "passwordTest"));
 
         try {
-            mvc.perform(MockMvcRequestBuilders.get("/auth/roles")
+            mvc.perform(MockMvcRequestBuilders.get("/users")
                     .header("Authorization", authPair[0])
                     .header("Function", authPair[1])
             )
                     .andExpect(status().isOk())
-                    //Expect 2 instead of 1 because there's 1 extra Role in the database for authentication purposes while testing
+                    //Expect 2 instead of 1 because there's 1 extra User in the database for authentication purposes while testing
                     .andExpect(jsonPath("$.data", hasSize(greaterThanOrEqualTo(2))))
                     .andExpect(jsonPath("$.total", greaterThanOrEqualTo(2)))
                     .andReturn();
         } finally {
             //Clean up database for other tests
-            roleDAO.remove(role.getUuid());
+            userDAO.remove(user.getUuid());
         }
 
     }
 
-    //TODO compare permissions between database object and restobject (low priority)
+    //Look to test password
     @Test
     public void post() throws Exception {
-        RESTRole restRole = new RESTRole(new Role("roleName"));
+        RESTUser restUser = new RESTUser(new User("firstNameTest", "lastNameTest", "emailTest", "passwordTest"));
         //Test if response object fields are equal to posted data
-        MvcResult result = mvc.perform(MockMvcRequestBuilders.post("/auth/roles")
+        MvcResult result = mvc.perform(MockMvcRequestBuilders.post("/users")
                 .header("Content-Type", "application/json")
                 .header("Authorization", authPair[0])
                 .header("Function", authPair[1])
-                .content(TestUtil.convertObjectToJsonBytes(restRole))
+                .content(TestUtil.convertObjectToJsonBytes(restUser))
         )
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", equalTo(restRole.getName())))
+                .andExpect(jsonPath("$.firstName", equalTo(restUser.getFirstName())))
+                .andExpect(jsonPath("$.lastName", equalTo(restUser.getLastName())))
+                .andExpect(jsonPath("$.email", equalTo(restUser.getEmail())))
+                .andExpect(jsonPath("$.password", equalTo(restUser.getPassword())))
                 .andReturn();
 
         //Test if posted object was actually added correctly to the database
-        RESTRole restRole1 = TestUtil.convertJsonBytesToObject(result.getResponse().getContentAsByteArray(), RESTRole.class);
-        RoleDAO roleDAO = manager.getRoleDAO();
-
+        RESTUser restUser1 = TestUtil.convertJsonBytesToObject(result.getResponse().getContentAsByteArray(), RESTUser.class);
+        UserDAO userDAO = manager.getUserDAO();
         try {
-            Role role = roleDAO.get(UUIDUtil.toUUID(restRole1.getId()));
-            assertEquals("name field not created correctly", "roleName", role.getName());
-            roleDAO.remove(UUIDUtil.toUUID(restRole1.getId()));
+            User user = userDAO.get(UUIDUtil.toUUID(restUser1.getId()));
+            assertEquals("firstname field not created correctly", "firstNameTest", user.getFirstName());
+            assertEquals("lastname field not created correctly", "lastNameTest", user.getLastName());
+            assertEquals("email field not created correctly", "emailTest", user.getEmail());
+            assertEquals("password field not created correctly", "passwordTest", user.getPassword());
+            userDAO.remove(UUIDUtil.toUUID(restUser1.getId()));
         } catch (DataAccessException e) {
             fail("Could not retrieve the posted object from the actual database");
         }
@@ -109,21 +111,21 @@ public class RESTRoleControllerTest {
     @Test
     public void deleteId() throws Exception {
         //Add to database directly with DAO
-        RoleDAO roleDAO = manager.getRoleDAO();
-        Role role = roleDAO.create(new Role("roleName"));
+        UserDAO userDAO = manager.getUserDAO();
+        User user = userDAO.create(new User("firstNameTest", "lastNameTest", "emailTest", "passwordTest"));
 
         //Attempt to remove from the database with delete request
-        mvc.perform(MockMvcRequestBuilders.delete("/auth/roles/{id}", UUIDUtil.UUIDToNumberString(role.getUuid()))
+        mvc.perform(MockMvcRequestBuilders.delete("/users/{id}", UUIDUtil.UUIDToNumberString(user.getUuid()))
                 .header("Authorization", authPair[0])
                 .header("Function", authPair[1])
         )
                 .andExpect(status().isOk());
         //Check if successfully removed from database
         try {
-            roleDAO.refresh(role);
-            roleDAO.get(role.getUuid());
+            userDAO.refresh(user);
+            userDAO.get(user.getUuid());
             //Remove from database (above get function should have thrown an error if the object was no longer in the database)
-            roleDAO.remove(role.getUuid());
+            userDAO.remove(user.getUuid());
             fail("DELETE request did not succesfully delete the object from the database");
         } catch (UnresolvableObjectException e) {
             //Nothing because the object is no longer present in the database which is expected
@@ -133,50 +135,58 @@ public class RESTRoleControllerTest {
     @Test
     public void getId() throws Exception {
         //Add to database directly with DAO
-        RoleDAO roleDAO = manager.getRoleDAO();
-        Role role = roleDAO.create(new Role("roleName"));
+        UserDAO userDAO = manager.getUserDAO();
+        User user = userDAO.create(new User("firstNameTest", "lastNameTest", "emailTest", "passwordTest"));
 
         //Attempt to retrieve the object with the given id
-        mvc.perform(MockMvcRequestBuilders.get("/auth/roles/{id}", UUIDUtil.UUIDToNumberString(role.getUuid()))
+        mvc.perform(MockMvcRequestBuilders.get("/users/{id}", UUIDUtil.UUIDToNumberString(user.getUuid()))
                 .header("Authorization", authPair[0])
                 .header("Function", authPair[1])
         )
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", equalTo(role.getName())))
+                .andExpect(jsonPath("$.firstName", equalTo(user.getFirstName())))
+                .andExpect(jsonPath("$.lastName", equalTo(user.getLastName())))
+                .andExpect(jsonPath("$.email", equalTo(user.getEmail())))
+                .andExpect(jsonPath("$.password", equalTo(user.getPassword())))
                 .andReturn();
 
         //Clean up database for other tests
-        roleDAO.remove(role.getUuid());
+        userDAO.remove(user.getUuid());
     }
 
-    @Ignore
     @Test
     public void putId() throws Exception {
         //Add to database directly with DAO
-        RoleDAO roleDAO = manager.getRoleDAO();
-        Role role = roleDAO.create(new Role("roleNameTest"));
+        UserDAO userDAO = manager.getUserDAO();
+        User user = userDAO.create(new User("firstNameTest", "lastNameTest", "emailTest", "passwordTest"));
 
         //Change a field of the object that has to be updated
-        role.setName("roleNameChanged");
-        RESTRole restRole = new RESTRole(role);
+        user.setLastName("lastNameTestChanged");
+        RESTUser restUser = new RESTUser(user);
         //Perform the put request to update the object and check the fields of the returned object
-        MvcResult result = mvc.perform(MockMvcRequestBuilders.put("/auth/roles/{id}", UUIDUtil.UUIDToNumberString(role.getUuid()))
+        MvcResult result = mvc.perform(MockMvcRequestBuilders.put("/users/{id}", UUIDUtil.UUIDToNumberString(user.getUuid()))
                 .header("Content-Type", "application/json")
                 .header("Authorization", authPair[0])
                 .header("Function", authPair[1])
-                .content(TestUtil.convertObjectToJsonBytes(restRole))
+                .content(TestUtil.convertObjectToJsonBytes(restUser))
         )
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", equalTo(restRole.getName())))
+                .andExpect(jsonPath("$.firstName", equalTo(restUser.getFirstName())))
+                .andExpect(jsonPath("$.lastName", equalTo(restUser.getLastName())))
+                .andExpect(jsonPath("$.email", equalTo(restUser.getEmail())))
+                .andExpect(jsonPath("$.password", equalTo(restUser.getPassword())))
                 .andReturn();
 
         //Test if changes actually went in effect in the database
         try {
-            roleDAO.refresh(role);
-            Role role1 = roleDAO.get(role.getUuid());
-            assertEquals("name field not updated correctly", "roleNameChanged", role1.getName());
+            userDAO.refresh(user);
+            User user1 = userDAO.get(user.getUuid());
+            assertEquals("firstname field not updated correctly", "firstNameTest", user1.getFirstName());
+            assertEquals("lastname field not updated correctly", "lastNameTestChanged", user1.getLastName());
+            assertEquals("email field not updated correctly", "emailTest", user1.getEmail());
+            assertEquals("password field not updated correctly", "passwordTest", user1.getPassword());
             //Clean up database for other tests
-            roleDAO.remove(role.getUuid());
+            userDAO.remove(user.getUuid());
         } catch (DataAccessException e) {
             fail("Could not retrieve the put object from the actual database");
         }
