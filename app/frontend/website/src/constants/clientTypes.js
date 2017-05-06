@@ -10,20 +10,20 @@ export default {
         translation: function(){
             return Vue.t('clientTypes.customer')
         },
-        value: 'Customer'
+        value: 'CUSTOMER'
     },
     LEASING_COMPANY: {
         name: 'leasing company',
         translation: function(){
             return Vue.t('clientTypes.leasingCompany')
         },
-        value: 'LeasingCompany'
+        value: 'LEASINGCOMPANY'
     },
     INSURANCE_COMPANY: {
         name: 'insurance company',
         translation: function(){
             return Vue.t('clientTypes.insuranceCompany')
         },
-        value: 'InsuranceCompany'
+        value: 'INSURANCECOMPANY'
     }
 }
