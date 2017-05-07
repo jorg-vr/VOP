@@ -7,8 +7,8 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="value in listObject.values">
-                    <td v-for="header in listObject.headers">
+                <tr v-for="value in listObject.values" class="list-tr">
+                    <td v-for="header in listObject.headers" class="clickable-td" @click="tdclick(value.id)">
                         {{value[header]}}
                     </td>
                     <td class="stretch">
@@ -25,8 +25,12 @@
     width: 1%;
     white-space: nowrap;
 }
-table {
-    
+
+.clickable-td {
+    cursor:pointer;
+}
+tr.list-tr {
+    border-bottom: 1px solid #e6e6e6;  
 }
 </style>
 <script>
@@ -63,8 +67,11 @@ table {
             buttonEdit,
             confirmModal
         },
-        created() {
-            
+        methods: {
+            tdclick: function(id) {
+                this.$router.push({name: this.resource.name, params: {id: id}});
+            }
         }
     }
+    
 </script>
