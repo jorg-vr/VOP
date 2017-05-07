@@ -3,6 +3,7 @@ package csv;
 import com.opencsv.CSVReader;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.HeaderColumnNameTranslateMappingStrategy;
+import dao.database.ProductionProvider;
 import model.fleet.Vehicle;
 
 import java.io.*;
@@ -16,7 +17,7 @@ import java.util.Map;
 public class CSVtoVehicleParser {
 
     public static Collection<Vehicle> parse(InputStream stream){
-        CsvToBean<Vehicle> csvToBean = new CsvToBean<>();
+        CsvToBean<Vehicle> csvToBean = new VehicleCsvToBean();
 
         Map<String, String> columnMapping = new HashMap<>();
         columnMapping.put("Merk", "brand");
@@ -41,10 +42,13 @@ public class CSVtoVehicleParser {
         return null;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
+        ProductionProvider.initializeProvider("localtest");
+
         InputStream inputStream = CSVtoVehicleParser.class.getClassLoader().getResourceAsStream("csv/example.csv");
         for(Vehicle vehicle: parse(inputStream)){
             System.out.println(vehicle);
         }
+        ProductionProvider.getInstance().close();
     }
 }
