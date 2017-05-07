@@ -1,6 +1,7 @@
 package model.identity;
 
 import model.fleet.Fleet;
+import model.history.LogResource;
 import model.insurance.Contract;
 import model.insurance.SuretyType;
 
@@ -101,5 +102,15 @@ public class Customer extends Company implements java.io.Serializable {
 
     public void removeSpecificCommission(SuretyType suretyType) {
         commissions.remove(suretyType);
+    }
+
+    @Override
+    public Object copy() {
+        return null;
+    }
+
+    @Override
+    public LogResource getLogResource() {
+        return null;
     }
 }

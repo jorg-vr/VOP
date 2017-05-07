@@ -1,13 +1,15 @@
 package model.account;
 
 import model.history.EditableObject;
+import model.history.LogResource;
 
 import java.util.*;
 
 /**
  * Created by jorg on 3/2/17.
  */
-public class Role implements EditableObject, java.io.Serializable {
+public class Role implements EditableObject<Role>, java.io.Serializable {
+
     private String name;
     private Map<Resource, Permission> rights;
     private UUID uuid;
@@ -69,8 +71,13 @@ public class Role implements EditableObject, java.io.Serializable {
     }
 
     @Override
-    public EditableObject copy() {
+    public Role copy() {
         return new Role(name, rights, uuid);
+    }
+
+    @Override
+    public LogResource getLogResource() {
+        return LogResource.ROLE;
     }
 
     @Override

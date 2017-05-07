@@ -1,6 +1,7 @@
 package model.account;
 
 import model.history.EditableObject;
+import model.history.LogResource;
 import model.identity.Company;
 
 import java.time.LocalDateTime;
@@ -9,7 +10,7 @@ import java.util.UUID;
 /**
  * Created by sam on 3/10/17.
  */
-public class Function implements EditableObject, java.io.Serializable {
+public class Function implements EditableObject<Function>, java.io.Serializable {
     private Company company;
     private Role role;
     private User user;
@@ -93,8 +94,13 @@ public class Function implements EditableObject, java.io.Serializable {
     }
 
     @Override
-    public EditableObject copy() {
+    public Function copy() {
         return null;
+    }
+
+    @Override
+    public LogResource getLogResource() {
+        return LogResource.FUNCTION;
     }
 
     @Override

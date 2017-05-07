@@ -3,7 +3,7 @@ package model.identity;
 
 import java.util.UUID;
 
-public class Company extends Identity implements java.io.Serializable {
+public abstract class Company extends Identity implements java.io.Serializable {
 
 
     private Periodicity invoicePeriodicity;

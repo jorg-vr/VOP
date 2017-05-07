@@ -4,7 +4,7 @@ import model.history.EditableObject;
 
 import java.util.UUID;
 
-public class Identity implements EditableObject, java.io.Serializable {
+public abstract class Identity implements EditableObject, java.io.Serializable {
 
     private UUID uuid;
 
@@ -66,13 +66,6 @@ public class Identity implements EditableObject, java.io.Serializable {
         if (o == null || ! (o instanceof Identity)) return false;
         Identity identity = (Identity) o;
         return uuid.equals(identity.getUuid());
-    }
-
-
-
-    @Override
-    public EditableObject copy() {
-        return new Identity(uuid, address, phoneNumber);
     }
 
     @Override

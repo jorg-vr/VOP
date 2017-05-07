@@ -15,7 +15,7 @@ import java.util.UUID;
 
 import static model.history.FieldsComparator.compareFields;
 
-public class Vehicle implements EditableObject, java.io.Serializable {
+public class Vehicle implements EditableObject<Vehicle>, java.io.Serializable {
 
     private UUID uuid;
 
@@ -288,8 +288,13 @@ public class Vehicle implements EditableObject, java.io.Serializable {
     }
 
     @Override
-    public EditableObject copy() {
+    public Vehicle copy() {
         return new Vehicle(uuid, brand, model, licensePlate, productionDate, chassisNumber, value, mileage, type, fleet);
+    }
+
+    @Override
+    public LogResource getLogResource() {
+        return LogResource.VEHICLE;
     }
 
     public Collection<LogEntry> logCreate(User user) {
@@ -308,7 +313,7 @@ public class Vehicle implements EditableObject, java.io.Serializable {
     }
 
     @Override
-    public Collection<LogEntry> logUpdate(User user, Object old) {
+    public Collection<LogEntry> logUpdate(User user, Vehicle old) {
         Collection<LogEntry> entries = new ArrayList<>();
         entries.add(new LogEntry(uuid, user, LogAction.UPDATE, compareFields(old, this)));
         return entries;

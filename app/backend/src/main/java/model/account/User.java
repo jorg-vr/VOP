@@ -2,13 +2,14 @@ package model.account;
 
 import dao.database.util.unique.UniqueKey;
 import model.history.EditableObject;
+import model.history.LogResource;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
 
 @UniqueKey(columnNames ={"email"})
-public class User implements EditableObject, java.io.Serializable {
+public class User implements EditableObject<User>, java.io.Serializable {
 
     private UUID uuid;
 
@@ -94,7 +95,7 @@ public class User implements EditableObject, java.io.Serializable {
     }
 
     @Override
-    public EditableObject copy() {
+    public User copy() {
         User user = new User();
         user.setUuid(uuid);
         user.setFirstName(firstName);
@@ -102,6 +103,11 @@ public class User implements EditableObject, java.io.Serializable {
         user.setFunctions(new ArrayList<>(functions));
         user.setPassword(password);
         return user;
+    }
+
+    @Override
+    public LogResource getLogResource() {
+        return LogResource.USER;
     }
 
     @Override

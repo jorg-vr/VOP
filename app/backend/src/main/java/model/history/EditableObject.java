@@ -1,16 +1,19 @@
 package model.history;
 
+import model.account.User;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
-import model.account.User;
 
 
-public interface EditableObject {
+public interface EditableObject<T> {
 
     UUID getUuid();
 
-    EditableObject copy();
+    T copy();
+
+    LogResource getLogResource();
 
     default Collection<LogEntry> logGet(User user) {
        return LogEntry.createSimpleLogCollection(getUuid(), user, LogAction.GET);
@@ -25,10 +28,7 @@ public interface EditableObject {
         return LogEntry.createSimpleLogCollection(getUuid(), user, LogAction.DELETE);
     }
 
-    /**
-     * TODO use generics
-     */
-    default Collection<LogEntry> logUpdate(User user, Object old) {
+    default Collection<LogEntry> logUpdate(User user, T old) {
         return new ArrayList<>();
     }
 }

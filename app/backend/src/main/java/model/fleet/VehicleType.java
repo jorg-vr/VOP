@@ -2,16 +2,14 @@ package model.fleet;
 
 
 import model.history.EditableObject;
-import model.insurance.Surety;
+import model.history.LogResource;
 import model.insurance.SuretyType;
-import spring.exceptions.InvalidInputException;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.atomic.DoubleAccumulator;
 
-public class VehicleType implements EditableObject, java.io.Serializable {
+public class VehicleType implements EditableObject<VehicleType>, java.io.Serializable {
 
     private UUID uuid;
 
@@ -86,7 +84,15 @@ public class VehicleType implements EditableObject, java.io.Serializable {
         commissions.put(suretyType, commission);
     }
 
+    @Override
+    public VehicleType copy() {
+        return null;
+    }
 
+    @Override
+    public LogResource getLogResource() {
+        return LogResource.VEHICLE_TYPE;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -109,10 +115,5 @@ public class VehicleType implements EditableObject, java.io.Serializable {
     @Override
     public String toString() {
         return type;
-    }
-
-    @Override
-    public EditableObject copy() {
-        return null;
     }
 }

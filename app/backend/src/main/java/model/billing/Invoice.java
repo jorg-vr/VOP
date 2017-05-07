@@ -1,9 +1,9 @@
 package model.billing;
 
 import model.history.EditableObject;
+import model.history.LogResource;
 import model.identity.Company;
 import model.insurance.Contract;
-import model.insurance.VehicleInsurance;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ import java.util.UUID;
  * Costs are separate objects so that it is easy to categorize the types of costs according to personal preference when making a pdf representation
  * of the invoice for example.
  */
-public class Invoice implements EditableObject, java.io.Serializable {
+public class Invoice implements EditableObject<Invoice>, java.io.Serializable {
 
     private UUID uuid;
 
@@ -96,10 +96,6 @@ public class Invoice implements EditableObject, java.io.Serializable {
         }
         return totalTax;
     }
-    @Override
-    public EditableObject copy() {
-        return null;
-    }
 
     @Override
     public UUID getUuid() {
@@ -173,6 +169,15 @@ public class Invoice implements EditableObject, java.io.Serializable {
         contracts.add(contract);
     }
 
+    @Override
+    public Invoice copy() {
+        return null;
+    }
+
+    @Override
+    public LogResource getLogResource() {
+        return LogResource.INVOICE;
+    }
 
     @Override
     public boolean equals(Object o) {

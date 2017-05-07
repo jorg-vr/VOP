@@ -1,6 +1,7 @@
 package model.fleet;
 
 import model.history.EditableObject;
+import model.history.LogResource;
 import model.identity.Address;
 import model.identity.Customer;
 
@@ -8,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
 
-public class Fleet implements EditableObject, java.io.Serializable {
+public class Fleet implements EditableObject<Fleet>, java.io.Serializable {
 
     private UUID uuid;
     private String name;
@@ -96,21 +97,26 @@ public class Fleet implements EditableObject, java.io.Serializable {
     }
 
     @Override
+    public Fleet copy() {
+        Collection<Vehicle> newList = new ArrayList<Vehicle>();
+        for (Vehicle v : vehicles) {
+            newList.add((Vehicle) v.copy());
+        }
+        return new Fleet(uuid, newList);
+    }
+
+    @Override
+    public LogResource getLogResource() {
+        return LogResource.FLEET;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || !(o instanceof Fleet)) return false;
 
         return uuid.equals(((Fleet) o).getUuid());
 
-    }
-
-    @Override
-    public EditableObject copy() {
-        Collection<Vehicle> newList = new ArrayList<Vehicle>();
-        for (Vehicle v : vehicles) {
-            newList.add((Vehicle) v.copy());
-        }
-        return new Fleet(uuid, newList);
     }
 
     @Override
