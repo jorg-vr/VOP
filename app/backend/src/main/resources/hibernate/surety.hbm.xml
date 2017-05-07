@@ -16,7 +16,7 @@
                 <param name="enumClass">model.insurance.SuretyType</param>
             </type>
         </property>
-        <bag name="specialConditions" access="field" table="specialconditions"
+        <bag name="specialConditions" access="field" table="sureties_specialconditions"
              lazy="true" fetch="select" >
             <key column="surety_id" not-null="true"/>
             <many-to-many class="model.insurance.SpecialCondition" />

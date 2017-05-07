@@ -14,10 +14,7 @@ import model.insurance.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static model.insurance.SuretyType.*;
 
@@ -53,10 +50,24 @@ public class DatabaseFiller {
             VehicleInsuranceDAO vehicleInsuranceDAO = provider.getVehicleInsuranceDao();
             CompanyDAO<Company> companyDAO = provider.getCompanyDAO();
             InvoiceDAO invoiceDAO = provider.getInvoiceDao();
+            SpecialConditionDAO specialConditionDAO = provider.getSpecialConditionDao();
+
+            String[] titles = {"Euromex polisnummer", "Dekking terrorisme TRIP"};
+            String[] texts = {"Voor de dekking rechtsbijstand geldt het Euromes polisnummer 3020980", "lange tekst"};
+            String[] referenceCodes = {"024", "029"};
+            List<SpecialCondition> specialConditions = new ArrayList<>();
+
+            for (int i = 0; i < titles.length; i++) {
+                SpecialCondition specialCondition = new SpecialCondition(titles[i], texts[i], referenceCodes[i]);
+                specialConditionDAO.create(specialCondition);
+                specialConditions.add(specialCondition);
+            }
 
             Surety flatSurety = new FlatSurety(100);
             flatSurety.setSuretyType(SuretyType.OMNIUM_FULL);
+            flatSurety.setSpecialConditions(specialConditions);
             suretyDAO.create(flatSurety);
+
 
             Company solvas = new Company();
             solvas.setName("Solvas");

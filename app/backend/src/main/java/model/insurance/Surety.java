@@ -4,6 +4,7 @@ package model.insurance;
 import model.history.EditableObject;
 import model.identity.InsuranceCompany;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
 
@@ -78,6 +79,13 @@ public  abstract class Surety implements EditableObject {
         this.specialConditions = specialConditions;
     }
 
+    public void addSpecialCondition(SpecialCondition specialCondition) {
+        if (specialConditions == null) {
+            specialConditions = new ArrayList<>();
+        }
+        specialConditions.add(specialCondition);
+    }
+
     public InsuranceCompany getInsuranceCompany() {
         return insuranceCompany;
     }
@@ -85,4 +93,5 @@ public  abstract class Surety implements EditableObject {
     public void setInsuranceCompany(InsuranceCompany insuranceCompany) {
         this.insuranceCompany = insuranceCompany;
     }
+
 }
