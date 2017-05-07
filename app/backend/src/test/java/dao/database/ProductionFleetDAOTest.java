@@ -101,21 +101,6 @@ public class ProductionFleetDAOTest {
             customerDAO.remove(cust1.getUuid());
         }
 
-
-        try {
-            AddressDAO addressDAO = daoManager.getAddressDao();
-            if (a1 != null) {
-                addressDAO.remove(a1.getUuid());
-            }
-        } catch (DataAccessException e) {
-        }
-        try {
-            AddressDAO addressDAO = daoManager.getAddressDao();
-            if (a2 != null) {
-                addressDAO.remove(a2.getUuid());
-            }
-        } catch (DataAccessException e) {
-        }
     }
 
     @Test

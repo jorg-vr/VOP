@@ -1,7 +1,7 @@
 package dao.database.util;
 
-import dao.database.ProductionManager;
 import dao.database.ProductionProvider;
+import dao.exceptions.DataAccessException;
 import dao.interfaces.*;
 import model.account.*;
 import model.billing.Invoice;
@@ -189,7 +189,7 @@ public class DatabaseFiller {
             function2.setCompany(customer);
 
 
-            userDAO.create(user);
+            //userDAO.create(user);
             addressDAO.create(address);
             customerDAO.create(customer);
             roleDAO.create(role1);
@@ -239,7 +239,7 @@ public class DatabaseFiller {
             function.setCompany(customer);
 
 
-            userDAO.create(user);
+            //userDAO.create(user);
             addressDAO.create(address);
             customerDAO.create(customer);
             roleDAO.create(role);
@@ -304,7 +304,7 @@ public class DatabaseFiller {
             function.setCompany(customer);
 
 
-            userDAO.create(user);
+            //userDAO.create(user);
             addressDAO.create(address);
             customerDAO.create(customer);
             roleDAO.create(role);

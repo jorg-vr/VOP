@@ -1,9 +1,8 @@
 package database;
 
-import dao.database.ProductionManager;
 import dao.database.ProductionProvider;
 import dao.interfaces.DAOManager;
-import dao.interfaces.DataAccessException;
+import dao.exceptions.DataAccessException;
 import dao.interfaces.RoleDAO;
 import model.account.Role;
 import org.junit.AfterClass;

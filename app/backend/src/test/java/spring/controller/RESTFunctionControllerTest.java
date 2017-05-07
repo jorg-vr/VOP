@@ -1,8 +1,8 @@
 package spring.controller;
 
 import dao.database.ProductionProvider;
+import dao.exceptions.DataAccessException;
 import dao.interfaces.DAOManager;
-import dao.interfaces.DataAccessException;
 import dao.interfaces.FunctionDAO;
 import model.account.Function;
 import model.account.Role;
@@ -20,14 +20,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import spring.exceptions.MyExceptionHandler;
 import spring.model.RESTFunction;
 import util.UUIDUtil;
 
 import java.time.LocalDateTime;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
-import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -42,6 +41,7 @@ public class RESTFunctionControllerTest {
     private MockMvc mvc = MockMvcBuilders.standaloneSetup(new RESTFunctionController())
             .addPlaceholderValue("path.users", "users")
             .addPlaceholderValue("path.functions", "functions")
+            .setControllerAdvice(new MyExceptionHandler())
             .build();
 
     private static Customer customer;
@@ -64,7 +64,7 @@ public class RESTFunctionControllerTest {
             role1 = manager.getRoleDAO().create(role1);
             role2 = new Role("role2");
             role2 = manager.getRoleDAO().create(role2);
-            user = new User("firstname", "lastname", "email", "password");
+            user = new User("firstname", "lastname", "email@a.com", "password");
             user = manager.getUserDAO().create(user);
 
         } catch (DataAccessException e) {

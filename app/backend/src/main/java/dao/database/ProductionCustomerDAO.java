@@ -1,25 +1,11 @@
 package dao.database;
 
 import dao.interfaces.CustomerDAO;
-import dao.interfaces.DataAccessException;
 import dao.interfaces.Filter;
 import model.fleet.Fleet;
 import model.identity.Address;
-import model.identity.Company;
-import model.identity.CompanyType;
 import model.identity.Customer;
-import org.hibernate.Hibernate;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
-
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Optional;
-import java.util.UUID;
 
 /**
  * Created by sam on 3/13/17.

@@ -5,13 +5,17 @@ import controller.CustomerController;
 import controller.RoleController;
 import controller.UserController;
 import controller.exceptions.UnAuthorizedException;
-import dao.interfaces.DataAccessException;
+import dao.exceptions.ConstraintViolationException;
+import dao.exceptions.DataAccessException;
+import dao.exceptions.ObjectNotFoundException;
 import model.account.Function;
 import model.account.Role;
 import model.identity.Company;
+import spring.exceptions.ErrorCode;
 import util.UUIDUtil;
-import spring.exceptions.InvalidInputException;
-import spring.exceptions.NotAuthorizedException;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static util.MyProperties.PATH_FUNCTIONS;
 import static util.MyProperties.getProperty;
@@ -52,31 +56,33 @@ public class RESTFunction extends RESTAbstractModel<Function> {
     }
 
     @Override
-    public Function translate(ControllerManager manager) {
+    public Function translate(ControllerManager manager) throws DataAccessException, UnAuthorizedException, ConstraintViolationException {
         Function function = new Function();
         function.setUuid(UUIDUtil.toUUID(getId()));
+
+        Map<String, String> violations = new HashMap<>();
         try {
-            try {
-                CustomerController customerController = manager.getCustomerController();
-                function.setCompany(customerController.get(UUIDUtil.toUUID(getCompany())));
-            } catch (DataAccessException e) {
-                throw new InvalidInputException("company");
-            }
-            try {
-                RoleController roleController = manager.getRoleController();
-                function.setRole(roleController.get(UUIDUtil.toUUID(getRole())));
-            } catch (DataAccessException e) {
-                throw new InvalidInputException("role");
-            }
-            try {
-                UserController userController = manager.getUserController();
-                function.setUser(userController.get(UUIDUtil.toUUID(getUser())));
-            } catch (DataAccessException e) {
-                throw new InvalidInputException("user");
-            }
-        } catch (UnAuthorizedException e) {
-            throw new NotAuthorizedException();
+            CustomerController customerController = manager.getCustomerController();
+            function.setCompany(customerController.get(UUIDUtil.toUUID(getCompany())));
+        } catch (ObjectNotFoundException e) {
+            violations.put("company", ErrorCode.NOT_FOUND.toString());
         }
+        try {
+            RoleController roleController = manager.getRoleController();
+            function.setRole(roleController.get(UUIDUtil.toUUID(getRole())));
+        } catch (ObjectNotFoundException e) {
+            violations.put("role", ErrorCode.NOT_FOUND.toString());
+        }
+        try {
+            UserController userController = manager.getUserController();
+            function.setUser(userController.get(UUIDUtil.toUUID(getUser())));
+        } catch (ObjectNotFoundException e) {
+            violations.put("user", ErrorCode.NOT_FOUND.toString());
+        }
+        if (violations.size() > 0) {
+            throw new ConstraintViolationException(violations);
+        }
+
         return function;
     }
 

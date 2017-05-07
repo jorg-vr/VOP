@@ -1,9 +1,9 @@
 package spring.controller;
 
 import dao.database.ProductionProvider;
+import dao.exceptions.DataAccessException;
 import dao.interfaces.CompanyDAO;
 import dao.interfaces.DAOManager;
-import dao.interfaces.DataAccessException;
 import model.identity.Address;
 import model.identity.Company;
 import model.identity.CompanyType;
@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import spring.exceptions.MyExceptionHandler;
 import spring.model.RESTAddress;
 import spring.model.RESTCompany;
 import util.UUIDUtil;
@@ -34,6 +35,7 @@ public class RESTCompanyControllerTest {
 
     private MockMvc mvc = MockMvcBuilders.standaloneSetup(new RESTCompanyController())
             .addPlaceholderValue("path.companies", "companies")
+            .setControllerAdvice(new MyExceptionHandler())
             .build();
 
     private static String[] authPair;
@@ -82,10 +84,12 @@ public class RESTCompanyControllerTest {
     @AfterClass
     public static void afterTransaction() throws Exception {
         try {
+
             for (Company company : companies) {
                 dao.remove(company.getUuid());
             }
         } catch (DataAccessException e) {
+
             e.printStackTrace();
         }
         manager.close();

@@ -2,6 +2,7 @@ package dao.interfaces;
 
 import model.identity.Company;
 import model.insurance.Surety;
+import org.hibernate.Session;
 
 /**
  * DAO provider to get DAO's
@@ -113,7 +114,6 @@ public interface DAOManager extends AutoCloseable {
      * @return an InsuranceCompanyDAO
      */
     InsuranceCompanyDAO getInsuranceCompanyDao();
-
 
     /**
      * MUST BE CALLED WHEN PROVIDER IS NOT USED ANYMORE

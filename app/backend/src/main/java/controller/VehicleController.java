@@ -2,15 +2,13 @@ package controller;
 
 import controller.exceptions.UnAuthorizedException;
 import dao.interfaces.DAOManager;
-import dao.interfaces.DataAccessException;
+import dao.exceptions.DataAccessException;
 import dao.interfaces.VehicleDAO;
-import main.BackendApplication;
 import model.account.Function;
 import model.account.Resource;
 import model.fleet.Fleet;
 import model.fleet.Vehicle;
 import model.identity.LeasingCompany;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Collection;
 

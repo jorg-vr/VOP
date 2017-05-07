@@ -4,19 +4,17 @@ import controller.ControllerManager;
 import controller.CustomerController;
 import controller.InsuranceCompanyController;
 import controller.exceptions.UnAuthorizedException;
-import dao.interfaces.DataAccessException;
-import model.account.Function;
-import model.identity.Customer;
-import model.identity.InsuranceCompany;
+import dao.exceptions.ConstraintViolationException;
+import dao.exceptions.DataAccessException;
+import dao.exceptions.ObjectNotFoundException;
 import model.insurance.Contract;
-import model.insurance.VehicleInsurance;
+import spring.exceptions.ErrorCode;
 import spring.exceptions.InvalidInputException;
 import spring.model.RESTAbstractModel;
-import util.UUIDUtil;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.UUID;
+import java.util.HashMap;
+import java.util.Map;
 
 import static util.MyProperties.PATH_CONTRACTS;
 import static util.MyProperties.getProperty;
@@ -49,23 +47,29 @@ public class RESTContract extends RESTAbstractModel<Contract> {
     }
 
     @Override
-    public Contract translate(ControllerManager manager) throws UnAuthorizedException {
+    public Contract translate(ControllerManager manager) throws UnAuthorizedException, DataAccessException, ConstraintViolationException {
         Contract contract = new Contract();
         contract.setUuid(toUUID(getId()));
+        contract.setStartDate(startDate);
+        contract.setEndDate(endDate);
+
+        Map<String, String> violations = new HashMap<>();
         try {
             CustomerController customerController = manager.getCustomerController();
             contract.setCustomer(customerController.get(toUUID(customer)));
-        } catch (DataAccessException e) {
-            throw new InvalidInputException("Company with id " + customer + " does not exist");
+        } catch (ObjectNotFoundException e) {
+            violations.put("customer", ErrorCode.NOT_FOUND.toString());
         }
         try {
             InsuranceCompanyController insuranceCompanyController = manager.getInsuranceCompanyController();
             contract.setCompany(insuranceCompanyController.get(toUUID(insuranceCompany)));
-        } catch (DataAccessException e) {
-            throw new InvalidInputException("InsuranceCompany with id " + insuranceCompany + " does not exist");
+        } catch (ObjectNotFoundException e) {
+            violations.put("insuranceCompany", ErrorCode.NOT_FOUND.toString());
         }
-        contract.setStartDate(startDate);
-        contract.setEndDate(endDate);
+        if (violations.size() > 0) {
+            throw new ConstraintViolationException(violations);
+        }
+
         return contract;
     }
 
