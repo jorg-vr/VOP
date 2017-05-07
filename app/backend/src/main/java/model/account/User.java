@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.UUID;
 
 @UniqueKey(columnNames ={"email"})
-public class User implements EditableObject<User>, java.io.Serializable {
+public class User implements EditableObject, java.io.Serializable {
 
     private UUID uuid;
 

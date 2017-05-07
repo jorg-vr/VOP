@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class VehicleType implements EditableObject<VehicleType>, java.io.Serializable {
+public class VehicleType implements EditableObject, java.io.Serializable {
 
     private UUID uuid;
 

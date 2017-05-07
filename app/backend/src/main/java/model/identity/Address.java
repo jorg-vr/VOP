@@ -7,7 +7,7 @@ import model.history.LogResource;
 import java.io.Serializable;
 import java.util.UUID;
 
-public class Address implements Serializable, EditableObject<Address> {
+public class Address implements Serializable, EditableObject {
 
     private UUID uuid;
 

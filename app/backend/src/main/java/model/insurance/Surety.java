@@ -2,6 +2,7 @@ package model.insurance;
 
 
 import model.history.EditableObject;
+import model.history.LogResource;
 
 import java.util.Collection;
 import java.util.UUID;
@@ -50,6 +51,11 @@ public  abstract class Surety implements EditableObject {
 
     public void setSuretyType(SuretyType suretyType) {
         this.suretyType = suretyType;
+    }
+
+    @Override
+    public LogResource getLogResource() {
+        return LogResource.SURETY;
     }
 
     @Override

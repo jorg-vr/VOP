@@ -2,9 +2,9 @@ package model.insurance;
 
 import model.fleet.Vehicle;
 import model.history.EditableObject;
+import model.history.LogResource;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.UUID;
 
 /**
@@ -121,6 +121,11 @@ public class VehicleInsurance implements EditableObject {
     @Override
     public EditableObject copy() {
         return null;
+    }
+
+    @Override
+    public LogResource getLogResource() {
+        return LogResource.VEHICLE_INSURANCE;
     }
 
     @Override

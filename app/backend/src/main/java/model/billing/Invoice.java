@@ -17,7 +17,7 @@ import java.util.UUID;
  * Costs are separate objects so that it is easy to categorize the types of costs according to personal preference when making a pdf representation
  * of the invoice for example.
  */
-public class Invoice implements EditableObject<Invoice>, java.io.Serializable {
+public class Invoice implements EditableObject, java.io.Serializable {
 
     private UUID uuid;
 

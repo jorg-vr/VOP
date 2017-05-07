@@ -1,6 +1,7 @@
 package model.insurance;
 
 import model.history.EditableObject;
+import model.history.LogResource;
 
 import java.util.UUID;
 
@@ -48,6 +49,11 @@ public class SpecialCondition implements EditableObject{
 
         return getUuid().equals(that.getUuid());
 
+    }
+
+    @Override
+    public LogResource getLogResource() {
+        return LogResource.SPECIAL_CONDITIION;
     }
 
     @Override

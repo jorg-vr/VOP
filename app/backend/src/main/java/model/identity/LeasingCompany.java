@@ -1,6 +1,8 @@
 package model.identity;
 
 import model.fleet.Vehicle;
+import model.history.EditableObject;
+import model.history.LogResource;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,6 +31,16 @@ public class LeasingCompany extends Company implements java.io.Serializable {
 
     public LeasingCompany(UUID id, Address address, String phoneNumber, String name, String btwNumber, CompanyType companyType) {
         super(id, address, phoneNumber, name, btwNumber, companyType);
+    }
+
+    @Override
+    public EditableObject copy() {
+        return null;
+    }
+
+    @Override
+    public LogResource getLogResource() {
+        return null;
     }
 
     public Collection<Vehicle> getVehicles() {

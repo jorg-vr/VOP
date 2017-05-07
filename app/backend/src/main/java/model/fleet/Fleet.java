@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
 
-public class Fleet implements EditableObject<Fleet>, java.io.Serializable {
+public class Fleet implements EditableObject, java.io.Serializable {
 
     private UUID uuid;
     private String name;

@@ -10,7 +10,7 @@ import java.util.UUID;
 /**
  * Created by sam on 3/10/17.
  */
-public class Function implements EditableObject<Function>, java.io.Serializable {
+public class Function implements EditableObject, java.io.Serializable {
     private Company company;
     private Role role;
     private User user;

@@ -1,21 +1,21 @@
 package model.fleet;
 
-import model.account.User;
-import model.history.*;
-import model.identity.LeasingCompany;
-import model.insurance.SuretyType;
-import spring.exceptions.InvalidInputException;
+        import model.account.User;
+        import model.history.*;
+        import model.identity.LeasingCompany;
+        import model.insurance.SuretyType;
+        import spring.exceptions.InvalidInputException;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+        import java.time.LocalDate;
+        import java.util.ArrayList;
+        import java.util.Collection;
+        import java.util.HashMap;
+        import java.util.Map;
+        import java.util.UUID;
 
-import static model.history.FieldsComparator.compareFields;
+        import static model.history.FieldsComparator.compareFields;
 
-public class Vehicle implements EditableObject<Vehicle>, java.io.Serializable {
+public class Vehicle implements EditableObject, java.io.Serializable {
 
     private UUID uuid;
 
@@ -240,7 +240,7 @@ public class Vehicle implements EditableObject<Vehicle>, java.io.Serializable {
     }
 
     public void setSpecificCommission(SuretyType suretyType, double commission) {
-        if(commissions==null){
+        if (commissions == null) {
             commissions = new HashMap<>();
         }
         commissions.put(suretyType, commission);
@@ -307,15 +307,15 @@ public class Vehicle implements EditableObject<Vehicle>, java.io.Serializable {
         description.setNewValue(uuid + "");
         descriptions.add(description);
 
-        LogEntry entry = new LogEntry(fleet.getUuid(),user, LogAction.UPDATE, descriptions );
+        LogEntry entry = new LogEntry(fleet.getUuid(), user, LogAction.UPDATE, fleet.getLogResource(), descriptions);
         entries.add(entry);
         return entries;
     }
 
     @Override
-    public Collection<LogEntry> logUpdate(User user, Vehicle old) {
+    public Collection<LogEntry> logUpdate(User user, EditableObject old) {
         Collection<LogEntry> entries = new ArrayList<>();
-        entries.add(new LogEntry(uuid, user, LogAction.UPDATE, compareFields(old, this)));
+        entries.add(new LogEntry(uuid, user, LogAction.UPDATE, getLogResource(), compareFields(old, this)));
         return entries;
     }
 }

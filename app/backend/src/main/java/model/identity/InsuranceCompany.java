@@ -1,5 +1,7 @@
 package model.identity;
 
+import model.history.EditableObject;
+import model.history.LogResource;
 import model.insurance.Contract;
 
 import java.util.ArrayList;
@@ -34,6 +36,16 @@ public class InsuranceCompany extends Company implements java.io.Serializable {
     public InsuranceCompany(UUID id, Address address, String phoneNumber, String name, String btwNumber, CompanyType companyType) {
         super(id, address, phoneNumber, name, btwNumber, companyType);
 
+    }
+
+    @Override
+    public EditableObject copy() {
+        return null;
+    }
+
+    @Override
+    public LogResource getLogResource() {
+        return LogResource.INSURANCE_COMPANY;
     }
 
     public Collection<Contract> getContracts() {

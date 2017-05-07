@@ -1,7 +1,7 @@
 package model.insurance;
 
-import model.billing.Invoice;
 import model.history.EditableObject;
+import model.history.LogResource;
 import model.identity.Customer;
 import model.identity.InsuranceCompany;
 
@@ -111,6 +111,11 @@ public class Contract implements EditableObject {
     @Override
     public EditableObject copy() {
         return null;
+    }
+
+    @Override
+    public LogResource getLogResource() {
+        return LogResource.CONTRACT;
     }
 
     @Override

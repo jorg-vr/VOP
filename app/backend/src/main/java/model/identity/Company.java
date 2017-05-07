@@ -1,9 +1,12 @@
 package model.identity;
 
 
+import model.history.EditableObject;
+import model.history.LogResource;
+
 import java.util.UUID;
 
-public abstract class Company extends Identity implements java.io.Serializable {
+public class Company extends Identity implements java.io.Serializable {
 
 
     private Periodicity invoicePeriodicity;
@@ -84,5 +87,15 @@ public abstract class Company extends Identity implements java.io.Serializable {
 
     public void setInvoicePeriodicity(Periodicity invoicePeriodicity) {
         this.invoicePeriodicity = invoicePeriodicity;
+    }
+
+    @Override
+    public EditableObject copy() {
+        return null;
+    }
+
+    @Override
+    public LogResource getLogResource() {
+        return LogResource.COMPANY;
     }
 }

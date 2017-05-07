@@ -8,7 +8,7 @@ import java.util.*;
 /**
  * Created by jorg on 3/2/17.
  */
-public class Role implements EditableObject<Role>, java.io.Serializable {
+public class Role implements EditableObject, java.io.Serializable {
 
     private String name;
     private Map<Resource, Permission> rights;
