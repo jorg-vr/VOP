@@ -1,10 +1,11 @@
-package spring.model;
+package spring.model.insurance;
 
 import controller.ControllerManager;
 import controller.exceptions.UnAuthorizedException;
 import dao.exceptions.ConstraintViolationException;
 import dao.exceptions.DataAccessException;
 import model.insurance.SpecialCondition;
+import spring.model.RESTAbstractModel;
 
 import static util.MyProperties.*;
 import static util.UUIDUtil.toUUID;

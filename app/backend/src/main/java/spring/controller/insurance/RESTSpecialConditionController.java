@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import spring.controller.RESTAbstractController;
 import spring.model.AuthenticationToken;
 import spring.model.RESTSchema;
-import spring.model.RESTSpecialCondition;
+import spring.model.insurance.RESTSpecialCondition;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
