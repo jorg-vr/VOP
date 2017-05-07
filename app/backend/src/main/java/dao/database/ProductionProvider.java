@@ -1,9 +1,12 @@
 package dao.database;
 
 
-import dao.interfaces.DAOManager;
-import dao.interfaces.DAOProvider;
+import dao.interfaces.*;
 
+import model.fleet.Vehicle;
+import model.fleet.VehicleType;
+import model.identity.Customer;
+import model.insurance.SuretyType;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;

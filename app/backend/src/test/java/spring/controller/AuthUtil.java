@@ -35,7 +35,7 @@ public class AuthUtil {
 
         Address address = addressDAO.create(new Address("street", "1", "town", "8530", "country"));
 
-        Role role = roleDAO.create(new Role("roleName"));
+        Role role = roleDAO.create(new Role("roleName-AuthUtil"));
         addActions(role, Resource.USER);
         addActions(role, Resource.FLEET);
         addActions(role, Resource.FUNCTION);
@@ -48,16 +48,16 @@ public class AuthUtil {
         roleDAO.update(role);
         role = roleDAO.get(role.getUuid());
 
-        Customer customer = customerDAO.create(new Customer(address, "123", "customerName", "456", Periodicity.QUARTERLY, Periodicity.QUARTERLY));
+        Customer customer = customerDAO.create(new Customer(address, "123", "customerName-AuthUtil", "456-AuthUtil", Periodicity.QUARTERLY, Periodicity.QUARTERLY));
 
-        User user = userDAO.create(new User("firstname", "lastname", "admin@login.com", "admin"));
+        User user = userDAO.create(new User("firstname-AuthUtil", "lastname-AuthUtil", "admin@login.com-AuthUtil", "admin"));
 
         Function function = functionDAO.create(new Function(customer, role, user, LocalDateTime.of(2016, 7, 15, 0, 0), LocalDateTime.of(2200, 8, 3, 0, 0)));
         functionId = UUIDUtil.UUIDToNumberString(function.getUuid());
 
         //Gets an authorization token for the created user
         RESTAuth restAuth = new RESTAuth();
-        restAuth.setLogin("admin@login.com");
+        restAuth.setLogin("admin@login.com-AuthUtil");
         restAuth.setPassword("admin");
 
         MockMvc mvc = MockMvcBuilders.standaloneSetup(new RESTAuthController())

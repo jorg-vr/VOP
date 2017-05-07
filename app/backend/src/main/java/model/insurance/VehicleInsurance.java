@@ -40,7 +40,7 @@ public class VehicleInsurance implements EditableObject {
     public int calculateCost() {
         int premium = surety.calculatePremium(insuredValue);
         SuretyType suretyType = surety.getSuretyType();
-        int commission = (int) Math.round(premium * vehicle.getType().getCommission(suretyType));
+        int commission = (int) Math.round(premium * vehicle.getCommission(suretyType));
         return premium + commission;
     }
 

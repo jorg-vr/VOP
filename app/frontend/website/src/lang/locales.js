@@ -14,7 +14,6 @@ export default
             vehicleType: 'type',
             mileage: 'mileage',
             year: 'year',
-            leasingCompany: 'leasing company',
             value: 'value'
         },
         fleet: {
@@ -41,7 +40,6 @@ export default
         },
         clientTypes: {
             customer: "customer",
-            leasingCompany: "leasing company",
             insuranceCompany: "insurance company"
         },
         address: {
@@ -151,7 +149,6 @@ export default
             vehicleType: 'type',
             mileage: 'kilometerstand',
             year: 'jaar',
-            leasingCompany:  'leasing bedrijf',
             value: 'waarde'
         },
         fleet: {
@@ -178,7 +175,6 @@ export default
         },
         clientTypes: {
             customer: "klant",
-            leasingCompany: "leasing bedrijf",
             insuranceCompany: "verzekeringsbedrijf"
         },
         address: {

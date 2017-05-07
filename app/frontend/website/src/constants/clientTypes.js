@@ -12,18 +12,11 @@ export default {
         },
         value: 'CUSTOMER'
     },
-    LEASING_COMPANY: {
-        name: 'leasing company',
-        translation: function(){
-            return Vue.t('clientTypes.leasingCompany')
-        },
-        value: 'LEASINGCOMPANY'
-    },
     INSURANCE_COMPANY: {
         name: 'insurance company',
         translation: function(){
             return Vue.t('clientTypes.insuranceCompany')
         },
-        value: 'INSURANCECOMPANY'
+        value: 'INSURANCE_COMPANY'
     }
 }
