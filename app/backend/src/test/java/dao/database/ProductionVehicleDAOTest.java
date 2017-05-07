@@ -45,12 +45,9 @@ public class ProductionVehicleDAOTest {
         boolean present = false;
         boolean removed = false;
         //test if a vehicle can be succesfully added to the database
-        try {
-            AddressDAO addressDAO = daoManager.getAddressDao();
-            a1 = addressDAO.create(new Address("streettest n1", "59", "town 1", "9999", "country 1"));
-        } catch (Exception e) {
-            fail("Failed trying to create a new address");
-        }
+
+        a1 = new Address("streettest n1", "59", "town 1", "9999", "country 1");
+
         try {
             CustomerDAO customerDAO = daoManager.getCustomerDAO();
             cust1 = customerDAO.create(new Customer(a1, "911", "customername 1", "btw123"));
@@ -59,6 +56,7 @@ public class ProductionVehicleDAOTest {
         }
         try {
             FleetDAO fleetDAO = daoManager.getFleetDAO();
+            a1 = new Address("streettest n1", "59", "town 1", "9999", "country 1");
             fleet1 = fleetDAO.create(new Fleet("fleet 1", cust1, a1));
         } catch (Exception e) {
             fail("Failed trying to create a new fleet");
@@ -126,7 +124,6 @@ public class ProductionVehicleDAOTest {
         vehicleTypeDAO.remove(t1.getUuid());
         fleetDAO.remove(fleet1.getUuid());
         customerDAO.remove(cust1.getUuid());
-        addressDAO.remove(a1.getUuid());
 
     }
 
@@ -139,8 +136,9 @@ public class ProductionVehicleDAOTest {
         VehicleTypeDAO vehicleTypeDAO = daoManager.getVehicleTypeDAO();
         VehicleDAO vehicleDAO = daoManager.getVehicleDAO();
 
-        Address a1 = addressDAO.create(new Address("streettest n1", "59", "town 1", "9999", "country 1"));
+        Address a1 = new Address("streettest n1", "59", "town 1", "9999", "country 1");
         Customer cust1 = customerDAO.create(new Customer(a1, "911", "customername 1", "btw123"));
+        a1 = new Address("streettest n1", "59", "town 1", "9999", "country 1");
         Fleet fleet1 = fleetDAO.create(new Fleet("fleet 1", cust1, a1));
         VehicleType t1 = vehicleTypeDAO.create(new VehicleType("type 1"));
         VehicleType t2 = vehicleTypeDAO.create(new VehicleType("type 2"));
@@ -171,9 +169,6 @@ public class ProductionVehicleDAOTest {
         vehicleTypeDAO.remove(t2.getUuid());
         fleetDAO.remove(fleet1.getUuid());
         customerDAO.remove(cust1.getUuid());
-        addressDAO.remove(a1.getUuid());
-
-
     }
 
 }

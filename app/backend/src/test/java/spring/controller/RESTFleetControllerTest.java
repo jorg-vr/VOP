@@ -1,14 +1,11 @@
 package spring.controller;
 
 import dao.database.ProductionProvider;
-
-import dao.interfaces.DAOManager;
+import dao.exceptions.DataAccessException;
 import dao.interfaces.AddressDAO;
 import dao.interfaces.CustomerDAO;
-import dao.exceptions.DataAccessException;
+import dao.interfaces.DAOManager;
 import dao.interfaces.FleetDAO;
-
-import dao.interfaces.*;
 import model.fleet.Fleet;
 import model.identity.Address;
 import model.identity.Customer;
@@ -22,13 +19,14 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import spring.exceptions.MyExceptionHandler;
 import spring.model.RESTFleet;
 import util.UUIDUtil;
 
 import static org.hamcrest.Matchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 /**
  * Created by jorg on 3/15/17.
@@ -42,6 +40,7 @@ public class RESTFleetControllerTest {
     private MockMvc mvc = MockMvcBuilders.standaloneSetup(new RESTFleetController())
             .addPlaceholderValue("path.fleets", "fleets")
             .addPlaceholderValue("path.companies", "companies")
+            .setControllerAdvice(new MyExceptionHandler())
             .build();
 
 

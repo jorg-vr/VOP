@@ -6,7 +6,8 @@ import controller.insurance.SuretyController;
 import controller.insurance.VehicleInsuranceController;
 import dao.exceptions.DataAccessException;
 import dao.exceptions.ObjectNotFoundException;
-import dao.interfaces.*;
+import dao.interfaces.DAOManager;
+import dao.interfaces.FunctionDAO;
 import main.BackendApplication;
 import model.account.*;
 import spring.exceptions.InvalidInputException;
@@ -17,6 +18,7 @@ import static main.BackendApplication.DISABLE_AUTH;
 
 /**
  * This class acts a provider for all the controllers. Every controller except AuthController should be retrieved from this class.
+ *
  * @author Billie Devolder
  */
 public class ControllerManager implements AutoCloseable {
@@ -52,25 +54,8 @@ public class ControllerManager implements AutoCloseable {
             if (!function.getUser().getUuid().equals(userId)) {
                 throw new InvalidInputException();
             }
-
-//            if (1 == 2) throw new DataAccessException();
-//            function = new Function();
-//            Role role = new Role();
-//            Map<Resource, Permission> rights = new HashMap<>();
-//            for (Resource resource : Resource.values()) {
-//                Permission permission = new Permission();
-//                Set<Action> actionSet = new HashSet<>();
-//                Collections.addAll(actionSet, Action.values());
-//                permission.setActions(actionSet);
-//                rights.put(resource, permission);
-//            }
-//            role.setRights(rights);
-//            function.setRole(role);
         } catch (ObjectNotFoundException e) {
-
-        } catch (DataAccessException e) {
-
-            throw new InvalidInputException("User/Function does not exist or user has no function with that id");
+            throw new InvalidInputException("User or function does not exist");
         }
     }
 

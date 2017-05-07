@@ -60,7 +60,7 @@ public class RESTUserMeController {
 
     @RequestMapping(method = RequestMethod.PUT)
     public RESTUser putId(@RequestBody RESTUser rest, @RequestHeader(value = "Authorization") String token,
-                          @RequestHeader(value = "Function") String function) throws UnAuthorizedException, ConstraintViolationException, ObjectNotFoundException {
+                          @RequestHeader(value = "Function") String function) throws UnAuthorizedException, ConstraintViolationException, ObjectNotFoundException, DataAccessException {
         String id = UUIDUtil.UUIDToNumberString(new AuthenticationToken(token).getAccountId());
         return new RESTUserController().putId(id, rest, token, function);
     }

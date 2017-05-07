@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import spring.exceptions.MyExceptionHandler;
 import spring.model.RESTAddress;
 import spring.model.RESTCompany;
 import util.UUIDUtil;
@@ -34,6 +35,7 @@ public class RESTCompanyControllerTest {
 
     private MockMvc mvc = MockMvcBuilders.standaloneSetup(new RESTCompanyController())
             .addPlaceholderValue("path.companies", "companies")
+            .setControllerAdvice(new MyExceptionHandler())
             .build();
 
     private static String[] authPair;
