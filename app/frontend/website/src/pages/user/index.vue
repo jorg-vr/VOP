@@ -12,9 +12,7 @@
         </div>
         <user-search-bar @search="updateUsers" @advancedSearch="updateUsersAdvanced"></user-search-bar>
         <!-- Render an info-pane for every user. Once all the data is loaded, the table will be shown.-->
-        <list-component :resource="resource"
-                        :objects="filteredUsers"
-                        :visibleKeys="['firstName', 'lastName']">
+        <list-component :resource="resource" :listObject="listObject">
         </list-component>
     </div>
 </template>
@@ -46,7 +44,13 @@
                 'filteredUsers',
                 'getUsersByAll',
                 'getUsersByAllAdvanced'
-            ])
+            ]),
+            listObject() {
+                var listObj = {};
+                listObj.headers = ['firstName', 'lastName'];
+                listObj.values = this.filteredUsers;
+                return listObj;
+            },
         },
         methods: {
             ...mapActions([

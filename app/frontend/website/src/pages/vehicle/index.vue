@@ -9,11 +9,7 @@
         </div>
         <vehicle-search-bar @advancedSearch="updateVehiclesAdvanced" :vehicleTypes="vehicleTypes"></vehicle-search-bar>
         <!-- Render an info-pane for every vehicle. Once all the data is loaded, the table will be shown.-->
-        <list-component v-if="filteredVehicles.length > 0"
-                :resource="resource"
-                :objects="filteredVehicles"
-                :visibleKeys="['brand','model', 'licensePlate']">
-        </list-component>
+        <list-component v-if="filteredVehicles.length > 0" :resource="resource" :listObject="listObject"></list-component>
     </div>
 </template>
 <script>
@@ -40,7 +36,13 @@
             ...mapGetters([
                 'vehicleTypes',
                 'filteredVehicles'
-            ])
+            ]),
+            listObject() {
+                var listObj = {};
+                listObj.headers = ['brand','model', 'licensePlate'];
+                listObj.values = this.filteredVehicles;
+                return listObj;
+            }
         },
         methods: {
             ...mapActions([
