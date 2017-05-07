@@ -6,24 +6,46 @@
 
 -->
 <template>
-    <user-form-page :actions="actions" :id="id"></user-form-page>
+    <abstract-form :actions="actions" :object="user" :back="back" :resource="resource">
+        <form-input :user="user"></form-input>
+    </abstract-form>
 </template>
 <script>
-    import UserFormPage from '../../assets/form/pages/UserFormPage.vue'
+    import {mapActions} from 'vuex'
+    import abstractForm from '../../assets/form/AbstractForm.vue'
     import actions from '../../constants/actions'
+    import resources from '../../constants/resources'
+    import formInput from '../../assets/form/types/userFormInput.vue'
 
     export default {
         data(){
             return {
-                actions: actions.UPDATE
+                resource: resources.USER,
+                actions: actions.UPDATE,
+                user: {},
+                back:{name:resources.USER.name.plural()}
+            }
+        },
+        created(){
+            if(this.id){
+                this.fetchUser({id: this.id}).then(o => {
+                    this.user = o;
+                })
             }
         },
         components: {
-            UserFormPage
+            abstractForm,formInput
         },
         props: {
             id: String
+        },
+        methods: {
+            ...mapActions([
+                'fetchUser'
+            ])
+
         }
     }
 </script>
+
 
