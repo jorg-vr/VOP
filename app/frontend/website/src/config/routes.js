@@ -67,7 +67,7 @@ export default [
 
             //Vehicle
             {path: 'vehicles', name: 'vehicles', component: indexVehicle},
-            {path: 'vehicles/new', name: 'new_vehicle', component: newVehicle, props: true},
+            {path: 'fleets/:fleetId(\\d+)/vehicles/new', name: 'new_vehicle', component: newVehicle, props: true},
             {path: 'vehicles/:id(\\d+)', name: 'vehicle', component: showVehicle, props: true},
             {path: 'vehicles/:id(\\d+)/edit', name: 'edit_vehicle', component: editVehicle, props: true},
 

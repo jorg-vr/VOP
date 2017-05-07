@@ -14,10 +14,10 @@ All of the fields for user input for the fleet form
 </template>
 <script>
     import {mapGetters, mapActions} from 'vuex'
-    import resources from '../../../constants/resources'
-    import actions from '../../../constants/actions'
-    import formInput from '../elements/formInput.vue'
-    import formSelect from '../elements/formSelect.vue'
+    import resources from '../../constants/resources'
+    import actions from '../../constants/actions'
+    import formInput from '../../assets/form/elements/formInput.vue'
+    import formSelect from '../../assets/form/elements/formSelect.vue'
 
     export default {
         props: {
