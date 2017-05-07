@@ -8,6 +8,7 @@ import spring.exceptions.InvalidInputException;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 public class Vehicle implements EditableObject, java.io.Serializable {
@@ -269,17 +270,32 @@ public class Vehicle implements EditableObject, java.io.Serializable {
 
     @Override
     public String toString() {
-        return "Vehicle{" +
-                "uuid=" + uuid +
-                ", brand='" + brand + '\'' +
-                ", model='" + model + '\'' +
-                ", licensePlate='" + licensePlate + '\'' +
-                ", productionDate=" + productionDate +
-                ", chassisNumber='" + chassisNumber + '\'' +
-                ", value=" + value +
-                ", mileage=" + mileage +
-                ", type=" + type.getType() +
-                '}';
+        if(type != null){
+            return "Vehicle{" +
+                    "uuid=" + uuid +
+                    ", brand='" + brand + '\'' +
+                    ", model='" + model + '\'' +
+                    ", licensePlate='" + licensePlate + '\'' +
+                    ", productionDate=" + productionDate +
+                    ", chassisNumber='" + chassisNumber + '\'' +
+                    ", value=" + value +
+                    ", mileage=" + mileage +
+                    ", type=" + type.getType() +
+                    '}';
+        }
+        else{
+            return "Vehicle{" +
+                    "uuid=" + uuid +
+                    ", brand='" + brand + '\'' +
+                    ", model='" + model + '\'' +
+                    ", licensePlate='" + licensePlate + '\'' +
+                    ", productionDate=" + productionDate +
+                    ", chassisNumber='" + chassisNumber + '\'' +
+                    ", value=" + value +
+                    ", mileage=" + mileage +
+                    '}';
+        }
+
     }
 
     @Override
