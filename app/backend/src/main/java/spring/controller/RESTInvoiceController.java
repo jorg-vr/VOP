@@ -28,7 +28,9 @@ import java.util.stream.Collectors;
 import static util.UUIDUtil.toUUID;
 
 /**
- * Created by Billie Devolder on 17/04/2017.
+ * Requests that are implemented in this class:
+ * 1) GET /companies/{id}/invoices
+ * 2) GET /companies/{id}/invoices/{id}
  */
 @RestController
 @RequestMapping("/${path.companies}/{companyId}/${path.invoices}")
