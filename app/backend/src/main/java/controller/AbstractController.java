@@ -1,10 +1,11 @@
 package controller;
 
 import controller.exceptions.UnAuthorizedException;
+import dao.exceptions.ConstraintViolationException;
+import dao.exceptions.ObjectNotFoundException;
 import dao.interfaces.DAO;
-import dao.interfaces.DataAccessException;
+import dao.exceptions.DataAccessException;
 import dao.interfaces.Filter;
-import model.account.Action;
 import model.account.Function;
 import model.account.Resource;
 import model.account.Role;
@@ -59,12 +60,13 @@ public abstract class AbstractController<T extends EditableObject> {
      *
      * @param uuid uuid of object to retrieve
      * @return Object of type T corresponding with the uuid
-     * @throws DataAccessException
-     * @throws UnAuthorizedException The function does not have the rights to perform this operation.
-     *                               The object can be retrieved if the user has the READ_ALL Action of the Resource
-     *                               or READ_MINE and the user is the owner of the object.
+     * @throws DataAccessException     something went wrong with the database
+     * @throws UnAuthorizedException   The function does not have the rights to perform this operation.
+     *                                 The object can be retrieved if the user has the READ_ALL Action of the Resource
+     *                                 or READ_MINE and the user is the owner of the object.
+     * @throws ObjectNotFoundException no object with that id exists
      */
-    public T get(UUID uuid) throws DataAccessException, UnAuthorizedException {
+    public T get(UUID uuid) throws DataAccessException, UnAuthorizedException, ObjectNotFoundException {
         T t = dao.get(uuid);
         if (role.hasAccess(resource, READ_ALL) ||
                 (role.hasAccess(resource, READ_MINE) && isOwner(t, function))) {
@@ -82,7 +84,7 @@ public abstract class AbstractController<T extends EditableObject> {
      *
      * @param filters filters where the objects should be filtered
      * @return Object of type T corresponding with the uuid
-     * @throws DataAccessException
+     * @throws DataAccessException   something went wrong with the database
      * @throws UnAuthorizedException The function does not have the rights to retrieve all of the objects that pass the filters.
      *                               If there is atleast one object that the function does not have the rights to retrieve, this exception will be thrown.
      */
@@ -101,12 +103,13 @@ public abstract class AbstractController<T extends EditableObject> {
      * Attempt to archive the object of type T that has the UUID uuid
      *
      * @param uuid uuid of object to archive
-     * @throws DataAccessException
-     * @throws UnAuthorizedException The function does not have the rights to perform this operation.
-     *                               The object can be retrieved if the user has the REMOVE_ALL Action of the Resource
-     *                               or REMOVE_MINE and the user is the owner of the object.
+     * @throws DataAccessException     something went wrong with the database
+     * @throws UnAuthorizedException   The function does not have the rights to perform this operation.
+     *                                 The object can be retrieved if the user has the REMOVE_ALL Action of the Resource
+     *                                 or REMOVE_MINE and the user is the owner of the object.
+     * @throws ObjectNotFoundException no object with that id exists
      */
-    public void archive(UUID uuid) throws DataAccessException, UnAuthorizedException {
+    public void archive(UUID uuid) throws DataAccessException, UnAuthorizedException, ObjectNotFoundException {
         T t = dao.get(uuid);
         if (role.hasAccess(resource, REMOVE_ALL) ||
                 (role.hasAccess(resource, REMOVE_MINE) && isOwner(t, function))) {
@@ -121,12 +124,13 @@ public abstract class AbstractController<T extends EditableObject> {
      *
      * @param t the value of uuid will be ignored
      * @return the same object as t, but the uuid field will now have a valid value
-     * @throws DataAccessException
-     * @throws UnAuthorizedException The function does not have the rights to perform this operation.
-     *                               The object can be created if the user has the CREATE_ALL Action of the Resource
-     *                               or CREATE_MINE and the user is the owner of the object.
+     * @throws DataAccessException          something went wrong with the database
+     * @throws UnAuthorizedException        The function does not have the rights to perform this operation.
+     *                                      The object can be created if the user has the CREATE_ALL Action of the Resource
+     *                                      or CREATE_MINE and the user is the owner of the object.
+     * @throws ConstraintViolationException one or more fields of t are invalid
      */
-    public T create(T t) throws DataAccessException, UnAuthorizedException {
+    public T create(T t) throws DataAccessException, UnAuthorizedException, ConstraintViolationException {
         if (role.hasAccess(resource, CREATE_ALL) ||
                 (role.hasAccess(resource, CREATE_MINE) && isOwner(t, function))) {
             return dao.create(t);
@@ -140,12 +144,14 @@ public abstract class AbstractController<T extends EditableObject> {
      *
      * @param t object that has to be updated. All fields can be different from what the fields are in the database except the uuid.
      * @return Object of type T corresponding with the uuid
-     * @throws DataAccessException
-     * @throws UnAuthorizedException The function does not have the rights to perform this operation.
-     *                               The object can be updated if the user has the UPDATE_ALL Action of the Resource
-     *                               or READ_MINE and the user is the owner of the original object and the updated object.
+     * @throws DataAccessException          something went wrong with the database
+     * @throws UnAuthorizedException        The function does not have the rights to perform this operation.
+     *                                      The object can be updated if the user has the UPDATE_ALL Action of the Resource
+     *                                      or READ_MINE and the user is the owner of the original object and the updated object.
+     * @throws ObjectNotFoundException      there is no object with the same id as t.id
+     * @throws ConstraintViolationException one more fields of t are invalid
      */
-    public T update(T t) throws DataAccessException, UnAuthorizedException {
+    public T update(T t) throws DataAccessException, UnAuthorizedException, ObjectNotFoundException, ConstraintViolationException {
         T tOld = dao.get(t.getUuid());
         if (role.hasAccess(resource, UPDATE_ALL) ||
                 (role.hasAccess(resource, UPDATE_MINE) &&

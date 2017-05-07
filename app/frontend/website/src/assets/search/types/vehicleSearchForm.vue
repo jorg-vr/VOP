@@ -1,7 +1,6 @@
 <!--
 Special searchbar for searching vehicles, which only contains the advanced searching part of the searchbar (the form part).
 
-@param clients: A list of leasing companies.
 @param vehicleTypes: a list of possible vehicle types.
 -->
 <template>
@@ -18,7 +17,7 @@ Special searchbar for searching vehicles, which only contains the advanced searc
 
 <script>
     import searchForm from '../searchForm.vue'
-    import vehicleFormInput from '../../form/types/vehicleFormInput.vue'
+    import vehicleFormInput from '../../../pages/vehicle/vehicleFormInput.vue'
     export default {
         data() {
             return {

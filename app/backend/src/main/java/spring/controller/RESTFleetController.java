@@ -2,22 +2,17 @@ package spring.controller;
 
 import controller.AbstractController;
 import controller.ControllerManager;
-import controller.CustomerController;
 import controller.FleetController;
 import controller.exceptions.UnAuthorizedException;
-import dao.interfaces.DataAccessException;
+import dao.exceptions.DataAccessException;
 import model.fleet.Fleet;
 import model.identity.Customer;
 import org.springframework.web.bind.annotation.*;
-import spring.exceptions.InvalidInputException;
-import spring.exceptions.ServerErrorException;
 import spring.model.AuthenticationToken;
 import spring.model.RESTFleet;
 import spring.model.RESTSchema;
-import util.UUIDUtil;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
@@ -65,7 +60,7 @@ public class RESTFleetController extends RESTAbstractController<RESTFleet, Fleet
                                      @RequestParam(required = false) Integer page,
                                      @RequestParam(required = false) Integer limit,
                                      @RequestHeader(value = "Authorization") String token,
-                                     @RequestHeader(value = "Function") String function) throws UnAuthorizedException {
+                                     @RequestHeader(value = "Function") String function) throws UnAuthorizedException, DataAccessException {
         if (companyId.isPresent()) {
             company = companyId.get();
         }
@@ -81,8 +76,6 @@ public class RESTFleetController extends RESTAbstractController<RESTFleet, Fleet
                     .map(RESTFleet::new)
                     .collect(Collectors.toList());
             return new RESTSchema<>(result, page, limit, request);
-        } catch (DataAccessException e) {
-            throw new ServerErrorException("Could not retrieve fleets. This is a server error.");
         }
     }
 

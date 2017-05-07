@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<constraint-mappings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                     xsi:schemaLocation="http://jboss.org/xml/ns/javax/validation/mapping validation-mapping-1.0.xsd"
+                     xmlns="http://jboss.org/xml/ns/javax/validation/mapping">
+
+    <bean class="model.fleet.Fleet">
+        <field name="name">
+            <constraint annotation="javax.validation.constraints.NotNull"/>
+            <constraint annotation="javax.validation.constraints.Min">
+                <element name="value">3</element>
+            </constraint>
+        </field>
+
+        <field name="owner">
+            <constraint annotation="javax.validation.constraints.NotNull"/>
+        </field>
+    </bean>
+
+    <bean class="model.fleet.Vehicle">
+        <field name="chassisNumber">
+            <constraint annotation="javax.validation.constraints.NotNull"/>
+            <constraint annotation="javax.validation.constraints.Pattern">
+                <element name="regexp">^[A-HJ-NPR-Z0-9]{9}[A-HJ-NPR-TV-Y1-9][A-HJ-NPR-Z0-9]{7}$</element>
+            </constraint>
+        </field>
+        <field name="brand">
+            <constraint annotation="javax.validation.constraints.NotNull"/>
+            <constraint annotation="javax.validation.constraints.Pattern">
+                <element name="regexp">^...*$</element>
+            </constraint>
+        </field>
+        <field name="model">
+            <constraint annotation="javax.validation.constraints.NotNull"/>
+            <constraint annotation="javax.validation.constraints.Pattern">
+                <element name="regexp">^...*$</element>
+            </constraint>
+        </field>
+        <field name="type">
+            <constraint annotation="javax.validation.constraints.NotNull"/>
+        </field>
+        <field name="mileage">
+            <constraint annotation="javax.validation.constraints.NotNull"/>
+            <constraint annotation="javax.validation.constraints.Min">
+                <element name="value">0</element>
+            </constraint>
+        </field>
+        <field name="productionDate">
+            <constraint annotation="javax.validation.constraints.NotNull"/>
+            <constraint annotation="javax.validation.constraints.Past"/>
+        </field>
+    </bean>
+
+    <bean class="model.fleet.VehicleType">
+        <field name="type">
+            <constraint annotation="javax.validation.constraints.NotNull"/>
+            <constraint annotation="javax.validation.constraints.Pattern">
+                <element name="regexp">^...*$</element>
+            </constraint>
+        </field>
+        <field name="commissions">
+            <constraint annotation="javax.validation.constraints.NotNull"/>
+        </field>
+        <field name="taxes">
+            <constraint annotation="javax.validation.constraints.NotNull"/>
+        </field>
+    </bean>
+
+</constraint-mappings>

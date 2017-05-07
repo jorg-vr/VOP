@@ -1,4 +1,4 @@
-package dao.interfaces;
+package dao.exceptions;
 
 public class DataAccessException extends Exception {
 

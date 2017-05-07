@@ -26,15 +26,13 @@ All of the fields for user input for the vehicle form
         <form-input :placeholder="$t('vehicle.year') | capitalize" :label="$t('vehicle.year') | capitalize"
                     v-model="vehicle.year"></form-input>
 
-        <form-select optionKey="name" :options="clients" :label="$t('vehicle.leasingCompany') | capitalize "
-                     v-model="vehicle.leasingCompany"></form-select>
     </div>
 
 </template>
 <script>
-    import formInput from '../elements/formInput.vue'
-    import formSelect from '../elements/formSelect.vue'
-    import clientTypes from '../../../constants/clientTypes'
+    import formInput from '../../assets/form/elements/formInput.vue'
+    import formSelect from '../../assets/form/elements/formSelect.vue'
+    import clientTypes from '../../constants/clientTypes'
     import {mapGetters, mapActions} from 'vuex'
 
     export default {
@@ -45,8 +43,6 @@ All of the fields for user input for the vehicle form
             formInput, formSelect
         },
         created(){
-            //Fetch options for the select items.
-            this.fetchClientsBy({type: clientTypes.LEASING_COMPANY.value})
             this.fetchVehicleTypes()
         },
         computed: {

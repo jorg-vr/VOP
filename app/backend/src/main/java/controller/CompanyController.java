@@ -1,18 +1,18 @@
 package controller;
 
 import controller.exceptions.UnAuthorizedException;
+import dao.exceptions.DataAccessException;
 import dao.interfaces.*;
-import main.BackendApplication;
 import model.account.Function;
 import model.account.Resource;
 import model.identity.Company;
 import model.identity.CompanyType;
+
 import model.identity.Customer;
 import util.Compare;
 
-import java.util.ArrayList;
+
 import java.util.Collection;
-import java.util.List;
 import java.util.stream.Collectors;
 
 import static util.Compare.containsIgnoreCase;

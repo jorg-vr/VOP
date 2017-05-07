@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import spring.exceptions.MyExceptionHandler;
 import spring.model.RESTPermission;
 import util.UUIDUtil;
 
@@ -35,6 +36,7 @@ public class RESTPermissionControllerTest {
             .addPlaceholderValue("path.auth", "auth")
             .addPlaceholderValue("path.roles", "roles")
             .addPlaceholderValue("path.permissions", "permissions")
+            .setControllerAdvice(new MyExceptionHandler())
             .build();
 
     private static String[] authPair;
