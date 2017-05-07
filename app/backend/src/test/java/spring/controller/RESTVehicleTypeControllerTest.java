@@ -61,6 +61,7 @@ public class RESTVehicleTypeControllerTest {
 
     /**
      * GET /vehicles/types
+     *
      * @throws Exception
      */
     @Test
@@ -86,6 +87,7 @@ public class RESTVehicleTypeControllerTest {
 
     /**
      * POST /vehicles/types
+     *
      * @throws Exception
      */
     @Test
@@ -117,6 +119,7 @@ public class RESTVehicleTypeControllerTest {
 
     /**
      * DELETE /vehicles/types/{id}
+     *
      * @throws Exception
      */
     @Test
@@ -145,6 +148,7 @@ public class RESTVehicleTypeControllerTest {
 
     /**
      * GET /vehicles/types/{id}
+     *
      * @throws Exception
      */
     @Test
@@ -168,6 +172,7 @@ public class RESTVehicleTypeControllerTest {
 
     /**
      * PUT /vehicles/types/{id}
+     *
      * @throws Exception
      */
     @Test
