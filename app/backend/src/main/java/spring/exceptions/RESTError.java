@@ -1,4 +1,4 @@
-package spring.model;
+package spring.exceptions;
 
 /**
  * This is a bean class as specified in the API specification
@@ -6,12 +6,10 @@ package spring.model;
 public class RESTError {
     private int code;
     private String message;
-    private  String fields;
 
-    public RESTError(int code, String message, String fields) {
+    public RESTError(int code, String message) {
         this.code = code;
         this.message = message;
-        this.fields = fields;
     }
 
 
@@ -32,13 +30,5 @@ public class RESTError {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public String getFields() {
-        return fields;
-    }
-
-    public void setFields(String fields) {
-        this.fields = fields;
     }
 }

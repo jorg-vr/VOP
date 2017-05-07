@@ -1,19 +1,15 @@
 package spring.controller.insurance;
 
 import controller.AbstractController;
-import controller.ControllerFactory;
 import controller.ControllerManager;
 import controller.exceptions.UnAuthorizedException;
-import controller.insurance.ContractController;
 import controller.insurance.VehicleInsuranceController;
-import dao.interfaces.DataAccessException;
+import dao.exceptions.DataAccessException;
 import model.insurance.VehicleInsurance;
 import org.springframework.web.bind.annotation.*;
 import spring.controller.RESTAbstractController;
 import spring.model.AuthenticationToken;
-import spring.model.RESTModelFactory;
 import spring.model.RESTSchema;
-import spring.model.insurance.RESTContract;
 import spring.model.insurance.RESTVehicleInsurance;
 
 import javax.servlet.http.HttpServletRequest;

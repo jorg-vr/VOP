@@ -9,6 +9,7 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import spring.exceptions.MyExceptionHandler;
 
 /**
  * Created by jorg on 3/15/17.
@@ -21,6 +22,7 @@ public class RESTRoleControllerTest {
     private MockMvc mvc = MockMvcBuilders.standaloneSetup(new RESTFunctionController())
             .addPlaceholderValue("path.users", "users")
             .addPlaceholderValue("path.functions", "functions")
+            .setControllerAdvice(new MyExceptionHandler())
             .build();
 
     private static String[] authPair;

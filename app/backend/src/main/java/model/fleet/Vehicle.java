@@ -215,10 +215,11 @@ public class Vehicle implements EditableObject, java.io.Serializable {
         if (vehicleCommission != null) {
             return vehicleCommission;
         }
-
-        Double ownerCommission = fleet.getOwner().getSpecificCommission(suretyType);
-        if (ownerCommission != null) {
-            return ownerCommission;
+        if (fleet != null) {
+            Double ownerCommission = fleet.getOwner().getSpecificCommission(suretyType);
+            if (ownerCommission != null) {
+                return ownerCommission;
+            }
         }
 
         return type.getCommission(suretyType);

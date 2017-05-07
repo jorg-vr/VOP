@@ -1,16 +1,13 @@
 package controller;
 
 import controller.exceptions.UnAuthorizedException;
+import dao.exceptions.ObjectNotFoundException;
 import dao.interfaces.DAOManager;
-import dao.interfaces.DataAccessException;
-import dao.interfaces.FunctionDAO;
+import dao.exceptions.DataAccessException;
 import dao.interfaces.UserDAO;
 import main.BackendApplication;
 import model.account.*;
 import spring.model.AuthenticationToken;
-
-import java.util.Collection;
-import java.util.UUID;
 
 /**
  * Created by jorg on 3/30/17.
@@ -25,7 +22,7 @@ public class AuthController implements AutoCloseable {
         userDAO = provider.getUserDAO();
     }
 
-    public User getUser(AuthenticationToken token) throws DataAccessException {
+    public User getUser(AuthenticationToken token) throws DataAccessException, ObjectNotFoundException {
         return userDAO.get(token.getAccountId());
     }
 
@@ -34,7 +31,7 @@ public class AuthController implements AutoCloseable {
         return new AuthenticationToken(account.getUuid());
     }
 
-    public AuthenticationToken refreshToken(AuthenticationToken token) throws DataAccessException, UnAuthorizedException {
+    public AuthenticationToken refreshToken(AuthenticationToken token) throws DataAccessException, UnAuthorizedException, ObjectNotFoundException {
         User user = userDAO.get(token.getAccountId());
         return new AuthenticationToken(user.getUuid());
     }
