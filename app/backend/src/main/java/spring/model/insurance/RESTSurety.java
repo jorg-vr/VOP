@@ -80,7 +80,7 @@ public class RESTSurety extends RESTAbstractModel<Surety> {
                 SpecialCondition condition = controller.get(toUUID(item.getId()));
                 conditions.add(condition);
             } catch (ObjectNotFoundException e) {
-                violations.put("specialConditions", item.getId() + ": " + ErrorCode.NOT_FOUND);
+                violations.put("specialConditions", ErrorCode.NOT_FOUND + "");
             }
         }
         if (violations.size() > 0) {
