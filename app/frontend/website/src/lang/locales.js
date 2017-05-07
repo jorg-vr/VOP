@@ -16,6 +16,11 @@ export default
             year: 'year',
             value: 'value'
         },
+        vehicleType: {
+            name: 'name',
+            vehicleType: 'type',
+            vehicleTypes: 'vehicleTypes'
+        },
         fleet: {
             name: 'fleet name',
             companyName: 'company name',
@@ -150,6 +155,11 @@ export default
             mileage: 'kilometerstand',
             year: 'jaar',
             value: 'waarde'
+        },
+        vehicleType: {
+            name: 'naam',
+            vehicleType: 'voertuig type',
+            vehicleTypes: 'voertuig types'
         },
         fleet: {
             name: 'vlootnaam',
