@@ -1,10 +1,13 @@
 package spring.model;
 
+import controller.ControllerManager;
 import controller.CustomerController;
 import controller.exceptions.UnAuthorizedException;
-import dao.interfaces.DataAccessException;
-import model.account.Function;
+import dao.exceptions.ConstraintViolationException;
+import dao.exceptions.DataAccessException;
+import dao.exceptions.ObjectNotFoundException;
 import model.fleet.Fleet;
+import spring.exceptions.ErrorCode;
 import util.UUIDUtil;
 import spring.exceptions.InvalidInputException;
 import spring.exceptions.NotAuthorizedException;
@@ -35,18 +38,17 @@ public class RESTFleet extends RESTAbstractModel<Fleet> {
         this.name = name;
     }
 
-    public Fleet translate(Function function){
-        Fleet fleet=new Fleet();
+    public Fleet translate(ControllerManager manager) throws UnAuthorizedException, DataAccessException, ConstraintViolationException {
+        Fleet fleet = new Fleet();
         fleet.setName(getName());
-        try (CustomerController customerController=new CustomerController(function)){
-            fleet.setOwner(customerController.get(UUIDUtil.toUUID(getCompany())));
-        } catch (DataAccessException e) {
-            throw new InvalidInputException("company");
-        } catch (UnAuthorizedException e) {
-            throw new NotAuthorizedException();
+        try {
+            CustomerController controller = manager.getCustomerController();
+            fleet.setOwner(controller.get(UUIDUtil.toUUID(getCompany())));
+        } catch (ObjectNotFoundException e) {
+            throw new ConstraintViolationException("company", ErrorCode.NOT_FOUND.toString());
         }
         fleet.setUuid(UUIDUtil.toUUID(getId()));
-        return  fleet;
+        return fleet;
     }
 
     public String getCompany() {

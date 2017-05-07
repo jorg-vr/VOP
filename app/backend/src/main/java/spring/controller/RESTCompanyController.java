@@ -2,33 +2,21 @@ package spring.controller;
 
 import controller.AbstractController;
 import controller.CompanyController;
-import controller.CustomerController;
+import controller.ControllerManager;
 import controller.exceptions.UnAuthorizedException;
-import controller.insurance.ContractController;
-import controller.insurance.VehicleInsuranceController;
-import dao.interfaces.CustomerDAO;
-import dao.interfaces.DataAccessException;
-import dao.interfaces.Filter;
-import model.fleet.VehicleType;
-import model.identity.Address;
+import dao.exceptions.DataAccessException;
 import model.identity.Company;
 import model.identity.CompanyType;
-import model.identity.Customer;
 import org.springframework.web.bind.annotation.*;
 import spring.exceptions.InvalidInputException;
-import spring.exceptions.NotAuthorizedException;
-import spring.exceptions.NotFoundException;
-import spring.exceptions.ServerErrorException;
 import spring.model.*;
-import spring.model.insurance.RESTContract;
-import spring.model.insurance.RESTVehicleInsurance;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
+import static util.UUIDUtil.toUUID;
 
 /**
  * This controller is responsible for handling the HTTP requests of the URL /companies.
@@ -51,9 +39,13 @@ public class RESTCompanyController extends RESTAbstractController<RESTCompany, C
 
 
     public RESTCompanyController() {
-        super(CompanyController::new, RESTCompany::new);
+        super(RESTCompany::new);
     }
 
+    @Override
+    public AbstractController<Company> getController(ControllerManager manager) {
+        return manager.getCompanyController();
+    }
 
     @RequestMapping(method = RequestMethod.GET)
     public RESTSchema<RESTCompany> get(HttpServletRequest request,
@@ -62,11 +54,10 @@ public class RESTCompanyController extends RESTAbstractController<RESTCompany, C
                                        String city, String postalCode,
                                        String type,
                                        @RequestHeader(value = "Authorization") String token,
-                                       @RequestHeader(value = "Function") String function) throws UnAuthorizedException {
-        /*
-        if (city != null || postalCode != null ||country != null)
-            throw new InvalidInputException("Certain filters that you use are not implemented");*/
-        try (CompanyController controller = new CompanyController(verifyToken(token, function))) {
+                                       @RequestHeader(value = "Function") String function) throws UnAuthorizedException, DataAccessException {
+        UUID user = new AuthenticationToken(token).getAccountId();
+        try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
+            CompanyController controller = manager.getCompanyController();
 
             CompanyType companyType = null;
             try {
@@ -82,8 +73,6 @@ public class RESTCompanyController extends RESTAbstractController<RESTCompany, C
                     .map(RESTCompany::new)
                     .collect(Collectors.toList());
             return new RESTSchema<>(restModels, page, limit, request);
-        } catch (DataAccessException e) {
-            throw new ServerErrorException("contracts could not be retrieved. This is a server error");
         }
     }
 

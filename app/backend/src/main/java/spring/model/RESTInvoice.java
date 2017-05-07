@@ -1,18 +1,20 @@
 package spring.model;
 
-import controller.CustomerController;
+import controller.CompanyController;
+import controller.ControllerManager;
 import controller.exceptions.UnAuthorizedException;
-import dao.interfaces.DataAccessException;
-import model.account.Function;
+import dao.exceptions.ConstraintViolationException;
+import dao.exceptions.DataAccessException;
+import dao.exceptions.ObjectNotFoundException;
 import model.billing.Invoice;
 import model.billing.InvoiceType;
-import model.history.EditEvent;
-import model.identity.Company;
+import spring.exceptions.ErrorCode;
 import spring.exceptions.InvalidInputException;
 import util.UUIDUtil;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Billie Devolder on 16/04/2017.
@@ -69,24 +71,33 @@ public class RESTInvoice extends RESTAbstractModel<Invoice> {
     }
 
     @Override
-    public Invoice translate(Function function) throws UnAuthorizedException {
-        Invoice invoice=new Invoice();
+    public Invoice translate(ControllerManager manager) throws UnAuthorizedException, DataAccessException, ConstraintViolationException {
+        Invoice invoice = new Invoice();
         invoice.setUuid(UUIDUtil.toUUID(getId()));
         invoice.setEndDate(getEndDate());
         invoice.setStartDate(getStartDate());
         invoice.setPaid(isPaid());
-        try(CustomerController customerController=new CustomerController(function)) {
-            invoice.setBeneficiary(customerController.get(UUIDUtil.toUUID(getBeneficiary())));
-        } catch (DataAccessException e) {
-            throw new InvalidInputException("benificiary");
-        }
-        try(CustomerController customerController=new CustomerController(function)) {
-            invoice.setPayer(customerController.get(UUIDUtil.toUUID(getPayer())));
-        } catch (DataAccessException e) {
-            throw new InvalidInputException("payer");
-        }
         invoice.setType(InvoiceType.valueOf(getType()));
-        return null;
+
+        CompanyController controller = manager.getCompanyController();
+
+        Map<String, String> violations = new HashMap<>();
+        try {
+            invoice.setBeneficiary(controller.get(UUIDUtil.toUUID(getBeneficiary())));
+        } catch (ObjectNotFoundException e) {
+            violations.put("benificiary", ErrorCode.NOT_FOUND.toString());
+        }
+
+        try {
+            invoice.setPayer(controller.get(UUIDUtil.toUUID(getPayer())));
+        } catch (ObjectNotFoundException e) {
+            violations.put("payer", ErrorCode.NOT_FOUND.toString());
+        }
+
+        if (violations.size() > 0) {
+            throw new ConstraintViolationException(violations);
+        }
+        return invoice;
     }
 
 

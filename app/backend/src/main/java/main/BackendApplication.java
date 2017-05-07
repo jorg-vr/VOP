@@ -1,7 +1,8 @@
 package main;
 
+import dao.database.ProductionManager;
 import dao.database.ProductionProvider;
-import dao.interfaces.DAO;
+import dao.interfaces.DAOManager;
 import dao.interfaces.DAOProvider;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,14 +19,15 @@ import javax.annotation.PreDestroy;
 @ComponentScan(basePackages = {"spring"})
 public class BackendApplication {
 
-	public static void main(String[] args) throws Exception {
+    public static final boolean DISABLE_AUTH = false;
+
+    public static void main(String[] args) throws Exception {
 
         if (args.length == 1) {
             ProductionProvider.initializeProvider(args[0]);
         } else if (args.length == 2) {
             ProductionProvider.initializeProvider(args[1]);
-        }
-        else {
+        } else {
             System.err.println("Wrong number of arguments");
             return;
         }
@@ -41,14 +43,18 @@ public class BackendApplication {
                 registry.addMapping("/**").allowedMethods("*").allowedOrigins("*");
             }
         };
-	}
+    }
 
     public static DAOProvider getProvider() {
         return ProductionProvider.getInstance();
     }
 
-	@PreDestroy
+    @PreDestroy
     public void preDestroy() {
-        ProductionProvider.getInstance().close();
+        try {
+            ProductionProvider.getInstance().close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

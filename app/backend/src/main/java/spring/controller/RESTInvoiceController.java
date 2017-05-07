@@ -1,38 +1,41 @@
 package spring.controller;
 
-import controller.ControllerFactory;
-import controller.CustomerController;
-import controller.InvoiceController;
+import controller.*;
 import controller.exceptions.UnAuthorizedException;
-import dao.interfaces.DataAccessException;
-import dao.interfaces.Filter;
-import dao.interfaces.InvoiceDAO;
+import dao.exceptions.DataAccessException;
+import dao.exceptions.ObjectNotFoundException;
 import model.billing.Invoice;
 import model.identity.Company;
-import model.insurance.Contract;
 import org.springframework.web.bind.annotation.*;
 import spring.exceptions.NotAuthorizedException;
+import spring.model.AuthenticationToken;
 import spring.model.RESTInvoice;
-import spring.model.RESTModelFactory;
 import spring.model.RESTSchema;
 import spring.model.insurance.RESTContract;
 import util.UUIDUtil;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import static util.UUIDUtil.toUUID;
 
 /**
  * Created by Billie Devolder on 17/04/2017.
  */
 @RestController
 @RequestMapping("/${path.companies}/{companyId}/${path.invoices}")
-public class RESTInvoiceController extends RESTAbstractController<RESTInvoice,Invoice> {
+public class RESTInvoiceController extends RESTAbstractController<RESTInvoice, Invoice> {
 
 
     public RESTInvoiceController() {
-        super(InvoiceController::new, RESTInvoice::new);
+        super(RESTInvoice::new);
+    }
+
+    @Override
+    public AbstractController<Invoice> getController(ControllerManager manager) {
+        return manager.getInvoiceController();
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -40,47 +43,50 @@ public class RESTInvoiceController extends RESTAbstractController<RESTInvoice,In
                                           HttpServletRequest request,
                                           Integer page, Integer limit,
                                           @RequestHeader(value = "Authorization") String token,
-                                          @RequestHeader(value = "Function") String authorityFunction) {
-        try(InvoiceController controller=new InvoiceController(verifyToken(token,authorityFunction));
-            CustomerController customerController=new CustomerController(verifyToken(token,authorityFunction))) {
+                                          @RequestHeader(value = "Function") String function) throws ObjectNotFoundException {
+        UUID user = new AuthenticationToken(token).getAccountId();
+        try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
+            InvoiceController controller = manager.getInvoiceController();
+            CompanyController companyController = manager.getCompanyController();
 
-            Collection<RESTInvoice> invoices=new ArrayList<>();
-            Company company=customerController.get(UUIDUtil.toUUID(companyId));//TODO companycontroller
-            for(Invoice invoice:controller.getFiltered(company)){
-                invoices.add(new RESTInvoice(invoice));
-            }
+            Company company = companyController.get(UUIDUtil.toUUID(companyId));
+
+            Collection<RESTInvoice> invoices = controller
+                    .getFiltered(company)
+                    .stream()
+                    .map(RESTInvoice::new)
+                    .collect(Collectors.toList());
             return new RESTSchema<>(invoices, page, limit, request);
         } catch (UnAuthorizedException e) {
             throw new NotAuthorizedException();
         } catch (DataAccessException e) {
-            throw  new RuntimeException(e);
+            throw new RuntimeException(e);
         }
 
 
     }
 
-    @RequestMapping(value = "/{invoiceId}/${path.contracts}",method = RequestMethod.GET)
+    @RequestMapping(value = "/{invoiceId}/${path.contracts}", method = RequestMethod.GET)
     public RESTSchema<RESTContract> getAllContracts(@PathVariable String companyId,
                                                     @PathVariable String invoiceId,
                                                     HttpServletRequest request,
                                                     Integer page, Integer limit,
                                                     @RequestHeader(value = "Authorization") String token,
-                                                    @RequestHeader(value = "Function") String authorityFunction) {
-        try(InvoiceController controller=new InvoiceController(verifyToken(token,authorityFunction))) {
-            Collection<RESTContract> contracts=new ArrayList<>();
-            for (Contract contract: controller.get(UUIDUtil.toUUID(invoiceId)).getContracts()){
-                contracts.add(new RESTContract(contract));
-            }
+                                                    @RequestHeader(value = "Function") String function) throws ObjectNotFoundException {
+        UUID user = new AuthenticationToken(token).getAccountId();
+        try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
+            InvoiceController controller = manager.getInvoiceController();
+
+            Collection<RESTContract> contracts = controller.get(UUIDUtil.toUUID(invoiceId))
+                    .getContracts()
+                    .stream()
+                    .map(RESTContract::new)
+                    .collect(Collectors.toList());
             return new RESTSchema<>(contracts, page, limit, request);
         } catch (UnAuthorizedException e) {
             throw new NotAuthorizedException();
         } catch (DataAccessException e) {
-            throw  new RuntimeException(e);
+            throw new RuntimeException(e);
         }
-
-
     }
-
-
-
 }

@@ -1,21 +1,21 @@
 package controller;
 
 import controller.exceptions.UnAuthorizedException;
-import dao.interfaces.CompanyDAO;
-import dao.interfaces.DAO;
-import dao.interfaces.DataAccessException;
-import dao.interfaces.Filter;
-import main.BackendApplication;
+import dao.exceptions.DataAccessException;
+import dao.interfaces.*;
 import model.account.Function;
 import model.account.Resource;
 import model.identity.Company;
 import model.identity.CompanyType;
-import model.identity.Customer;
 
-import java.util.ArrayList;
+import model.identity.Customer;
+import util.Compare;
+
+
 import java.util.Collection;
-import java.util.List;
 import java.util.stream.Collectors;
+
+import static util.Compare.containsIgnoreCase;
 
 
 /**
@@ -23,8 +23,11 @@ import java.util.stream.Collectors;
  */
 public class CompanyController extends AbstractController<Company> {
 
-    public CompanyController(Function function) {
-        super(BackendApplication.getProvider().getCompanyDAO(), Resource.COMPANY, function);
+    private CompanyDAO<Company> dao;
+
+    public CompanyController(Function function, DAOManager manager) {
+        super(manager.getCompanyDAO(), Resource.COMPANY, function);
+        dao = manager.getCompanyDAO();
     }
 
     @Override
@@ -34,6 +37,7 @@ public class CompanyController extends AbstractController<Company> {
 
     /**
      * When you don't want to filter on a certain argument, pass a null value
+     *
      * @param nameContains Only return companies whose name contains nameContains
      * @param country      NOT implemented TODO
      * @param city         NOT implemented TODO
@@ -45,13 +49,15 @@ public class CompanyController extends AbstractController<Company> {
      */
     public Collection<Company> getFiltered(String nameContains, String country,
                                            String city, String postalCode, CompanyType type) throws DataAccessException, UnAuthorizedException {
-        CompanyDAO<Company> dao = (CompanyDAO<Company>) getDao();
-
+        //CompanyDAO<Company> dao = (CompanyDAO<Company>) getDao();
         Collection<Company> result = getAll(dao.containsName(nameContains));
 
         // Filter companies on criteria that are not supported by the database
         return result.stream()
                 .filter(c -> type == null || c.getCompanyType() == type)
+                .filter(c -> postalCode == null || (c.getAddress() != null && containsIgnoreCase(c.getAddress().getPostalCode(), postalCode)))
+                .filter(c -> country == null || (c.getAddress() != null && containsIgnoreCase(c.getAddress().getCountry(), country)))
+                .filter(c -> city == null || (c.getAddress() != null && containsIgnoreCase(c.getAddress().getTown(), city)))
                 .collect(Collectors.toList());
     }
 }

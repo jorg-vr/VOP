@@ -1,21 +1,24 @@
 package spring.controller;
 
 
+import controller.AbstractController;
+import controller.ControllerManager;
 import controller.RoleController;
 import controller.exceptions.UnAuthorizedException;
-import dao.interfaces.DataAccessException;
-import model.account.Function;
+import dao.exceptions.DataAccessException;
 import model.account.Role;
 import org.springframework.web.bind.annotation.*;
 import spring.exceptions.InvalidInputException;
-import spring.exceptions.NotAuthorizedException;
+import spring.model.AuthenticationToken;
 import spring.model.RESTRole;
 import spring.model.RESTSchema;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.UUID;
 import java.util.stream.Collectors;
+
+import static util.UUIDUtil.toUUID;
 
 /**
  * This controller is responsible for handling the HTTP requests of the URL /roles.
@@ -38,7 +41,12 @@ public class RESTRoleController extends RESTAbstractController<RESTRole, Role> {
 
 
     public RESTRoleController() {
-        super(RoleController::new, RESTRole::new);
+        super(RESTRole::new);
+    }
+
+    @Override
+    public AbstractController<Role> getController(ControllerManager manager) {
+        return manager.getRoleController();
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -47,18 +55,17 @@ public class RESTRoleController extends RESTAbstractController<RESTRole, Role> {
                                     @RequestParam(required = false) Integer page,
                                     @RequestParam(required = false) Integer limit,
                                     @RequestHeader(value = "Authorization") String token,
-                                    @RequestHeader(value = "Function") String fu) throws UnAuthorizedException {
-        Function function = verifyToken(token, fu);
-
-        Collection<RESTRole> restRoles = new ArrayList<>();
-        try (RoleController roleController = new RoleController(function)) {
-            Collection<Role> roles = roleController.getAll();
-            for (Role role : roles) {
-                restRoles.add(new RESTRole(role));
-            }
+                                    @RequestHeader(value = "Function") String function) throws UnAuthorizedException {
+        UUID user = new AuthenticationToken(token).getAccountId();
+        try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
+            RoleController controller = manager.getRoleController();
+            Collection<RESTRole> roles = controller.getAll()
+                    .stream()
+                    .map(RESTRole::new)
+                    .collect(Collectors.toList());
+            return new RESTSchema<>(roles, page, limit, request);
         } catch (DataAccessException e) {
             throw new InvalidInputException("Something is wrong with the database");
         }
-        return new RESTSchema<>(restRoles, page, limit, request);
     }
 }

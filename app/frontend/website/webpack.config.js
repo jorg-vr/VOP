@@ -1,11 +1,25 @@
 var path = require('path')
 var webpack = require('webpack')
+var HtmlWebpackPlugin = require('html-webpack-plugin');
+
+var base;
+switch(process.env.NODE_ENV){
+    case 'production':
+        base = '/app'
+        break;
+    case 'testing':
+        base = '/test/app'
+        break;
+    default:
+        base = ''
+}
+
 
 module.exports = {
     entry: './src/main.js',
     output: {
         path: path.resolve(__dirname, './dist'),
-        publicPath: '/dist',
+        publicPath: base + '/dist' ,
         filename: 'build.js',
     },
     module: {
@@ -59,6 +73,9 @@ if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'testing')
     module.exports.devtool = '#source-map'
     // http://vue-loader.vuejs.org/en/workflow/production.html
     module.exports.plugins = (module.exports.plugins || []).concat([
+        new HtmlWebpackPlugin({
+            template: 'production.html',
+        }),
         new webpack.optimize.UglifyJsPlugin({
             sourceMap: true,
             compress: {
@@ -69,8 +86,5 @@ if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'testing')
             minimize: true
         })
     ])
-}
-else {
-
 }
 

@@ -1,17 +1,14 @@
 package controller;
 
 import controller.exceptions.UnAuthorizedException;
-import dao.database.ProductionProvider;
-import dao.interfaces.DAO;
-import dao.interfaces.DataAccessException;
+import dao.interfaces.DAOManager;
+import dao.exceptions.DataAccessException;
 import dao.interfaces.Filter;
 import dao.interfaces.InvoiceDAO;
 import model.account.Function;
 import model.account.Resource;
-import model.account.User;
 import model.billing.Invoice;
 import model.identity.Company;
-import spring.exceptions.NotImplementedException;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,8 +20,8 @@ import java.util.List;
 public class InvoiceController extends AbstractController<Invoice> {
 
 
-    public InvoiceController(Function function) {
-        super(ProductionProvider.getInstance().getInvoiceDao(), Resource.BILLING, function);
+    public InvoiceController(Function function, DAOManager manager) {
+        super(manager.getInvoiceDao(), Resource.BILLING, function);
     }
 
     public Collection<Invoice> getFiltered(Company company) throws UnAuthorizedException {

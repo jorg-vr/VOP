@@ -14,15 +14,14 @@ TODO: document this page.
                         <p id="error" v-show="showError"> {{$t("login.error") | capitalize }}  </p>
                         <div class="input-group" id="username">
                             <span class="input-group-addon"><i aria-hidden="true" class="fa fa-user"></i></span>
-                            <input id="email" type="text" class="form-control" name="email"  v-bind:placeholder="$t('login.username')" v-model="credentials
-							.login">
+                            <input id="email" type="text" class="form-control" name="email"  v-bind:placeholder="$t('login.username')" v-model="credentials.login">
                         </div>
                         <div class="input-group">
                             <span class="input-group-addon"><i aria-hidden="true" class="fa fa-lock"></i></span>
                             <input id="password" type="password" class="form-control" name="password" v-bind:placeholder="$t('login.password')"  v-model="credentials.password">
                         </div>
                         <br>
-                        <button type="button" id="login-button" @click="confirmLogin()"> {{$t("login.button") | capitalize }} </button>
+                        <button type="button" id="login-button" :class='buttonClass' @click="confirmLogin()"> {{$t("login.button") | capitalize }} </button>
                     </form>
                 </div>
             </div>
@@ -50,26 +49,25 @@ TODO: document this page.
         },
         computed: {
             ...mapGetters([
-                'hasActiveAccount', 'nextRoute'
-            ])
+                'nextRoute',
+                'loading'
+            ]),
+            buttonClass() {
+                return this.loading ? ' loading' : ''
+            }
         },
         methods: {
             ...mapActions([
-                'authenticate','fetchAccount'
-
+                'authenticate'
             ]),
-            ...mapMutations({
-                setActiveAccount: 'SET_ACTIVE_ACCOUNT'
-            }),
+            ...mapMutations([
+                'setLoading'
+            ]),
             confirmLogin:function(){
-                // Get webtoken and account information
-                this.authenticate(this.credentials).then(() => {
-                    // check if login was succesfull
-                    if(!(this.hasActiveAccount)){
-                        // Failed
-                        this.showError=true
-                    }
-                    else{
+                if(!this.loading){
+                    this.setLoading({loading: true})
+                    // Get webtoken and account information
+                    this.authenticate(this.credentials).then(() => {
                         // Succes, return to home
                         if(this.nextRoute.path !== null){
                             this.$router.push({name: this.nextRoute.name, params: this.nextRoute.params})
@@ -77,10 +75,12 @@ TODO: document this page.
                         else {
                             this.$router.push({name: 'homeClient'})
                         }
-                    }
-                })
-
-
+                        this.setLoading({loading: false})
+                    }, () => {
+                        this.showError=true
+                        this.setLoading({loading: false})
+                    })
+                }
             }
         }
     }
@@ -169,5 +169,13 @@ TODO: document this page.
         background:#009D7E;
         color:white;
     }
+
+    .loading:hover,
+    .loading {
+        opacity: 0.6;
+        cursor: auto;
+        background: #1AB394;
+    }
+
 
 </style>

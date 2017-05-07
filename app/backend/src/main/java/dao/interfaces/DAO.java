@@ -1,6 +1,10 @@
 package dao.interfaces;
 
 
+import dao.exceptions.ConstraintViolationException;
+import dao.exceptions.DataAccessException;
+import dao.exceptions.ObjectNotFoundException;
+
 import java.util.Collection;
 import java.util.UUID;
 
@@ -8,11 +12,11 @@ import java.util.UUID;
  * DAO interface which all other DAO interfaces should extend
  * Created by sam on 3/7/17.
  */
-public interface DAO<T> extends AutoCloseable {
+public interface DAO<T>  {
 
-    T create(T t) throws DataAccessException;
+    T create(T t) throws DataAccessException, ConstraintViolationException;
 
-    T update(T t) throws DataAccessException;
+    T update(T t) throws DataAccessException, ConstraintViolationException;
 
 
     /**
@@ -21,14 +25,14 @@ public interface DAO<T> extends AutoCloseable {
      * @return the object matching the given UUID
      * @throws DataAccessException Thrown when something goes wrong retrieving the object
      */
-    T get(UUID id) throws DataAccessException;
+    T get(UUID id) throws DataAccessException, ObjectNotFoundException;
 
     /**
      * Removes an object using its unique id
      * @param id the id of the object
      * @throws DataAccessException Thrown when something goes wrong retrieving the object
      */
-    void remove(UUID id) throws DataAccessException;
+    void remove(UUID id) throws DataAccessException, ObjectNotFoundException;
 
     /**
      * Gets all objects of the DAO using filters

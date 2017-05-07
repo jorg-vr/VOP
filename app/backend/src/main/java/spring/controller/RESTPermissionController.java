@@ -1,14 +1,18 @@
 package spring.controller;
 
+import controller.ControllerManager;
 import controller.RoleController;
 import controller.exceptions.UnAuthorizedException;
-import dao.interfaces.DataAccessException;
+import dao.exceptions.ConstraintViolationException;
+import dao.exceptions.DataAccessException;
+import dao.exceptions.ObjectNotFoundException;
 import model.account.Action;
 import model.account.Resource;
 import model.account.Role;
 import org.springframework.web.bind.annotation.*;
 import spring.exceptions.InvalidInputException;
 import spring.exceptions.NotFoundException;
+import spring.model.AuthenticationToken;
 import spring.model.RESTPermission;
 import spring.model.RESTSchema;
 import util.UUIDUtil;
@@ -16,6 +20,8 @@ import util.UUIDUtil;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static util.UUIDUtil.toUUID;
 
 /**
  * Requests that are implemented in this class:
@@ -43,12 +49,16 @@ public class RESTPermissionController extends RESTSimpleController {
                                           Integer page, Integer limit,
                                           String resource, String action,
                                           @RequestHeader(value = "Authorization") String token,
-                                          @RequestHeader(value = "Function") String function) throws UnAuthorizedException {
+                                          @RequestHeader(value = "Function") String function) throws UnAuthorizedException, ObjectNotFoundException {
         UUID uuid = UUIDUtil.toUUID(id);
-        try (RoleController roleController = new RoleController(verifyToken(token, function))) {
-            Role role = roleController.get(uuid);
+        UUID user = new AuthenticationToken(token).getAccountId();
+        try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
+            RoleController controller = manager.getRoleController();
+
+            Role role = controller.get(uuid);
             Collection<RESTPermission> restPermissions = RESTPermission.translate(role.getRights().values());
             Collection<RESTPermission> filtered = filter(restPermissions, resource, action);
+
             return new RESTSchema<>(filtered, page, limit, request);
         } catch (DataAccessException e) {
             throw new NotFoundException();
@@ -59,18 +69,20 @@ public class RESTPermissionController extends RESTSimpleController {
     public void put(@PathVariable String id,
                     @RequestBody List<Long> permissions,
                     @RequestHeader(value = "Authorization") String token,
-                    @RequestHeader(value = "Function") String function) throws UnAuthorizedException {
+                    @RequestHeader(value = "Function") String function) throws UnAuthorizedException, ObjectNotFoundException, ConstraintViolationException {
         UUID uuid = UUIDUtil.toUUID(id);
-        try (RoleController roleController = new RoleController(verifyToken(token, function))) {
-            try {
-                Role role = roleController.get(uuid);
-                setPermissions(role, permissions);
-                roleController.update(role);
-            } catch (DataAccessException e) {
-                throw new NotFoundException();
-            }
+        UUID user = new AuthenticationToken(token).getAccountId();
+        try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
+            RoleController controller = manager.getRoleController();
+
+            Role role = controller.get(uuid);
+            setPermissions(role, permissions);
+            controller.update(role);
+        } catch (DataAccessException e) {
+            throw new NotFoundException();
         }
     }
+
 
     /**
      * @param permissions collection of permissions that should be filtered. This method does NOT alter this collection in any way

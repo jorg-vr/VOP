@@ -1,20 +1,22 @@
 package spring.model.insurance;
 
+import controller.ControllerManager;
 import controller.VehicleController;
 import controller.exceptions.UnAuthorizedException;
 import controller.insurance.ContractController;
 import controller.insurance.SuretyController;
-import dao.interfaces.DataAccessException;
-import model.account.Function;
-import model.fleet.Vehicle;
-import model.insurance.Surety;
+import dao.exceptions.ConstraintViolationException;
+import dao.exceptions.DataAccessException;
+import dao.exceptions.ObjectNotFoundException;
 import model.insurance.SuretyType;
 import model.insurance.VehicleInsurance;
+import spring.exceptions.ErrorCode;
 import spring.exceptions.InvalidInputException;
 import spring.model.RESTAbstractModel;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
+import java.util.HashMap;
+import java.util.Map;
 
 import static util.MyProperties.PATH_VEHICLE_INSURANCES;
 import static util.MyProperties.getProperty;
@@ -51,32 +53,41 @@ public class RESTVehicleInsurance extends RESTAbstractModel<VehicleInsurance> {
     }
 
     @Override
-    public VehicleInsurance translate(Function function) throws UnAuthorizedException {
+    public VehicleInsurance translate(ControllerManager manager) throws UnAuthorizedException, DataAccessException, ConstraintViolationException {
         VehicleInsurance insurance = new VehicleInsurance();
         insurance.setUuid(toUUID(getId()));
-        try (VehicleController controller = new VehicleController(function)) {
-            insurance.setVehicle(controller.get(toUUID(vehicle)));
-            for (SuretyType suretyType: SuretyType.values()) {
-                insurance.getVehicle().getType().getCommission(suretyType);
-                insurance.getVehicle().getType().getTax(suretyType);
-            }
-        } catch (DataAccessException e) {
-            throw new InvalidInputException("Vehicle with id " + vehicle + " does not exist");
-        }
-        try (SuretyController controller = new SuretyController(function)) {
-            insurance.setSurety(controller.get(toUUID(surety)));
-        } catch (DataAccessException e) {
-            throw new InvalidInputException("Surety with id " + surety + " does not exist");
-        }
-        try (ContractController controller = new ContractController(function)) {
-            insurance.setContract(controller.get(toUUID(contract)));
-        } catch (DataAccessException e) {
-            throw new InvalidInputException("Contract with id " + surety + " does not exist");
-        }
         insurance.setStartDate(startDate);
         insurance.setEndDate(endDate);
         insurance.setFranchise(franchise);
         insurance.setInsuredValue(insuredValue);
+
+        Map<String, String> violations = new HashMap<>();
+        try {
+            VehicleController controller = manager.getVehicleController();
+            insurance.setVehicle(controller.get(toUUID(vehicle)));
+            for (SuretyType suretyType : SuretyType.values()) {
+                insurance.getVehicle().getType().getCommission(suretyType);
+                insurance.getVehicle().getType().getTax(suretyType);
+            }
+        } catch (ObjectNotFoundException e) {
+            violations.put("vehicle", ErrorCode.NOT_FOUND.toString());
+        }
+        try {
+            SuretyController controller = manager.getSuretyController();
+            insurance.setSurety(controller.get(toUUID(surety)));
+        } catch (ObjectNotFoundException e) {
+            violations.put("surety", ErrorCode.NOT_FOUND.toString());
+        }
+        try {
+            ContractController controller = manager.getContractController();
+            insurance.setContract(controller.get(toUUID(contract)));
+        } catch (ObjectNotFoundException e) {
+            violations.put("contract", ErrorCode.NOT_FOUND.toString());
+        }
+        if (violations.size() > 0) {
+            throw new ConstraintViolationException(violations);
+        }
+
         return insurance;
     }
 

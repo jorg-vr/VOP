@@ -1,24 +1,18 @@
 package spring.controller;
 
-import controller.FleetController;
-import controller.VehicleController;
+import controller.*;
 
-import controller.VehicleTypeController;
 import controller.exceptions.UnAuthorizedException;
-import dao.interfaces.DataAccessException;
-import dao.interfaces.Filter;
-import dao.interfaces.VehicleDAO;
+import dao.exceptions.DataAccessException;
 import model.fleet.Fleet;
 import model.fleet.Vehicle;
 import org.springframework.web.bind.annotation.*;
 import spring.exceptions.InvalidInputException;
-import spring.exceptions.NotAuthorizedException;
+import spring.model.AuthenticationToken;
 import spring.model.RESTSchema;
 import spring.model.RESTVehicle;
-import util.UUIDUtil;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import java.util.*;
@@ -53,7 +47,12 @@ public class RESTVehicleController extends RESTAbstractController<RESTVehicle, V
     private static DateTimeFormatter yearFormat = DateTimeFormatter.ofPattern("yyyyMMdd").withLocale(Locale.forLanguageTag("NL"));
 
     public RESTVehicleController() {
-        super(VehicleController::new, RESTVehicle::new);
+        super(RESTVehicle::new);
+    }
+
+    @Override
+    public AbstractController<Vehicle> getController(ControllerManager manager) {
+        return manager.getVehicleController();
     }
 
     /***
@@ -76,11 +75,9 @@ public class RESTVehicleController extends RESTAbstractController<RESTVehicle, V
             fleet = fleetId.get();
         }
 
-        /*
-        if (vin != null || leasingCompany != null || year != null || type != null)
-            throw new InvalidInputException("One or more filters are not implemented");
-        */
-        try (VehicleController controller = new VehicleController(verifyToken(token, function))) {
+        UUID user = new AuthenticationToken(token).getAccountId();
+        try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
+            VehicleController controller = manager.getVehicleController();
 
             Fleet fleetObject = fleet != null ? new Fleet(toUUID(fleet)) : null;
 

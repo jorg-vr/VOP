@@ -2,9 +2,12 @@ package model.fleet;
 
 import model.history.EditableObject;
 import model.identity.LeasingCompany;
+import model.insurance.SuretyType;
 import spring.exceptions.InvalidInputException;
 
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class Vehicle implements EditableObject, java.io.Serializable {
@@ -33,11 +36,13 @@ public class Vehicle implements EditableObject, java.io.Serializable {
 
     private Fleet fleet;
 
-    public Vehicle() {
+    private Map<SuretyType, Double> commissions;
 
+    public Vehicle() {
+        commissions = new HashMap<>();
     }
 
-    public Vehicle(String brand, String model, String chassisNumber, String licensePlate, int value, int mileage, VehicleType type, LocalDate productionDate, Fleet fleet, LeasingCompany leasingCompany) throws InvalidInputException{
+    public Vehicle(String brand, String model, String chassisNumber, String licensePlate, int value, int mileage, VehicleType type, LocalDate productionDate, Fleet fleet, LeasingCompany leasingCompany) throws InvalidInputException {
         this.brand = brand;
         this.model = model;
         this.productionDate = productionDate;
@@ -48,6 +53,7 @@ public class Vehicle implements EditableObject, java.io.Serializable {
         this.type = type;
         this.leasingCompany = leasingCompany;
         this.fleet = fleet;
+        commissions = new HashMap<>();
     }
 
     public Vehicle(UUID uuid, String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int value, int mileage, VehicleType type, Fleet fleet) throws InvalidInputException {
@@ -61,11 +67,13 @@ public class Vehicle implements EditableObject, java.io.Serializable {
         setMileage(mileage);
         this.type = type;
         this.fleet = fleet;
+        commissions = new HashMap<>();
     }
 
-    public Vehicle(UUID uuid, String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int value, int mileage, VehicleType type, Fleet fleet, LeasingCompany leasingCompany) throws InvalidInputException{
+    public Vehicle(UUID uuid, String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int value, int mileage, VehicleType type, Fleet fleet, LeasingCompany leasingCompany) throws InvalidInputException {
         this(uuid, brand, model, licensePlate, productionDate, chassisNumber, value, mileage, type, fleet);
         this.leasingCompany = leasingCompany;
+        commissions = new HashMap<>();
     }
 
     public Fleet getFleet() {
@@ -194,6 +202,55 @@ public class Vehicle implements EditableObject, java.io.Serializable {
 
     public void setLeasingCompany(LeasingCompany leasingCompany) {
         this.leasingCompany = leasingCompany;
+    }
+
+    /**
+     * @param suretyType type of surety of which the commission should be retrieved
+     * @return the commission that should be used for this vehicle.
+     * If there is no specific commission set for this vehicle, the specific commission of the owner will be retrieved.
+     * If there is no specific commission set for the owner, the default of commission of the type of this vehicle will be returned.
+     */
+    public double getCommission(SuretyType suretyType) {
+        Double vehicleCommission = getSpecificCommission(suretyType);
+        if (vehicleCommission != null) {
+            return vehicleCommission;
+        }
+        if (fleet != null) {
+            Double ownerCommission = fleet.getOwner().getSpecificCommission(suretyType);
+            if (ownerCommission != null) {
+                return ownerCommission;
+            }
+        }
+
+        return type.getCommission(suretyType);
+    }
+
+    /**
+     * @param suretyType suretyType of which the commission should be returned
+     * @return the specific commission of this vehicle for given SuretyType.
+     * If the vehicle does not have a specific commission for that type, null will be returned
+     */
+    public Double getSpecificCommission(SuretyType suretyType) {
+        return commissions.get(suretyType);
+    }
+
+    public void setSpecificCommission(SuretyType suretyType, double commission) {
+        if(commissions==null){
+            commissions = new HashMap<>();
+        }
+        commissions.put(suretyType, commission);
+    }
+
+    public void removeSpecificCommission(SuretyType suretyType) {
+        commissions.remove(suretyType);
+    }
+
+    public Map<SuretyType, Double> getCommissions() {
+        return commissions;
+    }
+
+    public void setCommissions(Map<SuretyType, Double> commissions) {
+        this.commissions = commissions;
     }
 
     @Override

@@ -1,16 +1,14 @@
 package dao.database;
 
-import dao.interfaces.DataAccessException;
+import dao.exceptions.DataAccessException;
 import dao.interfaces.Filter;
 import dao.interfaces.UserDAO;
 import model.account.User;
-import model.fleet.Vehicle;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.Collection;
 

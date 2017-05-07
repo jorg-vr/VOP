@@ -155,13 +155,11 @@ export default {
          * @returns {Promise}
          */
         authenticate(context, credentials){
-            return new Promise(resolve => {
+            return new Promise((resolve, reject) => {
                 RequestHandler.postObjectRequest(locations.LOGIN, credentials).then(response => {
-                    response.bodyText.promise.then(token => {
-                        context.commit('setAuthToken', {authToken: token});
-                    })
+                    context.commit('setAuthToken', {authToken: response.bodyText})
                 }, () =>  { //failure
-                    resolve()
+                    reject();
                 }).then(() => {
                     context.dispatch('fetchAccount').then(() => {
                         resolve()
@@ -178,9 +176,7 @@ export default {
         refreshToken(context){
             return new Promise((resolveSuccess, resolveFailure) => {
                 RequestHandler.postObjectRequest(locations.REFRESH, {}).then(response => {
-                    response.bodyText.promise.then(token => {
-                        context.commit('setAuthToken', {authToken: token})
-                                           })
+                    context.commit('setAuthToken', {authToken: response.bodyText})
                 }, () => { //failure
                     resolveFailure()
                 }).then(() => {

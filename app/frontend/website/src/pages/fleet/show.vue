@@ -47,17 +47,20 @@
         },
         created() {
             let id = this.id
+            this.setLoading({loading: true })
             this.fetchFleet({id: id}).then(fleet => {
                 this.fetchClient({id: fleet.company}).then(client => {
                     this.addClientName({client})
                 })
             })
-            let p1 = this.fetchVehiclesBy({fleet: id})
+            let p1 = this.fetchVehiclesBy({filters: {fleet: id}})
             let p2 = this.fetchVehicleTypes()
             Promise.all([p1, p2]).then(values => {
                 this.getSubfleets({
                     vehicles: values[0],
                     vehicleTypes: values[1]
+                }).then(() => {
+                    this.setLoading({loading: false })
                 })
             })
         },
@@ -82,7 +85,8 @@
             ]),
 
             ...mapMutations([
-                'updateFilteredSubfleets'
+                'updateFilteredSubfleets',
+                'setLoading'
             ]),
 
             updateSubfleets(value){

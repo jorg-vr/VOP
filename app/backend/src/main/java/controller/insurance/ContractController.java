@@ -4,11 +4,10 @@ package controller.insurance;
 import controller.AbstractController;
 import controller.exceptions.UnAuthorizedException;
 import dao.interfaces.ContractDAO;
-import dao.interfaces.DataAccessException;
-import main.BackendApplication;
+import dao.interfaces.DAOManager;
+import dao.exceptions.DataAccessException;
 import model.account.Function;
 import model.account.Resource;
-import model.fleet.Fleet;
 import model.identity.Company;
 import model.identity.Customer;
 import model.insurance.Contract;
@@ -17,8 +16,8 @@ import java.util.Collection;
 
 public class ContractController extends AbstractController<Contract> {
 
-    public ContractController(Function function) {
-        super(BackendApplication.getProvider().getContractDao(), Resource.INSURANCE, function);
+    public ContractController(Function function, DAOManager manager) {
+        super(manager.getContractDao(), Resource.INSURANCE, function);
     }
 
     @Override

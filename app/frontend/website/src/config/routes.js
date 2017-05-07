@@ -47,7 +47,6 @@ export default [
     {
         path: '',
         component: App,
-        name: 'home',
         children: [
             {path: '', name: 'homeClient', component: homeClient},
             //User

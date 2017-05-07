@@ -1,8 +1,8 @@
 package controller;
 
 import controller.exceptions.UnAuthorizedException;
+import dao.exceptions.DataAccessException;
 import dao.interfaces.*;
-import main.BackendApplication;
 import model.account.Function;
 import model.account.Resource;
 import model.fleet.Fleet;
@@ -15,8 +15,8 @@ import java.util.Collection;
  */
 public class FleetController extends AbstractController<Fleet> {
 
-    public FleetController(Function function) {
-        super(BackendApplication.getProvider().getFleetDAO(), Resource.FLEET, function);
+    public FleetController(Function function, DAOManager manager) {
+        super(manager.getFleetDAO(), Resource.FLEET, function);
     }
 
     @Override

@@ -59,7 +59,7 @@
     </div>
 </template>
 <script>
-    import {mapGetters, mapActions} from 'vuex'
+    import {mapMutations, mapGetters, mapActions} from 'vuex'
     import resources from '../../constants/resources'
     import clientTypes from '../../constants/clientTypes'
     import listComponent from "../../assets/list/listComponent.vue"
@@ -81,11 +81,14 @@
             id: String
         },
         created(){
+            this.setLoading({loading: true})
             let clientId = this.id
             this.fetchClient({id: clientId}).then(client => {
                 this.type = clientTypes[client.type]['name']
             })
-            this.fetchFleetsBy({company: clientId})
+            this.fetchFleetsBy({filters: {company: clientId}}).then(() => {
+                this.setLoading({loading: false })
+            })
         },
         computed: {
             ...mapGetters([
@@ -97,6 +100,9 @@
             ...mapActions([
                 'fetchClient',
                 'fetchFleetsBy'
+            ]),
+            ...mapMutations([
+                'setLoading'
             ])
         },
     }

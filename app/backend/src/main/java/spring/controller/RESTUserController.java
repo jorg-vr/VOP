@@ -1,22 +1,19 @@
 package spring.controller;
 
-import controller.AuthController;
-import controller.ControllerFactory;
-import controller.UserController;
+import controller.*;
 import controller.exceptions.UnAuthorizedException;
-import dao.interfaces.DataAccessException;
-import model.account.Function;
+import dao.exceptions.DataAccessException;
 import model.account.User;
 import org.springframework.web.bind.annotation.*;
-import spring.exceptions.InvalidInputException;
-import spring.exceptions.NotAuthorizedException;
 import spring.model.AuthenticationToken;
-import spring.model.RESTModelFactory;
 import spring.model.RESTSchema;
 import spring.model.RESTUser;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
+import java.util.stream.Collectors;
+
+import static util.UUIDUtil.toUUID;
 
 /**
  * This controller is responsible for handling the HTTP requests of the URL /user.
@@ -38,7 +35,12 @@ import java.util.*;
 public class RESTUserController extends RESTAbstractController<RESTUser, User> {
 
     public RESTUserController() {
-        super(UserController::new, RESTUser::new);
+        super(RESTUser::new);
+    }
+
+    @Override
+    public AbstractController<User> getController(ControllerManager manager) {
+        return manager.getUserController();
     }
 
     /**
@@ -52,17 +54,18 @@ public class RESTUserController extends RESTAbstractController<RESTUser, User> {
                                     String lastName,
                                     Integer page,
                                     Integer limit,
-                                    @RequestHeader(value="Authorization") String token,
-                                    @RequestHeader(value="Function") String function) throws UnAuthorizedException {
-        Collection<RESTUser> restUsers = new ArrayList<>();
-        try (UserController userController = new UserController(verifyToken(token, function))) {
-            Collection<User> users = userController.getAll();
-            for (User user: users) {
-                restUsers.add(new RESTUser(user));
-            }
+                                    @RequestHeader(value = "Authorization") String token,
+                                    @RequestHeader(value = "Function") String function) throws UnAuthorizedException {
+        UUID user = new AuthenticationToken(token).getAccountId();
+        try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
+            UserController controller = manager.getUserController();
+            Collection<RESTUser> users = controller.getAll()
+                    .stream()
+                    .map(RESTUser::new)
+                    .collect(Collectors.toList());
+            return new RESTSchema<>(users, page, limit, request);
         } catch (DataAccessException e) {
             throw new RuntimeException(e);
         }
-        return new RESTSchema<>(restUsers, page, limit, request);
     }
 }

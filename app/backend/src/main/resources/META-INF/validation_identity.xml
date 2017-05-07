@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<constraint-mappings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                     xsi:schemaLocation="http://jboss.org/xml/ns/javax/validation/mapping validation-mapping-1.0.xsd"
+                     xmlns="http://jboss.org/xml/ns/javax/validation/mapping">
+
+    <bean class="model.identity.Address">
+        <field name="country">
+            <constraint annotation="javax.validation.constraints.NotNull"/>
+            <constraint annotation="javax.validation.constraints.Pattern">
+                <element name="regexp">^...*$</element>
+            </constraint>
+        </field>
+        <field name="postalCode">
+            <constraint annotation="javax.validation.constraints.NotNull"/>
+            <constraint annotation="javax.validation.constraints.Pattern">
+                <element name="regexp">^...*$</element>
+            </constraint>
+        </field>
+        <field name="street">
+            <constraint annotation="javax.validation.constraints.NotNull"/>
+            <constraint annotation="javax.validation.constraints.Pattern">
+                <element name="regexp">^...*$</element>
+            </constraint>
+        </field>
+        <field name="streetNumber">
+            <constraint annotation="javax.validation.constraints.NotNull"/>
+            <constraint annotation="javax.validation.constraints.Pattern">
+                <element name="regexp">^..*$</element>
+            </constraint>
+        </field>
+        <field name="town">
+            <constraint annotation="javax.validation.constraints.NotNull"/>
+            <constraint annotation="javax.validation.constraints.Pattern">
+                <element name="regexp">^..*$</element>
+            </constraint>
+        </field>
+    </bean>
+
+    <bean class="model.identity.Company">
+        <field name="name">
+            <constraint annotation="javax.validation.constraints.NotNull"/>
+            <constraint annotation="javax.validation.constraints.Pattern">
+                <element name="regexp">^...*$</element>
+            </constraint>
+        </field>
+        <field name="btwNumber">
+            <constraint annotation="javax.validation.constraints.NotNull"/>
+            <constraint annotation="javax.validation.constraints.Pattern">
+                <element name="regexp">^.........*$</element>
+            </constraint>
+        </field>
+        <field name="companyType">
+            <constraint annotation="javax.validation.constraints.NotNull"/>
+        </field>
+    </bean>
+    
+    <bean class="model.identity.Identity">
+        <field name="address">
+            <constraint annotation="javax.validation.constraints.NotNull"/>
+        </field>
+        <field name="phoneNumber">
+            <constraint annotation="javax.validation.constraints.NotNull"/>
+            <constraint annotation="javax.validation.constraints.Pattern">
+                <element name="regexp">^.......*$</element>
+            </constraint>
+        </field>
+
+    </bean>
+
+</constraint-mappings>

@@ -1,20 +1,21 @@
 package spring.controller;
 
 import controller.AbstractController;
-import controller.ControllerFactory;
+import controller.ControllerManager;
 import controller.exceptions.UnAuthorizedException;
-import dao.interfaces.DAO;
-import dao.interfaces.DataAccessException;
-
+import dao.exceptions.ConstraintViolationException;
+import dao.exceptions.DataAccessException;
+import dao.exceptions.ObjectNotFoundException;
 import model.history.EditableObject;
 import org.springframework.web.bind.annotation.*;
 import spring.exceptions.InvalidInputException;
-import spring.exceptions.NotFoundException;
+import spring.model.AuthenticationToken;
 import spring.model.RESTAbstractModel;
 import spring.model.RESTModelFactory;
-import util.UUIDUtil;
 
-import java.util.*;
+import java.util.UUID;
+
+import static util.UUIDUtil.toUUID;
 
 /**
  * This class implements basic GET/{id}, POST, PUT/{id} and DELETE/{id} requests.
@@ -28,28 +29,24 @@ import java.util.*;
  */
 public abstract class RESTAbstractController<R extends RESTAbstractModel<M>, M extends EditableObject> extends RESTSimpleController {
 
-    private ControllerFactory<M> controllerFactory;
-
     private RESTModelFactory<R, M> factory;
 
     /**
-     * @param controllerFactory should be able to create a new controller for type M
      * @param factory           should be able to translate an object of type M to type R
      */
-    public RESTAbstractController(ControllerFactory<M> controllerFactory, RESTModelFactory<R, M> factory) {
-        this.controllerFactory = controllerFactory;
+    public RESTAbstractController(RESTModelFactory<R, M> factory) {
         this.factory = factory;
     }
 
-    public ControllerFactory<M> getControllerFactory() {
-        return controllerFactory;
-    }
+    public abstract AbstractController<M> getController(ControllerManager manager);
 
     @RequestMapping(method = RequestMethod.POST)
     public R post(@RequestBody R rest, @RequestHeader(value = "Authorization") String token,
-                  @RequestHeader(value = "Function") String function) throws UnAuthorizedException {
-        try (AbstractController<M> controller = controllerFactory.create(verifyToken(token, function))) {
-            M model = controller.create(rest.translate(verifyToken(token, function)));
+                  @RequestHeader(value = "Function") String function) throws UnAuthorizedException, ConstraintViolationException, ObjectNotFoundException {
+        UUID user = new AuthenticationToken(token).getAccountId();
+        try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
+            AbstractController<M> controller = getController(manager);
+            M model = controller.create(rest.translate(manager));
             return factory.create(model);
         } catch (DataAccessException e) {
             throw new InvalidInputException(e);
@@ -58,37 +55,36 @@ public abstract class RESTAbstractController<R extends RESTAbstractModel<M>, M e
 
     @RequestMapping(method = RequestMethod.GET, value = "{id}")
     public R getId(@PathVariable("id") String id, @RequestHeader(value = "Authorization") String token,
-                   @RequestHeader(value = "Function") String function) throws UnAuthorizedException {
-        UUID uuid = UUIDUtil.toUUID(id);
-        try (AbstractController<M> controller = controllerFactory.create(verifyToken(token, function))) {
+                   @RequestHeader(value = "Function") String function) throws UnAuthorizedException, ObjectNotFoundException, DataAccessException {
+        UUID uuid = toUUID(id);
+        UUID user = new AuthenticationToken(token).getAccountId();
+        try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
+            AbstractController<M> controller = getController(manager);
             return factory.create(controller.get(uuid));
-        } catch (DataAccessException e) {
-            throw new NotFoundException();
         }
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "{id}")
     public R putId(@PathVariable("id") String id, @RequestBody R rest, @RequestHeader(value = "Authorization") String token,
-                   @RequestHeader(value = "Function") String function) throws UnAuthorizedException {
-        try (AbstractController<M> controller = controllerFactory.create(verifyToken(token, function))) {
+                   @RequestHeader(value = "Function") String function) throws UnAuthorizedException, ConstraintViolationException, ObjectNotFoundException, DataAccessException {
+        UUID user = new AuthenticationToken(token).getAccountId();
+        try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
+            AbstractController<M> controller = getController(manager);
             rest.setId(id);
-            M model = rest.translate(verifyToken(token, function));
+            M model = rest.translate(manager);
             model = controller.update(model);
             return factory.create(model);
-        } catch (DataAccessException e) {
-            e.printStackTrace();
-            throw new InvalidInputException();
         }
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "{id}")
     public void deleteId(@PathVariable("id") String id, @RequestHeader(value = "Authorization") String token,
-                         @RequestHeader(value = "Function") String function) throws UnAuthorizedException {
-        UUID uuid = UUIDUtil.toUUID(id);
-        try (AbstractController<M> controller = controllerFactory.create(verifyToken(token, function))) {
+                         @RequestHeader(value = "Function") String function) throws UnAuthorizedException, ObjectNotFoundException, DataAccessException {
+        UUID uuid = toUUID(id);
+        UUID user = new AuthenticationToken(token).getAccountId();
+        try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
+            AbstractController<M> controller = getController(manager);
             controller.archive(uuid);
-        } catch (DataAccessException e) {
-            throw new NotFoundException();
         }
     }
 }

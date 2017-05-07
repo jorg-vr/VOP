@@ -1,7 +1,9 @@
 package model.insurance;
 
+import model.fleet.Fleet;
 import model.fleet.Vehicle;
 import model.fleet.VehicleType;
+import model.identity.Customer;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -26,6 +28,9 @@ public class VehicleInsuranceTest {
         vehicleType.setCommission(suretyType, 0.1);
         vehicleType.setTax(suretyType, 0.5);
         vehicle.setType(vehicleType);
+        Fleet fleet = new Fleet();
+        fleet.setOwner(new Customer());
+        vehicle.setFleet(fleet);
         vehicleInsurance.setVehicle(vehicle);
 
         FlatSurety surety = new FlatSurety();

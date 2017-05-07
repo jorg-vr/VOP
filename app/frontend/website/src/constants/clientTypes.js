@@ -12,13 +12,6 @@ export default {
         },
         value: 'CUSTOMER'
     },
-    LEASING_COMPANY: {
-        name: 'leasing company',
-        translation: function(){
-            return Vue.t('clientTypes.leasingCompany')
-        },
-        value: 'LEASING_COMPANY'
-    },
     INSURANCE_COMPANY: {
         name: 'insurance company',
         translation: function(){

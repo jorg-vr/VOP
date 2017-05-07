@@ -22,6 +22,7 @@
     import listComponent from "../../assets/list/listComponent.vue"
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
     import clientSearchBar from '../../assets/search/types/clientSearchBar.vue'
+    import clientTypes from '../../constants/clientTypes'
 
     export default {
         data(){
@@ -33,8 +34,9 @@
             listComponent, buttonAdd, clientSearchBar
         },
         created() {
-            this.fetchClients().then(clients => {
-                this.setFilteredClients(clients)
+            this.setLoading({loading: true})
+            this.fetchClientsBy({filters: {type: clientTypes.CUSTOMER.value}}).then(() => {
+                this.setLoading({loading: false })
             })
         },
         computed: {
@@ -47,10 +49,11 @@
         },
         methods: {
             ...mapActions([
-                'fetchClients',
+                'fetchClientsBy',
                 'deleteClient',
             ]),
             ...mapMutations([
+                'setLoading',
                 'setFilteredClients'
             ]),
             updateClients(value){

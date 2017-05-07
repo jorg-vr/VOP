@@ -2,18 +2,12 @@ package spring.controller;
 
 import controller.AuthController;
 import controller.exceptions.UnAuthorizedException;
-import dao.interfaces.DataAccessException;
-import model.account.Function;
+import dao.exceptions.DataAccessException;
+import dao.exceptions.ObjectNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import spring.exceptions.InvalidInputException;
-import spring.exceptions.NotAuthorizedException;
 import spring.model.AuthenticationToken;
 import spring.model.RESTAuth;
-import spring.model.RESTFunction;
-import spring.model.RESTRole;
-
-import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * Requests that are implemented in this class:
@@ -34,7 +28,7 @@ public class RESTAuthController {
     }
 
     @RequestMapping(value = "/${path.refresh}", method = RequestMethod.POST)
-    public String put(@RequestHeader(value = "Authorization") String token) throws UnAuthorizedException {
+    public String put(@RequestHeader(value = "Authorization") String token) throws UnAuthorizedException, ObjectNotFoundException {
         try (AuthController authController = new AuthController()) {
             return authController.refreshToken(new AuthenticationToken(token)).toString();
         } catch (DataAccessException e) {
