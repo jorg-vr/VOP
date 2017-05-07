@@ -16,7 +16,7 @@ All of the fields for user input for the user form
     </div>
 </template>
 <script>
-    import formInput from '../elements/formInput.vue'
+    import formInput from '../../assets/form/elements/formInput.vue'
 
     export default {
         props: {
