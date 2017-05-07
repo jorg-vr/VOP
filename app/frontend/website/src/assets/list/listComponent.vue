@@ -3,7 +3,9 @@
         <table class="table-hover table">
             <thead>
                 <tr>
-                    <th v-for="head in listObject.headers">{{$t(head).capitalize()}}</th>
+                    <th v-for="head in listObject.headers">
+                        {{$t(resource.name + '.' + head).capitalize()}}
+                    </th>
                 </tr>
             </thead>
             <tbody>
