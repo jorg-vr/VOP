@@ -3,20 +3,20 @@ package csv;
 import com.opencsv.CSVReader;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.HeaderColumnNameTranslateMappingStrategy;
+import com.opencsv.exceptions.CsvException;
 import dao.database.ProductionProvider;
 import model.fleet.Vehicle;
+import org.apache.commons.io.IOUtils;
 
 import java.io.*;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by sam on 5/7/17.
  */
 public class CSVtoVehicleParser {
 
-    public static Collection<Vehicle> parse(InputStream stream){
+    public static Collection<Vehicle> parse(InputStream stream) throws InvalidCSVHeaderException, CsvException {
         CsvToBean<Vehicle> csvToBean = new VehicleCsvToBean();
 
         Map<String, String> columnMapping = new HashMap<>();
@@ -32,23 +32,19 @@ public class CSVtoVehicleParser {
         strategy.setType(Vehicle.class);
         strategy.setColumnMapping(columnMapping);
 
-        try(CSVReader reader = new CSVReader(new InputStreamReader(new BufferedInputStream(stream)))){
-            return csvToBean.parse(strategy, reader);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        try {
+            byte[] csv = IOUtils.toByteArray(stream);
+            try(CSVReader reader = new CSVReader(new InputStreamReader(new ByteArrayInputStream(csv)));
+                CSVReader headerReader = new CSVReader(new InputStreamReader(new ByteArrayInputStream(csv)))){
+                List<String> header = new ArrayList<>(Arrays.asList(headerReader.readNext()));
+                for(String s: columnMapping.keySet()){
+                    if(!header.contains(s)){
+                        throw new InvalidCSVHeaderException("Wrong header: '" + s + "' is missing");
+                    }
+                }
+                return csvToBean.parse(strategy, reader);}
+        } catch (Exception e) {
+            throw new CsvException();
         }
-        return null;
-    }
-
-    public static void main(String[] args) throws Exception {
-        ProductionProvider.initializeProvider("localtest");
-
-        InputStream inputStream = CSVtoVehicleParser.class.getClassLoader().getResourceAsStream("csv/example.csv");
-        for(Vehicle vehicle: parse(inputStream)){
-            System.out.println(vehicle);
-        }
-        ProductionProvider.getInstance().close();
     }
 }
