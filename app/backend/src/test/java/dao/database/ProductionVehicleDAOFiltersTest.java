@@ -46,9 +46,9 @@ public class ProductionVehicleDAOFiltersTest {
         fleet1 = fleetDAO.create(new Fleet("name 1", cust1, a1));
         a1 = new Address("streettest n1", "59", "town 1", "9999", "country 1");
         fleet2 = fleetDAO.create(new Fleet("name 2", cust1, a1));
-        v1 = vehicleDAO.create(new Vehicle("brand 1", "model 1", "AAAAAAAAAAAAAAAAA", "ABC-123", 500, 3000, t1, LocalDate.of(2016, 7, 15), fleet1, null));
-        v2 = vehicleDAO.create(new Vehicle("brand 1", "model 2", "BBBBBBBBBBBBBBBBB", "DEF-123", 1000, 3500, t2, LocalDate.of(2016, 7, 26), fleet2, null));
-        v3 = vehicleDAO.create(new Vehicle("brand 2", "model 2", "CCCCCCCCCCCCCCCCC", "DEF-456", 1500, 4000, t1, LocalDate.of(2016, 9, 26), fleet2, null));
+        v1 = vehicleDAO.create(new Vehicle("brand 1", "model 1", "AAAAAAAAAAAAAAAAA", "ABC-123", 500, 3000, t1, LocalDate.of(2016, 7, 15), fleet1));
+        v2 = vehicleDAO.create(new Vehicle("brand 1", "model 2", "BBBBBBBBBBBBBBBBB", "DEF-123", 1000, 3500, t2, LocalDate.of(2016, 7, 26), fleet2));
+        v3 = vehicleDAO.create(new Vehicle("brand 2", "model 2", "CCCCCCCCCCCCCCCCC", "DEF-456", 1500, 4000, t1, LocalDate.of(2016, 9, 26), fleet2));
 
     }
 
@@ -178,9 +178,9 @@ public class ProductionVehicleDAOFiltersTest {
     @Test
     public void multipleFilters() throws Exception {
         VehicleDAO vehicleDAO = daoManager.getVehicleDAO();
-        Vehicle v4 = new Vehicle("brand 1", "model 2", "FAAAAAAAAAAAAAAAA", "ABC-123", 500, 4000, t2, LocalDate.of(2016, 9, 28), fleet2, null);
-        Vehicle v5 = new Vehicle("brand 2", "model 1", "FBBBBBBBBBBBBBBBB", "DEF-123", 1000, 4500, t1, LocalDate.of(2017, 7, 26), fleet1, null);
-        Vehicle v6 = new Vehicle("brand 1", "model 2", "FCCCCCCCCCCCCCCCC", "DEF-456", 1500, 5000, t2, LocalDate.of(2017, 9, 26), fleet1, null);
+        Vehicle v4 = new Vehicle("brand 1", "model 2", "FAAAAAAAAAAAAAAAA", "ABC-123", 500, 4000, t2, LocalDate.of(2016, 9, 28), fleet2);
+        Vehicle v5 = new Vehicle("brand 2", "model 1", "FBBBBBBBBBBBBBBBB", "DEF-123", 1000, 4500, t1, LocalDate.of(2017, 7, 26), fleet1);
+        Vehicle v6 = new Vehicle("brand 1", "model 2", "FCCCCCCCCCCCCCCCC", "DEF-456", 1500, 5000, t2, LocalDate.of(2017, 9, 26), fleet1);
         v4 = vehicleDAO.create(v4);
         v5 = vehicleDAO.create(v5);
         v6 = vehicleDAO.create(v6);
