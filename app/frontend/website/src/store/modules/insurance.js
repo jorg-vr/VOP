@@ -137,10 +137,6 @@ export default {
          * @returns {Promise}
          */
         fetchInsurancesByContract(context, contractId){
-            console.log()
-            console.log('fetchInsuranceByContract')
-            console.log(locations.INSURANCE+contractId+'/insurances')
-            var i
             // fetch all insurances from a contract
             return new Promise(resolve => {
                 RequestHandler.getObjectsRequestBy(locations.INSURANCE+contractId+'/insurances').then(insurances => {

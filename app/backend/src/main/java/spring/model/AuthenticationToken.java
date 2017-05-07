@@ -21,6 +21,8 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.UUID;
 
+import static main.BackendApplication.DISABLE_AUTH;
+
 /**
  * Created by jorg on 3/30/17.
  */
@@ -52,6 +54,10 @@ public class AuthenticationToken {
      * @throws InvalidTokenException token is not valid
      */
     public AuthenticationToken(String token) throws InvalidTokenException {
+        if (DISABLE_AUTH) {
+            accountId = new UUID(0, 0);
+            return;
+        }
         try {
             Algorithm algorithm = Algorithm.RSA256(publicKey);
             JWTVerifier verifier = JWT.require(algorithm)

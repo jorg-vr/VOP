@@ -1,10 +1,9 @@
 package database;
 
-import dao.database.ProductionManager;
 import dao.database.ProductionProvider;
 import dao.interfaces.AddressDAO;
 import dao.interfaces.DAOManager;
-import dao.interfaces.DataAccessException;
+import dao.exceptions.DataAccessException;
 import model.identity.Address;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;

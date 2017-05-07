@@ -2,6 +2,9 @@ package spring.model;
 
 import controller.ControllerManager;
 import controller.exceptions.UnAuthorizedException;
+import dao.exceptions.ConstraintViolationException;
+import dao.exceptions.DataAccessException;
+import dao.exceptions.ObjectNotFoundException;
 import model.account.Function;
 import model.history.EditEvent;
 import model.history.EditableObject;
@@ -50,7 +53,7 @@ public abstract class RESTAbstractModel<T extends EditableObject> {
      * @return the model corresponding to te RESTModel
      * @throws UnAuthorizedException the function is not authorized to retrieve certain objects.
      */
-    public abstract T translate(ControllerManager manager) throws UnAuthorizedException;
+    public abstract T translate(ControllerManager manager) throws UnAuthorizedException, DataAccessException, ConstraintViolationException;
 
     public String getId() {
         return id;

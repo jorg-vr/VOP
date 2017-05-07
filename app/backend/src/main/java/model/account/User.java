@@ -1,12 +1,13 @@
 package model.account;
 
+import dao.database.util.unique.UniqueKey;
 import model.history.EditableObject;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
 
-
+@UniqueKey(columnNames ={"email"})
 public class User implements EditableObject, java.io.Serializable {
 
     private UUID uuid;
@@ -116,6 +117,8 @@ public class User implements EditableObject, java.io.Serializable {
 
     @Override
     public int hashCode() {
-        return getUuid().hashCode();
+        if(uuid!=null){
+        return getUuid().hashCode();}
+        return super.hashCode();
     }
 }

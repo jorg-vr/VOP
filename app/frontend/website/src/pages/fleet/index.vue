@@ -44,7 +44,7 @@
                 })
             }
             else {
-                this.fetchFleetsBy({company: this.activeFunction.company}).then(() => {
+                this.fetchFleetsBy({filters: {company: this.activeFunction.company}}).then(() => {
                     this.setLoading({loading: false })
                 })
             }

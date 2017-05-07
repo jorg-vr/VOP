@@ -35,7 +35,7 @@
         },
         created() {
             this.setLoading({loading: true})
-            this.fetchClientsBy({type: clientTypes.CUSTOMER.value}).then(() => {
+            this.fetchClientsBy({filters: {type: clientTypes.CUSTOMER.value}}).then(() => {
                 this.setLoading({loading: false })
             })
         },

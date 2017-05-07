@@ -1,7 +1,9 @@
 package dao.database;
 
+import dao.exceptions.ConstraintViolationException;
+import dao.exceptions.ObjectNotFoundException;
 import dao.interfaces.DAO;
-import dao.interfaces.DataAccessException;
+import dao.exceptions.DataAccessException;
 import dao.interfaces.Filter;
 import model.history.EditableObject;
 import org.hibernate.Session;
@@ -37,24 +39,24 @@ public abstract class ProductionDAO<T extends EditableObject> implements DAO<T> 
 
 
     @Override
-    public T create(T t) throws DataAccessException {
+    public T create(T t) throws DataAccessException, ConstraintViolationException {
         HibernateUtil.create(session, t);
         return t;
     }
 
     @Override
-    public T update(T t) throws DataAccessException {
+    public T update(T t) throws DataAccessException, ConstraintViolationException {
         HibernateUtil.update(session, t);
         return t;
     }
 
     @Override
-    public T get(UUID id) throws DataAccessException {
-        return Optional.ofNullable(session.get(cl, id)).orElseThrow(DataAccessException::new);
+    public T get(UUID id) throws ObjectNotFoundException {
+        return Optional.ofNullable(session.get(cl, id)).orElseThrow(() -> new ObjectNotFoundException(id));
     }
 
     @Override
-    public void remove(UUID id) throws DataAccessException {
+    public void remove(UUID id) throws DataAccessException, ObjectNotFoundException {
         HibernateUtil.remove(session, get(id));
     }
 

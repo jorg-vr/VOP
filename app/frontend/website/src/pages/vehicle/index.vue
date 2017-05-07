@@ -55,7 +55,7 @@
             ]),
 
             updateVehiclesAdvanced(filterVehicle){
-                this.setFilteredVehicles(this.fetchVehiclesBy({vehicle: filterVehicle}))
+                this.setFilteredVehicles(this.fetchVehiclesBy({filters: {vehicle: filterVehicle}}))
             }
         }
     }

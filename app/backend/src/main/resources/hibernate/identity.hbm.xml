@@ -40,6 +40,17 @@
                     <key column="customer_id" not-null="true"/>
                     <one-to-many class="model.insurance.Contract" />
                 </bag>
+                <map name="commissions"
+                     table="customer_commissions" cascade="all">
+                    <key column="customer_id"/>
+
+                    <map-key column="surety_type">
+                        <type name = "org.hibernate.type.EnumType" >
+                            <param name="enumClass" >model.insurance.SuretyType</param>
+                        </type>
+                    </map-key>
+                    <element column="value" type="java.lang.Double"/>
+                </map>
             </joined-subclass>
             <joined-subclass name="model.identity.InsuranceCompany" table="insurancecompanies">
                 <key column="identity_id"/>

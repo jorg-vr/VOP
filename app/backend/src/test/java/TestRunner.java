@@ -128,7 +128,7 @@ public class TestRunner {
         Result controllerResults1 = JUnitCore.runClasses(RESTCompanyControllerTest.class);
         Result controllerResults2 = JUnitCore.runClasses(RESTFleetControllerTest.class);
         Result controllerResults3 = JUnitCore.runClasses(RESTRoleControllerTest.class);
-        Result controllerResults4 = JUnitCore.runClasses(RESTUserControllerTest.class);
+        //Result controllerResults4 = JUnitCore.runClasses(RESTUserControllerTest.class);
         Result controllerResults5 = JUnitCore.runClasses(UUIDUtilTest.class);
         Result controllerResults6 = JUnitCore.runClasses(TestPagination.class);
         System.out.print("\n\n\n");
@@ -146,10 +146,10 @@ public class TestRunner {
         for (Failure failure : controllerResults3.getFailures()) {
             System.out.println(failure.getMessage());
         }
-        System.out.printf("%-25s %s\n", "RESTUserController:", String.valueOf(controllerResults4.wasSuccessful()));
+        /*System.out.printf("%-25s %s\n", "RESTUserController:", String.valueOf(controllerResults4.wasSuccessful()));
         for (Failure failure : controllerResults4.getFailures()) {
             System.out.println(failure.getMessage());
-        }
+        }*/
         System.out.printf("%-25s %s\n", "UUIDUtil:", String.valueOf(controllerResults5.wasSuccessful()));
         for (Failure failure : controllerResults5.getFailures()) {
             System.out.println(failure.getMessage());
@@ -235,7 +235,7 @@ public class TestRunner {
         Result controllerResults1 = JUnitCore.runClasses(RESTCompanyControllerTest.class);
         Result controllerResults2 = JUnitCore.runClasses(RESTFleetControllerTest.class);
         Result controllerResults3 = JUnitCore.runClasses(RESTRoleControllerTest.class);
-        Result controllerResults4 = JUnitCore.runClasses(RESTUserControllerTest.class);
+        //Result controllerResults4 = JUnitCore.runClasses(RESTUserControllerTest.class);
         Result controllerResults5 = JUnitCore.runClasses(UUIDUtilTest.class);
         Result controllerResults6 = JUnitCore.runClasses(TestPagination.class);
         Result databaseResult1 = JUnitCore.runClasses(AddressParametersTest.class);
@@ -333,10 +333,10 @@ public class TestRunner {
         for (Failure failure : controllerResults3.getFailures()) {
             System.out.println(failure.getMessage());
         }
-        System.out.printf("%-25s %s\n", "RESTUserController:", String.valueOf(controllerResults4.wasSuccessful()));
+        /*System.out.printf("%-25s %s\n", "RESTUserController:", String.valueOf(controllerResults4.wasSuccessful()));
         for (Failure failure : controllerResults4.getFailures()) {
             System.out.println(failure.getMessage());
-        }
+        }*/
         System.out.printf("%-25s %s\n", "UUIDUtil:", String.valueOf(controllerResults5.wasSuccessful()));
         for (Failure failure : controllerResults5.getFailures()) {
             System.out.println(failure.getMessage());
