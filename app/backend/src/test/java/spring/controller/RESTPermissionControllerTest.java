@@ -111,9 +111,9 @@ public class RESTPermissionControllerTest {
         //Test if permissions were correctly added
         roleDAO.refresh(role);
         role = roleDAO.get(role.getUuid());
-        assertTrue("Permissions were not correctly updated",role.hasAccess(Resource.BILLING, Action.READ_MINE));
-        assertTrue("Permissions were not correctly updated",role.hasAccess(Resource.BILLING, Action.CREATE_ALL));
-        assertTrue("Permissions were not correctly updated",role.hasAccess(Resource.FLEET, Action.READ_ALL));
+        assertTrue("Permissions were not correctly updated", role.hasAccess(Resource.BILLING, Action.READ_MINE));
+        assertTrue("Permissions were not correctly updated", role.hasAccess(Resource.BILLING, Action.CREATE_ALL));
+        assertTrue("Permissions were not correctly updated", role.hasAccess(Resource.FLEET, Action.READ_ALL));
 
         //Clean up database for other tests
         roleDAO.remove(role.getUuid());

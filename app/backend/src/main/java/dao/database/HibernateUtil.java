@@ -1,12 +1,8 @@
 package dao.database;
 
 import dao.database.util.unique.ConstraintValidatorFactoryImpl;
-import dao.exceptions.*;
 import dao.exceptions.ConstraintViolationException;
-import dao.interfaces.DAOManager;
-import dao.interfaces.DAOProvider;
-import dao.interfaces.UserDAO;
-import model.account.User;
+import dao.exceptions.DataAccessException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 

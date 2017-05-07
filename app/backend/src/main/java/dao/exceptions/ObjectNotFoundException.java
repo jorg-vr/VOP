@@ -1,7 +1,5 @@
 package dao.exceptions;
 
-import model.history.EditableObject;
-
 import java.util.UUID;
 
 /**
