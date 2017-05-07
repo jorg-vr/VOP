@@ -1,8 +1,9 @@
 package spring.controller;
 
 import dao.database.ProductionProvider;
+import dao.exceptions.ObjectNotFoundException;
 import dao.interfaces.DAOManager;
-import dao.interfaces.DataAccessException;
+import dao.exceptions.DataAccessException;
 import dao.interfaces.VehicleDAO;
 import model.fleet.Fleet;
 import model.fleet.Vehicle;
@@ -20,6 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import spring.exceptions.MyExceptionHandler;
 import spring.model.RESTVehicle;
 import util.UUIDUtil;
 
@@ -41,6 +43,7 @@ public class RESTVehicleControllerTest {
             .addPlaceholderValue("path.vehicles", "vehicles")
             .addPlaceholderValue("path.companies", "companies")
             .addPlaceholderValue("path.fleets", "fleets")
+            .setControllerAdvice(new MyExceptionHandler())
             .build();
 
     private static VehicleType vehicleType;
@@ -167,7 +170,7 @@ public class RESTVehicleControllerTest {
             assertEquals("leasingCompany field not created correctly", null, vehicle.getLeasingCompany());
             assertEquals("fleet field not created correctly", fleet1, vehicle.getFleet());
             vehicleDAO.remove(UUIDUtil.toUUID(restVehicle1.getId()));
-        } catch (DataAccessException e) {
+        } catch (ObjectNotFoundException e) {
             fail("Could not retrieve the posted object from the actual database");
         }
     }
@@ -284,7 +287,7 @@ public class RESTVehicleControllerTest {
             assertEquals("fleet field not updated correctly", fleet1, vehicle1.getFleet());
             //Clean up database for other tests
             vehicleDAO.remove(vehicle.getUuid());
-        } catch (DataAccessException e) {
+        } catch (ObjectNotFoundException e) {
             fail("Could not retrieve the put object from the actual database");
         }
     }
@@ -363,7 +366,7 @@ public class RESTVehicleControllerTest {
             assertEquals("leasingCompany field not created correctly", null, vehicle.getLeasingCompany());
             assertEquals("fleet field not created correctly", fleet1, vehicle.getFleet());
             vehicleDAO.remove(UUIDUtil.toUUID(restVehicle1.getId()));
-        } catch (DataAccessException e) {
+        } catch (ObjectNotFoundException e) {
             fail("Could not retrieve the posted object from the actual database");
         }
     }
@@ -480,7 +483,7 @@ public class RESTVehicleControllerTest {
             assertEquals("fleet field not updated correctly", fleet1, vehicle1.getFleet());
             //Clean up database for other tests
             vehicleDAO.remove(vehicle.getUuid());
-        } catch (DataAccessException e) {
+        } catch (ObjectNotFoundException e) {
             fail("Could not retrieve the put object from the actual database");
         }
     }

@@ -1,16 +1,13 @@
 package spring.controller;
 
 import dao.database.ProductionProvider;
+import dao.exceptions.DataAccessException;
 import dao.interfaces.DAOManager;
-import dao.interfaces.DataAccessException;
-import dao.interfaces.RoleDAO;
 import dao.interfaces.VehicleTypeDAO;
-import model.account.Role;
 import model.fleet.VehicleType;
 import org.hibernate.UnresolvableObjectException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -18,12 +15,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import spring.model.RESTRole;
 import spring.model.RESTVehicleType;
 import util.UUIDUtil;
 
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;

@@ -1,8 +1,8 @@
 package spring.controller;
 
 import dao.database.ProductionProvider;
+import dao.exceptions.ObjectNotFoundException;
 import dao.interfaces.DAOManager;
-import dao.interfaces.DataAccessException;
 import dao.interfaces.RoleDAO;
 import model.account.Role;
 import org.hibernate.UnresolvableObjectException;
@@ -102,7 +102,7 @@ public class RESTRoleControllerTest {
             Role role = roleDAO.get(UUIDUtil.toUUID(restRole1.getId()));
             assertEquals("name field not created correctly", "roleName", role.getName());
             roleDAO.remove(UUIDUtil.toUUID(restRole1.getId()));
-        } catch (DataAccessException e) {
+        } catch (ObjectNotFoundException e) {
             fail("Could not retrieve the posted object from the actual database");
         }
     }
@@ -178,7 +178,7 @@ public class RESTRoleControllerTest {
             assertEquals("name field not updated correctly", "roleNameChanged", role1.getName());
             //Clean up database for other tests
             roleDAO.remove(role.getUuid());
-        } catch (DataAccessException e) {
+        } catch (ObjectNotFoundException e) {
             fail("Could not retrieve the put object from the actual database");
         }
     }

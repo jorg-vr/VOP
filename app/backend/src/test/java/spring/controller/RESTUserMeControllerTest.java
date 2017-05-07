@@ -1,12 +1,12 @@
 package spring.controller;
 
 import dao.database.ProductionProvider;
+import dao.exceptions.DataAccessException;
 import dao.interfaces.*;
 import model.account.*;
 import model.identity.Address;
 import model.identity.Customer;
 import model.identity.Periodicity;
-import org.hibernate.UnresolvableObjectException;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import spring.exceptions.MyExceptionHandler;
 import spring.model.RESTAuth;
 import spring.model.RESTUser;
 import util.UUIDUtil;
@@ -21,7 +22,6 @@ import util.UUIDUtil;
 import java.time.LocalDateTime;
 
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -37,6 +37,7 @@ public class RESTUserMeControllerTest {
     private MockMvc mvc = MockMvcBuilders.standaloneSetup(new RESTUserMeController())
             .addPlaceholderValue("path.users", "users")
             .addPlaceholderValue("path.functions", "functions")
+            .setControllerAdvice(new MyExceptionHandler())
             .build();
 
     private static User user;
