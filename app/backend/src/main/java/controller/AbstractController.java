@@ -71,9 +71,6 @@ public abstract class AbstractController<T extends EditableObject> {
         T t = dao.get(uuid);
         if (role.hasAccess(resource, READ_ALL) ||
                 (role.hasAccess(resource, READ_MINE) && isOwner(t, function))) {
-            for (LogEntry entry : t.logGet(function.getUser())) {
-                System.out.println(entry);
-            }
             return t;
         } else {
             throw new UnAuthorizedException();

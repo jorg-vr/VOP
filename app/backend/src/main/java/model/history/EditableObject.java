@@ -15,10 +15,6 @@ public interface EditableObject {
 
     LogResource getLogResource();
 
-    default Collection<LogEntry> logGet(User user) {
-       return LogEntry.createSimpleLogCollection(getUuid(), user, LogAction.GET, getLogResource());
-    }
-
     default Collection<LogEntry> logCreate(User user) {
         return LogEntry.createSimpleLogCollection(getUuid(), user, LogAction.CREATE, getLogResource());
 
