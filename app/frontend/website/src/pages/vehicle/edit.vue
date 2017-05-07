@@ -13,7 +13,7 @@
     import abstractForm from '../../assets/form/AbstractForm.vue'
     import actions from '../../constants/actions'
     import resources from '../../constants/resources'
-    import formInput from '../../assets/form/types/vehicleFormInput.vue'
+    import formInput from './vehicleFormInput.vue'
 
     export default {
         data(){

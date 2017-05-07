@@ -5,7 +5,7 @@
 </template>
 <script>
     import searchBar from '../searchBar.vue'
-    import invoiceFormInput from '../../form/types/invoiceFormInput.vue'
+    import invoiceFormInput from '../../../pages/invoice/invoiceFormInput.vue'
     export default {
         data() {
             return {

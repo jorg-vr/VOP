@@ -30,9 +30,9 @@ All of the fields for user input for the vehicle form
 
 </template>
 <script>
-    import formInput from '../elements/formInput.vue'
-    import formSelect from '../elements/formSelect.vue'
-    import clientTypes from '../../../constants/clientTypes'
+    import formInput from '../../assets/form/elements/formInput.vue'
+    import formSelect from '../../assets/form/elements/formSelect.vue'
+    import clientTypes from '../../constants/clientTypes'
     import {mapGetters, mapActions} from 'vuex'
 
     export default {

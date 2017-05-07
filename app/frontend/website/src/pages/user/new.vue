@@ -10,7 +10,7 @@
     import abstractForm from '../../assets/form/AbstractForm.vue'
     import actions from '../../constants/actions'
     import resources from '../../constants/resources'
-    import formInput from '../../assets/form/types/userFormInput.vue'
+    import formInput from './userFormInput.vue'
 
     export default {
         data(){
