@@ -141,6 +141,14 @@ export default
             tax: 'tax',
             startDate: 'start date',
             showableStartDate: 'start date'
+        },
+        suretyTypes:{
+            CIVIL_LIABILITY:"civil liability",
+            OMNIUM_FULL:"full omnium",
+            OMNIUM_PARTIAL:"partial omnium",
+            LEGAL_AID:"legal aid",
+            TRAVEL_AID:"travel aid",
+            SAFETY:"safety"
         }
     },
     nl : {
@@ -283,6 +291,14 @@ export default
             tax: 'taks',
             startDate: 'startdatum',
             showableStartDate: 'startdatum'
+        },
+        suretyTypes:{
+            CIVIL_LIABILITY:"burgerlijke aansprakelijkheid",
+            OMNIUM_FULL:"omnium",
+            OMNIUM_PARTIAL:"partiele omnium",
+            LEGAL_AID:"rechtsbijstand",
+            TRAVEL_AID:"reisbijstand",
+            SAFETY:"veiligheid"
         }
     }
 }
