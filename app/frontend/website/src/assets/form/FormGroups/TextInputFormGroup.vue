@@ -50,6 +50,10 @@ Component usable for requesting user input with a text field.
     }
 </script>
 <style>
+    .form-control {
+        height: 40px;
+        padding: 0 10px;
+    }
     .form-control, input {
         border-width: 1.5px;
     }
