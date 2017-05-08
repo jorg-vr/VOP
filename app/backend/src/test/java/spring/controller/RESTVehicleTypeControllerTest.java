@@ -87,7 +87,6 @@ public class RESTVehicleTypeControllerTest {
     @Test
     public void post() throws Exception {
 
-        //Add to database directly with DAO
         RESTVehicleType restVehicleType = new RESTVehicleType(new VehicleType("type"));
 
         //Perform the post request

@@ -115,7 +115,6 @@ public class RESTFunctionControllerTest {
     @Test
     public void post() throws Exception {
 
-        //Add to database directly with DAO
         RESTFunction restFunction = new RESTFunction(new Function(customer, role1, user, LocalDateTime.of(2016, 7, 15, 0, 0), LocalDateTime.of(2200, 8, 3, 0, 0)));
 
         //Perform the post request
