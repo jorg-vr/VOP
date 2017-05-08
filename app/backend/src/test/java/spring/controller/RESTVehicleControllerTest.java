@@ -100,9 +100,9 @@ public class RESTVehicleControllerTest {
     @Test
     public void get() throws Exception {
 
-        Vehicle vehicle1 = create(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAA", "ABC 123", 30000, 2500, vehicleType, localDate, fleet1, null));
-        Vehicle vehicle2 = create(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAB", "ABC 124", 30000, 2500, vehicleType, localDate, fleet2, null));
-        Vehicle vehicle3 = create(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAC", "ABC 125", 30000, 2500, vehicleType, localDate, fleet3, null));
+        Vehicle vehicle1 = create(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAA", "ABC 123", 30000, 2500, vehicleType, localDate, fleet1));
+        Vehicle vehicle2 = create(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAB", "ABC 124", 30000, 2500, vehicleType, localDate, fleet2));
+        Vehicle vehicle3 = create(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAC", "ABC 125", 30000, 2500, vehicleType, localDate, fleet3));
 
         try {
             mvc.perform(MockMvcRequestBuilders.get("/vehicles")
@@ -133,7 +133,7 @@ public class RESTVehicleControllerTest {
     @Test
     public void post() throws Exception {
 
-        RESTVehicle restVehicle = new RESTVehicle(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAA", "ABC 123", 30000, 2500, vehicleType, localDate, fleet1, null));
+        RESTVehicle restVehicle = new RESTVehicle(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAA", "ABC 123", 30000, 2500, vehicleType, localDate, fleet1));
 
         //Perform the post request
         ResultActions resultActions = mvc.perform(MockMvcRequestBuilders.post("/vehicles")
@@ -155,7 +155,6 @@ public class RESTVehicleControllerTest {
                     .andExpect(jsonPath("$.value", equalTo(restVehicle.getValue())))
                     .andExpect(jsonPath("$.mileage", equalTo(restVehicle.getMileage())))
                     .andExpect(jsonPath("$.year", equalTo(restVehicle.getYear())))
-                    .andExpect(jsonPath("$.leasingCompany", equalTo(restVehicle.getLeasingCompany())))
                     .andExpect(jsonPath("$.fleet", equalTo(restVehicle.getFleet())));
         } catch (AssertionError e) {
             remove(restId);
@@ -174,7 +173,6 @@ public class RESTVehicleControllerTest {
                 assertEquals("value field not created correctly", 30000, vehicle.getValue());
                 assertEquals("mileage field not created correctly", 2500, vehicle.getMileage());
                 assertEquals("productionDate field not created correctly", localDate, vehicle.getProductionDate());
-                assertEquals("leasingCompany field not created correctly", null, vehicle.getLeasingCompany());
                 assertEquals("fleet field not created correctly", fleet1, vehicle.getFleet());
             } finally {
                 remove(restId);
@@ -193,7 +191,7 @@ public class RESTVehicleControllerTest {
     public void deleteId() throws Exception {
 
         //Add to database directly with DAO
-        Vehicle vehicle = create(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAA", "ABC 123", 30000, 2500, vehicleType, localDate, fleet1, null));
+        Vehicle vehicle = create(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAA", "ABC 123", 30000, 2500, vehicleType, localDate, fleet1));
 
         //Attempt to remove from the database with delete request
         try {
@@ -226,7 +224,7 @@ public class RESTVehicleControllerTest {
     public void getId() throws Exception {
 
         //Add to database directly with DAO
-        Vehicle vehicle = create(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAA", "ABC 123", 30000, 2500, vehicleType, localDate, fleet1, null));
+        Vehicle vehicle = create(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAA", "ABC 123", 30000, 2500, vehicleType, localDate, fleet1));
 
         //Attempt to retrieve the object with the given id
         try {
@@ -243,7 +241,6 @@ public class RESTVehicleControllerTest {
                     .andExpect(jsonPath("$.value", equalTo(vehicle.getValue())))
                     .andExpect(jsonPath("$.mileage", equalTo(vehicle.getMileage())))
                     .andExpect(jsonPath("$.year", equalTo(Integer.toString(vehicle.getProductionDate().getYear()))))
-                    //.andExpect(jsonPath("$.leasingCompany", equalTo(UUIDUtil.UUIDToNumberString(vehicle.getLeasingCompany().getUuid()))))
                     .andExpect(jsonPath("$.fleet", equalTo(UUIDUtil.UUIDToNumberString(vehicle.getFleet().getUuid()))));
         } catch (Exception e) {
             remove(vehicle.getUuid());
@@ -263,7 +260,7 @@ public class RESTVehicleControllerTest {
     public void putId() throws Exception {
 
         //Add to database directly with DAO
-        Vehicle vehicle = create(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAA", "ABC 123", 30000, 2500, vehicleType, localDate, fleet1, null));
+        Vehicle vehicle = create(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAA", "ABC 123", 30000, 2500, vehicleType, localDate, fleet1));
 
         //Change a field of the object that has to be updated
         vehicle.setMileage(3500);
@@ -286,7 +283,6 @@ public class RESTVehicleControllerTest {
                     .andExpect(jsonPath("$.value", equalTo(restVehicle.getValue())))
                     .andExpect(jsonPath("$.mileage", equalTo(restVehicle.getMileage())))
                     .andExpect(jsonPath("$.year", equalTo(restVehicle.getYear())))
-                    .andExpect(jsonPath("$.leasingCompany", equalTo(restVehicle.getLeasingCompany())))
                     .andExpect(jsonPath("$.fleet", equalTo(restVehicle.getFleet())));
         } catch (Exception e) {
             remove(vehicle.getUuid());
@@ -305,7 +301,6 @@ public class RESTVehicleControllerTest {
                 assertEquals("value field not updated correctly", 30000, vehicle.getValue());
                 assertEquals("mileage field not updated correctly", 3500, vehicle.getMileage());
                 assertEquals("productionDate field not updated correctly", localDate, vehicle.getProductionDate());
-                assertEquals("leasingCompany field not updated correctly", null, vehicle.getLeasingCompany());
                 assertEquals("fleet field not updated correctly", fleet1, vehicle.getFleet());
             } finally {
                 //Clean up database for other tests
@@ -324,9 +319,9 @@ public class RESTVehicleControllerTest {
     @Test
     public void getNested() throws Exception {
 
-        Vehicle vehicle1 = create(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAA", "ABC 123", 30000, 2500, vehicleType, localDate, fleet1, null));
-        Vehicle vehicle2 = create(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAB", "ABC 124", 30000, 2500, vehicleType, localDate, fleet2, null));
-        Vehicle vehicle3 = create(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAC", "ABC 125", 30000, 2500, vehicleType, localDate, fleet3, null));
+        Vehicle vehicle1 = create(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAA", "ABC 123", 30000, 2500, vehicleType, localDate, fleet1));
+        Vehicle vehicle2 = create(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAB", "ABC 124", 30000, 2500, vehicleType, localDate, fleet2));
+        Vehicle vehicle3 = create(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAC", "ABC 125", 30000, 2500, vehicleType, localDate, fleet3));
 
         try {
             mvc.perform(MockMvcRequestBuilders.get("/companies/" + UUIDUtil.UUIDToNumberString(customer1.getUuid()) + "/fleets/" + UUIDUtil.UUIDToNumberString(fleet2.getUuid()) + "/vehicles")
@@ -357,7 +352,7 @@ public class RESTVehicleControllerTest {
     @Test
     public void postNested() throws Exception {
 
-        RESTVehicle restVehicle = new RESTVehicle(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAA", "ABC 123", 30000, 2500, vehicleType, localDate, fleet1, null));
+        RESTVehicle restVehicle = new RESTVehicle(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAA", "ABC 123", 30000, 2500, vehicleType, localDate, fleet1));
 
         //Perform the post request
         ResultActions resultActions = mvc.perform(MockMvcRequestBuilders.post("/companies/" + UUIDUtil.UUIDToNumberString(customer1.getUuid()) + "/fleets/" + UUIDUtil.UUIDToNumberString(fleet1.getUuid()) + "/vehicles")
@@ -379,7 +374,6 @@ public class RESTVehicleControllerTest {
                     .andExpect(jsonPath("$.value", equalTo(restVehicle.getValue())))
                     .andExpect(jsonPath("$.mileage", equalTo(restVehicle.getMileage())))
                     .andExpect(jsonPath("$.year", equalTo(restVehicle.getYear())))
-                    .andExpect(jsonPath("$.leasingCompany", equalTo(restVehicle.getLeasingCompany())))
                     .andExpect(jsonPath("$.fleet", equalTo(restVehicle.getFleet())));
         } catch (AssertionError e) {
             remove(restId);
@@ -398,7 +392,6 @@ public class RESTVehicleControllerTest {
                 assertEquals("value field not created correctly", 30000, vehicle.getValue());
                 assertEquals("mileage field not created correctly", 2500, vehicle.getMileage());
                 assertEquals("productionDate field not created correctly", localDate, vehicle.getProductionDate());
-                assertEquals("leasingCompany field not created correctly", null, vehicle.getLeasingCompany());
                 assertEquals("fleet field not created correctly", fleet1, vehicle.getFleet());
             } finally {
                 remove(restId);
@@ -417,7 +410,7 @@ public class RESTVehicleControllerTest {
     public void deleteIdNested() throws Exception {
 
         //Add to database directly with DAO
-        Vehicle vehicle = create(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAA", "ABC 123", 30000, 2500, vehicleType, localDate, fleet1, null));
+        Vehicle vehicle = create(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAA", "ABC 123", 30000, 2500, vehicleType, localDate, fleet1));
 
         //Attempt to remove from the database with delete request
         try {
@@ -450,7 +443,7 @@ public class RESTVehicleControllerTest {
     public void getIdNested() throws Exception {
 
         //Add to database directly with DAO
-        Vehicle vehicle = create(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAA", "ABC 123", 30000, 2500, vehicleType, localDate, fleet1, null));
+        Vehicle vehicle = create(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAA", "ABC 123", 30000, 2500, vehicleType, localDate, fleet1));
 
         //Attempt to retrieve the object with the given id
         try {
@@ -467,7 +460,6 @@ public class RESTVehicleControllerTest {
                     .andExpect(jsonPath("$.value", equalTo(vehicle.getValue())))
                     .andExpect(jsonPath("$.mileage", equalTo(vehicle.getMileage())))
                     .andExpect(jsonPath("$.year", equalTo(Integer.toString(vehicle.getProductionDate().getYear()))))
-                    //.andExpect(jsonPath("$.leasingCompany", equalTo(UUIDUtil.UUIDToNumberString(vehicle.getLeasingCompany().getUuid()))))
                     .andExpect(jsonPath("$.fleet", equalTo(UUIDUtil.UUIDToNumberString(vehicle.getFleet().getUuid()))));
         } catch (Exception e) {
             remove(vehicle.getUuid());
@@ -487,7 +479,7 @@ public class RESTVehicleControllerTest {
     public void putIdNested() throws Exception {
 
         //Add to database directly with DAO
-        Vehicle vehicle = create(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAA", "ABC 123", 30000, 2500, vehicleType, localDate, fleet1, null));
+        Vehicle vehicle = create(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAA", "ABC 123", 30000, 2500, vehicleType, localDate, fleet1));
 
         //Change a field of the object that has to be updated
         vehicle.setMileage(3500);
@@ -510,7 +502,6 @@ public class RESTVehicleControllerTest {
                     .andExpect(jsonPath("$.value", equalTo(restVehicle.getValue())))
                     .andExpect(jsonPath("$.mileage", equalTo(restVehicle.getMileage())))
                     .andExpect(jsonPath("$.year", equalTo(restVehicle.getYear())))
-                    .andExpect(jsonPath("$.leasingCompany", equalTo(restVehicle.getLeasingCompany())))
                     .andExpect(jsonPath("$.fleet", equalTo(restVehicle.getFleet())));
         } catch (Exception e) {
             remove(vehicle.getUuid());
@@ -529,7 +520,6 @@ public class RESTVehicleControllerTest {
                 assertEquals("value field not updated correctly", 30000, vehicle.getValue());
                 assertEquals("mileage field not updated correctly", 3500, vehicle.getMileage());
                 assertEquals("productionDate field not updated correctly", localDate, vehicle.getProductionDate());
-                assertEquals("leasingCompany field not updated correctly", null, vehicle.getLeasingCompany());
                 assertEquals("fleet field not updated correctly", fleet1, vehicle.getFleet());
             } finally {
                 //Clean up database for other tests
