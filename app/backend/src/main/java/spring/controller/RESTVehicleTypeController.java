@@ -1,23 +1,19 @@
 package spring.controller;
 
 import controller.AbstractController;
-import controller.CompanyController;
 import controller.ControllerManager;
 import controller.VehicleTypeController;
 import controller.exceptions.UnAuthorizedException;
-import dao.interfaces.DataAccessException;
+import dao.exceptions.DataAccessException;
 import model.fleet.VehicleType;
 import org.springframework.web.bind.annotation.*;
 import spring.exceptions.InvalidInputException;
-import spring.exceptions.NotAuthorizedException;
 import spring.model.AuthenticationToken;
 import spring.model.RESTSchema;
 import spring.model.RESTVehicleType;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -28,6 +24,12 @@ import static util.UUIDUtil.toUUID;
  * Although the api doesn't offer this, this is an improvement to the program
  * It offers the frontend applications a way to view wich vehicletypes are correct inputs
  * may be enlarged when admin gets rights to edit vehicletypes
+ * Requests that are implemented in this class:
+ * 1)  GET /vehicles/types
+ * 2)  GET /vehicles/types/{id}
+ * 3)  POST /vehicles/types
+ * 4)  PUT /vehicles/types/{id}
+ * 5)  DELETE /vehicles/types/{id}
  */
 @RestController
 @RequestMapping("/${path.vehicles}/${path.types}")
@@ -43,7 +45,7 @@ public class RESTVehicleTypeController extends RESTAbstractController<RESTVehicl
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public RESTSchema<RESTVehicleType> getAllVehileTypes(HttpServletRequest request,
+    public RESTSchema<RESTVehicleType> getAllVehicleTypes(HttpServletRequest request,
                                                          @RequestParam(required = false) Integer page,
                                                          @RequestParam(required = false) Integer limit,
                                                          @RequestHeader(value = "Authorization") String token,

@@ -48,7 +48,7 @@
             </table>
              <h2>{{$t("insurance.vehicle") | capitalize }}</h2>
 
-            
+            <!-- TODO: This page is equal to show vehicle. Remove code duplication -->
             <table class="table show-table" v-if="vehicle">
                 <tr>
                     <td>{{$t('vehicle.brand') | capitalize }}</td>
@@ -83,10 +83,6 @@
                 <tr>
                     <td>{{$t('vehicle.value') | capitalize }}</td>
                     <td>€ {{vehicle.value}}</td>
-                </tr>
-                <tr v-if='vehicle.leasingCompany != null'>
-                    <td>{{$t('vehicle.leasingCompany') | capitalize }}</td>
-                    <td>{{vehicle.leasingCompany}}</td>
                 </tr>
 
 

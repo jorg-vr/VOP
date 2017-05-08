@@ -10,8 +10,9 @@ Searchbar to search for vehicles.
 </template>
 <script>
     import searchBar from '../searchBar.vue'
-    import vehicleFormInput from '../../form/types/VehicleFormInput.vue'
+    import vehicleFormInput from '../../../pages/vehicle/vehicleFormInput.vue'
     import {mapGetters, mapActions} from 'vuex'
+
     export default {
         data() {
             return {

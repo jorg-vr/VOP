@@ -1,9 +1,11 @@
 package spring.model;
 
 import controller.ControllerManager;
+import dao.exceptions.ConstraintViolationException;
 import model.Factory;
 import model.account.Function;
 import model.identity.*;
+import spring.exceptions.ErrorCode;
 import spring.exceptions.InvalidInputException;
 import util.UUIDUtil;
 
@@ -52,12 +54,12 @@ public class RESTCompany extends RESTAbstractModel<Company> {
         this.address = address;
     }
 
-    public Company translate(ControllerManager manager) {
+    public Company translate(ControllerManager manager) throws ConstraintViolationException {
         Company company;
         try {
             company = CompanyType.valueOf(type).getFactory().create();
-        } catch (IllegalArgumentException e) {
-            throw new InvalidInputException(type + " is not a valid Company type");
+        } catch (IllegalArgumentException | NullPointerException e) {
+            throw new ConstraintViolationException("type", ErrorCode.INVALID.toString());
         }
         company.setName(getName());
         company.setBtwNumber(getVatNumber());

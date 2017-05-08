@@ -12,7 +12,7 @@ All of the fields for user input for the user form
     </div>
 </template>
 <script>
-    import TextInputFormGroup from '../FormGroups/TextInputFormGroup.vue'
+    import TextInputFormGroup from '../../assets/form/FormGroups/TextInputFormGroup.vue'
 
     export default {
         props: {

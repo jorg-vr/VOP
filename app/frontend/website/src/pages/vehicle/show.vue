@@ -38,10 +38,6 @@
                     <td>{{$t('vehicle.year') | capitalize }}</td>
                     <td>{{vehicle.year}}</td>
                 </tr>
-                <tr>
-                    <td>{{$t('vehicle.leasingCompany') | capitalize }}</td>
-                    <td>{{vehicle.leasingCompany}}</td>
-                </tr>
             </table>
             <button-back v-if="vehicle.fleet" :route="{name: 'fleet', params: {id: vehicle.fleet}}"></button-back>
             <button-back v-else :route="{name: 'fleets'}"></button-back>
@@ -63,16 +59,12 @@
         created() {
             this.fetchVehicle({id: this.id}).then(vehicle => {
                 this.fetchVehicleType({id: vehicle.type})
-                if(vehicle.leasingCompany){
-                    this.fetchClient({id: vehicle.leasingCompany})
-                }
             })
         },
         computed: {
             ...mapGetters([
                 'vehicle',
                 'vehicleType',
-                'client'
             ])
         },
         methods: {
@@ -80,7 +72,6 @@
             ...mapActions([
                 'fetchVehicle',
                 'fetchVehicleType',
-                'fetchClient'
             ])
         }
     }

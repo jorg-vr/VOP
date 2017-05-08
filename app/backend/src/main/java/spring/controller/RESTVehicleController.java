@@ -3,21 +3,16 @@ package spring.controller;
 import controller.*;
 
 import controller.exceptions.UnAuthorizedException;
-import dao.interfaces.DataAccessException;
-import dao.interfaces.Filter;
-import dao.interfaces.VehicleDAO;
+import dao.exceptions.DataAccessException;
 import model.fleet.Fleet;
 import model.fleet.Vehicle;
 import org.springframework.web.bind.annotation.*;
 import spring.exceptions.InvalidInputException;
-import spring.exceptions.NotAuthorizedException;
 import spring.model.AuthenticationToken;
 import spring.model.RESTSchema;
 import spring.model.RESTVehicle;
-import util.UUIDUtil;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import java.util.*;

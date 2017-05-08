@@ -3,12 +3,12 @@ package spring.controller.insurance;
 import controller.ControllerManager;
 import controller.VehicleTypeController;
 import controller.exceptions.UnAuthorizedException;
-import dao.interfaces.DataAccessException;
+import dao.exceptions.ConstraintViolationException;
+import dao.exceptions.DataAccessException;
+import dao.exceptions.ObjectNotFoundException;
 import model.fleet.VehicleType;
 import model.insurance.SuretyType;
 import org.springframework.web.bind.annotation.*;
-import spring.exceptions.InvalidInputException;
-import spring.exceptions.NotFoundException;
 import spring.model.AuthenticationToken;
 
 import java.util.UUID;
@@ -27,16 +27,12 @@ public class RESTTaxController {
     @RequestMapping(method = RequestMethod.GET)
     public double get(@PathVariable String typeName, @PathVariable String contractType,
                       @RequestHeader(value = "Authorization") String token,
-                      @RequestHeader(value = "Function") String function) throws UnAuthorizedException {
+                      @RequestHeader(value = "Function") String function) throws UnAuthorizedException, ObjectNotFoundException, DataAccessException {
         UUID user = new AuthenticationToken(token).getAccountId();
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
             VehicleTypeController controller = manager.getVehicleTypeController();
             VehicleType type = controller.get(toUUID(typeName));
             return type.getTax(SuretyType.valueOf(contractType));
-        } catch (DataAccessException e) {
-            throw new NotFoundException();
-        } catch (IllegalArgumentException e) {
-            throw new InvalidInputException(e.getLocalizedMessage());
         }
     }
 
@@ -44,7 +40,7 @@ public class RESTTaxController {
     public double put(@PathVariable String typeName, @PathVariable String contractType,
                       double tax,
                       @RequestHeader(value = "Authorization") String token,
-                      @RequestHeader(value = "Function") String function) throws UnAuthorizedException {
+                      @RequestHeader(value = "Function") String function) throws UnAuthorizedException, DataAccessException, ConstraintViolationException, ObjectNotFoundException {
         UUID user = new AuthenticationToken(token).getAccountId();
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
             VehicleTypeController controller = manager.getVehicleTypeController();
@@ -54,10 +50,6 @@ public class RESTTaxController {
             type.setTax(suretyType, tax);
             type = controller.update(type);
             return type.getTax(suretyType);
-        } catch (DataAccessException e) {
-            throw new NotFoundException();
-        } catch (IllegalArgumentException e) {
-            throw new InvalidInputException(e.getLocalizedMessage());
         }
     }
 }

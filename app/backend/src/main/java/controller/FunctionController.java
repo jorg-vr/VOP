@@ -1,6 +1,7 @@
 package controller;
 
 import controller.exceptions.UnAuthorizedException;
+import dao.exceptions.DataAccessException;
 import dao.interfaces.*;
 import model.account.*;
 import model.identity.Company;

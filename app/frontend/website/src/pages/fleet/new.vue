@@ -10,7 +10,7 @@
     import abstractForm from '../../assets/form/AbstractForm.vue'
     import actions from '../../constants/actions'
     import resources from '../../constants/resources'
-    import fleetFormInput from '../../assets/form/types/FleetFormInput.vue'
+    import fleetFormInput from './fleetFormInput.vue'
     import {mapGetters} from 'vuex'
 
     export default {

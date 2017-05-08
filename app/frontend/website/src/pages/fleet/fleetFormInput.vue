@@ -14,11 +14,12 @@ All of the fields for user input for the fleet form
 
 </template>
 <script>
-    import resources from '../../../constants/resources'
-    import actions from '../../../constants/actions'
     import {mapGetters, mapActions} from 'vuex'
-    import TextInputFormGroup from '../FormGroups/TextInputFormGroup.vue'
-    import SelectInputFormGroup from '../FormGroups/SelectInputFormGroup.vue'
+    import resources from '../../constants/resources'
+    import actions from '../../constants/actions'
+    import TextInputFormGroup from '../../assets/form/FormGroups/TextInputFormGroup.vue'
+    import SelectInputFormGroup from '../../assets/form/FormGroups/SelectInputFormGroup.vue'
+
     export default {
         data() {
             return {

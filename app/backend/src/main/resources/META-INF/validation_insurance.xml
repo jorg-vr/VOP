@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<constraint-mappings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                     xsi:schemaLocation="http://jboss.org/xml/ns/javax/validation/mapping validation-mapping-1.0.xsd"
+                     xmlns="http://jboss.org/xml/ns/javax/validation/mapping">
+
+    <bean class="model.insurance.Contract">
+        <field name="company">
+            <constraint annotation="javax.validation.constraints.NotNull"/>
+        </field>
+        <field name="customer">
+            <constraint annotation="javax.validation.constraints.NotNull"/>
+        </field>
+        <field name="startDate">
+            <constraint annotation="javax.validation.constraints.NotNull"/>
+        </field>
+        <field name="endDate">
+            <constraint annotation="javax.validation.constraints.NotNull"/>
+        </field>
+    </bean>
+
+    <bean class="model.insurance.FlatSurety">
+        <field name="premium">
+            <constraint annotation="javax.validation.constraints.NotNull"/>
+                
+            <constraint annotation="javax.validation.constraints.Min">
+                <element name="value">0</element>
+            </constraint>
+        </field>
+    </bean>
+
+    <bean class="model.insurance.NonFlatSurety">
+        <field name="minPremium">
+            <constraint annotation="javax.validation.constraints.NotNull"/>
+
+            <constraint annotation="javax.validation.constraints.Min">
+                <element name="value">0</element>
+            </constraint>
+        </field>
+        <field name="premiumPercentage">
+            <constraint annotation="javax.validation.constraints.NotNull"/>
+
+            <constraint annotation="javax.validation.constraints.Min">
+                <element name="value">0</element>
+            </constraint>
+        </field>
+    </bean>
+    
+    <bean class="model.insurance.SpecialCondition">
+        <field name="referenceCode">
+            <constraint annotation="javax.validation.constraints.NotNull"/>
+            <constraint annotation="javax.validation.constraints.Pattern">
+                <element name="regexp">^..*$</element>
+            </constraint>
+        </field>
+        <field name="text">
+            <constraint annotation="javax.validation.constraints.NotNull"/>
+            <constraint annotation="javax.validation.constraints.Pattern">
+                <element name="regexp">^..*$</element>
+            </constraint>
+        </field>
+        <field name="Title">
+            <constraint annotation="javax.validation.constraints.NotNull"/>
+            <constraint annotation="javax.validation.constraints.Pattern">
+                <element name="regexp">^..*$</element>
+            </constraint>
+        </field>
+    </bean>
+
+    <bean class="model.insurance.Surety">
+        <field name="suretyType">
+            <constraint annotation="javax.validation.constraints.NotNull"/>
+        </field>
+    </bean>
+    
+    <bean class="model.insurance.VehicleInsurance">
+        <field name="vehicle">
+            <constraint annotation="javax.validation.constraints.NotNull"/>
+        </field>
+        <field name="surety">
+            <constraint annotation="javax.validation.constraints.NotNull"/>
+        </field>
+        <field name="startDate">
+            <constraint annotation="javax.validation.constraints.NotNull"/>
+        </field>
+        <field name="endDate">
+            <constraint annotation="javax.validation.constraints.NotNull"/>
+        </field>
+        <field name="franchise">
+            <constraint annotation="javax.validation.constraints.NotNull"/>
+        </field>
+        <field name="insuredValue">
+            <constraint annotation="javax.validation.constraints.NotNull"/>
+        </field>
+        <field name="contract">
+            <constraint annotation="javax.validation.constraints.NotNull"/>
+        </field>
+    </bean>
+
+</constraint-mappings>

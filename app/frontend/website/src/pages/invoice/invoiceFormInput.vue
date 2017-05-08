@@ -5,15 +5,15 @@
     </div>
 </template>
 <script>
-    import formInput from '../FormGroups/TextInputFormGroup.vue'
-    import formSelect from '../FormGroups/SelectInputFormGroup.vue'
+    import TextInputFormGroup from '../../assets/form/FormGroups/TextInputFormGroup.vue'
+    import SelectInputFormGroup from '../../assets/form/FormGroups/SelectInputFormGroup.vue'
 
     export default {
         props: {
             invoice: Object
         },
         components: {
-            formInput,formSelect
+            TextInputFormGroup,SelectInputFormGroup
         }
     }
 </script>

@@ -12,7 +12,7 @@
         </div>
         <client-search-bar @search="updateClients" @advancedSearch="updateClientsAdvanced"></client-search-bar>
         <!-- Render an info-pane for every client. Once all the data is loaded, the table will be shown.-->
-        <list-component :resource="resource" :objects="filteredClients" :visibleKeys="['name']"></list-component>
+        <list-component :resource="resource" :listObject="listObject" ></list-component>
     </div>
 </template>
 
@@ -45,7 +45,13 @@
                 'filteredClients',
                 'getClientsByAll',
                 'getClientsByAllAdvanced'
-            ])
+            ]),
+            listObject() {
+                var listObj = {};
+                listObj.headers = ["name"];
+                listObj.values = this.filteredClients;
+                return listObj;
+            }
         },
         methods: {
             ...mapActions([

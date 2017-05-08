@@ -18,13 +18,12 @@ All of the fields for user input for the vehicle form
     </div>
 </template>
 <script>
-    import TextInputFormGroup from '../FormGroups/TextInputFormGroup.vue'
-    import SelectInputFormGroup from '../FormGroups/SelectInputFormGroup.vue'
-    import clientTypes from '../../../constants/clientTypes'
+    import TextInputFormGroup from '../../assets/form/FormGroups/TextInputFormGroup.vue'
+    import SelectInputFormGroup from '../../assets/form/FormGroups/SelectInputFormGroup.vue'
+    import clientTypes from '../../constants/clientTypes'
     import {mapGetters, mapActions} from 'vuex'
 
     export default {
-
         props: {
             vehicle: Object,
         },

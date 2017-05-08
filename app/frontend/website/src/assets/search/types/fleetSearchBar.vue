@@ -8,7 +8,8 @@ Searchbar to search for fleets.
 </template>
 <script>
     import searchBar from '../searchBar.vue'
-    import fleetFormInput from '../../form/types/FleetFormInput.vue'
+    import fleetFormInput from '../../../pages/fleet/fleetFormInput.vue'
+
     export default {
         data() {
             return {

@@ -4,11 +4,12 @@ import controller.exceptions.UnAuthorizedException;
 import controller.insurance.ContractController;
 import controller.insurance.SuretyController;
 import controller.insurance.VehicleInsuranceController;
-import dao.interfaces.*;
+import dao.exceptions.DataAccessException;
+import dao.exceptions.ObjectNotFoundException;
+import dao.interfaces.DAOManager;
+import dao.interfaces.FunctionDAO;
 import main.BackendApplication;
 import model.account.*;
-import model.identity.Company;
-import model.insurance.Surety;
 import spring.exceptions.InvalidInputException;
 
 import java.util.*;
@@ -17,6 +18,7 @@ import static main.BackendApplication.DISABLE_AUTH;
 
 /**
  * This class acts a provider for all the controllers. Every controller except AuthController should be retrieved from this class.
+ *
  * @author Billie Devolder
  */
 public class ControllerManager implements AutoCloseable {
@@ -29,7 +31,7 @@ public class ControllerManager implements AutoCloseable {
      * @param functionId id of the function that the user wants to use
      * @throws InvalidInputException there is no function/user with that id or the user does not have that function
      */
-    public ControllerManager(UUID userId, UUID functionId) throws UnAuthorizedException, InvalidInputException {
+    public ControllerManager(UUID userId, UUID functionId) throws UnAuthorizedException, DataAccessException, InvalidInputException {
         daoManager = BackendApplication.getProvider().getDaoManager();
         if (DISABLE_AUTH) {
             function = new Function();
@@ -52,8 +54,8 @@ public class ControllerManager implements AutoCloseable {
             if (!function.getUser().getUuid().equals(userId)) {
                 throw new InvalidInputException();
             }
-        } catch (DataAccessException e) {
-            throw new InvalidInputException("User/Function does not exist or user has no function with that id");
+        } catch (ObjectNotFoundException e) {
+            throw new InvalidInputException("User or function does not exist");
         }
     }
 

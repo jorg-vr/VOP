@@ -19,9 +19,10 @@ All of the fields for user input for the client form
     </div>
 </template>"
 <script>
-    import TextInputFormGroup from '../FormGroups/TextInputFormGroup.vue'
-    import SelectInputFormGroup from '../FormGroups/SelectInputFormGroup.vue'
-    import clientTypes from '../../../constants/clientTypes'
+
+    import TextInputFormGroup from '../../assets/form/FormGroups/TextInputFormGroup.vue'
+    import SelectInputFormGroup from '../../assets/form/FormGroups/SelectInputFormGroup.vue'
+
     export default {
         data(){
             return {
