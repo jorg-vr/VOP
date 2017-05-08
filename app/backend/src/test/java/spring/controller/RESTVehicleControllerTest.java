@@ -365,22 +365,22 @@ public class RESTVehicleControllerTest {
                 .header("Authorization", authPair[0])
                 .header("Function", authPair[1])
                 .content(TestUtil.convertObjectToJsonBytes(restVehicle)));
-                MvcResult result = resultActions.andExpect(status().isOk()).andReturn();
+        MvcResult result = resultActions.andExpect(status().isOk()).andReturn();
         UUID restId = UUIDUtil.toUUID(TestUtil.convertJsonBytesToObject(result.getResponse().getContentAsByteArray(), RESTVehicle.class).getId());
 
         //Test if response object fields are equal to posted data
         try {
             resultActions
-                .andExpect(jsonPath("$.licensePlate", equalTo(restVehicle.getLicensePlate())))
-                .andExpect(jsonPath("$.vin", equalTo(restVehicle.getVin())))
-                .andExpect(jsonPath("$.brand", equalTo(restVehicle.getBrand())))
-                .andExpect(jsonPath("$.model", equalTo(restVehicle.getModel())))
-                .andExpect(jsonPath("$.type", equalTo(restVehicle.getType())))
-                .andExpect(jsonPath("$.value", equalTo(restVehicle.getValue())))
-                .andExpect(jsonPath("$.mileage", equalTo(restVehicle.getMileage())))
-                .andExpect(jsonPath("$.year", equalTo(restVehicle.getYear())))
-                .andExpect(jsonPath("$.leasingCompany", equalTo(restVehicle.getLeasingCompany())))
-                .andExpect(jsonPath("$.fleet", equalTo(restVehicle.getFleet())));
+                    .andExpect(jsonPath("$.licensePlate", equalTo(restVehicle.getLicensePlate())))
+                    .andExpect(jsonPath("$.vin", equalTo(restVehicle.getVin())))
+                    .andExpect(jsonPath("$.brand", equalTo(restVehicle.getBrand())))
+                    .andExpect(jsonPath("$.model", equalTo(restVehicle.getModel())))
+                    .andExpect(jsonPath("$.type", equalTo(restVehicle.getType())))
+                    .andExpect(jsonPath("$.value", equalTo(restVehicle.getValue())))
+                    .andExpect(jsonPath("$.mileage", equalTo(restVehicle.getMileage())))
+                    .andExpect(jsonPath("$.year", equalTo(restVehicle.getYear())))
+                    .andExpect(jsonPath("$.leasingCompany", equalTo(restVehicle.getLeasingCompany())))
+                    .andExpect(jsonPath("$.fleet", equalTo(restVehicle.getFleet())));
         } catch (AssertionError e) {
             remove(restId);
             throw e;
@@ -422,10 +422,10 @@ public class RESTVehicleControllerTest {
         //Attempt to remove from the database with delete request
         try {
             mvc.perform(MockMvcRequestBuilders.delete("/companies/" + UUIDUtil.UUIDToNumberString(customer1.getUuid()) + "/fleets/" + UUIDUtil.UUIDToNumberString(fleet1.getUuid()) + "/vehicles/{id}", UUIDUtil.UUIDToNumberString(vehicle.getUuid()))
-                .header("Authorization", authPair[0])
-                .header("Function", authPair[1])
-        )
-                .andExpect(status().isOk());
+                    .header("Authorization", authPair[0])
+                    .header("Function", authPair[1])
+            )
+                    .andExpect(status().isOk());
         } catch (Exception e) {
             remove(vehicle.getUuid());
             throw e;
@@ -455,20 +455,20 @@ public class RESTVehicleControllerTest {
         //Attempt to retrieve the object with the given id
         try {
             mvc.perform(MockMvcRequestBuilders.get("/companies/" + UUIDUtil.UUIDToNumberString(customer1.getUuid()) + "/fleets/" + UUIDUtil.UUIDToNumberString(fleet1.getUuid()) + "/vehicles/{id}", UUIDUtil.UUIDToNumberString(vehicle.getUuid()))
-                .header("Authorization", authPair[0])
-                .header("Function", authPair[1])
-        )
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.licensePlate", equalTo(vehicle.getLicensePlate())))
-                .andExpect(jsonPath("$.vin", equalTo(vehicle.getChassisNumber())))
-                .andExpect(jsonPath("$.brand", equalTo(vehicle.getBrand())))
-                .andExpect(jsonPath("$.model", equalTo(vehicle.getModel())))
-                .andExpect(jsonPath("$.type", equalTo(UUIDUtil.UUIDToNumberString(vehicle.getType().getUuid()))))
-                .andExpect(jsonPath("$.value", equalTo(vehicle.getValue())))
-                .andExpect(jsonPath("$.mileage", equalTo(vehicle.getMileage())))
-                .andExpect(jsonPath("$.year", equalTo(Integer.toString(vehicle.getProductionDate().getYear()))))
-                //.andExpect(jsonPath("$.leasingCompany", equalTo(UUIDUtil.UUIDToNumberString(vehicle.getLeasingCompany().getUuid()))))
-                .andExpect(jsonPath("$.fleet", equalTo(UUIDUtil.UUIDToNumberString(vehicle.getFleet().getUuid()))));
+                    .header("Authorization", authPair[0])
+                    .header("Function", authPair[1])
+            )
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.licensePlate", equalTo(vehicle.getLicensePlate())))
+                    .andExpect(jsonPath("$.vin", equalTo(vehicle.getChassisNumber())))
+                    .andExpect(jsonPath("$.brand", equalTo(vehicle.getBrand())))
+                    .andExpect(jsonPath("$.model", equalTo(vehicle.getModel())))
+                    .andExpect(jsonPath("$.type", equalTo(UUIDUtil.UUIDToNumberString(vehicle.getType().getUuid()))))
+                    .andExpect(jsonPath("$.value", equalTo(vehicle.getValue())))
+                    .andExpect(jsonPath("$.mileage", equalTo(vehicle.getMileage())))
+                    .andExpect(jsonPath("$.year", equalTo(Integer.toString(vehicle.getProductionDate().getYear()))))
+                    //.andExpect(jsonPath("$.leasingCompany", equalTo(UUIDUtil.UUIDToNumberString(vehicle.getLeasingCompany().getUuid()))))
+                    .andExpect(jsonPath("$.fleet", equalTo(UUIDUtil.UUIDToNumberString(vehicle.getFleet().getUuid()))));
         } catch (Exception e) {
             remove(vehicle.getUuid());
             throw e;
@@ -496,22 +496,22 @@ public class RESTVehicleControllerTest {
         //Perform the put request to update the object and check the fields of the returned object
         try {
             mvc.perform(MockMvcRequestBuilders.put("/companies/" + UUIDUtil.UUIDToNumberString(customer1.getUuid()) + "/fleets/" + UUIDUtil.UUIDToNumberString(fleet1.getUuid()) + "/vehicles/{id}", UUIDUtil.UUIDToNumberString(vehicle.getUuid()))
-                .header("Content-Type", "application/json")
-                .header("Authorization", authPair[0])
-                .header("Function", authPair[1])
-                .content(TestUtil.convertObjectToJsonBytes(restVehicle))
-        )
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.licensePlate", equalTo(restVehicle.getLicensePlate())))
-                .andExpect(jsonPath("$.vin", equalTo(restVehicle.getVin())))
-                .andExpect(jsonPath("$.brand", equalTo(restVehicle.getBrand())))
-                .andExpect(jsonPath("$.model", equalTo(restVehicle.getModel())))
-                .andExpect(jsonPath("$.type", equalTo(restVehicle.getType())))
-                .andExpect(jsonPath("$.value", equalTo(restVehicle.getValue())))
-                .andExpect(jsonPath("$.mileage", equalTo(restVehicle.getMileage())))
-                .andExpect(jsonPath("$.year", equalTo(restVehicle.getYear())))
-                .andExpect(jsonPath("$.leasingCompany", equalTo(restVehicle.getLeasingCompany())))
-                .andExpect(jsonPath("$.fleet", equalTo(restVehicle.getFleet())));
+                    .header("Content-Type", "application/json")
+                    .header("Authorization", authPair[0])
+                    .header("Function", authPair[1])
+                    .content(TestUtil.convertObjectToJsonBytes(restVehicle))
+            )
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.licensePlate", equalTo(restVehicle.getLicensePlate())))
+                    .andExpect(jsonPath("$.vin", equalTo(restVehicle.getVin())))
+                    .andExpect(jsonPath("$.brand", equalTo(restVehicle.getBrand())))
+                    .andExpect(jsonPath("$.model", equalTo(restVehicle.getModel())))
+                    .andExpect(jsonPath("$.type", equalTo(restVehicle.getType())))
+                    .andExpect(jsonPath("$.value", equalTo(restVehicle.getValue())))
+                    .andExpect(jsonPath("$.mileage", equalTo(restVehicle.getMileage())))
+                    .andExpect(jsonPath("$.year", equalTo(restVehicle.getYear())))
+                    .andExpect(jsonPath("$.leasingCompany", equalTo(restVehicle.getLeasingCompany())))
+                    .andExpect(jsonPath("$.fleet", equalTo(restVehicle.getFleet())));
         } catch (Exception e) {
             remove(vehicle.getUuid());
             throw e;

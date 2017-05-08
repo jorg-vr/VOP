@@ -103,7 +103,7 @@ public class RESTVehicleTypeControllerTest {
         try {
             resultActions
                     .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", equalTo(restVehicleType.getName())));
+                    .andExpect(jsonPath("$.name", equalTo(restVehicleType.getName())));
         } catch (AssertionError e) {
             remove(restId);
             throw e;
@@ -113,7 +113,7 @@ public class RESTVehicleTypeControllerTest {
         try {
             VehicleType vehicleType = get(restId);
             try {
-            assertEquals("type field not created correctly", "type", vehicleType.getType());
+                assertEquals("type field not created correctly", "type", vehicleType.getType());
             } finally {
                 remove(restId);
             }
@@ -136,8 +136,8 @@ public class RESTVehicleTypeControllerTest {
         //Attempt to remove from the database with delete request
         try {
             mvc.perform(MockMvcRequestBuilders.delete("/vehicles/types/{id}", UUIDUtil.UUIDToNumberString(vehicleType.getUuid()))
-                .header("Authorization", authPair[0])
-                .header("Function", authPair[1])
+                    .header("Authorization", authPair[0])
+                    .header("Function", authPair[1])
             )
                     .andExpect(status().isOk());
         } catch (Exception e) {
@@ -169,11 +169,11 @@ public class RESTVehicleTypeControllerTest {
         //Attempt to retrieve the object with the given id
         try {
             mvc.perform(MockMvcRequestBuilders.get("/vehicles/types/{id}", UUIDUtil.UUIDToNumberString(vehicleType.getUuid()))
-                .header("Authorization", authPair[0])
-                .header("Function", authPair[1])
-        )
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", equalTo(vehicleType.getType())));
+                    .header("Authorization", authPair[0])
+                    .header("Function", authPair[1])
+            )
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.name", equalTo(vehicleType.getType())));
         } catch (Exception e) {
             remove(vehicleType.getUuid());
             throw e;
@@ -201,13 +201,13 @@ public class RESTVehicleTypeControllerTest {
         //Perform the put request to update the object and check the fields of the returned object
         try {
             mvc.perform(MockMvcRequestBuilders.put("/vehicles/types/{id}", UUIDUtil.UUIDToNumberString(vehicleType.getUuid()))
-                .header("Content-Type", "application/json")
-                .header("Authorization", authPair[0])
-                .header("Function", authPair[1])
-                .content(TestUtil.convertObjectToJsonBytes(restVehicleType))
-        )
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", equalTo(restVehicleType.getName())));
+                    .header("Content-Type", "application/json")
+                    .header("Authorization", authPair[0])
+                    .header("Function", authPair[1])
+                    .content(TestUtil.convertObjectToJsonBytes(restVehicleType))
+            )
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.name", equalTo(restVehicleType.getName())));
         } catch (Exception e) {
             remove(vehicleType.getUuid());
             throw e;
@@ -217,7 +217,7 @@ public class RESTVehicleTypeControllerTest {
         try {
             vehicleType = get(vehicleType.getUuid());
             try {
-            assertEquals("type field not updated correctly", "typeChanged", vehicleType.getType());
+                assertEquals("type field not updated correctly", "typeChanged", vehicleType.getType());
             } finally {
                 //Clean up database for other tests
                 remove(vehicleType.getUuid());

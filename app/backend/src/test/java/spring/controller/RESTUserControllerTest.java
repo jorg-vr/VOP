@@ -209,10 +209,10 @@ public class RESTUserControllerTest {
         try {
             user = get(user.getUuid());
             try {
-            assertEquals("firstname field not updated correctly", "firstNameTest", user.getFirstName());
-            assertEquals("lastname field not updated correctly", "lastNameTestChanged", user.getLastName());
-            assertEquals("email field not updated correctly", "emailTest@mail.com", user.getEmail());
-            assertEquals("password field not updated correctly", "passwordTest", user.getPassword());
+                assertEquals("firstname field not updated correctly", "firstNameTest", user.getFirstName());
+                assertEquals("lastname field not updated correctly", "lastNameTestChanged", user.getLastName());
+                assertEquals("email field not updated correctly", "emailTest@mail.com", user.getEmail());
+                assertEquals("password field not updated correctly", "passwordTest", user.getPassword());
             } finally {
                 //Clean up database for other tests
                 remove(user.getUuid());
