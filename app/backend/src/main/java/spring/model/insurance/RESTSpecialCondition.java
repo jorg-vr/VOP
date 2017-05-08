@@ -20,14 +20,13 @@ public class RESTSpecialCondition extends RESTAbstractModel<SpecialCondition> {
     private String text;
 
     public RESTSpecialCondition() {
-
     }
 
     public RESTSpecialCondition(SpecialCondition specialCondition) {
         super(specialCondition.getUuid(), getProperty(PATH_SPECIAL_CONDITIONS));
         this.referenceCode = specialCondition.getReferenceCode();
         this.title = specialCondition.getTitle();
-        this.title = specialCondition.getText();
+        this.text = specialCondition.getText();
     }
 
     @Override

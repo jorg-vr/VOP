@@ -15,8 +15,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static util.MyProperties.*;
-import static util.UUIDUtil.UUIDToNumberString;
+import static util.MyProperties.PATH_SURETIES;
+import static util.MyProperties.getProperty;
 import static util.UUIDUtil.toUUID;
 
 /**
@@ -34,7 +34,7 @@ public class RESTSurety extends RESTAbstractModel<Surety> {
 
     private SuretyType suretyType;
 
-    private List<SpecialConditionItem> specialConditions;
+    private List<RESTSpecialCondition> specialConditions;
 
     public RESTSurety() {
     }
@@ -54,7 +54,7 @@ public class RESTSurety extends RESTAbstractModel<Surety> {
         this.suretyType = surety.getSuretyType();
         this.specialConditions = new ArrayList<>();
         for (SpecialCondition specialCondition: surety.getSpecialConditions()) {
-            this.specialConditions.add(new SpecialConditionItem(specialCondition));
+            this.specialConditions.add(new RESTSpecialCondition(specialCondition));
         }
     }
 
@@ -75,7 +75,7 @@ public class RESTSurety extends RESTAbstractModel<Surety> {
         SpecialConditionController controller = manager.getSpecialConditionController();
         Map<String, String> violations = new HashMap<>();
         List<SpecialCondition> conditions = new ArrayList<>();
-        for (SpecialConditionItem item: specialConditions) {
+        for (RESTSpecialCondition item: specialConditions) {
             try {
                 SpecialCondition condition = controller.get(toUUID(item.getId()));
                 conditions.add(condition);
@@ -123,59 +123,11 @@ public class RESTSurety extends RESTAbstractModel<Surety> {
         this.suretyType = suretyType;
     }
 
-    public List<SpecialConditionItem> getSpecialConditions() {
+    public List<RESTSpecialCondition> getSpecialConditions() {
         return specialConditions;
     }
 
-    public void setSpecialConditions(List<SpecialConditionItem> specialConditions) {
+    public void setSpecialConditions(List<RESTSpecialCondition> specialConditions) {
         this.specialConditions = specialConditions;
-    }
-
-    public static class SpecialConditionItem {
-
-        private String id;
-        private String title;
-        private String referenceCode;
-        private String url;
-
-        public SpecialConditionItem() {
-        }
-
-        public SpecialConditionItem(SpecialCondition specialCondition) {
-            this.id = UUIDToNumberString(specialCondition.getUuid());
-            this.title = specialCondition.getTitle();
-            this.referenceCode = specialCondition.getReferenceCode();
-        }
-
-        public String getUrl() {
-            return getProperty(PATH_SPECIAL_CONDITIONS) + "/" + id;
-        }
-
-        public void setUrl(String url) {
-        }
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public String getTitle() {
-            return title;
-        }
-
-        public void setTitle(String title) {
-            this.title = title;
-        }
-
-        public String getReferenceCode() {
-            return referenceCode;
-        }
-
-        public void setReferenceCode(String referenceCode) {
-            this.referenceCode = referenceCode;
-        }
     }
 }
