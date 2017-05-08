@@ -1496,13 +1496,9 @@ paths:
           type: integer
           description: Filter by insurance company.
         - in: query
-          name: vehicle
+          name: customer
           type: integer
-          description: Filter by vehicle.
-        - in: query
-          name: type
-          type: string
-          description: Filter by type of contract.
+          description: Filter by customer.
         - in: query
           name: page
           type: integer
@@ -1669,6 +1665,196 @@ paths:
           $ref: '#/responses/NotFound'
         '409':
           $ref: '#/responses/Conflict'
+  '/contracts/{contract_id}/insurances':
+    parameters:
+      - name: contract_id
+        in: path
+        description: ID of Contract
+        required: true
+        type: integer
+    get:
+      produces:
+        - application/json
+      summary: Get all vehicle insurances.
+      description: >
+        Get a list of `VehicleInsurance` objects, eventually filtered by the
+        query
+
+        parameters. When combining parameters, the conditions are joined by
+
+        AND. This means the resulting objects must satisfy all filters.
+      parameters:
+        - in: query
+          name: page
+          type: integer
+          description: The page to query.
+          default: 0
+        - in: query
+          name: limit
+          type: integer
+          description: The number of elements in a page.
+        - in: query
+          name: sort
+          type: string
+          description: >
+            Sort parameter. Support for this parameter is optional. If
+            supported, any field in the json reprensentation
+
+            may be used to sort, as follows: ?sort=field,order. For example:
+            `?sort=name,asc`.
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+            required:
+              - data
+              - total
+              - offset
+              - limit
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/definitions/VehicleInsurance'
+              total:
+                description: Total number of items.
+                example: 50
+                type: integer
+              offset:
+                description: |
+                  The number of items before this page (exclusive). This means
+                  that when offset = 20, this page will contains items 20 to
+                  20 + limit. For limit = 10, it will be 20 - 29 (including 29).
+                example: 20
+                type: integer
+              limit:
+                description: The maximum number of items on a page.
+                example: 10
+                type: integer
+              previous:
+                description: 'Link to the previous page, if applicable.'
+                example: /contracts&page=1
+                type: string
+              next:
+                description: 'Link to the next page, if applicable.'
+                type: string
+                example: /contracts&page=20
+              first:
+                description: 'Link to the first page, if applicable.'
+                type: string
+                example: /contracts&page=0
+              last:
+                description: 'Link to the last page, if applicable.'
+                type: string
+                example: /contracts&page=100
+        '400':
+          $ref: '#/responses/WrongQuery'
+        '401':
+          $ref: '#/responses/Unauthorised'
+    post:
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      summary: Add a new vehicle insurance.
+      description: >
+        Read-only attributes will be ignored by the server. Non-required
+        attributes that are
+
+        not present will be filled in by the server, using default values.
+      parameters:
+        - in: body
+          name: VehicleInsurance
+          description: vehicle insurance item to add
+          schema:
+            $ref: '#/definitions/VehicleInsurance'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/VehicleInsurance'
+        '400':
+          $ref: '#/responses/Malformed'
+        '401':
+          $ref: '#/responses/Unauthorised'
+        '409':
+          $ref: '#/responses/Conflict'
+        '415':
+          $ref: '#/responses/WrongType'
+        '422':
+          $ref: '#/responses/WrongContent'
+  '/contracts/{contract_id}/insurances/{id}':
+    parameters:
+      - name: contract_id
+        in: path
+        description: ID of Contract
+        required: true
+        type: integer
+      - name: id
+        in: path
+        description: ID of vehicle insurance
+        required: true
+        type: integer
+    get:
+      produces:
+        - application/json
+      summary: Get one vehicle insurance.
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/VehicleInsurance'
+        '401':
+          $ref: '#/responses/Unauthorised'
+        '404':
+          $ref: '#/responses/NotFound'
+    put:
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      summary: Update a vehicle insurance.
+      description: >
+        Read-only attributes will be ignored by the server. Non-required
+        attributes that are
+
+        not present will not be updated.
+      parameters:
+        - in: body
+          name: vehicleInsurance
+          description: vehicle insurance to update
+          required: true
+          schema:
+            $ref: '#/definitions/VehicleInsurance'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Contract'
+        '400':
+          $ref: '#/responses/Malformed'
+        '401':
+          $ref: '#/responses/Unauthorised'
+        '404':
+          $ref: '#/responses/NotFound'
+        '409':
+          $ref: '#/responses/Conflict'
+        '415':
+          $ref: '#/responses/WrongType'
+        '422':
+          $ref: '#/responses/WrongContent'
+    delete:
+      summary: Archive a vehicle insurance.
+      responses:
+        '204':
+          description: vehicle insurance archived successfully
+        '401':
+          $ref: '#/responses/Unauthorised'
+        '404':
+          $ref: '#/responses/NotFound'
+        '409':
+          $ref: '#/responses/Conflict'
   /contracts/types:
     get:
       summary: Get all types of contracts.
@@ -1709,6 +1895,359 @@ paths:
           $ref: '#/responses/Malformed'
         '401':
           $ref: '#/responses/Unauthorised'
+  /sureties:
+    get:
+      produces:
+        - application/json
+      summary: Get all sureties.
+      description: |
+        Get a list of `Surety` objects, eventually filtered by the query
+        parameters. When combining parameters, the conditions are joined by
+        AND. This means the resulting objects must satisfy all filters.
+      parameters:
+        - in: query
+          name: page
+          type: integer
+          description: The page to query.
+          default: 0
+        - in: query
+          name: limit
+          type: integer
+          description: The number of elements in a page.
+        - in: query
+          name: sort
+          type: string
+          description: >
+            Sort parameter. Support for this parameter is optional. If
+            supported, any field in the json reprensentation
+
+            may be used to sort, as follows: ?sort=field,order. For example:
+            `?sort=name,asc`.
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+            required:
+              - data
+              - total
+              - offset
+              - limit
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/definitions/Surety'
+              total:
+                description: Total number of items.
+                example: 50
+                type: integer
+              offset:
+                description: |
+                  The number of items before this page (exclusive). This means
+                  that when offset = 20, this page will contains items 20 to
+                  20 + limit. For limit = 10, it will be 20 - 29 (including 29).
+                example: 20
+                type: integer
+              limit:
+                description: The maximum number of items on a page.
+                example: 10
+                type: integer
+              previous:
+                description: 'Link to the previous page, if applicable.'
+                example: /sureties&page=1
+                type: string
+              next:
+                description: 'Link to the next page, if applicable.'
+                type: string
+                example: /sureties&page=20
+              first:
+                description: 'Link to the first page, if applicable.'
+                type: string
+                example: /sureties&page=0
+              last:
+                description: 'Link to the last page, if applicable.'
+                type: string
+                example: /sureties&page=100
+        '400':
+          $ref: '#/responses/WrongQuery'
+        '401':
+          $ref: '#/responses/Unauthorised'
+    post:
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      summary: Add a new surety.
+      description: >
+        Read-only attributes will be ignored by the server. Non-required
+        attributes that are
+
+        not present will be filled in by the server, using default values.
+      parameters:
+        - in: body
+          name: Surety
+          description: Surety item to add
+          schema:
+            $ref: '#/definitions/Surety'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Surety'
+        '400':
+          $ref: '#/responses/Malformed'
+        '401':
+          $ref: '#/responses/Unauthorised'
+        '409':
+          $ref: '#/responses/Conflict'
+        '415':
+          $ref: '#/responses/WrongType'
+        '422':
+          $ref: '#/responses/WrongContent'
+  '/sureties/{id}':
+    parameters:
+      - name: id
+        in: path
+        description: ID of Surety
+        required: true
+        type: integer
+    get:
+      produces:
+        - application/json
+      summary: Get one surety.
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Surety'
+        '401':
+          $ref: '#/responses/Unauthorised'
+        '404':
+          $ref: '#/responses/NotFound'
+    put:
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      summary: Update a surety.
+      description: >
+        Read-only attributes will be ignored by the server. Non-required
+        attributes that are
+
+        not present will not be updated.
+      parameters:
+        - in: body
+          name: Surety
+          description: surety to update
+          required: true
+          schema:
+            $ref: '#/definitions/Surety'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Surety'
+        '400':
+          $ref: '#/responses/Malformed'
+        '401':
+          $ref: '#/responses/Unauthorised'
+        '404':
+          $ref: '#/responses/NotFound'
+        '409':
+          $ref: '#/responses/Conflict'
+        '415':
+          $ref: '#/responses/WrongType'
+        '422':
+          $ref: '#/responses/WrongContent'
+    delete:
+      summary: Archive a surety.
+      responses:
+        '204':
+          description: Surety archived successfully
+        '401':
+          $ref: '#/responses/Unauthorised'
+        '404':
+          $ref: '#/responses/NotFound'
+        '409':
+          $ref: '#/responses/Conflict'
+  /special-conditions:
+    get:
+      produces:
+        - application/json
+      summary: |
+        Get all special conditions.
+      description: >
+        Get a list of `SpecialCondition` objects, eventually filtered by the
+        query
+
+        parameters. When combining parameters, the conditions are joined by
+
+        AND. This means the resulting objects must satisfy all filters. All the
+        string filter operations are case insensitive.
+      parameters:
+        - in: query
+          name: page
+          type: integer
+          description: The page to query.
+          default: 0
+        - in: query
+          name: limit
+          type: integer
+          description: The number of elements in a page.
+        - in: query
+          name: sort
+          type: string
+          description: >
+            Sort parameter. Support for this parameter is optional. If
+            supported, any field in the json reprensentation
+
+            may be used to sort, as follows: ?sort=field,order. For example:
+            `?sort=name,asc`.
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+            required:
+              - data
+              - total
+              - offset
+              - limit
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/definitions/SpecialCondition'
+              total:
+                description: Total number of items.
+                example: 50
+                type: integer
+              offset:
+                description: |
+                  The number of items before this page (exclusive). This means
+                  that when offset = 20, this page will contains items 20 to
+                  20 + limit. For limit = 10, it will be 20 - 29 (including 29).
+                example: 20
+                type: integer
+              limit:
+                description: The maximum number of items on a page.
+                example: 10
+                type: integer
+              previous:
+                description: 'Link to the previous page, if applicable.'
+                example: /special-conditions&page=1
+                type: string
+              next:
+                description: 'Link to the next page, if applicable.'
+                type: string
+                example: /special-conditions&page=20
+              first:
+                description: 'Link to the first page, if applicable.'
+                type: string
+                example: /special-conditions&page=0
+              last:
+                description: 'Link to the last page, if applicable.'
+                type: string
+                example: /special-conditions&page=100
+        '400':
+          $ref: '#/responses/WrongQuery'
+        '401':
+          $ref: '#/responses/Unauthorised'
+    post:
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      summary: Add new special condition.
+      description: >
+        Read-only attributes will be ignored by the server. Non-required
+        attributes that are
+
+        not present will be filled in by the server, using default values.
+      parameters:
+        - in: body
+          name: SpecialCondition
+          required: true
+          schema:
+            $ref: '#/definitions/SpecialCondition'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/SpecialCondition'
+        '400':
+          $ref: '#/responses/Malformed'
+        '401':
+          $ref: '#/responses/Unauthorised'
+        '415':
+          $ref: '#/responses/WrongType'
+        '422':
+          $ref: '#/responses/WrongContent'
+  '/special-conditions/{id}':
+    parameters:
+      - in: path
+        name: id
+        description: ID of SpecialCondition
+        required: true
+        type: integer
+        format: int64
+    get:
+      produces:
+        - application/json
+      summary: Get one special condition.
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/SpecialCondition'
+        '401':
+          $ref: '#/responses/Unauthorised'
+        '404':
+          $ref: '#/responses/NotFound'
+    put:
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      summary: Update a special condition.
+      description: >
+        Read-only attributes will be ignored by the server. Non-required
+        attributes that are
+
+        not present will not be updated.
+      parameters:
+        - in: body
+          name: SpecialCondition
+          required: true
+          schema:
+            $ref: '#/definitions/SpecialCondition'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/SpecialCondition'
+        '400':
+          $ref: '#/responses/Malformed'
+        '401':
+          $ref: '#/responses/Unauthorised'
+        '404':
+          $ref: '#/responses/NotFound'
+        '415':
+          $ref: '#/responses/WrongType'
+        '422':
+          $ref: '#/responses/WrongContent'
+    delete:
+      summary: Archive a special condition.
+      responses:
+        '204':
+          description: SpecialCondition archived successfully.
+        '401':
+          $ref: '#/responses/Unauthorised'
+        '404':
+          $ref: '#/responses/NotFound'
+        '409':
+          $ref: '#/responses/Conflict'
   '/companies/{id}/fleets':
     parameters:
       - in: path
@@ -3704,8 +4243,13 @@ definitions:
       - isFlat
       - premium
       - premiumPercentage
+      - leasingCompany
     properties:
       id:
+        readOnly: true
+        type: integer
+        format: int64
+      leasingCompany:
         readOnly: true
         type: integer
         format: int64
@@ -3740,7 +4284,39 @@ definitions:
       url:
         readOnly: true
         type: string
-        example: /contracts/
+        example: /sureties/
+  SpecialCondition:
+    type: object
+    required:
+      - referenceCode
+      - title
+      - text
+    properties:
+      id:
+        readOnly: true
+        type: integer
+        format: int64
+      referenceCode:
+        type: string
+      title:
+        type: string
+      text:
+        description: A detailed description of this specialcondition.
+        type: string
+      createdAt:
+        readOnly: true
+        type: string
+        format: date-time
+        example: 2016-08-29T09:12:33.001Z
+      updatedAt:
+        readOnly: true
+        type: string
+        format: date-time
+        example: 2016-08-29T09:12:33.001Z
+      url:
+        readOnly: true
+        type: string
+        example: /special-conditions/
   Error:
     type: object
     properties:
