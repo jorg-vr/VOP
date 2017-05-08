@@ -4,62 +4,48 @@ All of the fields for user input for the client form
 @param client: This object will be configured with the input of this component.
 -->
 <template>
-    <div>
-        <form-input :placeholder="$t('common.name') | capitalize" :label="$t('common.name') | capitalize"
-                    v-model="client.name"></form-input>
-
-        <client-type-select v-model="client.type"></client-type-select>
-
-        <form-input :placeholder="$t('address.country') | capitalize" :label="$t('address.country') | capitalize"
-
-                    v-model="client.address.country"></form-input>
-
-        <form-input :placeholder="$t('address.city') | capitalize" :label="$t('address.city') | capitalize"
-                    v-model="client.address.city"></form-input>
-
-        <form-input :placeholder="$t('address.postalCode') | capitalize" :label="$t('address.postalCode') | capitalize"
-                    v-model="client.address.postalCode"></form-input>
-
-        <form-input :placeholder="$t('address.street') | capitalize" :label="$t('address.street') | capitalize"
-                    v-model="client.address.street"></form-input>
-
-        <form-input :placeholder="$t('address.houseNumber') | capitalize" :label="$t('address.houseNumber') | capitalize"
-                    v-model="client.address.houseNumber"></form-input>
-
-        <form-input :placeholder="$t('client.vatNumber') | capitalize" :label="$t('client.vatNumber') | capitalize"
-                    v-model="client.vatNumber"></form-input>
-
-        <form-input :placeholder="$t('client.phoneNumber') | capitalize" :label="$t('client.phoneNumber') | capitalize"
-                    v-model="client.phoneNumber"></form-input>
+    <div v-if="client">
+        <text-input-form-group :object="client" name="name" :text="$t('client.name')" :rules="'required'"></text-input-form-group>
+        <select-input-form-group :object="client" name="type" :text="$t('client.type')" :rules="'required'"
+                                 :options="clientTypes" visibleKey="translation">
+        </select-input-form-group>
+        <text-input-form-group :object="client.address" name="country" :text="$t('address.country')" :rules="'required|length:2'"></text-input-form-group>
+        <text-input-form-group :object="client.address" name="city" :text="$t('address.city')" :rules="'required'"></text-input-form-group>
+        <text-input-form-group :object="client.address" name="street" :text="$t('address.street')" :rules="'required'"></text-input-form-group>
+        <text-input-form-group :object="client.address" name="postalCode" :text="$t('address.postalCode')" :rules="'required|numeric'"></text-input-form-group>
+        <text-input-form-group :object="client.address" name="houseNumber" :text="$t('address.houseNumber')" :rules="'required|numeric'"></text-input-form-group>
+        <text-input-form-group :object="client" name="vatNumber" :text="$t('client.vatNumber')" :rules="'required|min:8'"></text-input-form-group>
+        <text-input-form-group :object="client" name="phoneNumber" :text="$t('client.phoneNumber')" :rules="'required|min:6'"></text-input-form-group>
     </div>
-
-
-</template>
+</template>"
 <script>
-    import formInput from '../../assets/form/elements/formInput.vue'
-    import clientTypeSelect from '../../assets/form/elements/clientTypeSelect.vue'
+
+    import TextInputFormGroup from '../../assets/form/FormGroups/TextInputFormGroup.vue'
+    import SelectInputFormGroup from '../../assets/form/FormGroups/SelectInputFormGroup.vue'
 
     export default {
+        data(){
+            return {
+                clientTypes: $.map(clientTypes, function (value, index) {
+                    return [value]
+                })
+            }
+        },
         props: {
             object: Object,
         },
         components: {
-            formInput, clientTypeSelect
-        },
-        created(){
-            console.log(this.client)
+            TextInputFormGroup, SelectInputFormGroup
         },
         computed: {
             client(){
-                if(this.object === null) {
-                    return {address: {}}
+                if(this.object) {
+                    return this.object
                 }
                 else {
-                    return this.object
+                    return {address: {}}
                 }
             }
         }
     }
-
-
 </script>
