@@ -52,7 +52,7 @@ public class RESTFleetControllerTest {
         ProductionProvider.initializeProvider("unittest");
         authPair = AuthUtil.getAdminToken();
 
-        try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()){
+        try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()) {
             address = new Address("mystreet", "123", "lala", "12345", "land");
             customer = new Customer(address, "04789456123", "anita", "123456789", Periodicity.QUARTERLY, Periodicity.QUARTERLY);
             customer = manager.getCustomerDAO().create(customer);
@@ -63,7 +63,7 @@ public class RESTFleetControllerTest {
 
     @AfterClass
     public static void afterTransaction() throws Exception {
-        try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()){
+        try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()) {
             manager.getCustomerDAO().remove(customer.getUuid());
         } catch (DataAccessException e) {
             e.printStackTrace();
@@ -74,16 +74,16 @@ public class RESTFleetControllerTest {
     public void get() throws Exception {
 
         //Add to database directly with DAO
-        Fleet fleet = create(new Fleet("myFleet",customer,null));
+        Fleet fleet = create(new Fleet("myFleet", customer, null));
 
         try {
             mvc.perform(MockMvcRequestBuilders.get("/fleets")
-                .header("Authorization", authPair[0])
-                .header("Function", authPair[1])
+                    .header("Authorization", authPair[0])
+                    .header("Function", authPair[1])
             )
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data", hasSize(equalTo(1))))
-                .andExpect(jsonPath("$.total", equalTo(1)));
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.data", hasSize(equalTo(1))))
+                    .andExpect(jsonPath("$.total", equalTo(1)));
         } catch (Exception e) {
             remove(fleet.getUuid());
             throw e;
@@ -111,8 +111,8 @@ public class RESTFleetControllerTest {
         try {
             resultActions
                     .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", equalTo(restFleet.getName())))
-                .andExpect(jsonPath("$.company", equalTo(restFleet.getCompany())));
+                    .andExpect(jsonPath("$.name", equalTo(restFleet.getName())))
+                    .andExpect(jsonPath("$.company", equalTo(restFleet.getCompany())));
         } catch (AssertionError e) {
             remove(restId);
             throw e;
@@ -136,7 +136,7 @@ public class RESTFleetControllerTest {
     public void deleteId() throws Exception {
 
         //Add to database directly with DAO
-        Fleet fleet = create(new Fleet("myFleet",customer,null));
+        Fleet fleet = create(new Fleet("myFleet", customer, null));
 
         //Attempt to remove from the database with delete request
         try {
@@ -164,17 +164,17 @@ public class RESTFleetControllerTest {
     public void getId() throws Exception {
 
         //Add to database directly with DAO
-        Fleet fleet = create(new Fleet("myFleet",customer,null));
+        Fleet fleet = create(new Fleet("myFleet", customer, null));
 
         //Attempt to retrieve the object with the given id
         try {
             mvc.perform(MockMvcRequestBuilders.get("/fleets/{id}", UUIDUtil.UUIDToNumberString(fleet.getUuid()))
-                .header("Authorization", authPair[0])
-                .header("Function", authPair[1])
+                    .header("Authorization", authPair[0])
+                    .header("Function", authPair[1])
             )
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", equalTo(fleet.getName())))
-                .andExpect(jsonPath("$.company", equalTo(UUIDUtil.UUIDToNumberString(fleet.getOwner().getUuid()))));
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.name", equalTo(fleet.getName())))
+                    .andExpect(jsonPath("$.company", equalTo(UUIDUtil.UUIDToNumberString(fleet.getOwner().getUuid()))));
         } catch (Exception e) {
             remove(fleet.getUuid());
             throw e;
@@ -188,7 +188,7 @@ public class RESTFleetControllerTest {
     public void putId() throws Exception {
 
         //Add to database directly with DAO
-        Fleet fleet = create(new Fleet("myFleet",customer,address));
+        Fleet fleet = create(new Fleet("myFleet", customer, address));
 
         //Change a field of the object that has to be updated
         fleet.setName("newName");
@@ -197,14 +197,14 @@ public class RESTFleetControllerTest {
         //Perform the put request to update the object and check the fields of the returned object
         try {
             mvc.perform(MockMvcRequestBuilders.put("/fleets/{id}", UUIDUtil.UUIDToNumberString(fleet.getUuid()))
-                .header("Content-Type", "application/json")
-                .header("Authorization", authPair[0])
-                .header("Function", authPair[1])
-                .content(TestUtil.convertObjectToJsonBytes(restFleet))
-        )
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", equalTo(restFleet.getName())))
-                .andExpect(jsonPath("$.company", equalTo(restFleet.getCompany())));
+                    .header("Content-Type", "application/json")
+                    .header("Authorization", authPair[0])
+                    .header("Function", authPair[1])
+                    .content(TestUtil.convertObjectToJsonBytes(restFleet))
+            )
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.name", equalTo(restFleet.getName())))
+                    .andExpect(jsonPath("$.company", equalTo(restFleet.getCompany())));
         } catch (Exception e) {
             remove(fleet.getUuid());
             throw e;
