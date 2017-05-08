@@ -79,7 +79,7 @@ public class RESTUserControllerTest {
     //Look to test password
     @Test
     public void post() throws Exception {
-        RESTUser restUser = new RESTUser(new User("firstNameTest", "lastNameTest", "emailTest@mail.com", "passwordTest"));
+        RESTUser restUser = new RESTUser("firstNameTest", "lastNameTest", "emailTest@mail.com", "passwordTest");
         //Test if response object fields are equal to posted data
         MvcResult result = mvc.perform(MockMvcRequestBuilders.post("/users")
                 .header("Content-Type", "application/json")
@@ -91,7 +91,7 @@ public class RESTUserControllerTest {
                 .andExpect(jsonPath("$.firstName", equalTo(restUser.getFirstName())))
                 .andExpect(jsonPath("$.lastName", equalTo(restUser.getLastName())))
                 .andExpect(jsonPath("$.email", equalTo(restUser.getEmail())))
-                .andExpect(jsonPath("$.password", equalTo(restUser.getPassword())))
+                .andExpect(jsonPath("$.password", equalTo(null)))
                 .andReturn();
 
         //Test if posted object was actually added correctly to the database
@@ -113,7 +113,7 @@ public class RESTUserControllerTest {
     public void deleteId() throws Exception {
         //Add to database directly with DAO
         UserDAO userDAO = manager.getUserDAO();
-        User user = userDAO.create(new User("firstNameTest", "lastNameTest", "emailTest@mail.com", "passwordTest"));
+        User user = userDAO.create(new User("firstNameTest", "lastNameTest", "emailTestt@mail.com", "passwordTest"));
 
         //Attempt to remove from the database with delete request
         mvc.perform(MockMvcRequestBuilders.delete("/users/{id}", UUIDUtil.UUIDToNumberString(user.getUuid()))
@@ -148,7 +148,7 @@ public class RESTUserControllerTest {
                 .andExpect(jsonPath("$.firstName", equalTo(user.getFirstName())))
                 .andExpect(jsonPath("$.lastName", equalTo(user.getLastName())))
                 .andExpect(jsonPath("$.email", equalTo(user.getEmail())))
-                .andExpect(jsonPath("$.password", equalTo(user.getPassword())))
+                .andExpect(jsonPath("$.password", equalTo(null)))
                 .andReturn();
 
         //Clean up database for other tests

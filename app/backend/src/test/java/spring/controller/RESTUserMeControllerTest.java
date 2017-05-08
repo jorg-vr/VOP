@@ -128,7 +128,7 @@ public class RESTUserMeControllerTest {
                 .andExpect(jsonPath("$.firstName", equalTo(user.getFirstName())))
                 .andExpect(jsonPath("$.lastName", equalTo(user.getLastName())))
                 .andExpect(jsonPath("$.email", equalTo(user.getEmail())))
-                .andExpect(jsonPath("$.password", equalTo(user.getPassword())))
+                .andExpect(jsonPath("$.password", equalTo(null)))
                 .andReturn();
     }
 
@@ -159,7 +159,7 @@ public class RESTUserMeControllerTest {
                     .andExpect(jsonPath("$.firstName", equalTo(restUser.getFirstName())))
                     .andExpect(jsonPath("$.lastName", equalTo(restUser.getLastName())))
                     .andExpect(jsonPath("$.email", equalTo(restUser.getEmail())))
-                    .andExpect(jsonPath("$.password", equalTo(restUser.getPassword())))
+                    .andExpect(jsonPath("$.password", equalTo(null)))
                     .andReturn();
         } finally {
             //Clean up database for other tests
