@@ -12,8 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import spring.exceptions.ErrorCode;
 import util.UUIDUtil;
-import spring.exceptions.InvalidInputException;
-import spring.exceptions.NotAuthorizedException;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -40,7 +38,6 @@ public class RESTVehicle extends RESTAbstractModel<Vehicle> {
     private int value;
     private int mileage;
     private String year;
-    private String leasingCompany; //id of leasing company
     private String fleet;
 
     public RESTVehicle() {
@@ -61,7 +58,6 @@ public class RESTVehicle extends RESTAbstractModel<Vehicle> {
         value = vehicle.getValue();
         mileage = vehicle.getMileage();
         year = vehicle.getProductionDate().getYear() + "";
-        leasingCompany = vehicle.getLeasingCompany() != null ? UUIDUtil.UUIDToNumberString(vehicle.getLeasingCompany().getUuid()) : null;
         fleet = vehicle.getFleet() != null ? UUIDUtil.UUIDToNumberString(vehicle.getFleet().getUuid()) : null;
     }
 
@@ -162,14 +158,6 @@ public class RESTVehicle extends RESTAbstractModel<Vehicle> {
 
     public void setYear(String year) {
         this.year = year;
-    }
-
-    public String getLeasingCompany() {
-        return leasingCompany;
-    }
-
-    public void setLeasingCompany(String leasingCompany) {
-        this.leasingCompany = leasingCompany;
     }
 
     public String getFleet() {

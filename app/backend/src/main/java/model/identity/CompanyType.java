@@ -6,7 +6,6 @@ import model.Factory;
 public enum CompanyType {
 
     CUSTOMER(Customer::new),
-    LEASING_COMPANY(LeasingCompany::new),
     INSURANCE_COMPANY(InsuranceCompany::new);
 
     private Factory<Company> factory;

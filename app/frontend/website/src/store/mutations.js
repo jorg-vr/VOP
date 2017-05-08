@@ -8,5 +8,10 @@ export default {
      */
     setLoading(state, {loading}){
         state.loading = loading
+    },
+
+    pushVisitedRoute(state, {route}){
+        state.visitedRoutes.push(route)
     }
+
 }

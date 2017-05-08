@@ -1,6 +1,5 @@
 package database;
 
-import dao.database.ProductionManager;
 import dao.database.ProductionProvider;
 import dao.interfaces.*;
 import model.fleet.Fleet;
@@ -84,8 +83,8 @@ public class VehiclesCollectionTest {
 
             //create vehicles
             f1 = fleetDAO.get(f1.getUuid());
-            v1 = vehicleDAO.create(new Vehicle("brand 2", "model A", "AZ0UZABCUKZ12345L", "ABR 569", 36000, 4900, t1, LocalDate.of(2015, 6, 17), f1, null));
-            v2 = vehicleDAO.create(new Vehicle("brand 3", "model B", "BZ0UZABCUKZ12345L", "BBR 569", 36000, 4900, t1, LocalDate.of(2015, 7, 17), null, null));
+            v1 = vehicleDAO.create(new Vehicle("brand 2", "model A", "AZ0UZABCUKZ12345L", "ABR 569", 36000, 4900, t1, LocalDate.of(2015, 6, 17), f1));
+            v2 = vehicleDAO.create(new Vehicle("brand 3", "model B", "BZ0UZABCUKZ12345L", "BBR 569", 36000, 4900, t1, LocalDate.of(2015, 7, 17), null));
 
             //Test if a vehicle is automatically added to a fleet's vehicles collection when creating the vehicle with a given fleet parameter
             fleetDAO.refresh(f1);
@@ -127,7 +126,7 @@ public class VehiclesCollectionTest {
 
             //create vehicle
             f1 = fleetDAO.get(f1.getUuid());
-            v1 = vehicleDAO.create(new Vehicle("brand 2", "model A", "AZ0UZABCUKZ12345L", "ABR 569", 36000, 4900, t1, LocalDate.of(2015, 6, 17), f1, null));
+            v1 = vehicleDAO.create(new Vehicle("brand 2", "model A", "AZ0UZABCUKZ12345L", "ABR 569", 36000, 4900, t1, LocalDate.of(2015, 6, 17), f1));
 
             //Test if a vehicle is automatically added to a fleet's vehicles collection when creating the vehicle with a given fleet parameter (if this fails the rest of the test is irrelevant)
             fleetDAO.refresh(f1);
