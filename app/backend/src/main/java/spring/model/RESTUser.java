@@ -1,7 +1,6 @@
 package spring.model;
 
 import controller.ControllerManager;
-import model.account.Function;
 import model.account.User;
 import util.UUIDUtil;
 
@@ -31,7 +30,6 @@ public class RESTUser extends RESTAbstractModel<User> {
         firstName = user.getFirstName();
         lastName = user.getLastName();
         email = user.getEmail();
-        password = user.getPassword();
     }
 
     public User translate(ControllerManager manager) {
