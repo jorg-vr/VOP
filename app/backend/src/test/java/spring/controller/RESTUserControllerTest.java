@@ -15,7 +15,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import spring.exceptions.MyExceptionHandler;
 import spring.model.RESTUser;
 import util.UUIDUtil;
 
@@ -36,7 +35,7 @@ public class RESTUserControllerTest {
 
     private MockMvc mvc = MockMvcBuilders.standaloneSetup(new RESTUserController())
             .addPlaceholderValue("path.users", "users")
-            .setControllerAdvice(new MyExceptionHandler())
+            //.setControllerAdvice(new MyExceptionHandler())
             .build();
 
     private static String[] authPair;
@@ -82,7 +81,7 @@ public class RESTUserControllerTest {
     @Test
     public void post() throws Exception {
 
-        RESTUser restUser = new RESTUser(new User("firstNameTest", "lastNameTest", "emailTest@mail.com", "passwordTest"));
+        RESTUser restUser = new RESTUser("firstNameTest", "lastNameTest", "emailTest@mail.com", "passwordTest");
 
         //Perform the post request
         ResultActions resultActions = mvc.perform(MockMvcRequestBuilders.post("/users")
@@ -99,7 +98,7 @@ public class RESTUserControllerTest {
                     .andExpect(jsonPath("$.firstName", equalTo(restUser.getFirstName())))
                     .andExpect(jsonPath("$.lastName", equalTo(restUser.getLastName())))
                     .andExpect(jsonPath("$.email", equalTo(restUser.getEmail())))
-                    .andExpect(jsonPath("$.password", equalTo(restUser.getPassword())));
+                    .andExpect(jsonPath("$.password", equalTo(null)));
         } catch (AssertionError e) {
             remove(restId);
             throw e;
@@ -165,7 +164,7 @@ public class RESTUserControllerTest {
                     .andExpect(jsonPath("$.firstName", equalTo(user.getFirstName())))
                     .andExpect(jsonPath("$.lastName", equalTo(user.getLastName())))
                     .andExpect(jsonPath("$.email", equalTo(user.getEmail())))
-                    .andExpect(jsonPath("$.password", equalTo(user.getPassword())));
+                    .andExpect(jsonPath("$.password", equalTo(null)));
         } catch (Exception e) {
             remove(user.getUuid());
             throw e;

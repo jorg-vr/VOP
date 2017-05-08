@@ -133,7 +133,7 @@ public class RESTUserMeControllerTest {
                 .andExpect(jsonPath("$.firstName", equalTo(user.getFirstName())))
                 .andExpect(jsonPath("$.lastName", equalTo(user.getLastName())))
                 .andExpect(jsonPath("$.email", equalTo(user.getEmail())))
-                .andExpect(jsonPath("$.password", equalTo(user.getPassword())))
+                .andExpect(jsonPath("$.password", equalTo(null)))
                 .andReturn();
     }
 
