@@ -62,8 +62,9 @@ Generic component for a form. Every form should be encapsulated in this componen
              * index page of the resource of the object.
              */
             submit(){
-                console.log(this.resource.name)
+                //TODO: exceptions should be passed as props.
                 console.log(this.object)
+
                 if(this.resource.name == 'insurance'){
                     console.log('speciale dispatch voor insurance')
                     console.log(this.actions.name+'Surety')

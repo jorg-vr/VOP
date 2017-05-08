@@ -32,9 +32,9 @@ All of the fields for insurance input for the insurance form
 </template>
 <script>
     import {mapGetters, mapActions} from 'vuex'
-    import formInput from '../elements/formInput.vue'
-    import formDateInput from '../elements/formDateInput.vue'
-    import formSelect from '../elements/formSelect.vue'
+    import formInput from '../FormGroups/TextInputFormGroup.vue'
+    import formDateInput from '../FormGroups/DateInputFormGroup.vue'
+    import formSelect from '../FormGroups/SelectInputFormGroup.vue'
     import clientTypes from '../../../constants/clientTypes'
 
     export default {
