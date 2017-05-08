@@ -82,7 +82,7 @@ router.beforeEach((to, from, next) => {
             next({path: '/login'});
         }
     }
-
+    store.commit('pushVisitedRoute', {route: from})
 })
 
 String.prototype.capitalize = function() {
