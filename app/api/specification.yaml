@@ -3478,7 +3478,7 @@ definitions:
         type: integer
         format: int64
       beneficiary:
-        description: The ID ofthe company that the amount has to be paid to
+        description: The ID of the company that the amount has to be paid to
         type: integer
         format: int64
       paid:
@@ -3540,6 +3540,14 @@ definitions:
         readOnly: true
         type: integer
         format: int64
+      payer:
+        description: The ID of the company this invoice belongs to
+        type: integer
+        format: int64
+      beneficiary:
+        description: The ID of the company that the amount has to be paid to
+        type: integer
+        format: int64
       vehicle:
         description: The ID of the vehicle this correction is for
         type: integer
@@ -3560,6 +3568,12 @@ definitions:
         description: >-
           The amount of money in cents this correction adds or subtracts to the
           contract.
+        type: integer
+        format: int64
+      tax:
+        description: >-
+          The total amount of tax in cents that has to be paid in this
+          correction.
         type: integer
         format: int64
       type:
