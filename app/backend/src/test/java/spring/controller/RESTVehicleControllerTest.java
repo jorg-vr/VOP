@@ -104,9 +104,9 @@ public class RESTVehicleControllerTest {
     @Test
     public void get() throws Exception {
         VehicleDAO vehicleDAO = manager.getVehicleDAO();
-        Vehicle vehicle1 = vehicleDAO.create(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAA", "ABC 123", 30000, 2500, vehicleType, localDate, fleet1, null));
-        Vehicle vehicle2 = vehicleDAO.create(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAB", "ABC 124", 30000, 2500, vehicleType, localDate, fleet2, null));
-        Vehicle vehicle3 = vehicleDAO.create(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAC", "ABC 125", 30000, 2500, vehicleType, localDate, fleet3, null));
+        Vehicle vehicle1 = vehicleDAO.create(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAA", "ABC 123", 30000, 2500, vehicleType, localDate, fleet1));
+        Vehicle vehicle2 = vehicleDAO.create(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAB", "ABC 124", 30000, 2500, vehicleType, localDate, fleet2));
+        Vehicle vehicle3 = vehicleDAO.create(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAC", "ABC 125", 30000, 2500, vehicleType, localDate, fleet3));
 
         try {
             mvc.perform(MockMvcRequestBuilders.get("/vehicles")
@@ -133,7 +133,7 @@ public class RESTVehicleControllerTest {
      */
     @Test
     public void post() throws Exception {
-        RESTVehicle restVehicle = new RESTVehicle(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAA", "ABC 123", 30000, 2500, vehicleType, localDate, fleet1, null));
+        RESTVehicle restVehicle = new RESTVehicle(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAA", "ABC 123", 30000, 2500, vehicleType, localDate, fleet1));
         //Test if response object fields are equal to posted data
         MvcResult result = mvc.perform(MockMvcRequestBuilders.post("/vehicles")
                 .header("Content-Type", "application/json")
@@ -150,7 +150,6 @@ public class RESTVehicleControllerTest {
                 .andExpect(jsonPath("$.value", equalTo(restVehicle.getValue())))
                 .andExpect(jsonPath("$.mileage", equalTo(restVehicle.getMileage())))
                 .andExpect(jsonPath("$.year", equalTo(restVehicle.getYear())))
-                .andExpect(jsonPath("$.leasingCompany", equalTo(restVehicle.getLeasingCompany())))
                 .andExpect(jsonPath("$.fleet", equalTo(restVehicle.getFleet())))
                 .andReturn();
 
@@ -167,7 +166,6 @@ public class RESTVehicleControllerTest {
             assertEquals("value field not created correctly", 30000, vehicle.getValue());
             assertEquals("mileage field not created correctly", 2500, vehicle.getMileage());
             assertEquals("productionDate field not created correctly", localDate, vehicle.getProductionDate());
-            assertEquals("leasingCompany field not created correctly", null, vehicle.getLeasingCompany());
             assertEquals("fleet field not created correctly", fleet1, vehicle.getFleet());
             vehicleDAO.remove(UUIDUtil.toUUID(restVehicle1.getId()));
         } catch (ObjectNotFoundException e) {
@@ -184,7 +182,7 @@ public class RESTVehicleControllerTest {
     public void deleteId() throws Exception {
         //Add to database directly with DAO
         VehicleDAO vehicleDAO = manager.getVehicleDAO();
-        Vehicle vehicle = vehicleDAO.create(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAA", "ABC 123", 30000, 2500, vehicleType, localDate, fleet1, null));
+        Vehicle vehicle = vehicleDAO.create(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAA", "ABC 123", 30000, 2500, vehicleType, localDate, fleet1));
 
         //Attempt to remove from the database with delete request
         mvc.perform(MockMvcRequestBuilders.delete("/vehicles/{id}", UUIDUtil.UUIDToNumberString(vehicle.getUuid()))
@@ -213,7 +211,7 @@ public class RESTVehicleControllerTest {
     public void getId() throws Exception {
         //Add to database directly with DAO
         VehicleDAO vehicleDAO = manager.getVehicleDAO();
-        Vehicle vehicle = vehicleDAO.create(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAA", "ABC 123", 30000, 2500, vehicleType, localDate, fleet1, null));
+        Vehicle vehicle = vehicleDAO.create(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAA", "ABC 123", 30000, 2500, vehicleType, localDate, fleet1));
 
         //Attempt to retrieve the object with the given id
         mvc.perform(MockMvcRequestBuilders.get("/vehicles/{id}", UUIDUtil.UUIDToNumberString(vehicle.getUuid()))
@@ -229,7 +227,6 @@ public class RESTVehicleControllerTest {
                 .andExpect(jsonPath("$.value", equalTo(vehicle.getValue())))
                 .andExpect(jsonPath("$.mileage", equalTo(vehicle.getMileage())))
                 .andExpect(jsonPath("$.year", equalTo(Integer.toString(vehicle.getProductionDate().getYear()))))
-                //.andExpect(jsonPath("$.leasingCompany", equalTo(UUIDUtil.UUIDToNumberString(vehicle.getLeasingCompany().getUuid()))))
                 .andExpect(jsonPath("$.fleet", equalTo(UUIDUtil.UUIDToNumberString(vehicle.getFleet().getUuid()))))
                 .andReturn();
 
@@ -246,7 +243,7 @@ public class RESTVehicleControllerTest {
     public void putId() throws Exception {
         //Add to database directly with DAO
         VehicleDAO vehicleDAO = manager.getVehicleDAO();
-        Vehicle vehicle = vehicleDAO.create(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAA", "ABC 123", 30000, 2500, vehicleType, localDate, fleet1, null));
+        Vehicle vehicle = vehicleDAO.create(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAA", "ABC 123", 30000, 2500, vehicleType, localDate, fleet1));
 
         //Change a field of the object that has to be updated
         vehicle.setMileage(3500);
@@ -267,7 +264,6 @@ public class RESTVehicleControllerTest {
                 .andExpect(jsonPath("$.value", equalTo(restVehicle.getValue())))
                 .andExpect(jsonPath("$.mileage", equalTo(restVehicle.getMileage())))
                 .andExpect(jsonPath("$.year", equalTo(restVehicle.getYear())))
-                .andExpect(jsonPath("$.leasingCompany", equalTo(restVehicle.getLeasingCompany())))
                 .andExpect(jsonPath("$.fleet", equalTo(restVehicle.getFleet())))
                 .andReturn();
 
@@ -283,7 +279,6 @@ public class RESTVehicleControllerTest {
             assertEquals("value field not updated correctly", 30000, vehicle1.getValue());
             assertEquals("mileage field not updated correctly", 3500, vehicle1.getMileage());
             assertEquals("productionDate field not updated correctly", localDate, vehicle1.getProductionDate());
-            assertEquals("leasingCompany field not updated correctly", null, vehicle1.getLeasingCompany());
             assertEquals("fleet field not updated correctly", fleet1, vehicle1.getFleet());
             //Clean up database for other tests
             vehicleDAO.remove(vehicle.getUuid());
@@ -300,9 +295,9 @@ public class RESTVehicleControllerTest {
     @Test
     public void getNested() throws Exception {
         VehicleDAO vehicleDAO = manager.getVehicleDAO();
-        Vehicle vehicle1 = vehicleDAO.create(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAA", "ABC 123", 30000, 2500, vehicleType, localDate, fleet1, null));
-        Vehicle vehicle2 = vehicleDAO.create(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAB", "ABC 124", 30000, 2500, vehicleType, localDate, fleet2, null));
-        Vehicle vehicle3 = vehicleDAO.create(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAC", "ABC 125", 30000, 2500, vehicleType, localDate, fleet3, null));
+        Vehicle vehicle1 = vehicleDAO.create(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAA", "ABC 123", 30000, 2500, vehicleType, localDate, fleet1));
+        Vehicle vehicle2 = vehicleDAO.create(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAB", "ABC 124", 30000, 2500, vehicleType, localDate, fleet2));
+        Vehicle vehicle3 = vehicleDAO.create(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAC", "ABC 125", 30000, 2500, vehicleType, localDate, fleet3));
 
         try {
             mvc.perform(MockMvcRequestBuilders.get("/companies/" + UUIDUtil.UUIDToNumberString(customer1.getUuid()) + "/fleets/" + UUIDUtil.UUIDToNumberString(fleet2.getUuid()) + "/vehicles")
@@ -329,7 +324,7 @@ public class RESTVehicleControllerTest {
      */
     @Test
     public void postNested() throws Exception {
-        RESTVehicle restVehicle = new RESTVehicle(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAA", "ABC 123", 30000, 2500, vehicleType, localDate, fleet1, null));
+        RESTVehicle restVehicle = new RESTVehicle(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAA", "ABC 123", 30000, 2500, vehicleType, localDate, fleet1));
         //Test if response object fields are equal to posted data
         MvcResult result = mvc.perform(MockMvcRequestBuilders.post("/companies/" + UUIDUtil.UUIDToNumberString(customer1.getUuid()) + "/fleets/" + UUIDUtil.UUIDToNumberString(fleet1.getUuid()) + "/vehicles")
                 .header("Content-Type", "application/json")
@@ -346,7 +341,6 @@ public class RESTVehicleControllerTest {
                 .andExpect(jsonPath("$.value", equalTo(restVehicle.getValue())))
                 .andExpect(jsonPath("$.mileage", equalTo(restVehicle.getMileage())))
                 .andExpect(jsonPath("$.year", equalTo(restVehicle.getYear())))
-                .andExpect(jsonPath("$.leasingCompany", equalTo(restVehicle.getLeasingCompany())))
                 .andExpect(jsonPath("$.fleet", equalTo(restVehicle.getFleet())))
                 .andReturn();
 
@@ -363,7 +357,6 @@ public class RESTVehicleControllerTest {
             assertEquals("value field not created correctly", 30000, vehicle.getValue());
             assertEquals("mileage field not created correctly", 2500, vehicle.getMileage());
             assertEquals("productionDate field not created correctly", localDate, vehicle.getProductionDate());
-            assertEquals("leasingCompany field not created correctly", null, vehicle.getLeasingCompany());
             assertEquals("fleet field not created correctly", fleet1, vehicle.getFleet());
             vehicleDAO.remove(UUIDUtil.toUUID(restVehicle1.getId()));
         } catch (ObjectNotFoundException e) {
@@ -380,7 +373,7 @@ public class RESTVehicleControllerTest {
     public void deleteIdNested() throws Exception {
         //Add to database directly with DAO
         VehicleDAO vehicleDAO = manager.getVehicleDAO();
-        Vehicle vehicle = vehicleDAO.create(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAA", "ABC 123", 30000, 2500, vehicleType, localDate, fleet1, null));
+        Vehicle vehicle = vehicleDAO.create(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAA", "ABC 123", 30000, 2500, vehicleType, localDate, fleet1));
 
         //Attempt to remove from the database with delete request
         mvc.perform(MockMvcRequestBuilders.delete("/companies/" + UUIDUtil.UUIDToNumberString(customer1.getUuid()) + "/fleets/" + UUIDUtil.UUIDToNumberString(fleet1.getUuid()) + "/vehicles/{id}", UUIDUtil.UUIDToNumberString(vehicle.getUuid()))
@@ -409,7 +402,7 @@ public class RESTVehicleControllerTest {
     public void getIdNested() throws Exception {
         //Add to database directly with DAO
         VehicleDAO vehicleDAO = manager.getVehicleDAO();
-        Vehicle vehicle = vehicleDAO.create(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAA", "ABC 123", 30000, 2500, vehicleType, localDate, fleet1, null));
+        Vehicle vehicle = vehicleDAO.create(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAA", "ABC 123", 30000, 2500, vehicleType, localDate, fleet1));
 
         //Attempt to retrieve the object with the given id
         mvc.perform(MockMvcRequestBuilders.get("/companies/" + UUIDUtil.UUIDToNumberString(customer1.getUuid()) + "/fleets/" + UUIDUtil.UUIDToNumberString(fleet1.getUuid()) + "/vehicles/{id}", UUIDUtil.UUIDToNumberString(vehicle.getUuid()))
@@ -425,7 +418,6 @@ public class RESTVehicleControllerTest {
                 .andExpect(jsonPath("$.value", equalTo(vehicle.getValue())))
                 .andExpect(jsonPath("$.mileage", equalTo(vehicle.getMileage())))
                 .andExpect(jsonPath("$.year", equalTo(Integer.toString(vehicle.getProductionDate().getYear()))))
-                //.andExpect(jsonPath("$.leasingCompany", equalTo(UUIDUtil.UUIDToNumberString(vehicle.getLeasingCompany().getUuid()))))
                 .andExpect(jsonPath("$.fleet", equalTo(UUIDUtil.UUIDToNumberString(vehicle.getFleet().getUuid()))))
                 .andReturn();
 
@@ -442,7 +434,7 @@ public class RESTVehicleControllerTest {
     public void putIdNested() throws Exception {
         //Add to database directly with DAO
         VehicleDAO vehicleDAO = manager.getVehicleDAO();
-        Vehicle vehicle = vehicleDAO.create(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAA", "ABC 123", 30000, 2500, vehicleType, localDate, fleet1, null));
+        Vehicle vehicle = vehicleDAO.create(new Vehicle("brand 1", "model A", "AAAAAAAAAAAAAAAAA", "ABC 123", 30000, 2500, vehicleType, localDate, fleet1));
 
         //Change a field of the object that has to be updated
         vehicle.setMileage(3500);
@@ -463,7 +455,6 @@ public class RESTVehicleControllerTest {
                 .andExpect(jsonPath("$.value", equalTo(restVehicle.getValue())))
                 .andExpect(jsonPath("$.mileage", equalTo(restVehicle.getMileage())))
                 .andExpect(jsonPath("$.year", equalTo(restVehicle.getYear())))
-                .andExpect(jsonPath("$.leasingCompany", equalTo(restVehicle.getLeasingCompany())))
                 .andExpect(jsonPath("$.fleet", equalTo(restVehicle.getFleet())))
                 .andReturn();
 
@@ -479,7 +470,6 @@ public class RESTVehicleControllerTest {
             assertEquals("value field not updated correctly", 30000, vehicle1.getValue());
             assertEquals("mileage field not updated correctly", 3500, vehicle1.getMileage());
             assertEquals("productionDate field not updated correctly", localDate, vehicle1.getProductionDate());
-            assertEquals("leasingCompany field not updated correctly", null, vehicle1.getLeasingCompany());
             assertEquals("fleet field not updated correctly", fleet1, vehicle1.getFleet());
             //Clean up database for other tests
             vehicleDAO.remove(vehicle.getUuid());

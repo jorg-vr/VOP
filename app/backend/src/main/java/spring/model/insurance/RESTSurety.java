@@ -1,16 +1,25 @@
 package spring.model.insurance;
 
 import controller.ControllerManager;
+import controller.InsuranceCompanyController;
 import controller.exceptions.UnAuthorizedException;
-import model.account.Function;
-import model.insurance.NonFlatSurety;
-import model.insurance.FlatSurety;
-import model.insurance.Surety;
-import model.insurance.SuretyType;
+import controller.insurance.SpecialConditionController;
+import dao.exceptions.ConstraintViolationException;
+import dao.exceptions.DataAccessException;
+import dao.exceptions.ObjectNotFoundException;
+import model.insurance.*;
+import spring.exceptions.ErrorCode;
 import spring.model.RESTAbstractModel;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static util.MyProperties.PATH_SURETIES;
 import static util.MyProperties.getProperty;
+import static util.UUIDUtil.UUIDToNumberString;
+import static util.UUIDUtil.toUUID;
 
 /**
  * Created by Billie Devolder on 18/04/2017.
@@ -26,6 +35,8 @@ public class RESTSurety extends RESTAbstractModel<Surety> {
     private double premiumPercentage;
 
     private SuretyType suretyType;
+    private List<RESTSpecialCondition> specialConditions;
+    private String insuranceCompany;
 
     public RESTSurety() {
     }
@@ -43,20 +54,53 @@ public class RESTSurety extends RESTAbstractModel<Surety> {
             this.premiumPercentage = nonFlatSurety.getPremiumPercentage();
         }
         this.suretyType = surety.getSuretyType();
+        this.insuranceCompany = UUIDToNumberString(surety.getInsuranceCompany().getUuid());
+        this.specialConditions = new ArrayList<>();
+        for (SpecialCondition specialCondition : surety.getSpecialConditions()) {
+            this.specialConditions.add(new RESTSpecialCondition(specialCondition));
+        }
     }
 
     @Override
-    public Surety translate(ControllerManager manager) throws UnAuthorizedException {
+    public Surety translate(ControllerManager manager) throws UnAuthorizedException, DataAccessException, ConstraintViolationException {
+        Surety surety;
         if (isFlat) {
-            FlatSurety surety = new FlatSurety();
-            surety.setPremium(premium);
-            return surety;
+            FlatSurety flatSurety = new FlatSurety();
+            flatSurety.setPremium(premium);
+            surety = flatSurety;
         } else {
-            NonFlatSurety surety = new NonFlatSurety();
-            surety.setMinPremium(premium);
-            surety.setPremiumPercentage(premiumPercentage);
-            return surety;
+            NonFlatSurety nonFlatSurety = new NonFlatSurety();
+            nonFlatSurety.setMinPremium(premium);
+            nonFlatSurety.setPremiumPercentage(premiumPercentage);
+            surety = nonFlatSurety;
         }
+
+        Map<String, String> violations = new HashMap<>();
+        try {
+            SpecialConditionController controller = manager.getSpecialConditionController();
+
+            List<SpecialCondition> conditions = new ArrayList<>();
+            for (RESTSpecialCondition item : specialConditions) {
+                SpecialCondition condition = controller.get(toUUID(item.getId()));
+                conditions.add(condition);
+            }
+            surety.setSpecialConditions(conditions);
+        } catch (ObjectNotFoundException e) {
+            violations.put("specialConditions", ErrorCode.NOT_FOUND + "");
+        }
+        try {
+            InsuranceCompanyController controller = manager.getInsuranceCompanyController();
+            surety.setInsuranceCompany(controller.get(toUUID(insuranceCompany)));
+        } catch (ObjectNotFoundException e) {
+            violations.put("insuranceCompany", ErrorCode.NOT_FOUND + "");
+        }
+
+        if (violations.size() > 0) {
+            throw new ConstraintViolationException(violations);
+        }
+
+        surety.setUuid(toUUID(getId()));
+        return surety;
     }
 
     public boolean isFlat() {
@@ -89,5 +133,21 @@ public class RESTSurety extends RESTAbstractModel<Surety> {
 
     public void setSuretyType(SuretyType suretyType) {
         this.suretyType = suretyType;
+    }
+
+    public List<RESTSpecialCondition> getSpecialConditions() {
+        return specialConditions;
+    }
+
+    public void setSpecialConditions(List<RESTSpecialCondition> specialConditions) {
+        this.specialConditions = specialConditions;
+    }
+
+    public String getInsuranceCompany() {
+        return insuranceCompany;
+    }
+
+    public void setInsuranceCompany(String insuranceCompany) {
+        this.insuranceCompany = insuranceCompany;
     }
 }

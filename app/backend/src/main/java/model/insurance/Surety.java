@@ -2,7 +2,9 @@ package model.insurance;
 
 
 import model.history.EditableObject;
+import model.identity.InsuranceCompany;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
 
@@ -13,6 +15,7 @@ public  abstract class Surety implements EditableObject {
 
     private UUID uuid;
     private Collection<SpecialCondition> specialConditions;
+    private InsuranceCompany insuranceCompany;
 
     // Type of surety included
     private SuretyType suretyType;
@@ -66,6 +69,29 @@ public  abstract class Surety implements EditableObject {
     @Override
     public int hashCode() {
         return getUuid().hashCode();
+    }
+
+    public Collection<SpecialCondition> getSpecialConditions() {
+        return specialConditions;
+    }
+
+    public void setSpecialConditions(Collection<SpecialCondition> specialConditions) {
+        this.specialConditions = specialConditions;
+    }
+
+    public void addSpecialCondition(SpecialCondition specialCondition) {
+        if (specialConditions == null) {
+            specialConditions = new ArrayList<>();
+        }
+        specialConditions.add(specialCondition);
+    }
+
+    public InsuranceCompany getInsuranceCompany() {
+        return insuranceCompany;
+    }
+
+    public void setInsuranceCompany(InsuranceCompany insuranceCompany) {
+        this.insuranceCompany = insuranceCompany;
     }
 
 }

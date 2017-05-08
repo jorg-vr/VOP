@@ -1,7 +1,6 @@
 package model.fleet;
 
 import model.history.EditableObject;
-import model.identity.LeasingCompany;
 import model.insurance.SuretyType;
 import spring.exceptions.InvalidInputException;
 
@@ -32,7 +31,6 @@ public class Vehicle implements EditableObject, java.io.Serializable {
 
     private VehicleType type;
 
-    private LeasingCompany leasingCompany;
 
     private Fleet fleet;
 
@@ -42,7 +40,7 @@ public class Vehicle implements EditableObject, java.io.Serializable {
         commissions = new HashMap<>();
     }
 
-    public Vehicle(String brand, String model, String chassisNumber, String licensePlate, int value, int mileage, VehicleType type, LocalDate productionDate, Fleet fleet, LeasingCompany leasingCompany) throws InvalidInputException {
+    public Vehicle(String brand, String model, String chassisNumber, String licensePlate, int value, int mileage, VehicleType type, LocalDate productionDate, Fleet fleet) throws InvalidInputException {
         this.brand = brand;
         this.model = model;
         this.productionDate = productionDate;
@@ -51,7 +49,6 @@ public class Vehicle implements EditableObject, java.io.Serializable {
         setValue(value);
         setMileage(mileage);
         this.type = type;
-        this.leasingCompany = leasingCompany;
         this.fleet = fleet;
         commissions = new HashMap<>();
     }
@@ -67,12 +64,6 @@ public class Vehicle implements EditableObject, java.io.Serializable {
         setMileage(mileage);
         this.type = type;
         this.fleet = fleet;
-        commissions = new HashMap<>();
-    }
-
-    public Vehicle(UUID uuid, String brand, String model, String licensePlate, LocalDate productionDate, String chassisNumber, int value, int mileage, VehicleType type, Fleet fleet, LeasingCompany leasingCompany) throws InvalidInputException {
-        this(uuid, brand, model, licensePlate, productionDate, chassisNumber, value, mileage, type, fleet);
-        this.leasingCompany = leasingCompany;
         commissions = new HashMap<>();
     }
 
@@ -194,14 +185,6 @@ public class Vehicle implements EditableObject, java.io.Serializable {
 
     public void setType(VehicleType type) {
         this.type = type;
-    }
-
-    public LeasingCompany getLeasingCompany() {
-        return leasingCompany;
-    }
-
-    public void setLeasingCompany(LeasingCompany leasingCompany) {
-        this.leasingCompany = leasingCompany;
     }
 
     /**
