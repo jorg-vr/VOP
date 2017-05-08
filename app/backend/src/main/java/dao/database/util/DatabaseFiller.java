@@ -52,23 +52,6 @@ public class DatabaseFiller {
             InvoiceDAO invoiceDAO = provider.getInvoiceDao();
             SpecialConditionDAO specialConditionDAO = provider.getSpecialConditionDao();
 
-            String[] titles = {"Euromex polisnummer", "Dekking terrorisme TRIP"};
-            String[] texts = {"Voor de dekking rechtsbijstand geldt het Euromes polisnummer 3020980", "lange tekst"};
-            String[] referenceCodes = {"024", "029"};
-            List<SpecialCondition> specialConditions = new ArrayList<>();
-
-            for (int i = 0; i < titles.length; i++) {
-                SpecialCondition specialCondition = new SpecialCondition(titles[i], texts[i], referenceCodes[i]);
-                specialConditionDAO.create(specialCondition);
-                specialConditions.add(specialCondition);
-            }
-
-            Surety flatSurety = new FlatSurety(100);
-            flatSurety.setSuretyType(SuretyType.OMNIUM_FULL);
-            flatSurety.setSpecialConditions(specialConditions);
-            suretyDAO.create(flatSurety);
-
-
             Company solvas = new Company();
             solvas.setName("Solvas");
             solvas.setCompanyType(CompanyType.CUSTOMER);
@@ -85,6 +68,21 @@ public class DatabaseFiller {
                 insuranceCompany.setAddress(address);
                 insuranceCompany.setName("Bedrijf " + Integer.toString(i));
 
+                String[] titles = {"Euromex polisnummer", "Dekking terrorisme TRIP"};
+                String[] texts = {"Voor de dekking rechtsbijstand geldt het Euromes polisnummer 3020980", "lange tekst"};
+                String[] referenceCodes = {"024", "029"};
+                List<SpecialCondition> specialConditions = new ArrayList<>();
+
+                for (int j = 0; j < titles.length; j++) {
+                    SpecialCondition specialCondition = new SpecialCondition(titles[j], texts[j], referenceCodes[j]);
+                    specialConditions.add(specialCondition);
+                }
+
+                Surety flatSurety = new FlatSurety(i * 100);
+                flatSurety.setSuretyType(SuretyType.OMNIUM_FULL);
+                flatSurety.setSpecialConditions(specialConditions);
+                flatSurety.setInsuranceCompany(insuranceCompany);
+
                 Contract contract = new Contract();
                 contract.setCustomer(customer);
                 contract.setCompany(insuranceCompany);
@@ -97,6 +95,11 @@ public class DatabaseFiller {
                 addressDAO.create(address2);
                 insuranceCompanyDAO.create(insuranceCompany);
                 contractDAO.create(contract);
+                for (SpecialCondition specialCondition: specialConditions) {
+                    specialConditionDAO.create(specialCondition);
+                }
+                suretyDAO.create(flatSurety);
+
 
                 Invoice invoice = new Invoice();
                 invoice.setContracts(new ArrayList<Contract>(Arrays.asList(new Contract[]{contract})));
@@ -280,13 +283,13 @@ public class DatabaseFiller {
             CompanyDAO companyDAO = provider.getCompanyDAO();
 
 
-            Company solvas = new Company();
+            InsuranceCompany solvas = new InsuranceCompany();
             solvas.setName("Solvas");
-            solvas.setCompanyType(CompanyType.CUSTOMER);
             companyDAO.create(solvas);
 
             Surety flatSurety = new FlatSurety(100);
             flatSurety.setSuretyType(SuretyType.OMNIUM_FULL);
+            flatSurety.setInsuranceCompany(solvas);
             suretyDAO.create(flatSurety);
 
 

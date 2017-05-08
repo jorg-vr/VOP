@@ -1,6 +1,7 @@
 package spring.model.insurance;
 
 import controller.ControllerManager;
+import controller.InsuranceCompanyController;
 import controller.exceptions.UnAuthorizedException;
 import controller.insurance.SpecialConditionController;
 import dao.exceptions.ConstraintViolationException;
@@ -17,6 +18,7 @@ import java.util.Map;
 
 import static util.MyProperties.PATH_SURETIES;
 import static util.MyProperties.getProperty;
+import static util.UUIDUtil.UUIDToNumberString;
 import static util.UUIDUtil.toUUID;
 
 /**
@@ -33,8 +35,8 @@ public class RESTSurety extends RESTAbstractModel<Surety> {
     private double premiumPercentage;
 
     private SuretyType suretyType;
-
     private List<RESTSpecialCondition> specialConditions;
+    private String insuranceCompany;
 
     public RESTSurety() {
     }
@@ -52,8 +54,9 @@ public class RESTSurety extends RESTAbstractModel<Surety> {
             this.premiumPercentage = nonFlatSurety.getPremiumPercentage();
         }
         this.suretyType = surety.getSuretyType();
+        this.insuranceCompany = UUIDToNumberString(surety.getInsuranceCompany().getUuid());
         this.specialConditions = new ArrayList<>();
-        for (SpecialCondition specialCondition: surety.getSpecialConditions()) {
+        for (SpecialCondition specialCondition : surety.getSpecialConditions()) {
             this.specialConditions.add(new RESTSpecialCondition(specialCondition));
         }
     }
@@ -72,21 +75,30 @@ public class RESTSurety extends RESTAbstractModel<Surety> {
             surety = nonFlatSurety;
         }
 
-        SpecialConditionController controller = manager.getSpecialConditionController();
         Map<String, String> violations = new HashMap<>();
-        List<SpecialCondition> conditions = new ArrayList<>();
-        for (RESTSpecialCondition item: specialConditions) {
-            try {
+        try {
+            SpecialConditionController controller = manager.getSpecialConditionController();
+
+            List<SpecialCondition> conditions = new ArrayList<>();
+            for (RESTSpecialCondition item : specialConditions) {
                 SpecialCondition condition = controller.get(toUUID(item.getId()));
                 conditions.add(condition);
-            } catch (ObjectNotFoundException e) {
-                violations.put("specialConditions", ErrorCode.NOT_FOUND + "");
             }
+            surety.setSpecialConditions(conditions);
+        } catch (ObjectNotFoundException e) {
+            violations.put("specialConditions", ErrorCode.NOT_FOUND + "");
         }
+        try {
+            InsuranceCompanyController controller = manager.getInsuranceCompanyController();
+            surety.setInsuranceCompany(controller.get(toUUID(insuranceCompany)));
+        } catch (ObjectNotFoundException e) {
+            violations.put("insuranceCompany", ErrorCode.NOT_FOUND + "");
+        }
+
         if (violations.size() > 0) {
             throw new ConstraintViolationException(violations);
         }
-        surety.setSpecialConditions(conditions);
+
         surety.setUuid(toUUID(getId()));
         return surety;
     }
@@ -129,5 +141,13 @@ public class RESTSurety extends RESTAbstractModel<Surety> {
 
     public void setSpecialConditions(List<RESTSpecialCondition> specialConditions) {
         this.specialConditions = specialConditions;
+    }
+
+    public String getInsuranceCompany() {
+        return insuranceCompany;
+    }
+
+    public void setInsuranceCompany(String insuranceCompany) {
+        this.insuranceCompany = insuranceCompany;
     }
 }
