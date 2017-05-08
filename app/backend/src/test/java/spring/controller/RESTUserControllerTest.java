@@ -57,6 +57,7 @@ public class RESTUserControllerTest {
     @Test
     public void get() throws Exception {
 
+        //Add to database directly with DAO
         User user = create(new User("firstNameTest", "lastNameTest", "emailTest@mail.com", "passwordTest"));
 
         try {
@@ -81,6 +82,7 @@ public class RESTUserControllerTest {
     @Test
     public void post() throws Exception {
 
+        //Add to database directly with DAO
         RESTUser restUser = new RESTUser(new User("firstNameTest", "lastNameTest", "emailTest@mail.com", "passwordTest"));
 
         //Perform the post request
