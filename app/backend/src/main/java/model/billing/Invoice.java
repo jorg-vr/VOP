@@ -63,6 +63,15 @@ public class Invoice implements EditableObject, java.io.Serializable {
         this.contracts = new ArrayList<>();
     }
 
+    /**
+     * Constructor
+     * @param payer the payer
+     * @param beneficiary the beneficiary
+     * @param type the type of invoice
+     * @param paid paid (probably false)
+     * @param startDate the start date
+     * @param endDate the end date
+     */
     public Invoice(Company payer, Company beneficiary, InvoiceType type, boolean paid, LocalDateTime startDate, LocalDateTime endDate) {
         this.payer = payer;
         this.beneficiary = beneficiary;
@@ -96,9 +105,22 @@ public class Invoice implements EditableObject, java.io.Serializable {
         }
         return totalTax;
     }
+
+    /**
+     * Copies the object
+     * @return the copy
+     */
     @Override
     public EditableObject copy() {
-        return null;
+        Invoice invoice = new Invoice();
+        invoice.setType(type);
+        invoice.setUuid(uuid);
+        invoice.setStartDate(startDate);
+        invoice.setEndDate(endDate);
+        invoice.setPayer(payer);
+        invoice.setBeneficiary(beneficiary);
+        invoice.setContracts(contracts);
+        return invoice;
     }
 
     @Override
@@ -181,12 +203,13 @@ public class Invoice implements EditableObject, java.io.Serializable {
 
         Invoice that = (Invoice) o;
 
-        return getUuid().equals(that.getUuid());
+        return uuid!=null&&getUuid().equals(that.getUuid());
 
     }
 
     @Override
     public int hashCode() {
-        return getUuid().hashCode();
+        if(uuid!=null){return getUuid().hashCode();}
+        return super.hashCode();
     }
 }
