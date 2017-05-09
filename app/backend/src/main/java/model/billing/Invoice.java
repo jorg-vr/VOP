@@ -123,71 +123,139 @@ public class Invoice implements EditableObject, java.io.Serializable {
         return invoice;
     }
 
+    /**
+     * Gets the id
+     * @return the id
+     */
     @Override
     public UUID getUuid() {
         return uuid;
     }
 
+    /**
+     * Sets the id
+     * @param uuid the id
+     */
     public void setUuid(UUID uuid) {
         this.uuid = uuid;
     }
 
+    /**
+     * Gets the payer
+     * @return the payer
+     */
     public Company getPayer() {
         return payer;
     }
 
+    /**
+     * Sets the payer
+     * @param payer the payer
+     */
     public void setPayer(Company payer) {
         this.payer = payer;
     }
 
+    /**
+     * Gets the Beneficiary
+     * @return the beneficiary
+     */
     public Company getBeneficiary() {
         return beneficiary;
     }
 
+    /**
+     * Sets the beneficiary
+     * @param beneficiary the beneficiary
+     */
     public void setBeneficiary(Company beneficiary) {
         this.beneficiary = beneficiary;
     }
 
+    /**
+     * Gets paid status
+     * @return true if paid, false if not
+     */
     public boolean isPaid() {
         return paid;
     }
 
+    /**
+     * Sets the paid status
+     * @param paid the status
+     */
     public void setPaid(boolean paid) {
         this.paid = paid;
     }
 
+    /**
+     * Gets the start date
+     * @return the start date
+     */
     public LocalDateTime getStartDate() {
         return startDate;
     }
 
+    /**
+     * Sets the start date
+     * @param startDate the start date
+     */
     public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
     }
 
+    /**
+     * Gets the end date
+     * @return the end date
+     */
     public LocalDateTime getEndDate() {
         return endDate;
     }
 
+    /**
+     * Sets the end date
+     * @param endDate the end date
+     */
     public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
     }
 
+    /**
+     * Gets the type
+     * @return the type
+     */
     public InvoiceType getType() {
         return type;
     }
 
+    /**
+     * Sets the type
+     * @param type the type
+     */
     public void setType(InvoiceType type) {
         this.type = type;
     }
 
+    /**
+     * Gets the contracts
+     * @return the contracts
+     */
     public Collection<Contract> getContracts() {
         return contracts;
     }
 
+    /**
+     * Sets the contracts
+     * @param contracts the contracts
+     */
     public void setContracts(Collection<Contract> contracts) {
         this.contracts = contracts;
     }
 
+    /**
+     * Adds a new contract
+     * @param contract the contract
+     */
     public void addContract(Contract contract){
         if(contracts==null){
             contracts = new HashSet<>();
