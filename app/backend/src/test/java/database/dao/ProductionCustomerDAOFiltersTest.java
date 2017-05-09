@@ -1,7 +1,9 @@
-package dao.database;
+package database.dao;
 
+import dao.database.ProductionProvider;
 import dao.interfaces.CustomerDAO;
 import dao.interfaces.DAOManager;
+import database.DAOTestUtil;
 import model.identity.Address;
 import model.identity.Customer;
 import org.junit.AfterClass;
@@ -10,8 +12,6 @@ import org.junit.Test;
 
 import java.util.Collection;
 
-import static dao.database.DAOTestUtil.createCustomer;
-import static dao.database.DAOTestUtil.removeCustomer;
 import static org.junit.Assert.assertTrue;
 
 
@@ -26,17 +26,17 @@ public class ProductionCustomerDAOFiltersTest {
         a1 = new Address("streettest n1", "59", "town 1", "9999", "country 1");
         a2 = new Address("streettest n2", "60", "town 2", "99999", "country 2");
         a3 = new Address("streettest n2", "60", "town 2", "99999", "country 2");
-        v1 = createCustomer(new Customer(a1, "911", "customername 1", "btw123"));
-        v2 = createCustomer(new Customer(a2, "911", "customername 2", "btw123"));
-        v3 = createCustomer(new Customer(a3, "912", "customername 2", "btw124"));
+        v1 = DAOTestUtil.createCustomer(new Customer(a1, "911", "customername 1", "btw123"));
+        v2 = DAOTestUtil.createCustomer(new Customer(a2, "911", "customername 2", "btw123"));
+        v3 = DAOTestUtil.createCustomer(new Customer(a3, "912", "customername 2", "btw124"));
     }
 
     @AfterClass
     public static void end() throws Exception {
 
-        removeCustomer(v1.getUuid());
-        removeCustomer(v2.getUuid());
-        removeCustomer(v3.getUuid());
+        DAOTestUtil.removeCustomer(v1.getUuid());
+        DAOTestUtil.removeCustomer(v2.getUuid());
+        DAOTestUtil.removeCustomer(v3.getUuid());
 
         ProductionProvider.getInstance().close();
     }

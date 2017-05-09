@@ -1,14 +1,15 @@
-package dao.database;
+package database.dao;
 
+import dao.database.ProductionProvider;
 import dao.exceptions.ObjectNotFoundException;
 import dao.interfaces.DAOManager;
+import database.DAOTestUtil;
 import model.identity.Address;
 import model.identity.Customer;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static dao.database.DAOTestUtil.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
@@ -38,14 +39,14 @@ public class ProductionCustomerDAOTest {
 
         //test if a customer can be succesfully added to the database
         try {
-            cust1 = createCustomer(new Customer(adr1, "911", "customername 1", "btw123"));
+            cust1 = DAOTestUtil.createCustomer(new Customer(adr1, "911", "customername 1", "btw123"));
         } catch (Exception e) {
             e.printStackTrace();
             fail("Failed trying to create a new customer");
         }
         //If a customer was succesfully added, test if it can be retrieved succesfully and if all fields were correctly set
         try {
-            Customer cust2 = getCustomer(cust1.getUuid());
+            Customer cust2 = DAOTestUtil.getCustomer(cust1.getUuid());
             assertEquals("address field not created correctly", cust1.getAddress(), cust2.getAddress());
             assertEquals("phoneNumber field not created correctly", cust1.getPhoneNumber(), cust2.getPhoneNumber());
             assertEquals("name field not created correctly", cust1.getName(), cust2.getName());
@@ -57,14 +58,14 @@ public class ProductionCustomerDAOTest {
         }
         //If the customer is confirmed to be present in the database, try to remove it
         try {
-            removeCustomer(cust1.getUuid());
+            DAOTestUtil.removeCustomer(cust1.getUuid());
         } catch (Exception e) {
             e.printStackTrace();
             fail("Failed trying to remove a customer from the database");
         }
         //Check if the customer is effectively removed (if create, get and remove tests passed)
         try {
-            getCustomer(cust1.getUuid());
+            DAOTestUtil.getCustomer(cust1.getUuid());
             //If get was successfull the test fails
             fail("Customer is still in database after removal");
         }
@@ -78,8 +79,8 @@ public class ProductionCustomerDAOTest {
     @Test
     public void update() throws Exception {
         Address adr1 = new Address("streettest n1", "59", "town 1", "9999", "country 1");
-        Address adr2 = createAddress(new Address("streettest n2", "60", "town 2", "99999", "country 2"));
-        Customer cust1 = createCustomer(new Customer(adr1, "911", "customername 1", "btw123"));
+        Address adr2 = DAOTestUtil.createAddress(new Address("streettest n2", "60", "town 2", "99999", "country 2"));
+        Customer cust1 = DAOTestUtil.createCustomer(new Customer(adr1, "911", "customername 1", "btw123"));
         cust1.setAddress(adr2);
         cust1.setPhoneNumber("912");
         cust1.setName("customername 2");
@@ -88,12 +89,12 @@ public class ProductionCustomerDAOTest {
             manager.getCustomerDAO().update(cust1);
         }
 
-        Customer cust3 = getCustomer(cust1.getUuid());
+        Customer cust3 = DAOTestUtil.getCustomer(cust1.getUuid());
         assertEquals("address field not updated correctly", cust1.getAddress(), cust3.getAddress());
         assertEquals("phoneNumber field not updated correctly", "912", cust3.getPhoneNumber());
         assertEquals("name field not updated correctly", "customername 2", cust3.getName());
         assertEquals("btwNumber field not updated correctly", "btw124", cust3.getBtwNumber());
 
-        removeCustomer(cust1.getUuid());
+        DAOTestUtil.removeCustomer(cust1.getUuid());
     }
 }

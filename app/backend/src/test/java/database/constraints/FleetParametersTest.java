@@ -1,4 +1,4 @@
-package database;
+package database.constraints;
 
 import dao.database.ProductionProvider;
 import dao.interfaces.AddressDAO;

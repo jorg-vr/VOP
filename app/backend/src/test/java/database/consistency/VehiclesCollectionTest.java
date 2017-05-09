@@ -1,4 +1,4 @@
-package database;
+package database.consistency;
 
 import dao.database.ProductionProvider;
 import dao.interfaces.*;

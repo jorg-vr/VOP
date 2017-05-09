@@ -1,5 +1,6 @@
-package dao.database;
+package database;
 
+import dao.database.ProductionProvider;
 import dao.interfaces.DAOManager;
 import model.account.Function;
 import model.account.Role;

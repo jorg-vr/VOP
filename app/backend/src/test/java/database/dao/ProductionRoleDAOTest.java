@@ -1,7 +1,9 @@
-package dao.database;
+package database.dao;
 
+import dao.database.ProductionProvider;
 import dao.exceptions.ObjectNotFoundException;
 import dao.interfaces.DAOManager;
+import database.DAOTestUtil;
 import model.account.Action;
 import model.account.Permission;
 import model.account.Resource;
@@ -14,7 +16,6 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-import static dao.database.DAOTestUtil.*;
 import static org.junit.Assert.*;
 
 /**
@@ -42,7 +43,7 @@ public class ProductionRoleDAOTest {
 
         //test if a role can be succesfully added to the database
         try {
-            role = createRole(new Role("testRole1"));
+            role = DAOTestUtil.createRole(new Role("testRole1"));
         } catch (Exception e) {
             e.printStackTrace();
             fail("Failed trying to create a new role");
@@ -60,14 +61,14 @@ public class ProductionRoleDAOTest {
         }
         //If the role is confirmed to be present in the database, try to remove it
         try {
-            removeRole(role.getUuid());
+            DAOTestUtil.removeRole(role.getUuid());
         } catch (Exception e) {
             e.printStackTrace();
             fail("Failed trying to remove a role from the database");
         }
         //Check if the role is effectively removed (if create, get and remove tests passed)
         try {
-            getRole(role.getUuid());
+            DAOTestUtil.getRole(role.getUuid());
             //If get was successfull the test fails
             fail("Role is still in database after removal");
         }
@@ -81,7 +82,7 @@ public class ProductionRoleDAOTest {
     @Test
     public void update() throws Exception {
 
-        Role role = createRole(new Role("test1"));
+        Role role = DAOTestUtil.createRole(new Role("test1"));
         role.setAccess(Resource.INSURANCE, Action.READ_ALL);
         role.setAccess(Resource.INSURANCE, Action.UPDATE_ALL);
         role.setAccess(Resource.INSURANCE, Action.REMOVE_ALL);
@@ -128,7 +129,7 @@ public class ProductionRoleDAOTest {
             assertTrue(!role3.getRights().containsKey(Resource.BILLING));
         }
 
-        removeRole(role.getUuid());
+        DAOTestUtil.removeRole(role.getUuid());
     }
 }
 
