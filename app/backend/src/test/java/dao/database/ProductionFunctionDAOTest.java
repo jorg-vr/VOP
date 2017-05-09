@@ -50,16 +50,19 @@ public class ProductionFunctionDAOTest {
         try {
             user = createUser(new User("Firstname 1", "Lastname 1", "Email@address1.com", "hashedPassword1"));
         } catch (Exception e) {
+            e.printStackTrace();
             fail("Failed trying to create a new user");
         }
         try {
             role = createRole(new Role("testRole1"));
         } catch (Exception e) {
+            e.printStackTrace();
             fail("Failed trying to create a new role");
         }
         try {
             function = createFunction(new Function(customer, role, user, LocalDateTime.of(2016, 7, 15, 0, 0), LocalDateTime.of(2017, 8, 3, 0, 0)));
         } catch (Exception e) {
+            e.printStackTrace();
             fail("Failed trying to create a new function");
         }
         //If a function was succesfully added, test if it can be retrieved succesfully and if all fields were correctly set
@@ -71,12 +74,14 @@ public class ProductionFunctionDAOTest {
             assertEquals("startDate field not created correctly", function.getStartDate(), function1.getStartDate());
             assertEquals("endDate field not created correctly", function.getEndDate(), function1.getEndDate());
         } catch (Exception e) {
+            e.printStackTrace();
             fail("Failed trying to get an existing function from the database");
         }
         //If the function is confirmed to be present in the database, try to remove it
         try {
             removeFunction(function.getUuid());
         } catch (Exception e) {
+            e.printStackTrace();
             fail("Failed trying to remove an function from the database");
         }
         //Check if the function is effectively removed (if create, get and remove tests passed)

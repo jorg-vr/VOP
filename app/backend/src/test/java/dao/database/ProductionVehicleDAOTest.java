@@ -43,22 +43,26 @@ public class ProductionVehicleDAOTest {
             Address address = new Address("streettest n1", "59", "town 1", "9999", "country 1");
             customer = createCustomer(new Customer(address, "911", "customername 1", "btw123"));
         } catch (Exception e) {
+            e.printStackTrace();
             fail("Failed trying to create a new customer");
         }
         try {
             Address address = new Address("streettest n1", "59", "town 1", "9999", "country 1");
             fleet = createFleet(new Fleet("fleet 1", customer, address));
         } catch (Exception e) {
+            e.printStackTrace();
             fail("Failed trying to create a new fleet");
         }
         try {
             vehicleType = createVehicleType(new VehicleType("type 1"));
         } catch (Exception e) {
+            e.printStackTrace();
             fail("Failed trying to create a new vehicleType");
         }
         try {
             vehicle = createVehicle(new Vehicle("brand 1", "model A", "UZ0UZABCUKZ12345L", "ABC 123", 30000, 2500, vehicleType, LocalDate.now(), fleet));
         } catch (Exception e) {
+            e.printStackTrace();
             fail("Failed trying to create a new vehicle");
         }
         //If a vehicle was succesfully added, test if it can be retrieved succesfully
@@ -81,6 +85,7 @@ public class ProductionVehicleDAOTest {
         try {
             removeVehicle(vehicle.getUuid());
         } catch (Exception e) {
+            e.printStackTrace();
             fail("Failed trying to remove a vehicle from the database");
         }
         //Check if the vehicle is effectively removed (if create, get and remove tests passed)

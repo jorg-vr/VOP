@@ -33,6 +33,7 @@ public class ProductionUserDAOTest {
         try {
             user = createUser(new User("Firstname 1", "Lastname 1", "Email@address1.com", "hashedPassword1"));
         } catch (Exception e) {
+            e.printStackTrace();
             fail("Failed trying to create a new user");
         }
         //If a user was succesfully added, test if it can be retrieved succesfully and if all fields were correctly set
@@ -43,12 +44,14 @@ public class ProductionUserDAOTest {
             assertEquals("email field not created correctly", user.getEmail(), user1.getEmail());
             assertEquals("password field not created correctly", user.getPassword(), user1.getPassword());
         } catch (Exception e) {
+            e.printStackTrace();
             fail("Failed trying to get an existing user from the database");
         }
         //If the function is confirmed to be present in the database, try to remove it
         try {
             removeUser(user.getUuid());
         } catch (Exception e) {
+            e.printStackTrace();
             fail("Failed trying to remove an function from the database");
         }
         //Check if the function is effectively removed (if create, get and remove tests passed)

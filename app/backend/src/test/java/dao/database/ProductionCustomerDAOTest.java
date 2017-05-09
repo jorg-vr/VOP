@@ -40,6 +40,7 @@ public class ProductionCustomerDAOTest {
         try {
             cust1 = createCustomer(new Customer(adr1, "911", "customername 1", "btw123"));
         } catch (Exception e) {
+            e.printStackTrace();
             fail("Failed trying to create a new customer");
         }
         //If a customer was succesfully added, test if it can be retrieved succesfully and if all fields were correctly set
@@ -51,12 +52,14 @@ public class ProductionCustomerDAOTest {
             assertEquals("btwNumber field not created correctly", cust1.getBtwNumber(), cust2.getBtwNumber());
             assertEquals("companyType field not created correctly", cust1.getCompanyType(), cust2.getCompanyType());
         } catch (Exception e) {
+            e.printStackTrace();
             fail("Failed trying to get an existing customer from the database");
         }
         //If the customer is confirmed to be present in the database, try to remove it
         try {
             removeCustomer(cust1.getUuid());
         } catch (Exception e) {
+            e.printStackTrace();
             fail("Failed trying to remove a customer from the database");
         }
         //Check if the customer is effectively removed (if create, get and remove tests passed)

@@ -33,6 +33,7 @@ public class ProductionAddressDAOTest {
         try {
             a1 = createAddress(new Address("streettest n1", "59", "town 1", "9999", "country 1"));
         } catch (Exception e) {
+            e.printStackTrace();
             fail("Failed trying to create a new address");
         }
         //If a address was succesfully added, test if it can be retrieved succesfully
@@ -44,12 +45,14 @@ public class ProductionAddressDAOTest {
             assertEquals("postalCode field not created correctly", a1.getPostalCode(), a2.getPostalCode());
             assertEquals("country field not created correctly", a1.getCountry(), a2.getCountry());
         } catch (Exception e) {
+            e.printStackTrace();
             fail("Failed trying to get an existing address from the database");
         }
         //If the address is confirmed to be present in the database, try to remove it
         try {
             removeAddress(a1.getUuid());
         } catch (Exception e) {
+            e.printStackTrace();
             fail("Failed trying to remove an address from the database");
         }
         //Check if the address is effectively removed (if create, get and remove tests passed)

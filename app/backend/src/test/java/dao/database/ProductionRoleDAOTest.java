@@ -44,6 +44,7 @@ public class ProductionRoleDAOTest {
         try {
             role = createRole(new Role("testRole1"));
         } catch (Exception e) {
+            e.printStackTrace();
             fail("Failed trying to create a new role");
         }
         //If a role was succesfully added, test if it can be retrieved succesfully and if all fields were correctly set
@@ -54,12 +55,14 @@ public class ProductionRoleDAOTest {
                 assertEquals("rights field not created correctly", role.getRights(), role1.getRights());
             }
         } catch (Exception e) {
+            e.printStackTrace();
             fail("Failed trying to get an existing role from the database");
         }
         //If the role is confirmed to be present in the database, try to remove it
         try {
             removeRole(role.getUuid());
         } catch (Exception e) {
+            e.printStackTrace();
             fail("Failed trying to remove a role from the database");
         }
         //Check if the role is effectively removed (if create, get and remove tests passed)
