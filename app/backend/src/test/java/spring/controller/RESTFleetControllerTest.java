@@ -43,7 +43,6 @@ public class RESTFleetControllerTest {
             .setControllerAdvice(new MyExceptionHandler())
             .build();
 
-    private static Address address;
     private static Customer customer;
     private static String[] authPair;
 
@@ -53,7 +52,7 @@ public class RESTFleetControllerTest {
         authPair = AuthUtil.getAdminToken();
 
         try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()) {
-            address = new Address("mystreet", "123", "lala", "12345", "land");
+            Address address = new Address("mystreet", "123", "lala", "12345", "land");
             customer = new Customer(address, "04789456123", "anita", "123456789", Periodicity.QUARTERLY, Periodicity.QUARTERLY);
             customer = manager.getCustomerDAO().create(customer);
         } catch (DataAccessException e) {
@@ -74,7 +73,8 @@ public class RESTFleetControllerTest {
     public void get() throws Exception {
 
         //Add to database directly with DAO
-        Fleet fleet = create(new Fleet("myFleet", customer, null));
+        Address address = new Address("mystreet", "123", "lala", "12345", "land");
+        Fleet fleet = create(new Fleet("myFleet", customer, address));
 
         try {
             mvc.perform(MockMvcRequestBuilders.get("/fleets")
@@ -136,7 +136,8 @@ public class RESTFleetControllerTest {
     public void deleteId() throws Exception {
 
         //Add to database directly with DAO
-        Fleet fleet = create(new Fleet("myFleet", customer, null));
+        Address address = new Address("mystreet", "123", "lala", "12345", "land");
+        Fleet fleet = create(new Fleet("myFleet", customer, address));
 
         //Attempt to remove from the database with delete request
         try {
@@ -164,7 +165,8 @@ public class RESTFleetControllerTest {
     public void getId() throws Exception {
 
         //Add to database directly with DAO
-        Fleet fleet = create(new Fleet("myFleet", customer, null));
+        Address address = new Address("mystreet", "123", "lala", "12345", "land");
+        Fleet fleet = create(new Fleet("myFleet", customer, address));
 
         //Attempt to retrieve the object with the given id
         try {
@@ -188,6 +190,7 @@ public class RESTFleetControllerTest {
     public void putId() throws Exception {
 
         //Add to database directly with DAO
+        Address address = new Address("mystreet", "123", "lala", "12345", "land");
         Fleet fleet = create(new Fleet("myFleet", customer, address));
 
         //Change a field of the object that has to be updated

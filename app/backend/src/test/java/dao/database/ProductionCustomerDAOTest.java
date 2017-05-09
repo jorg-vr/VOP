@@ -35,8 +35,8 @@ public class ProductionCustomerDAOTest {
     public void createGetRemoveTest() throws Exception {
         Customer cust1 = null;
         Address adr1 = new Address("streettest n1", "59", "town 1", "9999", "country 1");
-        //test if a customer can be succesfully added to the database
 
+        //test if a customer can be succesfully added to the database
         try {
             cust1 = createCustomer(new Customer(adr1, "911", "customername 1", "btw123"));
         } catch (Exception e) {
