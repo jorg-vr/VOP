@@ -193,8 +193,7 @@ public class Function implements EditableObject, java.io.Serializable {
         if (o == null || getClass() != o.getClass()) return false;
 
         Function function = (Function) o;
-
-        return getUuid().equals(function.getUuid());
+        return this.uuid != null && getUuid().equals(function.getUuid());
     }
 
     @Override

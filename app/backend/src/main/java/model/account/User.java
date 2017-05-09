@@ -185,7 +185,7 @@ public class User implements EditableObject, java.io.Serializable {
 
         User user = (User) o;
 
-        return getUuid().equals(user.getUuid());
+        return this.uuid!=null&&getUuid().equals(user.getUuid());
 
     }
 

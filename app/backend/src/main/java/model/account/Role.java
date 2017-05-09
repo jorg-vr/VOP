@@ -146,7 +146,7 @@ public class Role implements EditableObject, java.io.Serializable {
 
         Role role = (Role) o;
 
-        return getUuid().equals(role.getUuid());
+        return this.uuid!= null && getUuid().equals(role.getUuid());
 
     }
 
