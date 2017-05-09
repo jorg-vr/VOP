@@ -8,7 +8,7 @@ import java.util.UUID;
 
 
 /**
- * This class represents an user of the application
+ * This class represents a user of the application
  */
 public class User implements EditableObject, java.io.Serializable {
 
@@ -43,10 +43,20 @@ public class User implements EditableObject, java.io.Serializable {
     private String password;
 
 
+    /**
+     * Default constructor
+     */
     public User() {
         functions = new ArrayList<>();
     }
 
+    /**
+     * Constructor
+     * @param firstName the first name
+     * @param lastName the last name
+     * @param email the email
+     * @param password the hashed password
+     */
     public User(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -55,56 +65,107 @@ public class User implements EditableObject, java.io.Serializable {
         functions = new ArrayList<>();
     }
 
-
+    /**
+     * Gets the functions of the user
+     * @return the functions
+     */
     public Collection<Function> getFunctions() {
         return new ArrayList<>(functions);
     }
 
+    /**
+     * Sets the functions of the user
+     * @param functions the functions
+     */
     public void setFunctions(Collection<Function> functions) {
         this.functions = new ArrayList<>(functions);
     }
 
+    /**
+     * Gets the id
+     * @return the id
+     */
     @Override
     public UUID getUuid() {
         return uuid;
     }
 
+    /**
+     * Sets the id
+     * @param uuid the id
+     */
     public void setUuid(UUID uuid) {
         this.uuid = uuid;
     }
 
+    /**
+     * Gets the first name
+     * @return the first name
+     */
     public String getFirstName() {
         return firstName;
     }
 
+    /**
+     * Sets the first name
+     * @param firstName the first name
+     */
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
+    /**
+     * Gets the last name
+     * @return the last name
+     */
     public String getLastName() {
         return lastName;
     }
 
+    /**
+     * Sets the last name
+     * @param lastName the last name
+     */
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
+    /**
+     * Gets the email
+     * @return the email
+     */
     public String getEmail() {
         return email;
     }
 
+    /**
+     * Sets the email
+     * @param email the email
+     */
     public void setEmail(String email) {
         this.email = email;
     }
 
+    /**
+     * Gets the hashed password
+     * @return the hashed password
+     */
     public String getPassword() {
         return password;
     }
 
+    /**
+     * Sets the password
+     * @param password the password
+     */
     public void setPassword(String password) {
         this.password = password;
     }
 
+    /**
+     * Copies the object and sets all its fields
+     * @return the copied object
+     */
     @Override
     public EditableObject copy() {
         User user = new User();
