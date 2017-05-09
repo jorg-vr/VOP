@@ -4,10 +4,7 @@ import controller.ControllerManager;
 import controller.LogEntryController;
 import controller.exceptions.UnAuthorizedException;
 import dao.exceptions.DataAccessException;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import spring.model.AuthenticationToken;
 import spring.model.RESTLogEntry;
 import spring.model.RESTSchema;
@@ -25,7 +22,7 @@ import static util.UUIDUtil.toUUID;
 @RestController
 public class RESTLogEntryController {
 
-    @RequestMapping(value = {"/{path.vehicles}/id/{path.logs}", "/{path.fleets}/id/${path.logs}"})
+    @RequestMapping(value = {"/{path.vehicles}/{id}/{path.logs}", "/{path.fleets}/{id}/${path.logs}"}, method = RequestMethod.GET)
     public RESTSchema<RESTLogEntry> getEntries(@PathVariable String id,
                                                HttpServletRequest request,
                                                Integer page, Integer limit,
