@@ -65,7 +65,7 @@ public class ProductionUserDAOTest {
 
     @Test
     public void update() throws Exception {
-        
+
         User user = createUser(new User("Firstname 1", "Lastname 1", "Email@address1.com", "hashedPassword1"));
         user.setFirstName("Firstname 2");
         user.setLastName("Lastname 2");

@@ -16,6 +16,7 @@ import static org.junit.Assert.assertTrue;
 
 
 public class ProductionAddressDAOFiltersTest {
+
     private static Address a1, a2, a3;
 
     //Setup before any of the tests are started

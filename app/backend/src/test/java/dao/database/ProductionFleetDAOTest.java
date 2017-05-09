@@ -31,18 +31,18 @@ public class ProductionFleetDAOTest {
     public void createGetRemoveTest() throws Exception {
         Fleet fleet = null;
         Customer customer = null;
-        Address address1 = new Address("streettest n1", "59", "town 1", "9999", "country 1");
-        Address address2 = new Address("streettest n1", "59", "town 1", "9999", "country 1");
 
         //test if a fleet can be succesfully added to the database
         try {
-            customer = createCustomer(new Customer(address1, "911", "customername 1", "btw123"));
+            Address address = new Address("streettest n1", "59", "town 1", "9999", "country 1");
+            customer = createCustomer(new Customer(address, "911", "customername 1", "btw123"));
         } catch (Exception e) {
             e.printStackTrace();
             fail("Failed trying to create a new customer");
         }
         try {
-            fleet = createFleet(new Fleet("fleet 1", customer, address2));
+            Address address = new Address("streettest n1", "59", "town 1", "9999", "country 1");
+            fleet = createFleet(new Fleet("fleet 1", customer, address));
         } catch (Exception e) {
             e.printStackTrace();
             fail("Failed trying to create a new fleet");
