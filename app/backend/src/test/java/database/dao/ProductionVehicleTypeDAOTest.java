@@ -1,7 +1,9 @@
-package dao.database;
+package database.dao;
 
+import dao.database.ProductionProvider;
 import dao.exceptions.ObjectNotFoundException;
 import dao.interfaces.DAOManager;
+import database.DAOTestUtil;
 import model.fleet.VehicleType;
 import model.insurance.SuretyType;
 import org.junit.AfterClass;
@@ -11,7 +13,6 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-import static dao.database.DAOTestUtil.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
@@ -52,7 +53,7 @@ public class ProductionVehicleTypeDAOTest {
             commissions.put(SuretyType.TRAVEL_AID, 5.0);
             commissions.put(SuretyType.SAFETY, 6.0);
 
-            vehicleType = createVehicleType(new VehicleType("type 14", taxes, commissions));
+            vehicleType = DAOTestUtil.createVehicleType(new VehicleType("type 14", taxes, commissions));
         } catch (Exception e) {
             e.printStackTrace();
             fail("Failed trying to create a new vehicleType");
@@ -71,14 +72,14 @@ public class ProductionVehicleTypeDAOTest {
         }
         //If the vehicle is confirmed to be present in the database, try to remove it
         try {
-            removeVehicleType(vehicleType.getUuid());
+            DAOTestUtil.removeVehicleType(vehicleType.getUuid());
         } catch (Exception e) {
             e.printStackTrace();
             fail("Failed trying to remove a vehicleType from the database");
         }
         //Check if the vehicleType is effectively removed (if create, get and remove tests passed)
         try {
-            getVehicleType(vehicleType.getUuid());
+            DAOTestUtil.getVehicleType(vehicleType.getUuid());
             //If get was successfull the test fails
             fail("VehicleType is still in database after removal");
         }
@@ -92,7 +93,7 @@ public class ProductionVehicleTypeDAOTest {
     @Test
     public void update() throws Exception {
 
-        VehicleType vehicleType = createVehicleType(new VehicleType("type 14"));
+        VehicleType vehicleType = DAOTestUtil.createVehicleType(new VehicleType("type 14"));
         vehicleType.setType("type 15");
 
         Map<SuretyType, Double> taxes = new HashMap<>();
@@ -123,6 +124,6 @@ public class ProductionVehicleTypeDAOTest {
             assertEquals("commissions field not updated correctly", vehicleType.getCommissions(), vehicleType1.getCommissions());
         }
 
-        removeVehicleType(vehicleType.getUuid());
+        DAOTestUtil.removeVehicleType(vehicleType.getUuid());
     }
 }

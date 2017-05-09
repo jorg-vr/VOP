@@ -1,7 +1,9 @@
-package dao.database;
+package database.dao;
 
+import dao.database.ProductionProvider;
 import dao.interfaces.DAOManager;
 import dao.interfaces.VehicleTypeDAO;
+import database.DAOTestUtil;
 import model.fleet.VehicleType;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -9,8 +11,6 @@ import org.junit.Test;
 
 import java.util.Collection;
 
-import static dao.database.DAOTestUtil.createVehicleType;
-import static dao.database.DAOTestUtil.removeVehicleType;
 import static org.junit.Assert.assertTrue;
 
 
@@ -23,15 +23,15 @@ public class ProductionVehicleTypeDAOFiltersTest {
     public static void initProvider() throws Exception {
         ProductionProvider.initializeProvider("unittest");
 
-        t1 = createVehicleType(new VehicleType("type 1"));
-        t2 = createVehicleType(new VehicleType("type 2"));
+        t1 = DAOTestUtil.createVehicleType(new VehicleType("type 1"));
+        t2 = DAOTestUtil.createVehicleType(new VehicleType("type 2"));
     }
 
     //Gets executed after all tests have been run
     @AfterClass
     public static void closeProvider() throws Exception {
-        removeVehicleType(t1.getUuid());
-        removeVehicleType(t2.getUuid());
+        DAOTestUtil.removeVehicleType(t1.getUuid());
+        DAOTestUtil.removeVehicleType(t2.getUuid());
 
         ProductionProvider.getInstance().close();
     }

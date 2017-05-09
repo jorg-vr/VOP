@@ -1,14 +1,18 @@
-package dao.database;
+package database;
 
+import dao.database.ProductionProvider;
 import dao.interfaces.DAOManager;
 import model.account.Function;
 import model.account.Role;
 import model.account.User;
+import model.billing.Invoice;
 import model.fleet.Fleet;
 import model.fleet.Vehicle;
 import model.fleet.VehicleType;
 import model.identity.Address;
 import model.identity.Customer;
+import model.identity.InsuranceCompany;
+import model.insurance.Contract;
 
 import java.util.UUID;
 
@@ -160,4 +164,76 @@ public class DAOTestUtil {
             return manager.getVehicleTypeDAO().get(uuid);
         }
     }
+
+    public static void removeInsuranceCompany(UUID uuid) throws Exception {
+        try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()) {
+            manager.getInsuranceCompanyDao().remove(uuid);
+        }
+    }
+
+    public static InsuranceCompany createInsuranceCompany(InsuranceCompany insuranceCompany) throws Exception {
+        try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()) {
+            return manager.getInsuranceCompanyDao().create(insuranceCompany);
+        }
+    }
+
+    public static InsuranceCompany getInsuranceCompany(UUID uuid) throws Exception {
+        try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()) {
+            return manager.getInsuranceCompanyDao().get(uuid);
+        }
+    }
+
+    public static void removeContract(UUID uuid) throws Exception {
+        try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()) {
+            manager.getContractDao().remove(uuid);
+        }
+    }
+
+    public static Contract createContract(Contract contract) throws Exception {
+        try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()) {
+            return manager.getContractDao().create(contract);
+        }
+    }
+
+    public static Contract getContract(UUID uuid) throws Exception {
+        try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()) {
+            return manager.getContractDao().get(uuid);
+        }
+    }
+
+    public static void removeInvoice(UUID uuid) throws Exception {
+        try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()) {
+            manager.getInvoiceDao().remove(uuid);
+        }
+    }
+
+    public static Invoice createInvoice(Invoice invoice) throws Exception {
+        try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()) {
+            return manager.getInvoiceDao().create(invoice);
+        }
+    }
+
+    public static Invoice getInvoice(UUID uuid) throws Exception {
+        try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()) {
+            return manager.getInvoiceDao().get(uuid);
+        }
+    }
+
+    /*public static void remove(UUID uuid) throws Exception {
+        try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()) {
+            manager.getVehicleTypeDAO().remove(uuid);
+        }
+    }
+
+    public static VehicleType create(VehicleType vehicleType) throws Exception {
+        try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()) {
+            return manager.getVehicleTypeDAO().create(vehicleType);
+        }
+    }
+
+    public static VehicleType get(UUID uuid) throws Exception {
+        try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()) {
+            return manager.getVehicleTypeDAO().get(uuid);
+        }
+    }*/
 }

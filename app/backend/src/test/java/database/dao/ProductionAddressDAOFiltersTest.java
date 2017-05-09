@@ -1,8 +1,10 @@
-package dao.database;
+package database.dao;
 //ProductionManager.initializeProvider("test");
 
+import dao.database.ProductionProvider;
 import dao.interfaces.AddressDAO;
 import dao.interfaces.DAOManager;
+import database.DAOTestUtil;
 import model.identity.Address;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -10,8 +12,6 @@ import org.junit.Test;
 
 import java.util.Collection;
 
-import static dao.database.DAOTestUtil.createAddress;
-import static dao.database.DAOTestUtil.removeAddress;
 import static org.junit.Assert.assertTrue;
 
 
@@ -25,18 +25,18 @@ public class ProductionAddressDAOFiltersTest {
 
         ProductionProvider.initializeProvider("unittest");
 
-        a1 = createAddress(new Address("streettest n1", "59", "town 1", "9999", "country 1"));
-        a2 = createAddress(new Address("streettest n2", "59", "town 2", "9999", "country 2"));
-        a3 = createAddress(new Address("streettest n2", "60", "town 2", "99999", "country 2"));
+        a1 = DAOTestUtil.createAddress(new Address("streettest n1", "59", "town 1", "9999", "country 1"));
+        a2 = DAOTestUtil.createAddress(new Address("streettest n2", "59", "town 2", "9999", "country 2"));
+        a3 = DAOTestUtil.createAddress(new Address("streettest n2", "60", "town 2", "99999", "country 2"));
     }
 
     //Gets executed after all tests have been run
     @AfterClass
     public static void closeProvider() throws Exception {
 
-        removeAddress(a1.getUuid());
-        removeAddress(a2.getUuid());
-        removeAddress(a3.getUuid());
+        DAOTestUtil.removeAddress(a1.getUuid());
+        DAOTestUtil.removeAddress(a2.getUuid());
+        DAOTestUtil.removeAddress(a3.getUuid());
 
         ProductionProvider.getInstance().close();
     }
