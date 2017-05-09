@@ -1,26 +1,47 @@
 package model.account;
 
-import dao.database.util.unique.UniqueKey;
 import model.history.EditableObject;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
 
-@UniqueKey(columnNames ={"email"})
+
+/**
+ * This class represents an user of the application
+ */
 public class User implements EditableObject, java.io.Serializable {
 
+    /**
+     * Unique key to represent this object.
+     */
     private UUID uuid;
 
+    /**
+     * First name of user, should not be null
+     */
     private String firstName;
 
+    /**
+     * Last name of user, should not be null
+     */
     private String lastName;
 
+    /**
+     * Email of the user, should be unique
+     */
     private String email;
 
+    /**
+     * Collection of the functions this user has (e.g. admin and customer)
+     */
     private Collection<Function> functions;
 
+    /**
+     * Hashed password
+     */
     private String password;
+
 
     public User() {
         functions = new ArrayList<>();
@@ -34,15 +55,6 @@ public class User implements EditableObject, java.io.Serializable {
         functions = new ArrayList<>();
     }
 
-    public void resetPassword(String oldPassword, String newPassword) {
-        if (validatePassword(oldPassword)) {
-            this.password = newPassword; //TODO hash this extra
-        }
-    }
-
-    public boolean validatePassword(String password) {
-        return password.equals(password); // TODO also use hashfunction
-    }
 
     public Collection<Function> getFunctions() {
         return new ArrayList<>(functions);
@@ -100,6 +112,7 @@ public class User implements EditableObject, java.io.Serializable {
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setFunctions(new ArrayList<>(functions));
+        user.setEmail(email);
         user.setPassword(password);
         return user;
     }
@@ -117,8 +130,9 @@ public class User implements EditableObject, java.io.Serializable {
 
     @Override
     public int hashCode() {
-        if(uuid!=null){
-        return getUuid().hashCode();}
+        if (uuid != null) {
+            return getUuid().hashCode();
+        }
         return super.hashCode();
     }
 }

@@ -1,6 +1,7 @@
 package model.account;
 
 /**
+ * All possible actions in the application
  * Created by jorg on 3/2/17.
  */
 public enum Action {
