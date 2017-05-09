@@ -1,8 +1,8 @@
 package database.constraints;
 
 import dao.database.ProductionProvider;
+import dao.exceptions.ConstraintViolationException;
 import dao.exceptions.DataAccessException;
-import dao.interfaces.*;
 import model.identity.Address;
 import model.identity.InsuranceCompany;
 import model.insurance.Contract;
@@ -13,96 +13,75 @@ import org.junit.Test;
 
 import java.time.LocalDateTime;
 
+import static database.DAOTestUtil.*;
 import static org.junit.Assert.fail;
 
 @Ignore
 public class ContractParametersTest {
 
-    private static DAOManager daoManager;
-    private static Address address;
     private static InsuranceCompany insuranceCompany;
 
     //Setup before any of the tests are started
     @BeforeClass
     public static void initProvider() throws Exception {
         ProductionProvider.initializeProvider("unittest");
-        daoManager = ProductionProvider.getInstance().getDaoManager();
 
-        AddressDAO addressDAO = daoManager.getAddressDao();
-        InsuranceCompanyDAO insuranceCompanyDAO = daoManager.getInsuranceCompanyDao();
-        address = addressDAO.create(new Address("Street", "55", "Town", "9000", "Country"));
-        insuranceCompany = insuranceCompanyDAO.create(new InsuranceCompany(address, "123456789", "customerName", "BE123123123B01"));
-
+        Address address = new Address("Street", "55", "Town", "9000", "Country");
+        insuranceCompany = createInsuranceCompany(new InsuranceCompany(address, "123456789", "customerName", "BE123123123B01"));
     }
 
     //Gets executed after all tests have been run
     @AfterClass
     public static void closeProvider() throws Exception {
-        AddressDAO addressDAO = daoManager.getAddressDao();
-        InsuranceCompanyDAO insuranceCompanyDAO = daoManager.getInsuranceCompanyDao();
-        insuranceCompanyDAO.remove(insuranceCompany.getUuid());
-        addressDAO.remove(address.getUuid());
+        removeInsuranceCompany(insuranceCompany.getUuid());
 
-        daoManager.close();
         ProductionProvider.getInstance().close();
     }
 
     @Test
     public void allFields() throws Exception {
-        Contract contract = null;
         try {
-            ContractDAO contractDAO = daoManager.getContractDao();
-            contract = contractDAO.create(new Contract(insuranceCompany, null, LocalDateTime.of(2017, 7, 15, 0, 0), LocalDateTime.of(2017, 9, 15, 0, 0)));
-            contractDAO.remove(contract.getUuid());
-        } catch (DataAccessException d) {
-            if (contract == null) {
-                fail("Contract failed to create despite all required fields being filled in");
-            }
+            Contract contract = createContract(new Contract(insuranceCompany, null, LocalDateTime.of(2017, 7, 15, 0, 0), LocalDateTime.of(2017, 9, 15, 0, 0)));
+            removeContract(contract.getUuid());
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+            fail("Contract failed to create despite all required fields being filled in");
         }
     }
 
     @Test
     public void insuranceCompanyField() throws Exception {
-        Contract contract = null;
         try {
-            ContractDAO contractDAO = daoManager.getContractDao();
-            contract = contractDAO.create(new Contract(null, null, LocalDateTime.of(2017, 7, 15, 0, 0), LocalDateTime.of(2017, 9, 15, 0, 0)));
-            contractDAO.remove(contract.getUuid());
+            Contract contract = createContract(new Contract(null, null, LocalDateTime.of(2017, 7, 15, 0, 0), LocalDateTime.of(2017, 9, 15, 0, 0)));
+            removeContract(contract.getUuid());
             fail("Contract succesfully created with insuranceCompany field null when an exception was expected");
-        } catch (DataAccessException d) {
-            if (contract != null) {
-                fail("Contract succesfully created with insuranceCompany field null when an exception was expected");
-            }
+        } catch (ConstraintViolationException e) {
+            e.printStackTrace();
+            fail("Contract succesfully created with insuranceCompany field null when an exception was expected");
         }
     }
 
     @Test
     public void startDateField() throws Exception {
-        Contract contract = null;
         try {
-            ContractDAO contractDAO = daoManager.getContractDao();
-            contract = contractDAO.create(new Contract(insuranceCompany, null, null, LocalDateTime.of(2017, 9, 15, 0, 0)));
-            contractDAO.remove(contract.getUuid());
+            Contract contract = createContract(new Contract(insuranceCompany, null, null, LocalDateTime.of(2017, 9, 15, 0, 0)));
+            removeContract(contract.getUuid());
             fail("Contract succesfully created with startDate field null when an exception was expected");
-        } catch (DataAccessException d) {
-            if (contract != null) {
-                fail("Contract succesfully created with startDate field null when an exception was expected");
-            }
+        } catch (ConstraintViolationException e) {
+            e.printStackTrace();
+            fail("Contract succesfully created with startDate field null when an exception was expected");
         }
     }
 
     @Test
     public void endDateField() throws Exception {
-        Contract contract = null;
         try {
-            ContractDAO contractDAO = daoManager.getContractDao();
-            contract = contractDAO.create(new Contract(insuranceCompany, null, LocalDateTime.of(2017, 7, 15, 0, 0), null));
-            contractDAO.remove(contract.getUuid());
+            Contract contract = createContract(new Contract(insuranceCompany, null, LocalDateTime.of(2017, 7, 15, 0, 0), null));
+            removeContract(contract.getUuid());
             fail("Contract succesfully created with endDate field null when an exception was expected");
-        } catch (DataAccessException d) {
-            if (contract != null) {
-                fail("Contract succesfully created with endDate field null when an exception was expected");
-            }
+        } catch (ConstraintViolationException e) {
+            e.printStackTrace();
+            fail("Contract succesfully created with endDate field null when an exception was expected");
         }
     }
 }
