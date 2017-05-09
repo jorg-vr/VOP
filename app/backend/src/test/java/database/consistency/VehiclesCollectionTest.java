@@ -2,6 +2,7 @@ package database.consistency;
 
 import dao.database.ProductionProvider;
 import dao.interfaces.*;
+import database.DAOTestUtil;
 import model.fleet.Fleet;
 import model.fleet.Vehicle;
 import model.fleet.VehicleType;
@@ -13,6 +14,7 @@ import org.junit.Test;
 
 import java.time.LocalDate;
 
+import static database.DAOTestUtil.*;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -20,53 +22,32 @@ import static org.junit.Assert.assertTrue;
  */
 public class VehiclesCollectionTest {
 
-    private static DAOManager daoManager;
-    private static boolean notLocalTest = false;
-    private static Address a1;
-    private static Customer c1;
-    private static VehicleType t1, t2;
-    private static Fleet f1;
+    private static Customer customer;
+    private static VehicleType vehicleType1, vehicleType2;
+    private static Fleet fleet;
 
     //Setup before any of the tests are started
     @BeforeClass
     public static void initProvider() throws Exception {
         ProductionProvider.initializeProvider("unittest");
-        daoManager = ProductionProvider.getInstance().getDaoManager();
-        try {
-            VehicleTypeDAO vehicleTypeDAO = daoManager.getVehicleTypeDAO();
-            CustomerDAO customerDAO = daoManager.getCustomerDAO();
-            FleetDAO fleetDAO = daoManager.getFleetDAO();
-            AddressDAO addressDAO = daoManager.getAddressDao();
 
-            a1 = addressDAO.create(new Address("streettest n1", "59", "town 1", "9999", "country 1"));
-            c1 = customerDAO.create(new Customer(a1, "911", "customername 1", "btw123"));
-            f1 = fleetDAO.create(new Fleet("fleet 1", c1, a1));
-            t1 = vehicleTypeDAO.create(new VehicleType("type 1"));
-            t2 = vehicleTypeDAO.create(new VehicleType("type 2"));
-        } catch (Exception e) {
-
-        }
+        Address address = new Address("streettest n1", "59", "town 1", "9999", "country 1");
+        customer = createCustomer(new Customer(address, "911", "customername 1", "btw123"));
+        address = new Address("streettest n1", "59", "town 1", "9999", "country 1");
+        fleet = createFleet(new Fleet("fleet 1", customer, address));
+        vehicleType1 = createVehicleType(new VehicleType("type 1"));
+        vehicleType2 = createVehicleType(new VehicleType("type 2"));
     }
 
     //Gets executed after all tests have been run
     @AfterClass
     public static void closeProvider() throws Exception {
-        try {
-            VehicleTypeDAO vehicleTypeDAO = daoManager.getVehicleTypeDAO();
-            CustomerDAO customerDAO = daoManager.getCustomerDAO();
-            FleetDAO fleetDAO = daoManager.getFleetDAO();
-            AddressDAO addressDAO = daoManager.getAddressDao();
+        removeVehicleType(vehicleType2.getUuid());
+        removeVehicleType(vehicleType1.getUuid());
+        removeFleet(fleet.getUuid());
+        removeCustomer(customer.getUuid());
 
-            vehicleTypeDAO.remove(t2.getUuid());
-            vehicleTypeDAO.remove(t1.getUuid());
-            fleetDAO.remove(f1.getUuid());
-            customerDAO.remove(c1.getUuid());
-            addressDAO.remove(a1.getUuid());
-        } catch (Exception e) {
-
-        }
-
-        daoManager.close();
+        ProductionProvider.getInstance().close();
     }
 
     /**
@@ -76,37 +57,35 @@ public class VehiclesCollectionTest {
      */
     @Test
     public void setFleetOfVehicle() throws Exception {
-        Vehicle v1 = null, v2 = null;
-        try {
-            FleetDAO fleetDAO = daoManager.getFleetDAO();
-            VehicleDAO vehicleDAO = daoManager.getVehicleDAO();
 
+        Vehicle vehicle1 = null, vehicle2 = null;
+        try {
             //create vehicles
-            f1 = fleetDAO.get(f1.getUuid());
-            v1 = vehicleDAO.create(new Vehicle("brand 2", "model A", "AZ0UZABCUKZ12345L", "ABR 569", 36000, 4900, t1, LocalDate.of(2015, 6, 17), f1));
-            v2 = vehicleDAO.create(new Vehicle("brand 3", "model B", "BZ0UZABCUKZ12345L", "BBR 569", 36000, 4900, t1, LocalDate.of(2015, 7, 17), null));
+            fleet = getFleet(fleet.getUuid());
+            vehicle1 = createVehicle(new Vehicle("brand 2", "model A", "AZ0UZABCUKZ12345L", "ABR 569", 36000, 4900, vehicleType1, LocalDate.of(2015, 6, 17), fleet));
+            vehicle2 = createVehicle(new Vehicle("brand 3", "model B", "BZ0UZABCUKZ12345L", "BBR 569", 36000, 4900, vehicleType1, LocalDate.of(2015, 7, 17), null));
 
             //Test if a vehicle is automatically added to a fleet's vehicles collection when creating the vehicle with a given fleet parameter
-            fleetDAO.refresh(f1);
-            f1 = fleetDAO.get(f1.getUuid());
-            assertTrue("vehicle was not automatically added to the fleet's vehicles collection when created with given fleet parameter", f1.getVehicles().contains(v1));
+            try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()) {
+                fleet = manager.getFleetDAO().get(fleet.getUuid());
+                assertTrue("vehicle was not automatically added to the fleet's vehicles collection when created with given fleet parameter", fleet.getVehicles().contains(vehicle1));
+            }
 
             //Test if a vehicle is automatically added to a fleet's vehicles collection when setting the vehicle's fleet field.
-            v2.setFleet(f1);
-            vehicleDAO.update(v2);
-            fleetDAO.refresh(f1);
-            f1 = fleetDAO.get(f1.getUuid());
-            assertTrue("vehicle was not automatically added to the fleet's vehicles collection when updating the vehicle with a fleet parameter", f1.getVehicles().contains(v2));
-
-        } catch (Exception e) {
-
-        } finally {
-            VehicleDAO vehicleDAO = daoManager.getVehicleDAO();
-            if (v1 != null) {
-                vehicleDAO.remove(v1.getUuid());
+            vehicle2.setFleet(fleet);
+            try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()) {
+                manager.getVehicleDAO().update(vehicle2);
             }
-            if (v2 != null) {
-                vehicleDAO.remove(v2.getUuid());
+            try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()) {
+                fleet = manager.getFleetDAO().get(fleet.getUuid());
+                assertTrue("vehicle was not automatically added to the fleet's vehicles collection when updating the vehicle with a fleet parameter", fleet.getVehicles().contains(vehicle2));
+            }
+        } finally {
+            if (vehicle1 != null) {
+                DAOTestUtil.removeVehicle(vehicle1.getUuid());
+            }
+            if (vehicle2 != null) {
+                DAOTestUtil.removeVehicle(vehicle2.getUuid());
             }
         }
     }
@@ -119,37 +98,31 @@ public class VehiclesCollectionTest {
     @Test
     public void removeVehicle() throws Exception {
 
-        Vehicle v1 = null;
+        Vehicle vehicle = null;
         try {
-            FleetDAO fleetDAO = daoManager.getFleetDAO();
-            VehicleDAO vehicleDAO = daoManager.getVehicleDAO();
-
             //create vehicle
-            f1 = fleetDAO.get(f1.getUuid());
-            v1 = vehicleDAO.create(new Vehicle("brand 2", "model A", "AZ0UZABCUKZ12345L", "ABR 569", 36000, 4900, t1, LocalDate.of(2015, 6, 17), f1));
+            fleet = getFleet(fleet.getUuid());
+            vehicle = createVehicle(new Vehicle("brand 2", "model A", "AZ0UZABCUKZ12345L", "ABR 569", 36000, 4900, vehicleType1, LocalDate.of(2015, 6, 17), fleet));
 
             //Test if a vehicle is automatically added to a fleet's vehicles collection when creating the vehicle with a given fleet parameter (if this fails the rest of the test is irrelevant)
-            fleetDAO.refresh(f1);
-            f1 = fleetDAO.get(f1.getUuid());
-            assertTrue("vehicle was not automatically added to the fleet's vehicles collection when created with given fleet parameter", f1.getVehicles().contains(v1));
+            try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()) {
+                fleet = manager.getFleetDAO().get(fleet.getUuid());
+                assertTrue("vehicle was not automatically added to the fleet's vehicles collection when created with given fleet parameter", fleet.getVehicles().contains(vehicle));
+            }
 
             //Test if vehicles are automatically removed from the fleet's vehicle collection when a vehicle is removed from the database
-            vehicleDAO.remove(v1.getUuid());
-            Vehicle tempVehicle = v1;
-            v1 = null;
-            fleetDAO.refresh(f1);
-            f1 = fleetDAO.get(f1.getUuid());
-            assertTrue("vehicle still remains in the fleet's vehicles collection after removing it from the database", !f1.getVehicles().contains(tempVehicle));
+            DAOTestUtil.removeVehicle(vehicle.getUuid());
+            Vehicle tempVehicle = vehicle;
+            vehicle = null;
+            try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()) {
+                fleet = manager.getFleetDAO().get(fleet.getUuid());
+                assertTrue("vehicle still remains in the fleet's vehicles collection after removing it from the database", !fleet.getVehicles().contains(tempVehicle));
+            }
 
-        } catch (Exception e) {
-            e.printStackTrace();
         } finally {
-            VehicleDAO vehicleDAO = daoManager.getVehicleDAO();
-            if (v1 != null) {
-                vehicleDAO.remove(v1.getUuid());
+            if (vehicle != null) {
+                DAOTestUtil.removeVehicle(vehicle.getUuid());
             }
         }
     }
-
-    //TODO: test if duplicate vehicles can be added to a fleet
 }
