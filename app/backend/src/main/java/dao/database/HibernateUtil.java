@@ -3,10 +3,15 @@ package dao.database;
 import dao.database.util.unique.ConstraintValidatorFactoryImpl;
 import dao.exceptions.ConstraintViolationException;
 import dao.exceptions.DataAccessException;
+import dao.interfaces.DAOManager;
+import dao.interfaces.DAOProvider;
+import dao.interfaces.UserDAO;
+import model.account.User;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import javax.validation.*;
+import java.security.Provider;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -36,6 +41,9 @@ public class HibernateUtil {
             session.save(objectToSave);
             transaction.commit();
         } catch (ConstraintViolationException e){
+            if (transaction != null) {
+                transaction.rollback();
+            }
             throw e;
         } catch (Exception e) {
             e.printStackTrace();
@@ -84,6 +92,9 @@ public class HibernateUtil {
             session.merge(objectToUpdate);
             tx.commit();
         } catch(ConstraintViolationException e){
+            if (tx != null) {
+                tx.rollback();
+            }
             throw e;
         } catch (Exception e) {
             if (tx != null) {
