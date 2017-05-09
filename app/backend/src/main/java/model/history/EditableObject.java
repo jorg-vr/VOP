@@ -27,4 +27,6 @@ public interface EditableObject {
     default Collection<LogEntry> logUpdate(User user, EditableObject old) {
         return new ArrayList<>();
     }
+
+
 }

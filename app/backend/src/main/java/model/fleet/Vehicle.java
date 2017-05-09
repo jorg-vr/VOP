@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.util.*;
 
 import static model.history.FieldsComparator.compareFields;
+import static util.UUIDUtil.UUIDToNumberString;
 
 /**
  * Class representing a vehicle
@@ -389,6 +390,11 @@ public class Vehicle implements EditableObject, java.io.Serializable {
         return super.hashCode();
     }
 
+    @Override
+    public String toString() {
+        return UUIDToNumberString(uuid);
+    }
+
     /**
      * Copies the vehicle
      *
@@ -419,6 +425,7 @@ public class Vehicle implements EditableObject, java.io.Serializable {
     public Collection<LogEntry> logCreate(User user) {
         Collection<LogEntry> entries = EditableObject.super.logCreate(user);
 
+        // Add an entry to the fleet of this vehicle that says a vehicle has been added
         Collection<Description> descriptions = new ArrayList<>();
         Description description = new Description();
         description.setField("vehicles");

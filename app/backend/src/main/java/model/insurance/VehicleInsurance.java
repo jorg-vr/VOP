@@ -1,11 +1,18 @@
 package model.insurance;
 
+import model.account.User;
 import model.fleet.Vehicle;
 import model.history.EditableObject;
+import model.history.LogAction;
+import model.history.LogEntry;
 import model.history.LogResource;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.UUID;
+
+import static model.history.FieldsComparator.compareFields;
 
 /**
  * Class representing the relation between vehicle and surety for a specific contract
@@ -267,5 +274,23 @@ public class VehicleInsurance implements EditableObject {
             return getUuid().hashCode();
         }
         return super.hashCode();
+    }
+
+    @Override
+    public Collection<LogEntry> logCreate(User user) {
+        Collection<LogEntry> entries = new ArrayList<>();
+        LogEntry entry = new LogEntry(uuid, user, LogAction.CREATE, getLogResource());
+        entry.addInterestedObject(vehicle);
+        entries.add(entry);
+        return entries;
+    }
+
+    @Override
+    public Collection<LogEntry> logUpdate(User user, EditableObject old) {
+        Collection<LogEntry> entries = new ArrayList<>();
+        LogEntry entry = new LogEntry(uuid, user, LogAction.UPDATE, getLogResource(), compareFields(old, this));
+        entry.addInterestedObject(vehicle);
+        entries.add(entry);
+        return entries;
     }
 }

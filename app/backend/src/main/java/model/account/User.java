@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
 
+import static util.UUIDUtil.UUIDToNumberString;
+
 
 /**
  * This class represents a user of the application
@@ -201,5 +203,10 @@ public class User implements EditableObject, java.io.Serializable {
             return getUuid().hashCode();
         }
         return super.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return UUIDToNumberString(uuid);
     }
 }

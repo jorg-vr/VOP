@@ -5,6 +5,7 @@ import model.account.User;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.UUID;
 
 /**
@@ -18,7 +19,7 @@ public class LogEntry {
      * A collection of ids of objects that also want this logentry to be shown when asked about their log history.
      * e.g: when an vehicleinsurance changes, it should also be shown in the log of the vehicle the insurance belongs to
      */
-    private Collection<UUID> interestedIn;
+    private Collection<UUID> interested;
 
     // User that created/retrieved/updated/deleted the object
     private User user;
@@ -103,11 +104,26 @@ public class LogEntry {
         this.descriptions = descriptions;
     }
 
+    public Collection<UUID> getInterested() {
+        return interested;
+    }
+
+    public void setInterested(Collection<UUID> interested) {
+        this.interested = interested;
+    }
+
+    public void addInterestedObject(EditableObject object) {
+        if (interested == null) {
+            interested = new HashSet<>();
+        }
+        interested.add(object.getUuid());
+    }
+
     @Override
     public String toString() {
         return "LogEntry{" +
                 "object=" + object +
-                ", interestedIn=" + interestedIn +
+                ", interested=" + interested +
                 ", user=" + user +
                 ", time=" + time +
                 ", action=" + action +
