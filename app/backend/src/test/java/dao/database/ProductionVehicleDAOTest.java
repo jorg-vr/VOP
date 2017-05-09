@@ -1,5 +1,6 @@
 package dao.database;
 
+import dao.exceptions.ObjectNotFoundException;
 import dao.interfaces.*;
 import model.fleet.Fleet;
 import model.fleet.Vehicle;
@@ -12,163 +13,140 @@ import org.junit.Test;
 
 import java.time.LocalDate;
 
+import static dao.database.DAOTestUtil.*;
 import static org.junit.Assert.*;
 
 
 public class ProductionVehicleDAOTest {
 
-    private static DAOManager daoManager;
-    private static DAOProvider daoProvider;
-
     //Setup before any of the tests are started
     @BeforeClass
     public static void initProvider() throws Exception {
         ProductionProvider.initializeProvider("unittest");
-        daoProvider = ProductionProvider.getInstance();
-        daoManager = daoProvider.getDaoManager();
     }
 
     //Gets executed after all tests have been run
     @AfterClass
     public static void closeProvider() throws Exception {
-        daoManager.close();
-        daoProvider.close();
+        ProductionProvider.getInstance().close();
     }
 
     @Test
     public void createGetRemoveTest() throws Exception {
-        Address a1 = null;
-        Customer cust1 = null;
-        Fleet fleet1 = null;
-        VehicleType t1 = null;
-        Vehicle vehicle1 = null;
-        boolean present = false;
-        boolean removed = false;
+        Customer customer = null;
+        Fleet fleet = null;
+        VehicleType vehicleType = null;
+        Vehicle vehicle = null;
+
         //test if a vehicle can be succesfully added to the database
-
-        a1 = new Address("streettest n1", "59", "town 1", "9999", "country 1");
-
         try {
-            CustomerDAO customerDAO = daoManager.getCustomerDAO();
-            cust1 = customerDAO.create(new Customer(a1, "911", "customername 1", "btw123"));
+            Address address = new Address("streettest n1", "59", "town 1", "9999", "country 1");
+            customer = createCustomer(new Customer(address, "911", "customername 1", "btw123"));
         } catch (Exception e) {
+            e.printStackTrace();
             fail("Failed trying to create a new customer");
         }
         try {
-            FleetDAO fleetDAO = daoManager.getFleetDAO();
-            a1 = new Address("streettest n1", "59", "town 1", "9999", "country 1");
-            fleet1 = fleetDAO.create(new Fleet("fleet 1", cust1, a1));
+            Address address = new Address("streettest n1", "59", "town 1", "9999", "country 1");
+            fleet = createFleet(new Fleet("fleet 1", customer, address));
         } catch (Exception e) {
+            e.printStackTrace();
             fail("Failed trying to create a new fleet");
         }
         try {
-            VehicleTypeDAO vehicleTypeDAO = daoManager.getVehicleTypeDAO();
-            t1 = vehicleTypeDAO.create(new VehicleType("type 1"));
+            vehicleType = createVehicleType(new VehicleType("type 1"));
         } catch (Exception e) {
+            e.printStackTrace();
             fail("Failed trying to create a new vehicleType");
         }
         try {
-            VehicleDAO vehicleDao = daoManager.getVehicleDAO();
-            vehicle1 = vehicleDao.create(new Vehicle("brand 1", "model A", "UZ0UZABCUKZ12345L", "ABC 123", 30000, 2500, t1, LocalDate.now(), fleet1, null));
+            vehicle = createVehicle(new Vehicle("brand 1", "model A", "UZ0UZABCUKZ12345L", "ABC 123", 30000, 2500, vehicleType, LocalDate.now(), fleet));
         } catch (Exception e) {
+            e.printStackTrace();
             fail("Failed trying to create a new vehicle");
         }
         //If a vehicle was succesfully added, test if it can be retrieved succesfully
         try {
-            VehicleDAO vehicleDao = daoManager.getVehicleDAO();
-            if (vehicle1 != null) {
-                Vehicle vehicle2 = vehicleDao.get(vehicle1.getUuid());
-                assertEquals("type field not equal", vehicle1.getType(), vehicle2.getType());
-                assertEquals("brand field not equal", vehicle1.getBrand(), vehicle2.getBrand());
-                assertEquals("model field not equal", vehicle1.getModel(), vehicle2.getModel());
-                assertEquals("chassisNumber field not equal", vehicle1.getChassisNumber(), vehicle2.getChassisNumber());
-                assertEquals("licensePlate field not equal", vehicle1.getLicensePlate(), vehicle2.getLicensePlate());
-                assertEquals("value field not equal", vehicle1.getValue(), vehicle2.getValue());
-                assertEquals("mileage field not equal", vehicle1.getMileage(), vehicle2.getMileage());
-                assertEquals("productionDate field not equal", vehicle1.getProductionDate(), vehicle2.getProductionDate());
-                assertEquals("fleet field not equal", vehicle1.getFleet(), vehicle2.getFleet());
-                present = true;
-            }
+            Vehicle vehicle1 = getVehicle(vehicle.getUuid());
+            assertEquals("type field not equal", vehicle.getType(), vehicle1.getType());
+            assertEquals("brand field not equal", vehicle.getBrand(), vehicle1.getBrand());
+            assertEquals("model field not equal", vehicle.getModel(), vehicle1.getModel());
+            assertEquals("chassisNumber field not equal", vehicle.getChassisNumber(), vehicle1.getChassisNumber());
+            assertEquals("licensePlate field not equal", vehicle.getLicensePlate(), vehicle1.getLicensePlate());
+            assertEquals("value field not equal", vehicle.getValue(), vehicle1.getValue());
+            assertEquals("mileage field not equal", vehicle.getMileage(), vehicle1.getMileage());
+            assertEquals("productionDate field not equal", vehicle.getProductionDate(), vehicle1.getProductionDate());
+            assertEquals("fleet field not equal", vehicle.getFleet(), vehicle1.getFleet());
         } catch (Exception e) {
             e.printStackTrace();
             fail("Failed trying to get an existing vehicle from the database");
         }
         //If the vehicle is confirmed to be present in the database, try to remove it
         try {
-            VehicleDAO vehicleDao = daoManager.getVehicleDAO();
-            if (vehicle1 != null && present) {
-                vehicleDao.remove(vehicle1.getUuid());
-                removed = true;
-            }
+            removeVehicle(vehicle.getUuid());
         } catch (Exception e) {
+            e.printStackTrace();
             fail("Failed trying to remove a vehicle from the database");
         }
         //Check if the vehicle is effectively removed (if create, get and remove tests passed)
         try {
-            VehicleDAO vehicleDao = daoManager.getVehicleDAO();
-            if (vehicle1 != null && present && removed) {
-                Vehicle vehicle3 = vehicleDao.get(vehicle1.getUuid());
-                //adding this because I'm not sure if the get method returns a null object or an error for a non existing uuid
-                assertNull("Vehicle is still in database after removal", vehicle3);
-            }
+            getVehicle(vehicle.getUuid());
+            //If get was successfull the test fails
+            assertNull("Vehicle is still in database after removal");
         }
         //In case the get method returns an exception when given a uuid that's not present in the database.
-        catch (Exception e) {
+        catch (ObjectNotFoundException e) {
             //Nothing because the test passed in this case
         }
-        AddressDAO addressDAO = daoManager.getAddressDao();
-        CustomerDAO customerDAO = daoManager.getCustomerDAO();
-        FleetDAO fleetDAO = daoManager.getFleetDAO();
-        VehicleTypeDAO vehicleTypeDAO = daoManager.getVehicleTypeDAO();
 
-        vehicleTypeDAO.remove(t1.getUuid());
-        fleetDAO.remove(fleet1.getUuid());
-        customerDAO.remove(cust1.getUuid());
-
+        removeVehicleType(vehicleType.getUuid());
+        removeFleet(fleet.getUuid());
+        removeCustomer(customer.getUuid());
     }
 
 
     @Test
     public void update() throws Exception {
-        AddressDAO addressDAO = daoManager.getAddressDao();
-        CustomerDAO customerDAO = daoManager.getCustomerDAO();
-        FleetDAO fleetDAO = daoManager.getFleetDAO();
-        VehicleTypeDAO vehicleTypeDAO = daoManager.getVehicleTypeDAO();
-        VehicleDAO vehicleDAO = daoManager.getVehicleDAO();
 
-        Address a1 = new Address("streettest n1", "59", "town 1", "9999", "country 1");
-        Customer cust1 = customerDAO.create(new Customer(a1, "911", "customername 1", "btw123"));
-        a1 = new Address("streettest n1", "59", "town 1", "9999", "country 1");
-        Fleet fleet1 = fleetDAO.create(new Fleet("fleet 1", cust1, a1));
-        VehicleType t1 = vehicleTypeDAO.create(new VehicleType("type 1"));
-        VehicleType t2 = vehicleTypeDAO.create(new VehicleType("type 2"));
+        Address address = new Address("streettest n1", "59", "town 1", "9999", "country 1");
+        Customer customer = createCustomer(new Customer(address, "911", "customername 1", "btw123"));
+        address = new Address("streettest n1", "59", "town 1", "9999", "country 1");
+        Fleet fleet = createFleet(new Fleet("fleet 1", customer, address));
+        VehicleType vehicleType1 = createVehicleType(new VehicleType("type 1"));
+        VehicleType vehicleType2 = createVehicleType(new VehicleType("type 2"));
+
         //add new vehicle to the database
-        Vehicle v1 = vehicleDAO.create(new Vehicle("brand 2", "model A", "AZ0UZABCUKZ12345L", "ABR 569", 36000, 4900, t1, LocalDate.of(2015, 6, 17), fleet1, null));
+        Vehicle vehicle = createVehicle(new Vehicle("brand 2", "model A", "AZ0UZABCUKZ12345L", "ABR 569", 36000, 4900, vehicleType1, LocalDate.of(2015, 6, 17), fleet));
+
         //try to update the vehicle's brand field in the database
-        v1.setBrand("brand 3");
-        v1.setModel("model B");
-        v1.setChassisNumber("AZ0UZABCUKZ12345A");
-        v1.setLicensePlate("ABR 600");
-        v1.setValue(37000);
-        v1.setMileage(5900);
-        v1.setType(t2);
-        v1.setProductionDate(LocalDate.of(2016, 7, 18));
-        vehicleDAO.update(v1);
-        Vehicle v3 = vehicleDAO.get(v1.getUuid());
-        assertEquals("brand field not updated correctly", "brand 3", v3.getBrand());
-        assertEquals("model field not updated correctly", "model B", v3.getModel());
-        assertEquals("chassisNumber field not updated correctly", "AZ0UZABCUKZ12345A", v3.getChassisNumber());
-        assertEquals("licensPlate field not updated correctly", "ABR 600", v3.getLicensePlate());
-        assertEquals("value field not updated correctly", 37000, v3.getValue());
-        assertEquals("mileage field not updated correctly", 5900, v3.getMileage());
-        assertEquals("type field not updated correctly", t2, v3.getType());
-        assertEquals("productionDate field not updated correctly", LocalDate.of(2016, 7, 18), v3.getProductionDate());
+        vehicle.setBrand("brand 3");
+        vehicle.setModel("model B");
+        vehicle.setChassisNumber("AZ0UZABCUKZ12345A");
+        vehicle.setLicensePlate("ABR 600");
+        vehicle.setValue(37000);
+        vehicle.setMileage(5900);
+        vehicle.setType(vehicleType2);
+        vehicle.setProductionDate(LocalDate.of(2016, 7, 18));
+        try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()) {
+            manager.getVehicleDAO().update(vehicle);
+        }
+
+        Vehicle vehicle1 = getVehicle(vehicle.getUuid());
+        assertEquals("brand field not updated correctly", "brand 3", vehicle1.getBrand());
+        assertEquals("model field not updated correctly", "model B", vehicle1.getModel());
+        assertEquals("chassisNumber field not updated correctly", "AZ0UZABCUKZ12345A", vehicle1.getChassisNumber());
+        assertEquals("licensPlate field not updated correctly", "ABR 600", vehicle1.getLicensePlate());
+        assertEquals("value field not updated correctly", 37000, vehicle1.getValue());
+        assertEquals("mileage field not updated correctly", 5900, vehicle1.getMileage());
+        assertEquals("type field not updated correctly", vehicleType2, vehicle1.getType());
+        assertEquals("productionDate field not updated correctly", LocalDate.of(2016, 7, 18), vehicle1.getProductionDate());
+
         //clean up database for new other tests
-        vehicleDAO.remove(v1.getUuid());
-        vehicleTypeDAO.remove(t1.getUuid());
-        vehicleTypeDAO.remove(t2.getUuid());
-        fleetDAO.remove(fleet1.getUuid());
-        customerDAO.remove(cust1.getUuid());
+        removeVehicle(vehicle.getUuid());
+        removeVehicleType(vehicleType1.getUuid());
+        removeVehicleType(vehicleType2.getUuid());
+        removeFleet(fleet.getUuid());
+        removeCustomer(customer.getUuid());
     }
 
 }

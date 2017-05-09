@@ -19,8 +19,6 @@ Vue.use(Vuex)
 
 
 
-
-
 //Basic operations for each resource
 
 let fleetResource = resourceModule.initializeModule(locations.FLEET, 'fleet')

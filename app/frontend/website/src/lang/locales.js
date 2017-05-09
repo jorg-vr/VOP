@@ -18,6 +18,7 @@ export default
         },
         fleet: {
             name: 'fleet name',
+            company: 'company',
             companyName: 'company name',
             fleet: 'fleet',
             fleets: 'fleets'
@@ -28,11 +29,13 @@ export default
             users: 'users',
             firstName: 'first name',
             lastName: 'last name',
-            email: 'email'
+            email: 'email',
+            password: 'password',
         },
         client: {
             client: 'client',
             clients: 'clients',
+            type: 'type',
             company: 'company',
             name: 'name',
             phoneNumber: 'phone number',
@@ -153,21 +156,23 @@ export default
         },
         fleet: {
             name: 'vlootnaam',
+            company: 'bedrijf',
             companyName: 'bedrijfsnaam',
             fleet: 'vloot',
             fleets: 'vloten'
         },
         user: {
-
             user: 'gebruiker',
             users: 'gebruikers',
             firstName: 'voornaam',
             lastName: 'achternaam',
             email: 'e-mail',
+            password: 'wachtwoord',
         },
         client: {
             client: 'klant',
             clients: 'klanten',
+            type: 'type',
             company: 'bedrijf',
             name: 'naam',
             phoneNumber: 'telefoonnummer',

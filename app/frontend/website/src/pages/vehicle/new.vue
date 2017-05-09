@@ -4,23 +4,35 @@
     @param fleetId (optional): The fleetId of  the new vehicle
 -->
 <template>
-    <vehicle-form-page :actions="actions" :fleetId="fleetId"></vehicle-form-page>
+    <abstract-form :actions="actions" :object="vehicle" :back="back" :resource="resource">
+        <form-input :vehicle="vehicle"></form-input>
+    </abstract-form>
 </template>
 <script>
-    import VehicleFormPage from '../../assets/form/pages/VehicleFormPage.vue'
+    import abstractForm from '../../assets/form/AbstractForm.vue'
     import actions from '../../constants/actions'
+    import resources from '../../constants/resources'
+    import formInput from './vehicleFormInput.vue'
 
     export default {
         data(){
             return {
-                actions: actions.CREATE
+                actions: actions.CREATE,
+                resource: resources.VEHICLE,
+                vehicle: {},
+                back:{}
             }
         },
-        props: {
-            fleetId: String
+        props:{
+            fleetId:String
+        },
+        created(){
+            this.back={name:resources.FLEET.name,params:{id: this.fleetId}};
+            this.vehicle={fleet:this.fleetId}
+
         },
         components: {
-            VehicleFormPage
+            abstractForm,formInput
         }
     }
 </script>

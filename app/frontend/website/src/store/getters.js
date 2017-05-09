@@ -5,6 +5,13 @@ export default {
         return state.loading;
     },
 
+    popVisitedRoute(state){
+        console.log(state.visitedRoutes)
+        let route = state.visitedRoutes.pop()
+        console.log(state.visitedRoutes)
+        return route
+    },
+
     /**
      * Returns a subset of the given objects. Only the objects which have a property which is a substring of
      * the given value are returned.

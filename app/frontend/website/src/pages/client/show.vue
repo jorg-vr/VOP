@@ -49,9 +49,7 @@
                 </tr>
             </table>
             <h2>{{$t("fleet.fleets") | capitalize }}</h2>
-            <list-component :objects="fleets"
-                            :visibleKeys="['name','companyName']"
-                            :resource="resource">
+            <list-component :listObject="listObject" :resource="resource">
             </list-component>
             <button-back :route="{name: 'clients'}"></button-back>
             <button-add :resource="resource" :params="{clientId: client.id}"></button-add>
@@ -94,7 +92,13 @@
             ...mapGetters([
                 'client',
                 'fleets'
-            ])
+            ]),
+            listObject () {
+                var listObj = {};
+                listObj.headers = ["name"];
+                listObj.values = this.fleets;
+                return listObj;
+            }
         },
         methods: {
             ...mapActions([
