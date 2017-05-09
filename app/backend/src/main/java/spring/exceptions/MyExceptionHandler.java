@@ -57,7 +57,7 @@ public class MyExceptionHandler {
     @ExceptionHandler(ConstraintViolationException.class)
     protected ResponseEntity<Object> handleServerErrorException(ConstraintViolationException ex) {
         return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
+                .status(HttpStatus.UNPROCESSABLE_ENTITY)
                 .body(new RESTConstraintsError(HttpStatus.UNPROCESSABLE_ENTITY.value(),
                         "The JSON is has correct syntax, but an attribute was missing or one of the attributes has incorrect content. " +
                                 "All attributes with errors or missing ones should be reported back in the error object."

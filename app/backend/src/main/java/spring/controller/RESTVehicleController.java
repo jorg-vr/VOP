@@ -63,7 +63,6 @@ public class RESTVehicleController extends RESTAbstractController<RESTVehicle, V
                                        @PathVariable Optional<String> fleetId,
                                        @RequestParam(required = false) String licensePlate,
                                        @RequestParam(required = false) String vin,
-                                       @RequestParam(required = false) String leasingCompany,
                                        @RequestParam(required = false) Integer year,
                                        @RequestParam(required = false) String fleet,
                                        @RequestParam(required = false) String type,
@@ -81,7 +80,7 @@ public class RESTVehicleController extends RESTAbstractController<RESTVehicle, V
 
             Fleet fleetObject = fleet != null ? new Fleet(toUUID(fleet)) : null;
 
-            Collection<RESTVehicle> result = controller.getFiltered(licensePlate, vin, null, year, fleetObject, type)
+            Collection<RESTVehicle> result = controller.getFiltered(licensePlate, vin, year, fleetObject, type)
                     .stream()
                     .map(RESTVehicle::new)
                     .collect(Collectors.toList());

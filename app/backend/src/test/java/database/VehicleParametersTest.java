@@ -46,7 +46,7 @@ public class VehicleParametersTest {
         Vehicle vehicle = null;
         try {
             VehicleDAO vehicleDAO = daoManager.getVehicleDAO();
-            vehicle = vehicleDAO.create(new Vehicle("Volkswagen", "Golf 7", "AAAAAAAAAAAAAAAAA", null, 5000, 300, vehicleType, LocalDate.of(2015, 6, 17), null, null));
+            vehicle = vehicleDAO.create(new Vehicle("Volkswagen", "Golf 7", "AAAAAAAAAAAAAAAAA", null, 5000, 300, vehicleType, LocalDate.of(2015, 6, 17), null));
             vehicleDAO.remove(vehicle.getUuid());
         } catch (DataAccessException d) {
             if (vehicle == null) {
@@ -60,7 +60,7 @@ public class VehicleParametersTest {
         Vehicle vehicle = null;
         try {
             VehicleDAO vehicleDAO = daoManager.getVehicleDAO();
-            vehicle = vehicleDAO.create(new Vehicle(null, "Golf 7", "AAAAAAAAAAAAAAAAA", null, 5000, 300, vehicleType, LocalDate.of(2015, 6, 17), null, null));
+            vehicle = vehicleDAO.create(new Vehicle(null, "Golf 7", "AAAAAAAAAAAAAAAAA", null, 5000, 300, vehicleType, LocalDate.of(2015, 6, 17), null));
             vehicleDAO.remove(vehicle.getUuid());
             fail("Vehicle succesfully created with brand field null when an exception was expected");
         } catch (DataAccessException d) {
@@ -75,7 +75,7 @@ public class VehicleParametersTest {
         Vehicle vehicle = null;
         try {
             VehicleDAO vehicleDAO = daoManager.getVehicleDAO();
-            vehicle = vehicleDAO.create(new Vehicle("Volkswagen", null, "AAAAAAAAAAAAAAAAA", null, 5000, 300, vehicleType, LocalDate.of(2015, 6, 17), null, null));
+            vehicle = vehicleDAO.create(new Vehicle("Volkswagen", null, "AAAAAAAAAAAAAAAAA", null, 5000, 300, vehicleType, LocalDate.of(2015, 6, 17), null));
             vehicleDAO.remove(vehicle.getUuid());
             fail("Vehicle succesfully created with model field null when an exception was expected");
         } catch (DataAccessException d) {
@@ -90,7 +90,7 @@ public class VehicleParametersTest {
         Vehicle vehicle = null;
         try {
             VehicleDAO vehicleDAO = daoManager.getVehicleDAO();
-            vehicle = vehicleDAO.create(new Vehicle("Volkswagen", "Golf 7", null, null, 5000, 300, vehicleType, LocalDate.of(2015, 6, 17), null, null));
+            vehicle = vehicleDAO.create(new Vehicle("Volkswagen", "Golf 7", null, null, 5000, 300, vehicleType, LocalDate.of(2015, 6, 17), null));
             vehicleDAO.remove(vehicle.getUuid());
             fail("Vehicle succesfully created with chassisNumber field null when an exception was expected");
         } catch (DataAccessException d) {
@@ -105,7 +105,7 @@ public class VehicleParametersTest {
         Vehicle vehicle = null;
         try {
             VehicleDAO vehicleDAO = daoManager.getVehicleDAO();
-            vehicle = vehicleDAO.create(new Vehicle("Volkswagen", "Golf 7", "AAAAAAAAAAAAAAAAA", null, 5000, 300, null, LocalDate.of(2015, 6, 17), null, null));
+            vehicle = vehicleDAO.create(new Vehicle("Volkswagen", "Golf 7", "AAAAAAAAAAAAAAAAA", null, 5000, 300, null, LocalDate.of(2015, 6, 17), null));
             vehicleDAO.remove(vehicle.getUuid());
             fail("Vehicle succesfully created with type field null when an exception was expected");
         } catch (DataAccessException d) {
@@ -120,7 +120,7 @@ public class VehicleParametersTest {
         Vehicle vehicle = null;
         try {
             VehicleDAO vehicleDAO = daoManager.getVehicleDAO();
-            vehicle = vehicleDAO.create(new Vehicle("Volkswagen", "Golf 7", "AAAAAAAAAAAAAAAAA", null, 5000, 300, vehicleType, null, null, null));
+            vehicle = vehicleDAO.create(new Vehicle("Volkswagen", "Golf 7", "AAAAAAAAAAAAAAAAA", null, 5000, 300, vehicleType, null, null));
             vehicleDAO.remove(vehicle.getUuid());
             fail("Vehicle succesfully created with productionDate field null when an exception was expected");
         } catch (DataAccessException d) {

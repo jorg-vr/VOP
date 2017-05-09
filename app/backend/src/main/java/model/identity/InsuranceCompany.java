@@ -1,6 +1,7 @@
 package model.identity;
 
 import model.insurance.Contract;
+import model.insurance.Surety;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,6 +11,7 @@ import java.util.UUID;
 public class InsuranceCompany extends Company implements java.io.Serializable {
 
     private Collection<Contract> contracts;
+    private Collection<Surety> sureties = new ArrayList<>();
 
     public InsuranceCompany() {
         this.contracts = new ArrayList<>();
@@ -42,5 +44,13 @@ public class InsuranceCompany extends Company implements java.io.Serializable {
 
     public void setContracts(Collection<Contract> contracts) {
         this.contracts = contracts;
+    }
+
+    public Collection<Surety> getSureties() {
+        return sureties;
+    }
+
+    public void setSureties(Collection<Surety> sureties) {
+        this.sureties = sureties;
     }
 }

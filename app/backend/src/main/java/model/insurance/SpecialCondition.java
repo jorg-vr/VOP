@@ -7,13 +7,19 @@ import java.util.UUID;
 /**
  * Created by jorg on 4/12/17.
  */
-public class SpecialCondition implements EditableObject{
+public class SpecialCondition implements EditableObject {
     private UUID uuid;
     private String referenceCode;
     private String Title;
     private String text;
 
     public SpecialCondition() {
+    }
+
+    public SpecialCondition(String title, String text, String referenceCode) {
+        this.referenceCode = referenceCode;
+        this.text = text;
+        Title = title;
     }
 
     public String getReferenceCode() {
@@ -39,6 +45,7 @@ public class SpecialCondition implements EditableObject{
     public void setText(String text) {
         this.text = text;
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
