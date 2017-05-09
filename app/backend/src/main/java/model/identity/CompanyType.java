@@ -3,6 +3,7 @@ package model.identity;
 
 import model.Factory;
 
+//TODO documentation
 public enum CompanyType {
 
     CUSTOMER(Customer::new),
