@@ -14,6 +14,7 @@ public class FieldsComparator {
      *
      * @param o1  the old version of the object
      * @param o2  the new version of the object
+     * @throws IllegalArgumentException o1 and o2 are not of the same class
      * @return a collection with descriptions of all the fields that are different
      */
     public static Collection<Description> compareFields(Object o1, Object o2) {

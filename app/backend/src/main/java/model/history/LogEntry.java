@@ -14,6 +14,12 @@ public class LogEntry {
 
     private UUID object;
 
+    /**
+     * A collection of ids of objects that also want this logentry to be shown when asked about their log history.
+     * e.g: when an vehicleinsurance changes, it should also be shown in the log of the vehicle the insurance belongs to
+     */
+    private Collection<UUID> interestedIn;
+
     // User that created/retrieved/updated/deleted the object
     private User user;
 
@@ -101,6 +107,7 @@ public class LogEntry {
     public String toString() {
         return "LogEntry{" +
                 "object=" + object +
+                ", interestedIn=" + interestedIn +
                 ", user=" + user +
                 ", time=" + time +
                 ", action=" + action +

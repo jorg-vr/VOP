@@ -19,11 +19,10 @@ import static model.account.Action.*;
 
 /**
  * This class and it's subclasses are framework independent controller classes.
- * In their final state, these classes should act as a protecting interface of the backend model.
- * The methods of these classes should in final state take care of:
- * 1) history changes (not yet implemented) TODO milestone3
+ * These classes should act as a protecting interface of the backend model.
+ * The methods of these classes take care of
+ * 1) Logging
  * 2) Authorization
- * 3) business logic
  * <p>
  * Currently there is a generic implementation for the get, update, create and archive methods.
  */
@@ -93,7 +92,6 @@ public abstract class AbstractController<T extends EditableObject> {
         Collection<T> collection = dao.listFiltered(filters);
         if (role.hasAccess(resource, READ_ALL) ||
                 (role.hasAccess(resource, READ_MINE) && collection.stream().allMatch((t) -> isOwner(t, function)))) {
-            //TODO log get of every object
             return collection;
         } else {
             throw new UnAuthorizedException();
