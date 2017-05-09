@@ -13,11 +13,24 @@ import java.util.UUID;
  */
 public  abstract class Surety implements EditableObject {
 
+    /**
+     * The unique id
+     */
     private UUID uuid;
+
+    /**
+     * The specialconditions applying for the surety
+     */
     private Collection<SpecialCondition> specialConditions;
+
+    /**
+     * The insurance company
+     */
     private InsuranceCompany insuranceCompany;
 
-    // Type of surety included
+    /**
+     * Type of surety included
+     */
     private SuretyType suretyType;
 
     /**
@@ -33,24 +46,42 @@ public  abstract class Surety implements EditableObject {
      */
     public abstract int calculatePremium(int value);
 
+    /**
+     * Gets the uuid
+     * @return the uuid
+     */
     @Override
     public UUID getUuid() {
         return uuid;
     }
 
+    /**
+     * Sets the uuid
+     * @param uuid the uuid
+     */
     public void setUuid(UUID uuid) {
         this.uuid = uuid;
     }
 
+    /**
+     * Copies the object
+     * @return the object
+     */
     @Override
-    public EditableObject copy() {
-        return null;
-    }
+    public abstract EditableObject copy();
 
+    /**
+     * Gets the surety type
+     * @return the surety type
+     */
     public SuretyType getSuretyType() {
         return suretyType;
     }
 
+    /**
+     * Sets the suretyType
+     * @param suretyType the surety type
+     */
     public void setSuretyType(SuretyType suretyType) {
         this.suretyType = suretyType;
     }
@@ -62,23 +93,36 @@ public  abstract class Surety implements EditableObject {
 
         Surety that = (Surety) o;
 
-        return getUuid().equals(that.getUuid());
+        return getUuid()!=null && getUuid().equals(that.getUuid());
 
     }
 
     @Override
     public int hashCode() {
+        if(getUuid()!=null){return getUuid().hashCode();}
         return getUuid().hashCode();
     }
 
+    /**
+     * Gets the special conditions
+     * @return the special conditions
+     */
     public Collection<SpecialCondition> getSpecialConditions() {
         return specialConditions;
     }
 
+    /**
+     * Sets the special conditions
+     * @param specialConditions the special conditions
+     */
     public void setSpecialConditions(Collection<SpecialCondition> specialConditions) {
         this.specialConditions = specialConditions;
     }
 
+    /**
+     * Adds a single special conditions to the collection
+     * @param specialCondition a special condition
+     */
     public void addSpecialCondition(SpecialCondition specialCondition) {
         if (specialConditions == null) {
             specialConditions = new ArrayList<>();
@@ -86,10 +130,18 @@ public  abstract class Surety implements EditableObject {
         specialConditions.add(specialCondition);
     }
 
+    /**
+     * Gets the insurance company
+     * @return the insurance company
+     */
     public InsuranceCompany getInsuranceCompany() {
         return insuranceCompany;
     }
 
+    /**
+     * Sets the insurance company
+     * @param insuranceCompany the insurance company
+     */
     public void setInsuranceCompany(InsuranceCompany insuranceCompany) {
         this.insuranceCompany = insuranceCompany;
     }
