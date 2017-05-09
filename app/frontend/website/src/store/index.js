@@ -32,7 +32,6 @@ let roleResource = resourceModule.initializeModule(locations.ROLE, 'role')
 let permissionResource = resourceModule.initializeModule(locations.PERMISSIONS, 'permission')
 let vehicleTypeResource = resourceModule.initializeModule(locations.VEHICLE_TYPE, 'vehicleType')
 let insuranceResource = resourceModule.initializeModule(locations.INSURANCE, 'insurance')
-
 let invoiceResource = resourceModule.initializeModule(locations.INVOICE, 'invoice')
 
 
