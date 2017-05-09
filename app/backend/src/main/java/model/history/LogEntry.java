@@ -13,6 +13,8 @@ import java.util.UUID;
  */
 public class LogEntry {
 
+    private UUID uuid;
+
     private UUID object;
 
     /**
@@ -54,6 +56,14 @@ public class LogEntry {
         this.action = action;
         this.resource = resource;
         this.descriptions = descriptions;
+    }
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 
     public UUID getObject() {
