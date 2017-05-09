@@ -69,6 +69,7 @@ public class Fleet implements EditableObject, java.io.Serializable {
 
     /**
      * Gets the address of the fleet
+     *
      * @return the address
      */
     public Address getAddress() {
@@ -77,6 +78,7 @@ public class Fleet implements EditableObject, java.io.Serializable {
 
     /**
      * Sets the address of the fleet
+     *
      * @param address the address
      */
     public void setAddress(Address address) {
@@ -85,6 +87,7 @@ public class Fleet implements EditableObject, java.io.Serializable {
 
     /**
      * Gets the owner of the fleet
+     *
      * @return the owner
      */
     public Customer getOwner() {
@@ -93,6 +96,7 @@ public class Fleet implements EditableObject, java.io.Serializable {
 
     /**
      * Sets the owner of the fleet
+     *
      * @param owner the owner
      */
     public void setOwner(Customer owner) {
@@ -101,6 +105,7 @@ public class Fleet implements EditableObject, java.io.Serializable {
 
     /**
      * Gets the name of the fleet
+     *
      * @return the name
      */
     public String getName() {
@@ -109,6 +114,7 @@ public class Fleet implements EditableObject, java.io.Serializable {
 
     /**
      * Sets the name of the fleet
+     *
      * @param name the name
      */
     public void setName(String name) {
@@ -117,6 +123,7 @@ public class Fleet implements EditableObject, java.io.Serializable {
 
     /**
      * Gets the unique id
+     *
      * @return the id
      */
     public UUID getUuid() {
@@ -125,6 +132,7 @@ public class Fleet implements EditableObject, java.io.Serializable {
 
     /**
      * Sets the id
+     *
      * @param uuid the id
      */
     public void setUuid(UUID uuid) {
@@ -133,6 +141,7 @@ public class Fleet implements EditableObject, java.io.Serializable {
 
     /**
      * Gets the vehicles in the fleet
+     *
      * @return the vehicles
      */
     public Collection<Vehicle> getVehicles() {
@@ -141,6 +150,7 @@ public class Fleet implements EditableObject, java.io.Serializable {
 
     /**
      * Sets a collection of vehicle as all vehicles in the fleet
+     *
      * @param vehicles the vehicles
      */
     public void setVehicles(Collection<Vehicle> vehicles) {
@@ -152,12 +162,13 @@ public class Fleet implements EditableObject, java.io.Serializable {
         if (this == o) return true;
         if (o == null || !(o instanceof Fleet)) return false;
 
-        return uuid!=null && uuid.equals(((Fleet) o).getUuid());
+        return uuid != null && uuid.equals(((Fleet) o).getUuid());
 
     }
 
     /**
      * Copies the object (and all vehicles)
+     *
      * @return the copied object
      */
     @Override
@@ -177,7 +188,9 @@ public class Fleet implements EditableObject, java.io.Serializable {
 
     @Override
     public int hashCode() {
-        if(this.uuid!=null){return uuid.hashCode();}
+        if (this.uuid != null) {
+            return uuid.hashCode();
+        }
         return super.hashCode();
     }
 
