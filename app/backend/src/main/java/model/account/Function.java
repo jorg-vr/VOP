@@ -12,17 +12,17 @@ import java.util.UUID;
  */
 public class Function implements EditableObject, java.io.Serializable {
     /**
-     * The company where the user works
+     * The company where the user works, should not be null
      */
     private Company company;
 
     /**
-     * The role of the function
+     * The role of the function, should not be null
      */
     private Role role;
 
     /**
-     * Bidirectional relationship of User and Function
+     * Bidirectional relationship of User and Function, should not be null
      */
     private User user;
 
