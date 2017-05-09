@@ -6,12 +6,14 @@ import model.fleet.Fleet;
 import model.identity.Address;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static database.DAOTestUtil.createFleet;
 import static database.DAOTestUtil.removeFleet;
 import static org.junit.Assert.fail;
 
+@Ignore
 public class FleetParametersTest {
 
     //Setup before any of the tests are started
