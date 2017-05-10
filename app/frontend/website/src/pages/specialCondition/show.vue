@@ -33,7 +33,6 @@
 </template>
 <script>
     import {mapGetters, mapActions,mapMutations} from 'vuex'
-    import buttonPrevious from '../../assets/buttons/buttonPrevious.vue'
     import listComponent from "../../assets/list/listComponent.vue"
     import resources from '../../constants/resources'
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
@@ -41,7 +40,7 @@
 
     export default {
         components: {
-            buttonPrevious,listComponent,buttonAdd,buttonBack
+            listComponent,buttonAdd,buttonBack
         },
         props: {
             id: String,

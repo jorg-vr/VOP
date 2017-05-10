@@ -27,7 +27,7 @@
 
     <!-- special conditions for the insurance surety -->
         <div class="page-header">   
-            <button-add :resource="resource"></button-add>    
+            <!-- <button-add :resource="resource"></button-add>   -->
             <h2>{{$t("surety.coverage") | capitalize }}</h2>
         </div>   
 
@@ -52,6 +52,7 @@
         data(){
             return{
                 resource: resources.CONDITION,
+                values: []
             }
         },
         components: {
@@ -63,7 +64,9 @@
         },
         created(){
            let suretyId = this.id
-           this.fetchSurety({id:suretyId})
+           this.fetchSurety({id:suretyId}).then(surety => {
+                this.values = this.surety.specialConditions
+           })
            // Needs to be removed after back end support
            // if back end support
            // this.setSpecialConditions(this.surety.specialConditions)
@@ -78,7 +81,7 @@
         listObject() {
                 var listObj = {};
                 listObj.headers = ['referenceCode','title'];
-                listObj.values = this.surety.specialConditions;
+                listObj.values = this.values
                 return listObj;
         }
     },
