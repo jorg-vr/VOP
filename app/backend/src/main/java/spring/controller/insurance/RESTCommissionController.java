@@ -1,13 +1,13 @@
 package spring.controller.insurance;
 
-import controller.ControllerManager;
-import controller.CustomerController;
-import controller.VehicleController;
-import controller.VehicleTypeController;
+import controller.*;
 import controller.exceptions.UnAuthorizedException;
+import controller.insurance.CommissionContainerController;
+import controller.insurance.CommissionContainerControllerFactory;
 import dao.exceptions.ConstraintViolationException;
 import dao.exceptions.DataAccessException;
 import dao.exceptions.ObjectNotFoundException;
+import model.CommissionContainer;
 import model.fleet.Vehicle;
 import model.fleet.VehicleType;
 import model.identity.Customer;
@@ -53,94 +53,85 @@ public class RESTCommissionController {
         return map;
     }
 
+    private  Collection<RESTCommission> getCommissions(String id,
+                                                       String token,
+                                                       String function,
+                                                       CommissionContainerControllerFactory controllerFactory)
+            throws DataAccessException, UnAuthorizedException, ObjectNotFoundException {
+        UUID user = new AuthenticationToken(token).getAccountId();
+        try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
+            CommissionContainerController controller = controllerFactory.create(manager);
+            return translateMap(controller.getCommissions(toUUID(id)));
+        }
+    }
+
+    private  Collection<RESTCommission> putCommissions(String id,
+                                                    String token,
+                                                    String function,
+                                                    Collection<RESTCommission> commissions,
+                                                    CommissionContainerControllerFactory controllerFactory)
+            throws DataAccessException, UnAuthorizedException, ObjectNotFoundException, ConstraintViolationException {
+        UUID user = new AuthenticationToken(token).getAccountId();
+        try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
+            CommissionContainerController controller = controllerFactory.create(manager);
+            return translateMap(controller.setCommissions(toUUID(id),translateCommissions(commissions)));
+        }
+    }
+
+    private  void deleteCommissions(String id,
+                                    String token,
+                                    String function,
+                                    CommissionContainerControllerFactory controllerFactory)
+            throws DataAccessException, UnAuthorizedException, ObjectNotFoundException, ConstraintViolationException {
+        UUID user = new AuthenticationToken(token).getAccountId();
+        try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
+            CommissionContainerController controller = controllerFactory.create(manager);
+            controller.setCommissions(toUUID(id),null);
+        }
+    }
+
     @RequestMapping(value = "${path.vehicles}/${path.types}/{id}/${path.commissions}", method = RequestMethod.GET)
     public Collection<RESTCommission> getVehicleTypeCommission(@PathVariable String id,
                                                    @RequestHeader(value = "Authorization") String token,
                                                    @RequestHeader(value = "Function") String function) throws UnAuthorizedException, DataAccessException, ObjectNotFoundException {
-        UUID user = new AuthenticationToken(token).getAccountId();
-        try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
-            VehicleTypeController controller = manager.getVehicleTypeController();
-            VehicleType vehicleType1 = controller.get(toUUID(id));
-            return translateMap(vehicleType1.getCommissions());
-        }
+        return getCommissions(id,token,function, ControllerManager::getVehicleTypeController);
     }
 
-    @RequestMapping(value = "${path.vehicles}/${path.types}/{vehicleType}/${path.commissions}", method = RequestMethod.PUT)
-    public Collection<RESTCommission> putVehicleTypeCommission(@PathVariable String vehicleType,
+    @RequestMapping(value = "${path.vehicles}/${path.types}/{id}/${path.commissions}", method = RequestMethod.PUT)
+    public Collection<RESTCommission> putVehicleTypeCommission(@PathVariable String id,
                                                    @RequestHeader(value = "Authorization") String token,
                                                    @RequestHeader(value = "Function") String function,
-                                                   @RequestBody Collection<RESTCommission> commissions) throws UnAuthorizedException, ObjectNotFoundException, ConstraintViolationException {
-        UUID user = new AuthenticationToken(token).getAccountId();
-        try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
-            VehicleTypeController controller = manager.getVehicleTypeController();
-            VehicleType type = controller.get(toUUID(vehicleType));
-
-            type.setCommissions(translateCommissions(commissions));
-            controller.update(type);
-
-            return commissions;
-        } catch (DataAccessException e) {
-            throw new NotFoundException();
-        }
+                                                   @RequestBody Collection<RESTCommission> commissions) throws UnAuthorizedException, ObjectNotFoundException, ConstraintViolationException, DataAccessException {
+        return putCommissions(id,token,function,commissions,ControllerManager::getVehicleTypeController);
     }
 
-    @RequestMapping(value = "${path.vehicles}/{id}/${path.commissions}/{contractType}", method = RequestMethod.GET)
-    public Collection<RESTCommission> getVehicleCommission(@PathVariable String id, @PathVariable String contractType,
+    @RequestMapping(value = "${path.vehicles}/{id}/${path.commissions}", method = RequestMethod.GET)
+    public Collection<RESTCommission> getVehicleCommission(@PathVariable String id,
                                                 @RequestHeader(value = "Authorization") String token,
-                                                @RequestHeader(value = "Function") String function) throws UnAuthorizedException, ObjectNotFoundException {
-        UUID user = new AuthenticationToken(token).getAccountId();
-        try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
-            VehicleController controller = manager.getVehicleController();
-            Vehicle vehicle = controller.get(toUUID(id));
-            return translateMap(vehicle.getCommissions());
-        } catch (DataAccessException e) {
-            throw new NotFoundException();
-        }
+                                                @RequestHeader(value = "Function") String function) throws UnAuthorizedException, ObjectNotFoundException, DataAccessException {
+        return getCommissions(id,token,function, ControllerManager::getVehicleController);
     }
 
     @RequestMapping(value = "${path.vehicles}/{id}/${path.commissions}", method = RequestMethod.PUT)
     public Collection<RESTCommission> putVehicleCommission(@PathVariable String id,
                                                @RequestHeader(value = "Authorization") String token,
                                                @RequestHeader(value = "Function") String function,
-                                               @RequestBody Collection<RESTCommission> commissions) throws UnAuthorizedException, ObjectNotFoundException, ConstraintViolationException {
-        UUID user = new AuthenticationToken(token).getAccountId();
-        try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
-            VehicleController controller = manager.getVehicleController();
-            Vehicle vehicle = controller.get(toUUID(id));
-
-            vehicle.setCommissions(translateCommissions(commissions));
-            controller.update(vehicle);
-
-            return commissions;
-        } catch (DataAccessException e) {
-            throw new NotFoundException();
-        }
+                                               @RequestBody Collection<RESTCommission> commissions) throws UnAuthorizedException, ObjectNotFoundException, ConstraintViolationException, DataAccessException {
+        return putCommissions(id,token,function,commissions,ControllerManager::getVehicleController);
     }
 
     @RequestMapping(value = "${path.vehicles}/{id}/${path.commissions}", method = RequestMethod.DELETE)
     public void deleteVehicleCommission(@PathVariable String id,
                                         @RequestHeader(value = "Authorization") String token,
                                         @RequestHeader(value = "Function") String function) throws UnAuthorizedException, ConstraintViolationException, DataAccessException, ObjectNotFoundException {
-        UUID user = new AuthenticationToken(token).getAccountId();
-        try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
-            VehicleController controller = manager.getVehicleController();
-            Vehicle vehicle = controller.get(toUUID(id));
-
-            vehicle.setCommissions(null);
-            controller.update(vehicle);
-        }
+        deleteCommissions(id,token,function,ControllerManager::getVehicleController);
     }
 
     @RequestMapping(value = "${path.companies}/{id}/${path.commissions}", method = RequestMethod.GET)
     public Collection<RESTCommission> getCustomerCommission(@PathVariable String id,
                                                @RequestHeader(value = "Authorization") String token,
                                                @RequestHeader(value = "Function") String function) throws UnAuthorizedException, DataAccessException, ObjectNotFoundException {
-        UUID user = new AuthenticationToken(token).getAccountId();
-        try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
-            CustomerController controller = manager.getCustomerController();
-            Customer customer = controller.get(toUUID(id));
-            return translateMap(customer.getCommissions());
-        }
+        return getCommissions(id,token,function, ControllerManager::getCustomerController);
     }
 
     @RequestMapping(value = "${path.companies}/{id}/${path.commissions}", method = RequestMethod.PUT)
@@ -148,29 +139,13 @@ public class RESTCommissionController {
                                                @RequestHeader(value = "Authorization") String token,
                                                @RequestHeader(value = "Function") String function,
                                                @RequestBody Collection<RESTCommission> commissions) throws UnAuthorizedException, ObjectNotFoundException, ConstraintViolationException, DataAccessException {
-        UUID user = new AuthenticationToken(token).getAccountId();
-        try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
-            CustomerController controller = manager.getCustomerController();
-            Customer customer = controller.get(toUUID(id));
-
-            customer.setCommissions(translateCommissions(commissions));
-            controller.update(customer);
-
-            return commissions;
-        }
+        return putCommissions(id,token,function,commissions, ControllerManager::getCustomerController);
     }
 
     @RequestMapping(value = "${path.companies}/{id}/${path.commissions}", method = RequestMethod.DELETE)
     public void deleteCustomerCommission(@PathVariable String id,
                                         @RequestHeader(value = "Authorization") String token,
                                         @RequestHeader(value = "Function") String function) throws UnAuthorizedException, DataAccessException, ObjectNotFoundException, ConstraintViolationException {
-        UUID user = new AuthenticationToken(token).getAccountId();
-        try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
-            CustomerController controller = manager.getCustomerController();
-            Customer customer = controller.get(toUUID(id));
-
-            customer.setCommissions(null);
-            controller.update(customer);
-        }
+        deleteCommissions(id,token,function, ControllerManager::getCustomerController);
     }
 }
