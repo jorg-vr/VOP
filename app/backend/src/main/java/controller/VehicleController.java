@@ -1,6 +1,8 @@
 package controller;
 
 import controller.exceptions.UnAuthorizedException;
+import dao.exceptions.ConstraintViolationException;
+import dao.exceptions.ObjectNotFoundException;
 import dao.interfaces.DAOManager;
 import dao.exceptions.DataAccessException;
 import dao.interfaces.VehicleDAO;
@@ -8,6 +10,7 @@ import model.account.Function;
 import model.account.Resource;
 import model.fleet.Fleet;
 import model.fleet.Vehicle;
+import model.identity.Customer;
 import model.identity.LeasingCompany;
 
 import java.util.Collection;
@@ -21,6 +24,12 @@ public class VehicleController extends AbstractController<Vehicle> {
         super(manager.getVehicleDAO(), Resource.VEHICLE, function);
     }
 
+    @Override
+    public Vehicle update(Vehicle vehicle) throws DataAccessException, UnAuthorizedException, ObjectNotFoundException, ConstraintViolationException {
+        Vehicle old = get(vehicle.getUuid());
+        vehicle.setCommissions(old.getCommissions());
+        return super.update(vehicle);
+    }
 
     @Override
     public boolean isOwner(Vehicle vehicle, Function function) {
