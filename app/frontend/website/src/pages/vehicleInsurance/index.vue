@@ -12,9 +12,8 @@
         </div>
         <insurance-search-bar @search="updateInsurance" @advancedSearch="updateInsurancesAdvanced"></insurance-search-bar>
         <!-- Render an info-pane for every insurance. Once all the data is loaded, the table will be shown.-->
-         <list-component :resource="resource" :listObject="listObject">
+        <list-component :resource="resource" :objects="insurances" :visibleKeys="['startDate','totalCost','totalTax']">
         </list-component>
-
     </div>
 </template>
 <script>
@@ -55,13 +54,7 @@
                 'filteredInsurances',
                 'getInsurancesByAll',
                 'getInsurancesByAllAdvanced'
-            ]),
-            listObject() {
-                var listObj = {};
-                listObj.headers = ['startDate','totalCost','totalTax'];
-                listObj.values = this.insurances;
-                return listObj;
-            }
+            ])
         },
         methods: {
             ...mapActions([

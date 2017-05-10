@@ -9,11 +9,11 @@ This page is used to edit or create a certain insurance.
         <div class="page-header">
             <h1>{{ title }}</h1>
         </div>
-        <insurance-form :actions="actions" :oldInsurance="oldInsurance"></insurance-form>
+        <condition-form :actions="actions" :oldCondition="oldCondition"></condition-form>
     </div>
 </template>
 <script>
-    import InsuranceForm from '../../../assets/form/types/insuranceForm.vue'
+    import ConditionForm from '../../../assets/form/types/ConditionForm.vue'
     import actions from '../../../constants/actions'
     import {mapGetters, mapActions,mapMutations} from 'vuex'
     import {getResourceActionText} from '../../../utils/utils'
@@ -21,22 +21,17 @@ This page is used to edit or create a certain insurance.
     export default {
         data(){
             return {
-                title: getResourceActionText('insurance', this.actions.name),
-                oldInsurance: null
+                title: getResourceActionText('condition', this.actions.name),
+                oldCondition: null
             }
         },
         components: {
-            InsuranceForm
+            ConditionForm
         },
          created(){
-            this.clearSurety()
-            // edit
-            if(this.id){
-                this.fetchInsurance({ids: this.contractId, id:this.id}).then(insurance => {
-                    this.oldInsurance = insurance
-                    this.oldInsurance.startDate = this.oldInsurance.startDate.substring(0,10)
-                    this.oldInsurance.endDate = this.oldInsurance.endDate.substring(0,10)
-                    console.log(this.oldInsurance)
+           if(this.id){
+                this.fetchCondition({id:this.id}).then(condition => {
+                    this.oldCondition = condition
                 })
             }
            
@@ -47,6 +42,7 @@ This page is used to edit or create a certain insurance.
         },
         computed: {
             ...mapGetters([
+                'surety',
                 'suretyData',
                 'suretyDetail',
                 'insurance',
@@ -56,8 +52,7 @@ This page is used to edit or create a certain insurance.
         methods: {
             ...mapActions([
                 'fetchSurety',
-                'fetchSuretyDetail',
-                'fetchInsurance'
+                'fetchCondition'
             ]),
             ...mapMutations([
                 'clearSurety'

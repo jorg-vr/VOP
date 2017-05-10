@@ -13,9 +13,12 @@ Generic component for a form. Every form should be encapsulated in this componen
         <form class="form-horizontal col-xs-12 col-sm-11 col-md-9 col-lg-7">
             <slot></slot>
             <div class="row">
-                <button-link :route="back" buttonClass="pull-right btn btn-sm btn-default form-component-button">
+                <!-- <button-link :route="back" buttonClass="pull-right btn btn-sm btn-default form-component-button">
                     {{ $t('common.cancel') | capitalize }}
-                </button-link>
+                </button-link> -->
+                <button-action @click="cancel" buttonClass="pull-right btn btn-sm btn-default form-component-button">
+                    {{ $t('common.cancel') | capitalize }}
+                </button-action>
                 <button-action @click="submit" buttonClass="pull-right btn btn-sm btn-primary form-component-button">
                     {{ submitText }}
                 </button-action>
@@ -63,9 +66,12 @@ Generic component for a form. Every form should be encapsulated in this componen
              * index page of the resource of the object.
              */
             submit(){
-                this.$store.dispatch(this.actions.name + this.resource.name.capitalize(), {resource:this.object,ids:{}}).then(object => {
-                    this.$router.push(this.back)
+                this.$store.dispatch(this.actions.name + this.resource.name.capitalize(), {resource:this.object,ids:this.contractId}).then(object => {
+                    this.$router.go(-1)
                 })
+            },
+            cancel(){
+                this.$router.go(-1)
             }
 
         }

@@ -13,9 +13,13 @@ export default {
         suretyDetailId: '',
         vehicleId: '',
         contractId: '',
-        sureties:[]
+        selectedConditions: [],
+
     },
     getters: {
+        selectedConditions(state){
+            return state.selectedConditions
+        },
         /**
          * Get the list of contract insurances
          * @param state
@@ -51,8 +55,11 @@ export default {
          contractId(state){
             return state.contractId
         },
-        sureties(state){
+/*        sureties(state){
             return state.sureties
+        },*/
+        coverages(state){
+            return state.coverages
         },
 
         getContractInsurancesByAll: (state, getters) => (value) => {
@@ -66,6 +73,21 @@ export default {
 
     },
     mutations: {
+        setSelectedConditions(state,value){
+            state.selectedConditions = value
+        },
+        addSelectedCondition(state,value){
+            // check if array doesn't contain any elements with same ID
+            let possible = true
+            for(let i=0; i<state.selectedConditions.length; i++){
+                if(state.selectedConditions[i].id == value.id){
+                    possible = false
+                }
+            }
+            if(possible){
+             state.selectedConditions.push(value)
+            }
+        },
         setContractInsurances(state,insurances){
             state.contractInsurances=insurances
         },
@@ -93,11 +115,12 @@ export default {
             return state.suretyTypes=suretyTypes
         },
          setContractId(state,id){
+            console.log('setting contract id'+id)
             return state.contractId = id
         },
-        setSureties(state,sureties){
+ /*       setSureties(state,sureties){
             return state.sureties = sureties
-        },
+        },*/
         /**
          * Clear the list of insurances
          * @param state
@@ -105,7 +128,7 @@ export default {
         clearContractInsurances(state){
             state.contractInsurances = []
         },
-
+       
         /**
          * Add an insurance to the list of contract insurances
          * @param state
@@ -121,15 +144,26 @@ export default {
             console.log('clearSurety called')
             state.suretyData = {}
             state.suretyDetail = {}
+            state.insurances = []
+        },
+        clearData(state){
+            state.insurances=[]
+            state.filteredInsurances=[]
         },
         removeSurety(state,payload){
             console.log(payload.id)
             state.contractInsurances = state.contractInsurances.filter(insurance => insurance.id !== payload.id)
             state.filteredcontractInsurances = state.filteredcontractInsurances.filter(insurance => insurance.id !== payload.id)
 
-        }
+        },
+         addInsurance(state,payload){
+            console.log(state.clients)
+     //       state.insurances.push(insurance)
+        //    state.filteredInsurances.push(insurance)
+        },
     },
     actions: {
+     
         /**
          * Fetches all of the insurances of a particular contract.
          * @param context
@@ -142,15 +176,10 @@ export default {
                 RequestHandler.getObjectsRequestBy(locations.INSURANCE+contractId+'/insurances').then(insurances => {
                     context.commit('setContractInsurances',insurances)
                     context.commit('setFilteredcontractInsurances',insurances)
-                    //console.log(insurances)
-                    //  for(i=0;i<insurances.length;i++){
-                    //      context.commit('addContractInsurance',insurances[i])
-                    //  }
-                    // resolve(insurances)
                 })
             })
-        },fetchInsurancesByCompany(context,  companyId){
-            var i
+        },
+        fetchInsurancesByCompany(context,  companyId){
             // fetch all insurances from a contract
             return new Promise(resolve => {
                 RequestHandler.getObjectsRequestBy(locations.INSURANCE,{company:companyId}).then(insurances => {
@@ -165,7 +194,7 @@ export default {
             Also fetch information about insurance surety and insured vehicle
             @param payload: data containting id of insurance and id of contract
         */
-        fetchSureties(context){
+      /*  fetchSureties(context){
             console.log('fetching sureties')
             return new Promise((resolveSuccess, resolveFailure) => {
                 RequestHandler.getObjectsRequest(locations.SURETYDETAIL).then(sureties => {
@@ -176,8 +205,8 @@ export default {
                     resolveFailure(response)
                 })
             })
-        },
-        fetchSurety(context,payload){
+        },*/
+        /*fetchSurety(context,payload){
             // fetch Surety
             return new Promise((resolveSuccess, resolveFailure) => {
                 RequestHandler.getObjectRequest(locations.INSURANCE+payload.contractId+'/'+locations.SURETY, payload.id).then(surety => {
@@ -190,7 +219,7 @@ export default {
             })
             // fetch surety detail
             console.log(suretyDetailId)
-        },
+        },*/
 
         fetchSuretyDetail(context,id){
             return new Promise((resolveSuccess, resolveFailure) => {
@@ -239,7 +268,7 @@ export default {
             })
         },
 
-        createSurety(context,payload){
+/*        createSurety(context,payload){
             return new Promise((resolveSuccess, resolveFailure) => {
                 RequestHandler.postObjectRequest(locations.INSURANCE+payload.contractId+'/'+locations.SURETY, payload.object).then(createdSurety => {
                     context.commit('addContractInsurance', createdSurety)
@@ -249,7 +278,7 @@ export default {
                 })
             })
 
-        }
+        }*/
     }
 }
 

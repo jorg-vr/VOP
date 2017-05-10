@@ -9,11 +9,11 @@ This page is used to edit or create a certain insurance.
         <div class="page-header">
             <h1>{{ title }}</h1>
         </div>
-        <insurance-form :actions="actions" :oldInsurance="oldInsurance"></insurance-form>
+        <contract-form :actions="actions" :oldContract="oldContract"></contract-form>
     </div>
 </template>
 <script>
-    import InsuranceForm from '../../../assets/form/types/insuranceForm.vue'
+    import ContractForm from '../../../assets/form/types/ContractForm.vue'
     import actions from '../../../constants/actions'
     import {mapGetters, mapActions,mapMutations} from 'vuex'
     import {getResourceActionText} from '../../../utils/utils'
@@ -21,24 +21,32 @@ This page is used to edit or create a certain insurance.
     export default {
         data(){
             return {
-                title: getResourceActionText('insurance', this.actions.name),
-                oldInsurance: null
+                title: getResourceActionText('contract', this.actions.name),
+                oldContract: null
             }
         },
         components: {
-            InsuranceForm
+            ContractForm
         },
          created(){
-            this.clearSurety()
-            // edit
+            // if EDIT
             if(this.id){
-                this.fetchInsurance({ids: this.contractId, id:this.id}).then(insurance => {
-                    this.oldInsurance = insurance
-                    this.oldInsurance.startDate = this.oldInsurance.startDate.substring(0,10)
-                    this.oldInsurance.endDate = this.oldInsurance.endDate.substring(0,10)
-                    console.log(this.oldInsurance)
+                this.fetchContract({id: this.id}).then(contract => {
+                    this.oldContract = contract
+                    // adjust dates to fit form date input
+                    this.oldContract.startDate = this.oldContract.startDate.substring(0,10)
+                    this.oldContract.endDate = this.oldContract.endDate.substring(0,10)
+                    console.log(this.oldContract)
                 })
+
+                // Overbodig dmv veld in contract resource? (contract.insurances = [])
+               /* this.fetchInsurances({ids:this.id}).then(insurances =>{
+                    console.log(insurances)
+                })*/
             }
+
+
+
            
         },
         props: {
@@ -50,17 +58,19 @@ This page is used to edit or create a certain insurance.
                 'suretyData',
                 'suretyDetail',
                 'insurance',
-                'contractId'
+                'contractId',
+                'contract'
             ])
         },
         methods: {
             ...mapActions([
-                'fetchSurety',
+                'fetchContract',
                 'fetchSuretyDetail',
-                'fetchInsurance'
+                'fetchInsurances'
             ]),
             ...mapMutations([
-                'clearSurety'
+                'clearData',
+                'clearInsurances'
                 
             ]),
         }
