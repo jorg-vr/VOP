@@ -1,5 +1,6 @@
 package model.fleet;
 
+import model.CommissionContainer;
 import model.history.EditableObject;
 import model.identity.LeasingCompany;
 import model.insurance.SuretyType;
@@ -10,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class Vehicle implements EditableObject, java.io.Serializable {
+public class Vehicle implements EditableObject, java.io.Serializable, CommissionContainer {
 
     private UUID uuid;
 

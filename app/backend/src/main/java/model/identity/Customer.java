@@ -1,12 +1,13 @@
 package model.identity;
 
+import model.CommissionContainer;
 import model.fleet.Fleet;
 import model.insurance.Contract;
 import model.insurance.SuretyType;
 
 import java.util.*;
 
-public class Customer extends Company implements java.io.Serializable {
+public class Customer extends Company implements java.io.Serializable, CommissionContainer {
 
     private Collection<Fleet> fleets;
 

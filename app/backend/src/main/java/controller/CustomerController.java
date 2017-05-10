@@ -1,6 +1,7 @@
 package controller;
 
 import controller.exceptions.UnAuthorizedException;
+import controller.insurance.CommissionContainerController;
 import dao.exceptions.ConstraintViolationException;
 import dao.exceptions.DataAccessException;
 import dao.exceptions.ObjectNotFoundException;
@@ -13,18 +14,10 @@ import model.identity.Customer;
 /**
  * For more information of what this class does, see AbstractController
  */
-public class CustomerController extends AbstractController<Customer>{
+public class CustomerController extends CommissionContainerController<Customer> {
 
     public CustomerController(Function function, DAOManager manager) {
         super(manager.getCustomerDAO(), Resource.COMPANY,function);
-    }
-
-
-    @Override
-    public Customer update(Customer customer) throws DataAccessException, UnAuthorizedException, ObjectNotFoundException, ConstraintViolationException {
-        Customer old = get(customer.getUuid());
-        customer.setCommissions(old.getCommissions());
-        return super.update(customer);
     }
 
     @Override

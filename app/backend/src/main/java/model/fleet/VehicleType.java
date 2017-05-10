@@ -1,6 +1,7 @@
 package model.fleet;
 
 
+import model.CommissionContainer;
 import model.history.EditableObject;
 import model.insurance.Surety;
 import model.insurance.SuretyType;
@@ -11,7 +12,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.DoubleAccumulator;
 
-public class VehicleType implements EditableObject, java.io.Serializable {
+public class VehicleType implements EditableObject, java.io.Serializable, CommissionContainer {
 
     private UUID uuid;
 
