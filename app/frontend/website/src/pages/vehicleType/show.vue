@@ -9,7 +9,7 @@
             <h1> {{$t('vehicleType.vehicleType') | capitalize }} {{vehicleType.name}}</h1>
         </div>
         <div class="col-md-8">
-            <commissions :id="id"></commissions>
+            <commissions :id="id" :loc="loc"></commissions>
             <button-back :route="{name: 'vehicleTypes'}"></button-back>
         </div>
 
@@ -19,10 +19,16 @@
     import buttonBack from '../../assets/buttons/buttonBack.vue'
     import commissions from '../commission/show.vue'
     import {mapGetters, mapActions} from 'vuex'
+    import * as locations from '../../constants/locations'
 
     export default {
         components: {
             buttonBack,commissions
+        },
+        data(){
+            return {
+                loc:locations.VEHICLE_TYPE
+            }
         },
         props: {
             id: String

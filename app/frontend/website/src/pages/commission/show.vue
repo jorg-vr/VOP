@@ -13,10 +13,10 @@
             </thead>
             <tbody>
             <tr v-for="commission in commissions" class="list-tr">
-                <td  class="clickable-td" >
+                <td  >
                     {{$t('suretyTypes.'+commission.suretyType)}}
                 </td>
-                <td  class="clickable-td">
+                <td  >
                     {{commission.commission*100}}%
                 </td>
             </tr>
@@ -24,19 +24,6 @@
         </table>
     </div>
 </template>
-<style>
-    .stretch {
-        width: 1%;
-        white-space: nowrap;
-    }
-
-    .clickable-td {
-        cursor:pointer;
-    }
-    tr.list-tr {
-        border-bottom: 1px solid #e6e6e6;
-    }
-</style>
 <script>
     import { mapGetters, mapActions, mapMutations } from 'vuex'
     import resources from '../../constants/resources'
@@ -50,13 +37,14 @@
             }
         },
         props:{
-            id:String
+            id:String,
+            loc:String
         },
         components: {
             listComponent
         },
         created() {
-            this.fetchCommissions({ids:{'resource':'vehicles/types','resourceId':this.id}});
+            this.fetchCommissions({ids:{'resource':this.loc,'resourceId':this.id}});
         },
         computed: {
             ...mapGetters([
@@ -73,5 +61,3 @@
         }
     }
 </script>
-
-//ids:{'resource':'vehicles/types','id':'274776102288499320837812636171303961393'}

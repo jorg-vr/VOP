@@ -6,7 +6,6 @@ import login from './modules/login'
 import invoice from './modules/invoice'
 import insurance from './modules/insurance'
 import currentUser from './modules/currentUser'
-import commission from './modules/commissions'
 
 import resourceModule from './resourceModule'
 import * as locations from '../constants/locations'
