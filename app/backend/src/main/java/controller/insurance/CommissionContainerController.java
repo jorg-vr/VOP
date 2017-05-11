@@ -6,6 +6,7 @@ import dao.exceptions.ConstraintViolationException;
 import dao.exceptions.DataAccessException;
 import dao.exceptions.ObjectNotFoundException;
 import dao.interfaces.DAO;
+import dao.interfaces.DAOManager;
 import model.CommissionContainer;
 import model.account.Function;
 import model.account.Resource;
@@ -32,8 +33,8 @@ public abstract class CommissionContainerController<T extends CommissionContaine
      * @param resource Resource the function should have to be able to get,create,update and/or delete an object.
      * @param function of the user. This is used to determine the user has rights to do a certain operation
      */
-    public CommissionContainerController(DAO<T> dao, Resource resource, Function function) {
-        super(dao, resource, function);
+    public CommissionContainerController(DAOManager manager, DAO<T> dao, Resource resource, Function function) {
+        super(manager,dao, resource, function);
         this.function=function;
         this.role = function.getRole();
         this.resource=Resource.COMMISSION;
