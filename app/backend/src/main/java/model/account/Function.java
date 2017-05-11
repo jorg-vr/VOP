@@ -187,7 +187,15 @@ public class Function implements EditableObject, java.io.Serializable {
      */
     @Override
     public Function copy() {
-        return null;
+        Function function = new Function();
+        function.setUuid(uuid);
+        function.setCompany(company);
+        function.setUser(user);
+        function.setRole(role);
+        function.setName(name);
+        function.setStartDate(startDate);
+        function.setEndDate(endDate);
+        return function;
     }
 
     @Override
