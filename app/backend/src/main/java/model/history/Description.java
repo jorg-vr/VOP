@@ -1,11 +1,16 @@
 package model.history;
 
+import java.util.UUID;
+
 /**
  * This class gives more information of what the value of a certain field changed to in a certain action.
  *
  * @author Billie Devolder
  */
 public class Description {
+
+    // Unique id
+    private UUID uuid;
 
     // The name of the field that has been changed
     private String field;
@@ -30,6 +35,14 @@ public class Description {
         if (newObject != null) {
             newValue = newObject.toString();
         }
+    }
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 
     public String getField() {
