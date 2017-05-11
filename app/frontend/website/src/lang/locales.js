@@ -64,7 +64,8 @@ export default
             back: 'back',
             name: 'name',
             cancel: 'cancel',
-            add: 'add'
+            add: 'add',
+            update: "update"
         },
         actions: {
             select: 'select {subject}',
@@ -259,7 +260,8 @@ export default
             back: 'terug',
             name: 'naam',
             cancel: 'annuleer',
-            add: 'voeg toe'
+            add: 'voeg toe',
+            update: "bewerken"
         },
         actions: {
             select: 'selecteer {subject}',

@@ -2,11 +2,10 @@
     <div class="col-lg-8 col-md-9 col-sm-11">
         <div class="page-header">
             <h1>
-                {{$t("client.client") | capitalize}}
+                {{$t("vehicleType.vehicleType") | capitalize}}
                 <button-add :resource="resource"></button-add>
             </h1>
-        </div><!-- Render an info-pane for every vehicleType. Once all the data is loaded, the table will be shown.-->
-        <list-component :resource="resource" :objects="vehicleTypes" :visibleKeys="['name']"></list-component>
+        </div>
         <list-component v-if="vehicleTypes.length > 0" :resource="resource" :listObject="listObject"></list-component>
     </div>
 </template>
@@ -27,9 +26,7 @@
             listComponent, buttonAdd
         },
         created(){
-            this.fetchVehicleTypes().then(() => {
-                this.setLoading({loading: false });
-            });
+            this.fetchVehicleTypes();
         },
         computed: {
             ...mapGetters([

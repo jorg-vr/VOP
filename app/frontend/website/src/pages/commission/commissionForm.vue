@@ -6,7 +6,7 @@
                     :object="commission"
                     name="commission"
                     :text="$t('suretyTypes.'+commission.suretyType)"
-                    :rules="'required'|'numeric'"
+                    :rules="'required'"
             ></text-input-form-group>
         </div>
     </div>
@@ -23,7 +23,7 @@
             }
         },
         props: {
-            commissions: []
+            commissions: Array
         },
         components: {
             textInputFormGroup

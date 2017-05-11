@@ -1,8 +1,12 @@
 <template>
-    <abstract-form :actions="actions" :object="vehicleType" :back="back" :resource="resource">
-        <form-input :vehicleType="vehicleType"></form-input>
-        <commissionForm :commissions="commissions"></commissionForm>
-    </abstract-form>
+    <div>
+        <abstract-form :actions="actions" :object="vehicleType" :back="back" :resource="resource">
+            <form-input :vehicleType="vehicleType"></form-input>
+        </abstract-form>
+        <div class="col-lg-12">
+        <commission-edit :id="id" :loc="loc" :back="back" ></commission-edit>
+        </div>
+    </div>
 </template>
 <script>
     import {mapActions,mapGetters} from 'vuex'
@@ -10,7 +14,7 @@
     import actions from '../../constants/actions'
     import resources from '../../constants/resources'
     import formInput from './vehicleTypeForm.vue'
-    import commissionForm from '../commission/commissionForm.vue'
+    import commissionEdit from '../commission/edit.vue'
     import * as locations from '../../constants/locations'
 
     export default {
@@ -19,7 +23,8 @@
                 resource: resources.VEHICLE_TYPE,
                 actions: actions.UPDATE,
                 vehicleType: {address:{}},
-                back:{name:resources.VEHICLE_TYPE.name.plural()}
+                back:{name:resources.VEHICLE_TYPE.name.plural()},
+                loc:locations.VEHICLE_TYPE
             }
         },
         created(){
@@ -27,24 +32,17 @@
                 this.fetchVehicleType({id: this.id}).then(o => {
                     this.vehicleType = o;
                 })
-                this.fetchCommissions({ids:{'resource':locations.VEHICLE_TYPE,'resourceId':this.id}});
             }
         },
         components: {
-            abstractForm,formInput,commissionForm
+            abstractForm,formInput,commissionEdit
         },
         props: {
             id: String
         },
-        computed: {
-            ...mapGetters([
-                'commissions'
-            ])
-        },
         methods: {
             ...mapActions([
-                'fetchVehicleType',
-                'fetchCommissions'
+                'fetchVehicleType'
             ])
 
         }
