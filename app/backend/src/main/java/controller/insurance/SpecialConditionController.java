@@ -12,7 +12,7 @@ import model.insurance.SpecialCondition;
 public class SpecialConditionController extends AbstractController<SpecialCondition> {
 
     public SpecialConditionController(Function function, DAOManager manager) {
-        super(manager.getSpecialConditionDao(), Resource.INSURANCE, function);
+        super(manager, manager.getSpecialConditionDao(), Resource.INSURANCE, function);
     }
 
     @Override

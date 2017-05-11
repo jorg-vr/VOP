@@ -7,6 +7,7 @@ import model.history.LogResource;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 import static util.UUIDUtil.UUIDToNumberString;
 
@@ -20,7 +21,7 @@ public class RESTLogEntry {
     private String user;
     private LogResource resource;
     private LogAction action;
-    private Collection<Description> description;
+    private Collection<RESTDescription> description;
     private LocalDateTime dateTime;
 
 
@@ -30,7 +31,10 @@ public class RESTLogEntry {
         this.user = UUIDToNumberString(entry.getObject());
         this.resource = entry.getResource();
         this.action = entry.getAction();
-        this.description = entry.getDescriptions();
+        this.description = entry.getDescriptions()
+                .stream()
+                .map(RESTDescription::new)
+                .collect(Collectors.toList());
         this.dateTime = entry.getTime();
     }
 
@@ -66,11 +70,11 @@ public class RESTLogEntry {
         this.action = action;
     }
 
-    public Collection<Description> getDescription() {
+    public Collection<RESTDescription> getDescription() {
         return description;
     }
 
-    public void setDescription(Collection<Description> description) {
+    public void setDescription(Collection<RESTDescription> description) {
         this.description = description;
     }
 
@@ -88,5 +92,50 @@ public class RESTLogEntry {
 
     public void setUser(String user) {
         this.user = user;
+    }
+
+    public static class RESTDescription {
+
+        // The name of the field that has been changed
+        private String field;
+
+        // String representation of the old value of the field
+        private String oldValue;
+
+        // String representation of the new value of the field
+        private String newValue;
+
+        public RESTDescription() {
+        }
+
+        public RESTDescription(Description description) {
+            this.field = description.getField();
+            this.oldValue = description.getOldValue();
+            this.newValue = description.getNewValue();
+        }
+
+        public String getField() {
+            return field;
+        }
+
+        public void setField(String field) {
+            this.field = field;
+        }
+
+        public String getOldValue() {
+            return oldValue;
+        }
+
+        public void setOldValue(String oldValue) {
+            this.oldValue = oldValue;
+        }
+
+        public String getNewValue() {
+            return newValue;
+        }
+
+        public void setNewValue(String newValue) {
+            this.newValue = newValue;
+        }
     }
 }

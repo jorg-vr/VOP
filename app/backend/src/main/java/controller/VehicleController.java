@@ -17,7 +17,7 @@ import java.util.Collection;
 public class VehicleController extends AbstractController<Vehicle> {
 
     public VehicleController(Function function, DAOManager manager) {
-        super(manager.getVehicleDAO(), Resource.VEHICLE, function);
+        super(manager, manager.getVehicleDAO(), Resource.VEHICLE, function);
     }
 
 

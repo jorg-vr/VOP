@@ -2,10 +2,12 @@ package controller;
 
 import controller.exceptions.UnAuthorizedException;
 import dao.exceptions.ConstraintViolationException;
+import dao.exceptions.DataAccessException;
 import dao.exceptions.ObjectNotFoundException;
 import dao.interfaces.DAO;
-import dao.exceptions.DataAccessException;
+import dao.interfaces.DAOManager;
 import dao.interfaces.Filter;
+import dao.interfaces.LogEntryDAO;
 import model.account.Function;
 import model.account.Resource;
 import model.account.Role;
@@ -29,6 +31,7 @@ import static model.account.Action.*;
 public abstract class AbstractController<T extends EditableObject> {
 
     private DAO<T> dao;
+    private LogEntryDAO logEntryDAO;
     private Resource resource;
     private Function function;
     private Role role;
@@ -38,8 +41,9 @@ public abstract class AbstractController<T extends EditableObject> {
      * @param resource Resource the function should have to be able to get,create,update and/or delete an object.
      * @param function of the user. This is used to determine the user has rights to do a certain operation
      */
-    public AbstractController(DAO<T> dao, Resource resource, Function function) {
+    public AbstractController(DAOManager manager, DAO<T> dao, Resource resource, Function function) {
         this.dao = dao;
+        this.logEntryDAO = manager.getLogEntryDao();
         this.resource = resource;
         this.function = function;
         this.role = function.getRole();
@@ -115,7 +119,11 @@ public abstract class AbstractController<T extends EditableObject> {
                 (role.hasAccess(resource, REMOVE_MINE) && isOwner(t, function))) {
             dao.remove(uuid);
             for (LogEntry entry : t.logDelete(function.getUser())) {
-                System.out.println(entry);
+                try {
+                    logEntryDAO.create(entry);
+                } catch (ConstraintViolationException e) {
+                    e.printStackTrace();
+                }
             }
         } else {
             throw new UnAuthorizedException();
@@ -138,7 +146,11 @@ public abstract class AbstractController<T extends EditableObject> {
                 (role.hasAccess(resource, CREATE_MINE) && isOwner(t, function))) {
             T result = dao.create(t);
             for (LogEntry entry : t.logCreate(function.getUser())) {
-                System.out.println(entry);
+                try {
+                    logEntryDAO.create(entry);
+                } catch (ConstraintViolationException e) {
+                    e.printStackTrace();
+                }
             }
             return result;
         } else {
@@ -167,7 +179,11 @@ public abstract class AbstractController<T extends EditableObject> {
                         isOwner(t, function))) {
             T result = dao.update(t);
             for (LogEntry entry : t.logUpdate(function.getUser(), copy)) {
-                System.out.println(entry);
+                try {
+                    logEntryDAO.create(entry);
+                } catch (ConstraintViolationException e) {
+                    e.printStackTrace();
+                }
             }
             return result;
         } else {

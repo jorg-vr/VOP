@@ -1,7 +1,6 @@
 package controller;
 
 import dao.interfaces.DAOManager;
-import main.BackendApplication;
 import model.account.Function;
 import model.account.Resource;
 import model.identity.Customer;
@@ -12,7 +11,7 @@ import model.identity.Customer;
 public class CustomerController extends AbstractController<Customer>{
 
     public CustomerController(Function function, DAOManager manager) {
-        super(manager.getCustomerDAO(), Resource.COMPANY,function);
+        super(manager, manager.getCustomerDAO(), Resource.COMPANY,function);
     }
 
 

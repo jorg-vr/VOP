@@ -409,7 +409,7 @@ public class Vehicle implements EditableObject, java.io.Serializable {
         vehicle.setUuid(getUuid());
         vehicle.setFleet(getFleet());
         vehicle.setChassisNumber(getChassisNumber());
-        vehicle.setType((VehicleType) getType().copy());
+        vehicle.setType(getType());
         vehicle.setLicensePlate(getLicensePlate());
         vehicle.setValue(getValue());
         vehicle.setMileage(getMileage());

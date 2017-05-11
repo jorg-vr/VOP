@@ -4,6 +4,8 @@ import controller.ControllerManager;
 import controller.LogEntryController;
 import controller.exceptions.UnAuthorizedException;
 import dao.exceptions.DataAccessException;
+import dao.exceptions.ObjectNotFoundException;
+import model.fleet.Vehicle;
 import org.springframework.web.bind.annotation.*;
 import spring.model.AuthenticationToken;
 import spring.model.RESTLogEntry;
@@ -27,11 +29,12 @@ public class RESTLogEntryController {
                                                HttpServletRequest request,
                                                Integer page, Integer limit,
                                                @RequestHeader(value = "Authorization") String token,
-                                               @RequestHeader(value = "Function") String function) throws DataAccessException, UnAuthorizedException {
+                                               @RequestHeader(value = "Function") String function) throws DataAccessException, UnAuthorizedException, ObjectNotFoundException {
         UUID user = new AuthenticationToken(token).getAccountId();
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
             LogEntryController controller = manager.getLogEntryController();
-            Collection<RESTLogEntry> entries = controller.getLogEntries(toUUID(id))
+            Vehicle vehicle = manager.getVehicleController().get(toUUID(id));
+            Collection<RESTLogEntry> entries = controller.getVehicleLogEntries(vehicle)
                     .stream()
                     .map(RESTLogEntry::new)
                     .collect(Collectors.toList());
