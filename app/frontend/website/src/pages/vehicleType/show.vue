@@ -6,7 +6,11 @@
 <template>
     <div v-if="vehicleType">
         <div class="page-header">
-            <h1> {{$t('vehicleType.vehicleType') | capitalize }} {{vehicleType.name}}</h1>
+            <h1>
+                {{$t('vehicleType.vehicleType') | capitalize }} {{vehicleType.name}}
+                <button-edit :resource="resource" :params="{id: id}"></button-edit>
+            </h1>
+
         </div>
         <div class="col-md-8">
             <commissions :id="id" :loc="loc"></commissions>
@@ -16,18 +20,21 @@
     </div>
 </template>
 <script>
+    import buttonEdit from '../../assets/buttons/buttonEdit.vue'
     import buttonBack from '../../assets/buttons/buttonBack.vue'
     import commissions from '../commission/show.vue'
     import {mapGetters, mapActions} from 'vuex'
+    import resources from '../../constants/resources'
     import * as locations from '../../constants/locations'
 
     export default {
         components: {
-            buttonBack,commissions
+            buttonEdit,buttonBack,commissions
         },
         data(){
             return {
-                loc:locations.VEHICLE_TYPE
+                loc:locations.VEHICLE_TYPE,
+                resource:resources.VEHICLE_TYPE
             }
         },
         props: {
