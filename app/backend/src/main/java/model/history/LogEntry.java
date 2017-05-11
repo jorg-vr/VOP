@@ -129,6 +129,24 @@ public class LogEntry {
         interested.add(object.getUuid());
     }
 
+    /**
+     * Checks whether the value of a field has been changed
+     * @param field string name of the field
+     * @return true of this field has been changed
+     */
+    public boolean fieldChanged(String field) {
+        if (descriptions == null) {
+            return false;
+        }
+
+        for (Description description: descriptions) {
+            if (description.getField().equals(field)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public String toString() {
         return "LogEntry{" +

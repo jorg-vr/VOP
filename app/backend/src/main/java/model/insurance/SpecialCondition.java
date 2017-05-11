@@ -5,6 +5,8 @@ import model.history.LogResource;
 
 import java.util.UUID;
 
+import static util.UUIDUtil.UUIDToNumberString;
+
 /**
  * Class representing special conditions which can apply for a Surety
  * Created by jorg on 4/12/17.
@@ -147,5 +149,10 @@ public class SpecialCondition implements EditableObject {
         specialCondition.setText(getText());
         specialCondition.setTitle(getTitle());
         return specialCondition;
+    }
+
+    @Override
+    public String toString() {
+        return UUIDToNumberString(uuid);
     }
 }

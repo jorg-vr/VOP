@@ -118,12 +118,14 @@ public abstract class AbstractController<T extends EditableObject> {
         if (role.hasAccess(resource, REMOVE_ALL) ||
                 (role.hasAccess(resource, REMOVE_MINE) && isOwner(t, function))) {
             dao.remove(uuid);
-            for (LogEntry entry : t.logDelete(function.getUser())) {
-                try {
+
+            try {
+                LogEntry entry = t.logDelete(function.getUser());
+                if (entry != null) {
                     logEntryDAO.create(entry);
-                } catch (ConstraintViolationException e) {
-                    e.printStackTrace();
                 }
+            } catch (ConstraintViolationException e) {
+                e.printStackTrace();
             }
         } else {
             throw new UnAuthorizedException();
@@ -145,13 +147,16 @@ public abstract class AbstractController<T extends EditableObject> {
         if (role.hasAccess(resource, CREATE_ALL) ||
                 (role.hasAccess(resource, CREATE_MINE) && isOwner(t, function))) {
             T result = dao.create(t);
-            for (LogEntry entry : t.logCreate(function.getUser())) {
-                try {
+
+            try {
+                LogEntry entry = t.logCreate(function.getUser());
+                if (entry != null) {
                     logEntryDAO.create(entry);
-                } catch (ConstraintViolationException e) {
-                    e.printStackTrace();
                 }
+            } catch (ConstraintViolationException e) {
+                e.printStackTrace();
             }
+
             return result;
         } else {
             throw new UnAuthorizedException();
@@ -178,13 +183,16 @@ public abstract class AbstractController<T extends EditableObject> {
                         isOwner(tOld, function) &&
                         isOwner(t, function))) {
             T result = dao.update(t);
-            for (LogEntry entry : t.logUpdate(function.getUser(), copy)) {
-                try {
+
+            try {
+                LogEntry entry = t.logUpdate(function.getUser(), copy);
+                if (entry != null) {
                     logEntryDAO.create(entry);
-                } catch (ConstraintViolationException e) {
-                    e.printStackTrace();
                 }
+            } catch (ConstraintViolationException e) {
+                e.printStackTrace();
             }
+
             return result;
         } else {
             throw new UnAuthorizedException();

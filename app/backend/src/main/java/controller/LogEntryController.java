@@ -7,6 +7,7 @@ import model.account.Function;
 import model.account.Resource;
 import model.account.Role;
 import model.account.User;
+import model.fleet.Fleet;
 import model.fleet.Vehicle;
 import model.history.LogEntry;
 
@@ -39,6 +40,16 @@ public class LogEntryController {
     public Collection<LogEntry> getVehicleLogEntries(Vehicle vehicle) throws UnAuthorizedException {
         boolean isOwner = vehicle.getFleet().getOwner().equals(user);
         return getLogEntries(vehicle.getUuid(), isOwner);
+    }
+
+    /**
+     * Get all the log entries that are relevant to the object with uuid objectId
+     * @param fleet uuid of the object which all the relevant log entries should be returned
+     * @return a collection of all the log entries. The collection is empty if there are nog log entries for that uuid.
+     */
+    public Collection<LogEntry> getFleetLogEntries(Fleet fleet) throws UnAuthorizedException {
+        boolean isOwner = fleet.getOwner().equals(user);
+        return getLogEntries(fleet.getUuid(), isOwner);
     }
 
     /**

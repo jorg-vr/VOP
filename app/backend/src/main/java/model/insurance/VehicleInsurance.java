@@ -3,16 +3,13 @@ package model.insurance;
 import model.account.User;
 import model.fleet.Vehicle;
 import model.history.EditableObject;
-import model.history.LogAction;
 import model.history.LogEntry;
 import model.history.LogResource;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.UUID;
 
-import static model.history.FieldsComparator.compareFields;
+import static util.UUIDUtil.UUIDToNumberString;
 
 /**
  * Class representing the relation between vehicle and surety for a specific contract
@@ -236,6 +233,7 @@ public class VehicleInsurance implements EditableObject {
 
     /**
      * Copies the object
+     *
      * @return the copy
      */
     @Override
@@ -277,20 +275,21 @@ public class VehicleInsurance implements EditableObject {
     }
 
     @Override
-    public Collection<LogEntry> logCreate(User user) {
-        Collection<LogEntry> entries = new ArrayList<>();
-        LogEntry entry = new LogEntry(uuid, user, LogAction.CREATE, getLogResource());
-        entry.addInterestedObject(vehicle);
-        entries.add(entry);
-        return entries;
+    public String toString() {
+        return UUIDToNumberString(uuid);
     }
 
     @Override
-    public Collection<LogEntry> logUpdate(User user, EditableObject old) {
-        Collection<LogEntry> entries = new ArrayList<>();
-        LogEntry entry = new LogEntry(uuid, user, LogAction.UPDATE, getLogResource(), compareFields(old, this));
+    public LogEntry logCreate(User user) {
+        LogEntry entry = EditableObject.super.logCreate(user);
         entry.addInterestedObject(vehicle);
-        entries.add(entry);
-        return entries;
+        return entry;
+    }
+
+    @Override
+    public LogEntry logUpdate(User user, EditableObject old) {
+        LogEntry entry = EditableObject.super.logUpdate(user, old);
+        entry.addInterestedObject(vehicle);
+        return entry;
     }
 }

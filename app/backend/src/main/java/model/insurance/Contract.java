@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
 
+import static util.UUIDUtil.UUIDToNumberString;
+
 /**
  * Representing a contract: a collection of VehicleInsurance of a Customer from an InsuranceCompany
  * Created by jorg on 4/8/17.
@@ -227,5 +229,10 @@ public class Contract implements EditableObject {
     public int hashCode() {
         if(uuid!=null){return getUuid().hashCode();}
         return super.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return UUIDToNumberString(uuid);
     }
 }

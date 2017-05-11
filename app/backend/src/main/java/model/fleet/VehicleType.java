@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import static util.UUIDUtil.UUIDToNumberString;
+
 /**
  * Class representing the SubFleet, each vehicle has a VehicleType and subfleets can be retrieved this way
  */
@@ -200,6 +202,11 @@ public class VehicleType implements EditableObject, java.io.Serializable {
             return uuid.hashCode();
         }
         return super.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return UUIDToNumberString(uuid);
     }
 
     /**

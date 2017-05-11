@@ -7,6 +7,8 @@ import model.identity.Company;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import static util.UUIDUtil.UUIDToNumberString;
+
 /**
  * Represents the relationship of a User, his Company and a given Role
  * Created by sam on 3/10/17.
@@ -208,5 +210,10 @@ public class Function implements EditableObject, java.io.Serializable {
             return getUuid().hashCode();
         }
         return super.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return UUIDToNumberString(uuid);
     }
 }

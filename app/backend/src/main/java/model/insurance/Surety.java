@@ -1,7 +1,9 @@
 package model.insurance;
 
 
+import model.account.User;
 import model.history.EditableObject;
+import model.history.LogEntry;
 import model.history.LogResource;
 import model.identity.InsuranceCompany;
 
@@ -9,10 +11,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
 
+import static util.UUIDUtil.UUIDToNumberString;
+
 /**
  * Surety class representing an surety linked to a (group of) vehicle(s).
  */
-public  abstract class Surety implements EditableObject {
+public abstract class Surety implements EditableObject {
 
     /**
      * The unique id
@@ -42,6 +46,7 @@ public  abstract class Surety implements EditableObject {
 
     /**
      * Calculate the premium that has to be paid based on the given value
+     *
      * @param value value of which the premium has to be calculated. This is e.g the insuredValue of a car
      * @return premium based on value
      */
@@ -49,6 +54,7 @@ public  abstract class Surety implements EditableObject {
 
     /**
      * Gets the uuid
+     *
      * @return the uuid
      */
     @Override
@@ -58,6 +64,7 @@ public  abstract class Surety implements EditableObject {
 
     /**
      * Sets the uuid
+     *
      * @param uuid the uuid
      */
     public void setUuid(UUID uuid) {
@@ -66,6 +73,7 @@ public  abstract class Surety implements EditableObject {
 
     /**
      * Copies the object
+     *
      * @return the object
      */
     @Override
@@ -73,6 +81,7 @@ public  abstract class Surety implements EditableObject {
 
     /**
      * Gets the surety type
+     *
      * @return the surety type
      */
     public SuretyType getSuretyType() {
@@ -81,6 +90,7 @@ public  abstract class Surety implements EditableObject {
 
     /**
      * Sets the suretyType
+     *
      * @param suretyType the surety type
      */
     public void setSuretyType(SuretyType suretyType) {
@@ -99,18 +109,21 @@ public  abstract class Surety implements EditableObject {
 
         Surety that = (Surety) o;
 
-        return getUuid()!=null && getUuid().equals(that.getUuid());
+        return getUuid() != null && getUuid().equals(that.getUuid());
 
     }
 
     @Override
     public int hashCode() {
-        if(getUuid()!=null){return getUuid().hashCode();}
+        if (getUuid() != null) {
+            return getUuid().hashCode();
+        }
         return getUuid().hashCode();
     }
 
     /**
      * Gets the special conditions
+     *
      * @return the special conditions
      */
     public Collection<SpecialCondition> getSpecialConditions() {
@@ -119,6 +132,7 @@ public  abstract class Surety implements EditableObject {
 
     /**
      * Sets the special conditions
+     *
      * @param specialConditions the special conditions
      */
     public void setSpecialConditions(Collection<SpecialCondition> specialConditions) {
@@ -127,6 +141,7 @@ public  abstract class Surety implements EditableObject {
 
     /**
      * Adds a single special conditions to the collection
+     *
      * @param specialCondition a special condition
      */
     public void addSpecialCondition(SpecialCondition specialCondition) {
@@ -138,6 +153,7 @@ public  abstract class Surety implements EditableObject {
 
     /**
      * Gets the insurance company
+     *
      * @return the insurance company
      */
     public InsuranceCompany getInsuranceCompany() {
@@ -146,10 +162,30 @@ public  abstract class Surety implements EditableObject {
 
     /**
      * Sets the insurance company
+     *
      * @param insuranceCompany the insurance company
      */
     public void setInsuranceCompany(InsuranceCompany insuranceCompany) {
         this.insuranceCompany = insuranceCompany;
     }
 
+    @Override
+    public LogEntry logUpdate(User user, EditableObject old) {
+        LogEntry entry = EditableObject.super.logUpdate(user, old);
+
+        // Add vehices that have an insurance that use this surety to the interested objects
+        for (Contract contract : insuranceCompany.getContracts()) {
+            for (VehicleInsurance insurance : contract.getVehicleInsurances()) {
+                if (insurance.getSurety().equals(this)) {
+                    entry.addInterestedObject(insurance.getVehicle());
+                }
+            }
+        }
+        return entry;
+    }
+
+    @Override
+    public String toString() {
+        return UUIDToNumberString(uuid);
+    }
 }

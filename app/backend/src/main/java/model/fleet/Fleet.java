@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
 
+import static util.UUIDUtil.UUIDToNumberString;
+
 /**
  * Fleet class that contains all Vehicles a Customer owns
  * Subfleets are represented by VehicleTypes in the vehicle collection
@@ -200,4 +202,8 @@ public class Fleet implements EditableObject, java.io.Serializable {
         return super.hashCode();
     }
 
+    @Override
+    public String toString() {
+        return UUIDToNumberString(uuid);
+    }
 }

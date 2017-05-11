@@ -1,14 +1,17 @@
 package model.fleet;
 
 import model.account.User;
-import model.history.*;
+import model.history.EditableObject;
+import model.history.LogEntry;
+import model.history.LogResource;
 import model.insurance.SuretyType;
 import spring.exceptions.InvalidInputException;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
-import static model.history.FieldsComparator.compareFields;
 import static util.UUIDUtil.UUIDToNumberString;
 
 /**
@@ -422,26 +425,25 @@ public class Vehicle implements EditableObject, java.io.Serializable {
         return LogResource.VEHICLE;
     }
 
-    public Collection<LogEntry> logCreate(User user) {
-        Collection<LogEntry> entries = EditableObject.super.logCreate(user);
-
-        // Add an entry to the fleet of this vehicle that says a vehicle has been added
-        Collection<Description> descriptions = new ArrayList<>();
-        Description description = new Description();
-        description.setField("vehicles");
-        description.setOldValue("null");
-        description.setNewValue(uuid + "");
-        descriptions.add(description);
-
-        LogEntry entry = new LogEntry(fleet.getUuid(), user, LogAction.UPDATE, fleet.getLogResource(), descriptions);
-        entries.add(entry);
-        return entries;
+    public LogEntry logCreate(User user) {
+        LogEntry entry = EditableObject.super.logCreate(user);
+        entry.addInterestedObject(fleet);
+        return entry;
     }
 
     @Override
-    public Collection<LogEntry> logUpdate(User user, EditableObject old) {
-        Collection<LogEntry> entries = new ArrayList<>();
-        entries.add(new LogEntry(uuid, user, LogAction.UPDATE, getLogResource(), compareFields(old, this)));
-        return entries;
+    public LogEntry logUpdate(User user, EditableObject old) {
+        LogEntry entry = EditableObject.super.logUpdate(user, old);
+        if (entry.fieldChanged("fleet")) {
+            entry.addInterestedObject(fleet);
+            entry.addInterestedObject(((Vehicle)old).getFleet());
+        }
+        return entry;
+    }
+
+    public LogEntry logDelete(User user) {
+        LogEntry entry = EditableObject.super.logDelete(user);
+        entry.addInterestedObject(fleet);
+        return entry;
     }
 }

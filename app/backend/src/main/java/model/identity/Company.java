@@ -202,4 +202,6 @@ public class Company extends Identity implements java.io.Serializable {
         company.setPhoneNumber(getPhoneNumber());
         return company;
     }
+
+
 }

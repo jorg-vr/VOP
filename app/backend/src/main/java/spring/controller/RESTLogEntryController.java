@@ -5,6 +5,7 @@ import controller.LogEntryController;
 import controller.exceptions.UnAuthorizedException;
 import dao.exceptions.DataAccessException;
 import dao.exceptions.ObjectNotFoundException;
+import model.fleet.Fleet;
 import model.fleet.Vehicle;
 import org.springframework.web.bind.annotation.*;
 import spring.model.AuthenticationToken;
@@ -24,17 +25,35 @@ import static util.UUIDUtil.toUUID;
 @RestController
 public class RESTLogEntryController {
 
-    @RequestMapping(value = {"/{path.vehicles}/{id}/{path.logs}", "/{path.fleets}/{id}/${path.logs}"}, method = RequestMethod.GET)
-    public RESTSchema<RESTLogEntry> getEntries(@PathVariable String id,
-                                               HttpServletRequest request,
-                                               Integer page, Integer limit,
-                                               @RequestHeader(value = "Authorization") String token,
-                                               @RequestHeader(value = "Function") String function) throws DataAccessException, UnAuthorizedException, ObjectNotFoundException {
+    @RequestMapping(value = "/${path.vehicles}/{id}/${path.logs}", method = RequestMethod.GET)
+    public RESTSchema<RESTLogEntry> getVehicleEntries(@PathVariable String id,
+                                                      HttpServletRequest request,
+                                                      Integer page, Integer limit,
+                                                      @RequestHeader(value = "Authorization") String token,
+                                                      @RequestHeader(value = "Function") String function) throws DataAccessException, UnAuthorizedException, ObjectNotFoundException {
         UUID user = new AuthenticationToken(token).getAccountId();
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
             LogEntryController controller = manager.getLogEntryController();
             Vehicle vehicle = manager.getVehicleController().get(toUUID(id));
             Collection<RESTLogEntry> entries = controller.getVehicleLogEntries(vehicle)
+                    .stream()
+                    .map(RESTLogEntry::new)
+                    .collect(Collectors.toList());
+            return new RESTSchema<>(entries, page, limit, request);
+        }
+    }
+
+    @RequestMapping(value = "/${path.fleets}/{id}/${path.logs}", method = RequestMethod.GET)
+    public RESTSchema<RESTLogEntry> getFleetEntries(@PathVariable String id,
+                                                    HttpServletRequest request,
+                                                    Integer page, Integer limit,
+                                                    @RequestHeader(value = "Authorization") String token,
+                                                    @RequestHeader(value = "Function") String function) throws DataAccessException, UnAuthorizedException, ObjectNotFoundException {
+        UUID user = new AuthenticationToken(token).getAccountId();
+        try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
+            LogEntryController controller = manager.getLogEntryController();
+            Fleet fleet = manager.getFleetController().get(toUUID(id));
+            Collection<RESTLogEntry> entries = controller.getFleetLogEntries(fleet)
                     .stream()
                     .map(RESTLogEntry::new)
                     .collect(Collectors.toList());

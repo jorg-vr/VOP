@@ -4,6 +4,8 @@ import model.history.EditableObject;
 
 import java.util.UUID;
 
+import static util.UUIDUtil.UUIDToNumberString;
+
 /**
  * Class representing a company or person
  */
@@ -137,6 +139,11 @@ public abstract class Identity implements EditableObject, java.io.Serializable {
             return uuid.hashCode();
         }
         return super.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return UUIDToNumberString(uuid);
     }
 }
 

@@ -28,7 +28,7 @@ public class RESTLogEntry {
     public RESTLogEntry(LogEntry entry) {
         this.id = UUIDToNumberString(entry.getUuid());
         this.object = UUIDToNumberString(entry.getObject());
-        this.user = UUIDToNumberString(entry.getObject());
+        this.user = UUIDToNumberString(entry.getUser() != null ? entry.getUser().getUuid() : null);
         this.resource = entry.getResource();
         this.action = entry.getAction();
         this.description = entry.getDescriptions()
