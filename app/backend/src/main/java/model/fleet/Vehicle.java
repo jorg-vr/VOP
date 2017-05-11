@@ -7,6 +7,7 @@ import spring.exceptions.InvalidInputException;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -386,6 +387,35 @@ public class Vehicle implements EditableObject, java.io.Serializable {
             return uuid.hashCode();
         }
         return super.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        if(type != null){
+            return "Vehicle{" +
+                    "uuid=" + uuid +
+                    ", brand='" + brand + '\'' +
+                    ", model='" + model + '\'' +
+                    ", licensePlate='" + licensePlate + '\'' +
+                    ", productionDate=" + productionDate +
+                    ", chassisNumber='" + chassisNumber + '\'' +
+                    ", value=" + value +
+                    ", mileage=" + mileage +
+                    ", type=" + type.getType() +
+                    '}';
+        }
+        else{
+            return "Vehicle{" +
+                    "uuid=" + uuid +
+                    ", brand='" + brand + '\'' +
+                    ", model='" + model + '\'' +
+                    ", licensePlate='" + licensePlate + '\'' +
+                    ", productionDate=" + productionDate +
+                    ", chassisNumber='" + chassisNumber + '\'' +
+                    ", value=" + value +
+                    ", mileage=" + mileage +
+                    '}';
+        }
     }
 
     /**

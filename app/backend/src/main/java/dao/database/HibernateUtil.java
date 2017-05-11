@@ -104,7 +104,7 @@ public class HibernateUtil {
         }
     }
 
-    private synchronized static void validate(Session session, Object object) throws ConstraintViolationException {
+    public synchronized static void validate(Session session, Object object) throws ConstraintViolationException {
         Map<String, String> map = new HashMap<>();
 
 

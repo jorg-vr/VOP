@@ -1,10 +1,12 @@
 package dao.interfaces;
 
+import dao.exceptions.ConstraintViolationException;
 import model.fleet.Fleet;
 import model.fleet.Vehicle;
 import model.fleet.VehicleType;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.UUID;
 
 
@@ -13,6 +15,11 @@ import java.util.UUID;
  * Created by sam on 3/7/17.
  */
 public interface VehicleDAO extends DAO<Vehicle> {
+
+    /**
+     * Checks if every vehicle in the collection uses the right constraints
+     */
+    void validateVehicles(Collection<Vehicle> vehicles) throws ConstraintViolationException;
 
     /**
      * Returns a Filter to use in ListFiltered in this class, which returns all Vehicles which have the given brand.
