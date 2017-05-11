@@ -10,13 +10,11 @@ import model.identity.Address;
 import model.identity.Customer;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static database.DAOTestUtil.*;
 import static org.junit.Assert.fail;
 
-@Ignore
 public class FunctionParametersTest {
 
     private static Customer customer;
@@ -62,8 +60,8 @@ public class FunctionParametersTest {
             removeFunction(function.getUuid());
             fail("Function succesfully created with company field null when an exception was expected");
         } catch (ConstraintViolationException e) {
-            e.printStackTrace();
-            fail("Function succesfully created with company field null when an exception was expected");
+            System.out.println( e.getMessage());
+            //nothing since this is supposed to happen
         }
     }
 
@@ -74,8 +72,8 @@ public class FunctionParametersTest {
             removeFunction(function.getUuid());
             fail("Function succesfully created with role field null when an exception was expected");
         } catch (ConstraintViolationException e) {
-            e.printStackTrace();
-            fail("Function succesfully created with role field null when an exception was expected");
+            System.out.println( e.getMessage());
+            //nothing since this is supposed to happen
         }
     }
 
@@ -86,8 +84,8 @@ public class FunctionParametersTest {
             removeFunction(function.getUuid());
             fail("Function succesfully created with user field null when an exception was expected");
         } catch (ConstraintViolationException e) {
-            e.printStackTrace();
-            fail("Function succesfully created with user field null when an exception was expected");
+            System.out.println( e.getMessage());
+            //nothing since this is supposed to happen
         }
     }
 }

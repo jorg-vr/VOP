@@ -10,7 +10,8 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import static database.DAOTestUtil.*;
+import static database.DAOTestUtil.createCustomer;
+import static database.DAOTestUtil.removeCustomer;
 import static org.junit.Assert.fail;
 
 @Ignore
@@ -35,8 +36,8 @@ public class CompanyParametersTest {
             removeCustomer(customer.getUuid());
             fail("Customer succesfully created with address field null when an exception was expected");
         } catch (ConstraintViolationException e) {
-            e.printStackTrace();
-            fail("Customer succesfully created with address field null when an exception was expected");
+            System.out.println( e.getMessage());
+            //nothing since this is supposed to happen
         }
     }
 
@@ -48,8 +49,8 @@ public class CompanyParametersTest {
             removeCustomer(customer.getUuid());
             fail("Customer succesfully created with name field null when an exception was expected");
         } catch (ConstraintViolationException e) {
-            e.printStackTrace();
-            fail("Customer succesfully created with name field null when an exception was expected");
+            System.out.println( e.getMessage());
+            //nothing since this is supposed to happen
         }
     }
 
@@ -61,8 +62,8 @@ public class CompanyParametersTest {
             removeCustomer(customer.getUuid());
             fail("Customer succesfully created with phoneNumber field null when an exception was expected");
         } catch (ConstraintViolationException e) {
-            e.printStackTrace();
-            fail("Customer succesfully created with phoneNumber field null when an exception was expected");
+            System.out.println( e.getMessage());
+            //nothing since this is supposed to happen
         }
     }
 
@@ -74,8 +75,8 @@ public class CompanyParametersTest {
             removeCustomer(customer.getUuid());
             fail("Customer succesfully created with btwNumber field null when an exception was expected");
         } catch (ConstraintViolationException e) {
-            e.printStackTrace();
-            fail("Customer succesfully created with btwNumber field null when an exception was expected");
+            System.out.println( e.getMessage());
+            //nothing since this is supposed to happen
         }
     }
 
@@ -87,8 +88,8 @@ public class CompanyParametersTest {
             removeCustomer(customer.getUuid());
             fail("Customer succesfully created with type field null when an exception was expected");
         } catch (ConstraintViolationException e) {
-            e.printStackTrace();
-            fail("Customer succesfully created with type field null when an exception was expected");
+            System.out.println( e.getMessage());
+            //nothing since this is supposed to happen
         }
     }
 }

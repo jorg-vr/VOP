@@ -23,7 +23,7 @@ public class CompanyController extends AbstractController<Company> {
     private CompanyDAO<Company> dao;
 
     public CompanyController(Function function, DAOManager manager) {
-        super(manager.getCompanyDAO(), Resource.COMPANY, function);
+        super(manager, manager.getCompanyDAO(), Resource.COMPANY, function);
         dao = manager.getCompanyDAO();
     }
 

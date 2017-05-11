@@ -1,11 +1,15 @@
 package model.insurance;
 
+import model.account.User;
 import model.fleet.Vehicle;
 import model.history.EditableObject;
+import model.history.LogEntry;
+import model.history.LogResource;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.UUID;
+
+import static util.UUIDUtil.UUIDToNumberString;
 
 /**
  * Class representing the relation between vehicle and surety for a specific contract
@@ -229,6 +233,7 @@ public class VehicleInsurance implements EditableObject {
 
     /**
      * Copies the object
+     *
      * @return the copy
      */
     @Override
@@ -243,6 +248,11 @@ public class VehicleInsurance implements EditableObject {
         vehicleInsurance.setSurety(getSurety());
         vehicleInsurance.setVehicle(getVehicle());
         return vehicleInsurance;
+    }
+
+    @Override
+    public LogResource getLogResource() {
+        return LogResource.VEHICLE_INSURANCE;
     }
 
     @Override
@@ -262,5 +272,24 @@ public class VehicleInsurance implements EditableObject {
             return getUuid().hashCode();
         }
         return super.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return UUIDToNumberString(uuid);
+    }
+
+    @Override
+    public LogEntry logCreate(User user) {
+        LogEntry entry = EditableObject.super.logCreate(user);
+        entry.addInterestedObject(vehicle);
+        return entry;
+    }
+
+    @Override
+    public LogEntry logUpdate(User user, EditableObject old) {
+        LogEntry entry = EditableObject.super.logUpdate(user, old);
+        entry.addInterestedObject(vehicle);
+        return entry;
     }
 }

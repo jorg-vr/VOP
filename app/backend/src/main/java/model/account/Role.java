@@ -1,16 +1,20 @@
 package model.account;
 
 import model.history.EditableObject;
+import model.history.LogResource;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+
+import static util.UUIDUtil.UUIDToNumberString;
 
 /**
  * Represents a Role (what the user can access)
  * Created by jorg on 3/2/17.
  */
 public class Role implements EditableObject, java.io.Serializable {
+
     /**
      * The name of the role, should be unique
      */
@@ -140,6 +144,11 @@ public class Role implements EditableObject, java.io.Serializable {
     }
 
     @Override
+    public LogResource getLogResource() {
+        return LogResource.ROLE;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || !(o instanceof Role)) return false;
@@ -156,5 +165,10 @@ public class Role implements EditableObject, java.io.Serializable {
             return getUuid().hashCode();
         }
         return super.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return UUIDToNumberString(uuid);
     }
 }

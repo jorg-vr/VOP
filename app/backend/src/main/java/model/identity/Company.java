@@ -2,6 +2,7 @@ package model.identity;
 
 
 import model.history.EditableObject;
+import model.history.LogResource;
 
 import java.util.UUID;
 
@@ -179,6 +180,11 @@ public class Company extends Identity implements java.io.Serializable {
         this.invoicePeriodicity = invoicePeriodicity;
     }
 
+    @Override
+    public LogResource getLogResource() {
+        return LogResource.COMPANY;
+    }
+
     /**
      * Copies the object
      * @return the copy
@@ -196,4 +202,6 @@ public class Company extends Identity implements java.io.Serializable {
         company.setPhoneNumber(getPhoneNumber());
         return company;
     }
+
+
 }

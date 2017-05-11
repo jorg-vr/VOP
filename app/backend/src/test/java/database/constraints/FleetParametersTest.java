@@ -6,14 +6,12 @@ import model.fleet.Fleet;
 import model.identity.Address;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static database.DAOTestUtil.createFleet;
 import static database.DAOTestUtil.removeFleet;
 import static org.junit.Assert.fail;
 
-@Ignore
 public class FleetParametersTest {
 
     //Setup before any of the tests are started
@@ -36,8 +34,8 @@ public class FleetParametersTest {
             removeFleet(fleet.getUuid());
             fail("Fleet succesfully created with owner field null when an exception was expected");
         } catch (ConstraintViolationException e) {
-            e.printStackTrace();
-            fail("Fleet succesfully created with owner field null when an exception was expected");
+            System.out.println( e.getMessage());
+            //nothing since this is supposed to happen
         }
     }
 }

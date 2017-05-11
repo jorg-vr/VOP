@@ -33,6 +33,9 @@ All of the fields for user input for the vehicle form
         created(){
             this.fetchVehicleTypes()
         },
+        mounted(){
+            this.$parent.$emit('mounted', this.$children)
+        },
         computed: {
             ...mapGetters([
                 'clients',
@@ -44,6 +47,7 @@ All of the fields for user input for the vehicle form
                 'fetchClientsBy',
                 'fetchVehicleTypes'
             ])
-        }
+        },
+
     }
 </script>

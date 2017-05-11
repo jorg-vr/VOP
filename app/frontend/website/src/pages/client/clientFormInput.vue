@@ -17,7 +17,7 @@ All of the fields for user input for the client form
         <text-input-form-group :object="client" name="vatNumber" :text="$t('client.vatNumber')" :rules="'required|min:8'"></text-input-form-group>
         <text-input-form-group :object="client" name="phoneNumber" :text="$t('client.phoneNumber')" :rules="'required|min:6'"></text-input-form-group>
     </div>
-</template>"
+</template>
 <script>
     import clientTypes from '../../constants/clientTypes'
     import TextInputFormGroup from '../../assets/form/FormGroups/TextInputFormGroup.vue'
@@ -30,6 +30,9 @@ All of the fields for user input for the client form
                     return [value]
                 })
             }
+        },
+        mounted(){
+            this.$parent.$emit('mounted', this.$children)
         },
         props: {
             object: Object,

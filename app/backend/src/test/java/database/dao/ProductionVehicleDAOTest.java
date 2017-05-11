@@ -72,11 +72,11 @@ public class ProductionVehicleDAOTest {
             assertEquals("type field not equal", vehicle.getType(), vehicle1.getType());
             assertEquals("brand field not equal", vehicle.getBrand(), vehicle1.getBrand());
             assertEquals("model field not equal", vehicle.getModel(), vehicle1.getModel());
-            assertEquals("chassisNumber field not equal", vehicle.getChassisNumber(), vehicle1.getChassisNumber());
+            assertEquals("chassisNumber field not equal", vehicle.getVin(), vehicle1.getVin());
             assertEquals("licensePlate field not equal", vehicle.getLicensePlate(), vehicle1.getLicensePlate());
             assertEquals("value field not equal", vehicle.getValue(), vehicle1.getValue());
             assertEquals("mileage field not equal", vehicle.getMileage(), vehicle1.getMileage());
-            assertEquals("productionDate field not equal", vehicle.getProductionDate(), vehicle1.getProductionDate());
+            assertEquals("productionDate field not equal", vehicle.getYear(), vehicle1.getYear());
             assertEquals("fleet field not equal", vehicle.getFleet(), vehicle1.getFleet());
         } catch (Exception e) {
             e.printStackTrace();
@@ -122,12 +122,12 @@ public class ProductionVehicleDAOTest {
         //try to update the vehicle's brand field in the database
         vehicle.setBrand("brand 3");
         vehicle.setModel("model B");
-        vehicle.setChassisNumber("AZ0UZABCUKZ12345A");
+        vehicle.setVin("AZ0UZABCUKZ12345A");
         vehicle.setLicensePlate("ABR 600");
         vehicle.setValue(37000);
         vehicle.setMileage(5900);
         vehicle.setType(vehicleType2);
-        vehicle.setProductionDate(LocalDate.of(2016, 7, 18));
+        vehicle.setYear(LocalDate.of(2016, 7, 18));
         try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()) {
             manager.getVehicleDAO().update(vehicle);
         }
@@ -135,12 +135,12 @@ public class ProductionVehicleDAOTest {
         Vehicle vehicle1 = DAOTestUtil.getVehicle(vehicle.getUuid());
         assertEquals("brand field not updated correctly", "brand 3", vehicle1.getBrand());
         assertEquals("model field not updated correctly", "model B", vehicle1.getModel());
-        assertEquals("chassisNumber field not updated correctly", "AZ0UZABCUKZ12345A", vehicle1.getChassisNumber());
+        assertEquals("chassisNumber field not updated correctly", "AZ0UZABCUKZ12345A", vehicle1.getVin());
         assertEquals("licensPlate field not updated correctly", "ABR 600", vehicle1.getLicensePlate());
         assertEquals("value field not updated correctly", 37000, vehicle1.getValue());
         assertEquals("mileage field not updated correctly", 5900, vehicle1.getMileage());
         assertEquals("type field not updated correctly", vehicleType2, vehicle1.getType());
-        assertEquals("productionDate field not updated correctly", LocalDate.of(2016, 7, 18), vehicle1.getProductionDate());
+        assertEquals("productionDate field not updated correctly", LocalDate.of(2016, 7, 18), vehicle1.getYear());
 
         //clean up database for new other tests
         DAOTestUtil.removeVehicle(vehicle.getUuid());

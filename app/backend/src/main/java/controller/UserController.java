@@ -1,8 +1,6 @@
 package controller;
 
 import dao.interfaces.DAOManager;
-import dao.interfaces.UserDAO;
-import main.BackendApplication;
 import model.account.Function;
 import model.account.Resource;
 import model.account.User;
@@ -13,7 +11,7 @@ import model.account.User;
 public class UserController extends AbstractController<User> {
 
     public UserController(Function function, DAOManager manager) {
-        super(manager.getUserDAO(), Resource.USER,function);
+        super(manager, manager.getUserDAO(), Resource.USER,function);
     }
 
     @Override

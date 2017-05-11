@@ -18,7 +18,7 @@ import java.util.Collection;
 public class VehicleController extends CommissionContainerController<Vehicle> {
 
     public VehicleController(Function function, DAOManager manager) {
-        super(manager.getVehicleDAO(), Resource.VEHICLE, function);
+        super(manager, manager.getVehicleDAO(), Resource.VEHICLE, function);
     }
 
 

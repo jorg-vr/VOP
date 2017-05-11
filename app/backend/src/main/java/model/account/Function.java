@@ -1,10 +1,13 @@
 package model.account;
 
 import model.history.EditableObject;
+import model.history.LogResource;
 import model.identity.Company;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
+
+import static util.UUIDUtil.UUIDToNumberString;
 
 /**
  * Represents the relationship of a User, his Company and a given Role
@@ -183,8 +186,21 @@ public class Function implements EditableObject, java.io.Serializable {
      * @return the copied object
      */
     @Override
-    public EditableObject copy() {
-        return null;
+    public Function copy() {
+        Function function = new Function();
+        function.setUuid(uuid);
+        function.setCompany(company);
+        function.setUser(user);
+        function.setRole(role);
+        function.setName(name);
+        function.setStartDate(startDate);
+        function.setEndDate(endDate);
+        return function;
+    }
+
+    @Override
+    public LogResource getLogResource() {
+        return LogResource.FUNCTION;
     }
 
     @Override
@@ -202,5 +218,10 @@ public class Function implements EditableObject, java.io.Serializable {
             return getUuid().hashCode();
         }
         return super.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return UUIDToNumberString(uuid);
     }
 }

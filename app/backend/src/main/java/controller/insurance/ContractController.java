@@ -17,7 +17,7 @@ import java.util.Collection;
 public class ContractController extends AbstractController<Contract> {
 
     public ContractController(Function function, DAOManager manager) {
-        super(manager.getContractDao(), Resource.INSURANCE, function);
+        super(manager, manager.getContractDao(), Resource.INSURANCE, function);
     }
 
     @Override

@@ -34,6 +34,7 @@ public class ProductionManager implements DAOManager {
     private SpecialConditionDAO specialConditionDAO;
     private VehicleInsuranceDAO vehicleInsuranceDAO;
     private InsuranceCompanyDAO insuranceCompanyDAO;
+    private LogEntryDAO logEntryDAO;
 
 
     ProductionManager(Session session) {
@@ -174,6 +175,14 @@ public class ProductionManager implements DAOManager {
             insuranceCompanyDAO = new ProductionInsuranceCompanyDAO(session);
         }
         return insuranceCompanyDAO;
+    }
+
+    @Override
+    public LogEntryDAO getLogEntryDao() {
+        if( logEntryDAO==null){
+            logEntryDAO = new ProductionLogEntryDAO(session);
+        }
+        return logEntryDAO;
     }
 
     @Override

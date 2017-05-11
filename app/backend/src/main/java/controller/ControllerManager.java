@@ -117,6 +117,10 @@ public class ControllerManager implements AutoCloseable {
         return new SpecialConditionController(function, daoManager);
     }
 
+    public LogEntryController getLogEntryController() {
+        return new LogEntryController(function, daoManager);
+    }
+
     public void close() {
         daoManager.close();
     }

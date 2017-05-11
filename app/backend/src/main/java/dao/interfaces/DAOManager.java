@@ -115,6 +115,9 @@ public interface DAOManager extends AutoCloseable {
      */
     InsuranceCompanyDAO getInsuranceCompanyDao();
 
+
+    LogEntryDAO getLogEntryDao();
+
     /**
      * MUST BE CALLED WHEN PROVIDER IS NOT USED ANYMORE
      * if not called application will keep running
