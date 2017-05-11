@@ -21,7 +21,10 @@ TODO: document this page.
                             <input id="password" type="password" class="form-control" name="password" v-bind:placeholder="$t('login.password')"  v-model="credentials.password">
                         </div>
                         <br>
-                        <button type="button" id="login-button" :class='buttonClass' @click="confirmLogin()"> {{$t("login.button") | capitalize }} </button>
+                        <button type="button" id="login-button" :class='buttonClass' @click="confirmLogin()">
+                            <i v-if="loading" class="fa fa-spinner fa-spin"></i>
+                            <b v-else>{{$t("login.button") | capitalize }}</b>
+                        </button>
                     </form>
                 </div>
             </div>
@@ -53,7 +56,7 @@ TODO: document this page.
                 'loading'
             ]),
             buttonClass() {
-                return this.loading ? ' loading' : ''
+                return this.loading ? 'loading' : ''
             }
         },
         methods: {
@@ -64,6 +67,7 @@ TODO: document this page.
                 'setLoading'
             ]),
             confirmLogin:function(){
+                this.showError=false;
                 if(!this.loading){
                     this.setLoading({loading: true})
                     // Get webtoken and account information

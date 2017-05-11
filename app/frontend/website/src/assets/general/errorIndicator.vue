@@ -1,26 +1,29 @@
 <template>
-    <div class="row">
-        <div v-if="visible && error" class="alert alert-danger alert-dismissible col-lg-8 col-md-9 col-sm-11" role="danger">
-            <button type="button" class="close" @click="visible=false" aria-label="Close">
+    <div class="row text-center">
+        <div v-if="error && isServerError" class="alert alert-danger alert-dismissible col-sm-6" role="danger">
+            <button type="button" class="close" @click="setError(null)" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
-            <strong>{{error.error}}:</strong> The page failed to load.
+            <strong>{{error.error}}:</strong> {{error.message}}
         </div>
     </div>
 
 </template>
 <script>
-    import {mapGetters} from 'vuex'
+    import {mapGetters, mapMutations} from 'vuex'
 
     export default {
-        data() {
-            return {
-                visible: true
-            }
-        },
         computed: {
             ...mapGetters([
                 'error'
+            ]),
+            isServerError(){
+                return this.error.status &&this.error.status.toString().startsWith('5')
+            }
+        },
+        methods: {
+            ...mapMutations([
+                'setError'
             ])
         }
     }

@@ -62,13 +62,14 @@ router.beforeEach((to, from, next) => {
             store.commit('setAuthToken', {authToken: token})
             store.dispatch('refreshToken').then(() => {
                 if(store.getters.hasPermissionForRoute(to.name)){
+                    store.commit('setError', null) //Reset the state errors. No errors have been thrown yet on the new page.
                     next()
                 }
                 else {
-                    if(from.name !== null){
+                    if(from.name !== null){ //If the user comes from a page. Let the user remain on that page.
                         next(false)
                     }
-                    else {
+                    else { //If the user does not come from a page. Redirect the user to the home page
                         next({name: 'home'})
                     }
                 }

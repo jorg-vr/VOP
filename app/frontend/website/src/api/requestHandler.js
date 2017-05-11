@@ -117,7 +117,6 @@ export default {
 }
 
 let rejectResponse = function(response, reject){
-    console.log(response)
     store.commit('setError', response)
     reject(response)
 }
