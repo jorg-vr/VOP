@@ -9,6 +9,8 @@ import dao.interfaces.UserDAO;
 import model.account.User;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator;
+import org.hibernate.validator.resourceloading.PlatformResourceBundleLocator;
 
 import javax.validation.*;
 import java.security.Provider;
@@ -23,7 +25,9 @@ import java.util.Set;
 public class HibernateUtil {
 
     private static ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
-    private static ValidatorContext validatorContext = validatorFactory.usingContext();
+    private static ValidatorContext validatorContext = validatorFactory.usingContext().messageInterpolator(
+            new ResourceBundleMessageInterpolator(
+                    new PlatformResourceBundleLocator("ValidationMessages")));
 
 
     /**
@@ -107,6 +111,8 @@ public class HibernateUtil {
 
     private synchronized static void validate(Session session, Object object) throws ConstraintViolationException {
         Map<String, String> map = new HashMap<>();
+
+
         validatorContext.constraintValidatorFactory(
                 new ConstraintValidatorFactoryImpl
                         (session));
@@ -118,6 +124,22 @@ public class HibernateUtil {
         }
         if(map.size()>0){
             throw new ConstraintViolationException(map);
+        }
+    }
+
+    public static void main(String[] args) {
+        ProductionProvider.initializeProvider("localtest");
+        try(DAOProvider provider = ProductionProvider.getInstance();
+            DAOManager manager = provider.getDaoManager()) {
+            UserDAO dao = manager.getUserDAO();
+
+            User user = new User();
+            user.setFirstName(null);
+            user.setEmail("admin@solvas.be");
+            dao.create(user);
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
