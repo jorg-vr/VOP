@@ -2,8 +2,12 @@
 <validation-config
         xmlns="http://jboss.org/xml/ns/javax/validation/configuration"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://jboss.org/xml/ns/javax/validation/configuration">
+        xsi:schemaLocation="http://jboss.org/xml/ns/javax/validation/configuration" version="1.1">
 
+    <constraint-mapping>META-INF/validation_account.xml</constraint-mapping>
+    <constraint-mapping>META-INF/validation_billing.xml</constraint-mapping>
+    <constraint-mapping>META-INF/validation_fleet.xml</constraint-mapping>
+    <constraint-mapping>META-INF/validation_identity.xml</constraint-mapping>
     <constraint-mapping>META-INF/validation_account.xml</constraint-mapping>
 
 </validation-config>

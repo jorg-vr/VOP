@@ -3,15 +3,12 @@ package dao.database;
 import dao.database.util.unique.ConstraintValidatorFactoryImpl;
 import dao.exceptions.ConstraintViolationException;
 import dao.exceptions.DataAccessException;
-import dao.interfaces.DAOManager;
-import dao.interfaces.DAOProvider;
-import dao.interfaces.UserDAO;
-import model.account.User;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator;
+import org.hibernate.validator.resourceloading.PlatformResourceBundleLocator;
 
 import javax.validation.*;
-import java.security.Provider;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -23,7 +20,9 @@ import java.util.Set;
 public class HibernateUtil {
 
     private static ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
-    private static ValidatorContext validatorContext = validatorFactory.usingContext();
+    private static ValidatorContext validatorContext = validatorFactory.usingContext().messageInterpolator(
+            new ResourceBundleMessageInterpolator(
+                    new PlatformResourceBundleLocator("ValidationMessages")));
 
 
     /**
@@ -50,7 +49,7 @@ public class HibernateUtil {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataAccessException();
+            throw new DataAccessException(e);
         }
     }
 
@@ -72,7 +71,7 @@ public class HibernateUtil {
             if (tx != null) {
                 tx.rollback();
             }
-            throw new DataAccessException();
+            throw new DataAccessException(e);
         }
     }
 
@@ -101,12 +100,14 @@ public class HibernateUtil {
                 tx.rollback();
             }
             e.printStackTrace();
-            throw new DataAccessException();
+            throw new DataAccessException(e);
         }
     }
 
     private synchronized static void validate(Session session, Object object) throws ConstraintViolationException {
         Map<String, String> map = new HashMap<>();
+
+
         validatorContext.constraintValidatorFactory(
                 new ConstraintValidatorFactoryImpl
                         (session));
@@ -116,7 +117,7 @@ public class HibernateUtil {
         for (ConstraintViolation<Object> violation : violations) {
             map.put(violation.getPropertyPath().toString(), violation.getMessage());
         }
-        if(map.size()>0){
+        if (map.size() > 0) {
             throw new ConstraintViolationException(map);
         }
     }
