@@ -42,6 +42,4 @@ public interface DAO<T>  {
      */
     Collection<T> listFiltered(Filter<T>... filters) throws DataAccessException;
 
-    void refresh(T t) throws Exception;
-
 }

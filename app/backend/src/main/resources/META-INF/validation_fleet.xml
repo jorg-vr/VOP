@@ -6,8 +6,8 @@
     <bean class="model.fleet.Fleet">
         <field name="name">
             <constraint annotation="javax.validation.constraints.NotNull"/>
-            <constraint annotation="javax.validation.constraints.Min">
-                <element name="value">3</element>
+            <constraint annotation="javax.validation.constraints.Pattern">
+                <element name="regexp">^...*$</element>
             </constraint>
         </field>
 
@@ -46,7 +46,6 @@
         </field>
         <field name="year">
             <constraint annotation="javax.validation.constraints.NotNull"/>
-            <constraint annotation="javax.validation.constraints.Past"/>
         </field>
     </bean>
 

@@ -43,12 +43,12 @@
                 <element name="regexp">^...*$</element>
             </constraint>
         </field>
-        <field name="btwNumber">
-            <constraint annotation="javax.validation.constraints.NotNull"/>
-            <constraint annotation="javax.validation.constraints.Pattern">
-                <element name="regexp">^.........*$</element>
-            </constraint>
-        </field>
+        <!--<field name="btwNumber">-->
+            <!--<constraint annotation="javax.validation.constraints.NotNull"/>-->
+            <!--<constraint annotation="javax.validation.constraints.Pattern">-->
+                <!--<element name="regexp">^.........*$</element>-->
+            <!--</constraint>-->
+        <!--</field>-->
         <field name="companyType">
             <constraint annotation="javax.validation.constraints.NotNull"/>
         </field>
@@ -58,12 +58,12 @@
         <field name="address">
             <constraint annotation="javax.validation.constraints.NotNull"/>
         </field>
-        <field name="phoneNumber">
-            <constraint annotation="javax.validation.constraints.NotNull"/>
-            <constraint annotation="javax.validation.constraints.Pattern">
-                <element name="regexp">^.......*$</element>
-            </constraint>
-        </field>
+        <!--<field name="phoneNumber">-->
+            <!--<constraint annotation="javax.validation.constraints.NotNull"/>-->
+            <!--<constraint annotation="javax.validation.constraints.Pattern">-->
+                <!--<element name="regexp">^.......*$</element>-->
+            <!--</constraint>-->
+        <!--</field>-->
 
     </bean>
 

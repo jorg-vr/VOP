@@ -29,17 +29,15 @@ This page is used to edit or create a certain insurance.
             InsuranceForm
         },
          created(){
-            // this.id is id of insurance, contractId is id of contract
             this.clearSurety()
+            // edit
             if(this.id){
-                console.log(this.actions.name)
-                this.fetchSurety({id: this.id, contractId:this.contractId})
-                let suretyInfo = this.suretyData.surety
-                console.log(suretyInfo)
-                this.fetchSuretyDetail(suretyInfo)
-                console.log(this.suretyDetail)
-               // this.suretyData.surety = this.suretyDetail
-                console.log(this.suretyData)
+                this.fetchInsurance({ids: this.contractId, id:this.id}).then(insurance => {
+                    this.oldInsurance = insurance
+                    this.oldInsurance.startDate = this.oldInsurance.startDate.substring(0,10)
+                    this.oldInsurance.endDate = this.oldInsurance.endDate.substring(0,10)
+                    console.log(this.oldInsurance)
+                })
             }
            
         },
@@ -58,7 +56,8 @@ This page is used to edit or create a certain insurance.
         methods: {
             ...mapActions([
                 'fetchSurety',
-                'fetchSuretyDetail'
+                'fetchSuretyDetail',
+                'fetchInsurance'
             ]),
             ...mapMutations([
                 'clearSurety'

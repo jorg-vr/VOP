@@ -123,10 +123,4 @@ public abstract class ProductionDAO<T> implements DAO<T> {
         return () -> getPredicates().add(getCriteriaBuilder().like(getRoot().get(fieldName), "%" + string + "%")) ;
 
     }
-
-
-    @Override
-    public void refresh(T t) throws Exception{
-        session.refresh(t);
-    }
 }

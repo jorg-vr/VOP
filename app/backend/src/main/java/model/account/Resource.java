@@ -14,5 +14,6 @@ public enum Resource {
     VEHICLETYPE,
     COMPANY,
     INSURANCE,
+    COMMISSION,
     LOG
 }

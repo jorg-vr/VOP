@@ -33,7 +33,7 @@
                             <resources-link :resource="resources.VEHICLE"></resources-link>
                         </li>
                         <li>
-                            <resources-link :resource="resources.INSURANCE"></resources-link>
+                            <resources-link :resource="resources.CONTRACT"></resources-link>
                         </li>
                     </template>
                 </ul><!-- /.navbar-nav -->

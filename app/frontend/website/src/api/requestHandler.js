@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import store from '../store'
 
 /**
  * Interface for communicating with the backend API.
@@ -16,11 +17,11 @@ export default {
      * @returns {Promise}
      */
     getObjectsRequest(location){
-        return new Promise((resolveSuccess, resolveFailure) => {
+        return new Promise((resolve, reject) => {
             Vue.http.get(location).then(response => {
-                resolveSuccess(response.body.data)
+                resolve(response.body.data)
             }, response => {
-                resolveFailure(response)
+                rejectResponse(response, reject)
             })
         })
     },
@@ -33,11 +34,11 @@ export default {
      * @returns {Promise}
      */
     getObjectRequest(location, id){
-        return new Promise((resolveSuccess, resolveFailure) => {
+        return new Promise((resolve, reject) => {
             Vue.http.get(location + id).then(response => {
-                resolveSuccess(response.body)
+                resolve(response.body)
             }, response => {
-                resolveFailure(response)
+                rejectResponse(response, reject)
             })
         })
     },
@@ -71,11 +72,11 @@ export default {
      * @returns {Promise}
      */
     postObjectRequest(location, object){
-        return new Promise((resolveSuccess, resolveFailure) => {
+        return new Promise((resolve, reject) => {
             Vue.http.post(location, object).then(response => {
-                resolveSuccess(response)
+                resolve(response)
             }, response => {
-                resolveFailure(response)
+                rejectResponse(response, reject)
             })
         })
     },
@@ -89,11 +90,11 @@ export default {
      * @returns {Promise}
      */
     putObjectRequest(location, object){
-        return new Promise((resolveSuccess, resolveFailure) => {
+        return new Promise((resolve, reject) => {
             Vue.http.put(location + object.id, object).then(response => {
-                resolveSuccess(response.body)
+                resolve(response.body)
             }, response => {
-                resolveFailure(response)
+                rejectResponse(response, reject)
             })
         })
     },
@@ -105,13 +106,17 @@ export default {
      * @returns {Promise}
      */
     deleteObjectRequest(location, id){
-        return new Promise((resolveSuccess, resolveFailure) => {
+        return new Promise((resolve, reject) => {
             Vue.http.delete(location + id).then(() => {
-                resolveSuccess()
+                resolve()
             }, response => {
-                resolveFailure(response)
+                rejectResponse(response, reject)
             })
         })
     },
 }
 
+let rejectResponse = function(response, reject){
+    store.commit('setError', response)
+    reject(response)
+}

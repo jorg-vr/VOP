@@ -64,7 +64,7 @@ public class UniqueKeyValidator implements ConstraintValidator<UniqueKey, Serial
                 boolean valid =  collection.size() == 0;
                 if ( !valid ) {
                     context.disableDefaultConstraintViolation();
-                    context.buildConstraintViolationWithTemplate("should be unique")
+                    context.buildConstraintViolationWithTemplate("UNIQUE")
                             .addPropertyNode( propertyName ).addConstraintViolation();
                     finalValid = false;
                 }
