@@ -1,19 +1,19 @@
 <template>
     <div>
-        <form-input :placeholder="$t('common.name') + ' ' + $t('vehicleType.vehicleType') | capitalize" v-model="vehicleType.name"></form-input>
+        <text-input-form-group :object="vehicleType" name="name" :text="$t('vehicleType.vehicleType')" :rules="'required'"></text-input-form-group>
     </div>
 
 </template>
 <script>
     import {mapGetters, mapActions} from 'vuex'
-    import formInput from '../../assets/form/elements/formInput.vue'
+    import textInputFormGroup from '../../assets/form/FormGroups/TextInputFormGroup.vue'
 
     export default {
         props: {
             vehicleType: Object
         },
         components: {
-            formInput
+            textInputFormGroup
         }
     }
 </script>

@@ -1,12 +1,42 @@
 <template>
     <div v-if="commissions" class="col-lg-8 col-md-9 col-sm-11">
-        <div v-for="commission in commissions">
-            {{commission.commission}} {{commission.suretyType}}
-        </div>
-        <!--<list-component :resource="resource" :objects="commissions" :visibleKeys="['suretyType','commission']"></list-component>-->
+        <table class="table-hover table">
+            <thead>
+            <tr>
+                <th >
+                    {{$t(commission.suretyType).capitalize()}}
+                </th>
+                <th >
+                    {{$t(commission.commission).capitalize()}}
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="commission in commissions" class="list-tr">
+                <td  class="clickable-td" >
+                    {{commission.suretyType}}
+                </td>
+                <td  class="clickable-td">
+                    {{commission.commission}}
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </template>
+<style>
+    .stretch {
+        width: 1%;
+        white-space: nowrap;
+    }
 
+    .clickable-td {
+        cursor:pointer;
+    }
+    tr.list-tr {
+        border-bottom: 1px solid #e6e6e6;
+    }
+</style>
 <script>
     import { mapGetters, mapActions, mapMutations } from 'vuex'
     import resources from '../../constants/resources'
@@ -21,9 +51,7 @@
             listComponent
         },
         created() {
-            this.setLoading({loading: true})
             this.fetchCommissions({}).then(() => {
-                this.setLoading({loading: false })
             }).catch(response=>{
                 console.log(response)
             })

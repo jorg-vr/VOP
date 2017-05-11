@@ -146,22 +146,6 @@ export default
             cost: 'cost',
             tax: 'tax',
             startDate: 'start date',
-<<<<<<< HEAD
-            showableStartDate: 'start date'
-        },
-        suretyTypes:{
-            CIVIL_LIABILITY:"civil liability",
-            OMNIUM_FULL:"full omnium",
-            OMNIUM_PARTIAL:"partial omnium",
-            LEGAL_AID:"legal aid",
-            TRAVEL_AID:"travel aid",
-            SAFETY:"safety"
-        },
-        commission:{
-            commission:"commission",
-            commissions:"commissions",
-            suretyType:"surety type"
-=======
             showableStartDate: 'start date',
             premium: 'premium',
             premiumPercentage: 'premium percentage',
@@ -199,7 +183,19 @@ export default
             referenceCode: 'code',
             title: 'title',
             text: 'text'
->>>>>>> master
+        },
+        suretyTypes:{
+            CIVIL_LIABILITY:"civil liability",
+            OMNIUM_FULL:"full omnium",
+            OMNIUM_PARTIAL:"partial omnium",
+            LEGAL_AID:"legal aid",
+            TRAVEL_AID:"travel aid",
+            SAFETY:"safety"
+        },
+        commission:{
+            commission:"commission",
+            commissions:"commissions",
+            suretyType:"surety type"
         }
     },
     nl : {
@@ -344,22 +340,6 @@ export default
             cost: 'prijs',
             tax: 'taks',
             startDate: 'startdatum',
-<<<<<<< HEAD
-            showableStartDate: 'startdatum'
-        },
-        suretyTypes:{
-            CIVIL_LIABILITY:"burgerlijke aansprakelijkheid",
-            OMNIUM_FULL:"omnium",
-            OMNIUM_PARTIAL:"partiele omnium",
-            LEGAL_AID:"rechtsbijstand",
-            TRAVEL_AID:"reisbijstand",
-            SAFETY:"veiligheid"
-        },
-        commission:{
-            commission:"commissie",
-            commissions:"commissies",
-            suretyType:"type waarborg"
-=======
             showableStartDate: 'startdatum',
             premium: 'premie',
             premiumPercentage: 'premie percentage',
@@ -396,7 +376,19 @@ export default
             referenceCode: 'code',
             title: 'titel',
             text: 'tekst'
->>>>>>> master
+        },
+        suretyTypes:{
+            CIVIL_LIABILITY:"burgerlijke aansprakelijkheid",
+                OMNIUM_FULL:"omnium",
+                OMNIUM_PARTIAL:"partiele omnium",
+                LEGAL_AID:"rechtsbijstand",
+                TRAVEL_AID:"reisbijstand",
+                SAFETY:"veiligheid"
+        },
+        commission:{
+            commission:"commissie",
+                commissions:"commissies",
+                suretyType:"type waarborg"
         }
     }
 }

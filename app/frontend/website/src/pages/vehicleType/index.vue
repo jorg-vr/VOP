@@ -7,6 +7,7 @@
             </h1>
         </div><!-- Render an info-pane for every vehicleType. Once all the data is loaded, the table will be shown.-->
         <list-component :resource="resource" :objects="vehicleTypes" :visibleKeys="['name']"></list-component>
+        <list-component v-if="vehicleTypes.length > 0" :resource="resource" :listObject="listObject"></list-component>
     </div>
 </template>
 
@@ -33,7 +34,13 @@
         computed: {
             ...mapGetters([
                 'vehicleTypes'
-            ])
+            ]),
+            listObject() {
+                var listObj = {};
+                listObj.headers = ['name'];
+                listObj.values = this.vehicleTypes;
+                return listObj;
+            }
         },
         methods: {
             ...mapActions([

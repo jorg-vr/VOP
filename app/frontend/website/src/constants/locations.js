@@ -18,11 +18,8 @@ export const PERMISSIONS = 'permissions/'
 export const INVOICE = "invoices/"
 export const SURETY = 'sureties/'
 export const SURETYDETAIL = 'sureties/'
-<<<<<<< HEAD
-export const COMMISSION = 'vehicles/types/274776102288499320837812636171303961393/commissions/'
-=======
+export const COMMISSION = 'vehicles/types/32530653198763511852634614999739150709/commissions/'
 export const CONTRACT = 'contracts/'
 export const CONDITION= 'special-conditions/'
->>>>>>> master
 
 //Example location for updated resources: export const SURETY = 'contracts/{contract}/insurances'

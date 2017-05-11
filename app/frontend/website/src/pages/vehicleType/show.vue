@@ -17,7 +17,7 @@
 </template>
 <script>
     import buttonBack from '../../assets/buttons/buttonBack.vue'
-    import commissions from '../commission&tax/show.vue'
+    import commissions from '../commission/show.vue'
     import {mapGetters, mapActions} from 'vuex'
 
     export default {
