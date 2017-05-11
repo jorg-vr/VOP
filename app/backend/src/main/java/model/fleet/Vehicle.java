@@ -428,14 +428,14 @@ public class Vehicle implements EditableObject, java.io.Serializable, Commission
     }
 
     public LogEntry logCreate(User user) {
-        LogEntry entry = EditableObject.super.logCreate(user);
+        LogEntry entry = CommissionContainer.super.logCreate(user);
         entry.addInterestedObject(fleet);
         return entry;
     }
 
     @Override
     public LogEntry logUpdate(User user, EditableObject old) {
-        LogEntry entry = EditableObject.super.logUpdate(user, old);
+        LogEntry entry = CommissionContainer.super.logUpdate(user, old);
         if (entry.fieldChanged("fleet")) {
             entry.addInterestedObject(fleet);
             entry.addInterestedObject(((Vehicle)old).getFleet());
@@ -444,7 +444,7 @@ public class Vehicle implements EditableObject, java.io.Serializable, Commission
     }
 
     public LogEntry logDelete(User user) {
-        LogEntry entry = EditableObject.super.logDelete(user);
+        LogEntry entry = CommissionContainer.super.logDelete(user);
         entry.addInterestedObject(fleet);
         return entry;
     }
