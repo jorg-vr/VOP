@@ -19,7 +19,7 @@ public class LogEntry {
 
     /**
      * A collection of ids of objects that also want this logentry to be shown when asked about their log history.
-     * e.g: when an vehicleinsurance changes, it should also be shown in the log of the vehicle the insurance belongs to
+     * e.g: when an vehicle insurance changes, it should also be shown in the log of the vehicle the insurance belongs to
      */
     private Collection<UUID> interested;
 

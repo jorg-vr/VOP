@@ -120,13 +120,13 @@ public class DatabaseFiller {
                         for (int k = 1; k < 3; k++) {
                             Vehicle vehicle = new Vehicle();
                             vehicle.setFleet(fleet);
-                            vehicle.setChassisNumber("AAAAAAAAAAAAAAAAA");
+                            vehicle.setVin("AAAAAAAAAAAAAAAAA");
                             vehicle.setMileage(k * 10000);
                             vehicle.setBrand("Merk " + Integer.toString(k));
                             vehicle.setLicensePlate("ABC-00" + Integer.toString(k));
                             vehicle.setType(type);
                             vehicle.setModel("Model " + Integer.toString(k));
-                            vehicle.setProductionDate(LocalDate.now());
+                            vehicle.setYear(LocalDate.now());
                             vehicleDAO.create(vehicle);
 
                             VehicleInsurance insurance = new VehicleInsurance();
@@ -360,13 +360,13 @@ public class DatabaseFiller {
                     for (int k = 1; k < 3; k++) {
                         Vehicle vehicle = new Vehicle();
                         vehicle.setFleet(fleet);
-                        vehicle.setChassisNumber("AAAAAAAAAAAAAAAAA");
+                        vehicle.setVin("AAAAAAAAAAAAAAAAA");
                         vehicle.setMileage(k * 10000);
                         vehicle.setBrand("Merk " + Integer.toString(k));
                         vehicle.setLicensePlate("DEF-95" + Integer.toString(k));
                         vehicle.setType(type);
                         vehicle.setModel("Model " + Integer.toString(k));
-                        vehicle.setProductionDate(LocalDate.now());
+                        vehicle.setYear(LocalDate.now());
                         vehicleDAO.create(vehicle);
 
                         VehicleInsurance insurance = new VehicleInsurance();

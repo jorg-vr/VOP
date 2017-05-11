@@ -29,7 +29,7 @@ public interface EditableObject {
      * Create a log entry for the deletion of the object
      *
      * @param user the user that deleted this object
-     * @return null if the object does not want to log the celetion
+     * @return null if the object does not want to log the deletion
      */
     default LogEntry logDelete(User user) {
         return new LogEntry(getUuid(), user, LogAction.DELETE, getLogResource());

@@ -166,13 +166,13 @@ public class RESTVehicleControllerTest {
             Vehicle vehicle = get(restId);
             try {
                 assertEquals("licensePlate field not created correctly", "ABC 123", vehicle.getLicensePlate());
-                assertEquals("chassisNumber field not created correctly", "AAAAAAAAAAAAAAAAA", vehicle.getChassisNumber());
+                assertEquals("chassisNumber field not created correctly", "AAAAAAAAAAAAAAAAA", vehicle.getVin());
                 assertEquals("brand field not created correctly", "brand 1", vehicle.getBrand());
                 assertEquals("model field not created correctly", "model A", vehicle.getModel());
                 assertEquals("type field not created correctly", vehicleType, vehicle.getType());
                 assertEquals("value field not created correctly", 30000, vehicle.getValue());
                 assertEquals("mileage field not created correctly", 2500, vehicle.getMileage());
-                assertEquals("productionDate field not created correctly", localDate, vehicle.getProductionDate());
+                assertEquals("productionDate field not created correctly", localDate, vehicle.getYear());
                 assertEquals("fleet field not created correctly", fleet1, vehicle.getFleet());
             } finally {
                 remove(restId);
@@ -234,13 +234,13 @@ public class RESTVehicleControllerTest {
             )
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.licensePlate", equalTo(vehicle.getLicensePlate())))
-                    .andExpect(jsonPath("$.vin", equalTo(vehicle.getChassisNumber())))
+                    .andExpect(jsonPath("$.vin", equalTo(vehicle.getVin())))
                     .andExpect(jsonPath("$.brand", equalTo(vehicle.getBrand())))
                     .andExpect(jsonPath("$.model", equalTo(vehicle.getModel())))
                     .andExpect(jsonPath("$.type", equalTo(UUIDUtil.UUIDToNumberString(vehicle.getType().getUuid()))))
                     .andExpect(jsonPath("$.value", equalTo(vehicle.getValue())))
                     .andExpect(jsonPath("$.mileage", equalTo(vehicle.getMileage())))
-                    .andExpect(jsonPath("$.year", equalTo(Integer.toString(vehicle.getProductionDate().getYear()))))
+                    .andExpect(jsonPath("$.year", equalTo(Integer.toString(vehicle.getYear().getYear()))))
                     .andExpect(jsonPath("$.fleet", equalTo(UUIDUtil.UUIDToNumberString(vehicle.getFleet().getUuid()))));
         } catch (Exception e) {
             remove(vehicle.getUuid());
@@ -294,13 +294,13 @@ public class RESTVehicleControllerTest {
             vehicle = get(vehicle.getUuid());
             try {
                 assertEquals("licensePlate field not updated correctly", "ABC 123", vehicle.getLicensePlate());
-                assertEquals("chassisNumber field not updated correctly", "AAAAAAAAAAAAAAAAA", vehicle.getChassisNumber());
+                assertEquals("chassisNumber field not updated correctly", "AAAAAAAAAAAAAAAAA", vehicle.getVin());
                 assertEquals("brand field not updated correctly", "brand 1", vehicle.getBrand());
                 assertEquals("model field not updated correctly", "model A", vehicle.getModel());
                 assertEquals("type field not updated correctly", vehicleType, vehicle.getType());
                 assertEquals("value field not updated correctly", 30000, vehicle.getValue());
                 assertEquals("mileage field not updated correctly", 3500, vehicle.getMileage());
-                assertEquals("productionDate field not updated correctly", localDate, vehicle.getProductionDate());
+                assertEquals("productionDate field not updated correctly", localDate, vehicle.getYear());
                 assertEquals("fleet field not updated correctly", fleet1, vehicle.getFleet());
             } finally {
                 //Clean up database for other tests
@@ -385,13 +385,13 @@ public class RESTVehicleControllerTest {
             Vehicle vehicle = get(restId);
             try {
                 assertEquals("licensePlate field not created correctly", "ABC 123", vehicle.getLicensePlate());
-                assertEquals("chassisNumber field not created correctly", "AAAAAAAAAAAAAAAAA", vehicle.getChassisNumber());
+                assertEquals("chassisNumber field not created correctly", "AAAAAAAAAAAAAAAAA", vehicle.getVin());
                 assertEquals("brand field not created correctly", "brand 1", vehicle.getBrand());
                 assertEquals("model field not created correctly", "model A", vehicle.getModel());
                 assertEquals("type field not created correctly", vehicleType, vehicle.getType());
                 assertEquals("value field not created correctly", 30000, vehicle.getValue());
                 assertEquals("mileage field not created correctly", 2500, vehicle.getMileage());
-                assertEquals("productionDate field not created correctly", localDate, vehicle.getProductionDate());
+                assertEquals("productionDate field not created correctly", localDate, vehicle.getYear());
                 assertEquals("fleet field not created correctly", fleet1, vehicle.getFleet());
             } finally {
                 remove(restId);
@@ -453,13 +453,13 @@ public class RESTVehicleControllerTest {
             )
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.licensePlate", equalTo(vehicle.getLicensePlate())))
-                    .andExpect(jsonPath("$.vin", equalTo(vehicle.getChassisNumber())))
+                    .andExpect(jsonPath("$.vin", equalTo(vehicle.getVin())))
                     .andExpect(jsonPath("$.brand", equalTo(vehicle.getBrand())))
                     .andExpect(jsonPath("$.model", equalTo(vehicle.getModel())))
                     .andExpect(jsonPath("$.type", equalTo(UUIDUtil.UUIDToNumberString(vehicle.getType().getUuid()))))
                     .andExpect(jsonPath("$.value", equalTo(vehicle.getValue())))
                     .andExpect(jsonPath("$.mileage", equalTo(vehicle.getMileage())))
-                    .andExpect(jsonPath("$.year", equalTo(Integer.toString(vehicle.getProductionDate().getYear()))))
+                    .andExpect(jsonPath("$.year", equalTo(Integer.toString(vehicle.getYear().getYear()))))
                     .andExpect(jsonPath("$.fleet", equalTo(UUIDUtil.UUIDToNumberString(vehicle.getFleet().getUuid()))));
         } catch (Exception e) {
             remove(vehicle.getUuid());
@@ -513,13 +513,13 @@ public class RESTVehicleControllerTest {
             vehicle = get(vehicle.getUuid());
             try {
                 assertEquals("licensePlate field not updated correctly", "ABC 123", vehicle.getLicensePlate());
-                assertEquals("chassisNumber field not updated correctly", "AAAAAAAAAAAAAAAAA", vehicle.getChassisNumber());
+                assertEquals("chassisNumber field not updated correctly", "AAAAAAAAAAAAAAAAA", vehicle.getVin());
                 assertEquals("brand field not updated correctly", "brand 1", vehicle.getBrand());
                 assertEquals("model field not updated correctly", "model A", vehicle.getModel());
                 assertEquals("type field not updated correctly", vehicleType, vehicle.getType());
                 assertEquals("value field not updated correctly", 30000, vehicle.getValue());
                 assertEquals("mileage field not updated correctly", 3500, vehicle.getMileage());
-                assertEquals("productionDate field not updated correctly", localDate, vehicle.getProductionDate());
+                assertEquals("productionDate field not updated correctly", localDate, vehicle.getYear());
                 assertEquals("fleet field not updated correctly", fleet1, vehicle.getFleet());
             } finally {
                 //Clean up database for other tests
