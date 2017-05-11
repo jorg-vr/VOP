@@ -3,7 +3,7 @@
 -->
 <template>
     <abstract-form :actions="actions" :object="fleet" :back="back" :resource="resource">
-        <fleet-form-input :fleet="fleet"></fleet-form-input>
+        <fleet-form-input :object="fleet"></fleet-form-input>
     </abstract-form>
 </template>
 <script>
@@ -11,6 +11,7 @@
     import actions from '../../constants/actions'
     import resources from '../../constants/resources'
     import fleetFormInput from './fleetFormInput.vue'
+    import {mapGetters} from 'vuex'
 
     export default {
         data(){
@@ -29,6 +30,11 @@
         },
         components: {
             abstractForm,fleetFormInput
+        },
+        computed: {
+            ...mapGetters([
+                'isAuthorizedForOwnResourcesButNotAll'
+            ])
         }
     }
 </script>

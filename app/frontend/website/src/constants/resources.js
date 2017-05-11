@@ -50,9 +50,19 @@ export default {
         name: 'surety',
         value: 'INSURANCE'
     },
+<<<<<<< HEAD
     COMMISSION: {
         name: 'commission',
         value: 'COMMISSION'
+=======
+    CONTRACT:{
+        name: 'contract',
+        value: 'INSURANCE'
+    },
+    CONDITION:{
+        name:'condition',
+        value:'INSURANCE'
+>>>>>>> master
     },
 
 }

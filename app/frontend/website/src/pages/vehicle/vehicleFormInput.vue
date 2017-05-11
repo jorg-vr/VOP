@@ -5,33 +5,21 @@ All of the fields for user input for the vehicle form
 -->
 <template>
     <div>
-        <form-input :placeholder="$t('vehicle.licensePlate') | capitalize" :label="$t('vehicle.licensePlate') | capitalize"
-                    v-model="vehicle.licensePlate"></form-input>
-
-        <form-input :placeholder="$t('vehicle.vin') | capitalize" :label="$t('vehicle.vin') | capitalize"
-                    v-model="vehicle.vin"></form-input>
-
-        <form-input :placeholder="$t('vehicle.brand') | capitalize" :label="$t('vehicle.brand') | capitalize"
-                    v-model="vehicle.brand"></form-input>
-
-        <form-input :placeholder="$t('vehicle.model') | capitalize" :label="$t('vehicle.model') | capitalize"
-                    v-model="vehicle.model"></form-input>
-
-        <form-select optionKey="name" :options="vehicleTypes" :label="$t('vehicle.vehicleType') | capitalize "
-                     v-model="vehicle.type"></form-select>
-
-        <form-input :placeholder="$t('vehicle.mileage') | capitalize" :label="$t('vehicle.mileage') | capitalize"
-                    v-model="vehicle.mileage"></form-input>
-
-        <form-input :placeholder="$t('vehicle.year') | capitalize" :label="$t('vehicle.year') | capitalize"
-                    v-model="vehicle.year"></form-input>
-
+        <text-input-form-group :object="vehicle" name="licensePlate" :text="$t('vehicle.licensePlate')"></text-input-form-group>
+        <text-input-form-group :object="vehicle" name="vin" :text="$t('vehicle.vin')" :rules="'required|check_vin'"></text-input-form-group>
+        <text-input-form-group :object="vehicle" name="brand" :text="$t('vehicle.brand')" :rules="'required'"></text-input-form-group>
+        <text-input-form-group :object="vehicle" name="model" :text="$t('vehicle.model')" :rules="'required'"></text-input-form-group>
+        <select-input-form-group :object="vehicle" name="type" optionPropertyName="id" visibleKey="name"
+                     :text="$t('vehicle.vehicleType')" :rules="'required'" :options="clients">
+        </select-input-form-group>
+        <text-input-form-group :object="vehicle" name="mileage" :text="$t('vehicle.mileage')" :rules="'required|numeric'"></text-input-form-group>
+        <text-input-form-group :object="vehicle" name="year" :text="$t('vehicle.year')" :rules="'required|numeric'"></text-input-form-group>
+        <text-input-form-group :object="vehicle" name="value" :text="$t('vehicle.value')" :rules="'numeric'"></text-input-form-group>
     </div>
-
 </template>
 <script>
-    import formInput from '../../assets/form/elements/formInput.vue'
-    import formSelect from '../../assets/form/elements/formSelect.vue'
+    import TextInputFormGroup from '../../assets/form/FormGroups/TextInputFormGroup.vue'
+    import SelectInputFormGroup from '../../assets/form/FormGroups/SelectInputFormGroup.vue'
     import clientTypes from '../../constants/clientTypes'
     import {mapGetters, mapActions} from 'vuex'
 
@@ -40,7 +28,7 @@ All of the fields for user input for the vehicle form
             vehicle: Object,
         },
         components: {
-            formInput, formSelect
+            TextInputFormGroup, SelectInputFormGroup
         },
         created(){
             this.fetchVehicleTypes()

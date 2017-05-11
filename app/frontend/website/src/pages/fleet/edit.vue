@@ -5,7 +5,7 @@
 -->
 <template>
     <abstract-form :actions="actions" :object="fleet" :back="back" :resource="resource">
-        <form-input :fleet="fleet"></form-input>
+        <form-input :object="fleet"></form-input>
     </abstract-form>
 </template>
 <script>
@@ -20,7 +20,7 @@
             return {
                 resource: resources.FLEET,
                 actions: actions.UPDATE,
-                fleet: {address:{}},
+                fleet: {},
                 back:{name:resources.FLEET.name.plural()}
             }
         },

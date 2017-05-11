@@ -19,6 +19,14 @@ import java.util.Collection;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+/**
+ * Requests that are implemented in this class:
+ * 1) GET /users/me
+ * 2) PUT /users/me
+ * 3) GET /users/me/functions
+ * 4) GET /users/me/functions/{id}
+ * these requests to not require a "Function" header and only need an "Authorization" header
+ */
 @RestController
 @RequestMapping("/${path.users}/me")
 public class RESTUserMeController {

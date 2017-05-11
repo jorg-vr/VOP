@@ -12,10 +12,7 @@
             </h1>
         </div>
         <insurance-search-bar @search="updateContractInsurances" @advancedSearch="updateContractInsurancesAdvanced"></insurance-search-bar>
-        <list-component :resource="resource"
-                        :objects="filteredcontractInsurances"
-                        :visibleKeys="['cost','tax','showableStartDate']">
-        </list-component>
+        <list-component :resource="resource" :listObject="listObject"></list-component>
         <button-back :route="{name: 'insurances'}"></button-back>
     </div>
 </template>
@@ -53,13 +50,19 @@
         },
         computed: {
             ...mapGetters([
-                'insurance',
-                'contractInsurances',
-                'filteredcontractInsurances',
-                'contractId',
-                'getContractInsurancesByAll',
-                'getContractInsurancesByAllAdvanced'
-            ])
+            'insurance',
+            'contractInsurances',
+            'filteredcontractInsurances',
+            'contractId',
+            'getContractInsurancesByAll',
+            'getContractInsurancesByAllAdvanced'
+            ]),
+            listObject() {
+                var listObj = {};
+                listObj.headers = ['cost','tax','showableStartDate'];
+                listObj.values = this.filteredcontractInsurances;
+                return listObj;
+            }
         },
         methods: {
             ...mapActions([

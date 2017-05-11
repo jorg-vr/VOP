@@ -1,5 +1,6 @@
-import dao.database.*;
-import database.*;
+import database.consistency.VehiclesCollectionTest;
+import database.constraints.*;
+import database.dao.*;
 import model.fleet.VehicleTest;
 import model.insurance.NonFlatSuretyTest;
 import model.insurance.VehicleInsuranceTest;

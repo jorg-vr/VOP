@@ -36,10 +36,19 @@ import newSurety from '../pages/surety/new.vue'
 import editSurety from '../pages/surety/edit.vue'
 import showSurety from '../pages/surety/show.vue'
 
-import indexInsurance from '../pages/insurance/index.vue'
-import newInsurance from '../pages/insurance/new.vue'
-import editInsurance from '../pages/insurance/edit.vue'
-import showInsurance from '../pages/insurance/show.vue'
+import newVehicleInsurance from '../pages/vehicleInsurance/new.vue'
+import editVehicleInsurance from '../pages/vehicleInsurance/edit.vue'
+import showVehicleInsurance from '../pages/vehicleInsurance/show.vue'
+
+import indexContract from '../pages/contract/index.vue'
+import newContract from '../pages/contract/new.vue'
+import editContract from '../pages/contract/edit.vue'
+import showContract from '../pages/contract/show.vue'
+
+import indexSpecialCondition from '../pages/specialCondition/index.vue'
+import newSpecialCondition from '../pages/specialCondition/new.vue'
+import editSpecialCondition from '../pages/specialCondition/edit.vue'
+import showSpecialCondition from '../pages/specialCondition/show.vue'
 
 import indexInvoice from '../pages/invoice/index.vue'
 import showInvoice from '../pages/invoice/show.vue'
@@ -83,15 +92,28 @@ export default [
             {path: 'vehicle_types/:id(\\d+)/edit', name: 'edit_vehicleType', component: editVehicleType, props: true},
 
             // sureties
+            {path: 'surety', name: 'suretys', component: indexContract},
             {path: 'surety/new', name: 'new_surety', component: newSurety},
             {path: 'surety/:id(\\d+)', name: 'surety', component: showSurety, props: true},
             {path: 'surety/:id(\\d+)/edit', name: 'edit_surety', component: editSurety, props: true},   
+            
+            // contracts
+            {path: 'contracts', name: 'contracts', component: indexContract},
+            {path: 'contracts/new', name: 'new_contract', component: newContract},
+            {path: 'contracts/:id(\\d+)', name: 'contract', component: showContract, props: true},
+            {path: 'contracts/:id(\\d+)/edit', name: 'edit_contract', component: editContract, props: true},
 
-            // insurance
-            {path: 'insurances', name: 'insurances', component: indexInsurance},
-            {path: 'insurances/new', name: 'new_insurance', component: newInsurance},
-            {path: 'insurances/:id(\\d+)', name: 'insurance', component: showInsurance, props: true},
-            {path: 'insurances/:id(\\d+)/edit', name: 'edit_insurance', component: editInsurance, props: true},
+            // vehicle insurances
+            {path: 'insurances', name: 'insurances', component: indexContract},
+            {path: 'insurances/new', name: 'new_insurance', component: newVehicleInsurance},
+            {path: 'insurances/:id(\\d+)', name: 'insurance', component: showVehicleInsurance, props: true},
+            {path: 'insurances/:id(\\d+)/edit', name: 'edit_insurance', component: editVehicleInsurance, props: true},
+            
+            // special conditions
+            {path: 'conditions', name: 'conditions', component: indexSpecialCondition},
+            {path: 'conditions/new', name: 'new_condition', component: newSpecialCondition},
+            {path: 'conditions/:id(\\d+)', name: 'condition', component: showSpecialCondition, props: true},
+            {path: 'conditions/:id(\\d+)/edit', name: 'edit_condition', component: editSpecialCondition, props: true},
 
             // invoice
             {path: 'clients/:companyId(\\d+)/invoices', name: 'invoices', component: indexInvoice, props: true},

@@ -23,6 +23,7 @@ export default
         },
         fleet: {
             name: 'fleet name',
+            company: 'company',
             companyName: 'company name',
             fleet: 'fleet',
             fleets: 'fleets'
@@ -33,11 +34,13 @@ export default
             users: 'users',
             firstName: 'first name',
             lastName: 'last name',
-            email: 'email'
+            email: 'email',
+            password: 'password',
         },
         client: {
             client: 'client',
             clients: 'clients',
+            type: 'type',
             company: 'company',
             name: 'name',
             phoneNumber: 'phone number',
@@ -61,7 +64,7 @@ export default
             back: 'back',
             name: 'name',
             cancel: 'cancel',
-            add: 'new'
+            add: 'add'
         },
         actions: {
             select: 'select {subject}',
@@ -105,14 +108,16 @@ export default
             premium: 'insurance premium',
             franchise: 'franchise',
             endDate: 'end date',
-            showableStartDate: 'start date',
-            showableEndDate: 'end date',
-            insurancedAmount: 'insuranced amount',
+            startDate: 'start date',
+            endDate: 'end date',
+            showableStartDate: 'startdatum',
+            showableEndDate: 'einddatum ',
+            insuredValue: 'insured value',
             percentage: 'percentage',
             coverageClauses: 'coverage clauses',
             exemptions: 'exemptions',
             contract: 'contract',
-            totalCost: 'total cost',
+            cost: 'total cost',
             tax: 'tax',
             insuranceCompany: 'insurance company'
         },
@@ -137,9 +142,11 @@ export default
         },
         surety:{
             surety:'insurance surety',
+            sureties: 'insurance sureties',
             cost: 'cost',
             tax: 'tax',
             startDate: 'start date',
+<<<<<<< HEAD
             showableStartDate: 'start date'
         },
         suretyTypes:{
@@ -154,6 +161,45 @@ export default
             commission:"commission",
             commissions:"commissions",
             suretyType:"surety type"
+=======
+            showableStartDate: 'start date',
+            premium: 'premium',
+            premiumPercentage: 'premium percentage',
+            coverage: 'coverage clauses',
+            exceptions: 'exceptions',
+            suretyType: 'type',
+            flat: 'flat',
+            yes: 'yes',
+            no: 'no'
+
+        },
+        contract:{
+            contract: 'insurance contract',
+            contracts: 'insurance contracts',
+            showableStartDate: 'start date',
+            showableEndDate: 'end date',
+            totalCost: 'total cost',
+            totalTax: 'total tax',
+            customer: 'company',
+            insuranceCompany: 'insurance company',
+            offer: 'all insurance sureties offered by'
+        },
+        vehicle_insurance:{
+            vehicle_insurance: 'vehicle insurance',
+            vehicle_insurances: 'vehicle insurances',
+            cost: 'cost',
+            tax: 'tax',
+            showableStartDate: 'start date',
+            showableEndDate: 'end date',
+            insuredValue: 'insured value'
+        },
+        condition:{
+            condition: 'special condition',
+            conditions: 'special conditions',
+            referenceCode: 'code',
+            title: 'title',
+            text: 'text'
+>>>>>>> master
         }
     },
     nl : {
@@ -176,21 +222,23 @@ export default
         },
         fleet: {
             name: 'vlootnaam',
+            company: 'bedrijf',
             companyName: 'bedrijfsnaam',
             fleet: 'vloot',
             fleets: 'vloten'
         },
         user: {
-
             user: 'gebruiker',
             users: 'gebruikers',
             firstName: 'voornaam',
             lastName: 'achternaam',
             email: 'e-mail',
+            password: 'wachtwoord',
         },
         client: {
             client: 'klant',
             clients: 'klanten',
+            type: 'type',
             company: 'bedrijf',
             name: 'naam',
             phoneNumber: 'telefoonnummer',
@@ -215,7 +263,7 @@ export default
             back: 'terug',
             name: 'naam',
             cancel: 'annuleer',
-            add: 'nieuwe'
+            add: 'voeg toe'
         },
         actions: {
             select: 'selecteer {subject}',
@@ -262,12 +310,12 @@ export default
             endDate: 'einddatum',
             showableStartDate: 'startdatum',
             showableEndDate: 'einddatum ',
-            insurancedAmount: 'verzekerd bedrag',
+            insuredValue: 'verzekerd bedrag',
             percentage: 'percentage',
             coverageClauses: 'dekkingsclausules',
             exemptions: 'vrijstellingen',
             contract: 'contract',
-            totalCost: 'totaal bedrag',
+            cost: 'totaal bedrag',
             tax: 'tax',
             insuranceCompany: 'verzekeringsbedrijf'
         },
@@ -292,9 +340,11 @@ export default
         },
         surety: {
             surety:'verzekeringswaarborg',
+            sureties: 'verzekeringswaarborgen',
             cost: 'prijs',
             tax: 'taks',
             startDate: 'startdatum',
+<<<<<<< HEAD
             showableStartDate: 'startdatum'
         },
         suretyTypes:{
@@ -309,6 +359,44 @@ export default
             commission:"commissie",
             commissions:"commissies",
             suretyType:"type waarborg"
+=======
+            showableStartDate: 'startdatum',
+            premium: 'premie',
+            premiumPercentage: 'premie percentage',
+            coverage: 'dekkingsclausules',
+            exceptions: 'vrijstellingen',
+            suretyType: 'type',
+            flat: 'flat',
+            yes: 'ja',
+            no: 'nee'
+        },
+        contract:{
+            contract: 'verzekeringscontract',
+            contracts: 'verzekeringscontracten',
+            showableStartDate: 'startdatum',
+            showableEndDate: 'einddatum',
+            totalCost: 'totale kost',
+            totalTax: 'totale tax',
+            customer: 'bedrijf',
+            insuranceCompany: 'verzekeringsmaatschappij',
+            offer: 'Alle verzekeringswaarborgen aangeboden door'
+        },
+        vehicle_insurance:{
+            vehicle_insurance: 'voertuigverzekering',
+            vehicle_insurances: 'voertuigverzekeringen',
+            cost: 'kost',
+            tax: 'tax',
+            showableStartDate: 'start datum',
+            showableEndDate: 'end datum',
+            insuredValue: 'verzekerd bedrag'
+        },
+        condition:{
+            condition: 'speciale conditie',
+            conditions: 'special condities',
+            referenceCode: 'code',
+            title: 'titel',
+            text: 'tekst'
+>>>>>>> master
         }
     }
 }

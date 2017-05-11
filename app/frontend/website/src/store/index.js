@@ -20,8 +20,6 @@ Vue.use(Vuex)
 
 
 
-
-
 //Basic operations for each resource
 
 let fleetResource = resourceModule.initializeModule(locations.FLEET, 'fleet')
@@ -32,8 +30,17 @@ let functionResource = resourceModule.initializeModule(locations.USER_FUNCTION, 
 let roleResource = resourceModule.initializeModule(locations.ROLE, 'role')
 let permissionResource = resourceModule.initializeModule(locations.PERMISSIONS, 'permission')
 let vehicleTypeResource = resourceModule.initializeModule(locations.VEHICLE_TYPE, 'vehicleType')
+<<<<<<< HEAD
 let insuranceResource = resourceModule.initializeModule(locations.INSURANCE, 'insurance')
 let commissionResource = resourceModule.initializeModule(locations.COMMISSION, 'commission')
+=======
+let contractResoure = resourceModule.initializeModule(locations.CONTRACT,'contract')
+let invoiceResource = resourceModule.initializeModule(locations.INVOICE, 'invoice')
+let suretyResource = resourceModule.initializeModule(locations.SURETY,'surety','sureties')
+let conditionResource = resourceModule.initializeModule(locations.CONDITION,'condition')
+let insuranceResource = resourceModule.initializeModule(locations.INSURANCE,'insurance')
+
+>>>>>>> master
 
 
 export default new Vuex.Store({
@@ -46,6 +53,9 @@ export default new Vuex.Store({
         roleResource,
         permissionResource,
         vehicleTypeResource,
+        contractResoure,
+        suretyResource,
+        conditionResource,
         insuranceResource,
         commission,//Resource,
         // invoiceResource,

@@ -1,6 +1,7 @@
 package model.account;
 
 /**
+ * All viewable and/or editable resources in the application
  * Created by jorg on 3/2/17.
  */
 public enum Resource {
@@ -13,5 +14,6 @@ public enum Resource {
     VEHICLETYPE,
     COMPANY,
     INSURANCE,
-    COMMISSION
+    COMMISSION,
+    LOG
 }

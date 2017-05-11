@@ -7,16 +7,16 @@ import Vue from 'vue'
 export default {
     CUSTOMER: {
         name: 'customer',
-        translation: function(){
+        translation: function () {
             return Vue.t('clientTypes.customer')
         },
-        value: 'CUSTOMER'
+        type: 'CUSTOMER'
     },
     INSURANCE_COMPANY: {
         name: 'insurance company',
-        translation: function(){
+        translation: function () {
             return Vue.t('clientTypes.insuranceCompany')
         },
-        value: 'INSURANCE_COMPANY'
+        type: 'INSURANCE_COMPANY'
     }
 }

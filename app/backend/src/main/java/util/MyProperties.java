@@ -2,8 +2,6 @@ package util;
 
 import org.springframework.context.annotation.Configuration;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -28,6 +26,8 @@ public class MyProperties {
     public static final String PATH_SURETIES = "path.sureties";
     public static final String PATH_VEHICLE_INSURANCES = "path.vehicle_insurances";
     public static final String PATH_CONTRACTS = "path.contracts";
+    public static final String PATH_SPECIAL_CONDITIONS = "path.special_conditions";
+
 
 
     private static final String APPLICATION_PROPERTIES = "application.properties";
