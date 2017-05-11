@@ -30,9 +30,9 @@ export const SubmitFormHandler = new Vue({
                 let validator = this.inputComponents[i].$validator
                 promises.push(validator.validateAll())
             }
-            Promise.all(promises).then(() => {
+            Promise.all(promises).then(() => { //Trigger all validations
                 this.submitFunction()
-            })
+            }).catch(() => {}) //Catch to supress console output if validation fails.
         }
     }
 });

@@ -1,24 +1,49 @@
 package model.insurance;
 
+import model.history.EditableObject;
+
+import java.util.ArrayList;
+
 /**
+ * Class representing a variable Surety depending on the insured value
  * Created by jorg on 4/12/17.
  */
 public class NonFlatSurety extends Surety {
-
-    // Percentage of value that has to be paid yearly
+    /**
+     * Percentage of value that has to be paid yearly
+     */
     private double premiumPercentage;
 
-    // Minimum premium in cents
+    /**
+     * If the calculated price is below the minium premium, the minimum premium has to be paid
+     * Minimum premium in cents
+     */
     private int minPremium;
 
+    /**
+     * Default Constructor
+     */
     public NonFlatSurety() {
     }
 
+    /**
+     * Constructor
+     *
+     * @param premiumPercentage the percentage
+     * @param minPremium        the minimum premium
+     */
     public NonFlatSurety(double premiumPercentage, int minPremium) {
         this.premiumPercentage = premiumPercentage;
         this.minPremium = minPremium;
     }
 
+    /**
+     * Calculates the premium, if the percentage of the given value is below the minimum, the minimum will be returned,
+     * otherwise calculated value.
+     *
+     * @param value value of which the premium has to be calculated. This is e.g the insuredValue of a car
+     * @return
+     */
     @Override
     public int calculatePremium(int value) {
         int premium = (int) Math.round(value * premiumPercentage);
@@ -28,20 +53,56 @@ public class NonFlatSurety extends Surety {
         return premium;
     }
 
+    /**
+     * Gets the premium percentage
+     *
+     * @return the premium percentage
+     */
     public double getPremiumPercentage() {
         return premiumPercentage;
     }
 
+    /**
+     * Sets the premium percentage
+     *
+     * @param premiumPercentage the premium percentage
+     */
     public void setPremiumPercentage(double premiumPercentage) {
         this.premiumPercentage = premiumPercentage;
     }
 
+    /**
+     * Gets the minimum premium
+     *
+     * @return the minimum premium
+     */
     public int getMinPremium() {
         return minPremium;
     }
 
+    /**
+     * Sets the minimum premium
+     *
+     * @param minPremium the mimium premium
+     */
     public void setMinPremium(int minPremium) {
         this.minPremium = minPremium;
+    }
+
+    /**
+     * Copies the object
+     * @return the copy
+     */
+    @Override
+    public EditableObject copy() {
+        NonFlatSurety nonFlatSurety = new NonFlatSurety();
+        nonFlatSurety.setSuretyType(getSuretyType());
+        nonFlatSurety.setUuid(getUuid());
+        nonFlatSurety.setMinPremium(getMinPremium());
+        nonFlatSurety.setPremiumPercentage(getPremiumPercentage());
+        nonFlatSurety.setSpecialConditions(new ArrayList<>(getSpecialConditions()));
+        nonFlatSurety.setInsuranceCompany(getInsuranceCompany());
+        return nonFlatSurety;
     }
 
     @Override
@@ -51,12 +112,15 @@ public class NonFlatSurety extends Surety {
 
         NonFlatSurety that = (NonFlatSurety) o;
 
-        return getUuid().equals(that.getUuid());
+        return getUuid() != null && getUuid().equals(that.getUuid());
 
     }
 
     @Override
     public int hashCode() {
-        return getUuid().hashCode();
+        if (getUuid() != null) {
+            return getUuid().hashCode();
+        }
+        return super.hashCode();
     }
 }

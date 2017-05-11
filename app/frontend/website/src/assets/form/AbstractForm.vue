@@ -16,7 +16,7 @@ Generic component for a form. Every form should be encapsulated in this componen
                     <li class="list-group-item list-group-item-danger" v-for="errorEle in error.errors">{{errorEle}}</li>
                 </ul>
             </div>
-            <slot @mounted="console.log('hello')"></slot>
+            <slot></slot>
             <div class="row">
                 <button-link :route="back" buttonClass="pull-right btn btn-sm btn-default form-component-button">
                     {{ $t('common.cancel') | capitalize }}
@@ -49,7 +49,8 @@ Generic component for a form. Every form should be encapsulated in this componen
             back: Object, //link to previous page
             actions: Object, //The action of this form
             resource: Object, //The name of the resource configured by this form
-            object: Object //The resource configured by this form
+            object: Object, //The resource configured by this form
+            ids: Object //Object with id's for creating the correct POST/PUT route.
         },
         created(){
             this.$on('mounted', components => this.initializeFormHandler(components))
@@ -72,7 +73,7 @@ Generic component for a form. Every form should be encapsulated in this componen
              * index page of the resource of the object.
              */
             submit(){
-                this.$store.dispatch(this.actions.name + this.resource.name.capitalize(), {resource: this.object}).then(() => {
+                this.$store.dispatch(this.actions.name + this.resource.name.capitalize(), {resource: this.object, ids: this.ids}).then(() => {
                     this.$router.push(this.back)
                 })
             },
