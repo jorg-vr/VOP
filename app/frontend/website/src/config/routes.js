@@ -27,6 +27,11 @@ import newVehicle from '../pages/vehicle/new.vue'
 import editVehicle from '../pages/vehicle/edit.vue'
 import showVehicle from '../pages/vehicle/show.vue'
 
+import indexVehicleType from '../pages/vehicleType/index.vue'
+import newVehicleType from '../pages/vehicleType/new.vue'
+import editVehicleType from '../pages/vehicleType/edit.vue'
+import showVehicleType from '../pages/vehicleType/show.vue'
+
 import newSurety from '../pages/surety/new.vue'
 import editSurety from '../pages/surety/edit.vue'
 import showSurety from '../pages/surety/show.vue'
@@ -80,6 +85,11 @@ export default [
             {path: 'vehicles/:id(\\d+)', name: 'vehicle', component: showVehicle, props: true},
             {path: 'vehicles/:id(\\d+)/edit', name: 'edit_vehicle', component: editVehicle, props: true},
 
+            //VehicleType
+            {path: 'vehicle_types', name: 'vehicleTypes', component: indexVehicleType},
+            {path: 'vehicle_types/new', name: 'new_vehicleType', component: newVehicleType},
+            {path: 'vehicle_types/:id(\\d+)', name: 'vehicleType', component: showVehicleType, props: true},
+            {path: 'vehicle_types/:id(\\d+)/edit', name: 'edit_vehicleType', component: editVehicleType, props: true},
 
             // sureties
             {path: 'surety', name: 'suretys', component: indexContract},

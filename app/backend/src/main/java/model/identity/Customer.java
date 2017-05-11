@@ -1,5 +1,6 @@
 package model.identity;
 
+import model.CommissionContainer;
 import model.fleet.Fleet;
 import model.history.EditableObject;
 import model.history.LogResource;
@@ -8,10 +9,11 @@ import model.insurance.SuretyType;
 
 import java.util.*;
 
+
 /**
  * Class representing a Customer having one or more fleets
  */
-public class Customer extends Company implements java.io.Serializable {
+public class Customer extends Company implements java.io.Serializable, CommissionContainer {
 
     /**
      * Collection of fleets, most of the time only 1

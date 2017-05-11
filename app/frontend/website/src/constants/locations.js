@@ -18,6 +18,7 @@ export const PERMISSIONS = 'permissions/'
 export const INVOICE = "invoices/"
 export const SURETY = 'sureties/'
 export const SURETYDETAIL = 'sureties/'
+export const COMMISSION = '{resource}/{resourceId}/commissions'
 export const CONTRACT = 'contracts/'
 export const CONDITION= 'special-conditions/'
 

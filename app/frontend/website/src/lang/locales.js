@@ -16,6 +16,11 @@ export default
             year: 'year',
             value: 'value'
         },
+        vehicleType: {
+            name: 'name',
+            vehicleType: 'type',
+            vehicleTypes: 'vehicleTypes'
+        },
         fleet: {
             name: 'fleet name',
             company: 'company',
@@ -59,7 +64,8 @@ export default
             back: 'back',
             name: 'name',
             cancel: 'cancel',
-            add: 'add'
+            add: 'add',
+            update: "update"
         },
         actions: {
             select: 'select {subject}',
@@ -178,6 +184,19 @@ export default
             referenceCode: 'code',
             title: 'title',
             text: 'text'
+        },
+        suretyTypes:{
+            CIVIL_LIABILITY:"civil liability",
+            OMNIUM_FULL:"full omnium",
+            OMNIUM_PARTIAL:"partial omnium",
+            LEGAL_AID:"legal aid",
+            TRAVEL_AID:"travel aid",
+            SAFETY:"safety"
+        },
+        commission:{
+            commission:"commission",
+            commissions:"commissions",
+            suretyType:"surety type"
         }
     },
     nl : {
@@ -192,6 +211,11 @@ export default
             mileage: 'kilometerstand',
             year: 'jaar',
             value: 'waarde'
+        },
+        vehicleType: {
+            name: 'naam',
+            vehicleType: 'voertuig type',
+            vehicleTypes: 'voertuig types'
         },
         fleet: {
             name: 'vlootnaam',
@@ -236,7 +260,8 @@ export default
             back: 'terug',
             name: 'naam',
             cancel: 'annuleer',
-            add: 'voeg toe'
+            add: 'voeg toe',
+            update: "bewerken"
         },
         actions: {
             select: 'selecteer {subject}',
@@ -353,6 +378,19 @@ export default
             referenceCode: 'code',
             title: 'titel',
             text: 'tekst'
+        },
+        suretyTypes:{
+            CIVIL_LIABILITY:"burgerlijke aansprakelijkheid",
+            OMNIUM_FULL:"omnium",
+            OMNIUM_PARTIAL:"partiele omnium",
+            LEGAL_AID:"rechtsbijstand",
+            TRAVEL_AID:"reisbijstand",
+            SAFETY:"veiligheid"
+        },
+        commission:{
+            commission:"commissie",
+            commissions:"commissies",
+            suretyType:"type waarborg"
         }
     }
 }

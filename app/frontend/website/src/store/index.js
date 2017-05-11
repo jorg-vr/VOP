@@ -29,6 +29,7 @@ let functionResource = resourceModule.initializeModule(locations.USER_FUNCTION, 
 let roleResource = resourceModule.initializeModule(locations.ROLE, 'role')
 let permissionResource = resourceModule.initializeModule(locations.PERMISSIONS, 'permission')
 let vehicleTypeResource = resourceModule.initializeModule(locations.VEHICLE_TYPE, 'vehicleType')
+let commissionResource = resourceModule.initializeModule(locations.COMMISSION, 'commission')
 let contractResoure = resourceModule.initializeModule(locations.CONTRACT,'contract')
 let invoiceResource = resourceModule.initializeModule(locations.INVOICE, 'invoice')
 let suretyResource = resourceModule.initializeModule(locations.SURETY,'surety','sureties')
@@ -51,6 +52,7 @@ export default new Vuex.Store({
         suretyResource,
         conditionResource,
         insuranceResource,
+        commissionResource,
         // invoiceResource,
         //The following modules provide additional functions for the previous resources (or are completely new modules).
         fleet,

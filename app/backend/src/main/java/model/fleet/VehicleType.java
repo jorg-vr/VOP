@@ -1,6 +1,7 @@
 package model.fleet;
 
 
+import model.CommissionContainer;
 import model.history.EditableObject;
 import model.history.LogResource;
 import model.insurance.SuretyType;
@@ -11,10 +12,11 @@ import java.util.UUID;
 
 import static util.UUIDUtil.UUIDToNumberString;
 
+
 /**
  * Class representing the SubFleet, each vehicle has a VehicleType and subfleets can be retrieved this way
  */
-public class VehicleType implements EditableObject, java.io.Serializable {
+public class VehicleType implements EditableObject, java.io.Serializable, CommissionContainer {
 
     /**
      * The unique id
