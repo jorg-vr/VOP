@@ -46,7 +46,6 @@
         </field>
         <field name="productionDate">
             <constraint annotation="javax.validation.constraints.NotNull"/>
-            <constraint annotation="javax.validation.constraints.Past"/>
         </field>
     </bean>
 
