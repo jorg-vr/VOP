@@ -5,14 +5,12 @@ import dao.exceptions.ConstraintViolationException;
 import model.account.User;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static database.DAOTestUtil.createUser;
 import static database.DAOTestUtil.removeUser;
 import static org.junit.Assert.fail;
 
-@Ignore
 public class UserParametersTest {
 
     //Setup before any of the tests are started
@@ -34,8 +32,8 @@ public class UserParametersTest {
             removeUser(user.getUuid());
             fail("User succesfully created with firstName field null when an exception was expected");
         } catch (ConstraintViolationException e) {
-            e.printStackTrace();
-            fail("User succesfully created with firstName field null when an exception was expected");
+            System.out.println( e.getMessage());
+            //nothing since this is supposed to happen
         }
     }
 
@@ -46,8 +44,8 @@ public class UserParametersTest {
             removeUser(user.getUuid());
             fail("User succesfully created with lastName field null when an exception was expected");
         } catch (ConstraintViolationException e) {
-            e.printStackTrace();
-            fail("User succesfully created with lastName field null when an exception was expected");
+            System.out.println( e.getMessage());
+            //nothing since this is supposed to happen
         }
     }
 
@@ -58,8 +56,8 @@ public class UserParametersTest {
             removeUser(user.getUuid());
             fail("User succesfully created with email field null when an exception was expected");
         } catch (ConstraintViolationException e) {
-            e.printStackTrace();
-            fail("User succesfully created with email field null when an exception was expected");
+            System.out.println( e.getMessage());
+            //nothing since this is supposed to happen
         }
     }
 
@@ -70,8 +68,8 @@ public class UserParametersTest {
             removeUser(user.getUuid());
             fail("User succesfully created with password field null when an exception was expected");
         } catch (ConstraintViolationException e) {
-            e.printStackTrace();
-            fail("User succesfully created with password field null when an exception was expected");
+            System.out.println( e.getMessage());
+            //nothing since this is supposed to happen
         }
     }
 }

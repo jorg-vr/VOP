@@ -5,14 +5,12 @@ import dao.exceptions.ConstraintViolationException;
 import model.identity.Address;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static database.DAOTestUtil.createAddress;
 import static database.DAOTestUtil.removeAddress;
 import static org.junit.Assert.fail;
 
-@Ignore
 public class AddressParametersTest {
 
     //Setup before any of the tests are started
@@ -34,8 +32,8 @@ public class AddressParametersTest {
             removeAddress(address.getUuid());
             fail("Address succesfully created with town field null when an exception was expected");
         } catch (ConstraintViolationException e) {
-            e.printStackTrace();
-            fail("Address succesfully created with town field null when an exception was expected");
+            System.out.println( e.getMessage());
+            //nothing since this is supposed to happen
         }
     }
 
@@ -46,8 +44,8 @@ public class AddressParametersTest {
             removeAddress(address.getUuid());
             fail("Address succesfully created with country field null when an exception was expected");
         } catch (ConstraintViolationException e) {
-            e.printStackTrace();
-            fail("Address succesfully created with country field null when an exception was expected");
+            System.out.println( e.getMessage());
+            //nothing since this is supposed to happen
         }
     }
 
@@ -58,8 +56,8 @@ public class AddressParametersTest {
             removeAddress(address.getUuid());
             fail("Address succesfully created with streetNumber field null when an exception was expected");
         } catch (ConstraintViolationException e) {
-            e.printStackTrace();
-            fail("Address succesfully created with streetNumber field null when an exception was expected");
+            System.out.println( e.getMessage());
+            //nothing since this is supposed to happen
         }
     }
 
@@ -70,8 +68,8 @@ public class AddressParametersTest {
             removeAddress(address.getUuid());
             fail("Address succesfully created with postalCode field null when an exception was expected");
         } catch (ConstraintViolationException e) {
-            e.printStackTrace();
-            fail("Address succesfully created with postalCode field null when an exception was expected");
+            System.out.println( e.getMessage());
+            //nothing since this is supposed to happen
         }
     }
 
@@ -82,8 +80,8 @@ public class AddressParametersTest {
             removeAddress(address.getUuid());
             fail("Address succesfully created with street field null when an exception was expected");
         } catch (ConstraintViolationException e) {
-            e.printStackTrace();
-            fail("Address succesfully created with street field null when an exception was expected");
+            System.out.println( e.getMessage());
+            //nothing since this is supposed to happen
         }
     }
 }
