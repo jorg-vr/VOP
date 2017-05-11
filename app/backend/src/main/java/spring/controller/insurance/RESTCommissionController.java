@@ -16,6 +16,7 @@ import model.insurance.SuretyType;
 import org.springframework.web.bind.annotation.*;
 import spring.exceptions.NotFoundException;
 import spring.model.AuthenticationToken;
+import spring.model.RESTSchema;
 import spring.model.insurance.RESTCommission;
 
 import java.util.*;
@@ -37,12 +38,12 @@ import static util.UUIDUtil.toUUID;
  */
 @RestController
 public class RESTCommissionController {
-    private Collection<RESTCommission> translateMap(Map<SuretyType,Double> map){
+    private RESTSchema<RESTCommission> translateMap(Map<SuretyType,Double> map){
         Collection<RESTCommission> commissions=new ArrayList<>();
         for(SuretyType suretyType: map.keySet()){
             commissions.add(new RESTCommission(map.get(suretyType),suretyType));
         }
-        return commissions;
+        return new RESTSchema<>(commissions,null,null,null);
     }
 
     private Map<SuretyType,Double> translateCommissions(Collection<RESTCommission> commissions){
@@ -53,7 +54,7 @@ public class RESTCommissionController {
         return map;
     }
 
-    private  Collection<RESTCommission> getCommissions(String id,
+    private  RESTSchema<RESTCommission> getCommissions(String id,
                                                        String token,
                                                        String function,
                                                        CommissionContainerControllerFactory controllerFactory)
@@ -65,7 +66,7 @@ public class RESTCommissionController {
         }
     }
 
-    private  Collection<RESTCommission> putCommissions(String id,
+    private  RESTSchema<RESTCommission> putCommissions(String id,
                                                     String token,
                                                     String function,
                                                     Collection<RESTCommission> commissions,
@@ -91,14 +92,14 @@ public class RESTCommissionController {
     }
 
     @RequestMapping(value = "${path.vehicles}/${path.types}/{id}/${path.commissions}", method = RequestMethod.GET)
-    public Collection<RESTCommission> getVehicleTypeCommission(@PathVariable String id,
+    public RESTSchema<RESTCommission> getVehicleTypeCommission(@PathVariable String id,
                                                    @RequestHeader(value = "Authorization") String token,
                                                    @RequestHeader(value = "Function") String function) throws UnAuthorizedException, DataAccessException, ObjectNotFoundException {
         return getCommissions(id,token,function, ControllerManager::getVehicleTypeController);
     }
 
     @RequestMapping(value = "${path.vehicles}/${path.types}/{id}/${path.commissions}", method = RequestMethod.PUT)
-    public Collection<RESTCommission> putVehicleTypeCommission(@PathVariable String id,
+    public RESTSchema<RESTCommission> putVehicleTypeCommission(@PathVariable String id,
                                                    @RequestHeader(value = "Authorization") String token,
                                                    @RequestHeader(value = "Function") String function,
                                                    @RequestBody Collection<RESTCommission> commissions) throws UnAuthorizedException, ObjectNotFoundException, ConstraintViolationException, DataAccessException {
@@ -106,14 +107,14 @@ public class RESTCommissionController {
     }
 
     @RequestMapping(value = "${path.vehicles}/{id}/${path.commissions}", method = RequestMethod.GET)
-    public Collection<RESTCommission> getVehicleCommission(@PathVariable String id,
+    public RESTSchema<RESTCommission> getVehicleCommission(@PathVariable String id,
                                                 @RequestHeader(value = "Authorization") String token,
                                                 @RequestHeader(value = "Function") String function) throws UnAuthorizedException, ObjectNotFoundException, DataAccessException {
         return getCommissions(id,token,function, ControllerManager::getVehicleController);
     }
 
     @RequestMapping(value = "${path.vehicles}/{id}/${path.commissions}", method = RequestMethod.PUT)
-    public Collection<RESTCommission> putVehicleCommission(@PathVariable String id,
+    public RESTSchema<RESTCommission> putVehicleCommission(@PathVariable String id,
                                                @RequestHeader(value = "Authorization") String token,
                                                @RequestHeader(value = "Function") String function,
                                                @RequestBody Collection<RESTCommission> commissions) throws UnAuthorizedException, ObjectNotFoundException, ConstraintViolationException, DataAccessException {
@@ -128,14 +129,14 @@ public class RESTCommissionController {
     }
 
     @RequestMapping(value = "${path.companies}/{id}/${path.commissions}", method = RequestMethod.GET)
-    public Collection<RESTCommission> getCustomerCommission(@PathVariable String id,
+    public RESTSchema<RESTCommission> getCustomerCommission(@PathVariable String id,
                                                @RequestHeader(value = "Authorization") String token,
                                                @RequestHeader(value = "Function") String function) throws UnAuthorizedException, DataAccessException, ObjectNotFoundException {
         return getCommissions(id,token,function, ControllerManager::getCustomerController);
     }
 
     @RequestMapping(value = "${path.companies}/{id}/${path.commissions}", method = RequestMethod.PUT)
-    public Collection<RESTCommission> putCustomerCommission(@PathVariable String id,
+    public RESTSchema<RESTCommission> putCustomerCommission(@PathVariable String id,
                                                @RequestHeader(value = "Authorization") String token,
                                                @RequestHeader(value = "Function") String function,
                                                @RequestBody Collection<RESTCommission> commissions) throws UnAuthorizedException, ObjectNotFoundException, ConstraintViolationException, DataAccessException {

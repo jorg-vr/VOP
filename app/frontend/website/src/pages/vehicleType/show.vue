@@ -9,7 +9,7 @@
             <h1> {{$t('vehicleType.vehicleType') | capitalize }} {{vehicleType.name}}</h1>
         </div>
         <div class="col-md-8">
-            <commissions></commissions>
+            <commissions :id="id"></commissions>
             <button-back :route="{name: 'vehicleTypes'}"></button-back>
         </div>
 

@@ -18,7 +18,7 @@ export const PERMISSIONS = 'permissions/'
 export const INVOICE = "invoices/"
 export const SURETY = 'sureties/'
 export const SURETYDETAIL = 'sureties/'
-export const COMMISSION = 'vehicles/types/32530653198763511852634614999739150709/commissions/'
+export const COMMISSION = '{resource}/{resourceId}/commissions'
 export const CONTRACT = 'contracts/'
 export const CONDITION= 'special-conditions/'
 

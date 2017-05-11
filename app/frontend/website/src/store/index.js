@@ -53,7 +53,7 @@ export default new Vuex.Store({
         suretyResource,
         conditionResource,
         insuranceResource,
-        commission,//Resource,
+        commissionResource,
         // invoiceResource,
         //The following modules provide additional functions for the previous resources (or are completely new modules).
         fleet,

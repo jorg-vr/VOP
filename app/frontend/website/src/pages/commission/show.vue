@@ -49,11 +49,14 @@
 
             }
         },
+        props:{
+            id:String
+        },
         components: {
             listComponent
         },
         created() {
-            this.fetchCommissions({});
+            this.fetchCommissions({ids:{'resource':'vehicles/types','resourceId':this.id}});
         },
         computed: {
             ...mapGetters([

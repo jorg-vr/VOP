@@ -38,7 +38,7 @@ export default {
             return new Promise((resolveSuccess, resolveFailure) => {
                 Vue.http.get('vehicles/types/32530653198763511852634614999739150709/commissions').then(commissions => {
                     console.log(commissions)
-                    context.commit('setCommissions', commissions.body)
+                    context.commit('setCommissions', commissions.body.data)
                     resolveSuccess(commissions.body)
                 }, response => {
                     resolveFailure(response)
