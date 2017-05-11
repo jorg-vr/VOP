@@ -16,12 +16,12 @@ Generic component for a form. Every form should be encapsulated in this componen
                     <li class="list-group-item list-group-item-danger" v-for="errorEle in error.errors">{{errorEle}}</li>
                 </ul>
             </div>
-            <slot></slot>
+            <slot @mounted="console.log('hello')"></slot>
             <div class="row">
                 <button-link :route="back" buttonClass="pull-right btn btn-sm btn-default form-component-button">
                     {{ $t('common.cancel') | capitalize }}
                 </button-link>
-                <button-action @click="ValidationBus.$emit('submit')" buttonClass="pull-right btn btn-sm btn-primary form-component-button">
+                <button-action @click="SubmitFormHandler.submit()" buttonClass="pull-right btn btn-sm btn-primary form-component-button">
                     {{ submitText }}
                 </button-action>
             </div>
@@ -33,12 +33,13 @@ Generic component for a form. Every form should be encapsulated in this componen
     import buttonLink from '../buttons/buttonLink.vue'
     import buttonAction from '../buttons/buttonAction.vue'
     import { mapGetters, mapActions, mapMutations } from 'vuex'
-    import {ValidationBus} from './ValidationBus'
+    import {SubmitFormHandler} from './SubmitFormHandler'
 
     export default {
         data(){
             return {
-                submitText:  getResourceActionText(this.resource.name, this.actions.name)
+                submitText:  getResourceActionText(this.resource.name, this.actions.name),
+                SubmitFormHandler: SubmitFormHandler
             }
         },
         components: {
@@ -51,7 +52,7 @@ Generic component for a form. Every form should be encapsulated in this componen
             object: Object //The resource configured by this form
         },
         created(){
-            ValidationBus.set
+            this.$on('mounted', components => this.initializeFormHandler(components))
             document.addEventListener("keyup", e => {
                 if(e.keyCode === 13){
                     this.submit()
@@ -74,6 +75,10 @@ Generic component for a form. Every form should be encapsulated in this componen
                 this.$store.dispatch(this.actions.name + this.resource.name.capitalize(), {resource: this.object}).then(() => {
                     this.$router.push(this.back)
                 })
+            },
+            initializeFormHandler(components){
+                SubmitFormHandler.setInputComponents(components)
+                SubmitFormHandler.setSubmitFunction(this.submit)
             }
         }
     }

@@ -35,6 +35,9 @@ All of the fields for user input for the fleet form
                 }
             }
         },
+        mounted(){
+            this.$parent.$emit('mounted', this.$children)
+        },
         props: {
             object: Object,
         },

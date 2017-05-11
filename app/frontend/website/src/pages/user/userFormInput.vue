@@ -13,16 +13,15 @@ All of the fields for user input for the user form
 </template>
 <script>
     import TextInputFormGroup from '../../assets/form/FormGroups/TextInputFormGroup.vue'
-    import {ValidationBus} from '../../assets/form/ValidationBus'
     export default {
         props: {
             user: Object
         },
-        mounted(){
-            ValidationBus.setToValidateCount(this.$children.length)
-        },
         components: {
             TextInputFormGroup
-        }
+        },
+        mounted(){
+            this.$parent.$emit('mounted', this.$children)
+        },
     }
 </script>
