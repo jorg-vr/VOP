@@ -1,14 +1,18 @@
 package model.fleet;
 
+import model.account.User;
 import model.history.EditableObject;
+import model.history.LogEntry;
+import model.history.LogResource;
 import model.insurance.SuretyType;
 import spring.exceptions.InvalidInputException;
 
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
+
+import static util.UUIDUtil.UUIDToNumberString;
 
 /**
  * Class representing a vehicle
@@ -38,12 +42,12 @@ public class Vehicle implements EditableObject, java.io.Serializable {
     /**
      * Production date of the vehicle, should be in the past
      */
-    private LocalDate productionDate;
+    private LocalDate year;
 
     /**
      * VIN-number of the vehicle, should be unique and the right format (e.g. 17 chars)
      */
-    private String chassisNumber;
+    private String vin;
 
     // The value of the vehicle in cents
     private int value;
@@ -83,15 +87,15 @@ public class Vehicle implements EditableObject, java.io.Serializable {
      * @param value          the value (in cents)
      * @param mileage        the mileage
      * @param type           the VehicleType
-     * @param productionDate the production date
+     * @param year the production date
      * @param fleet          the fleet containing this vehicle
      * @throws InvalidInputException When VIN-number is not formatted right or mileage/value is negative
      */
-    public Vehicle(String brand, String model, String chassisNumber, String licensePlate, int value, int mileage, VehicleType type, LocalDate productionDate, Fleet fleet) throws InvalidInputException {
+    public Vehicle(String brand, String model, String chassisNumber, String licensePlate, int value, int mileage, VehicleType type, LocalDate year, Fleet fleet) throws InvalidInputException {
         this.brand = brand;
         this.model = model;
-        this.productionDate = productionDate;
-        setChassisNumber(chassisNumber);
+        this.year = year;
+        setVin(chassisNumber);
         this.licensePlate = licensePlate;
         setValue(value);
         setMileage(mileage);
@@ -195,17 +199,17 @@ public class Vehicle implements EditableObject, java.io.Serializable {
      *
      * @return the production date
      */
-    public LocalDate getProductionDate() {
-        return productionDate;
+    public LocalDate getYear() {
+        return year;
     }
 
     /**
      * Sets the production date
      *
-     * @param productionDate the production date
+     * @param year the production date
      */
-    public void setProductionDate(LocalDate productionDate) {
-        this.productionDate = productionDate;
+    public void setYear(LocalDate year) {
+        this.year = year;
     }
 
     /**
@@ -213,8 +217,8 @@ public class Vehicle implements EditableObject, java.io.Serializable {
      *
      * @return the VIN-number
      */
-    public String getChassisNumber() {
-        return chassisNumber;
+    public String getVin() {
+        return vin;
     }
 
     /**
@@ -225,16 +229,16 @@ public class Vehicle implements EditableObject, java.io.Serializable {
      * - the 10th character can not be U, Z or the digit 0
      * Additionally lowercase characters are converted to uppercase before storing the code.
      *
-     * @param chassisNumber chassinumber or VIN-code
+     * @param vin chassinumber or VIN-code
      * @throws InvalidInputException when the code has the wrong format.
      */
-    public void setChassisNumber(String chassisNumber) throws InvalidInputException {
-        if (chassisNumber != null) {
-            String VIN = chassisNumber.toUpperCase();
+    public void setVin(String vin) throws InvalidInputException {
+        if (vin != null) {
+            String VIN = vin.toUpperCase();
             if (!VIN.matches("^[A-HJ-NPR-Z0-9]{9}[A-HJ-NPR-TV-Y1-9][A-HJ-NPR-Z0-9]{7}$")) {
                 throw new InvalidInputException("VIN code has to be 17 characters long, cannot contain character I, O or Q and the 10th character cannot be U, Z or the digit 0");
             }
-            this.chassisNumber = VIN;
+            this.vin = VIN;
         }
     }
 
@@ -391,51 +395,55 @@ public class Vehicle implements EditableObject, java.io.Serializable {
 
     @Override
     public String toString() {
-        if(type != null){
-            return "Vehicle{" +
-                    "uuid=" + uuid +
-                    ", brand='" + brand + '\'' +
-                    ", model='" + model + '\'' +
-                    ", licensePlate='" + licensePlate + '\'' +
-                    ", productionDate=" + productionDate +
-                    ", chassisNumber='" + chassisNumber + '\'' +
-                    ", value=" + value +
-                    ", mileage=" + mileage +
-                    ", type=" + type.getType() +
-                    '}';
-        }
-        else{
-            return "Vehicle{" +
-                    "uuid=" + uuid +
-                    ", brand='" + brand + '\'' +
-                    ", model='" + model + '\'' +
-                    ", licensePlate='" + licensePlate + '\'' +
-                    ", productionDate=" + productionDate +
-                    ", chassisNumber='" + chassisNumber + '\'' +
-                    ", value=" + value +
-                    ", mileage=" + mileage +
-                    '}';
-        }
+        return UUIDToNumberString(uuid);
     }
 
     /**
      * Copies the vehicle
+     *
      * @return the copy of the vehicle
      */
     @Override
-    public EditableObject copy() {
+    public Vehicle copy() {
         Vehicle vehicle = new Vehicle();
         vehicle.setModel(getModel());
-        vehicle.setProductionDate(getProductionDate());
+        vehicle.setYear(getYear());
         vehicle.setBrand(getBrand());
         vehicle.setUuid(getUuid());
         vehicle.setFleet(getFleet());
-        vehicle.setChassisNumber(getChassisNumber());
-        vehicle.setType((VehicleType) getType().copy());
+        vehicle.setVin(getVin());
+        vehicle.setType(getType());
         vehicle.setLicensePlate(getLicensePlate());
         vehicle.setValue(getValue());
         vehicle.setMileage(getMileage());
         vehicle.setCommissions(new HashMap<>(getCommissions()));
         return vehicle;
+    }
+
+    @Override
+    public LogResource getLogResource() {
+        return LogResource.VEHICLE;
+    }
+
+    public LogEntry logCreate(User user) {
+        LogEntry entry = EditableObject.super.logCreate(user);
+        entry.addInterestedObject(fleet);
+        return entry;
+    }
+
+    @Override
+    public LogEntry logUpdate(User user, EditableObject old) {
+        LogEntry entry = EditableObject.super.logUpdate(user, old);
+        if (entry.fieldChanged("fleet")) {
+            entry.addInterestedObject(fleet);
+            entry.addInterestedObject(((Vehicle)old).getFleet());
+        }
+        return entry;
+    }
+
+    public LogEntry logDelete(User user) {
+        LogEntry entry = EditableObject.super.logDelete(user);
+        entry.addInterestedObject(fleet);
+        return entry;
     }
 }

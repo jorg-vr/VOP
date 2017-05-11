@@ -44,7 +44,7 @@ public class ProductionVehicleDAO extends ProductionDAO<Vehicle> implements Vehi
 
     @Override
     public Filter<Vehicle> atProductionDate(LocalDate productionDate) {
-        return filterEqual("productionDate",productionDate);
+        return filterEqual("year",productionDate);
     }
 
     @Override
@@ -53,7 +53,7 @@ public class ProductionVehicleDAO extends ProductionDAO<Vehicle> implements Vehi
             return ()->{};
         }
         return () ->
-                getPredicates().add(getCriteriaBuilder().lessThanOrEqualTo(getRoot().<LocalDate>get("productionDate"), productionDate));
+                getPredicates().add(getCriteriaBuilder().lessThanOrEqualTo(getRoot().<LocalDate>get("year"), productionDate));
     }
 
     @Override
@@ -62,7 +62,7 @@ public class ProductionVehicleDAO extends ProductionDAO<Vehicle> implements Vehi
             return ()->{};
         }
         return () ->
-                getPredicates().add(getCriteriaBuilder().greaterThanOrEqualTo(getRoot().<LocalDate>get("productionDate"), productionDate));
+                getPredicates().add(getCriteriaBuilder().greaterThanOrEqualTo(getRoot().<LocalDate>get("year"), productionDate));
     }
 
     @Override

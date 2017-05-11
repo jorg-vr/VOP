@@ -2,14 +2,17 @@ package controller;
 
 import controller.exceptions.UnAuthorizedException;
 import dao.exceptions.ConstraintViolationException;
+import dao.exceptions.DataAccessException;
 import dao.exceptions.ObjectNotFoundException;
 import dao.interfaces.DAO;
-import dao.exceptions.DataAccessException;
+import dao.interfaces.DAOManager;
 import dao.interfaces.Filter;
+import dao.interfaces.LogEntryDAO;
 import model.account.Function;
 import model.account.Resource;
 import model.account.Role;
 import model.history.EditableObject;
+import model.history.LogEntry;
 
 import java.util.Collection;
 import java.util.UUID;
@@ -18,17 +21,17 @@ import static model.account.Action.*;
 
 /**
  * This class and it's subclasses are framework independent controller classes.
- * In their final state, these classes should act as a protecting interface of the backend model.
- * The methods of these classes should in final state take care of:
- * 1) history changes (not yet implemented) TODO milestone3
+ * These classes should act as a protecting interface of the backend model.
+ * The methods of these classes take care of
+ * 1) Logging
  * 2) Authorization
- * 3) business logic
  * <p>
  * Currently there is a generic implementation for the get, update, create and archive methods.
  */
 public abstract class AbstractController<T extends EditableObject> {
 
     private DAO<T> dao;
+    private LogEntryDAO logEntryDAO;
     private Resource resource;
     private Function function;
     private Role role;
@@ -38,8 +41,9 @@ public abstract class AbstractController<T extends EditableObject> {
      * @param resource Resource the function should have to be able to get,create,update and/or delete an object.
      * @param function of the user. This is used to determine the user has rights to do a certain operation
      */
-    public AbstractController(DAO<T> dao, Resource resource, Function function) {
+    public AbstractController(DAOManager manager, DAO<T> dao, Resource resource, Function function) {
         this.dao = dao;
+        this.logEntryDAO = manager.getLogEntryDao();
         this.resource = resource;
         this.function = function;
         this.role = function.getRole();
@@ -114,6 +118,15 @@ public abstract class AbstractController<T extends EditableObject> {
         if (role.hasAccess(resource, REMOVE_ALL) ||
                 (role.hasAccess(resource, REMOVE_MINE) && isOwner(t, function))) {
             dao.remove(uuid);
+
+            try {
+                LogEntry entry = t.logDelete(function.getUser());
+                if (entry != null) {
+                    logEntryDAO.create(entry);
+                }
+            } catch (ConstraintViolationException e) {
+                e.printStackTrace();
+            }
         } else {
             throw new UnAuthorizedException();
         }
@@ -133,7 +146,18 @@ public abstract class AbstractController<T extends EditableObject> {
     public T create(T t) throws DataAccessException, UnAuthorizedException, ConstraintViolationException {
         if (role.hasAccess(resource, CREATE_ALL) ||
                 (role.hasAccess(resource, CREATE_MINE) && isOwner(t, function))) {
-            return dao.create(t);
+            T result = dao.create(t);
+
+            try {
+                LogEntry entry = t.logCreate(function.getUser());
+                if (entry != null) {
+                    logEntryDAO.create(entry);
+                }
+            } catch (ConstraintViolationException e) {
+                e.printStackTrace();
+            }
+
+            return result;
         } else {
             throw new UnAuthorizedException();
         }
@@ -153,11 +177,23 @@ public abstract class AbstractController<T extends EditableObject> {
      */
     public T update(T t) throws DataAccessException, UnAuthorizedException, ObjectNotFoundException, ConstraintViolationException {
         T tOld = dao.get(t.getUuid());
+        EditableObject copy = tOld.copy();
         if (role.hasAccess(resource, UPDATE_ALL) ||
                 (role.hasAccess(resource, UPDATE_MINE) &&
                         isOwner(tOld, function) &&
                         isOwner(t, function))) {
-            return dao.update(t);
+            T result = dao.update(t);
+
+            try {
+                LogEntry entry = t.logUpdate(function.getUser(), copy);
+                if (entry != null) {
+                    logEntryDAO.create(entry);
+                }
+            } catch (ConstraintViolationException e) {
+                e.printStackTrace();
+            }
+
+            return result;
         } else {
             throw new UnAuthorizedException();
         }

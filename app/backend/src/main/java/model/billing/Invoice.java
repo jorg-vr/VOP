@@ -1,9 +1,9 @@
 package model.billing;
 
 import model.history.EditableObject;
+import model.history.LogResource;
 import model.identity.Company;
 import model.insurance.Contract;
-import model.insurance.VehicleInsurance;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -104,23 +104,6 @@ public class Invoice implements EditableObject, java.io.Serializable {
             totalTax += contract.calculateTax();
         }
         return totalTax;
-    }
-
-    /**
-     * Copies the object
-     * @return the copy
-     */
-    @Override
-    public EditableObject copy() {
-        Invoice invoice = new Invoice();
-        invoice.setType(type);
-        invoice.setUuid(uuid);
-        invoice.setStartDate(startDate);
-        invoice.setEndDate(endDate);
-        invoice.setPayer(payer);
-        invoice.setBeneficiary(beneficiary);
-        invoice.setContracts(contracts);
-        return invoice;
     }
 
     /**
@@ -263,6 +246,10 @@ public class Invoice implements EditableObject, java.io.Serializable {
         contracts.add(contract);
     }
 
+    @Override
+    public LogResource getLogResource() {
+        return LogResource.INVOICE;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -279,5 +266,22 @@ public class Invoice implements EditableObject, java.io.Serializable {
     public int hashCode() {
         if(uuid!=null){return getUuid().hashCode();}
         return super.hashCode();
+    }
+
+    /**
+     * Copies the object
+     * @return the copy
+     */
+    @Override
+    public EditableObject copy() {
+        Invoice invoice = new Invoice();
+        invoice.setType(type);
+        invoice.setUuid(uuid);
+        invoice.setStartDate(startDate);
+        invoice.setEndDate(endDate);
+        invoice.setPayer(payer);
+        invoice.setBeneficiary(beneficiary);
+        invoice.setContracts(contracts);
+        return invoice;
     }
 }

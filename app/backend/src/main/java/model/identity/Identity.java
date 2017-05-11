@@ -4,10 +4,12 @@ import model.history.EditableObject;
 
 import java.util.UUID;
 
+import static util.UUIDUtil.UUIDToNumberString;
+
 /**
  * Class representing a company or person
  */
-public class Identity implements EditableObject, java.io.Serializable {
+public abstract class Identity implements EditableObject, java.io.Serializable {
 
     /**
      * The unique id
@@ -131,22 +133,6 @@ public class Identity implements EditableObject, java.io.Serializable {
         return uuid != null && uuid.equals(identity.getUuid());
     }
 
-
-    /**
-     * Copies the object
-     *
-     * @return the copy
-     */
-    @Override
-    public EditableObject copy() {
-        Identity identity = new Identity();
-        identity.setUuid(getUuid());
-        identity.setPhoneNumber(getPhoneNumber());
-        identity.setAddress((Address) getAddress().copy());
-
-        return identity;
-    }
-
     @Override
     public int hashCode() {
         if (uuid != null) {
@@ -154,4 +140,10 @@ public class Identity implements EditableObject, java.io.Serializable {
         }
         return super.hashCode();
     }
+
+    @Override
+    public String toString() {
+        return UUIDToNumberString(uuid);
+    }
 }
+

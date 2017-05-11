@@ -20,7 +20,7 @@ public class FunctionController extends AbstractController<Function> {
     private FunctionDAO functionDAO;
 
     public FunctionController(Function function, DAOManager manager) {
-        super(manager.getFunctionDAO(), Resource.FUNCTION,function);
+        super(manager, manager.getFunctionDAO(), Resource.FUNCTION,function);
         this.manager = manager;
         functionDAO = this.manager.getFunctionDAO();
     }

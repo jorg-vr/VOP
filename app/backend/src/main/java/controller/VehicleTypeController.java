@@ -1,7 +1,6 @@
 package controller;
 
 import dao.interfaces.DAOManager;
-import main.BackendApplication;
 import model.account.Function;
 import model.account.Resource;
 import model.fleet.VehicleType;
@@ -13,7 +12,7 @@ public class VehicleTypeController extends AbstractController<VehicleType> {
 
 
     public VehicleTypeController(Function function, DAOManager manager) {
-        super(manager.getVehicleTypeDAO(), Resource.VEHICLETYPE, function);
+        super(manager, manager.getVehicleTypeDAO(), Resource.VEHICLETYPE, function);
     }
 
 

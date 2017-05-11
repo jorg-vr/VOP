@@ -2,14 +2,14 @@ package model.fleet;
 
 
 import model.history.EditableObject;
-import model.insurance.Surety;
+import model.history.LogResource;
 import model.insurance.SuretyType;
-import spring.exceptions.InvalidInputException;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.atomic.DoubleAccumulator;
+
+import static util.UUIDUtil.UUIDToNumberString;
 
 /**
  * Class representing the SubFleet, each vehicle has a VehicleType and subfleets can be retrieved this way
@@ -181,6 +181,10 @@ public class VehicleType implements EditableObject, java.io.Serializable {
         commissions.put(suretyType, commission);
     }
 
+    @Override
+    public LogResource getLogResource() {
+        return LogResource.VEHICLE_TYPE;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -198,6 +202,11 @@ public class VehicleType implements EditableObject, java.io.Serializable {
             return uuid.hashCode();
         }
         return super.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return UUIDToNumberString(uuid);
     }
 
     /**

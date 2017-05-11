@@ -2,6 +2,7 @@ package model.identity;
 
 
 import model.history.EditableObject;
+import model.history.LogResource;
 
 import java.io.Serializable;
 import java.util.UUID;
@@ -174,7 +175,7 @@ public class Address implements Serializable, EditableObject {
      * @return the copy
      */
     @Override
-    public EditableObject copy() {
+    public Address copy() {
         Address address = new Address();
         address.setUuid(getUuid());
         address.setCountry(getCountry());
@@ -185,6 +186,10 @@ public class Address implements Serializable, EditableObject {
         return address;
     }
 
+    @Override
+    public LogResource getLogResource() {
+        return LogResource.ADDRESS;
+    }
 
     @Override
     public boolean equals(Object o) {

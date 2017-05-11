@@ -22,7 +22,7 @@ import java.util.UUID;
  * All filters using String as Object use the filterContains, all other filters are equal filters
  * Created by sam on 4/4/17.
  */
-public abstract class ProductionDAO<T extends EditableObject> implements DAO<T> {
+public abstract class ProductionDAO<T> implements DAO<T> {
     private final Session session;
     private final Class<T> cl;
 
