@@ -5,19 +5,21 @@ All of the fields for insurance input for the insurance form
 -->
 <template>
     <div>
-      <!--surety type select-->
-      <form-date-input :placeholder="$t('insurance.startdate') | capitalize" :label="$t('insurance.startdate') | capitalize"
+      <!--default information vehicle insurance -->
+      <form-date-input :placeholder="$t('insurance.showableStartDate') | capitalize" :label="$t('insurance.showableStartDate') | capitalize"
       v-model="insurance.startDate"></form-date-input>
-      <form-date-input :placeholder="$t('insurance.enddate') | capitalize" :label="$t('insurance.enddate') | capitalize"
+      <form-date-input :placeholder="$t('insurance.showableEndDate') | capitalize" :label="$t('insurance.showableEndDate') | capitalize"
       v-model="insurance.endDate"></form-date-input>
       <form-input :placeholder="$t('insurance.insurancedAmount') | capitalize" :label="$t('insurance.insurancedAmount') | capitalize"
       v-model="insurance.insuredValue"></form-input>
        <form-input :placeholder="$t('insurance.franchise') | capitalize" :label="$t('insurance.franchise') | capitalize"
       v-model="insurance.franchise"></form-input>
 
-
+      <!-- insurance surety for which vehicle is insured -->
       <div class="page-header">
+       <button-add :resource="resource"></button-add>
         <h2>{{$t("insurance.type") | capitalize }} </h2>
+       
       </div>
       <form-select v-model="insurance.surety":options='sureties' :optionKey="this.suretyType" :optionProperty='this.id' :label="$t('insurance.type') | capitalize" ></form-select>
 
@@ -32,10 +34,12 @@ All of the fields for insurance input for the insurance form
 </template>
 <script>
     import {mapGetters, mapActions} from 'vuex'
-    import formInput from '../elements/formInput.vue'
-    import formDateInput from '../elements/formDateInput.vue'
-    import formSelect from '../elements/formSelect.vue'
+    import resources from '../../../constants/resources'
+        import formInput from '../FormGroups/TextInputFormGroup.vue'
+    import formDateInput from '../FormGroups/DateInputFormGroup.vue'
+    import formSelect from '../FormGroups/SelectInputFormGroup.vue'
     import clientTypes from '../../../constants/clientTypes'
+    import buttonAdd from '../../buttons/buttonAdd.vue'
 
     export default {
         data(){
@@ -43,14 +47,14 @@ All of the fields for insurance input for the insurance form
                 licensePlate: 'licensePlate',
                 suretyType: 'suretyType',
                 id:'id',
+                resource: resources.SURETY,
             }
         },
         props: {
             insurance: Object,
-            contractId: String
         },
         components: {
-            formInput,formSelect,formDateInput
+            formInput,formSelect,formDateInput,buttonAdd
         },
         computed: {
             ...mapGetters([
@@ -78,11 +82,6 @@ All of the fields for insurance input for the insurance form
             this.fetchSureties()
             // fetch all vehicles
             this.fetchVehicles()
-            // check results
-            console.log('start check up')
-            console.log('---------------')
-            console.log(this.sureties)
-            console.log(this.vehicles)
         }
     }
 </script>

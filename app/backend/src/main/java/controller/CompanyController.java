@@ -2,15 +2,12 @@ package controller;
 
 import controller.exceptions.UnAuthorizedException;
 import dao.exceptions.DataAccessException;
-import dao.interfaces.*;
+import dao.interfaces.CompanyDAO;
+import dao.interfaces.DAOManager;
 import model.account.Function;
 import model.account.Resource;
 import model.identity.Company;
 import model.identity.CompanyType;
-
-import model.identity.Customer;
-import util.Compare;
-
 
 import java.util.Collection;
 import java.util.stream.Collectors;

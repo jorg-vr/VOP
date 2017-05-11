@@ -25,15 +25,13 @@ public class AuthUtil {
         DAOManager manager = ProductionProvider.getInstance().getDaoManager();
         String functionId = null;
 
-        //Adds a user with all privilieges to the database and sets the corresponding functionId
+        //Adds a user with all privileges to the database and sets the corresponding functionId
 
         UserDAO userDAO = manager.getUserDAO();
         FunctionDAO functionDAO = manager.getFunctionDAO();
         CustomerDAO customerDAO = manager.getCustomerDAO();
         RoleDAO roleDAO = manager.getRoleDAO();
         AddressDAO addressDAO = manager.getAddressDao();
-
-        Address address = addressDAO.create(new Address("street", "1", "town", "8530", "country"));
 
         Role role = roleDAO.create(new Role("roleName-AuthUtil"));
         addActions(role, Resource.USER);
@@ -48,6 +46,7 @@ public class AuthUtil {
         roleDAO.update(role);
         role = roleDAO.get(role.getUuid());
 
+        Address address = new Address("street", "1", "town", "8530", "country");
         Customer customer = customerDAO.create(new Customer(address, "123", "customerName-AuthUtil", "456-AuthUtil", Periodicity.QUARTERLY, Periodicity.QUARTERLY));
 
         User user = userDAO.create(new User("firstname-AuthUtil", "lastname-AuthUtil", "admin@login.com-AuthUtil", "admin"));

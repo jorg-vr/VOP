@@ -46,7 +46,7 @@ public class RESTCompanyControllerTest {
     private static Address address;
     private static Company company;
 
-    private static String[] NAMES = new String[]{"anita", "i", "b"};
+    private static String[] NAMES = new String[]{"anita", "iiiii", "bbbbbbb"};
     private static String[] COUNTRIES = new String[]{"Tanzania", "Sierra Leone", "Sierra Leone"};
     private static String[] CITIES = new String[]{"Dar es Salaam", "Freetown", "Freetown"};
     private static String[] POSTAL_CODES = new String[]{"1234", "1234", "1489"};

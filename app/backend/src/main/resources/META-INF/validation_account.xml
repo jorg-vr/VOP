@@ -5,7 +5,7 @@
 
     <bean class="model.account.User" >
         <class>
-            <constraint annotation="dao.database.util.unique.UniqueKey" >
+            <constraint annotation="dao.database.util.unique.UniqueKey">
                 <element name="columnNames">email</element>
             </constraint>
         </class>

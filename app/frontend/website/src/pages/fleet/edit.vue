@@ -4,23 +4,48 @@
     @param id: the id of the old fleet.
 -->
 <template>
-    <fleet-form-page :actions="actions" :id="id"></fleet-form-page>
+    <abstract-form :actions="actions" :object="fleet" :back="back" :resource="resource">
+        <form-input :object="fleet"></form-input>
+    </abstract-form>
 </template>
 <script>
-    import FleetFormPage from '../../assets/form/pages/FleetFormPage.vue'
+    import {mapActions} from 'vuex'
+    import abstractForm from '../../assets/form/AbstractForm.vue'
     import actions from '../../constants/actions'
+    import resources from '../../constants/resources'
+    import formInput from './fleetFormInput.vue'
 
     export default {
         data(){
             return {
-                actions: actions.UPDATE
+                resource: resources.FLEET,
+                actions: actions.UPDATE,
+                fleet: {},
+                back:{name:resources.FLEET.name.plural()}
+            }
+        },
+        created(){
+            if(this.id){
+                this.fetchFleet({id: this.id}).then(o => {
+                    this.fleet = o;
+                })
+            }
+            //If the user can only create/update fleets for his own company then the company can already be configured.
+            if(this.isAuthorizedForOwnResourcesButNotAll(this.resource, this.actions)){
+                this.fleet.company = this.activeFunction.company
             }
         },
         components: {
-            FleetFormPage
+            abstractForm,formInput
         },
         props: {
             id: String
+        },
+        methods: {
+            ...mapActions([
+                'fetchFleet'
+            ])
+
         }
     }
 </script>

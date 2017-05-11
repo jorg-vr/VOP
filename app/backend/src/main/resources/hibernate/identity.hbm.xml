@@ -54,6 +54,11 @@
             </joined-subclass>
             <joined-subclass name="model.identity.InsuranceCompany" table="insurancecompanies">
                 <key column="identity_id"/>
+                <bag name="sureties" access="field" table="contracts"
+                     lazy="true" fetch="select" inverse="true">
+                    <key column="company_id" not-null="true"/>
+                    <one-to-many class="model.insurance.Surety" />
+                </bag>
                 <bag name="contracts" access="field" table="contracts"
                      lazy="true" fetch="select" inverse="true">
                     <key column="company_id" not-null="true"/>

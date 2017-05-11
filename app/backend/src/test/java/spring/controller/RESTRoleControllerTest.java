@@ -1,192 +1,223 @@
 package spring.controller;
 
 import dao.database.ProductionProvider;
+import dao.exceptions.ObjectNotFoundException;
 import dao.interfaces.DAOManager;
+import model.account.Role;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import spring.exceptions.MyExceptionHandler;
+import spring.model.RESTRole;
+import util.UUIDUtil;
+
+import java.util.UUID;
+
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * Created by jorg on 3/15/17.
- *
+ * Created by tjupo on 04/05/17.
  */
-@Ignore
 @RunWith(SpringJUnit4ClassRunner.class)
 public class RESTRoleControllerTest {
 
-    private MockMvc mvc = MockMvcBuilders.standaloneSetup(new RESTFunctionController())
-            .addPlaceholderValue("path.users", "users")
-            .addPlaceholderValue("path.functions", "functions")
+    private MockMvc mvc = MockMvcBuilders.standaloneSetup(new RESTRoleController())
+            .addPlaceholderValue("path.auth", "auth")
+            .addPlaceholderValue("path.roles", "roles")
             .setControllerAdvice(new MyExceptionHandler())
             .build();
 
     private static String[] authPair;
 
-    private static DAOManager manager;
-
     @BeforeClass
     public static void setup() throws Exception {
         ProductionProvider.initializeProvider("unittest");
-        manager = ProductionProvider.getInstance().getDaoManager();
         authPair = AuthUtil.getAdminToken();
     }
 
 
     @AfterClass
     public static void afterTransaction() throws Exception {
-        manager.close();
         ProductionProvider.getInstance().close();
     }
 
 
-    /*@Test
+    @Test
     public void get() throws Exception {
-        FunctionDAO functionDAO = manager.getFunctionDAO();
-        Function function1 = new Function(customer, role1, user, LocalDateTime.of(2016, 7, 15, 0, 0), LocalDateTime.of(2200, 8, 3, 0, 0));
-        function1 = functionDAO.create(function1);
-        Function function2 = new Function(customer, role2, user, LocalDateTime.of(2015, 7, 15, 0, 0), LocalDateTime.of(2201, 8, 3, 0, 0));
-        function2 = functionDAO.create(function2);
+
+        //Add to database directly with DAO
+        Role role = create(new Role("roleName"));
 
         try {
-            mvc.perform(MockMvcRequestBuilders.get("/users/" + UUIDUtil.UUIDToNumberString(user.getUuid()) + "/functions")
+            mvc.perform(MockMvcRequestBuilders.get("/auth/roles")
                     .header("Authorization", authPair[0])
                     .header("Function", authPair[1])
             )
                     .andExpect(status().isOk())
-                    //Expect 3 instead of 2 because there's 1 extra Function in the database for authentication purposes while testing
-                    .andExpect(jsonPath("$.data", hasSize(greaterThanOrEqualTo(3))))
-                    .andExpect(jsonPath("$.total", greaterThanOrEqualTo(3)))
-                    .andReturn();
-        } finally {
-            //Clean up database for other tests
-            functionDAO.remove(function1.getUuid());
-            functionDAO.remove(function2.getUuid());
+                    //Expect 2 instead of 1 because there's 1 extra Role in the database for authentication purposes while testing
+                    .andExpect(jsonPath("$.data", hasSize(greaterThanOrEqualTo(2))))
+                    .andExpect(jsonPath("$.total", greaterThanOrEqualTo(2)));
+        } catch (Exception e) {
+            remove(role.getUuid());
+            throw e;
         }
 
+        //Clean up database for other tests
+        remove(role.getUuid());
     }
 
+    //TODO compare permissions between database object and restobject (low priority)
     @Test
     public void post() throws Exception {
-        RESTFunction restFunction = new RESTFunction(new Function(customer, role1, user, LocalDateTime.of(2016, 7, 15, 0, 0), LocalDateTime.of(2200, 8, 3, 0, 0)));
-        //Test if response object fields are equal to posted data
-        MvcResult result = mvc.perform(MockMvcRequestBuilders.post("/users/" + UUIDUtil.UUIDToNumberString(user.getUuid()) + "/functions")
+
+        RESTRole restRole = new RESTRole(new Role("roleName"));
+
+        //Perform the post request
+        ResultActions resultActions = mvc.perform(MockMvcRequestBuilders.post("/auth/roles")
                 .header("Content-Type", "application/json")
                 .header("Authorization", authPair[0])
                 .header("Function", authPair[1])
-                .content(TestUtil.convertObjectToJsonBytes(restFunction))
-        )
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.company", equalTo(restFunction.getCompany())))
-                .andExpect(jsonPath("$.companyName", equalTo(restFunction.getCompanyName())))
-                .andExpect(jsonPath("$.role", equalTo(restFunction.getRole())))
-                .andExpect(jsonPath("$.roleName", equalTo(restFunction.getRoleName())))
-                .andExpect(jsonPath("$.user", equalTo(restFunction.getUser())))
-                .andReturn();
+                .content(TestUtil.convertObjectToJsonBytes(restRole)));
+        MvcResult result = resultActions.andExpect(status().isOk()).andReturn();
+        UUID restId = UUIDUtil.toUUID(TestUtil.convertJsonBytesToObject(result.getResponse().getContentAsByteArray(), RESTRole.class).getId());
+
+        //Test if response object fields are equal to posted data
+        try {
+            resultActions.andExpect(jsonPath("$.name", equalTo(restRole.getName())));
+        } catch (AssertionError e) {
+            remove(restId);
+            throw e;
+        }
 
         //Test if posted object was actually added correctly to the database
-        RESTFunction restFunction1 = TestUtil.convertJsonBytesToObject(result.getResponse().getContentAsByteArray(), RESTFunction.class);
-        FunctionDAO functionDAO = manager.getFunctionDAO();
         try {
-            Function function = functionDAO.get(UUIDUtil.toUUID(restFunction1.getId()));
-            assertEquals("customer field not created correctly", customer, function.getCompany());
-            assertEquals("role field not created correctly", role1, function.getRole());
-            assertEquals("user field not created correctly", user, function.getUser());
-            functionDAO.remove(UUIDUtil.toUUID(restFunction1.getId()));
-        } catch (DataAccessException e) {
+            Role role = get(restId);
+            try {
+                assertEquals("name field not created correctly", "roleName", role.getName());
+            } finally {
+                remove(restId);
+            }
+        } catch (ObjectNotFoundException e) {
             fail("Could not retrieve the posted object from the actual database");
         }
     }
 
     @Test
     public void deleteId() throws Exception {
+
         //Add to database directly with DAO
-        Function function = new Function(customer, role1, user, LocalDateTime.of(2016, 7, 15, 0, 0), LocalDateTime.of(2200, 8, 3, 0, 0));
-        FunctionDAO functionDAO = manager.getFunctionDAO();
-        function = functionDAO.create(function);
+        Role role = create(new Role("roleName"));
 
         //Attempt to remove from the database with delete request
-        mvc.perform(MockMvcRequestBuilders.delete("/users/" + UUIDUtil.UUIDToNumberString(user.getUuid()) + "/functions/{id}", UUIDUtil.UUIDToNumberString(function.getUuid()))
-                .header("Authorization", authPair[0])
-                .header("Function", authPair[1])
-        )
-                .andExpect(status().isOk());
+        try {
+            mvc.perform(MockMvcRequestBuilders.delete("/auth/roles/{id}", UUIDUtil.UUIDToNumberString(role.getUuid()))
+                    .header("Authorization", authPair[0])
+                    .header("Function", authPair[1])
+            )
+                    .andExpect(status().isOk());
+        } catch (Exception e) {
+            remove(role.getUuid());
+            throw e;
+        }
+
         //Check if successfully removed from database
         try {
-            functionDAO.refresh(function);
-            functionDAO.get(function.getUuid());
             //Remove from database (above get function should have thrown an error if the object was no longer in the database)
-            functionDAO.remove(function.getUuid());
+            remove(role.getUuid());
             fail("DELETE request did not succesfully delete the object from the database");
-        } catch (UnresolvableObjectException e) {
+        } catch (ObjectNotFoundException e) {
             //Nothing because the object is no longer present in the database which is expected
         }
     }
 
     @Test
     public void getId() throws Exception {
+
         //Add to database directly with DAO
-        FunctionDAO functionDAO = manager.getFunctionDAO();
-        Function function = new Function(customer, role1, user, LocalDateTime.of(2016, 7, 15, 0, 0), LocalDateTime.of(2200, 8, 3, 0, 0));
-        function = functionDAO.create(function);
+        Role role = create(new Role("roleName"));
 
         //Attempt to retrieve the object with the given id
-        mvc.perform(MockMvcRequestBuilders.get("/users/" + UUIDUtil.UUIDToNumberString(user.getUuid()) + "/functions/{id}", UUIDUtil.UUIDToNumberString(function.getUuid()))
-                .header("Authorization", authPair[0])
-                .header("Function", authPair[1])
-        )
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.company", equalTo(UUIDUtil.UUIDToNumberString(function.getCompany().getUuid()))))
-                .andExpect(jsonPath("$.companyName", equalTo(function.getCompany().getName())))
-                .andExpect(jsonPath("$.role", equalTo(UUIDUtil.UUIDToNumberString(function.getRole().getUuid()))))
-                .andExpect(jsonPath("$.roleName", equalTo(function.getRole().getName())))
-                .andExpect(jsonPath("$.user", equalTo(UUIDUtil.UUIDToNumberString(function.getUser().getUuid()))))
-                .andReturn();
+        try {
+            mvc.perform(MockMvcRequestBuilders.get("/auth/roles/{id}", UUIDUtil.UUIDToNumberString(role.getUuid()))
+                    .header("Authorization", authPair[0])
+                    .header("Function", authPair[1])
+            )
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.name", equalTo(role.getName())));
+        } catch (Exception e) {
+            remove(role.getUuid());
+            throw e;
+        }
 
         //Clean up database for other tests
-        functionDAO.remove(function.getUuid());
+        remove(role.getUuid());
     }
 
     @Test
     public void putId() throws Exception {
+
         //Add to database directly with DAO
-        FunctionDAO functionDAO = manager.getFunctionDAO();
-        Function function = new Function(customer, role1, user, LocalDateTime.of(2016, 7, 15, 0, 0), LocalDateTime.of(2200, 8, 3, 0, 0));
-        function = functionDAO.create(function);
+        Role role = create(new Role("roleName"));
 
         //Change a field of the object that has to be updated
-        function.setRole(role2);
-        RESTFunction restFunction = new RESTFunction(function);
+        role.setName("roleNameChanged");
+        RESTRole restRole = new RESTRole(role);
+
         //Perform the put request to update the object and check the fields of the returned object
-        MvcResult result = mvc.perform(MockMvcRequestBuilders.put("/users/" + UUIDUtil.UUIDToNumberString(user.getUuid()) + "/functions/{id}", UUIDUtil.UUIDToNumberString(function.getUuid()))
-                .header("Content-Type", "application/json")
-                .header("Authorization", authPair[0])
-                .header("Function", authPair[1])
-                .content(TestUtil.convertObjectToJsonBytes(restFunction))
-        )
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.company", equalTo(restFunction.getCompany())))
-                .andExpect(jsonPath("$.companyName", equalTo(restFunction.getCompanyName())))
-                .andExpect(jsonPath("$.role", equalTo(restFunction.getRole())))
-                .andExpect(jsonPath("$.roleName", equalTo(restFunction.getRoleName())))
-                .andExpect(jsonPath("$.user", equalTo(restFunction.getUser())))
-                .andReturn();
+        try {
+            mvc.perform(MockMvcRequestBuilders.put("/auth/roles/{id}", UUIDUtil.UUIDToNumberString(role.getUuid()))
+                    .header("Content-Type", "application/json")
+                    .header("Authorization", authPair[0])
+                    .header("Function", authPair[1])
+                    .content(TestUtil.convertObjectToJsonBytes(restRole))
+            )
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.name", equalTo(restRole.getName())));
+        } catch (Exception e) {
+            remove(role.getUuid());
+            throw e;
+        }
 
         //Test if changes actually went in effect in the database
         try {
-            functionDAO.refresh(function);
-            Function function1 = functionDAO.get(function.getUuid());
-            assertEquals("customer field not updated correctly", customer, function1.getCompany());
-            assertEquals("role field not updated correctly", role2, function1.getRole());
-            assertEquals("user field not updated correctly", user, function1.getUser());
-            //Clean up database for other tests
-            functionDAO.remove(function.getUuid());
-        } catch (DataAccessException e) {
+            role = get(role.getUuid());
+            try {
+                assertEquals("name field not updated correctly", "roleNameChanged", role.getName());
+            } finally {
+                //Clean up database for other tests
+                remove(role.getUuid());
+            }
+        } catch (ObjectNotFoundException e) {
             fail("Could not retrieve the put object from the actual database");
         }
-    }*/
+    }
+
+    private void remove(UUID uuid) throws Exception {
+        try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()) {
+            manager.getRoleDAO().remove(uuid);
+        }
+    }
+
+    private Role create(Role role) throws Exception {
+        try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()) {
+            return manager.getRoleDAO().create(role);
+        }
+    }
+
+    private Role get(UUID uuid) throws Exception {
+        try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()) {
+            return manager.getRoleDAO().get(uuid);
+        }
+    }
 }

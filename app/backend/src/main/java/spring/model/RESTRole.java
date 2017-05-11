@@ -3,9 +3,7 @@ package spring.model;
 
 import controller.ControllerManager;
 import model.account.Role;
-
-import model.account.Function;
-import model.account.Role;
+import util.UUIDUtil;
 
 import static util.MyProperties.*;
 
@@ -28,6 +26,7 @@ public class RESTRole extends RESTAbstractModel<Role> {
     public Role translate(ControllerManager manager) {
         Role role = new Role();
         role.setName(name);
+        role.setUuid(UUIDUtil.toUUID(getId()));
         return role;
     }
 
