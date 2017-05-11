@@ -22,16 +22,18 @@ import java.util.UUID;
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 /**
  * Created by Ponti on 9/05/2017.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-public class RESTInvoiceController {
+public class RESTInvoiceControllerTest {
 
-    private MockMvc mvc = MockMvcBuilders.standaloneSetup(new RESTFunctionController())
+    private MockMvc mvc = MockMvcBuilders.standaloneSetup(new RESTInvoiceController())
             .addPlaceholderValue("path.companies", "companies")
             .addPlaceholderValue("path.invoices", "invoices")
+            .addPlaceholderValue("path.contracts", "contracts")
             .setControllerAdvice(new MyExceptionHandler())
             .build();
 
@@ -47,6 +49,7 @@ public class RESTInvoiceController {
         try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()){
             Address address = new Address("mystreet", "123", "lala", "12345", "land");
             payer = manager.getCustomerDAO().create(new Customer(address, "04789456123", "payerName", "123456789", Periodicity.QUARTERLY, Periodicity.QUARTERLY));
+            address = new Address("mystreet", "123", "lala", "12345", "land");
             beneficiary = manager.getInsuranceCompanyDao().create(new InsuranceCompany(address, "04789456123", "payerName", "123456789"));
         }
     }
@@ -67,7 +70,7 @@ public class RESTInvoiceController {
     public void get() throws Exception {
 
         //Add to database directly with DAO
-        Invoice invoice = create(new Invoice(payer,beneficiary, InvoiceType.BILLING,false,LocalDateTime.of(2017,3,0,0,0,0),LocalDateTime.of(2017,4,0,0,0,0)));
+        Invoice invoice = create(new Invoice(payer,beneficiary, InvoiceType.BILLING,false,LocalDateTime.of(2017,3,1,0,0,0),LocalDateTime.of(2017,4,1,0,0,0)));
 
         try {
             mvc.perform(MockMvcRequestBuilders.get("/companies/" + UUIDUtil.UUIDToNumberString(payer.getUuid()) + "/invoices")
@@ -91,7 +94,7 @@ public class RESTInvoiceController {
     public void getId() throws Exception {
 
         //Add to database directly with DAO
-        Invoice invoice = create(new Invoice(payer,beneficiary, InvoiceType.BILLING,false,LocalDateTime.of(2017,3,0,0,0,0),LocalDateTime.of(2017,4,0,0,0,0)));
+        Invoice invoice = create(new Invoice(payer,beneficiary, InvoiceType.BILLING,false,LocalDateTime.of(2017,3,1,0,0),LocalDateTime.of(2017,4,1,0,0)));
 
         //Attempt to retrieve the object with the given id
         try {
@@ -100,12 +103,21 @@ public class RESTInvoiceController {
                     .header("Function", authPair[1])
             )
                     .andExpect(status().isOk())
+                    .andDo(print())
                     .andExpect(jsonPath("$.payer", equalTo(UUIDUtil.UUIDToNumberString(invoice.getPayer().getUuid()))))
-                    .andExpect(jsonPath("$.beneficiary", equalTo(invoice.getBeneficiary().getUuid())))
+                    .andExpect(jsonPath("$.beneficiary", equalTo(UUIDUtil.UUIDToNumberString(invoice.getBeneficiary().getUuid()))))
                     .andExpect(jsonPath("$.type", equalTo(invoice.getType().toString())))
                     .andExpect(jsonPath("$.paid", equalTo(invoice.isPaid())))
-                    .andExpect(jsonPath("$.startDate", equalTo(invoice.getStartDate().toString())))
-                    .andExpect(jsonPath("$.endDate", equalTo(invoice.getEndDate().toString())));
+                    .andExpect(jsonPath("$.startDate[0]", equalTo(invoice.getStartDate().getYear())))
+                    .andExpect(jsonPath("$.startDate[1]", equalTo(invoice.getStartDate().getMonthValue())))
+                    .andExpect(jsonPath("$.startDate[2]", equalTo(invoice.getStartDate().getDayOfMonth())))
+                    .andExpect(jsonPath("$.startDate[3]", equalTo(invoice.getStartDate().getHour())))
+                    .andExpect(jsonPath("$.startDate[4]", equalTo(invoice.getStartDate().getMinute())))
+                    .andExpect(jsonPath("$.endDate[0]", equalTo(invoice.getEndDate().getYear())))
+                    .andExpect(jsonPath("$.endDate[1]", equalTo(invoice.getEndDate().getMonthValue())))
+                    .andExpect(jsonPath("$.endDate[2]", equalTo(invoice.getEndDate().getDayOfMonth())))
+                    .andExpect(jsonPath("$.endDate[3]", equalTo(invoice.getEndDate().getHour())))
+                    .andExpect(jsonPath("$.endDate[4]", equalTo(invoice.getEndDate().getMinute())));
         } catch (Exception e) {
             remove(invoice.getUuid());
             throw e;
