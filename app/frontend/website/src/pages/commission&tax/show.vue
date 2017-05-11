@@ -1,12 +1,9 @@
 <template>
-    <div class="col-lg-8 col-md-9 col-sm-11">
-        <div class="page-header">
-            <h1>
-                {{title | capitalize}}
-                <button-add :resource="resource"></button-add>
-            </h1>
+    <div v-if="commissions" class="col-lg-8 col-md-9 col-sm-11">
+        <div v-for="commission in commissions">
+            {{commission.commission}} {{commission.suretyType}}
         </div>
-        <list-component :resource="resource" :objects="filteredClients" :visibleKeys="['name']"></list-component>
+        <!--<list-component :resource="resource" :objects="commissions" :visibleKeys="['suretyType','commission']"></list-component>-->
     </div>
 </template>
 
@@ -14,54 +11,37 @@
     import { mapGetters, mapActions, mapMutations } from 'vuex'
     import resources from '../../constants/resources'
     import listComponent from "../../assets/list/listComponent.vue"
-    import buttonAdd from '../../assets/buttons/buttonAdd.vue'
-    import clientSearchBar from '../../assets/search/types/clientSearchBar.vue'
-    import clientTypes from '../../constants/clientTypes'
-
     export default {
         data(){
             return {
-                resource: resources.CLIENT
+                resource: resources.COMMISSION
             }
         },
         components: {
-            listComponent, buttonAdd, clientSearchBar
+            listComponent
         },
         created() {
             this.setLoading({loading: true})
-            this.fetchClientsBy({filters: {type: clientTypes.CUSTOMER.value}}).then(() => {
+            this.fetchCommissions({}).then(() => {
                 this.setLoading({loading: false })
+            }).catch(response=>{
+                console.log(response)
             })
         },
         computed: {
             ...mapGetters([
-                'clients',
-                'filteredClients',
-                'getClientsByAll',
-                'getClientsByAllAdvanced'
+                'commissions'
             ])
         },
         methods: {
             ...mapActions([
-                'fetchClientsBy',
-                'deleteClient',
+                'fetchCommissions'
             ]),
             ...mapMutations([
-                'setLoading',
-                'setFilteredClients'
-            ]),
-            updateClients(value){
-                if(value!==''){
-                    this.setFilteredClients(this.getClientsByAll(value))
-                }
-                else {
-                    this.setFilteredClients(this.clients)
-                }
-            },
-            updateClientsAdvanced(filterClient){
-                this.setFilteredClients(this.getClientsByAllAdvanced(filterClient))
-
-            }
+                'setLoading'
+            ])
         }
     }
 </script>
+
+//ids:{'resource':'vehicles/types','id':'274776102288499320837812636171303961393'}

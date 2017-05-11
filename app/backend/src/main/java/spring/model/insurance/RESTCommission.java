@@ -17,6 +17,7 @@ public class RESTCommission {
 
     public RESTCommission(Double commission,SuretyType suretyType) {
         this.commission = commission;
+        this.suretyType=suretyType;
     }
 
     public Double getCommission() {

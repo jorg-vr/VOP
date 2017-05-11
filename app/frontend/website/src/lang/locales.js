@@ -149,6 +149,11 @@ export default
             LEGAL_AID:"legal aid",
             TRAVEL_AID:"travel aid",
             SAFETY:"safety"
+        },
+        commission:{
+            commission:"commission",
+            commissions:"commissions",
+            suretyType:"surety type"
         }
     },
     nl : {
@@ -299,6 +304,11 @@ export default
             LEGAL_AID:"rechtsbijstand",
             TRAVEL_AID:"reisbijstand",
             SAFETY:"veiligheid"
+        },
+        commission:{
+            commission:"commissie",
+            commissions:"commissies",
+            suretyType:"type waarborg"
         }
     }
 }

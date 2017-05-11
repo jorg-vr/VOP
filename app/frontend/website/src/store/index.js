@@ -6,6 +6,7 @@ import login from './modules/login'
 import invoice from './modules/invoice'
 import insurance from './modules/insurance'
 import currentUser from './modules/currentUser'
+import commission from './modules/commissions'
 
 import resourceModule from './resourceModule'
 import * as locations from '../constants/locations'
@@ -32,7 +33,7 @@ let roleResource = resourceModule.initializeModule(locations.ROLE, 'role')
 let permissionResource = resourceModule.initializeModule(locations.PERMISSIONS, 'permission')
 let vehicleTypeResource = resourceModule.initializeModule(locations.VEHICLE_TYPE, 'vehicleType')
 let insuranceResource = resourceModule.initializeModule(locations.INSURANCE, 'insurance')
-let invoiceResource = resourceModule.initializeModule(locations.INVOICE, 'invoice')
+let commissionResource = resourceModule.initializeModule(locations.COMMISSION, 'commission')
 
 
 export default new Vuex.Store({
@@ -46,6 +47,7 @@ export default new Vuex.Store({
         permissionResource,
         vehicleTypeResource,
         insuranceResource,
+        commission,//Resource,
         // invoiceResource,
         //The following modules provide additional functions for the previous resources (or are completely new modules).
         fleet,
