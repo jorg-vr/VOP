@@ -7,7 +7,6 @@ import model.fleet.Vehicle;
 import model.fleet.VehicleType;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.time.LocalDate;
@@ -15,7 +14,6 @@ import java.time.LocalDate;
 import static database.DAOTestUtil.*;
 import static org.junit.Assert.fail;
 
-@Ignore
 public class VehicleParametersTest {
 
     private static VehicleType vehicleType;
@@ -54,8 +52,8 @@ public class VehicleParametersTest {
             removeVehicle(vehicle.getUuid());
             fail("Vehicle succesfully created with brand field null when an exception was expected");
         } catch (ConstraintViolationException e) {
-            e.printStackTrace();
-            fail("Vehicle succesfully created with brand field null when an exception was expected");
+            System.out.println( e.getMessage());
+            //nothing since this is supposed to happen
         }
     }
 
@@ -66,8 +64,8 @@ public class VehicleParametersTest {
             removeVehicle(vehicle.getUuid());
             fail("Vehicle succesfully created with model field null when an exception was expected");
         } catch (ConstraintViolationException e) {
-            e.printStackTrace();
-            fail("Vehicle succesfully created with model field null when an exception was expected");
+            System.out.println( e.getMessage());
+            //nothing since this is supposed to happen
         }
     }
 
@@ -78,8 +76,8 @@ public class VehicleParametersTest {
             removeVehicle(vehicle.getUuid());
             fail("Vehicle succesfully created with chassisNumber field null when an exception was expected");
         } catch (ConstraintViolationException e) {
-            e.printStackTrace();
-            fail("Vehicle succesfully created with chassisNumber field null when an exception was expected");
+            System.out.println( e.getMessage());
+            //nothing since this is supposed to happen
         }
     }
 
@@ -90,8 +88,8 @@ public class VehicleParametersTest {
             removeVehicle(vehicle.getUuid());
             fail("Vehicle succesfully created with type field null when an exception was expected");
         } catch (ConstraintViolationException e) {
-            e.printStackTrace();
-            fail("Vehicle succesfully created with type field null when an exception was expected");
+            System.out.println( e.getMessage());
+            //nothing since this is supposed to happen
         }
     }
 
@@ -102,8 +100,8 @@ public class VehicleParametersTest {
             removeVehicle(vehicle.getUuid());
             fail("Vehicle succesfully created with productionDate field null when an exception was expected");
         } catch (ConstraintViolationException e) {
-            e.printStackTrace();
-            fail("Vehicle succesfully created with productionDate field null when an exception was expected");
+            System.out.println( e.getMessage());
+            //nothing since this is supposed to happen
         }
     }
 }

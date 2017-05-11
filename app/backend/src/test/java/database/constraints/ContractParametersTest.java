@@ -56,8 +56,8 @@ public class ContractParametersTest {
             removeContract(contract.getUuid());
             fail("Contract succesfully created with insuranceCompany field null when an exception was expected");
         } catch (ConstraintViolationException e) {
-            e.printStackTrace();
-            fail("Contract succesfully created with insuranceCompany field null when an exception was expected");
+            System.out.println( e.getMessage());
+            //nothing since this is supposed to happen
         }
     }
 
@@ -68,8 +68,8 @@ public class ContractParametersTest {
             removeContract(contract.getUuid());
             fail("Contract succesfully created with startDate field null when an exception was expected");
         } catch (ConstraintViolationException e) {
-            e.printStackTrace();
-            fail("Contract succesfully created with startDate field null when an exception was expected");
+            System.out.println( e.getMessage());
+            //nothing since this is supposed to happen
         }
     }
 
@@ -80,8 +80,8 @@ public class ContractParametersTest {
             removeContract(contract.getUuid());
             fail("Contract succesfully created with endDate field null when an exception was expected");
         } catch (ConstraintViolationException e) {
-            e.printStackTrace();
-            fail("Contract succesfully created with endDate field null when an exception was expected");
+            System.out.println( e.getMessage());
+            //nothing since this is supposed to happen
         }
     }
 }
