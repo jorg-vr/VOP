@@ -14,6 +14,9 @@
         },
         components: {
             TextInputFormGroup,SelectInputFormGroup
+        },
+        mounted(){
+            this.$parent.$emit('mounted', this.$children)
         }
     }
 </script>

@@ -13,13 +13,15 @@ All of the fields for user input for the user form
 </template>
 <script>
     import TextInputFormGroup from '../../assets/form/FormGroups/TextInputFormGroup.vue'
-
     export default {
         props: {
             user: Object
         },
         components: {
             TextInputFormGroup
-        }
+        },
+        mounted(){
+            this.$parent.$emit('mounted', this.$children)
+        },
     }
 </script>
