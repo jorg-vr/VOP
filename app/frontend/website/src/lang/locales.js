@@ -379,16 +379,16 @@ export default
         },
         suretyTypes:{
             CIVIL_LIABILITY:"burgerlijke aansprakelijkheid",
-                OMNIUM_FULL:"omnium",
-                OMNIUM_PARTIAL:"partiele omnium",
-                LEGAL_AID:"rechtsbijstand",
-                TRAVEL_AID:"reisbijstand",
-                SAFETY:"veiligheid"
+            OMNIUM_FULL:"omnium",
+            OMNIUM_PARTIAL:"partiele omnium",
+            LEGAL_AID:"rechtsbijstand",
+            TRAVEL_AID:"reisbijstand",
+            SAFETY:"veiligheid"
         },
         commission:{
             commission:"commissie",
-                commissions:"commissies",
-                suretyType:"type waarborg"
+            commissions:"commissies",
+            suretyType:"type waarborg"
         }
     }
 }

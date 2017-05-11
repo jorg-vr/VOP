@@ -1,23 +1,23 @@
 <template>
-    <div v-if="commissions" class="col-lg-8 col-md-9 col-sm-11">
+    <div v-if="commissions" >
         <table class="table-hover table">
             <thead>
             <tr>
                 <th >
-                    {{$t(commission.suretyType).capitalize()}}
+                    {{$t('commission.suretyType')| capitalize }}
                 </th>
                 <th >
-                    {{$t(commission.commission).capitalize()}}
+                    {{$t('commission.commission')| capitalize }}
                 </th>
             </tr>
             </thead>
             <tbody>
             <tr v-for="commission in commissions" class="list-tr">
                 <td  class="clickable-td" >
-                    {{commission.suretyType}}
+                    {{$t('suretyTypes.'+commission.suretyType)}}
                 </td>
                 <td  class="clickable-td">
-                    {{commission.commission}}
+                    {{commission.commission*100}}%
                 </td>
             </tr>
             </tbody>
@@ -44,17 +44,16 @@
     export default {
         data(){
             return {
-                resource: resources.COMMISSION
+                resource: resources.COMMISSION,
+                commission: {}
+
             }
         },
         components: {
             listComponent
         },
         created() {
-            this.fetchCommissions({}).then(() => {
-            }).catch(response=>{
-                console.log(response)
-            })
+            this.fetchCommissions({});
         },
         computed: {
             ...mapGetters([

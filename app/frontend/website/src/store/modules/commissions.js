@@ -36,7 +36,7 @@ export default {
 
         fetchCommissions(context,payload){
             return new Promise((resolveSuccess, resolveFailure) => {
-                Vue.http.get('vehicles/types/274776102288499320837812636171303961393/commissions').then(commissions => {
+                Vue.http.get('vehicles/types/32530653198763511852634614999739150709/commissions').then(commissions => {
                     console.log(commissions)
                     context.commit('setCommissions', commissions.body)
                     resolveSuccess(commissions.body)
