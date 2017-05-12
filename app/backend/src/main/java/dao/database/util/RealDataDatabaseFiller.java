@@ -117,7 +117,7 @@ public class RealDataDatabaseFiller {
             manager.getFunctionDAO().create(productionFunction);
 
             //Create InsuranceAgent Account
-            User userInsurance = createUser("Patrick","Eastbirds", "patrick.eastbirds@solvas.be","1h8xE660mn");
+            User userInsurance = createUser("Hans","Termont", "hans.termont@solvas.be","aox897OP");
             Function insuranceFunction = createFunction(company,userInsurance,LocalDateTime.now().minusMonths(8),LocalDateTime.now().plusMonths(8),"Verzekeringsmakelaar",
                     insuranceRole);
 
@@ -125,8 +125,20 @@ public class RealDataDatabaseFiller {
             manager.getRoleDAO().create(insuranceRole);
             manager.getFunctionDAO().create(insuranceFunction);
 
+            customerSam(customerRole,manager,user,adminFunction);
 
-            //Create User and Customer Sam
+
+
+
+        } catch (DataAccessException | ConstraintViolationException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void customerSam(Role customerRole, DAOManager manager, User user, Function adminFunction){
+        //Create User and Customer Sam
+        try(ControllerManager controllerManager = new ControllerManager(user.getUuid(),adminFunction.getUuid())){
             Address addressSam = createAddress("Linde","10", "Sint-Jansteen","4564GG","Nederland");
             User userSam = createUser("Sam","Persoon","persoonsam@gmail.com","sapersoo5");
             Customer customerSam = createCustomer(addressSam,"Transport De Doncker","00318877066","NL778802024");
@@ -138,46 +150,46 @@ public class RealDataDatabaseFiller {
             manager.getCustomerDAO().create(customerSam);
             manager.getUserDAO().create(userSam);
             manager.getFunctionDAO().create(functionSam);
-
-
-
-            try(ControllerManager controllerManager = new ControllerManager(user.getUuid(),adminFunction.getUuid())){
-                Fleet fleetSam = createFleet("Antwerpen",customerSam,addressSam);
-                controllerManager.getFleetController().create(fleetSam);
-                createVehiclesSam(fleetSam,manager,controllerManager);
-
-
-            } catch (UnAuthorizedException e) {
-                e.printStackTrace();
-            }
-        } catch (DataAccessException | ConstraintViolationException e) {
+            Fleet fleetSam = createFleet("Antwerpen",customerSam,addressSam);
+            controllerManager.getFleetController().create(fleetSam);
+            createVehiclesSam(fleetSam,manager,controllerManager);
+        } catch (UnAuthorizedException | DataAccessException | ConstraintViolationException e) {
             e.printStackTrace();
         }
-
     }
 
     private void createVehiclesSam(Fleet fleetSam,DAOManager manager, ControllerManager controllerManager){
-
         createVehicleToDatabase(fleetSam,"AAAAKAAA78ACAAA9P",17000,"Audi","A1","BE-12-CK",manager,controllerManager,VEHICLETYPE_1);
         createVehicleToDatabase(fleetSam,"WYKMZ4KD7YD0KSJDY",85000,"Mercedes","Benz 2","18-PP-OI",manager,controllerManager,VEHICLETYPE_1);
         createVehicleToDatabase(fleetSam,"9WPM9X0KK3SUMD0T9",140000,"Fiat","Punto","1-842-PMT",manager,controllerManager,VEHICLETYPE_1);
         createVehicleToDatabase(fleetSam,"YH6U5TNZKVLKEGVBJ",62500,"Opel","Astra","9-785-PT",manager,controllerManager,VEHICLETYPE_1);
 
         createVehicleToDatabase(fleetSam,"UC0RBDZYZF6JCFHY0",62500,"MAN","TGX","KPD-129",manager,controllerManager,VEHICLETYPE_2);
-        createVehicleToDatabase(fleetSam,"JSZ63HAZS8LW8F61E",62500,"CAT","V2","9-804-UID",manager,controllerManager,VEHICLETYPE_2);
-        createVehicleToDatabase(fleetSam,"BMCRJRJX9XSPYUMES",62500,"DAF","XF 510","HUS-090",manager,controllerManager,VEHICLETYPE_2);
-        createVehicleToDatabase(fleetSam,"HEVUCMEZB5TXJKH48",62500,"DAF","CF Euro 6","KAW-481",manager,controllerManager,VEHICLETYPE_2);
+        createVehicleToDatabase(fleetSam,"JSZ63HAZS8LW8F61E",58200,"CAT","V2","9-804-UID",manager,controllerManager,VEHICLETYPE_2);
+        createVehicleToDatabase(fleetSam,"BMCRJRJX9XSPYUMES",110000,"DAF","XF 510","HUS-090",manager,controllerManager,VEHICLETYPE_2);
+        createVehicleToDatabase(fleetSam,"HEVUCMEZB5TXJKH48",6000,"DAF","CF Euro 6","KAW-481",manager,controllerManager,VEHICLETYPE_2);
 
-        createVehicleToDatabase(fleetSam,"0MRJ7BJPUW58USS19",62500,"Mercedes","P2","560-KIN",manager,controllerManager,VEHICLETYPE_3);
-        createVehicleToDatabase(fleetSam,"ZFU2534S79KATB41S",62500,"MAN","TGS","23-81-MT",manager,controllerManager,VEHICLETYPE_3);
-        createVehicleToDatabase(fleetSam,"BY1WRA6CBEZVC50V6",62500,"Scania","S","92-HD-RX",manager,controllerManager,VEHICLETYPE_3);
-        createVehicleToDatabase(fleetSam,"ZFWS3N69STTBFZZCD",62500,"Scania","R","95-LA-AS",manager,controllerManager,VEHICLETYPE_3);
+        createVehicleToDatabase(fleetSam,"0MRJ7BJPUW58USS19",14000,"Mercedes","P2","560-KIN",manager,controllerManager,VEHICLETYPE_3);
+        createVehicleToDatabase(fleetSam,"ZFU2534S79KATB41S",140000,"MAN","TGS","23-81-MT",manager,controllerManager,VEHICLETYPE_3);
+        createVehicleToDatabase(fleetSam,"BY1WRA6CBEZVC50V6",90000,"Scania","S","92-HD-RX",manager,controllerManager,VEHICLETYPE_3);
+        createVehicleToDatabase(fleetSam,"ZFWS3N69STTBFZZCD",78000,"Scania","R","95-LA-AS",manager,controllerManager,VEHICLETYPE_3);
 
-        createVehicleToDatabase(fleetSam,"W5P111LHZXW6UGUV5",62500,"Range Rover","C7","121- DKK",manager,controllerManager,VEHICLETYPE_4);
-        createVehicleToDatabase(fleetSam,"0ALGKKT4A5BB1Z8TZ",62500,"MAN","TGM","UTA-789",manager,controllerManager,VEHICLETYPE_4);
-        createVehicleToDatabase(fleetSam,"1U20YYDM0DHU9JM7E",62500,"Opel","Astra","LKO-186",manager,controllerManager,VEHICLETYPE_4);
-        createVehicleToDatabase(fleetSam,"AZXN1V8VDL0CF9WD3",62500,"Fiat","Panda","1-POL-553",manager,controllerManager,VEHICLETYPE_4);
+        createVehicleToDatabase(fleetSam,"W5P111LHZXW6UGUV5",6300,"Range Rover","C7","121- DKK",manager,controllerManager,VEHICLETYPE_4);
+        createVehicleToDatabase(fleetSam,"0ALGKKT4A5BB1Z8TZ",54000,"MAN","TGM","UTA-789",manager,controllerManager,VEHICLETYPE_4);
+        createVehicleToDatabase(fleetSam,"1U20YYDM0DHU9JM7E",73000,"Opel","Astra","LKO-186",manager,controllerManager,VEHICLETYPE_4);
+        createVehicleToDatabase(fleetSam,"AZXN1V8VDL0CF9WD3",31000,"Fiat","Panda","1-POL-553",manager,controllerManager,VEHICLETYPE_4);
     }
+
+    private void createVehiclesJorg(Fleet fleetJorg,DAOManager manager, ControllerManager controllerManager){
+        createVehicleToDatabase(fleetJorg,"RDDRSG2USGRZHT3GK",85000,"Mercedes","Break C","19-KK-OK",manager,controllerManager,VEHICLETYPE_1);
+        createVehicleToDatabase(fleetJorg,"6N8K7YVMKPT9000NV",17000,"Audi","A5","BEE-861",manager,controllerManager,VEHICLETYPE_1);
+
+        createVehicleToDatabase(fleetJorg,"WHR3B86S8W934TZ7U",62500,"MAN","TGS","LOP-090",manager,controllerManager,VEHICLETYPE_2);
+        createVehicleToDatabase(fleetJorg,"5JPUNZCVSF62VFM6Z",47000,"DAF","XF 610","HSA-444",manager,controllerManager,VEHICLETYPE_2);
+        createVehicleToDatabase(fleetJorg,"DWBYG9KH8NRAZHGP3",3400,"DAF","CK Euro 6","JUX-1-PP",manager,controllerManager,VEHICLETYPE_2);
+    }
+
+
 
     private Customer createCustomer(Address address, String name, String phoneNumber, String vatNumber) {
         Customer customer = new Customer();
