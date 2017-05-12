@@ -12,8 +12,13 @@ import model.identity.Address;
 import model.identity.Company;
 import model.identity.CompanyType;
 import model.identity.Customer;
+import model.insurance.Surety;
+import model.insurance.SuretyType;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.Map;
 
 /**
  * Created by sam on 5/12/17.
@@ -40,10 +45,29 @@ public class RealDataDatabaseFiller {
             Function function = new Function();
             function.setCompany(company);
 
-            User user = createUser("Patrick","Eastbirds", "patrick.eastbirds@solvas.be","1h8xE660mn",functions);
+            User user = createUser("Patrick","Eastbirds", "patrick.eastbirds@solvas.be","1h8xE660mn");
 
         }
 
+    }
+
+    private Function createFunction(Company company, User user, LocalDateTime startDate, LocalDateTime endDate, String name, Role role){
+        Function function = new Function();
+        function.setCompany(company);
+        function.setUser(user);
+        function.setStartDate(startDate);
+        function.setEndDate(endDate);
+        function.setName(name);
+        function.setRole(role);
+        return function;
+    }
+
+    private VehicleType createVehicleType(String type, Map<SuretyType,Double> commissions, Map<SuretyType,Double> taxes){
+        VehicleType vehicleType = new VehicleType();
+        vehicleType.setType(type);
+        vehicleType.setCommissions(commissions);
+        vehicleType.setTaxes(taxes);
+        return vehicleType;
     }
 
     private Fleet createFleet(String name, Customer owner, Address address){
@@ -54,7 +78,7 @@ public class RealDataDatabaseFiller {
         return fleet;
     }
 
-    private User createUser(String firstName, String lastName, String email, String password, Collection<Function> functions){
+    private User createUser(String firstName, String lastName, String email, String password){
         User user = new User();
         user.setEmail(email);
         user.setPassword(password);
