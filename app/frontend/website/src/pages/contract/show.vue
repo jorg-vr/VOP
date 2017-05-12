@@ -52,7 +52,6 @@
         </div>
         
 
-        <!-- TODO ADD MORE FIELDS -->
         <list-component :resource="resource1" :listObject="listObject1">
         </list-component>
 

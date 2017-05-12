@@ -126,6 +126,7 @@ export default
             cost: 'total cost',
             tax: 'tax ',
             insuranceCompany: 'insurance company',
+            insuranceCompanyName: 'insurance company',
             brand:'brand',
             licensePlate:'license plate',
             suretyType:'surety'
@@ -331,6 +332,7 @@ export default
             cost: 'totaal bedrag',
             tax: 'tax',
             insuranceCompany: 'verzekeringsbedrijf',
+            insuranceCompanyName: 'verzekeringsbedrijf',
             brand:'merk',
             licensePlate:'nummer plaat',
             suretyType:'waarborg'
