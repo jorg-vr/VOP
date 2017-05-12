@@ -121,33 +121,24 @@ public class RealDataDatabaseFiller {
             createInsuranceAccount3(company, insuranceRole, manager);
             createInsuranceAccount4(company, insuranceRole, manager);
 
-            customerSam(customerRole, manager, user, adminFunction);
-            customerJorg(customerRole, manager, user, adminFunction);
-            customerBillie(customerRole, manager, user, adminFunction);
-
             InsuranceCompany axa = insuranceCompany1(user, adminFunction);
             InsuranceCompany ethias = insuranceCompany2(user, adminFunction);
 
             Collection<SpecialCondition> specialConditions = initSpecialConditions(user, adminFunction);
 
-            Collection<Surety> suretiesAxa = initSuretiesAxa(user,adminFunction,specialConditions,axa);
-            Collection<Surety> suretiesEthias = initSuretiesEthias(user,adminFunction,specialConditions,axa);
+            Collection<Surety> suretiesAxa = initSuretiesAxa(user, adminFunction, specialConditions, axa);
+            Collection<Surety> suretiesEthias = initSuretiesEthias(user, adminFunction, specialConditions, ethias);
+
+            Customer sam = customerSam(customerRole, manager, user, adminFunction);
+            Customer jorg = customerJorg(customerRole, manager, user, adminFunction);
+            Customer billie = customerBillie(customerRole, manager, user, adminFunction);
+
+            Contract jorgContract = initContract(user,adminFunction,jorg,axa);
+            Contract samContract = initContract(user,adminFunction,sam,axa);
+            Contract billieContract = initContract(user,adminFunction,billie,ethias);
+
+
             //----------------------------------------------
-
-
-            Contract contract = new Contract();
-            contract.setCustomer(customer);
-            contract.setCompany(insuranceCompany);
-            contract.setStartDate(LocalDateTime.now());
-            contract.setEndDate(LocalDateTime.now().plusMonths(10));
-
-
-            contractDAO.create(contract);
-            for (SpecialCondition specialCondition : specialConditions) {
-                specialConditionDAO.create(specialCondition);
-            }
-            suretyDAO.create(flatSurety);
-
 
             Invoice invoice = new Invoice();
             invoice.setContracts(new ArrayList<Contract>(Arrays.asList(new Contract[]{contract})));
@@ -166,6 +157,21 @@ public class RealDataDatabaseFiller {
             e.printStackTrace();
         }
     }
+
+    private Contract initContract(User user, Function function, Customer customer, InsuranceCompany company) throws DataAccessException, UnAuthorizedException, ConstraintViolationException {
+        try (ControllerManager controllerManager = new ControllerManager(user.getUuid(), function.getUuid())) {
+            Contract contract = new Contract();
+            contract.setCustomer(customer);
+            contract.setCompany(company);
+            contract.setStartDate(LocalDateTime.now());
+            contract.setEndDate(LocalDateTime.now().plusMonths(10));
+            controllerManager.getContractController().create(contract);
+            return contract;
+        }
+    }
+
+
+
 
     private Collection<Surety> initSuretiesAxa(User user, Function function, Collection<SpecialCondition> specialConditions, InsuranceCompany insuranceCompany)
             throws DataAccessException, UnAuthorizedException, ConstraintViolationException {
@@ -308,7 +314,7 @@ public class RealDataDatabaseFiller {
         manager.getFunctionDAO().create(insuranceFunction);
     }
 
-    private void customerSam(Role customerRole, DAOManager manager, User user, Function adminFunction) {
+    private Customer customerSam(Role customerRole, DAOManager manager, User user, Function adminFunction) throws DataAccessException, ConstraintViolationException, UnAuthorizedException {
         //Create User and Customer Sam
         try (ControllerManager controllerManager = new ControllerManager(user.getUuid(), adminFunction.getUuid())) {
             Address addressSam = createAddress("Linde", "10", "Sint-Jansteen", "4564GG", "Nederland");
@@ -324,12 +330,11 @@ public class RealDataDatabaseFiller {
             Fleet fleetSam = createFleet("Antwerpen", customerSam, addressSam);
             controllerManager.getFleetController().create(fleetSam);
             createVehiclesSam(fleetSam, manager, controllerManager);
-        } catch (UnAuthorizedException | DataAccessException | ConstraintViolationException e) {
-            e.printStackTrace();
+            return customerSam;
         }
     }
 
-    private void customerJorg(Role customerRole, DAOManager manager, User user, Function adminFunction) {
+    private Customer customerJorg(Role customerRole, DAOManager manager, User user, Function adminFunction) throws DataAccessException, UnAuthorizedException, ConstraintViolationException {
         //Create User and Customer Sam
         try (ControllerManager controllerManager = new ControllerManager(user.getUuid(), adminFunction.getUuid())) {
             Address addressJorg = createAddress("Hoofdstraat", "125A", "Hansbeke", "4564GG", "België");
@@ -345,12 +350,11 @@ public class RealDataDatabaseFiller {
             Fleet fleetJorg = createFleet("West Vlaanderen", customerJorg, addressJorg);
             controllerManager.getFleetController().create(fleetJorg);
             createVehiclesJorg(fleetJorg, manager, controllerManager);
-        } catch (UnAuthorizedException | DataAccessException | ConstraintViolationException e) {
-            e.printStackTrace();
+            return customerJorg;
         }
     }
 
-    private void customerBillie(Role customerRole, DAOManager manager, User user, Function adminFunction) {
+    private Customer customerBillie(Role customerRole, DAOManager manager, User user, Function adminFunction) throws DataAccessException, UnAuthorizedException, ConstraintViolationException {
         //Create User and Customer Sam
         try (ControllerManager controllerManager = new ControllerManager(user.getUuid(), adminFunction.getUuid())) {
             Address addressBillie = createAddress("Gentsesteenweg", "4", "Kortrijk", "8000", "België");
@@ -366,8 +370,7 @@ public class RealDataDatabaseFiller {
             Fleet fleetBillie = createFleet("West Vlaanderen", customerBillie, addressBillie);
             controllerManager.getFleetController().create(fleetBillie);
             createVehiclesBillie(fleetBillie, manager, controllerManager);
-        } catch (UnAuthorizedException | DataAccessException | ConstraintViolationException e) {
-            e.printStackTrace();
+            return customerBillie;
         }
     }
 
