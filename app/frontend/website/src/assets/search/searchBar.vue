@@ -5,7 +5,7 @@
 -->
 <template>
     <div class="row search-bar">
-        <div class="input-group">
+        <div class="input-group search-input-group">
             <input type="text" class="form-control" :placeholder="$t('search_bar.search_for') + ' ' + title" v-model="value" @input="onInput"/>
             <div class="input-group-btn">
                 <div class="btn-group" role="group">
@@ -51,5 +51,8 @@
 
     .input-group-btn .btn-group {
         display: flex !important;
+    }
+    .search-input-group {
+        padding-bottom: 10px;
     }
 </style>
