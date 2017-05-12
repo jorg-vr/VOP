@@ -14,11 +14,11 @@ TODO: document this page.
                         <p id="error" v-show="showError"> {{$t("login.error") | capitalize }}  </p>
                         <div class="input-group" id="username">
                             <span class="input-group-addon"><i aria-hidden="true" class="fa fa-user"></i></span>
-                            <input id="email" type="text" class="form-control" name="email"  v-bind:placeholder="$t('login.username')" v-model="credentials.login">
+                            <input id="email" type="text" class="form-control" name="email"  v-bind:placeholder="$t('login.username')" v-model="credentials.login" @keyup.enter="confirmLogin()">
                         </div>
                         <div class="input-group">
                             <span class="input-group-addon"><i aria-hidden="true" class="fa fa-lock"></i></span>
-                            <input id="password" type="password" class="form-control" name="password" v-bind:placeholder="$t('login.password')"  v-model="credentials.password">
+                            <input id="password" type="password" class="form-control" name="password" v-bind:placeholder="$t('login.password')"  v-model="credentials.password" @keyup.enter="confirmLogin()">
                         </div>
                         <br>
                         <button type="button" id="login-button" :class='buttonClass' @click="confirmLogin()">
@@ -41,7 +41,7 @@ TODO: document this page.
         data() {
             return {
                 credentials:{
-                    login:'patrick.eastbirds@solvas.be',
+                    login:'patrick.oostvogels@solvas.be',
                     password:'1h8xE660mn'
                 },
                 showError: false
