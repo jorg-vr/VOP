@@ -4,9 +4,7 @@ import dao.database.ProductionProvider;
 import dao.exceptions.DataAccessException;
 import dao.interfaces.DAOManager;
 import dao.interfaces.DAOProvider;
-import model.account.Function;
-import model.account.Role;
-import model.account.User;
+import model.account.*;
 import model.fleet.Fleet;
 import model.fleet.Vehicle;
 import model.fleet.VehicleType;
@@ -16,7 +14,6 @@ import model.identity.CompanyType;
 import model.identity.Customer;
 import model.insurance.Surety;
 import model.insurance.SuretyType;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalDate;
@@ -120,6 +117,21 @@ public class RealDataDatabaseFiller {
         vehicle.setType(type);
         vehicle.setModel(model);
         vehicle.setYear(LocalDate.now());
-
+        return vehicle;
     }
+
+    private role adminRole() {
+
+        Role role = new Role();
+        role1.setName("Admin");
+        for (Resource resource : Resource.values()) {
+            role1.setAccess(resource, Action.CREATE_ALL);
+            role1.setAccess(resource, Action.READ_ALL);
+            role1.setAccess(resource, Action.REMOVE_ALL);
+            role1.setAccess(resource, Action.UPDATE_ALL);
+        }
+
+        return role;
+    }
+
 }
