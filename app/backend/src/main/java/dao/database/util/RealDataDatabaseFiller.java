@@ -140,22 +140,29 @@ public class RealDataDatabaseFiller {
 
             //----------------------------------------------
 
+            Invoice jorgInvoice = initInvoice(user,adminFunction,company,jorg,new ArrayList<>(Arrays.asList(new Contract[]{jorgContract})));
+            Invoice samInvoice = initInvoice(user,adminFunction,company,sam,new ArrayList<>(Arrays.asList(new Contract[]{samContract})));
+            Invoice billieInvoice = initInvoice(user,adminFunction,company,billie,new ArrayList<>(Arrays.asList(new Contract[]{billieContract})));
+
+        } catch (DataAccessException | ConstraintViolationException | UnAuthorizedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Invoice initInvoice(User user, Function function,Company solvas, Customer customer, Collection<Contract> contracts) throws DataAccessException, UnAuthorizedException, ConstraintViolationException {
+        try (ControllerManager controllerManager = new ControllerManager(user.getUuid(), function.getUuid())) {
             Invoice invoice = new Invoice();
-            invoice.setContracts(new ArrayList<Contract>(Arrays.asList(new Contract[]{contract})));
+            invoice.setContracts(new ArrayList<>(contracts));
             invoice.setBeneficiary(solvas);
             invoice.setPayer(customer);
             invoice.setPaid(false);
             invoice.setStartDate(LocalDateTime.now().minusMonths(1));
             invoice.setEndDate(LocalDateTime.now().plusMonths(1));
             invoice.setType(InvoiceType.BILLING);
-            invoiceDAO.create(invoice);
-
-
-        } catch (DataAccessException | ConstraintViolationException e) {
-            e.printStackTrace();
-        } catch (UnAuthorizedException e) {
-            e.printStackTrace();
+            controllerManager.getInvoiceController().create(invoice);
+            return invoice;
         }
+
     }
 
     private Contract initContract(User user, Function function, Customer customer, InsuranceCompany company) throws DataAccessException, UnAuthorizedException, ConstraintViolationException {
@@ -248,6 +255,7 @@ public class RealDataDatabaseFiller {
                 controllerManager.getSpecialConditionController().create(specialCondition);
             }
         }
+        return specialConditions;
     }
 
     private InsuranceCompany insuranceCompany1(User user, Function function) throws DataAccessException, UnAuthorizedException {
