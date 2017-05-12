@@ -56,4 +56,12 @@ public class RESTVehicleType extends RESTAbstractModel<VehicleType> {
     public void setName(String name) {
         this.name = name;
     }
+
+    public Collection<RESTTax> getTaxes() {
+        return taxes;
+    }
+
+    public void setTaxes(Collection<RESTTax> taxes) {
+        this.taxes = taxes;
+    }
 }
