@@ -137,15 +137,54 @@ public class RealDataDatabaseFiller {
             Contract samContract = initContract(user,adminFunction,sam,axa);
             Contract billieContract = initContract(user,adminFunction,billie,ethias);
 
-
-            //----------------------------------------------
-
             Invoice jorgInvoice = initInvoice(user,adminFunction,company,jorg,new ArrayList<>(Arrays.asList(new Contract[]{jorgContract})));
             Invoice samInvoice = initInvoice(user,adminFunction,company,sam,new ArrayList<>(Arrays.asList(new Contract[]{samContract})));
             Invoice billieInvoice = initInvoice(user,adminFunction,company,billie,new ArrayList<>(Arrays.asList(new Contract[]{billieContract})));
 
+            for(Fleet fleet: sam.getFleets()){
+                for(Vehicle vehicle: fleet.getVehicles()){
+                    initVehicleInsurance(user,adminFunction,samContract,getRandomSurety(suretiesAxa),vehicle);
+                }
+            }
+
+            for(Fleet fleet: billie.getFleets()){
+                for(Vehicle vehicle: fleet.getVehicles()){
+                    initVehicleInsurance(user,adminFunction,billieContract,getRandomSurety(suretiesEthias),vehicle);
+                }
+            }
+
+            for(Fleet fleet: jorg.getFleets()){
+                for(Vehicle vehicle: fleet.getVehicles()){
+                    initVehicleInsurance(user,adminFunction,jorgContract,getRandomSurety(suretiesAxa),vehicle);
+                }
+            }
+
         } catch (DataAccessException | ConstraintViolationException | UnAuthorizedException e) {
             e.printStackTrace();
+        }
+    }
+
+    private Surety getRandomSurety(Collection<Surety> collection) {
+        Random rnd = new Random();
+        int i = rnd.nextInt(collection.size());
+        return collection.toArray(new Surety[collection.size()])[i];
+    }
+
+    private void initVehicleInsurance(User user, Function function, Contract contract, Surety surety, Vehicle vehicle) throws DataAccessException, UnAuthorizedException, ConstraintViolationException {
+        try (ControllerManager controllerManager = new ControllerManager(user.getUuid(), function.getUuid())) {
+            int franchiseMinimum = 10000;
+            int franchiseMaximum = 100000;
+            int insuredMinimum = 200000;
+            int insuredMaximum = 4000000;
+            VehicleInsurance insurance = new VehicleInsurance();
+            insurance.setContract(contract);
+            insurance.setSurety(surety);
+            insurance.setFranchise(new Random().nextInt(franchiseMaximum-franchiseMinimum)+franchiseMinimum);
+            insurance.setInsuredValue(new Random().nextInt(insuredMaximum-insuredMinimum)+insuredMinimum);
+            insurance.setVehicle(vehicle);
+            insurance.setStartDate(LocalDateTime.now().minusMonths(10));
+            insurance.setStartDate(LocalDateTime.now().plusMonths(10));
+            controllerManager.getVehicleInsuranceController().create(insurance);
         }
     }
 
