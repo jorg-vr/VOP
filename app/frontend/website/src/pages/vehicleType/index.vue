@@ -6,7 +6,33 @@
                 <button-add :resource="resource"></button-add>
             </h1>
         </div>
-        <list-component v-if="vehicleTypes.length > 0" :resource="resource" :listObject="listObject"></list-component>
+        <div v-for="vehicleType in vehicleTypes">
+            <h3>{{vehicleType.name | capitalize }}</h3>
+            <div v-if="show" >
+                <table class="table-hover table">
+                    <thead>
+                    <tr>
+                        <th >
+                            {{$t('commission.suretyType')| capitalize }}
+                        </th>
+                        <th >
+                            {{$t('commission.commission')| capitalize }}
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="commission in vehicleType.commissions" class="list-tr">
+                        <td  >
+                            {{$t('suretyTypes.'+commission.suretyType)}}
+                        </td>
+                        <td  >
+                            {{commission.commission*100}}%
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -15,18 +41,36 @@
     import resources from '../../constants/resources'
     import listComponent from "../../assets/list/listComponent.vue"
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
+    import * as locations from '../../constants/locations'
 
     export default {
         data(){
             return {
-                resource: resources.VEHICLE_TYPE
+                resource: resources.VEHICLE_TYPE,
+                show:false
             }
         },
         components: {
             listComponent, buttonAdd
         },
         created(){
-            this.fetchVehicleTypes();
+            this.fetchVehicleTypes().then(
+                    ()=>{
+                        let p=[]
+                        for(let i=0;i<this.vehicleTypes.length;i++) {
+                            p[i]=this.fetchCommissions({ids: {'resource': locations.VEHICLE_TYPE, 'resourceId': this.vehicleTypes[i].id}})
+                        }
+                        Promise.all(p).then(
+                                com=>{
+                                    for(let i=0;i<this.vehicleTypes.length;i++) {
+                                        this.vehicleTypes[i].commissions = com[i];
+                                    }
+                                    this.show = true;
+                                }
+                        )
+
+                    }
+            );
         },
         computed: {
             ...mapGetters([
@@ -41,7 +85,8 @@
         },
         methods: {
             ...mapActions([
-                'fetchVehicleTypes'
+                'fetchVehicleTypes',
+                'fetchCommissions'
             ])
         }
     }
