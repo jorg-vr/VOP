@@ -129,13 +129,15 @@ export default {
          * @param activeFunction
          */
         setActiveFunction(state, activeFunction){
-            state.activeFunction = activeFunction
+            console.log(activeFunction);
+            /*state.activeFunction = activeFunction
             let functionId = null
             if(activeFunction) {
                 functionId = activeFunction.id
             }
             localStorage.setItem('functionId', functionId)
             Vue.http.headers.common['Function'] = functionId
+            */
         },
 
         /**

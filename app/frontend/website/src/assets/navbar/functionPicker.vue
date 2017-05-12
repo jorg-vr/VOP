@@ -41,9 +41,9 @@
         },
         created(){
             if(this.userFunctions.length === 0){
-                this.fetchUserFunctions()
+                this.fetchUserFunctions();
             }
-            this.accountFunction = this.activeFunction
+            this.accountFunction = this.activeFunction;
         },
         components: {
             formSelect
@@ -61,11 +61,12 @@
             ]),
             onInput(userFunction){
                 //let userFunction = this.userFunctions.filter(obj => obj.id === functionId)[0]
-                this.setActiveFunction(userFunction)
+                console.log(userFunction);
+                this.setActiveFunction(userFunction);
                 //Navigate back to home once the function has changed.
                 //This method is used, and not the router, as the page has to reload in order to remove unwanted state
-                location.reload();
-                this.$router.push({name:'homeClient'})
+                //location.reload();
+                //this.$router.push({name:'homeClient'})
             }
         }
     }
