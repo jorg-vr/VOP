@@ -6,6 +6,7 @@ import dao.interfaces.DAOManager;
 import dao.interfaces.DAOProvider;
 import model.account.Function;
 import model.account.User;
+import model.fleet.Fleet;
 import model.identity.Address;
 import model.identity.Company;
 import model.identity.CompanyType;
@@ -38,15 +39,18 @@ public class RealDataDatabaseFiller {
             Function function = new Function();
             function.setCompany(company);
 
-            User user = new User();
-            user.setFirstName("Patrick");
-            user.setLastName("Eastbirds");
-            user.setEmail("patrick.eastbirds@solvas.be");
-            user.setPassword("1h8xE660mn");
-            user.set
+            User user = createUser("Patrick","Eastbirds", "patrick.eastbirds@solvas.be","1h8xE660mn",functions);
 
         }
 
+    }
+
+    private Fleet createFleet(String name, Customer owner, Address address){
+        Fleet fleet = new Fleet();
+        fleet.setName(name);
+        fleet.setOwner(owner);
+        fleet.setAddress(address);
+        return fleet;
     }
 
     private User createUser(String firstName, String lastName, String email, String password, Collection<Function> functions){
@@ -55,7 +59,6 @@ public class RealDataDatabaseFiller {
         user.setPassword(password);
         user.setLastName(lastName);
         user.setFirstName(firstName);
-        user.setFunctions(functions);
         return user;
     }
 
