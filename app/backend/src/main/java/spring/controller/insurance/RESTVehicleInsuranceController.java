@@ -5,8 +5,12 @@ import controller.ControllerManager;
 import controller.exceptions.UnAuthorizedException;
 import controller.insurance.VehicleInsuranceController;
 import dao.exceptions.DataAccessException;
+<<<<<<< HEAD
 import dao.exceptions.ObjectNotFoundException;
 import model.fleet.Vehicle;
+=======
+import model.insurance.Contract;
+>>>>>>> master
 import model.insurance.VehicleInsurance;
 import org.springframework.web.bind.annotation.*;
 import spring.controller.RESTAbstractController;
@@ -36,6 +40,7 @@ public class RESTVehicleInsuranceController extends RESTAbstractController<RESTV
 
     @RequestMapping(method = RequestMethod.GET)
     public RESTSchema<RESTVehicleInsurance> get(HttpServletRequest request,
+                                                @PathVariable String id,
                                                 Integer page, Integer limit,
                                                 String vehicleId,
                                                 @RequestHeader(value = "Authorization") String token,
@@ -43,11 +48,16 @@ public class RESTVehicleInsuranceController extends RESTAbstractController<RESTV
         UUID user = new AuthenticationToken(token).getAccountId();
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
             VehicleInsuranceController controller = manager.getVehicleInsuranceController();
+
             Vehicle vehicle=null;
             try {
                 vehicle=manager.getVehicleController().get(toUUID(vehicleId));
             } catch (ObjectNotFoundException e) {}
-            Collection<RESTVehicleInsurance> restModels = controller.getBy(vehicle)
+
+            Contract contract = new Contract();
+            contract.setUuid(toUUID(id));
+
+            Collection<RESTVehicleInsurance> restModels = controller.getFiltered(contract,vehicle)
                     .stream()
                     .map(RESTVehicleInsurance::new)
                     .collect(Collectors.toList());
