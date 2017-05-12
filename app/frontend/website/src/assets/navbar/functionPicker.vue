@@ -7,9 +7,28 @@
     <form-select selectClass="picker" optionKey="roleName" :options="userFunctions"
                  @input="updateActiveFunction(accountFunction.id)"
                  v-model="accountFunction.id"></form-select>-->
-    <select class="picker form-control" :value="accountFunction.id" @change="onInput($event.target.value)" >
+
+    <!--<select class="picker form-control" :value="accountFunction.id" @change="onInput($event.target.value)" >
         <option v-for="userFunction in userFunctions" :selected="accountFunction.id===userFunction.id">{{userFunction.roleName}}</option>
-    </select>
+    </select>-->
+
+    <li v-if="userFunctions.length > 1" class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" ariahaspopu="true" aria-expanded="false">
+            {{activeFunction.roleName}} <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <li>
+                <a>{{$t('actions.change', {subject: $t('user.role')}) | capitalize}}</a>
+            </li>
+            <li role="separator" class="divider"></li>
+            <li v-for="userFunction in userFunctions">
+                <a v-if="userFunction.id != activeFunction.id" @click="onInput(userFunction)" class="pointer">
+                    {{userFunction.roleName}}
+                </a>
+            </li>
+        </ul>
+    </li>
+
 </template>
 <script>
     import formSelect from '../form/FormGroups/SelectInputFormGroup.vue'
@@ -40,8 +59,8 @@
                 'setActiveFunction',
                 'fetchUserFunctions'
             ]),
-            onInput(functionId){
-                let userFunction = this.userFunctions.filter(obj => obj.id === functionId)[0]
+            onInput(userFunction){
+                //let userFunction = this.userFunctions.filter(obj => obj.id === functionId)[0]
                 this.setActiveFunction(userFunction)
                 //Navigate back to home once the function has changed.
                 //This method is used, and not the router, as the page has to reload in order to remove unwanted state

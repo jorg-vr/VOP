@@ -48,9 +48,7 @@
                     <li>
                         <language-picker></language-picker>
                     </li>
-                    <li>
-                        <function-picker></function-picker>
-                    </li>
+                    <function-picker></function-picker>
                     <!-- condition group rendering for navbar login info-->
                     <template v-if="hasActiveAccount">
                     <li class="dropdown">
