@@ -5,7 +5,7 @@ A button usable for navigating to the previous page. This previous page has to b
 -->
 
 <template>
-    <button type="button" @click="navigateBack" :class="buttonClass" id="back">{{ text | capitalize }}</button>
+    <button type="button" @click="back" :class="buttonClass" id="back">{{ text | capitalize }}</button>
 </template>
 <script>
     import {mapMutations, mapActions} from 'vuex'
@@ -25,7 +25,7 @@ A button usable for navigating to the previous page. This previous page has to b
             }
         },
         methods: {
-            navigateBack(){
+            back(){
                 let redirectRoute = this.$store.getters.popVisitedRoute;
                 if(redirectRoute===undefined || redirectRoute.name===null){
                     this.$router.push({name: this.route.name, params: this.route.params})
