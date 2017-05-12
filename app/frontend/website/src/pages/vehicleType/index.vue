@@ -7,7 +7,11 @@
             </h1>
         </div>
         <div v-for="vehicleType in vehicleTypes">
-            <h3>{{vehicleType.name | capitalize }}</h3>
+            <h3>
+                {{vehicleType.name | capitalize }}
+                <button-edit :resource="resource" :params="{id: vehicleType.id}"></button-edit>
+                <button-remove :resource="resource"></button-remove>
+            </h3>
             <div v-if="show" >
                 <table class="table-hover table">
                     <thead>
@@ -42,6 +46,8 @@
     import listComponent from "../../assets/list/listComponent.vue"
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
     import * as locations from '../../constants/locations'
+    import buttonEdit from '../../assets/buttons/buttonEdit.vue'
+    import buttonRemove from '../../assets/buttons/buttonRemove.vue'
 
     export default {
         data(){
@@ -51,7 +57,7 @@
             }
         },
         components: {
-            listComponent, buttonAdd
+            listComponent, buttonAdd,buttonEdit,buttonRemove
         },
         created(){
             this.fetchVehicleTypes().then(

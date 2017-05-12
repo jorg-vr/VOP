@@ -412,8 +412,8 @@ export default
             no: 'nee'
         },
         contract:{
-            contract: 'verzekeringscontract',
-            contracts: 'verzekeringscontracten',
+            contract: 'contract',
+            contracts: 'contracten',
             showableStartDate: 'startdatum',
             showableEndDate: 'einddatum',
             totalCost: 'totale kost',

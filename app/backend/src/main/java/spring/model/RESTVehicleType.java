@@ -3,7 +3,13 @@ package spring.model;
 import controller.ControllerManager;
 import model.account.Function;
 import model.fleet.VehicleType;
+import model.insurance.SuretyType;
 import util.UUIDUtil;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import static util.MyProperties.PATH_TYPES;
 import static util.MyProperties.PATH_VEHICLES;
@@ -15,6 +21,7 @@ import static util.MyProperties.getProperty;
 public class RESTVehicleType extends RESTAbstractModel<VehicleType> {
 
     private String name;
+    private Collection<RESTTax> taxes;
 
     public RESTVehicleType() {
     }
@@ -22,6 +29,10 @@ public class RESTVehicleType extends RESTAbstractModel<VehicleType> {
     public RESTVehicleType(VehicleType vehicleType){
         super(vehicleType.getUuid(), getProperty(PATH_VEHICLES) + "/" + getProperty(PATH_TYPES));
         setName(vehicleType.getType());
+        taxes=new ArrayList<>();
+        for(SuretyType suretyType: vehicleType.getTaxes().keySet()){
+            taxes.add(new RESTTax(vehicleType.getTaxes().get(suretyType),suretyType));
+        }
     }
 
     @Override
@@ -29,6 +40,11 @@ public class RESTVehicleType extends RESTAbstractModel<VehicleType> {
         VehicleType vehicleType=new VehicleType();
         vehicleType.setUuid(UUIDUtil.toUUID(getId()));
         vehicleType.setType(getName());
+        Map<SuretyType,Double> map=new HashMap<>();
+        for(RESTTax tax:taxes){
+            map.put(tax.getSuretyType(),tax.getTax());
+        }
+        vehicleType.setTaxes(map);
         return vehicleType;
     }
 
