@@ -37,6 +37,9 @@ addRoutesForResource(resources.INSURANCE)
 addRoutesForResource(resources.CLIENT)
 addRoutesForResource(resources.INVOICE)
 addRoutesForResource(resources.SURETY)
+addRoutesForResource(resources.VEHICLE_TYPE)
+addRoutesForResource(resources.CONTRACT)
+addRoutesForResource(resources.CONDITION)
 
 //Define exceptions
 

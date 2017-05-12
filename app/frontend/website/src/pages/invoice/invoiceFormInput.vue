@@ -5,15 +5,18 @@
     </div>
 </template>
 <script>
-    import formInput from '../../assets/form/elements/formInput.vue'
-    import formSelect from '../../assets/form/elements/formSelect.vue'
+    import TextInputFormGroup from '../../assets/form/FormGroups/TextInputFormGroup.vue'
+    import SelectInputFormGroup from '../../assets/form/FormGroups/SelectInputFormGroup.vue'
 
     export default {
         props: {
             invoice: Object
         },
         components: {
-            formInput,formSelect
+            TextInputFormGroup,SelectInputFormGroup
+        },
+        mounted(){
+            this.$parent.$emit('mounted', this.$children)
         }
     }
 </script>

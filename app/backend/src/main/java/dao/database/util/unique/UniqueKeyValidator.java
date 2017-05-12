@@ -19,7 +19,6 @@ import java.util.Collection;
  */
 public class UniqueKeyValidator implements ConstraintValidator<UniqueKey, Serializable>, EntityManagerAwareValidator {
 
-    //private EntityManager entityManager;
     private Session session;
 
     @Override
@@ -49,13 +48,23 @@ public class UniqueKeyValidator implements ConstraintValidator<UniqueKey, Serial
                 PropertyDescriptor desc = new PropertyDescriptor(propertyName, entityClass);
                 Method readMethod = desc.getReadMethod();
                 Object propertyValue = readMethod.invoke(target);
-                criteriaQuery.where(criteriaBuilder.equal(root.get(propertyName), propertyValue));
-                Collection<Object> collection = session.createQuery(criteriaQuery).getResultList();
 
+                PropertyDescriptor descUUID = new PropertyDescriptor("uuid", entityClass);
+                Method readMethodUUID = descUUID.getReadMethod();
+                Object propertyValueUUID = readMethodUUID.invoke(target);
+
+                if(propertyValueUUID==null){
+                    criteriaQuery.where(criteriaBuilder.equal(root.get(propertyName), propertyValue));
+                }
+                else{
+                    criteriaQuery.where(criteriaBuilder.equal(root.get(propertyName), propertyValue),
+                            criteriaBuilder.notEqual(root.get("uuid"), propertyValueUUID));
+                }
+                Collection<Object> collection = session.createQuery(criteriaQuery).getResultList();
                 boolean valid =  collection.size() == 0;
                 if ( !valid ) {
                     context.disableDefaultConstraintViolation();
-                    context.buildConstraintViolationWithTemplate("should be unique")
+                    context.buildConstraintViolationWithTemplate("UNIQUE")
                             .addPropertyNode( propertyName ).addConstraintViolation();
                     finalValid = false;
                 }

@@ -9,6 +9,7 @@ Searchbar to search for clients.
 <script>
     import searchBar from '../searchBar.vue'
     import clientFormInput from '../../../pages/client/clientFormInput.vue'
+
     export default {
         data() {
             return {

@@ -1,8 +1,6 @@
 package main;
 
-import dao.database.ProductionManager;
 import dao.database.ProductionProvider;
-import dao.interfaces.DAOManager;
 import dao.interfaces.DAOProvider;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

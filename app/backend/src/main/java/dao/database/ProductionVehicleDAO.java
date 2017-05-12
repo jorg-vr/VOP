@@ -1,5 +1,6 @@
 package dao.database;
 
+import dao.exceptions.ConstraintViolationException;
 import dao.interfaces.Filter;
 import dao.interfaces.VehicleDAO;
 import model.fleet.Fleet;
@@ -8,6 +9,7 @@ import model.fleet.VehicleType;
 import org.hibernate.Session;
 
 import java.time.LocalDate;
+import java.util.Collection;
 
 /**
  * Created by sam on 3/8/17.
@@ -16,6 +18,13 @@ public class ProductionVehicleDAO extends ProductionDAO<Vehicle> implements Vehi
 
     public ProductionVehicleDAO(Session session) {
         super(session,Vehicle.class);
+    }
+
+    @Override
+    public void validateVehicles(Collection<Vehicle> vehicles) throws ConstraintViolationException {
+        for(Vehicle vehicle: vehicles){
+            HibernateUtil.validate(getSession(),vehicle);
+        }
     }
 
     @Override
@@ -35,7 +44,7 @@ public class ProductionVehicleDAO extends ProductionDAO<Vehicle> implements Vehi
 
     @Override
     public Filter<Vehicle> atProductionDate(LocalDate productionDate) {
-        return filterEqual("productionDate",productionDate);
+        return filterEqual("year",productionDate);
     }
 
     @Override
@@ -44,7 +53,7 @@ public class ProductionVehicleDAO extends ProductionDAO<Vehicle> implements Vehi
             return ()->{};
         }
         return () ->
-                getPredicates().add(getCriteriaBuilder().lessThanOrEqualTo(getRoot().<LocalDate>get("productionDate"), productionDate));
+                getPredicates().add(getCriteriaBuilder().lessThanOrEqualTo(getRoot().<LocalDate>get("year"), productionDate));
     }
 
     @Override
@@ -53,7 +62,7 @@ public class ProductionVehicleDAO extends ProductionDAO<Vehicle> implements Vehi
             return ()->{};
         }
         return () ->
-                getPredicates().add(getCriteriaBuilder().greaterThanOrEqualTo(getRoot().<LocalDate>get("productionDate"), productionDate));
+                getPredicates().add(getCriteriaBuilder().greaterThanOrEqualTo(getRoot().<LocalDate>get("year"), productionDate));
     }
 
     @Override

@@ -16,10 +16,7 @@
         <div v-for="subfleet in filteredSubfleets">
             <div v-if="subfleet.vehicles.length > 0">
                 <h3>{{subfleet.type.name | capitalize }}</h3>
-                <list-component :resource="resource"
-                                :objects="subfleet.vehicles"
-                                :visibleKeys="['brand','model', 'licensePlate']">
-                </list-component>
+                <list-component :resource="resource" :listObject="listObject(subfleet.vehicles)"></list-component>
             </div>
         </div>
         <button-back :route="{name: 'fleets'}"></button-back>
@@ -71,7 +68,7 @@
                 'filteredSubfleets',
                 'getSubfleetsByAll',
                 'getSubfleetsByAllAdvanced'
-            ])
+            ]),
         },
         methods: {
             ...mapActions([
@@ -99,6 +96,12 @@
             },
             updateSubfleetsAdvanced(filterSubfleet){
                 this.updateFilteredSubfleets(this.getSubfleetsByAllAdvanced(filterSubfleet))
+            },
+            listObject(vehicles) {
+                var listObj = {};
+                listObj.headers = ['brand','model', 'licensePlate'];
+                listObj.values = vehicles;
+                return listObj;
             }
         }
     }

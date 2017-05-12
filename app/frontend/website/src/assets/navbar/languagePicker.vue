@@ -1,6 +1,7 @@
 <!--
     Component usable for letting the user select the language of the website.
     TODO: Make the language persistent on page reloads.
+    TODO: language flag is not showing
 -->
 <template>
     <!-- Wrap select into <p> to be able to add language flag -->
@@ -14,6 +15,8 @@
 
 <script>
     import Vue from 'vue';
+    import { Validator } from 'vee-validate';
+
     export default {
         data() {
             return {
@@ -43,6 +46,7 @@
             updateLanguage(name){
                 let lang = this.languages.filter(lang => lang.name === name)[0]
                 Vue.config.lang = lang.code
+                Validator.setLocale(lang.code)
             }
         }
     }

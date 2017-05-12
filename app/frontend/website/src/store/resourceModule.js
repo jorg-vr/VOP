@@ -207,8 +207,8 @@ let formatString = function(str, data) {
     var match = str.match(/{(.+?)}/g)
     if(match){
         match.forEach(function(key) {
-            str.replace(key, data[key.replace('{','').replace('}', '')])
-        })
+            str = str.replace(key, data[key.replace('{','').replace('}', '')])
+        });
     }
     return str
 }

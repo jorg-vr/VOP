@@ -1,8 +1,32 @@
 let nonAcceptedFilters = ['id', 'createdAt', 'lastUpdated', 'url', 'originalObject']
 
 export default {
+    /**
+     * Returns if the page is loading.
+     * @param state
+     */
     loading(state){
         return state.loading;
+    },
+
+    /**
+     * Returns the latest thrown error to the user.
+     * @param state
+     */
+    error(state){
+        return state.error
+    },
+
+    /**
+     * Pop a route from the visitedRoutes stack.
+     * @param state
+     * @returns {*}
+     */
+    popVisitedRoute(state){
+        console.log(state.visitedRoutes)
+        let route = state.visitedRoutes.pop()
+        console.log(state.visitedRoutes)
+        return route
     },
 
     /**

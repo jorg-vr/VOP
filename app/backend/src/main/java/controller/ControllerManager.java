@@ -2,6 +2,7 @@ package controller;
 
 import controller.exceptions.UnAuthorizedException;
 import controller.insurance.ContractController;
+import controller.insurance.SpecialConditionController;
 import controller.insurance.SuretyController;
 import controller.insurance.VehicleInsuranceController;
 import dao.exceptions.DataAccessException;
@@ -110,6 +111,14 @@ public class ControllerManager implements AutoCloseable {
 
     public VehicleInsuranceController getVehicleInsuranceController() {
         return new VehicleInsuranceController(function, daoManager);
+    }
+
+    public SpecialConditionController getSpecialConditionController() {
+        return new SpecialConditionController(function, daoManager);
+    }
+
+    public LogEntryController getLogEntryController() {
+        return new LogEntryController(function, daoManager);
     }
 
     public void close() {

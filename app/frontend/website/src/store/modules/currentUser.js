@@ -163,6 +163,8 @@ export default {
                 }).then(() => {
                     context.dispatch('fetchAccount').then(() => {
                         resolve()
+                    }, response => {
+                        reject(response);
                     })
                 })
             })
@@ -193,7 +195,7 @@ export default {
          * @returns {Promise}
          */
         fetchAccount(context){
-            return new Promise(resolve => {
+            return new Promise((resolve, reject) => {
                 RequestHandler.getObjectRequest(locations.CURRENT_USER, '').then(activeAccount => {
                     context.commit('setActiveAccount', activeAccount)
                     let functionId = localStorage.getItem('functionId')
@@ -207,6 +209,8 @@ export default {
                             //Set a default function. At the moment this is the first function in the list.
                             context.dispatch('setActiveFunction', activeFunctions[0]).then(() => {
                                 resolve(activeAccount)
+                            }, response => {
+                                reject(response)
                             })
                         })
                     }
@@ -214,6 +218,8 @@ export default {
                         context.dispatch('fetchUserFunction', {id: functionId}).then(activeFunction => {
                             context.dispatch('setActiveFunction', activeFunction).then(() => {
                                 resolve(activeAccount)
+                            }, response => {
+                                reject(response)
                             })
                         }, () => {
                             /**
@@ -224,6 +230,8 @@ export default {
                                 //Set a default function. At the moment this is the first function in the list.
                                 context.dispatch('setActiveFunction', activeFunctions[0]).then(() => {
                                     resolve(activeAccount)
+                                }, response => {
+                                    reject(response)
                                 })
                             })
                         })
@@ -239,11 +247,13 @@ export default {
          * @returns {Promise}
          */
         fetchPermissionsFunction(context, activeFunction){
-            return new Promise(resolve => {
+            return new Promise((resolve, reject) => {
                 RequestHandler.getObjectsRequest(locations.ROLE + activeFunction.role + '/' + locations.PERMISSIONS)
                     .then(permissions => {
                         context.commit('setActivePermissions', permissions)
                         resolve(permissions)
+                    }, response => {
+                        reject(response);
                     })
             })
         },
@@ -256,9 +266,11 @@ export default {
          */
         setActiveFunction(context, activeFunction){
             context.commit('setActiveFunction', activeFunction)
-            return new Promise(resolve => {
+            return new Promise((resolve, reject) => {
                 context.dispatch('fetchPermissionsFunction', activeFunction).then(() => {
                     resolve()
+                }, response => {
+                    reject(response)
                 })
             })
         },

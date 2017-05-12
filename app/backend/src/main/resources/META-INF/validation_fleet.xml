@@ -6,8 +6,8 @@
     <bean class="model.fleet.Fleet">
         <field name="name">
             <constraint annotation="javax.validation.constraints.NotNull"/>
-            <constraint annotation="javax.validation.constraints.Min">
-                <element name="value">3</element>
+            <constraint annotation="javax.validation.constraints.Pattern">
+                <element name="regexp">^...*$</element>
             </constraint>
         </field>
 
@@ -17,7 +17,7 @@
     </bean>
 
     <bean class="model.fleet.Vehicle">
-        <field name="chassisNumber">
+        <field name="vin">
             <constraint annotation="javax.validation.constraints.NotNull"/>
             <constraint annotation="javax.validation.constraints.Pattern">
                 <element name="regexp">^[A-HJ-NPR-Z0-9]{9}[A-HJ-NPR-TV-Y1-9][A-HJ-NPR-Z0-9]{7}$</element>
@@ -44,9 +44,8 @@
                 <element name="value">0</element>
             </constraint>
         </field>
-        <field name="productionDate">
+        <field name="year">
             <constraint annotation="javax.validation.constraints.NotNull"/>
-            <constraint annotation="javax.validation.constraints.Past"/>
         </field>
     </bean>
 

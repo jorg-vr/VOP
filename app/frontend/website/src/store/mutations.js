@@ -8,5 +8,29 @@ export default {
      */
     setLoading(state, {loading}){
         state.loading = loading
+    },
+
+    /**
+     * Add a route which has been visited to the stack.
+     * @param state
+     * @param route
+     */
+    pushVisitedRoute(state, {route}){
+        state.visitedRoutes.push(route)
+    },
+
+    /**
+     * Set the latest error returned by the API
+     * @param state
+     * @param response
+     */
+    setError(state, response){
+        if(response!==null){
+            state.error = response.body
+        }
+        else {
+            state.error = null
+        }
     }
+
 }

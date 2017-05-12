@@ -1,4 +1,4 @@
-import dao.database.*;
+import database.dao.*;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 

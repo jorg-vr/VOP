@@ -12,8 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import spring.exceptions.ErrorCode;
 import util.UUIDUtil;
-import spring.exceptions.InvalidInputException;
-import spring.exceptions.NotAuthorizedException;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -40,7 +38,6 @@ public class RESTVehicle extends RESTAbstractModel<Vehicle> {
     private int value;
     private int mileage;
     private String year;
-    private String leasingCompany; //id of leasing company
     private String fleet;
 
     public RESTVehicle() {
@@ -54,14 +51,13 @@ public class RESTVehicle extends RESTAbstractModel<Vehicle> {
     public RESTVehicle(Vehicle vehicle) {
         super(vehicle.getUuid(), getProperty(PATH_VEHICLES));
         licensePlate = vehicle.getLicensePlate();
-        vin = vehicle.getChassisNumber();
+        vin = vehicle.getVin();
         brand = vehicle.getBrand();
         model = vehicle.getModel();
         type = vehicle.getType() != null ? UUIDUtil.UUIDToNumberString(vehicle.getType().getUuid()) : null;
         value = vehicle.getValue();
         mileage = vehicle.getMileage();
-        year = vehicle.getProductionDate().getYear() + "";
-        leasingCompany = vehicle.getLeasingCompany() != null ? UUIDUtil.UUIDToNumberString(vehicle.getLeasingCompany().getUuid()) : null;
+        year = vehicle.getYear().getYear() + "";
         fleet = vehicle.getFleet() != null ? UUIDUtil.UUIDToNumberString(vehicle.getFleet().getUuid()) : null;
     }
 
@@ -75,8 +71,8 @@ public class RESTVehicle extends RESTAbstractModel<Vehicle> {
         vehicle.setModel(model);
         vehicle.setLicensePlate(licensePlate);
         LocalDate year = LocalDate.parse(this.year + "0101", yearFormat);//Fix conversion bug
-        vehicle.setProductionDate(year);
-        vehicle.setChassisNumber(vin);
+        vehicle.setYear(year);
+        vehicle.setVin(vin);
         vehicle.setValue(value);
         vehicle.setMileage(mileage);
 
@@ -162,14 +158,6 @@ public class RESTVehicle extends RESTAbstractModel<Vehicle> {
 
     public void setYear(String year) {
         this.year = year;
-    }
-
-    public String getLeasingCompany() {
-        return leasingCompany;
-    }
-
-    public void setLeasingCompany(String leasingCompany) {
-        this.leasingCompany = leasingCompany;
     }
 
     public String getFleet() {

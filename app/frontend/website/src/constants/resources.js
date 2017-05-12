@@ -46,9 +46,21 @@ export default {
         name: 'invoice',
         value: 'BILLING'
     },
-     SURETY: {
+    SURETY: {
         name: 'surety',
         value: 'INSURANCE'
+    },
+    COMMISSION: {
+        name: 'commission',
+        value: 'COMMISSION'
+    },
+    CONTRACT:{
+        name: 'contract',
+        value: 'INSURANCE'
+    },
+    CONDITION:{
+        name:'condition',
+        value:'INSURANCE'
     },
 
 }

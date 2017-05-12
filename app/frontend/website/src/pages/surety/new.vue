@@ -1,21 +1,29 @@
 <!--
-    This page is used to create a new insurance.
+    This page is used to create a new surety.
 -->
 <template>
-    <insurance-form-page :actions="actions"></insurance-form-page>
+    <abstract-form :actions="actions" :object="surety" :back="back" :resource="resource">
+        <surety-form-input :object="surety" :actions="actions"></surety-form-input>
+    </abstract-form>
 </template>
 <script>
-    import InsuranceFormPage from '../../assets/form/pages/InsuranceFormPage.vue'
+    import abstractForm from '../../assets/form/AbstractForm.vue'
     import actions from '../../constants/actions'
+    import resources from '../../constants/resources'
+    import suretyFormInput from './suretyFormInput.vue'
 
     export default {
         data(){
             return {
-                actions: actions.CREATE
+                actions: actions.CREATE,
+                resource: resources.SURETY,
+                surety: {},
+                back: {name:resources.SURETY.name.plural()}
+
             }
         },
         components: {
-            InsuranceFormPage
+            suretyFormInput,abstractForm
         }
     }
 </script>

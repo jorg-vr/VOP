@@ -1,8 +1,8 @@
 package spring.controller;
 
 import dao.database.ProductionProvider;
+import dao.exceptions.ObjectNotFoundException;
 import dao.interfaces.DAOManager;
-import dao.interfaces.RoleDAO;
 import model.account.Action;
 import model.account.Resource;
 import model.account.Role;
@@ -10,7 +10,6 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import spring.exceptions.MyExceptionHandler;
@@ -19,13 +18,14 @@ import util.UUIDUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Created by Ponti on 4/05/2017.
@@ -41,31 +41,29 @@ public class RESTPermissionControllerTest {
 
     private static String[] authPair;
 
-    private static DAOManager manager;
-
     @BeforeClass
     public static void setup() throws Exception {
         ProductionProvider.initializeProvider("unittest");
-        manager = ProductionProvider.getInstance().getDaoManager();
         authPair = AuthUtil.getAdminToken();
     }
 
 
     @AfterClass
     public static void afterTransaction() throws Exception {
-        manager.close();
         ProductionProvider.getInstance().close();
     }
 
 
     @Test
     public void get() throws Exception {
-        RoleDAO roleDAO = manager.getRoleDAO();
+
+        //Add to database directly with DAO
         Role role = new Role("roleControllerTestName");
         role.setAccess(Resource.BILLING, Action.READ_MINE);
         role.setAccess(Resource.BILLING, Action.CREATE_ALL);
         role.setAccess(Resource.FLEET, Action.READ_ALL);
-        role = roleDAO.create(role);
+
+        role = create(role);
 
         try {
             mvc.perform(MockMvcRequestBuilders.get("/auth/roles/" + UUIDUtil.UUIDToNumberString(role.getUuid()) + "/permissions")
@@ -74,20 +72,21 @@ public class RESTPermissionControllerTest {
             )
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.data", hasSize(equalTo(3))))
-                    .andExpect(jsonPath("$.total", equalTo(3)))
-                    .andReturn();
-        } finally {
-            //Clean up database for other tests
-            roleDAO.remove(role.getUuid());
+                    .andExpect(jsonPath("$.total", equalTo(3)));
+        } catch (Exception e) {
+            remove(role.getUuid());
+            throw e;
         }
 
+        //Clean up database for other tests
+        remove(role.getUuid());
     }
 
     @Test
     public void put() throws Exception {
-        RoleDAO roleDAO = manager.getRoleDAO();
-        Role role = new Role("roleControllerTestName");
-        role = roleDAO.create(role);
+
+        //Add to database directly with DAO
+        Role role = create(new Role("roleControllerTestName"));
 
         RESTPermission permission1 = new RESTPermission(Resource.BILLING, Action.READ_MINE);
         RESTPermission permission2 = new RESTPermission(Resource.BILLING, Action.CREATE_ALL);
@@ -98,25 +97,52 @@ public class RESTPermissionControllerTest {
         permissions.add(permission3.getId());
 
         //Perform PUT request to change the permissions
-        MvcResult result = mvc.perform(MockMvcRequestBuilders.put("/auth/roles/" + UUIDUtil.UUIDToNumberString(role.getUuid()) + "/permissions")
-                .header("Content-Type", "application/json")
-                .header("Authorization", authPair[0])
-                .header("Function", authPair[1])
-                .content(TestUtil.convertObjectToJsonBytes(permissions))
-        )
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andReturn();
+        try {
+            mvc.perform(MockMvcRequestBuilders.put("/auth/roles/" + UUIDUtil.UUIDToNumberString(role.getUuid()) + "/permissions")
+                    .header("Content-Type", "application/json")
+                    .header("Authorization", authPair[0])
+                    .header("Function", authPair[1])
+                    .content(TestUtil.convertObjectToJsonBytes(permissions))
+            )
+                    .andExpect(status().isOk());
+        } catch (Exception e) {
+            remove(role.getUuid());
+            throw e;
+        }
 
         //Test if permissions were correctly added
-        roleDAO.refresh(role);
-        role = roleDAO.get(role.getUuid());
-        assertTrue("Permissions were not correctly updated",role.hasAccess(Resource.BILLING, Action.READ_MINE));
-        assertTrue("Permissions were not correctly updated",role.hasAccess(Resource.BILLING, Action.CREATE_ALL));
-        assertTrue("Permissions were not correctly updated",role.hasAccess(Resource.FLEET, Action.READ_ALL));
+        try {
+            try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()) {
+                role = manager.getRoleDAO().get(role.getUuid());
+                try {
+                    assertTrue("Permissions were not correctly updated", role.hasAccess(Resource.BILLING, Action.READ_MINE));
+                    assertTrue("Permissions were not correctly updated", role.hasAccess(Resource.BILLING, Action.CREATE_ALL));
+                    assertTrue("Permissions were not correctly updated", role.hasAccess(Resource.FLEET, Action.READ_ALL));
+                } finally {
+                    //Clean up database for other tests
+                    remove(role.getUuid());
+                }
+            }
+        } catch (ObjectNotFoundException e) {
+            fail("Could not retrieve the put object from the actual database");
+        }
+    }
 
-        //Clean up database for other tests
-        roleDAO.remove(role.getUuid());
+    private void remove(UUID uuid) throws Exception {
+        try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()) {
+            manager.getRoleDAO().remove(uuid);
+        }
+    }
 
+    private Role create(Role role) throws Exception {
+        try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()) {
+            return manager.getRoleDAO().create(role);
+        }
+    }
+
+    private Role get(UUID uuid) throws Exception {
+        try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()) {
+            return manager.getRoleDAO().get(uuid);
+        }
     }
 }

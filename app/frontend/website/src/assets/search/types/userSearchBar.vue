@@ -9,6 +9,7 @@ Searchbar to search for users.
 <script>
     import searchBar from '../searchBar.vue'
     import userFormInput from '../../../pages/user/userFormInput.vue'
+
     export default {
         data() {
             return {
