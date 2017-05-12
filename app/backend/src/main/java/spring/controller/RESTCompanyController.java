@@ -49,10 +49,13 @@ public class RESTCompanyController extends RESTAbstractController<RESTCompany, C
 
     @RequestMapping(method = RequestMethod.GET)
     public RESTSchema<RESTCompany> get(HttpServletRequest request,
-                                       Integer page, Integer limit,
-                                       String nameContains, String country,
-                                       String city, String postalCode,
-                                       String type,
+                                       @RequestParam(required = false) String nameContains,
+                                       @RequestParam(required = false) String country,
+                                       @RequestParam(required = false) String city,
+                                       @RequestParam(required = false) String postalCode,
+                                       @RequestParam(required = false) String type,
+                                       @RequestParam(required = false) Integer page,
+                                       @RequestParam(required = false) Integer limit,
                                        @RequestHeader(value = "Authorization") String token,
                                        @RequestHeader(value = "Function") String function) throws UnAuthorizedException, DataAccessException {
         UUID user = new AuthenticationToken(token).getAccountId();
