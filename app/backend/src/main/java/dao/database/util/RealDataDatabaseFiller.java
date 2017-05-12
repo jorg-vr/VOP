@@ -116,14 +116,10 @@ public class RealDataDatabaseFiller {
             manager.getFunctionDAO().create(adminFunction);
             manager.getFunctionDAO().create(productionFunction);
 
-            //Create InsuranceAgent Account
-            User userInsurance = createUser("Hans","Termont", "hans.termont@solvas.be","aox897OP");
-            Function insuranceFunction = createFunction(company,userInsurance,LocalDateTime.now().minusMonths(8),LocalDateTime.now().plusMonths(8),"Verzekeringsmakelaar",
-                    insuranceRole);
-
-            manager.getUserDAO().create(userInsurance);
-            manager.getRoleDAO().create(insuranceRole);
-            manager.getFunctionDAO().create(insuranceFunction);
+            createInsuranceAccount1(company,insuranceRole,manager);
+            createInsuranceAccount2(company,insuranceRole,manager);
+            createInsuranceAccount3(company,insuranceRole,manager);
+            createInsuranceAccount4(company,insuranceRole,manager);
 
             customerSam(customerRole,manager,user,adminFunction);
 
@@ -134,6 +130,46 @@ public class RealDataDatabaseFiller {
             e.printStackTrace();
         }
 
+    }
+
+    private void createInsuranceAccount1(Company company, Role insuranceRole, DAOManager manager) throws DataAccessException, ConstraintViolationException {
+        User userInsurance = createUser("Hans","Termont", "hans.termont@solvas.be","aox897OP");
+        Function insuranceFunction = createFunction(company,userInsurance,LocalDateTime.now().minusMonths(8),LocalDateTime.now().plusMonths(8),"Verzekeringsmakelaar",
+                insuranceRole);
+
+        manager.getUserDAO().create(userInsurance);
+        manager.getRoleDAO().create(insuranceRole);
+        manager.getFunctionDAO().create(insuranceFunction);
+    }
+
+    private void createInsuranceAccount2(Company company, Role insuranceRole, DAOManager manager) throws DataAccessException, ConstraintViolationException {
+        User userInsurance = createUser("Elisa","Van Parys", "elisa.vanparys@solvas.be","8awOB2M4E");
+        Function insuranceFunction = createFunction(company,userInsurance,LocalDateTime.now().minusMonths(8),LocalDateTime.now().plusMonths(8),"Verzekeringsmakelaar",
+                insuranceRole);
+
+        manager.getUserDAO().create(userInsurance);
+        manager.getRoleDAO().create(insuranceRole);
+        manager.getFunctionDAO().create(insuranceFunction);
+    }
+
+    private void createInsuranceAccount3(Company company, Role insuranceRole, DAOManager manager) throws DataAccessException, ConstraintViolationException {
+        User userInsurance = createUser("Nikolas","Maenhout", "nikolas.maenhout@solvas.be","5KFKF9QQ02c");
+        Function insuranceFunction = createFunction(company,userInsurance,LocalDateTime.now().minusMonths(8),LocalDateTime.now().plusMonths(8),"Verzekeringsmakelaar",
+                insuranceRole);
+
+        manager.getUserDAO().create(userInsurance);
+        manager.getRoleDAO().create(insuranceRole);
+        manager.getFunctionDAO().create(insuranceFunction);
+    }
+
+    private void createInsuranceAccount4(Company company, Role insuranceRole, DAOManager manager) throws DataAccessException, ConstraintViolationException {
+        User userInsurance = createUser("Kathleen","Bekaert", "kathleen.bekaert@solvas.be","PcU5Q6Ma");
+        Function insuranceFunction = createFunction(company,userInsurance,LocalDateTime.now().minusMonths(8),LocalDateTime.now().plusMonths(8),"Verzekeringsmakelaar",
+                insuranceRole);
+
+        manager.getUserDAO().create(userInsurance);
+        manager.getRoleDAO().create(insuranceRole);
+        manager.getFunctionDAO().create(insuranceFunction);
     }
 
     private void customerSam(Role customerRole, DAOManager manager, User user, Function adminFunction){
