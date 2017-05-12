@@ -5,12 +5,12 @@ All of the fields for user input for the vehicle form
 -->
 <template>
     <div>
-        <text-input-form-group :object="vehicle" name="licensePlate" :text="$t('vehicle.licensePlate')"></text-input-form-group>
+        <text-input-form-group :object="vehicle" name="licensePlate" :text="$t('vehicle.licensePlate')" :rules="'required'"></text-input-form-group>
         <text-input-form-group :object="vehicle" name="vin" :text="$t('vehicle.vin')" :rules="'required|check_vin'"></text-input-form-group>
         <text-input-form-group :object="vehicle" name="brand" :text="$t('vehicle.brand')" :rules="'required'"></text-input-form-group>
         <text-input-form-group :object="vehicle" name="model" :text="$t('vehicle.model')" :rules="'required'"></text-input-form-group>
         <select-input-form-group :object="vehicle" name="type" optionPropertyName="id" visibleKey="name"
-                     :text="$t('vehicle.vehicleType')" :rules="'required'" :options="clients">
+                     :text="$t('vehicle.vehicleType')" :rules="'required'" :options="vehicleTypes">
         </select-input-form-group>
         <text-input-form-group :object="vehicle" name="mileage" :text="$t('vehicle.mileage')" :rules="'required|numeric'"></text-input-form-group>
         <text-input-form-group :object="vehicle" name="year" :text="$t('vehicle.year')" :rules="'required|numeric'"></text-input-form-group>
@@ -38,13 +38,11 @@ All of the fields for user input for the vehicle form
         },
         computed: {
             ...mapGetters([
-                'clients',
                 'vehicleTypes'
             ])
         },
         methods: {
             ...mapActions([
-                'fetchClientsBy',
                 'fetchVehicleTypes'
             ])
         },
