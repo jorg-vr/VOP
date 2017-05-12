@@ -22,15 +22,21 @@
                         <th >
                             {{$t('commission.commission')| capitalize }}
                         </th>
+                        <th >
+                            {{$t('vehicleType.tax')| capitalize }}
+                        </th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="commission in vehicleType.commissions" class="list-tr">
+                    <tr v-for="suretyType in vehicleType.merge" class="list-tr">
                         <td  >
-                            {{$t('suretyTypes.'+commission.suretyType)}}
+                            {{$t('suretyTypes.'+suretyType.name)}}
                         </td>
                         <td  >
-                            {{commission.commission*100}}%
+                            {{suretyType.commission*100}}%
+                        </td>
+                        <td  >
+                            {{suretyType.tax*100}}%
                         </td>
                     </tr>
                     </tbody>
@@ -69,7 +75,7 @@
                         Promise.all(p).then(
                                 com=>{
                                     for(let i=0;i<this.vehicleTypes.length;i++) {
-                                        this.vehicleTypes[i].commissions = com[i];
+                                        this.vehicleTypes[i].merge = this.mergeCommissionsAndTAxes(com[i], this.vehicleTypes[i].taxes);
                                     }
                                     this.show = true;
                                 }
@@ -93,7 +99,23 @@
             ...mapActions([
                 'fetchVehicleTypes',
                 'fetchCommissions'
-            ])
+            ]),
+            mergeCommissionsAndTAxes(commissions, taxes){
+                let merge={};
+                for(let i=0;i<commissions.length;i++){
+                    merge[commissions[i].suretyType]={};
+                    merge[commissions[i].suretyType].commission=commissions[i].commission;
+                    merge[commissions[i].suretyType].name=commissions[i].suretyType;
+                }
+                for(let i=0;i<taxes.length;i++){
+                    if(merge[taxes[i].suretyType]==undefined){
+                        merge[taxes[i].suretyType]={};
+                    }
+                    merge[taxes[i].suretyType].tax=taxes[i].tax;
+                    merge[taxes[i].suretyType].name=taxes[i].suretyType;
+                }
+                return merge;
+            }
         }
     }
 </script>

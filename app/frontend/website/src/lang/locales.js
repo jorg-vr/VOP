@@ -22,7 +22,8 @@ export default
         vehicleType: {
             name: 'name',
             vehicleType: 'vehicle type',
-            vehicleTypes: 'vehicle types'
+            vehicleTypes: 'vehicle types',
+            tax:'tax'
         },
         fleet: {
             name: 'fleet name',
@@ -264,7 +265,8 @@ export default
         vehicleType: {
             name: 'naam',
             vehicleType: 'voertuigtype',
-            vehicleTypes: 'voertuigtypes'
+            vehicleTypes: 'voertuigtypes',
+            tax:'btw'
         },
         fleet: {
             name: 'vlootnaam',
