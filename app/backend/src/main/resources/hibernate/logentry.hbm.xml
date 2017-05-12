@@ -36,7 +36,7 @@
     </class>
 
 
-    <class name="model.history.Description" table="invoices">
+    <class name="model.history.Description" table="descriptions">
         <meta attribute="class-description">
             This class contains the invoice detail.
         </meta>
