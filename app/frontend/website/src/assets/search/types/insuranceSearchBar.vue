@@ -8,7 +8,7 @@ Searchbar to search for insurances.
 </template>
 <script>
     import searchBar from '../searchBar.vue'
-    import insuranceFormInput from '../../form/types/insuranceFormInput.vue'
+    import insuranceFormInput from '../../../pages/vehicleInsurance/insuranceFormInput.vue'
     export default {
         data() {
             return {

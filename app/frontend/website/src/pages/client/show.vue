@@ -82,7 +82,9 @@
             this.setLoading({loading: true})
             let clientId = this.id
             this.fetchClient({id: clientId}).then(client => {
-                this.type = clientTypes[client.type]['name']
+                if(client.type){
+                    this.type = clientTypes[client.type].translation()
+                }
             })
             this.fetchFleetsBy({filters: {company: clientId}}).then(() => {
                 this.setLoading({loading: false })
