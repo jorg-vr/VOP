@@ -53,12 +53,14 @@
             let p1 = this.fetchVehiclesBy({filters: {fleet: id}});
             let p2 = this.fetchVehicleTypes();
             Promise.all([p1, p2]).then(values => {
-                this.getSubfleets({
-                    vehicles: values[0],
-                    vehicleTypes: values[1]
-                }).then(() => {
-                    this.setLoading({loading: false })
-                })
+                this.setVehicleInsurances(values[0]).then(ve =>{
+                    this.getSubfleets({
+                        vehicles: ve,
+                        vehicleTypes: values[1]
+                    }).then(() => {
+                        this.setLoading({loading: false })
+                    })
+                });
             })
         },
         computed: {
@@ -101,19 +103,27 @@
             listObject(vehicles) {
                 var listObj = {};
                 listObj.headers = ['brand','model', 'licensePlate','sureties'];
-                listObj.values = this.setVehicleInsurances(vehicles);
+                listObj.values = vehicles;
                 return listObj;
             },
             setVehicleInsurances(vehicles){
-                for(var i in vehicles){
-                    this.fetchInsurancesBy({filters: {vehicleId: vehicles[i].id}}).then(vi=>{
-                        vehicles[i].sureties=[];
-                        for(var j in vi){
-                            vehicles[i].sureties.push(vi[j].suretyType);
+                return new Promise((resolveSuccess, resolveFailure) => {
+                    let p=[];
+                    for (let i in vehicles) {
+                        p[i]=this.fetchInsurancesBy({filters: {vehicleId: vehicles[i].id}});
+                    }
+                    Promise.all(p).then(vi=> {
+                        for (let i in vehicles) {
+                            vehicles[i].sureties = "";
+                            for (let j in vi[i]) {
+                                if (vi[i][j].suretyType) {
+                                    vehicles[i].sureties = vehicles[i].sureties + this.$t('suretyTypes.' + vi[i][j].suretyType).capitalize() + " ";
+                                }
+                            }
                         }
-                    })
-                }
-                return vehicles;
+                        resolveSuccess(vehicles);
+                    }).catch(vi=>{resolveFailure(vehicles)});
+                });
             }
         }
     }
