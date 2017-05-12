@@ -1,61 +1,96 @@
 swagger: '2.0'
 info:
-  version: "2.0.2"
+  version: 2.1.1
   title: Solvas Fleet API - Milestone 2
-  description: |
+  description: >
     The API definitions for the first Milestone.
 
-    Some attributes in the models are server-generated attributes. To keep the API shorter, we don't use different
-    models for the different operations. Attributes are divided in two main categories:
+
+    Some attributes in the models are server-generated attributes. To keep the
+    API shorter, we don't use different
+
+    models for the different operations. Attributes are divided in two main
+    categories:
+
 
     1. Required attributes. These must be present at all times.
+
     2. Non-required attributes. There are three categories:
-        1. Server-generated attributes. These are read-only from the server to the client. If the client
-           send them to the server, they will be ignored.
+        1. Server-generated attributes. These attributes are marked as "read-only". These are read-only from the server
+           to the client. If the client sends them to the server, they must be ignored.
         2. Client-generated attributes. These are read-only from the client to the server. This means that the
            client can send them to the server, but the server will never send them to the client.
         3. Normal data-attributes. These are standard attributes representing optional data.
 
-    Note on the sorting parameters. Support for sorting is currently optional: this means that the sort parameters may
-    be ignored by the server. If the server does decide to support sorting, it should adhere to the API.
+    Note on the sorting parameters. Support for sorting is currently optional:
+    this means that the sort parameters may
 
+    be ignored by the server. If the server does decide to support sorting, it
+    should adhere to the API.
 securityDefinitions:
-  KeySecurity:
-    description: |
-      Here in the swagger document, the API is described using the type `API Key`. This might not be ideal; what we actually
-      use is something between an API Key and OAuth(2).
+  token:
+    description: >
+      Here in the swagger document, the API is described using the type
+      `OAuth2`. Conceptually, this is what we use.
+
+      However, we don't formally follow the OAuth2 specification, so it isn't
+      OAuth2. The reason we use it in the spec anyway
+
+      is that it allows us to easily define scopes (or permissions) for every
+      endpoint. The alternative would using
+
+      vendor extensions. This is also possible and works well, but requires
+      custom support. (Things such as the Swagger
+
+      Editor ignore custom extensions).
+
 
       The authentication flow is as follows:
-        1. The client sends an `Auth` object to the `/auth/login` endpoint.
-        2. The server validates the credentials and sends back a `JWT` token. The contents of the JWT token are defined
-           as object in this API spec, however, a JWT token should be sent according to the JWT-specification. See below.
-        3. The client sends this token along with every request it sends to the server.
-        4. The token has an expiration data. If the expiration date is near, the client should refresh the token.
-        5. To refresh the token, the client sends the token it has to the `/auth/refresh` endpoint.
-        6. The server looks up the user and validates it. If the user is still valid, the server returns a new token.
 
-      The token must be sent in the header, using `Authorization: Bearer {token}`. Note that not all swagger-related tools
+        1. The client sends an `Auth` object to the `/auth/login` endpoint.
+        2. The server validates the credentials and sends back two `JWT` tokens. The contents of the JWT token are defined
+           as object in this API spec, however, a JWT token should be sent according to the JWT-specification. See below.
+           One of the tokens is the access token, the other is the refresh token.
+        3. The client sends this token along with every request it sends to the server.
+        4. The token has an expiration date. If the expiration date is near, the client should refresh the token.
+        5. To refresh the token, the client sends the refresh it has to the `/auth/refresh` endpoint.
+        6. The server looks up the user and validates it. If the user is still valid, the server returns a new access token.
+        7. If the refresh tokens expires, the user should log in again to obtain a new refresh token.
+
+      The token must be sent in the header, using `Authorization: Bearer
+      {token}`. Note that not all swagger-related tools
+
       understand the notation below.
 
-      The token's format is defined in this spec as an object. This does not define the full token; it only defines the payload
-      of the token. The payload contains the data. More information can be found at https://jwt.io/.
-    type: apiKey
-    in: header
-    name: "Authorization: Bearer X"
-security:
-  - KeySecurity: []
 
+      The token's format is defined in this spec as an object. This does not
+      define the full token; it only defines the payload
+
+      of the token. The payload contains the data. More information can be found
+      at https://jwt.io/.
+
+
+      Note: if there is no security defined on an endpoint, it means the
+      endpoint does not require authorisation. The scopes specified do not make
+      sense everywhere yet. If you notice some inconsistencies, please notify
+      your API-responsible.F
+    type: oauth2
+    tokenUrl: /auth/refresh
+    flow: password
 paths:
   /companies:
     get:
       produces:
         - application/json
       summary: |
-        Get a list of Company objects.
-      description: |
+        Get all companies.
+      description: >
         Get a list of `Company` objects, eventually filtered by the query
+
         parameters. When combining parameters, the conditions are joined by
-        AND. This means the resulting objects must satisfy all filters. All the string filter operations are case insensitive.
+
+        AND. This means the resulting objects must satisfy all filters. All the
+        string filter operations are case insensitive.
       parameters:
         - in: query
           name: nameContains
@@ -74,6 +109,10 @@ paths:
           type: string
           description: Filter by postal code.
         - in: query
+          name: type
+          type: string
+          description: Filter by company type
+        - in: query
           name: page
           type: integer
           description: The page to query.
@@ -85,15 +124,22 @@ paths:
         - in: query
           name: sort
           type: string
-          description: |
-            Sort parameter. Support for this parameter is optional. If supported, any field in the json reprensentation
-            may be used to sort, as follows: ?sort=field,order. For example: `?sort=name,asc`.
+          description: >
+            Sort parameter. Support for this parameter is optional. If
+            supported, any field in the json reprensentation
+
+            may be used to sort, as follows: ?sort=field,order. For example:
+            `?sort=name,asc`.
       responses:
         '200':
           description: OK
           schema:
             type: object
-            required: [data, total, offset, limit]
+            required:
+              - data
+              - total
+              - offset
+              - limit
             properties:
               data:
                 type: array
@@ -115,23 +161,23 @@ paths:
                 example: 10
                 type: integer
               previous:
-                description: Link to the previous page, if applicable.
+                description: 'Link to the previous page, if applicable.'
                 example: /companies&page=1
                 type: string
               next:
-                description: Link to the next page, if applicable.
+                description: 'Link to the next page, if applicable.'
                 type: string
                 example: /companies&page=20
               first:
-                description: Link to the first page, if applicable.
+                description: 'Link to the first page, if applicable.'
                 type: string
                 example: /companies&page=0
               last:
-                description: Link to the last page, if applicable.
+                description: 'Link to the last page, if applicable.'
                 type: string
                 example: /companies&page=100
         '400':
-           $ref: '#/responses/WrongQuery'
+          $ref: '#/responses/WrongQuery'
         '401':
           $ref: '#/responses/Unauthorised'
     post:
@@ -139,9 +185,11 @@ paths:
         - application/json
       consumes:
         - application/json
-      summary: Add a new Company to the list of companies.
-      description: |
-        Attributes described as 'server-generated' will be ignored by the server. Non-required attributes that are
+      summary: Add new company.
+      description: >
+        Read-only attributes will be ignored by the server. Non-required
+        attributes that are
+
         not present will be filled in by the server, using default values.
       parameters:
         - in: body
@@ -158,22 +206,22 @@ paths:
           $ref: '#/responses/Malformed'
         '401':
           $ref: '#/responses/Unauthorised'
-        '422':
-          $ref: '#/responses/WrongContent'
         '415':
           $ref: '#/responses/WrongType'
+        '422':
+          $ref: '#/responses/WrongContent'
   '/companies/{id}':
     parameters:
-        - in: path
-          name: id
-          description: ID of Company
-          required: true
-          type: integer
-          format: int64
+      - in: path
+        name: id
+        description: ID of Company
+        required: true
+        type: integer
+        format: int64
     get:
       produces:
         - application/json
-      summary: Find Company by ID.
+      summary: Get one company.
       responses:
         '200':
           description: OK
@@ -188,9 +236,11 @@ paths:
         - application/json
       consumes:
         - application/json
-      summary: Update the `Company` with the given ID.
-      description: |
-        Attributes described as 'server-generated' will be ignored by the server. Non-required attributes that are
+      summary: Update a company.
+      description: >
+        Read-only attributes will be ignored by the server. Non-required
+        attributes that are
+
         not present will not be updated.
       parameters:
         - in: body
@@ -209,12 +259,12 @@ paths:
           $ref: '#/responses/Unauthorised'
         '404':
           $ref: '#/responses/NotFound'
-        '422':
-          $ref: '#/responses/WrongContent'
         '415':
           $ref: '#/responses/WrongType'
+        '422':
+          $ref: '#/responses/WrongContent'
     delete:
-      summary: Archive the Company with the given ID
+      summary: Archive a company.
       responses:
         '204':
           description: Company archived successfully.
@@ -224,7 +274,259 @@ paths:
           $ref: '#/responses/NotFound'
         '409':
           $ref: '#/responses/Conflict'
-  /companies/{id}/contracts:
+  '/companies/{company_id}/corrections':
+    parameters:
+      - in: path
+        name: company_id
+        description: ID of Company
+        required: true
+        type: integer
+        format: int64
+    get:
+      produces:
+        - application/json
+      summary: |
+        Get all corrections of a company.
+      description: >
+        Get a list of `Correction` objects, eventually filtered by the query
+        parameters. When combining parameters, the conditions are joined by AND.
+        This means the resulting objects must satisfy all filters. All the
+        string filter operations are case insensitive.
+      parameters:
+        - in: query
+          name: nameContains
+          type: string
+          description: Filter objects whose name attribute contains nameContains.
+        - in: query
+          name: paid
+          type: boolean
+          description: Filter by paid.
+        - in: query
+          name: date
+          type: string
+          description: Filter by date.
+        - in: query
+          name: vehicle
+          type: integer
+          description: Filter by vehicle
+        - in: query
+          name: type
+          type: integer
+          description: Filter by company.
+        - in: query
+          name: page
+          type: integer
+          description: The page to query.
+          default: 0
+        - in: query
+          name: limit
+          type: integer
+          description: The number of elements in a page.
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+            required:
+              - data
+              - total
+              - offset
+              - limit
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/definitions/Company'
+              total:
+                description: Total number of items.
+                example: 50
+                type: integer
+              offset:
+                description: |
+                  The number of items before this page (exclusive). This means
+                  that when offset = 20, this page will contains items 20 to
+                  20 + limit. For limit = 10, it will be 20 - 29 (including 29).
+                example: 20
+                type: integer
+              limit:
+                description: The maximum number of items on a page.
+                example: 10
+                type: integer
+              previous:
+                description: 'Link to the previous page, if applicable.'
+                example: /companies&page=1
+                type: string
+              next:
+                description: 'Link to the next page, if applicable.'
+                type: string
+                example: /companies&page=20
+              first:
+                description: 'Link to the first page, if applicable.'
+                type: string
+                example: /companies&page=0
+              last:
+                description: 'Link to the last page, if applicable.'
+                type: string
+                example: /companies&page=100
+        '400':
+          $ref: '#/responses/WrongQuery'
+        '401':
+          $ref: '#/responses/Unauthorised'
+    post:
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      summary: Add a new correction to the  company.
+      description: >
+        Read-only attributes will be ignored by the server. Non-required
+        attributes that are
+
+        not present will be filled in by the server, using default values.
+      parameters:
+        - in: body
+          name: Correction
+          required: true
+          schema:
+            $ref: '#/definitions/Correction'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Company'
+        '400':
+          $ref: '#/responses/Malformed'
+        '401':
+          $ref: '#/responses/Unauthorised'
+        '422':
+          $ref: '#/responses/WrongContent'
+  '/companies/{company_id}/corrections/{correction_id}':
+    parameters:
+      - in: path
+        name: company_id
+        description: ID of Company
+        required: true
+        type: integer
+        format: int64
+      - in: path
+        name: correction_id
+        description: ID of Correction
+        required: true
+        type: integer
+        format: int64
+    get:
+      produces:
+        - application/json
+      summary: Get one correction.
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Correction'
+        '401':
+          $ref: '#/responses/Unauthorised'
+        '404':
+          $ref: '#/responses/NotFound'
+    put:
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      summary: Update a correction.
+      description: >
+        Read-only attributes will be ignored by the server. Non-required
+        attributes that are
+
+        not present will not be updated.
+      parameters:
+        - in: body
+          name: Correction
+          required: true
+          schema:
+            $ref: '#/definitions/Correction'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Correction'
+        '400':
+          $ref: '#/responses/Malformed'
+        '401':
+          $ref: '#/responses/Unauthorised'
+        '404':
+          $ref: '#/responses/NotFound'
+        '422':
+          $ref: '#/responses/WrongContent'
+    delete:
+      summary: Archive a correction.
+      responses:
+        '204':
+          description: Correction archived successfully.
+        '401':
+          $ref: '#/responses/Unauthorised'
+        '404':
+          $ref: '#/responses/NotFound'
+  '/companies/{id}/commissions/{contractType}':
+    parameters:
+      - in: path
+        name: id
+        description: ID of Company
+        required: true
+        type: integer
+        format: int64
+      - name: contractType
+        in: path
+        description: Name of Contract type. See GET /contracts/types for all possibilities.
+        required: true
+        type: string
+    get:
+      produces:
+        - application/json
+      summary: Get specific commission of the company.
+      description: >
+        If this vehicle does not have a specific commission, value of commission
+        will be null.
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Commission'
+        '401':
+          $ref: '#/responses/Unauthorised'
+    put:
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      summary: Set specific commission of the company.
+      description: >
+        Attributes described as 'server-generated' will be ignored by the
+        server. Non-required attributes that are not present will not be
+        updated.
+      parameters:
+        - in: body
+          name: commission
+          description: commission to set
+          required: true
+          schema:
+            $ref: '#/definitions/Commission'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Contract'
+        '400':
+          $ref: '#/responses/Malformed'
+        '401':
+          $ref: '#/responses/Unauthorised'
+    delete:
+      summary: Remove the specific commission of the company.
+      responses:
+        '204':
+          description: Commission
+        '401':
+          $ref: '#/responses/Unauthorised'
+  '/companies/{id}/contracts':
     parameters:
       - in: path
         name: id
@@ -235,7 +537,7 @@ paths:
     get:
       produces:
         - application/json
-      summary: Get list of all contracts for company.
+      summary: Get all contracts for a company.
       description: |
         Get a list of all contracts of the `company` with the given ID.
       parameters:
@@ -263,15 +565,22 @@ paths:
         - in: query
           name: sort
           type: string
-          description: |
-            Sort parameter. Support for this parameter is optional. If supported, any field in the json reprensentation
-            may be used to sort, as follows: ?sort=field,order. For example: `?sort=name,asc`.
+          description: >
+            Sort parameter. Support for this parameter is optional. If
+            supported, any field in the json reprensentation
+
+            may be used to sort, as follows: ?sort=field,order. For example:
+            `?sort=name,asc`.
       responses:
         '200':
           description: OK
           schema:
             type: object
-            required: [data, total, offset, limit]
+            required:
+              - data
+              - total
+              - offset
+              - limit
             properties:
               data:
                 type: array
@@ -293,26 +602,26 @@ paths:
                 example: 10
                 type: integer
               previous:
-                description: Link to the previous page, if applicable.
+                description: 'Link to the previous page, if applicable.'
                 example: /contracts&page=1
                 type: string
               next:
-                description: Link to the next page, if applicable.
+                description: 'Link to the next page, if applicable.'
                 type: string
                 example: /contracts&page=20
               first:
-                description: Link to the first page, if applicable.
+                description: 'Link to the first page, if applicable.'
                 type: string
                 example: /contracts&page=0
               last:
-                description: Link to the last page, if applicable.
+                description: 'Link to the last page, if applicable.'
                 type: string
                 example: /contracts&page=100
         '400':
           $ref: '#/responses/WrongQuery'
         '401':
           $ref: '#/responses/Unauthorised'
-  /companies/{company_id}/fleets/{fleet_id}/vehicles/{vehicle_id}/contracts:
+  '/companies/{company_id}/fleets/{fleet_id}/vehicles/{vehicle_id}/contracts':
     parameters:
       - in: path
         name: company_id
@@ -335,7 +644,7 @@ paths:
     get:
       produces:
         - application/json
-      summary: Get list of all contracts.
+      summary: Get all contracts for a vehicle.
       description: |
         Get a list of all contracts of the `Vehicle` with the given ID.
       parameters:
@@ -352,7 +661,11 @@ paths:
           description: OK
           schema:
             type: object
-            required: [data, total, offset, limit]
+            required:
+              - data
+              - total
+              - offset
+              - limit
             properties:
               data:
                 type: array
@@ -374,54 +687,69 @@ paths:
                 example: 10
                 type: integer
               previous:
-                description: Link to the previous page, if applicable.
+                description: 'Link to the previous page, if applicable.'
                 example: /contracts&page=1
                 type: string
               next:
-                description: Link to the next page, if applicable.
+                description: 'Link to the next page, if applicable.'
                 type: string
                 example: /contracts&page=20
               first:
-                description: Link to the first page, if applicable.
+                description: 'Link to the first page, if applicable.'
                 type: string
                 example: /contracts&page=0
               last:
-                description: Link to the last page, if applicable.
+                description: 'Link to the last page, if applicable.'
                 type: string
                 example: /contracts&page=100
         '400':
           $ref: '#/responses/WrongQuery'
         '401':
           $ref: '#/responses/Unauthorised'
-  '/companies/{id}/invoices':
+  '/fleets/{id}/invoices':
     parameters:
-        - in: path
-          name: id
-          description: ID of Company
-          required: true
-          type: integer
-          format: int64
+      - in: path
+        name: id
+        description: ID of the fleet
+        required: true
+        type: integer
+        format: int64
     get:
       parameters:
         - in: query
           type: boolean
           name: payed
-          description: Show only invoices that have been payed or not. If not present, all invoices will be shown.
+          description: >-
+            Show only invoices that have been payed or not. If not present, all
+            invoices will be shown.
+        - in: query
+          type: string
+          name: type
+          description: >-
+            Show only invoices that match the given type. If not present, all
+            invoices will be shown.
         - in: query
           name: sort
           type: string
-          description: |
-            Sort parameter. Support for this parameter is optional. If supported, any field in the json reprensentation
-            may be used to sort, as follows: ?sort=field,order. For example: `?sort=name,asc`.
+          description: >
+            Sort parameter. Support for this parameter is optional. If
+            supported, any field in the json reprensentation
+
+            may be used to sort, as follows: ?sort=field,order. For example:
+            `?sort=name,asc`.
       produces:
         - application/json
-      summary: Get a list of all invoices of the `company` with the given ID.
+      summary: Get all invoices.
       responses:
         '200':
           description: OK
           schema:
             type: object
-            required: [data, total, offset, limit]
+            required:
+              - data
+              - total
+              - offset
+              - limit
             properties:
               data:
                 type: array
@@ -443,43 +771,43 @@ paths:
                 example: 10
                 type: integer
               previous:
-                description: Link to the previous page, if applicable.
+                description: 'Link to the previous page, if applicable.'
                 example: /companies/id/invoices&page=1
                 type: string
               next:
-                description: Link to the next page, if applicable.
+                description: 'Link to the next page, if applicable.'
                 type: string
                 example: /companies/id/invoices&page=20
               first:
-                description: Link to the first page, if applicable.
+                description: 'Link to the first page, if applicable.'
                 type: string
                 example: /companies/id/invoices&page=0
               last:
-                description: Link to the last page, if applicable.
+                description: 'Link to the last page, if applicable.'
                 type: string
                 example: /companies/id/invoices&page=100
         '401':
           $ref: '#/responses/Unauthorised'
         '404':
           $ref: '#/responses/NotFound'
-  '/companies/{company_id}/invoices/{invoice_id}':
+  '/fleets/{fleet_id}/invoices/{invoice_id}':
     parameters:
-        - in: path
-          name: company_id
-          description: ID of Company
-          required: true
-          type: integer
-          format: int64
-        - in: path
-          name: invoice_id
-          description: ID of the invoice
-          required: true
-          type: integer
-          format: int64
+      - in: path
+        name: fleet_id
+        description: ID of Company
+        required: true
+        type: integer
+        format: int64
+      - in: path
+        name: invoice_id
+        description: ID of the invoice
+        required: true
+        type: integer
+        format: int64
     get:
       produces:
         - application/json
-      summary: Find Invoice by ID.
+      summary: Get one invoice.
       responses:
         '200':
           description: OK
@@ -489,32 +817,38 @@ paths:
           $ref: '#/responses/Unauthorised'
         '404':
           $ref: '#/responses/NotFound'
-  '/companies/{company_id}/invoices/{invoice_id}{extention}':
+  '/fleets/{fleet_id}/invoices/{invoice_id}/{extention}':
     parameters:
-        - in: path
-          name: company_id
-          description: ID of Company
-          required: true
-          type: integer
-          format: int64
-        - in: path
-          name: invoice_id
-          description: ID of the invoice
-          required: true
-          type: integer
-          format: int64
-        - in: path
-          name: extention
-          description: Format of the invoice. This should be in the extension format, e.g. `.pdf` or `.xml`.
-          required: true
-          type: string
+      - in: path
+        name: fleet_id
+        description: ID of the fleet
+        required: true
+        type: integer
+        format: int64
+      - in: path
+        name: invoice_id
+        description: ID of the invoice
+        required: true
+        type: integer
+        format: int64
+      - in: path
+        name: extention
+        description: >-
+          Format of the invoice. This should be in the extension format, e.g.
+          `pdf` or `xml`.
+        required: true
+        type: string
     get:
       produces:
         - application/json
-      summary: Find Invoice by ID and return a file in the given extention.
-      description: |
-        Returns an invoice in the requested format. The response will be a file of the requested type, if
-        the server supports that type. The API only mandates support for `.pdf` files, so clients should make
+      summary: Get one invoice in a specified format.
+      description: >
+        Returns an invoice in the requested format. The response will be a file
+        of the requested type, if
+
+        the server supports that type. The API only mandates support for `.pdf`
+        files, so clients should make
+
         sure they can handle errors if they request another format.
       responses:
         '200':
@@ -522,28 +856,40 @@ paths:
           schema:
             description: A file with the requested extention
             type: file
-            example: "invoice.pdf"
+            example: invoice.pdf
         '401':
           $ref: '#/responses/Unauthorised'
         '404':
           $ref: '#/responses/NotFound'
         '415':
-          description: Invalid or unknown format. The server does not support the requested format.
-  '/companies/{company_id}/invoices/current':
+          description: >-
+            Invalid or unknown format. The server does not support the requested
+            format.
+  '/fleets/{fleet_id}/invoices/current':
     parameters:
-        - in: path
-          name: company_id
-          description: ID of Company
-          required: true
-          type: integer
-          format: int64
+      - in: path
+        name: fleet_id
+        description: ID of the fleet
+        required: true
+        type: integer
+        format: int64
     get:
       produces:
         - application/json
-      summary: Find the current `Invoice`.
-      description: |
-        Display the current invoice for a company. This is the invoice as it would be at the moment of generation. As
+      summary: Get the current invoice.
+      description: >
+        Display the current invoice for a fleet. This is the invoice as it would
+        be at the moment of generation. As
+
         such, it is possible that this invoice does not have an ID.
+      parameters:
+        - in: query
+          name: type
+          type: string
+          description: >-
+            indicates the type of the contract you want to see. The type has to
+            be "billing" or "payment"
+          required: true
       responses:
         '200':
           description: OK
@@ -555,13 +901,16 @@ paths:
           $ref: '#/responses/NotFound'
   /vehicles:
     get:
-      summary: Get a list of Vehicle objects
-      description: |
+      summary: Get all vehicles.
+      description: >
         Get a list of `Vehicle` objects, eventually filtered by the query
+
         parameters. When combining parameters, the conditions are joined by
-        AND. This means the resulting objects must satisfy all filters. All the string filter operations are case insensitive.
+
+        AND. This means the resulting objects must satisfy all filters. All the
+        string filter operations are case insensitive.
       produces:
-      - application/json
+        - application/json
       parameters:
         - in: query
           name: licensePlate
@@ -599,15 +948,22 @@ paths:
         - in: query
           name: sort
           type: string
-          description: |
-            Sort parameter. Support for this parameter is optional. If supported, any field in the json reprensentation
-            may be used to sort, as follows: ?sort=field,order. For example: `?sort=name,asc`.
+          description: >
+            Sort parameter. Support for this parameter is optional. If
+            supported, any field in the json reprensentation
+
+            may be used to sort, as follows: ?sort=field,order. For example:
+            `?sort=name,asc`.
       responses:
-        200:
+        '200':
           description: OK
           schema:
             type: object
-            required: [data, total, offset, limit]
+            required:
+              - data
+              - total
+              - offset
+              - limit
             properties:
               data:
                 type: array
@@ -629,19 +985,19 @@ paths:
                 example: 10
                 type: integer
               previous:
-                description: Link to the previous page, if applicable.
+                description: 'Link to the previous page, if applicable.'
                 example: /vehicles&page=1
                 type: string
               next:
-                description: Link to the next page, if applicable.
+                description: 'Link to the next page, if applicable.'
                 type: string
                 example: /vehicles&page=20
               first:
-                description: Link to the first page, if applicable.
+                description: 'Link to the first page, if applicable.'
                 type: string
                 example: /vehicles&page=0
               last:
-                description: Link to the last page, if applicable.
+                description: 'Link to the last page, if applicable.'
                 type: string
                 example: /vehicles&page=100
         '400':
@@ -653,16 +1009,18 @@ paths:
         - application/json
       consumes:
         - application/json
-      summary: Add a new `Vehicle` to the list of vehicles
-      description: |
-        Attributes described as 'server-generated' will be ignored by the server. Non-required attributes that are
+      summary: Add a new vehicle.
+      description: >
+        Read-only attributes will be ignored by the server. Non-required
+        attributes that are
+
         not present will be filled in by the server, using default values.
       parameters:
-      - in: body
-        name: Vehicle
-        description: Vehicle item to add
-        schema:
-          $ref: '#/definitions/Vehicle'
+        - in: body
+          name: Vehicle
+          description: Vehicle item to add
+          schema:
+            $ref: '#/definitions/Vehicle'
       responses:
         '200':
           description: OK
@@ -672,21 +1030,21 @@ paths:
           $ref: '#/responses/Malformed'
         '409':
           $ref: '#/responses/Conflict'
-        '422':
-          $ref: '#/responses/WrongContent'
         '415':
           $ref: '#/responses/WrongType'
-  /vehicles/{id}:
+        '422':
+          $ref: '#/responses/WrongContent'
+  '/vehicles/{id}':
     parameters:
-        - name: id
-          in: path
-          description: ID of Vehicle
-          required: true
-          type: integer
+      - name: id
+        in: path
+        description: ID of Vehicle
+        required: true
+        type: integer
     get:
       produces:
         - application/json
-      summary: Find Company by ID.
+      summary: Find one vehicle.
       responses:
         '200':
           description: OK
@@ -701,17 +1059,19 @@ paths:
         - application/json
       consumes:
         - application/json
-      summary: Update the Vehicle with the given ID
-      description: |
-        Attributes described as 'server-generated' will be ignored by the server. Non-required attributes that are
+      summary: Update a vehicle.
+      description: >
+        Read-only attributes will be ignored by the server. Non-required
+        attributes that are
+
         not present will not be updated.
       parameters:
-      - in: body
-        name: Vehicle
-        description: Vehicle to add
-        required: true
-        schema:
-          $ref: '#/definitions/Vehicle'
+        - in: body
+          name: Vehicle
+          description: Vehicle to add
+          required: true
+          schema:
+            $ref: '#/definitions/Vehicle'
       responses:
         '200':
           description: OK
@@ -725,12 +1085,12 @@ paths:
           $ref: '#/responses/NotFound'
         '409':
           $ref: '#/responses/Conflict'
-        '422':
-          $ref: '#/responses/WrongContent'
         '415':
           $ref: '#/responses/WrongType'
+        '422':
+          $ref: '#/responses/WrongContent'
     delete:
-      summary: Archive the Vehicle with the given ID.
+      summary: Archive a vehicle.
       responses:
         '204':
           description: Vehicle archived successfully
@@ -740,52 +1100,346 @@ paths:
           $ref: '#/responses/NotFound'
         '409':
           $ref: '#/responses/Conflict'
-  /vehicles/types:
+  '/vehicles/{id}/green_card/{extention}':
+    parameters:
+      - in: path
+        name: id
+        description: ID of Vehicle
+        required: true
+        type: integer
+        format: int64
+      - in: path
+        name: extention
+        description: >-
+          Format of the green card. This should be in the extension format, e.g.
+          `pdf` or `xml`.
+        required: true
+        type: string
     get:
       produces:
         - application/json
-      summary: Get a list of all the posible vehicle types supported by the system. The possible values are "PersonalVehicle", "SemiHeavyTruck", "Truck", "Truck+12", "Van". Vehicles in the "SemiHeavyTruck" category are busses, cabs, tranport and trailers.
+      summary: Get the green card of the vehicle in a specified format.
+      description: >
+        Returns an invoice in the requested format. The response will be a file
+        of the requested type, if the server supports that type. 
+      responses:
+        '200':
+          description: OK
+          schema:
+            description: A file with the requested extention
+            type: file
+            example: green_card.pdf
+        '401':
+          $ref: '#/responses/Unauthorised'
+        '404':
+          $ref: '#/responses/NotFound'
+        '415':
+          description: >-
+            Invalid or unknown format. The server does not support the requested
+            format.
+  '/vehicles/{id}/commissions/{contractType}':
+    parameters:
+      - in: path
+        name: id
+        description: ID of Vehicle
+        required: true
+        type: integer
+        format: int64
+      - name: contractType
+        in: path
+        description: Name of Contract type. See GET /contracts/types for all possibilities.
+        required: true
+        type: string
+    get:
+      produces:
+        - application/json
+      summary: Get the commission of the vehicle.
+      description: >
+        If this vehicle does not have a specific commission, value of commission
+        will be null.
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Commission'
+        '401':
+          $ref: '#/responses/Unauthorised'
+    put:
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      summary: Set specific commission of the vehicle.
+      description: >
+        Attributes described as 'server-generated' will be ignored by the
+        server. Non-required attributes that are not present will not be
+        updated.
+      parameters:
+        - in: body
+          name: commission
+          description: Commission to set
+          required: true
+          schema:
+            $ref: '#/definitions/Commission'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Contract'
+        '400':
+          $ref: '#/responses/Malformed'
+        '401':
+          $ref: '#/responses/Unauthorised'
+    delete:
+      summary: Reset the commission of the vehicle to the default value.
+      responses:
+        '204':
+          description: Commission
+        '401':
+          $ref: '#/responses/Unauthorised'
+  '/vehicles/{vehicle_id}/logs':
+    parameters:
+      - in: path
+        name: vehicle_id
+        description: ID of Vehicle
+        required: true
+        type: integer
+        format: int64
+    get:
+      produces:
+        - application/json
+      summary: |
+        Get the logs of a vehicle.
+      description: >
+        Get a list of `LogEntry` objects, eventually filtered by the query
+        parameters. When combining parameters, the conditions are joined by AND.
+        This means the resulting objects must satisfy all filters. All the
+        string filter operations are case insensitive.
+      parameters:
+        - in: query
+          name: user
+          type: integer
+          format: int64
+          description: Filter by user.
+        - in: query
+          name: resource
+          type: string
+          description: Filter by resource.
+        - in: query
+          name: action
+          type: string
+          description: Filter by action.
+        - in: query
+          name: datetime
+          type: string
+          format: date-time
+          description: Filter by datetime.
+        - in: query
+          name: object
+          type: integer
+          format: int64
+          description: Filter by object.
+        - in: query
+          name: page
+          type: integer
+          description: The page to query.
+          default: 0
+        - in: query
+          name: limit
+          type: integer
+          description: The number of elements in a page.
       responses:
         '200':
           description: OK
           schema:
             type: object
-            required: [data, total]
+            required:
+              - data
+              - total
+              - offset
+              - limit
             properties:
               data:
                 type: array
-                example: ["Lorry", "PersonalVehicle", "Trailer"]
+                items:
+                  $ref: '#/definitions/LogEntry'
+              total:
+                description: Total number of items.
+                example: 50
+                type: integer
+              offset:
+                description: |
+                  The number of items before this page (exclusive). This means
+                  that when offset = 20, this page will contains items 20 to
+                  20 + limit. For limit = 10, it will be 20 - 29 (including 29).
+                example: 20
+                type: integer
+              limit:
+                description: The maximum number of items on a page.
+                example: 10
+                type: integer
+              previous:
+                description: 'Link to the previous page, if applicable.'
+                example: /companies&page=1
+                type: string
+              next:
+                description: 'Link to the next page, if applicable.'
+                type: string
+                example: /companies&page=20
+              first:
+                description: 'Link to the first page, if applicable.'
+                type: string
+                example: /companies&page=0
+              last:
+                description: 'Link to the last page, if applicable.'
+                type: string
+                example: /companies&page=100
+        '400':
+          $ref: '#/responses/WrongQuery'
+        '401':
+          $ref: '#/responses/Unauthorised'
+  '/vehicles/{vehicle_id}/logs/{entry_id}':
+    parameters:
+      - in: path
+        name: vehicle_id
+        description: ID of Vehicle
+        required: true
+        type: integer
+        format: int64
+      - in: path
+        name: entry_id
+        description: ID of LogEntry
+        required: true
+        type: integer
+        format: int64
+    get:
+      produces:
+        - application/json
+      summary: Get one correction.
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/LogEntry'
+        '401':
+          $ref: '#/responses/Unauthorised'
+        '404':
+          $ref: '#/responses/NotFound'
+  /vehicles/types:
+    get:
+      produces:
+        - application/json
+      summary: Get all vehicle types.
+      description: >
+        Get a list of all the posible vehicle types supported by the system. The
+        values must be:
+
+          - `PersonalVehicle`
+          - `SemiHeavyTruck`
+          - `Truck`
+          - `Truck+12`
+          - `Van`
+
+        Vehicles in the `SemiHeavyTruck` category are busses, cabs, tranport and
+        trailers.
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+            required:
+              - data
+              - total
+            properties:
+              data:
+                type: array
+                example:
+                  - PersonalVehicle
+                  - SemiHeavyTruck
+                  - Truck
+                  - Truck+12
+                  - Van
                 items:
                   type: string
               total:
                 description: Total number of items.
                 example: 5
                 type: integer
+        '401':
+          $ref: '#/responses/Unauthorised'
+  '/vehicles/types/{vehicleType}/commissions/{contractType}':
+    parameters:
+      - name: vehicleType
+        in: path
+        description: ID of a vehicle type.
+        required: true
+        type: integer
+      - name: contractType
+        in: path
+        description: Name of Contract type. See GET /contracts/types for all possibilities.
+        required: true
+        type: string
+    get:
+      produces:
+        - application/json
+      summary: Get the commission of the vehicle type.
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Commission'
+        '401':
+          $ref: '#/responses/Unauthorised'
+    put:
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      summary: Update the commission of the vehicle type.
+      description: >
+        Attributes described as 'server-generated' will be ignored by the
+        server. Non-required attributes that are not present will not be
+        updated.
+      parameters:
+        - in: body
+          name: commission
+          description: Commission to set
+          required: true
+          schema:
+            $ref: '#/definitions/Commission'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Contract'
         '400':
           $ref: '#/responses/Malformed'
         '401':
           $ref: '#/responses/Unauthorised'
-  /vehicles/types/{typeName}/taxes/{contractType}:
+  '/vehicles/types/{typeName}/taxes/{contractType}':
     parameters:
-        - name: typeName
-          in: path
-          description: Name of Vehicle type. See GET /vehicles/types for all possibilities
-          required: true
-          type: string
-        - name: contractType
-          in: path
-          description: Name of Contract type. See GET /contracts/types for all possibilities.
-          required: true
-          type: string
+      - name: typeName
+        in: path
+        description: Name of Vehicle type. See GET /vehicles/types for all possibilities
+        required: true
+        type: string
+      - name: contractType
+        in: path
+        description: Name of Contract type. See GET /contracts/types for all possibilities.
+        required: true
+        type: string
     get:
       produces:
         - application/json
-      summary: Get the tax percentage of the Vehicle type and Contract type combination.
+      summary: Get the tax percentage.
+      description: Get the tax percentage for a given `Vehicle` type and `Contract` type.
       responses:
         '200':
           description: OK
           schema:
             type: object
+            required:
+              - tax
             properties:
               tax:
                 type: number
@@ -800,7 +1454,10 @@ paths:
     put:
       produces:
         - application/json
-      summary: Set the tax percentage of the Vehicle type and Contract type combination.
+      summary: Set the tax percentag.
+      description: >-
+        Sets the tax percentage for a given combination of `Vehicle` type and
+        `Contract` type.
       parameters:
         - in: query
           name: tax
@@ -828,7 +1485,7 @@ paths:
     get:
       produces:
         - application/json
-      summary: Get list of all contracts.
+      summary: Get all contracts.
       description: |
         Get a list of `Contract` objects, eventually filtered by the query
         parameters. When combining parameters, the conditions are joined by
@@ -839,13 +1496,9 @@ paths:
           type: integer
           description: Filter by insurance company.
         - in: query
-          name: vehicle
+          name: customer
           type: integer
-          description: Filter by vehicle.
-        - in: query
-          name: type
-          type: string
-          description: Filter by type of contract.
+          description: Filter by customer.
         - in: query
           name: page
           type: integer
@@ -858,15 +1511,22 @@ paths:
         - in: query
           name: sort
           type: string
-          description: |
-            Sort parameter. Support for this parameter is optional. If supported, any field in the json reprensentation
-            may be used to sort, as follows: ?sort=field,order. For example: `?sort=name,asc`.
+          description: >
+            Sort parameter. Support for this parameter is optional. If
+            supported, any field in the json reprensentation
+
+            may be used to sort, as follows: ?sort=field,order. For example:
+            `?sort=name,asc`.
       responses:
         '200':
           description: OK
           schema:
             type: object
-            required: [data, total, offset, limit]
+            required:
+              - data
+              - total
+              - offset
+              - limit
             properties:
               data:
                 type: array
@@ -888,19 +1548,19 @@ paths:
                 example: 10
                 type: integer
               previous:
-                description: Link to the previous page, if applicable.
+                description: 'Link to the previous page, if applicable.'
                 example: /contracts&page=1
                 type: string
               next:
-                description: Link to the next page, if applicable.
+                description: 'Link to the next page, if applicable.'
                 type: string
                 example: /contracts&page=20
               first:
-                description: Link to the first page, if applicable.
+                description: 'Link to the first page, if applicable.'
                 type: string
                 example: /contracts&page=0
               last:
-                description: Link to the last page, if applicable.
+                description: 'Link to the last page, if applicable.'
                 type: string
                 example: /contracts&page=100
         '400':
@@ -912,16 +1572,18 @@ paths:
         - application/json
       consumes:
         - application/json
-      summary: Add a new `Contract` to the list of contracts
-      description: |
-        Attributes described as 'server-generated' will be ignored by the server. Non-required attributes that are
+      summary: Add a new contract.
+      description: >
+        Read-only attributes will be ignored by the server. Non-required
+        attributes that are
+
         not present will be filled in by the server, using default values.
       parameters:
-      - in: body
-        name: Contract
-        description: Contract item to add
-        schema:
-          $ref: '#/definitions/Contract'
+        - in: body
+          name: Contract
+          description: Contract item to add
+          schema:
+            $ref: '#/definitions/Contract'
       responses:
         '200':
           description: OK
@@ -933,21 +1595,21 @@ paths:
           $ref: '#/responses/Unauthorised'
         '409':
           $ref: '#/responses/Conflict'
+        '415':
+          $ref: '#/responses/WrongType'
         '422':
           $ref: '#/responses/WrongContent'
-        '415':
-          $ref: '#/responses/WrongType' 
-  /contracts/{id}:
+  '/contracts/{id}':
     parameters:
-        - name: id
-          in: path
-          description: ID of Contract
-          required: true
-          type: integer
+      - name: id
+        in: path
+        description: ID of Contract
+        required: true
+        type: integer
     get:
       produces:
         - application/json
-      summary: Find Contract by ID.
+      summary: Get one contract.
       responses:
         '200':
           description: OK
@@ -962,17 +1624,19 @@ paths:
         - application/json
       consumes:
         - application/json
-      summary: Update the Contract with the given ID
-      description: |
-        Attributes described as 'server-generated' will be ignored by the server. Non-required attributes that are
+      summary: Update a contract.
+      description: >
+        Read-only attributes will be ignored by the server. Non-required
+        attributes that are
+
         not present will not be updated.
       parameters:
-      - in: body
-        name: Contract
-        description: Contract to update
-        required: true
-        schema:
-          $ref: '#/definitions/Contract'
+        - in: body
+          name: Contract
+          description: Contract to update
+          required: true
+          schema:
+            $ref: '#/definitions/Contract'
       responses:
         '200':
           description: OK
@@ -986,12 +1650,12 @@ paths:
           $ref: '#/responses/NotFound'
         '409':
           $ref: '#/responses/Conflict'
-        '422':
-          $ref: '#/responses/WrongContent'
         '415':
           $ref: '#/responses/WrongType'
+        '422':
+          $ref: '#/responses/WrongContent'
     delete:
-      summary: Archive the Contract with the given ID.
+      summary: Archive a contract.
       responses:
         '204':
           description: Contract archived successfully
@@ -1001,49 +1665,24 @@ paths:
           $ref: '#/responses/NotFound'
         '409':
           $ref: '#/responses/Conflict'
-  /contracts/types:
-    get:
-      summary: Get all types of contracts.
-      description: |
-        Get all contract types. These types should be `CivilLiability`, `LegalAid`, `Omnium`, `DriverInsurance`, `TravelInsurance`.
-      produces: 
-        - application/json
-      responses:
-        '200':
-          description: OK
-          schema:
-            type: object
-            required: [data, total]
-            properties:
-              data:
-                type: array
-                example: ["CivilLiability", "LegalAid", "Omnium", "DriverInsurance", "TravelInsurance"]
-                items:
-                  type: string
-              total:
-                description: total number of items
-                example: 5
-                type: integer
-        '400':
-          $ref: '#/responses/Malformed'
-        '401':
-          $ref: '#/responses/Unauthorised'
-  /companies/{id}/fleets:
+  '/contracts/{contract_id}/insurances':
     parameters:
-        - in: path
-          name: id
-          description: ID of Company
-          required: true
-          type: integer
-          format: int64
+      - name: contract_id
+        in: path
+        description: ID of Contract
+        required: true
+        type: integer
     get:
-      summary: Get all `Fleet`s of a company.
-      description: |
-        Get a list of `Fleet` objects, eventually filtered by the query
-        parameters. When combining parameters, the conditions are joined by
-        AND. This means the resulting objects must satisfy all filters. All the string filter operations are case insensitive.
       produces:
-      - application/json
+        - application/json
+      summary: Get all vehicle insurances.
+      description: >
+        Get a list of `VehicleInsurance` objects, eventually filtered by the
+        query
+
+        parameters. When combining parameters, the conditions are joined by
+
+        AND. This means the resulting objects must satisfy all filters.
       parameters:
         - in: query
           name: page
@@ -1057,15 +1696,606 @@ paths:
         - in: query
           name: sort
           type: string
-          description: |
-            Sort parameter. Support for this parameter is optional. If supported, any field in the json reprensentation
-            may be used to sort, as follows: ?sort=field,order. For example: `?sort=name,asc`.
+          description: >
+            Sort parameter. Support for this parameter is optional. If
+            supported, any field in the json reprensentation
+
+            may be used to sort, as follows: ?sort=field,order. For example:
+            `?sort=name,asc`.
       responses:
-        200:
+        '200':
           description: OK
           schema:
             type: object
-            required: [data, total, offset, limit]
+            required:
+              - data
+              - total
+              - offset
+              - limit
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/definitions/VehicleInsurance'
+              total:
+                description: Total number of items.
+                example: 50
+                type: integer
+              offset:
+                description: |
+                  The number of items before this page (exclusive). This means
+                  that when offset = 20, this page will contains items 20 to
+                  20 + limit. For limit = 10, it will be 20 - 29 (including 29).
+                example: 20
+                type: integer
+              limit:
+                description: The maximum number of items on a page.
+                example: 10
+                type: integer
+              previous:
+                description: 'Link to the previous page, if applicable.'
+                example: /contracts&page=1
+                type: string
+              next:
+                description: 'Link to the next page, if applicable.'
+                type: string
+                example: /contracts&page=20
+              first:
+                description: 'Link to the first page, if applicable.'
+                type: string
+                example: /contracts&page=0
+              last:
+                description: 'Link to the last page, if applicable.'
+                type: string
+                example: /contracts&page=100
+        '400':
+          $ref: '#/responses/WrongQuery'
+        '401':
+          $ref: '#/responses/Unauthorised'
+    post:
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      summary: Add a new vehicle insurance.
+      description: >
+        Read-only attributes will be ignored by the server. Non-required
+        attributes that are
+
+        not present will be filled in by the server, using default values.
+      parameters:
+        - in: body
+          name: VehicleInsurance
+          description: vehicle insurance item to add
+          schema:
+            $ref: '#/definitions/VehicleInsurance'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/VehicleInsurance'
+        '400':
+          $ref: '#/responses/Malformed'
+        '401':
+          $ref: '#/responses/Unauthorised'
+        '409':
+          $ref: '#/responses/Conflict'
+        '415':
+          $ref: '#/responses/WrongType'
+        '422':
+          $ref: '#/responses/WrongContent'
+  '/contracts/{contract_id}/insurances/{id}':
+    parameters:
+      - name: contract_id
+        in: path
+        description: ID of Contract
+        required: true
+        type: integer
+      - name: id
+        in: path
+        description: ID of vehicle insurance
+        required: true
+        type: integer
+    get:
+      produces:
+        - application/json
+      summary: Get one vehicle insurance.
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/VehicleInsurance'
+        '401':
+          $ref: '#/responses/Unauthorised'
+        '404':
+          $ref: '#/responses/NotFound'
+    put:
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      summary: Update a vehicle insurance.
+      description: >
+        Read-only attributes will be ignored by the server. Non-required
+        attributes that are
+
+        not present will not be updated.
+      parameters:
+        - in: body
+          name: vehicleInsurance
+          description: vehicle insurance to update
+          required: true
+          schema:
+            $ref: '#/definitions/VehicleInsurance'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Contract'
+        '400':
+          $ref: '#/responses/Malformed'
+        '401':
+          $ref: '#/responses/Unauthorised'
+        '404':
+          $ref: '#/responses/NotFound'
+        '409':
+          $ref: '#/responses/Conflict'
+        '415':
+          $ref: '#/responses/WrongType'
+        '422':
+          $ref: '#/responses/WrongContent'
+    delete:
+      summary: Archive a vehicle insurance.
+      responses:
+        '204':
+          description: vehicle insurance archived successfully
+        '401':
+          $ref: '#/responses/Unauthorised'
+        '404':
+          $ref: '#/responses/NotFound'
+        '409':
+          $ref: '#/responses/Conflict'
+  /contracts/types:
+    get:
+      summary: Get all types of contracts.
+      description: |
+        Get a list of all contract types. The types are:
+
+          - `CivilLiability`
+          - `LegalAid`
+          - `Omnium`
+          - `DriverInsurance`
+          - `TravelInsurance`
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+            required:
+              - data
+              - total
+            properties:
+              data:
+                type: array
+                example:
+                  - CivilLiability
+                  - LegalAid
+                  - Omnium
+                  - DriverInsurance
+                  - TravelInsurance
+                items:
+                  type: string
+              total:
+                description: total number of items
+                example: 5
+                type: integer
+        '400':
+          $ref: '#/responses/Malformed'
+        '401':
+          $ref: '#/responses/Unauthorised'
+  /sureties:
+    get:
+      produces:
+        - application/json
+      summary: Get all sureties.
+      description: |
+        Get a list of `Surety` objects, eventually filtered by the query
+        parameters. When combining parameters, the conditions are joined by
+        AND. This means the resulting objects must satisfy all filters.
+      parameters:
+        - in: query
+          name: page
+          type: integer
+          description: The page to query.
+          default: 0
+        - in: query
+          name: limit
+          type: integer
+          description: The number of elements in a page.
+        - in: query
+          name: sort
+          type: string
+          description: >
+            Sort parameter. Support for this parameter is optional. If
+            supported, any field in the json reprensentation
+
+            may be used to sort, as follows: ?sort=field,order. For example:
+            `?sort=name,asc`.
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+            required:
+              - data
+              - total
+              - offset
+              - limit
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/definitions/Surety'
+              total:
+                description: Total number of items.
+                example: 50
+                type: integer
+              offset:
+                description: |
+                  The number of items before this page (exclusive). This means
+                  that when offset = 20, this page will contains items 20 to
+                  20 + limit. For limit = 10, it will be 20 - 29 (including 29).
+                example: 20
+                type: integer
+              limit:
+                description: The maximum number of items on a page.
+                example: 10
+                type: integer
+              previous:
+                description: 'Link to the previous page, if applicable.'
+                example: /sureties&page=1
+                type: string
+              next:
+                description: 'Link to the next page, if applicable.'
+                type: string
+                example: /sureties&page=20
+              first:
+                description: 'Link to the first page, if applicable.'
+                type: string
+                example: /sureties&page=0
+              last:
+                description: 'Link to the last page, if applicable.'
+                type: string
+                example: /sureties&page=100
+        '400':
+          $ref: '#/responses/WrongQuery'
+        '401':
+          $ref: '#/responses/Unauthorised'
+    post:
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      summary: Add a new surety.
+      description: >
+        Read-only attributes will be ignored by the server. Non-required
+        attributes that are
+
+        not present will be filled in by the server, using default values.
+      parameters:
+        - in: body
+          name: Surety
+          description: Surety item to add
+          schema:
+            $ref: '#/definitions/Surety'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Surety'
+        '400':
+          $ref: '#/responses/Malformed'
+        '401':
+          $ref: '#/responses/Unauthorised'
+        '409':
+          $ref: '#/responses/Conflict'
+        '415':
+          $ref: '#/responses/WrongType'
+        '422':
+          $ref: '#/responses/WrongContent'
+  '/sureties/{id}':
+    parameters:
+      - name: id
+        in: path
+        description: ID of Surety
+        required: true
+        type: integer
+    get:
+      produces:
+        - application/json
+      summary: Get one surety.
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Surety'
+        '401':
+          $ref: '#/responses/Unauthorised'
+        '404':
+          $ref: '#/responses/NotFound'
+    put:
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      summary: Update a surety.
+      description: >
+        Read-only attributes will be ignored by the server. Non-required
+        attributes that are
+
+        not present will not be updated.
+      parameters:
+        - in: body
+          name: Surety
+          description: surety to update
+          required: true
+          schema:
+            $ref: '#/definitions/Surety'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Surety'
+        '400':
+          $ref: '#/responses/Malformed'
+        '401':
+          $ref: '#/responses/Unauthorised'
+        '404':
+          $ref: '#/responses/NotFound'
+        '409':
+          $ref: '#/responses/Conflict'
+        '415':
+          $ref: '#/responses/WrongType'
+        '422':
+          $ref: '#/responses/WrongContent'
+    delete:
+      summary: Archive a surety.
+      responses:
+        '204':
+          description: Surety archived successfully
+        '401':
+          $ref: '#/responses/Unauthorised'
+        '404':
+          $ref: '#/responses/NotFound'
+        '409':
+          $ref: '#/responses/Conflict'
+  /special-conditions:
+    get:
+      produces:
+        - application/json
+      summary: |
+        Get all special conditions.
+      description: >
+        Get a list of `SpecialCondition` objects, eventually filtered by the
+        query
+
+        parameters. When combining parameters, the conditions are joined by
+
+        AND. This means the resulting objects must satisfy all filters. All the
+        string filter operations are case insensitive.
+      parameters:
+        - in: query
+          name: page
+          type: integer
+          description: The page to query.
+          default: 0
+        - in: query
+          name: limit
+          type: integer
+          description: The number of elements in a page.
+        - in: query
+          name: sort
+          type: string
+          description: >
+            Sort parameter. Support for this parameter is optional. If
+            supported, any field in the json reprensentation
+
+            may be used to sort, as follows: ?sort=field,order. For example:
+            `?sort=name,asc`.
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+            required:
+              - data
+              - total
+              - offset
+              - limit
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/definitions/SpecialCondition'
+              total:
+                description: Total number of items.
+                example: 50
+                type: integer
+              offset:
+                description: |
+                  The number of items before this page (exclusive). This means
+                  that when offset = 20, this page will contains items 20 to
+                  20 + limit. For limit = 10, it will be 20 - 29 (including 29).
+                example: 20
+                type: integer
+              limit:
+                description: The maximum number of items on a page.
+                example: 10
+                type: integer
+              previous:
+                description: 'Link to the previous page, if applicable.'
+                example: /special-conditions&page=1
+                type: string
+              next:
+                description: 'Link to the next page, if applicable.'
+                type: string
+                example: /special-conditions&page=20
+              first:
+                description: 'Link to the first page, if applicable.'
+                type: string
+                example: /special-conditions&page=0
+              last:
+                description: 'Link to the last page, if applicable.'
+                type: string
+                example: /special-conditions&page=100
+        '400':
+          $ref: '#/responses/WrongQuery'
+        '401':
+          $ref: '#/responses/Unauthorised'
+    post:
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      summary: Add new special condition.
+      description: >
+        Read-only attributes will be ignored by the server. Non-required
+        attributes that are
+
+        not present will be filled in by the server, using default values.
+      parameters:
+        - in: body
+          name: SpecialCondition
+          required: true
+          schema:
+            $ref: '#/definitions/SpecialCondition'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/SpecialCondition'
+        '400':
+          $ref: '#/responses/Malformed'
+        '401':
+          $ref: '#/responses/Unauthorised'
+        '415':
+          $ref: '#/responses/WrongType'
+        '422':
+          $ref: '#/responses/WrongContent'
+  '/special-conditions/{id}':
+    parameters:
+      - in: path
+        name: id
+        description: ID of SpecialCondition
+        required: true
+        type: integer
+        format: int64
+    get:
+      produces:
+        - application/json
+      summary: Get one special condition.
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/SpecialCondition'
+        '401':
+          $ref: '#/responses/Unauthorised'
+        '404':
+          $ref: '#/responses/NotFound'
+    put:
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      summary: Update a special condition.
+      description: >
+        Read-only attributes will be ignored by the server. Non-required
+        attributes that are
+
+        not present will not be updated.
+      parameters:
+        - in: body
+          name: SpecialCondition
+          required: true
+          schema:
+            $ref: '#/definitions/SpecialCondition'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/SpecialCondition'
+        '400':
+          $ref: '#/responses/Malformed'
+        '401':
+          $ref: '#/responses/Unauthorised'
+        '404':
+          $ref: '#/responses/NotFound'
+        '415':
+          $ref: '#/responses/WrongType'
+        '422':
+          $ref: '#/responses/WrongContent'
+    delete:
+      summary: Archive a special condition.
+      responses:
+        '204':
+          description: SpecialCondition archived successfully.
+        '401':
+          $ref: '#/responses/Unauthorised'
+        '404':
+          $ref: '#/responses/NotFound'
+        '409':
+          $ref: '#/responses/Conflict'
+  '/companies/{id}/fleets':
+    parameters:
+      - in: path
+        name: id
+        description: ID of Company
+        required: true
+        type: integer
+        format: int64
+    get:
+      summary: Get all fleets of a company.
+      description: >
+        Get a list of `Fleet` objects, eventually filtered by the query
+
+        parameters. When combining parameters, the conditions are joined by
+
+        AND. This means the resulting objects must satisfy all filters. All the
+        string filter operations are case insensitive.
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: page
+          type: integer
+          description: The page to query.
+          default: 0
+        - in: query
+          name: limit
+          type: integer
+          description: The number of elements in a page.
+        - in: query
+          name: sort
+          type: string
+          description: >
+            Sort parameter. Support for this parameter is optional. If
+            supported, any field in the json reprensentation
+
+            may be used to sort, as follows: ?sort=field,order. For example:
+            `?sort=name,asc`.
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+            required:
+              - data
+              - total
+              - offset
+              - limit
             properties:
               data:
                 type: array
@@ -1087,19 +2317,19 @@ paths:
                 example: 10
                 type: integer
               previous:
-                description: Link to the previous page, if applicable.
+                description: 'Link to the previous page, if applicable.'
                 example: /fleet&page=1
                 type: string
               next:
-                description: Link to the next page, if applicable.
+                description: 'Link to the next page, if applicable.'
                 type: string
                 example: /fleet&page=20
               first:
-                description: Link to the first page, if applicable.
+                description: 'Link to the first page, if applicable.'
                 type: string
                 example: /fleet&page=0
               last:
-                description: Link to the last page, if applicable.
+                description: 'Link to the last page, if applicable.'
                 type: string
                 example: /fleet&page=100
         '400':
@@ -1111,17 +2341,18 @@ paths:
         - application/json
       consumes:
         - application/json
-      summary: Add a new `Fleet` to a company.
-      description: |
-        Add a new fleet to an existing company.
-        Attributes described as 'server-generated' will be ignored by the server. Non-required attributes that are
+      summary: Add a new fleet.
+      description: >
+        Read-only attributes will be ignored by the server. Non-required
+        attributes that are
+
         not present will be filled in by the server, using default values.
       parameters:
-      - in: body
-        name: Fleet
-        description: Fleet item to add
-        schema:
-          $ref: '#/definitions/Fleet'
+        - in: body
+          name: Fleet
+          description: Fleet item to add
+          schema:
+            $ref: '#/definitions/Fleet'
       responses:
         '200':
           description: OK
@@ -1135,27 +2366,27 @@ paths:
           description: The company was not found.
         '409':
           $ref: '#/responses/Conflict'
-        '422':
-          $ref: '#/responses/WrongContent'
         '415':
           $ref: '#/responses/WrongType'
-  /companies/{companyId}/fleets/{id}:
+        '422':
+          $ref: '#/responses/WrongContent'
+  '/companies/{companyId}/fleets/{id}':
     parameters:
-        - in: path
-          name: companyId
-          description: ID of Company
-          required: true
-          type: integer
-          format: int64
-        - in: path
-          name: id
-          description: ID of Fleet
-          required: true
-          type: integer
+      - in: path
+        name: companyId
+        description: ID of Company
+        required: true
+        type: integer
+        format: int64
+      - in: path
+        name: id
+        description: ID of Fleet
+        required: true
+        type: integer
     get:
       produces:
         - application/json
-      summary: Find Fleet by ID.
+      summary: Find one fleet.
       responses:
         '200':
           description: OK
@@ -1170,17 +2401,19 @@ paths:
         - application/json
       consumes:
         - application/json
-      summary: Update the Fleet with the given ID
-      description: |
-        Attributes described as 'server-generated' will be ignored by the server. Non-required attributes that are
+      summary: Update a fleet.
+      description: >
+        Read-only attributes will be ignored by the server. Non-required
+        attributes that are
+
         not present will not be updated.
       parameters:
-      - in: body
-        name: Fleet
-        description: The fleet to update
-        required: true
-        schema:
-          $ref: '#/definitions/Fleet'
+        - in: body
+          name: Fleet
+          description: The fleet to update
+          required: true
+          schema:
+            $ref: '#/definitions/Fleet'
       responses:
         '200':
           description: OK
@@ -1194,12 +2427,12 @@ paths:
           $ref: '#/responses/NotFound'
         '409':
           $ref: '#/responses/Conflict'
-        '422':
-          $ref: '#/responses/WrongContent'
         '415':
           $ref: '#/responses/WrongType'
+        '422':
+          $ref: '#/responses/WrongContent'
     delete:
-      summary: Archive the Fleet with the given ID.
+      summary: Archive a fleet.
       responses:
         '204':
           description: Fleet archived successfully
@@ -1209,27 +2442,31 @@ paths:
           $ref: '#/responses/NotFound'
         '409':
           $ref: '#/responses/Conflict'
-  /companies/{companyId}/fleets/{fleetId}/vehicles: 
+  '/companies/{companyId}/fleets/{fleetId}/vehicles':
     parameters:
-        - in: path
-          name: companyId
-          description: ID of Company
-          required: true
-          type: integer
-          format: int64
-        - in: path
-          name: fleetId
-          description: ID of Fleet
-          required: true
-          type: integer
+      - in: path
+        name: companyId
+        description: ID of Company
+        required: true
+        type: integer
+        format: int64
+      - in: path
+        name: fleetId
+        description: ID of Fleet
+        required: true
+        type: integer
     get:
-      summary: Get a list of Vehicle objects
-      description: |
-        Get a list of `Vehicle` objects, eventually filtered by the query
+      summary: Get all vehicles.
+      description: >
+        Get a list of `Vehicle` objects for a fleet, eventually filtered by the
+        query
+
         parameters. When combining parameters, the conditions are joined by
-        AND. This means the resulting objects must satisfy all filters. All the string filter operations are case insensitive.
+
+        AND. This means the resulting objects must satisfy all filters. All the
+        string filter operations are case insensitive.
       produces:
-      - application/json
+        - application/json
       parameters:
         - in: query
           name: licensePlate
@@ -1263,15 +2500,22 @@ paths:
         - in: query
           name: sort
           type: string
-          description: |
-            Sort parameter. Support for this parameter is optional. If supported, any field in the json reprensentation
-            may be used to sort, as follows: ?sort=field,order. For example: `?sort=name,asc`.
+          description: >
+            Sort parameter. Support for this parameter is optional. If
+            supported, any field in the json reprensentation
+
+            may be used to sort, as follows: ?sort=field,order. For example:
+            `?sort=name,asc`.
       responses:
-        200:
+        '200':
           description: OK
           schema:
             type: object
-            required: [data, total, offset, limit]
+            required:
+              - data
+              - total
+              - offset
+              - limit
             properties:
               data:
                 type: array
@@ -1293,47 +2537,50 @@ paths:
                 example: 10
                 type: integer
               previous:
-                description: Link to the previous page, if applicable.
+                description: 'Link to the previous page, if applicable.'
                 example: /vehicles&page=1
                 type: string
               next:
-                description: Link to the next page, if applicable.
+                description: 'Link to the next page, if applicable.'
                 type: string
                 example: /vehicles&page=20
               first:
-                description: Link to the first page, if applicable.
+                description: 'Link to the first page, if applicable.'
                 type: string
                 example: /vehicles&page=0
               last:
-                description: Link to the last page, if applicable.
+                description: 'Link to the last page, if applicable.'
                 type: string
                 example: /vehicles&page=100
         '400':
           $ref: '#/responses/WrongQuery'
         '401':
           $ref: '#/responses/Unauthorised'
-  /companies/{companyId}/fleets/{fleetId}/vehicles/{id}:
+  '/companies/{companyId}/fleets/{fleetId}/vehicles/{id}':
     parameters:
-        - in: path
-          name: companyId
-          description: ID of Company
-          required: true
-          type: integer
-          format: int64
-        - in: path
-          name: fleetId
-          description: ID of Fleet
-          required: true
-          type: integer
-        - name: id
-          in: path
-          description: ID of Vehicle
-          required: true
-          type: integer
+      - in: path
+        name: companyId
+        description: ID of Company
+        required: true
+        type: integer
+        format: int64
+      - in: path
+        name: fleetId
+        description: ID of Fleet
+        required: true
+        type: integer
+      - name: id
+        in: path
+        description: ID of Vehicle
+        required: true
+        type: integer
     get:
       produces:
         - application/json
-      summary: Find Company by ID.
+      summary: Get one vehicle.
+      description: >
+        Get a `Vehicle`, specified by its ID. The vehicle must have a `Fleet`,
+        which in turn must have a `Company`.
       responses:
         '200':
           description: OK
@@ -1347,7 +2594,7 @@ paths:
     get:
       produces:
         - application/json
-      summary: Get a list of Roles.
+      summary: Get all roles.
       description: |
         Get a list of `Role` objects, eventually filtered by the query
         parameters. When combining parameters, the conditions are joined by
@@ -1370,15 +2617,22 @@ paths:
         - in: query
           name: sort
           type: string
-          description: |
-            Sort parameter. Support for this parameter is optional. If supported, any field in the json reprensentation
-            may be used to sort, as follows: ?sort=field,order. For example: `?sort=name,asc`.
+          description: >
+            Sort parameter. Support for this parameter is optional. If
+            supported, any field in the json reprensentation
+
+            may be used to sort, as follows: ?sort=field,order. For example:
+            `?sort=name,asc`.
       responses:
         '200':
           description: OK
           schema:
             type: object
-            required: [data, total, offset, limit]
+            required:
+              - data
+              - total
+              - offset
+              - limit
             properties:
               data:
                 type: array
@@ -1400,19 +2654,19 @@ paths:
                 example: 10
                 type: integer
               previous:
-                description: Link to the previous page, if applicable.
+                description: 'Link to the previous page, if applicable.'
                 example: /roles&page=1
                 type: string
               next:
-                description: Link to the next page, if applicable.
+                description: 'Link to the next page, if applicable.'
                 type: string
                 example: /roles&page=20
               first:
-                description: Link to the first page, if applicable.
+                description: 'Link to the first page, if applicable.'
                 type: string
                 example: /roles&page=0
               last:
-                description: Link to the last page, if applicable.
+                description: 'Link to the last page, if applicable.'
                 type: string
                 example: /roles&page=100
         '400':
@@ -1424,9 +2678,11 @@ paths:
         - application/json
       consumes:
         - application/json
-      summary: Add a new `Role` object.
-      description: |
-        Attributes described as 'server-generated' will be ignored by the server. Non-required attributes that are
+      summary: Add a new role.
+      description: >
+        Read-only attributes will be ignored by the server. Non-required
+        attributes that are
+
         not present will be filled in by the server, using default values.
       parameters:
         - in: body
@@ -1434,7 +2690,7 @@ paths:
           description: The data to save
           required: true
           schema:
-            $ref: "#/definitions/Role"
+            $ref: '#/definitions/Role'
       responses:
         '200':
           description: OK
@@ -1444,21 +2700,21 @@ paths:
           $ref: '#/responses/Malformed'
         '401':
           $ref: '#/responses/Unauthorised'
-        '422':
-          $ref: '#/responses/WrongContent'
         '415':
           $ref: '#/responses/WrongType'
-  /auth/roles/{id}:
+        '422':
+          $ref: '#/responses/WrongContent'
+  '/auth/roles/{id}':
     parameters:
-        - in: path
-          name: id
-          description: ID of Role
-          required: true
-          type: integer
+      - in: path
+        name: id
+        description: ID of Role
+        required: true
+        type: integer
     get:
       produces:
         - application/json
-      description: Find Role by ID
+      summary: Get one role.
       responses:
         '200':
           description: OK
@@ -1473,9 +2729,11 @@ paths:
         - application/json
       consumes:
         - application/json
-      summary: Update a `Role` object.
-      description: |
-        Attributes described as 'server-generated' will be ignored by the server. Non-required attributes that are
+      summary: Update a role.
+      description: >
+        Read-only attributes will be ignored by the server. Non-required
+        attributes that are
+
         not present will not be updated.
       parameters:
         - in: body
@@ -1483,24 +2741,24 @@ paths:
           description: Role to be updated
           required: true
           schema:
-            $ref: "#/definitions/Role"
+            $ref: '#/definitions/Role'
       responses:
         '200':
           description: OK
           schema:
-            $ref: "#/definitions/Role"
+            $ref: '#/definitions/Role'
         '400':
           $ref: '#/responses/Malformed'
         '401':
           $ref: '#/responses/Unauthorised'
         '404':
           $ref: '#/responses/NotFound'
-        '422':
-          $ref: '#/responses/WrongContent'
         '415':
           $ref: '#/responses/WrongType'
+        '422':
+          $ref: '#/responses/WrongContent'
     delete:
-      summary: Archive the Role with the given ID.
+      summary: Archive a role.
       responses:
         '204':
           description: Role archived successfully
@@ -1510,7 +2768,7 @@ paths:
           $ref: '#/responses/NotFound'
         '409':
           $ref: '#/responses/Conflict'
-  /auth/roles/{id}/permissions:
+  '/auth/roles/{id}/permissions':
     parameters:
       - in: path
         name: id
@@ -1521,9 +2779,13 @@ paths:
       produces:
         - application/json
       summary: Get a list of permissions for a Role.
-      description: |
-        Get all permissions that a certain role has, eventually filtered by the query parameters.
-        When combining parameters, the conditions are joind by AND. This means the resulting objects must
+      description: >
+        Get all permissions that a certain role has, eventually filtered by the
+        query parameters.
+
+        When combining parameters, the conditions are joind by AND. This means
+        the resulting objects must
+
         satisfy all filters. All string filters are case-insensitive.
       parameters:
         - in: query
@@ -1546,15 +2808,22 @@ paths:
         - in: query
           name: sort
           type: string
-          description: |
-            Sort parameter. Support for this parameter is optional. If supported, any field in the json reprensentation
-            may be used to sort, as follows: ?sort=field,order. For example: `?sort=name,asc`.
+          description: >
+            Sort parameter. Support for this parameter is optional. If
+            supported, any field in the json reprensentation
+
+            may be used to sort, as follows: ?sort=field,order. For example:
+            `?sort=name,asc`.
       responses:
-        200:
+        '200':
           description: OK
           schema:
             type: object
-            required: [data, total, offset, limit]
+            required:
+              - data
+              - total
+              - offset
+              - limit
             properties:
               data:
                 type: array
@@ -1576,19 +2845,19 @@ paths:
                 example: 10
                 type: integer
               previous:
-                description: Link to the previous page, if applicable.
+                description: 'Link to the previous page, if applicable.'
                 example: /users&page=1
                 type: string
               next:
-                description: Link to the next page, if applicable.
+                description: 'Link to the next page, if applicable.'
                 type: string
                 example: /users&page=20
               first:
-                description: Link to the first page, if applicable.
+                description: 'Link to the first page, if applicable.'
                 type: string
                 example: /users&page=0
               last:
-                description: Link to the last page, if applicable.
+                description: 'Link to the last page, if applicable.'
                 type: string
                 example: /users&page=100
         '400':
@@ -1597,10 +2866,15 @@ paths:
           $ref: '#/responses/Unauthorised'
     put:
       summary: Set the Permissions of a Role.
-      description: |
-        Set the Permissions for a Role. You must pass the list of permissions you want a role to have. After this operation
-        the permissions should match exactly with the list you sent: permissions that were not in your list will be removed,
-        and permissions that are in your list will be added (or left the same if the role already has it).
+      description: >
+        Set the Permissions for a Role. You must pass the list of permissions
+        you want a role to have. After this operation
+
+        the permissions should match exactly with the list you sent: permissions
+        that were not in your list will be removed,
+
+        and permissions that are in your list will be added (or left the same if
+        the role already has it).
       produces:
         - application/json
       consumes:
@@ -1615,26 +2889,32 @@ paths:
               type: integer
               description: The ID's of the permissions.
       responses:
-        204:
+        '204':
           description: Permissions were updated succesfully.
-        400:
+        '400':
           $ref: '#/responses/Malformed'
         '401':
           $ref: '#/responses/Unauthorised'
-        404:
+        '404':
           description: The role with the given ID does not exist.
-        409:
-          description: Could not update one of the permissions (e.g. because they don't exist)
-        415:
+        '409':
+          description: >-
+            Could not update one of the permissions (e.g. because they don't
+            exist)
+        '415':
           $ref: '#/responses/WrongType'
   /auth/permissions:
     get:
       produces:
         - application/json
       summary: Get a list of permissions.
-      description: |
-        Get a list of `Permission` objects, eventually filtered by the query parameters.
-        When combining parameters, the conditions are joind by AND. This means the resulting objects must
+      description: >
+        Get a list of `Permission` objects, eventually filtered by the query
+        parameters.
+
+        When combining parameters, the conditions are joind by AND. This means
+        the resulting objects must
+
         satisfy all filters. All string filters are case-insensitive.
       parameters:
         - in: query
@@ -1657,15 +2937,22 @@ paths:
         - in: query
           name: sort
           type: string
-          description: |
-            Sort parameter. Support for this parameter is optional. If supported, any field in the json reprensentation
-            may be used to sort, as follows: ?sort=field,order. For example: `?sort=name,asc`.
+          description: >
+            Sort parameter. Support for this parameter is optional. If
+            supported, any field in the json reprensentation
+
+            may be used to sort, as follows: ?sort=field,order. For example:
+            `?sort=name,asc`.
       responses:
-        200:
+        '200':
           description: OK
           schema:
             type: object
-            required: [data, total, offset, limit]
+            required:
+              - data
+              - total
+              - offset
+              - limit
             properties:
               data:
                 type: array
@@ -1687,19 +2974,19 @@ paths:
                 example: 10
                 type: integer
               previous:
-                description: Link to the previous page, if applicable.
+                description: 'Link to the previous page, if applicable.'
                 example: /users&page=1
                 type: string
               next:
-                description: Link to the next page, if applicable.
+                description: 'Link to the next page, if applicable.'
                 type: string
                 example: /users&page=20
               first:
-                description: Link to the first page, if applicable.
+                description: 'Link to the first page, if applicable.'
                 type: string
                 example: /users&page=0
               last:
-                description: Link to the last page, if applicable.
+                description: 'Link to the last page, if applicable.'
                 type: string
                 example: /users&page=100
         '400':
@@ -1709,55 +2996,86 @@ paths:
   /auth/login:
     post:
       produces:
-        - application/text
+        - application/json
       consumes:
         - application/json
       summary: Get an access token.
-      security: []
-      description: |
-        Request a security token to access the application. The response is a JSON Web Token (JWT). The response in this
-        specification only specifies what fields must be included in the payload of the JWT. However, the response MUST
+      description: >
+        Request a security token to access the application. The response is a
+        JSON Web Token (JWT). The response in this
+
+        specification only specifies what fields must be included in the payload
+        of the JWT. However, the response MUST
+
         be a full JWT.
       parameters:
         - in: body
           name: auth
           description: The login data of the user
+          required: true
           schema:
             $ref: '#/definitions/Auth'
       responses:
         '200':
           description: OK
           schema:
-            $ref: '#/definitions/JWT'
+            type: object
+            required:
+              - access
+              - refresh
+            properties:
+              access:
+                $ref: '#/definitions/AccessToken'
+              refresh:
+                $ref: '#/definitions/RefreshToken'
         '401':
           $ref: '#/responses/Unauthorised'
   /auth/refresh:
     post:
       produces:
-        - application/text
+        - application/json
       consumes:
         - application/json
       summary: Get a new access token.
-      description: |
-        Request a security token to access the application, based on an existing token.  The response is a JSON Web Token (JWT).
-        The response in this specification only specifies what fields must be included in the payload of the JWT. However, the
+      description: >
+        Request a access token to access the application, based on an existing
+        token.  The response is a JSON Web Token (JWT).
+
+        The response in this specification only specifies what fields must be
+        included in the payload of the JWT. However, the
+
         response MUST be a full JWT.
+      parameters:
+        - in: body
+          name: token
+          required: true
+          description: The refresh token.
+          schema:
+            $ref: '#/definitions/RefreshToken'
       responses:
         '200':
           description: OK
           schema:
-            $ref: '#/definitions/JWT'
+            type: object
+            required:
+              - access
+            properties:
+              access:
+                $ref: '#/definitions/AccessToken'
         '401':
           $ref: '#/responses/Unauthorised'
   /users:
     get:
       produces:
         - application/json
-      summary: Get a list of User objects
-      description: |
+      summary: Get all users.
+      description: >
         Get a list of `User` objects, eventually filtered by the query
+
         parameters. When combining parameters, the conditions are joined by
-        AND. This means the resulting objects must satisfy all filters. All the string filter operations are case insensitive.
+
+        AND. This means the resulting objects must satisfy all filters. All the
+        string filter operations are case insensitive.
       parameters:
         - in: query
           name: email
@@ -1784,15 +3102,22 @@ paths:
         - in: query
           name: sort
           type: string
-          description: |
-            Sort parameter. Support for this parameter is optional. If supported, any field in the json reprensentation
-            may be used to sort, as follows: ?sort=field,order. For example: `?sort=name,asc`.
+          description: >
+            Sort parameter. Support for this parameter is optional. If
+            supported, any field in the json reprensentation
+
+            may be used to sort, as follows: ?sort=field,order. For example:
+            `?sort=name,asc`.
       responses:
-        200:
+        '200':
           description: OK
           schema:
             type: object
-            required: [data, total, offset, limit]
+            required:
+              - data
+              - total
+              - offset
+              - limit
             properties:
               data:
                 type: array
@@ -1814,19 +3139,19 @@ paths:
                 example: 10
                 type: integer
               previous:
-                description: Link to the previous page, if applicable.
+                description: 'Link to the previous page, if applicable.'
                 example: /users&page=1
                 type: string
               next:
-                description: Link to the next page, if applicable.
+                description: 'Link to the next page, if applicable.'
                 type: string
                 example: /users&page=20
               first:
-                description: Link to the first page, if applicable.
+                description: 'Link to the first page, if applicable.'
                 type: string
                 example: /users&page=0
               last:
-                description: Link to the last page, if applicable.
+                description: 'Link to the last page, if applicable.'
                 type: string
                 example: /users&page=100
         '400':
@@ -1838,9 +3163,11 @@ paths:
         - application/json
       consumes:
         - application/json
-      summary: Add a new `User` to the list of users
-      description: |
-        Attributes described as 'server-generated' will be ignored by the server. Non-required attributes that are
+      summary: Add a new user.
+      description: >
+        Read-only attributes will be ignored by the server. Non-required
+        attributes that are
+
         not present will be filled in by the server, using default values.
       parameters:
         - in: body
@@ -1860,13 +3187,13 @@ paths:
           $ref: '#/responses/Unauthorised'
         '409':
           $ref: '#/responses/Conflict'
-        '422':
-          $ref: '#/responses/WrongContent'
         '415':
           $ref: '#/responses/WrongType'
-  /users/{id}:
+        '422':
+          $ref: '#/responses/WrongContent'
+  '/users/{id}':
     parameters:
-     -  name: id
+      - name: id
         in: path
         description: ID of User
         required: true
@@ -1874,7 +3201,7 @@ paths:
     get:
       produces:
         - application/json
-      summary: Find User by ID
+      summary: Get one user.
       responses:
         '200':
           description: OK
@@ -1889,9 +3216,11 @@ paths:
         - application/json
       consumes:
         - application/json
-      summary: Update the ´User` with the given ID
-      description: |
-        Attributes described as 'server-generated' will be ignored by the server. Non-required attributes that are
+      summary: Update a user.
+      description: >
+        Read-only attributes will be ignored by the server. Non-required
+        attributes that are
+
         not present will not be updated.
       parameters:
         - in: body
@@ -1913,12 +3242,12 @@ paths:
           $ref: '#/responses/NotFound'
         '409':
           $ref: '#/responses/Conflict'
-        '422':
-          $ref: '#/responses/WrongContent'
         '415':
           $ref: '#/responses/WrongType'
+        '422':
+          $ref: '#/responses/WrongContent'
     delete:
-      description: Archive the User with the given ID.
+      summary: Archive a user.
       responses:
         '204':
           description: Role archived successfully
@@ -1928,7 +3257,62 @@ paths:
           $ref: '#/responses/NotFound'
         '409':
           $ref: '#/responses/Conflict'
-  /users/{id}/functions:
+  /users/me:
+    get:
+      produces:
+        - application/json
+      summary: Get current user.
+      description: >
+        Get information of the current user, based on the Authorization header.
+        This path does not require a 
+
+        Function header.
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/User'
+        '401':
+          $ref: '#/responses/Unauthorised'
+        '404':
+          $ref: '#/responses/NotFound'
+    put:
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      summary: Update current user.
+      description: >
+        Read-only attributes will be ignored by the server. Non-required
+        attributes that are
+
+        not present will not be updated. This path does require a Function
+        header!
+      parameters:
+        - in: body
+          name: User
+          description: User to add
+          required: true
+          schema:
+            $ref: '#/definitions/User'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/User'
+        '400':
+          $ref: '#/responses/Malformed'
+        '401':
+          $ref: '#/responses/Unauthorised'
+        '404':
+          $ref: '#/responses/NotFound'
+        '409':
+          $ref: '#/responses/Conflict'
+        '415':
+          $ref: '#/responses/WrongType'
+        '422':
+          $ref: '#/responses/WrongContent'
+  '/users/{id}/functions':
     parameters:
       - name: id
         in: path
@@ -1938,11 +3322,15 @@ paths:
     get:
       produces:
         - application/json
-      summary: Get a list of Functions for a user.
-      description: |
-        Get a list of `Function` objects for a `User`, eventually filtered by the query
+      summary: Get all functions for a user.
+      description: >
+        Get a list of `Function` objects for a `User`, eventually filtered by
+        the query
+
         parameters. When combining parameters, the conditions are joined by
+
         AND. This means the resulting objects must satisfy all filters.
+
         All the string filter operations are case insensitive.
       parameters:
         - in: query
@@ -1965,20 +3353,27 @@ paths:
         - in: query
           name: sort
           type: string
-          description: |
-            Sort parameter. Support for this parameter is optional. If supported, any field in the json reprensentation
-            may be used to sort, as follows: ?sort=field,order. For example: `?sort=name,asc`.
+          description: >
+            Sort parameter. Support for this parameter is optional. If
+            supported, any field in the json reprensentation
+
+            may be used to sort, as follows: ?sort=field,order. For example:
+            `?sort=name,asc`.
       responses:
         '200':
           description: OK
           schema:
             type: object
-            required: [data, total, offset, limit]
+            required:
+              - data
+              - total
+              - offset
+              - limit
             properties:
               data:
                 type: array
                 items:
-                  $ref: '#/definitions/Role'
+                  $ref: '#/definitions/Function'
               total:
                 description: Total number of items.
                 example: 50
@@ -1995,19 +3390,19 @@ paths:
                 example: 10
                 type: integer
               previous:
-                description: Link to the previous page, if applicable.
+                description: 'Link to the previous page, if applicable.'
                 example: /roles&page=1
                 type: string
               next:
-                description: Link to the next page, if applicable.
+                description: 'Link to the next page, if applicable.'
                 type: string
                 example: /roles&page=20
               first:
-                description: Link to the first page, if applicable.
+                description: 'Link to the first page, if applicable.'
                 type: string
                 example: /roles&page=0
               last:
-                description: Link to the last page, if applicable.
+                description: 'Link to the last page, if applicable.'
                 type: string
                 example: /roles&page=100
         '400':
@@ -2015,9 +3410,9 @@ paths:
         '401':
           $ref: '#/responses/Unauthorised'
     post:
-      summary: Add a new function to a User.
+      summary: Add a new function.
       description: |
-        Add a new function to a User
+        Add a new function to a user.
       produces:
         - application/json
       consumes:
@@ -2029,21 +3424,23 @@ paths:
           schema:
             $ref: '#/definitions/Function'
       responses:
-        204:
+        '204':
           description: Function was added succesfully.
           schema:
             $ref: '#/definitions/Function'
-        400:
+        '400':
           $ref: '#/responses/Malformed'
         '401':
           $ref: '#/responses/Unauthorised'
-        404:
+        '404':
           description: The user with the given ID does not exist.
-        409:
-          description: The Function already exists, the triple (user, role , company) should be unique
-        415:
+        '409':
+          description: >-
+            The Function already exists, the triple (user, role , company)
+            should be unique
+        '415':
           $ref: '#/responses/WrongType'
-  /users/{userId}/functions/{id}:
+  '/users/{userId}/functions/{id}':
     parameters:
       - name: userId
         in: path
@@ -2056,7 +3453,7 @@ paths:
         required: true
         type: integer
     delete:
-      description: Archive the Function with the given ID.
+      summary: Archive a function.
       responses:
         '204':
           description: Function archived successfully
@@ -2064,32 +3461,158 @@ paths:
           $ref: '#/responses/Unauthorised'
         '404':
           $ref: '#/responses/NotFound'
-    
-      
+  /users/me/functions:
+    get:
+      produces:
+        - application/json
+      summary: Get all functions for the current user.
+      description: >
+        Get a list of `Function` objects for a `User`, eventually filtered by
+        the query
+
+        parameters. When combining parameters, the conditions are joined by
+
+        AND. This means the resulting objects must satisfy all filters.
+
+        All the string filter operations are case insensitive. This path does
+        not require a Function header.
+      parameters:
+        - in: query
+          name: company
+          description: Filter by company
+          type: integer
+        - in: query
+          name: role
+          description: Filter by role
+          type: integer
+        - in: query
+          name: page
+          type: integer
+          description: The page to query.
+          default: 0
+        - in: query
+          name: limit
+          type: integer
+          description: The number of elements in a page.
+        - in: query
+          name: sort
+          type: string
+          description: >
+            Sort parameter. Support for this parameter is optional. If
+            supported, any field in the json reprensentation
+
+            may be used to sort, as follows: ?sort=field,order. For example:
+            `?sort=name,asc`.
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+            required:
+              - data
+              - total
+              - offset
+              - limit
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/definitions/Function'
+              total:
+                description: Total number of items.
+                example: 50
+                type: integer
+              offset:
+                description: |
+                  The number of items before this page (exclusive). This means
+                  that when offset = 20, this page will contains items 20 to
+                  20 + limit. For limit = 10, it will be 20 - 29 (including 29).
+                example: 20
+                type: integer
+              limit:
+                description: The maximum number of items on a page.
+                example: 10
+                type: integer
+              previous:
+                description: 'Link to the previous page, if applicable.'
+                example: /roles&page=1
+                type: string
+              next:
+                description: 'Link to the next page, if applicable.'
+                type: string
+                example: /roles&page=20
+              first:
+                description: 'Link to the first page, if applicable.'
+                type: string
+                example: /roles&page=0
+              last:
+                description: 'Link to the last page, if applicable.'
+                type: string
+                example: /roles&page=100
+        '400':
+          $ref: '#/responses/WrongQuery'
+        '401':
+          $ref: '#/responses/Unauthorised'
+  '/users/me/functions/{id}':
+    parameters:
+      - name: id
+        in: path
+        description: ID of Function
+        required: true
+        type: integer
+    get:
+      produces:
+        - application/json
+      summary: Get one function.
+      description: |
+        This path does not require a Function header.
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Function'
+        '401':
+          $ref: '#/responses/Unauthorised'
+        '404':
+          $ref: '#/responses/NotFound'
 responses:
   Malformed:
     description: The JSON is malformed. This is a syntax error.
   WrongQuery:
     description: A query parameter has a wrong type.
   WrongContent:
-    description: |
+    description: >
       The JSON is has correct syntax, but an attribute was missing or one of the
-      attributes has incorrect content. All attributes with errors or missing ones
+
+      attributes has incorrect content. All attributes with errors or missing
+      ones
+
       should be reported back in the error object.
     schema:
       $ref: '#/definitions/Error'
   Conflict:
-    description: |
+    description: >
       There was a conflict while updating or saving the model. This is not the
+
       same as a `422` code. This response indicates the request has a correct
-      syntax and the content is correctly formed, but it still could not be saved.
-      An example might be trying to add a vehicle with a chassis number that already
-      exists in the database. The error response contains all fields (or the field) that
-      triggered the error. Continuing the vehicle example, it would contain the field
+
+      syntax and the content is correctly formed, but it still could not be
+      saved.
+
+      An example might be trying to add a vehicle with a chassis number that
+      already
+
+      exists in the database. The error response contains all fields (or the
+      field) that
+
+      triggered the error. Continuing the vehicle example, it would contain the
+      field
+
       `vin`.
+
       Another example might be trying to delete a company that is still used.
     schema:
-          $ref: '#/definitions/Error'
+      $ref: '#/definitions/Error'
   WrongType:
     description: |
       The `Content-Type` header is not set to `application/json`.
@@ -2099,76 +3622,90 @@ responses:
   Unauthorised:
     description: |
       The token was not valid.
-
 definitions:
   Company:
     type: object
-    required: [name, type, vatNumber, phoneNumber, address]
+    required:
+      - name
+      - type
+      - vatNumber
+      - phoneNumber
+      - address
     properties:
       id:
-        description: This is a server-generated value.
         type: integer
+        readOnly: true
       name:
+        description: The name of the company.
         type: string
       type:
         type: string
-        description: This is a required attribute. Possible values are CUSTOMER, LEASING_COMPANY and INSURANCE_COMPANY.   
+        description: >-
+          This is a required attribute. Possible values are `Customer`,
+          `LeasingCompany` or `InsuranceCompany`.
+        enum:
+          - Customer
+          - LeasingCompany
+          - InsuranceCompany
       vatNumber:
         type: string
-        example: "BE123456789B01"
+        example: BE123456789B01
       phoneNumber:
         type: string
         format: phone
-        example: "+32 56 33 66 00"
+        example: +32 56 33 66 00
       address:
         $ref: '#/definitions/Address'
-      paymentPeriod:
-        description: This is the time between payments in advance.
-        example: "1"
-        type: integer
-      facturationPeriod:
-        description: This is the time between corrections on the payment.
-        example: "3"
-        type: integer
       createdAt:
-        description: This is a server-generated value.
+        readOnly: true
         type: string
         format: date-time
         example: 2016-08-29T09:12:33.001Z
       lastUpdated:
-        description: This is a server-generated value.
+        readOnly: true
         type: string
         format: date-time
         example: 2016-08-29T09:12:33.001Z
       url:
-        description: This is a server-generated value.
+        readOnly: true
         type: string
   Address:
     type: object
-    required: [country, city, street, houseNumber, postalCode]
+    required:
+      - country
+      - city
+      - street
+      - houseNumber
+      - postalCode
     properties:
       country:
         description: This field should contain the 2-letter ISO 3166 code of the country
         type: string
-        example: "BE"
+        example: BE
       city:
         type: string
-        example: "Gent"
+        example: Gent
       street:
         type: string
-        example: "Jozef Plateaustraat"
+        example: Jozef Plateaustraat
       houseNumber:
         type: string
-        example: "52B"
+        example: 52B
       postalCode:
         type: string
-        example: "9000"
+        example: '9000'
   Vehicle:
     type: object
-    required: [vin, brand, model, type, mileage, year]
+    required:
+      - vin
+      - brand
+      - model
+      - type
+      - mileage
+      - year
     properties:
       id:
-        description: This is a server-generated value.
+        readOnly: true
         type: integer
         example: 25
       licensePlate:
@@ -2185,8 +3722,11 @@ definitions:
         type: string
         example: Golf 7
       type:
+        description: >
+          The type of the vehicle. This value must be one of the values defined
+          at the `/vehicles/types` endpoint.
         type: string
-        example: Persoonswagen
+        example: PersonalVehicle
       mileage:
         type: integer
         example: 132000
@@ -2202,10 +3742,38 @@ definitions:
         description: The value described in cents.
       leasingCompany:
         type: integer
-        description: A null value indicates that the vehicle does not belong to a leasing company.
+        description: >-
+          A null value indicates that the vehicle does not belong to a leasing
+          company.
       fleet:
         type: integer
         description: A null value indicates that the vehicle does not belong to a fleet.
+      createdAt:
+        readOnly: true
+        type: string
+        format: date-time
+        example: 2016-08-29T09:12:33.001Z
+      updatedAt:
+        readOnly: true
+        type: string
+        format: date-time
+        example: 2016-08-29T09:12:33.001Z
+      url:
+        readOnly: true
+        type: string
+        format: url
+        example: /vehicles/1
+  Commission:
+    type: object
+    required:
+      - value
+    properties:
+      value:
+        description: >-
+          A percentage value representing the commission. null if there is no
+          commission
+        type: number
+        format: double
       createdAt:
         description: This is a server-generated value.
         type: string
@@ -2219,178 +3787,260 @@ definitions:
       url:
         description: This is a server-generated value.
         type: string
-        format: url
-        example: /vehicles/1
   Role:
+    description: >
+      A `Role` represents a collection of permissions that are granted together.
+      A role is not attached to an user directly;
+
+      it is a component of a `Function` instead. A `Function` grants the
+      permissions of a `Role` to a `User`, optionally
+
+      for a `Company`.
     type: object
-    required: [name]
+    required:
+      - name
     properties:
       id:
-        description: This is a server-generated value.
+        readOnly: true
         type: integer
       name:
         type: string
         description: The name of the role.
       permissions:
-        type: string
-        description: An URL to the permissions of this role. This is a server-generated value.
-        example: /roles/65/permissions
+        type: array
+        items:
+          type: integer
+        description: IDs of the permissions this role has.
       createdAt:
-        description: This is a server-generated value.
+        readOnly: true
         type: string
         format: date-time
         example: 2016-08-29T09:12:33.001Z
       updatedAt:
-        description: This is a server-generated value.
+        readOnly: true
         type: string
         format: date-time
         example: 2016-08-29T09:12:33.001Z
       url:
-        description: This is a server-generated value.
-        type: string
-  Function:
-    type: object
-    required: [company, user, role]
-    properties:
-      id:
-        description: This is a server-generated value.
-        type: integer
-      company:
-        description: |
-          If this value is a positive number, it indicates this role is restricted to one company. This means
-          every permission of this role is only applicable to the specified company. If the value is -1, it means
-          the role is applicable to all companies. For example, imagine a role with permission READ_VEHICLES. If
-          the company is -1, the role can read all vehicles. If the company is another number, it can only read the
-          vehicles of that company.
-        type: integer
-      role:
-        type: integer
-        description: The id of the role.
-      user:
-        type: integer
-        description: The id of the user.
-      createdAt:
-        description: This is a server-generated value.
-        type: string
-        format: date-time
-        example: 2016-08-29T09:12:33.001Z
-      updatedAt:
-        description: This is a server-generated value.
-        type: string
-        format: date-time
-        example: 2016-08-29T09:12:33.001Z
-      url:
-        description: This is a server-generated value.
+        readOnly: true
         type: string
   Permission:
     type: object
-    required: [resource, action]
+    required:
+      - resource
+      - action
     properties:
       id:
+        readOnly: true
         description: This is a server-generated value.
         type: integer
       resource:
         type: string
-        description: |
-          Which resource can be edited by this permission. This MUST be one of the objects defined in this API.
+        description: >
+          Which resource can be edited by this permission. This MUST be one of
+          the objects defined in this API.
       action:
         type: string
-        description: |
-          Describes what can be done with the resource. Possible values include `READ`, `READ_ALL`, `EDIT`, ...
-          A common set of action will be defined by the API. They will mostly map to the available endpoints, e.g. `READ_ALL`
-          would map to the endpoint that returns the list of items, while `READ` maps to the endpoint for a single item.
-          Note that some actions may automatically give access to others, e.g. `READ_ALL` logically also enables `READ`.
-  User:
+        description: >
+          Describes what can be done with the resource. Possible values include
+          `READ`, `READ_ALL`, `EDIT`, ...
+
+          A common set of action will be defined by the API. They will mostly
+          map to the available endpoints, e.g. `READ_ALL`
+
+          would map to the endpoint that returns the list of items, while `READ`
+          maps to the endpoint for a single item.
+
+          Note that some actions may automatically give access to others, e.g.
+          `READ_ALL` logically also enables `READ`.
+  Function:
+    description: >
+      A `Function` represents the `Role` an `User` has for a certain company.
+      The permissions of the `Role` must only
+
+      be granted for the given company (if the funcion has a company). If the
+      function does not have a company, it is
+
+      valid for all companies (or a company is not relevant).
     type: object
-    required: [firstName, lastName, email, password]
+    required:
+      - company
+      - user
+      - role
     properties:
       id:
-        description: This is a server-generated value.
         type: integer
-        example: 12345
-      firstName:
+        readOnly: true
+      company:
+        description: >
+          If this value is a positive number, it indicates this role is
+          restricted to one company. This means
+
+          every permission of this role is only applicable to the specified
+          company. If the value is -1, it means
+
+          the role is applicable to all companies. For example, a function with
+          a role with the permission 'read:vehicles'
+
+          does not need a company (as 'read:vehicles' implies reading all
+          vehicles). Another example is a role with the
+
+          permission 'read:fleet'. This permission requires a company.
+        type: integer
+      companyName:
+        readOnly: true
         type: string
-        example: "Jan"
-      lastName:
+        description: Name of the company
+      role:
+        type: integer
+        description: The id of the role.
+      roleName:
+        readOnly: true
         type: string
-        example: "Janssens"
-      email:
-        type: string
-        format: email
-        example: "user@ugent.be"
-      functions:
-        type: string
-        description: The URL to the Functions of this user. This is a server-generated value.
-        example: "/users/5/functions"
-      password:
-        type: string
-        description: This attribute is client-generated, and will never be returned by the server.
-        format: password
-        example: "******"
+        description: Name of the role
+      user:
+        type: integer
+        description: The id of the user.
       createdAt:
-        description: This is a server-generated value.
+        readOnly: true
         type: string
         format: date-time
         example: 2016-08-29T09:12:33.001Z
       updatedAt:
-        description: This is a server-generated value.
+        readOnly: true
         type: string
         format: date-time
         example: 2016-08-29T09:12:33.001Z
       url:
-        description: This is a server-generated value.
+        readOnly: true
         type: string
-        example: "/users/"
-  Fleet:
+  User:
     type: object
-    required: [company]
+    required:
+      - firstName
+      - lastName
+      - email
+      - password
     properties:
       id:
-        description: This is a server-generated value.
+        readOnly: true
+        type: integer
+        example: 12345
+      firstName:
+        type: string
+        example: Jan
+      lastName:
+        type: string
+        example: Janssens
+      email:
+        type: string
+        format: email
+        example: user@ugent.be
+      functions:
+        type: string
+        readOnly: true
+        description: The URL to the Functions of this user.
+        example: /users/5/functions
+      password:
+        type: string
+        description: >-
+          This attribute is client-generated, and will never be returned by the
+          server.
+        format: password
+        example: '******'
+      createdAt:
+        readOnly: true
+        type: string
+        format: date-time
+        example: 2016-08-29T09:12:33.001Z
+      updatedAt:
+        readOnly: true
+        type: string
+        format: date-time
+        example: 2016-08-29T09:12:33.001Z
+      url:
+        readOnly: true
+        type: string
+        example: /users/
+  Fleet:
+    type: object
+    required:
+      - company
+    properties:
+      id:
+        readOnly: true
         type: integer
       company:
         type: integer
       name:
         type: string
+      paymentPeriod:
+        description: This is the time between payments in advance.
+        example: '1'
+        type: integer
+      facturationPeriod:
+        description: This is the time between corrections on the payment.
+        example: '3'
+        type: integer
       address:
         $ref: '#/definitions/Address'
       createdAt:
-        description: This is a server-generated value.
+        readOnly: true
         type: string
         format: date-time
         example: 2016-08-29T09:12:33.001Z
       updatedAt:
-        description: This is a server-generated value.
+        readOnly: true
         type: string
         format: date-time
         example: 2016-08-29T09:12:33.001Z
       url:
-        description: This is a server-generated value.
+        readOnly: true
         type: string
-        example: "/users/"
+        example: /company/5/fleet/7
   Invoice:
     type: object
-    required: [company, payed, totalAmount, type, startDate, endDate]
+    required:
+      - payer
+      - paid
+      - totalAmount
+      - type
+      - startDate
+      - endDate
     properties:
       id:
-        description: This is a server-generated value.
+        readOnly: true
         type: integer
         format: int64
-      company:
+      payer:
+        description: The ID of the company this invoice belongs to
         type: integer
         format: int64
-      payed:
-        description: Shows if the invoice is payed or not.
+      beneficiary:
+        description: The ID of the company that the amount has to be paid to
+        type: integer
+        format: int64
+      paid:
+        description: Shows if the invoice is paid or not.
         type: boolean
       totalAmount:
-        description: The total amount of money that has to be payed in this invoice.
+        description: >-
+          The total amount of money in cents that has to be paid in this
+          invoice. (premium + commission)
+        type: integer
+        format: int64
+      totalTax:
+        description: The total amount of tax in cents that has to be paid in this invoice.
         type: integer
         format: int64
       type:
-        description: The period in months between invoices.
-        type: integer
-        format: int32
-        example: 1, 3, 6, 12
+        description: >-
+          The type of the invoice. The only possible values are `billing` or
+          `payment`
+        type: string
+        enum:
+          - billing
+          - payment
       startDate:
         description: The begin date of the invoice.
         type: string
@@ -2402,47 +4052,110 @@ definitions:
         format: date-time
         example: 2016-08-29T09:12:33.001Z
       createdAt:
-        description: This is a server-generated value.
+        readOnly: true
         type: string
         format: date-time
         example: 2016-08-29T09:12:33.001Z
       updatedAt:
-        description: This is a server-generated value.
+        readOnly: true
         type: string
         format: date-time
         example: 2016-08-29T09:12:33.001Z
       url:
-        description: This is a server-generated value.
+        readOnly: true
         type: string
-        example: "/users/"
-  Contract:
+        example: /fleet/15/invoice/20
+  Correction:
     type: object
-    required: [insuranceCompany, vehicle, type, startDate, endDate]
+    required:
+      - vehicle
+      - contract
+      - date
+      - paid
+      - amount
+      - type
     properties:
       id:
-        description: This is a server-generated value.
+        readOnly: true
+        type: integer
+        format: int64
+      payer:
+        description: The ID of the company this invoice belongs to
+        type: integer
+        format: int64
+      beneficiary:
+        description: The ID of the company that the amount has to be paid to
+        type: integer
+        format: int64
+      vehicle:
+        description: The ID of the vehicle this correction is for
+        type: integer
+        format: int64
+      contract:
+        description: The ID of the contract this correction belongs to.
+        type: integer
+        format: int64
+      date:
+        description: The date of the correction was submitted.
+        type: string
+        format: date-time
+        example: 2016-08-29T09:12:33.001Z
+      paid:
+        description: Shows if the correction is paid or not.
+        type: boolean
+      amount:
+        description: >-
+          The amount of money in cents this correction adds or subtracts to the
+          contract.
+        type: integer
+        format: int64
+      tax:
+        description: >-
+          The total amount of tax in cents that has to be paid in this
+          correction.
+        type: integer
+        format: int64
+      type:
+        description: >-
+          The type of the correction. The only possible values are `removal` or
+          `registration`
+        type: string
+        enum:
+          - removal
+      createdAt:
+        readOnly: true
+        type: string
+        format: date-time
+        example: 2016-08-29T09:12:33.001Z
+      updatedAt:
+        readOnly: true
+        type: string
+        format: date-time
+        example: 2016-08-29T09:12:33.001Z
+      url:
+        readOnly: true
+        type: string
+        example: /fleet/15/invoice/20
+  Contract:
+    type: object
+    required:
+      - customer
+      - insuranceCompany
+      - startDate
+      - endDate
+    properties:
+      id:
+        readOnly: true
+        type: integer
+        format: int64
+      customer:
+        description: The customer.
         type: integer
         format: int64
       insuranceCompany:
         description: The insurance company.
         type: integer
         format: int64
-      vehicle:
-        description: Insured vehicle.
-        type: integer
-        format: int64
-      type:
-        description: Type of insurance contract.
-        type: string
-        example: Omnium
-      franchise:
-        description: Damages paid for by the client in case of an accident.
-        type: integer
-        example: 1250
-      premium:
-        description: Cost of the insurance.
-        type: integer
-        example: 500
       startDate:
         description: The begin date of the contract.
         type: string
@@ -2453,6 +4166,63 @@ definitions:
         type: string
         format: date-time
         example: 2016-08-29T09:12:33.001Z
+      createdAt:
+        readOnly: true
+        type: string
+        format: date-time
+        example: 2016-08-29T09:12:33.001Z
+      updatedAt:
+        readOnly: true
+        type: string
+        format: date-time
+        example: 2016-08-29T09:12:33.001Z
+      url:
+        readOnly: true
+        type: string
+        example: /contracts/
+  VehicleInsurance:
+    type: object
+    required:
+      - vehicle
+      - surety
+      - contract
+      - franchise
+      - insuredValue
+    properties:
+      id:
+        description: This is a server-generated value.
+        type: integer
+        format: int64
+      vehicle:
+        description: Insured vehicle.
+        type: integer
+        format: int64
+      surety:
+        description: The surety.
+        type: integer
+        format: int64
+      contract:
+        description: Contract that this insurance belongs to.
+        type: integer
+        format: int64
+      franchise:
+        description: Damages paid for by the client in case of an accident.
+        type: integer
+        example: 1250
+      insuredValue:
+        description: Value that is insured in cents.
+        type: integer
+        example: 500
+      cost:
+        readOnly: true
+        description: Cost of this insurance in cents.
+        type: integer
+        example: 500
+      tax:
+        readOnly: true
+        description: Tax of this insurance in cents.
+        type: integer
+        example: 500
       createdAt:
         description: This is a server-generated value.
         type: string
@@ -2466,7 +4236,87 @@ definitions:
       url:
         description: This is a server-generated value.
         type: string
-        example: "/contracts/"
+        example: /contracts/10/insurances
+  Surety:
+    type: object
+    required:
+      - isFlat
+      - premium
+      - premiumPercentage
+      - leasingCompany
+    properties:
+      id:
+        readOnly: true
+        type: integer
+        format: int64
+      leasingCompany:
+        readOnly: true
+        type: integer
+        format: int64
+      isFlat:
+        description: true when it is a flat Surety
+        type: boolean
+        format: int64
+      premium:
+        description: >-
+          Premium that has to paid in cents. When the Surety is not flat, this
+          is the minimum premium.
+        type: integer
+        format: int64
+      premiumPercentage:
+        description: Has no use when the Surety is flat.
+        type: number
+        format: double
+        example: 0.17
+      suretyType:
+        description: type of surety
+        type: string
+      createdAt:
+        readOnly: true
+        type: string
+        format: date-time
+        example: 2016-08-29T09:12:33.001Z
+      updatedAt:
+        readOnly: true
+        type: string
+        format: date-time
+        example: 2016-08-29T09:12:33.001Z
+      url:
+        readOnly: true
+        type: string
+        example: /sureties/
+  SpecialCondition:
+    type: object
+    required:
+      - referenceCode
+      - title
+      - text
+    properties:
+      id:
+        readOnly: true
+        type: integer
+        format: int64
+      referenceCode:
+        type: string
+      title:
+        type: string
+      text:
+        description: A detailed description of this specialcondition.
+        type: string
+      createdAt:
+        readOnly: true
+        type: string
+        format: date-time
+        example: 2016-08-29T09:12:33.001Z
+      updatedAt:
+        readOnly: true
+        type: string
+        format: date-time
+        example: 2016-08-29T09:12:33.001Z
+      url:
+        readOnly: true
+        type: string
+        example: /special-conditions/
   Error:
     type: object
     properties:
@@ -2474,12 +4324,16 @@ definitions:
         type: array
         items:
           type: string
-        description: |
-          Contains a list of attributes that have an error. This can range from being required to
+        description: >
+          Contains a list of attributes that have an error. This can range from
+          being required to
+
           having a conflict.
   Auth:
     type: object
-    required: [email, password]
+    required:
+      - email
+      - password
     properties:
       email:
         description: The email address of the user
@@ -2487,13 +4341,20 @@ definitions:
       password:
         description: The password of the user
         type: string
-  JWT:
-    description: |
-      This is the payload of the JWT. Most of these are standard claims. Additional claims may be defined by the
-      implementations, on the condition that they 1) follow the JWT specification and 2) both the client and server
+  AccessToken:
+    description: >
+      This is the payload of the JWT Access Token. Most of these are standard
+      claims. Additional claims may be defined by the
+
+      implementations, on the condition that they 1) follow the JWT
+      specification and 2) both the client and server
+
       continue to function without them.
     type: object
-    required: [iat, exp, sub]
+    required:
+      - iat
+      - exp
+      - sub
     properties:
       iss:
         type: string
@@ -2507,6 +4368,91 @@ definitions:
         format: int64
         description: UTC Unix time when the token will expire.
       sub:
+        type: integer
+        description: The ID of the user.
+  RefreshToken:
+    description: >
+      This is the payload of the JWT Refresh Token. Most of these are standard
+      claims. Additional claims may be defined by the
+
+      implementations, on the condition that they 1) follow the JWT
+      specification and 2) both the client and server
+
+      continue to function without them.
+    type: object
+    required:
+      - iat
+      - exp
+      - sub
+    properties:
+      iss:
         type: string
-        format: email
-        description: The e-mail of the user.
+        description: Identifies the issuer of the token.
+      iat:
+        type: integer
+        format: int64
+        description: UTC Unix time when the token was issued.
+      exp:
+        type: integer
+        format: int64
+        description: UTC Unix time when the token will expire.
+      sub:
+        type: integer
+        description: The ID of the user.
+  LogEntry:
+    type: object
+    required:
+      - resource
+      - action
+      - description
+      - datetime
+      - user
+      - object
+    description: |
+      Describes an action on a resource.
+    properties:
+      id:
+        readOnly: true
+        type: integer
+      resource:
+        type: string
+        description: >-
+          Which resource this LogEntry describes. This MUST be one of the
+          objects defined in this API.
+      action:
+        type: string
+        description: >-
+          Which resource this LogEntry describes. The possible values are
+          "READ", "EDIT", "CREATE" and "REMOVE".
+      description:
+        type: array
+        items:
+          type: object
+        description: An array with key-value pairs describing the changed object.
+      datetime:
+        type: string
+        format: date-time
+        description: The time of the action.
+      user:
+        type: integer
+        format: int64
+        description: The user who called the action.
+      object:
+        type: integer
+        format: int64
+        description: >-
+          The object affected by the action. This object is of the type
+          indicated by the resource.
+      createdAt:
+        readOnly: true
+        type: string
+        format: date-time
+        example: 2016-08-29T09:12:33.001Z
+      updatedAt:
+        readOnly: true
+        type: string
+        format: date-time
+        example: 2016-08-29T09:12:33.001Z
+      url:
+        readOnly: true
+        type: string
