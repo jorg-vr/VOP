@@ -29,16 +29,15 @@ public class RealDataDatabaseFiller {
 
     private void initUsers(DAOProvider provider) {
         try(DAOManager manager = provider.getDaoManager()){
-            Address address = createAddress("Kerkstraat","1","Zomergem","9930","België");
-            
             Company company = new Company();
             company.setCompanyType(CompanyType.CUSTOMER);
-            company.setPhoneNumber("");
+            company.setPhoneNumber("093725663");
             company.setName("Solvas");
-            company.setAddress(address);
+            company.setAddress(createAddress("Kerkstraat","1","Zomergem","9930","België"));
+
 
             Function function = new Function();
-            function
+            function.setCompany(company);
 
             User user = new User();
             user.setFirstName("Patrick");
