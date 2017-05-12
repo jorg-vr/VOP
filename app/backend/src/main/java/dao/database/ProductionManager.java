@@ -173,7 +173,7 @@ public class ProductionManager implements DAOManager {
     public InsuranceCompanyDAO getInsuranceCompanyDao() {
         if (insuranceCompanyDAO == null) {
             insuranceCompanyDAO = new ProductionInsuranceCompanyDAO(session);
-        } 
+        }
         return insuranceCompanyDAO;
     }
 
