@@ -31,12 +31,9 @@ public class RealDataDatabaseFiller {
 
     private void initUsers(DAOProvider provider) {
         try(DAOManager manager = provider.getDaoManager()){
-            Company company = new Company();
-            company.setCompanyType(CompanyType.CUSTOMER);
-            company.setPhoneNumber("093725663");
-            company.setName("Solvas");
-            company.setAddress(createAddress("Kerkstraat","1","Zomergem","9930","België"));
 
+            Address address = createAddress("Kerkstraat","1","Zomergem","9930","België");
+            Company company = createCompany(CompanyType.CUSTOMER,"093725663","Solvas", address );
 
             Function function = new Function();
             function.setCompany(company);
@@ -70,5 +67,14 @@ public class RealDataDatabaseFiller {
         address.setCountry(country);
         address.setPostalCode(postalcode);
         return address;
+    }
+
+    private Company createCompany(CompanyType type, String phone, String name, Address address) {
+        Company company = new Company();
+        company.setCompanyType(type);
+        company.setPhoneNumber(phone);
+        company.setName(name);
+        company.setAddress(address);
+        return company;
     }
 }
