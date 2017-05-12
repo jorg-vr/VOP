@@ -5,10 +5,10 @@
     <div>
         <div class="page-header">
             <h1>
-                {{$t("log.logEntry") | capitalize}} {{$t("vehicle.vehicle")}} {{vehicle.licensePlate}}
+                {{$t("log.logEntry") | capitalize}} {{$t("resource.fleet")}} {{fleet.name}}
             </h1>
         </div>
-        <log :resourceId="resourceId" :id="id" :entry="entry" resource="vehicles"></log>
+        <log :resourceId="resourceId" :id="id" :entry="entry" resource="fleet"></log>
     </div>
 </template>
 <script>
@@ -19,7 +19,7 @@
     export default {
         data() {
             return {
-                vehicle: {}
+                fleet: {}
             }
         },
         components: {
@@ -31,13 +31,13 @@
             entry: Object
         },
         created(){
-            this.fetchVehicle({id: this.resourceId}).then(vehicle => {
-                this.vehicle = vehicle
+            this.fetchFleet({id: this.resourceId}).then(fleet => {
+                this.fleet = fleet
             })
         },
         methods: {
             ...mapActions([
-                'fetchVehicle',
+                'fetchFleet',
             ])
         },
     }

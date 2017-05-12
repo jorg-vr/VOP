@@ -19,7 +19,7 @@ A generic button which navigates to the given route once clicked.
             route: Object,
             buttonClass: {
                 type: String,
-                default: "btn btn-default pull-left"
+                default: "btn btn-default"
             },
             buttonId: String
         },
