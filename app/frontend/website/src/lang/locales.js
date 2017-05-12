@@ -83,8 +83,10 @@ export default
             search_for: 'Search for',
         },
         modal:{
-            title: 'Confirmation',
-            text: 'Are you sure you want to proceed with this action?',
+            titleConfirm: 'Confirmation',
+            textConfirm: 'Are you sure you want to proceed with this action?',
+            titleCorrection: 'Correction',
+            textCorrection: 'would you like to make a correction for this ',
             button1: 'Yes',
             button2: 'No'
         },
@@ -325,10 +327,12 @@ export default
             search_for: 'Zoeken naar',
         },
         modal:{
-            title: 'Bevestiging',
-            text: 'Weet u zeker dat u wilt doorgaan met deze actie?',
-            button1: 'Ja',
-            button2: 'Nee'
+            titleConfirm: 'Bevestiging',
+            textConfirm: 'Weet u zeker dat u wil doorgaan met deze actie?',
+            titleCorrection: 'Correctie',
+            textCorrection: 'wil u hiervoor een correctie doorvoeren?',
+            button1: 'ja',
+            button2: 'nee'
         },
         exception: {
             e404: 'Pagina niet gevonden',

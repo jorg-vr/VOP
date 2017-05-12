@@ -31,7 +31,7 @@ All of the fields for insurance input for the insurance form
 
       <!-- Flat -->
       <select-input-form-group 
-                     :object="object" name="flat" optionPropertyName="value" visibleKey="text"
+                     :object="object" name="isFlat" optionPropertyName="value" visibleKey="text"
                      :text="$t('surety.flat')" :rules="'required'" :options="flatData">
         </select-input-form-group>
 
@@ -54,7 +54,7 @@ All of the fields for insurance input for the insurance form
                      :text="$t('condition.condition')" :rules="'required'" :options="conditions">
         </select-input-form-group>
 
-       <button @click='pushCondition()' type="button" class="btn btn-primary"> {{$t("common.add") | capitalize }} </button>
+       <button @click='pushCondition()' type="button" class="btn pull-right btn btn-primary "> {{$t("common.add") | capitalize }} </button>
       </div>
 
     <!-- All special conditions of surety -->
@@ -78,7 +78,6 @@ All of the fields for insurance input for the insurance form
             return{
                 referenceCode: 'referenceCode',
                 selectedCondition: '',
-                selectedConditions: [],
                 id:'id',
                 resource: resources.CONDITION,
                 flatData: [{text:'true', value: true},{text:"false" , value: false}]
@@ -91,6 +90,9 @@ All of the fields for insurance input for the insurance form
         components: {
             TextInputFormGroup,SelectInputFormGroup,DateInputFormGroup,listComponent,buttonAdd
         },
+        mounted(){
+            this.$parent.$emit('mounted', this.$children)
+        },
         computed: {
             ...mapGetters([
                 'clients',  
@@ -101,6 +103,8 @@ All of the fields for insurance input for the insurance form
                 'sureties',
                 'vehicles',
                 'conditions',
+                'insuranceCompanyId',
+                'selectedConditions'
                 ]),
              listObject() {
                 var listObj = {};
@@ -115,52 +119,35 @@ All of the fields for insurance input for the insurance form
                 'fetchVehicles',
                 'fetchConditions',
                 'fetchCondition',
-                'fetchClientsBy'
+                'fetchClientsBy',
                 ]),
             ...mapMutations([
                 'setConditions',
                 'setCondition',
-                'setSelectedConditions'
+                'setSelectedConditions',
+                'addSelectedCondition',
+                'clearSelectedConditions'
                 ]),
             pushCondition(){
-                // push condition to list of selected conditions
-                //this.addSelectedCondition()
+                // fetch info for selected special condition
                 this.fetchCondition({id: this.object.selectedCondition}).then(condition => {
-                    console.log(condition)
-                    this.condition = condition;
-                    //this.object.specialConditions.push(condition)
+                    // add selected condition to list
                     this.addSelectedCondition(condition)
                 })
-                console.log(this.object.specialConditions)
-/*                this.fetchCondition({id: this.object.selectedCondition})          
-                console.log(this.object.selectedCondition)
-                this.object.specialConditions.push(this.condition)*/
-            },
-            addSelectedCondition(value){
-                // check if array doesn't contain any elements with same ID
-                let possible = true
-                for(let i=0; i<this.selectedConditions.length; i++){
-                    if(this.selectedConditions[i].id == value.id){
-                        possible = false
-                    }
-                }
-                if(possible){
-                 this.selectedConditions.push(value)
-                }
             },
         },
         created(){
-
-          if(this.actions.name == 'create'){
-            this.object.specialConditions = []
-          }
+          // set correct insurance company id 
+          this.object.insuranceCompany = this.insuranceCompanyId
+          // clear previous storage for selected conditions
+          this.clearSelectedConditions()
           // Fetch all special conditions
           this.fetchConditions()
-          this.selectedConditions = this.object.specialConditions
           // get all insurance companies
           this.fetchClientsBy({filters: {type: clientTypes.INSURANCE_COMPANY.type}}).then(() => {
-                
           })
+          // bind specialConditions to seleced conditions
+          this.object.specialConditions = this.selectedConditions
         }
     }
 </script>

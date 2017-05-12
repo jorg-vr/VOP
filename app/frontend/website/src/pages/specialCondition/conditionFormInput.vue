@@ -49,6 +49,9 @@ All of the fields for insurance input for the insurance form
         components: {
             TextInputFormGroup,SelectInputFormGroup,DateInputFormGroup,buttonAdd
         },
+        mounted(){
+            this.$parent.$emit('mounted', this.$children)
+        },
         computed: {
             ...mapGetters([
                 'clients',

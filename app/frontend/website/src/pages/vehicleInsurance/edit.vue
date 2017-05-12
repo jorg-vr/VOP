@@ -4,7 +4,7 @@
     @param id: the id of the fleet which is edited.
 -->
 <template>
-    <abstract-form :actions="actions" :object="insurance" :back="back" :resource="resource">
+    <abstract-form :actions="actions" :object="insurance" :back="back" :resource="resource" :ids="{contract: insurance.contract}">
         <insurance-form-input :object="insurance"></insurance-form-input>
     </abstract-form>
 </template>
@@ -27,7 +27,7 @@
         },
         created(){
             if(this.id){
-                this.fetchInsurance({id: this.id,ids: this.contractId}).then(insurance => {
+                this.fetchInsurance({id: this.id,ids:{contract: this.contractId}}).then(insurance => {
                     this.insurance = insurance;
                 })
             }

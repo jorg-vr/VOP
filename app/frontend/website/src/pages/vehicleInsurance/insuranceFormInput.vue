@@ -31,7 +31,7 @@ All of the fields for insurance input for the insurance form
 
       <select-input-form-group 
                      :object="object" name="surety" optionPropertyName="id" visibleKey="suretyType"
-                     :text="$t('surety.surety')" :rules="'required'" :options="sureties">
+                     :text="$t('surety.surety')" :rules="'required'" :options="insurancesureties">
       </select-input-form-group>
 
       <!-- Insured vehicle -->
@@ -64,6 +64,9 @@ All of the fields for insurance input for the insurance form
                 resource: resources.SURETY,
             }
         },
+        mounted(){
+            this.$parent.$emit('mounted', this.$children)
+        },
         props: {
             object: Object,
         },
@@ -79,7 +82,17 @@ All of the fields for insurance input for the insurance form
                 'contractId',
                 'sureties',
                 'vehicles',
-                ])
+                'insuranceCompanyId'
+                ]),
+            insurancesureties(){
+                  var s = []
+                  for(let i=0;i<this.sureties.length;i++){
+                      if(this.sureties[i].insuranceCompany == this.insuranceCompanyId){
+                          s.push(this.sureties[i])
+                      }
+                  }
+                  return s
+                }
         },
         methods: {
             ...mapActions([

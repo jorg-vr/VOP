@@ -34,7 +34,7 @@ All of the fields for contract input for the contract form
                 <h2>{{$t("vehicle_insurance.vehicle_insurances") | capitalize }} </h2>
             </div>
 
-        <list-component :resource="resource1" :listObject="listObject1">
+        <list-component :resource="resource1" :listObject="listObject1" :ids="{contract: this.object.id}">
         </list-component>
             
             <div class="page-header">
@@ -43,7 +43,7 @@ All of the fields for contract input for the contract form
                     {{$t("surety.sureties") | capitalize }}
                 </h2>
             </div>
-        <h5> {{$t("contract.offer") | capitalize }} {{object.insuranceCompany}} </h5>
+        <h5> {{$t("contract.offer") | capitalize }} {{object.insuranceCompanyName}} </h5>
         <list-component :resource="resource2" :listObject="listObject2">
         </list-component>
 
@@ -76,6 +76,9 @@ All of the fields for contract input for the contract form
                 insuranceCompanies:[]
             }
         },
+        mounted(){
+            this.$parent.$emit('mounted', this.$children)
+        },
         props: {
             actions: Object,
             object: Object,
@@ -97,7 +100,7 @@ All of the fields for contract input for the contract form
                 ]),
             listObject1() {
                 var listObj = {};
-                listObj.headers = ['cost','tax','showableStartDate'];
+                listObj.headers = ['licensePlate','brand','suretyType','insuredValue','showableStartDate','cost','tax'];
                 listObj.values = this.contractInsurances;
                 return listObj;
             },
@@ -177,7 +180,7 @@ All of the fields for contract input for the contract form
                 this.show = true
                 this.setLoading({loading: true })
                 // get all insurances from the contract with contract Id
-                this.fetchInsurances({ids: this.object.id}).then(() => {
+                this.fetchInsurances({ids:{contract: this.contractId}}).then(() => {
                     this.setLoading({loading: false })
                 })
                 // get all sureties for the chose insuranceCompany

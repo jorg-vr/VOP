@@ -2,14 +2,14 @@
 TODO: document this page.
 -->
 <template>
-    <div class="modal-mask" transition="modal">
-        <div class="modal-wrapper">
-            <div class="modal-container">
-                <div class="modal-header">
+    <div class="modal-mask" id="loginMask">
+        <div class="modal-wrapper" id="loginWrapper">
+            <div class="modal-container" id="loginContainer">
+                <div class="modal-header" id="loginHeader">
                     <h3> {{$t("login.header") | capitalize }} Solvas Fleet</h3>
                     <h5> {{$t("login.text") | capitalize }}  </h5>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" id="loginBody">
                     <form id="loginform">
                         <p id="error" v-show="showError"> {{$t("login.error") | capitalize }}  </p>
                         <div class="input-group" id="username">
@@ -118,7 +118,7 @@ TODO: document this page.
         color:#cc0000;
     }
 
-    .modal-mask {
+    #loginMask {
         position: fixed;
         z-index: 9998;
         top: 0;
@@ -129,49 +129,32 @@ TODO: document this page.
         transition: opacity .3s ease;
         text-align: center;
     }
-    .modal-wrapper {
+    #loginWrapper{
         margin-top: 8%;
         vertical-align: middle;
 
     }
 
-    .modal-container {
+    #loginContainer{
         width: 40%;
         margin: auto;
         background-color: #304052;
         padding:25px;
     }
 
-    .modal-header{
+    #loginHeader{
         padding: 15px;
         color: white;
         background-color: #304052;
         border:none;
-        /*background: rgba(0, 0, 0, 0.01); OLD STYLE */
+       
     }
 
 
-    .modal-body {
+    #loginBody{
         color: #304052;
         font-size: 14px;
         font-weight: 600;
-    }
-    .modal-footer{
-        border:none
-    }
-
-
-    .modal-footer button{
-        background:#1AB394;
-        color:white;
-        width: 100px;
-        margin: 0px 10px 0px 10px;
-        font-weight: 600;
-    }
-
-    .modal-footer button:hover{
-        background:#009D7E;
-        color:white;
     }
 
     .loading:hover,
