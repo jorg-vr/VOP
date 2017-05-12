@@ -41,8 +41,8 @@ TODO: document this page.
         data() {
             return {
                 credentials:{
-                    login:'admin@solvas.be',
-                    password:123
+                    login:'patrick.eastbirds@solvas.be',
+                    password:'1h8xE660mn'
                 },
                 showError: false
             }
