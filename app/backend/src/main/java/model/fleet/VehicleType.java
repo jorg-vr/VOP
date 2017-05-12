@@ -213,6 +213,7 @@ public class VehicleType implements EditableObject, java.io.Serializable, Commis
 
     /**
      * Copies the object
+     *
      * @return the copy
      */
     @Override

@@ -5,6 +5,7 @@ import controller.ControllerManager;
 import controller.exceptions.UnAuthorizedException;
 import controller.insurance.VehicleInsuranceController;
 import dao.exceptions.DataAccessException;
+import model.insurance.Contract;
 import model.insurance.VehicleInsurance;
 import org.springframework.web.bind.annotation.*;
 import spring.controller.RESTAbstractController;
@@ -34,13 +35,18 @@ public class RESTVehicleInsuranceController extends RESTAbstractController<RESTV
 
     @RequestMapping(method = RequestMethod.GET)
     public RESTSchema<RESTVehicleInsurance> get(HttpServletRequest request,
+                                                @PathVariable String id,
                                                 Integer page, Integer limit,
                                                 @RequestHeader(value = "Authorization") String token,
                                                 @RequestHeader(value = "Function") String function) throws UnAuthorizedException {
         UUID user = new AuthenticationToken(token).getAccountId();
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
             VehicleInsuranceController controller = manager.getVehicleInsuranceController();
-            Collection<RESTVehicleInsurance> restModels = controller.getAll()
+
+            Contract contract = new Contract();
+            contract.setUuid(toUUID(id));
+
+            Collection<RESTVehicleInsurance> restModels = controller.getFiltered(contract)
                     .stream()
                     .map(RESTVehicleInsurance::new)
                     .collect(Collectors.toList());

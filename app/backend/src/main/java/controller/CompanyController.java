@@ -36,9 +36,9 @@ public class CompanyController extends AbstractController<Company> {
      * When you don't want to filter on a certain argument, pass a null value
      *
      * @param nameContains Only return companies whose name contains nameContains
-     * @param country      NOT implemented TODO
-     * @param city         NOT implemented TODO
-     * @param postalCode   NOT implemented TODO
+     * @param country      implemented
+     * @param city         implemented
+     * @param postalCode   implemented
      * @param type         only return companies of this type
      * @return all companies, filtered on the arguments
      * @throws DataAccessException   Something went horribly wrong with the database

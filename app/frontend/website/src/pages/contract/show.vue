@@ -15,11 +15,11 @@
             <table class="table show-table" v-if='contract'>
                 <tr>
                     <td>{{$t('contract.customer') | capitalize }}</td>
-                    <td>{{contract.customer}}</td>
+                    <td>{{contract.customerName}}</td>
                 </tr>
                 <tr>
                     <td>{{$t('contract.insuranceCompany') | capitalize }}</td>
-                    <td>{{contract.insuranceCompany}}</td>
+                    <td>{{contract.insuranceCompanyName}}</td>
                 </tr>
                 <tr>
                     <td>{{$t('contract.showableStartDate') | capitalize }}</td>
@@ -63,7 +63,7 @@
             </h1>
         </div>
         
-        <h5> {{$t("contract.offer") | capitalize }} {{contract.insuranceCompany}} </h5>
+        <h5> {{$t("contract.offer") | capitalize }} {{contract.insuranceCompanyName}} </h5>
         <list-component :resource="resource2" :listObject="listObject2">
         </list-component>
 
@@ -126,7 +126,7 @@
             ]),
             listObject1() {
                 var listObj = {};
-                listObj.headers = ['cost','tax','showableStartDate','contract'];
+                listObj.headers = ['licensePlate','brand','suretyType','insuredValue','showableStartDate','cost','tax'];
                 listObj.values = this.contractInsurances;
                 return listObj;
             },

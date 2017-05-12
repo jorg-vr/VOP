@@ -6,7 +6,9 @@ import controller.FunctionController;
 import controller.exceptions.UnAuthorizedException;
 import dao.exceptions.DataAccessException;
 import model.account.Function;
-
+import model.account.Role;
+import model.account.User;
+import model.identity.Company;
 import org.springframework.web.bind.annotation.*;
 import spring.model.AuthenticationToken;
 import spring.model.RESTFunction;
@@ -55,7 +57,16 @@ public class RESTFunctionController extends RESTAbstractController<RESTFunction,
         UUID user = new AuthenticationToken(token).getAccountId();
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
             FunctionController controller = manager.getFunctionController();
-            restFunctions = controller.getAll()
+
+            User userObject = new User(toUUID(userId));
+            Company companyObject = company != null ? new Company(toUUID(company)) : null;
+            Role roleObject = null;
+            if(role != null){
+                roleObject = new Role();
+                roleObject.setUuid(toUUID(role));
+            }
+
+            restFunctions = controller.getFiltered(userObject, companyObject, roleObject)
                     .stream()
                     .map(RESTFunction::new)
                     .collect(Collectors.toList());
