@@ -15,7 +15,9 @@ export default
             mileage: 'mileage',
             year: 'year',
             value: 'value',
-            sureties: 'sureties'
+            sureties: 'sureties',
+            totalCost: 'price',
+            totalTax: 'tax'
         },
         vehicleType: {
             name: 'name',
@@ -27,7 +29,9 @@ export default
             company: 'company',
             companyName: 'company name',
             fleet: 'fleet',
-            fleets: 'fleets'
+            fleets: 'fleets',
+            totalCost: 'price',
+            totalTax: 'tax'
 
         },
         user: {
@@ -120,7 +124,7 @@ export default
             exemptions: 'exemptions',
             contract: 'contract',
             cost: 'total cost',
-            tax: 'tax',
+            tax: 'tax ',
             insuranceCompany: 'insurance company',
             brand:'brand',
             licensePlate:'license plate',
@@ -217,7 +221,9 @@ export default
             mileage: 'kilometerstand',
             year: 'jaar',
             value: 'waarde',
-            sureties: 'waarborgen'
+            sureties: 'waarborgen',
+            totalCost: 'prijs',
+            totalTax: 'btw'
         },
         vehicleType: {
             name: 'naam',
@@ -229,7 +235,9 @@ export default
             company: 'bedrijf',
             companyName: 'bedrijfsnaam',
             fleet: 'vloot',
-            fleets: 'vloten'
+            fleets: 'vloten',
+            totalCost: 'prijs',
+            totalTax: 'btw'
         },
         user: {
             user: 'gebruiker',

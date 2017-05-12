@@ -6,9 +6,15 @@
 <template>
     <div v-if="fleet">
         <div class="page-header">
-            <h1>{{fleet.name}} <span v-if="fleet.companyName">- {{fleet.companyName }}</span>
+            <h1>
+                {{fleet.name}} <span v-if="fleet.companyName">- {{fleet.companyName }}</span>
                 <button-add :resource="resource" :params="{fleetId: fleet.id}"></button-add>
             </h1>
+            <h4>
+                <span v-if="fleet.totalCost">  {{$t('fleet.totalCost')|capitalize}}: €{{fleet.totalCost }}</span>
+                <span v-if="fleet.totalTax">  |  {{$t('fleet.totalTax')|capitalize}}:  €{{fleet.totalTax }}</span>
+            </h4>
+
         </div>
         <vehicle-search-bar @search="updateSubfleets" @advancedSearch="updateSubfleetsAdvanced"></vehicle-search-bar>
 
@@ -102,7 +108,7 @@
             },
             listObject(vehicles) {
                 var listObj = {};
-                listObj.headers = ['brand','model', 'licensePlate','sureties'];
+                listObj.headers = ['brand','model', 'licensePlate','sureties','totalCost','totalTax'];
                 listObj.values = vehicles;
                 return listObj;
             },
@@ -113,13 +119,21 @@
                         p[i]=this.fetchInsurancesBy({filters: {vehicleId: vehicles[i].id}});
                     }
                     Promise.all(p).then(vi=> {
+                        this.fleet.totalCost=0;
+                        this.fleet.totalTax=0;
                         for (let i in vehicles) {
                             vehicles[i].sureties = "";
+                            vehicles[i].totalCost=0;
+                            vehicles[i].totalTax=0;
                             for (let j in vi[i]) {
                                 if (vi[i][j].suretyType) {
                                     vehicles[i].sureties = vehicles[i].sureties + this.$t('suretyTypes.' + vi[i][j].suretyType).capitalize() + " ";
+                                    vehicles[i].totalCost=vehicles[i].totalCost+vi[i][j].cost;
+                                    vehicles[i].totalTax=vehicles[i].totalTax+vi[i][j].tax;
                                 }
                             }
+                            this.fleet.totalCost=this.fleet.totalCost+vehicles[i].totalCost;
+                            this.fleet.totalTax=this.fleet.totalTax+vehicles[i].totalTax;
                         }
                         resolveSuccess(vehicles);
                     }).catch(vi=>{resolveFailure(vehicles)});
