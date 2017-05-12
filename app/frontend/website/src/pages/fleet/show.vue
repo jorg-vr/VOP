@@ -9,6 +9,9 @@
             <h1>
                 {{fleet.name}} <span v-if="fleet.companyName">- {{fleet.companyName }}</span>
                 <button-add :resource="resource" :params="{fleetId: fleet.id}"></button-add>
+                <button-link buttonId="log" buttonClass="btn btn-default pull-right" :route="{name: 'fleet_logs'}">
+                    {{$t('log.log') | capitalize}}
+                </button-link>
             </h1>
             <h4>
                 <span v-if="fleet.totalCost">  {{$t('fleet.totalCost')|capitalize}}: €{{fleet.totalCost }}</span>
@@ -17,8 +20,6 @@
 
         </div>
         <vehicle-search-bar @search="updateSubfleets" @advancedSearch="updateSubfleetsAdvanced"></vehicle-search-bar>
-
-
         <div v-for="subfleet in filteredSubfleets">
             <div v-if="subfleet.vehicles.length > 0">
                 <h3>{{subfleet.type.name | capitalize }}</h3>
@@ -33,6 +34,7 @@
     import listComponent from '../../assets/list/listComponent.vue'
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
     import buttonBack from '../../assets/buttons/buttonBack.vue'
+    import buttonLink from '../../assets/buttons/buttonLink.vue'
     import vehicleSearchBar from '../../assets/search/types/vehicleSearchBar.vue'
     import {mapGetters, mapActions, mapMutations} from 'vuex'
 
@@ -43,7 +45,7 @@
             }
         },
         components: {
-            listComponent, buttonAdd, vehicleSearchBar, buttonBack
+            listComponent, buttonAdd, vehicleSearchBar, buttonBack, buttonLink
         },
         props: {
             id: String

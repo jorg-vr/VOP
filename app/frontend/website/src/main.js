@@ -103,7 +103,9 @@ String.prototype.showableDate = function() {
 
 String.prototype.showableDateTime = function() {
     let d = new Date(this)
-    return this.showableDate() + ' ' + d.getHours() + ':' + d.getMinutes()
+    let hours = d.getHours().toString().length==2 ? d.getHours() : '0' + d.getHours()
+    let minutes = d.getMinutes().toString().length==2 ? d.getMinutes() : '0' + d.getMinutes()
+    return this.showableDate() + ' ' + hours + ':' + minutes
 }
 
 String.prototype.plural = function() {

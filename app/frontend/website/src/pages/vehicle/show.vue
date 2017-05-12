@@ -46,7 +46,9 @@
             </h3>
             <list-component v-if="this.insurances.length > 0" :resource="resource" :listObject="listObject"></list-component>
         </div>
-        <button-link buttonId="log" :route="{name: 'vehicle_logs'}">{{$t('log.log') | capitalize}}</button-link>
+        <button-link buttonClass="btn btn-default pull-left" buttonId="log" :route="{name: 'vehicle_logs', params: {id: this.id}}">
+            {{$t('log.log') | capitalize}}
+        </button-link>
         <button-back v-if="vehicle.fleet" :route="{name: 'fleet', params: {id: vehicle.fleet}}"></button-back>
         <button-back v-else :route="{name: 'fleets'}"></button-back>
     </div>
