@@ -6,6 +6,7 @@ import controller.exceptions.UnAuthorizedException;
 import dao.exceptions.DataAccessException;
 import model.fleet.Fleet;
 import model.fleet.Vehicle;
+import model.fleet.VehicleType;
 import org.springframework.web.bind.annotation.*;
 import spring.exceptions.InvalidInputException;
 import spring.model.AuthenticationToken;
@@ -79,8 +80,9 @@ public class RESTVehicleController extends RESTAbstractController<RESTVehicle, V
             VehicleController controller = manager.getVehicleController();
 
             Fleet fleetObject = fleet != null ? new Fleet(toUUID(fleet)) : null;
+            VehicleType vehicleTypeObject = type != null ? new VehicleType(toUUID(type)) : null;
 
-            Collection<RESTVehicle> result = controller.getFiltered(licensePlate, vin, year, fleetObject, type)
+            Collection<RESTVehicle> result = controller.getFiltered(licensePlate, vin, year, fleetObject, vehicleTypeObject)
                     .stream()
                     .map(RESTVehicle::new)
                     .collect(Collectors.toList());

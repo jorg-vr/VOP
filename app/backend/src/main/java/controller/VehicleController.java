@@ -2,11 +2,9 @@ package controller;
 
 import controller.exceptions.UnAuthorizedException;
 import controller.insurance.CommissionContainerController;
-import dao.database.ProductionProvider;
 import dao.exceptions.DataAccessException;
 import dao.interfaces.DAOManager;
 import dao.interfaces.VehicleDAO;
-import dao.interfaces.VehicleTypeDAO;
 import model.account.Function;
 import model.account.Resource;
 import model.fleet.Fleet;
@@ -44,29 +42,14 @@ public class VehicleController extends CommissionContainerController<Vehicle> {
      * @throws UnAuthorizedException Function is not authorized to get all the objects.
      */
     public Collection<Vehicle> getFiltered(String licensePlate, String vin,
-                                           Integer year, Fleet fleet, String type) throws DataAccessException, UnAuthorizedException {
+                                           Integer year, Fleet fleet, VehicleType type) throws DataAccessException, UnAuthorizedException {
         VehicleDAO dao = (VehicleDAO) getDao();
-
-        //get corresponding VehicleType for type String
-        VehicleType vehicleType = null;
-        if(type != null){
-            try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()) {
-                VehicleTypeDAO vehicleTypeDAO = manager.getVehicleTypeDAO();
-                Collection<VehicleType> types = vehicleTypeDAO.listFiltered(vehicleTypeDAO.byName(type));
-                //If a vehicleType with the given name was found (should be unique)
-                if (types.size() == 1){
-                    for(VehicleType vType : types){
-                        vehicleType = vType;
-                    }
-                }
-            }
-        }
 
         // Filter vehicles on criteria that are supported by the database
         Collection<Vehicle> result = getAll(
                 dao.byLicensePlate(licensePlate),
                 dao.byFleet(fleet),
-                dao.byType(vehicleType));
+                dao.byType(type));
 
         // Filter vehicles on criteria that are not supported by the database
         return result.stream()

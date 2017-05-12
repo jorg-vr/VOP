@@ -50,6 +50,15 @@ public class VehicleType implements EditableObject, java.io.Serializable, Commis
     /**
      * Constructor
      *
+     * @param uuid uuid of the VehicleType
+     */
+    public VehicleType(UUID uuid) {
+        this.uuid = uuid;
+    }
+
+    /**
+     * Constructor
+     *
      * @param type name of the VehicleType
      */
     public VehicleType(String type) {
@@ -213,6 +222,7 @@ public class VehicleType implements EditableObject, java.io.Serializable, Commis
 
     /**
      * Copies the object
+     *
      * @return the copy
      */
     @Override
