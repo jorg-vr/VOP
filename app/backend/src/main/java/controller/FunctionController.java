@@ -25,8 +25,14 @@ public class FunctionController extends AbstractController<Function> {
         functionDAO = this.manager.getFunctionDAO();
     }
 
-
-
+    /**
+     *
+     * @param company
+     * @param user
+     * @param active
+     * @return
+     * @throws UnAuthorizedException
+     */
     public Collection<Function> getFiltered(Company company, User user, Boolean active) throws UnAuthorizedException {
         try {
             List<Filter<Function>> filters = new ArrayList<>();
