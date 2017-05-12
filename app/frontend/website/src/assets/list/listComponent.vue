@@ -15,11 +15,21 @@
                     </td>
                     <td class="stretch">
                         <button-edit :resource="resource" :params="{id: value.id}"></button-edit>
-                        <button-remove :resource="resource"></button-remove>
+                        <button-remove :resource="resource"  @click="tdshowModal(value.id)"></button-remove>
                     </td>
                 </tr>
             </tbody>
         </table>
+        <!-- Confirmation Modam -->
+        <confirm-modal v-show="showModal" 
+            @cancelModal="showModal=false" 
+            @confirmModal="confirmAction()" 
+            :modalHeaderTitle=" $t('modal.titleConfirm') | capitalize"
+            :modalBodyText="$t('modal.textConfirm') | capitalize" 
+            :confirmButtonText="$t('modal.button1') | capitalize "
+            :cancelButtonText="$t('modal.button2') | capitalize ">        
+        </confirm-modal> 
+
     </div>
 </template>
 <style>
@@ -53,6 +63,7 @@ tr.list-tr {
         props: {
             resource: Object,
             listObject: Object,
+            ids: Object //Object with id's for creating the correct POST/PUT route.
             /*
             { "headers" : ["Name", "CompanyName"],
               "values" : [
@@ -75,7 +86,18 @@ tr.list-tr {
         methods: {
             tdclick: function(id) {
                 this.$router.push({name: this.resource.name, params: {id: id}});
-            }
+            },
+            confirmAction: function(){
+                // hide modal
+                this.showModal=false
+                // remove object
+                // special case deletion of insurance
+                this.$store.dispatch('delete' + this.resource.name.capitalize(), {id: this.selectedvalue, ids: this.ids})
+            },
+            tdshowModal: function(id) {
+                this.showModal = true
+                this.selectedvalue=id
+            },
         }
     }
     
