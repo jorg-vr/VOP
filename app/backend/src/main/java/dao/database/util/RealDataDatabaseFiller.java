@@ -28,8 +28,7 @@ public class RealDataDatabaseFiller {
     public static void main(String[] args) throws DataAccessException {
 
         ProductionProvider.initializeProvider("localtest");
-        try (DAOProvider provider = ProductionProvider.getInstance();
-             ) {
+        try (DAOProvider provider = ProductionProvider.getInstance()) {
             RealDataDatabaseFiller filler = new RealDataDatabaseFiller();
             filler.initUsers(provider);
         } catch (Exception e) {
@@ -40,18 +39,28 @@ public class RealDataDatabaseFiller {
     private void initUsers(DAOProvider provider) {
         try(DAOManager manager = provider.getDaoManager()){
             Role adminRole = adminRole();
+            Role productionRole = productionRole();
 
             Address address = createAddress("Kerkstraat","1","Zomergem","9930","België");
             Company company = createCompany(CompanyType.CUSTOMER,"093725663","Solvas", address );
 
             User user = createUser("Patrick","Eastbirds", "patrick.eastbirds@solvas.be","1h8xE660mn");
-            Function adminFunction = createFunction(company,user,LocalDateTime.now().minusMonths(8),LocalDateTime.now().plusMonths(8),"admin",
+            Function adminFunction = createFunction(company,user,LocalDateTime.now().minusMonths(8),LocalDateTime.now().plusMonths(8),"Admin",
                     adminRole);
+            Function productionFunction = createFunction(company,user,LocalDateTime.now().minusMonths(8),LocalDateTime.now().plusMonths(8),"Productiebeheerder",
+                    productionRole);
 
             manager.getUserDAO().create(user);
             manager.getRoleDAO().create(adminRole);
+            manager.getRoleDAO().create(productionRole);
             manager.getCompanyDAO().create(company);
             manager.getFunctionDAO().create(adminFunction);
+            manager.getFunctionDAO().create(productionFunction);
+
+            Address addressSam = createAddress("Linde","10", "Sint-Jansteen","4564GG","Nederland");
+            User userSam = createUser("Sam","Persoon","persoonsam@gmail.com","sapersoo5");
+//            Function customerFunction = createFunction();
+
 
 
 
@@ -119,7 +128,6 @@ public class RealDataDatabaseFiller {
     }
 
     private Vehicle createVehicle(Fleet fleet, String vin, int mileage, String brand, String model, String license, VehicleType type) {
-
         Vehicle vehicle = new Vehicle();
         vehicle.setFleet(fleet);
         vehicle.setVin(vin);
