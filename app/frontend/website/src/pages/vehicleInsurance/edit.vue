@@ -29,6 +29,8 @@
             if(this.id){
                 this.fetchInsurance({id: this.id,ids:{contract: this.contractId}}).then(insurance => {
                     this.insurance = insurance;
+                    this.insurance.startDate = this.insurance.startDate.substring(0,10)
+                    this.insurance.endDate = this.insurance.endDate.substring(0,10)
                 })
             }
         },
