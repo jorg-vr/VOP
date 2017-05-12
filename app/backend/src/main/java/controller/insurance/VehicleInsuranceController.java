@@ -4,12 +4,13 @@ import controller.AbstractController;
 import controller.exceptions.UnAuthorizedException;
 import dao.exceptions.DataAccessException;
 import dao.interfaces.DAOManager;
+import dao.interfaces.VehicleInsuranceDAO;
 import model.account.Function;
 import model.account.Resource;
-import model.insurance.Contract;
+import model.fleet.Vehicle;
 import model.insurance.VehicleInsurance;
-
 import java.util.Collection;
+import model.insurance.Contract;
 import java.util.stream.Collectors;
 
 /**
@@ -26,14 +27,15 @@ public class VehicleInsuranceController extends AbstractController<VehicleInsura
         return insurance.getVehicle().getFleet().getOwner().equals(function.getCompany());
     }
 
-    public Collection<VehicleInsurance> getFiltered(Contract contract) throws DataAccessException, UnAuthorizedException {
+    public Collection<VehicleInsurance> getBy(Vehicle vehicle) throws DataAccessException, UnAuthorizedException {
+        return vehicle == null ? getAll() : getAll(((VehicleInsuranceDAO) getDao()).byVehicle(vehicle));
+    }
+    public Collection<VehicleInsurance> getFiltered(Contract contract,Vehicle vehicle) throws DataAccessException, UnAuthorizedException {
 
-        // Filter vehicles on criteria that are supported by the database
-        Collection<VehicleInsurance> result = getAll();
-
-        // Filter vehicles on criteria that are not supported by the database
+        Collection<VehicleInsurance> result = getBy(vehicle);
         return result.stream()
                 .filter(c -> contract == null || c.getContract().equals(contract))
                 .collect(Collectors.toList());
+
     }
 }
