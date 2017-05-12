@@ -59,4 +59,13 @@ public class RealDataDatabaseFiller {
         address.setPostalCode(postalcode);
         return address;
     }
+
+    private Company createCompany(CompanyType type, String phone, String name, Address address) {
+        Company company = new Company();
+        company.setCompanyType(type);
+        company.setPhoneNumber(phone);
+        company.setName(name);
+        company.setAddress(address);
+        return company;
+    }
 }
