@@ -44,7 +44,7 @@ public class RealDataDatabaseFiller {
 
             Address address = createAddress("Kerkstraat","1","Zomergem","9930","België");
             Company company = createCompany(CompanyType.CUSTOMER,"093725663","Solvas", address );
-
+    
             Function function = new Function();
             function.setCompany(company);
 
