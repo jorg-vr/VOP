@@ -10,18 +10,18 @@ import dao.interfaces.DAOProvider;
 import dao.interfaces.VehicleDAO;
 import dao.interfaces.VehicleTypeDAO;
 import model.account.*;
+import model.billing.Invoice;
+import model.billing.InvoiceType;
 import model.fleet.Fleet;
 import model.fleet.Vehicle;
 import model.fleet.VehicleType;
 import model.identity.*;
-import model.insurance.Surety;
-import model.insurance.SuretyType;
+import model.insurance.*;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static model.insurance.SuretyType.*;
 import static model.insurance.SuretyType.SAFETY;
@@ -112,6 +112,7 @@ public class RealDataDatabaseFiller {
             manager.getUserDAO().create(user);
             manager.getRoleDAO().create(adminRole);
             manager.getRoleDAO().create(productionRole);
+            manager.getRoleDAO().create(customerRole);
             manager.getCompanyDAO().create(company);
             manager.getFunctionDAO().create(adminFunction);
             manager.getFunctionDAO().create(productionFunction);
@@ -122,14 +123,84 @@ public class RealDataDatabaseFiller {
             createInsuranceAccount4(company,insuranceRole,manager);
 
             customerSam(customerRole,manager,user,adminFunction);
+            customerJorg(customerRole,manager,user,adminFunction);
+            customerBillie(customerRole,manager,user,adminFunction);
+
+            insuranceCompany1(user,adminFunction);
+            insuranceCompany2(user,adminFunction);
+
+            //----------------------------------------------
 
 
+            String[] titles = {"Euromex polisnummer", "Dekking terrorisme TRIP"};
+            String[] texts = {"Voor de dekking rechtsbijstand geldt het Euromes polisnummer 3020980", "lange tekst"};
+            String[] referenceCodes = {"024", "029"};
+            List<SpecialCondition> specialConditions = new ArrayList<>();
+
+            for (int j = 0; j < titles.length; j++) {
+                SpecialCondition specialCondition = new SpecialCondition(titles[j], texts[j], referenceCodes[j]);
+                specialConditions.add(specialCondition);
+            }
+
+            Surety flatSurety = new FlatSurety(i * 100);
+            flatSurety.setSuretyType(SuretyType.OMNIUM_FULL);
+            flatSurety.setSpecialConditions(specialConditions);
+            flatSurety.setInsuranceCompany(insuranceCompany);
+
+            Contract contract = new Contract();
+            contract.setCustomer(customer);
+            contract.setCompany(insuranceCompany);
+            contract.setStartDate(LocalDateTime.now());
+            contract.setEndDate(LocalDateTime.now().plusMonths(10));
+
+
+           
+            contractDAO.create(contract);
+            for (SpecialCondition specialCondition: specialConditions) {
+                specialConditionDAO.create(specialCondition);
+            }
+            suretyDAO.create(flatSurety);
+
+
+            Invoice invoice = new Invoice();
+            invoice.setContracts(new ArrayList<Contract>(Arrays.asList(new Contract[]{contract})));
+            invoice.setBeneficiary(solvas);
+            invoice.setPayer(customer);
+            invoice.setPaid(false);
+            invoice.setStartDate(LocalDateTime.now().minusMonths(1));
+            invoice.setEndDate(LocalDateTime.now().plusMonths(1));
+            invoice.setType(InvoiceType.BILLING);
+            invoiceDAO.create(invoice);
 
 
         } catch (DataAccessException | ConstraintViolationException e) {
             e.printStackTrace();
+        } catch (UnAuthorizedException e) {
+            e.printStackTrace();
         }
+    }
 
+    private InsuranceCompany insuranceCompany1(User user, Function function) throws DataAccessException, UnAuthorizedException {
+        try(ControllerManager manager = new ControllerManager(user.getUuid(),function.getUuid())){
+        Address address = new Address("Zwijnaardsesteenweg", "11", "Gent", "9000", "Belgium");
+        InsuranceCompany insuranceCompany = new InsuranceCompany();
+        insuranceCompany.setAddress(address);
+        insuranceCompany.setName("Axa");
+        insuranceCompany.setPhoneNumber("0909886543");
+        insuranceCompany.setBtwNumber("BE99576430");
+
+        return insuranceCompany;}
+    }
+
+    private InsuranceCompany insuranceCompany2(User user, Function function) throws DataAccessException, UnAuthorizedException {
+        Address address = new Address("Leo de Bethunelaan", "108", "Aalst", "9300", "Belgium");
+        InsuranceCompany insuranceCompany = new InsuranceCompany();
+        insuranceCompany.setAddress(address);
+        insuranceCompany.setName("Ethias");
+        insuranceCompany.setPhoneNumber("0486532102");
+        insuranceCompany.setBtwNumber("BE1186543");
+
+        return insuranceCompany;
     }
 
     private void createInsuranceAccount1(Company company, Role insuranceRole, DAOManager manager) throws DataAccessException, ConstraintViolationException {
@@ -181,7 +252,6 @@ public class RealDataDatabaseFiller {
             Function functionSam = createFunction(customerSam,userSam,LocalDateTime.now().minusMonths(20),LocalDateTime.now().plusMonths(4),
                     "Sam",customerRole);
 
-            manager.getRoleDAO().create(customerRole);
             manager.getAddressDao().create(addressSam);
             manager.getCustomerDAO().create(customerSam);
             manager.getUserDAO().create(userSam);
@@ -189,6 +259,48 @@ public class RealDataDatabaseFiller {
             Fleet fleetSam = createFleet("Antwerpen",customerSam,addressSam);
             controllerManager.getFleetController().create(fleetSam);
             createVehiclesSam(fleetSam,manager,controllerManager);
+        } catch (UnAuthorizedException | DataAccessException | ConstraintViolationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void customerJorg(Role customerRole, DAOManager manager, User user, Function adminFunction){
+        //Create User and Customer Sam
+        try(ControllerManager controllerManager = new ControllerManager(user.getUuid(),adminFunction.getUuid())){
+            Address addressJorg = createAddress("Hoofdstraat","125A", "Hansbeke","4564GG","België");
+            User userJorg = createUser("Jorg","Van Renterghem","jorg.vanrenterghem@ugent.be","louise");
+            Customer customerJorg = createCustomer(addressJorg,"Transport Van Renterghem","09887653","BE875623545");
+            Function functionJorg = createFunction(customerJorg,userJorg,LocalDateTime.now().minusMonths(20),LocalDateTime.now().plusMonths(4),
+                    "Jorg",customerRole);
+
+            manager.getAddressDao().create(addressJorg);
+            manager.getCustomerDAO().create(customerJorg);
+            manager.getUserDAO().create(userJorg);
+            manager.getFunctionDAO().create(functionJorg);
+            Fleet fleetJorg = createFleet("West Vlaanderen",customerJorg,addressJorg);
+            controllerManager.getFleetController().create(fleetJorg);
+            createVehiclesJorg(fleetJorg,manager,controllerManager);
+        } catch (UnAuthorizedException | DataAccessException | ConstraintViolationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void customerBillie(Role customerRole, DAOManager manager, User user, Function adminFunction){
+        //Create User and Customer Sam
+        try(ControllerManager controllerManager = new ControllerManager(user.getUuid(),adminFunction.getUuid())){
+            Address addressBillie = createAddress("Gentsesteenweg","4", "Kortrijk","8000","België");
+            User userBillie = createUser("Billie","Devolder","billie.devolder@gmail.com","informatica");
+            Customer customerBillie = createCustomer(addressBillie,"Transport Devolder","0032483558043","BE82434846");
+            Function functionBillie = createFunction(customerBillie,userBillie,LocalDateTime.now().minusMonths(20),LocalDateTime.now().plusMonths(4),
+                    "Billie",customerRole);
+
+            manager.getAddressDao().create(addressBillie);
+            manager.getCustomerDAO().create(customerBillie);
+            manager.getUserDAO().create(userBillie);
+            manager.getFunctionDAO().create(functionBillie);
+            Fleet fleetBillie = createFleet("West Vlaanderen",customerBillie,addressBillie);
+            controllerManager.getFleetController().create(fleetBillie);
+            createVehiclesBillie(fleetBillie,manager,controllerManager);
         } catch (UnAuthorizedException | DataAccessException | ConstraintViolationException e) {
             e.printStackTrace();
         }
@@ -217,12 +329,26 @@ public class RealDataDatabaseFiller {
     }
 
     private void createVehiclesJorg(Fleet fleetJorg,DAOManager manager, ControllerManager controllerManager){
-        createVehicleToDatabase(fleetJorg,"RDDRSG2USGRZHT3GK",85000,"Mercedes","Break C","19-KK-OK",manager,controllerManager,VEHICLETYPE_1);
-        createVehicleToDatabase(fleetJorg,"6N8K7YVMKPT9000NV",17000,"Audi","A5","BEE-861",manager,controllerManager,VEHICLETYPE_1);
+        createVehicleToDatabase(fleetJorg,"RDDRSG2USGRZHT3GK",7400,"Mercedes","Break C","19-KK-OK",manager,controllerManager,VEHICLETYPE_1);
+        createVehicleToDatabase(fleetJorg,"6N8K7YVMKPT9000NV",87000,"Audi","A5","BEE-861",manager,controllerManager,VEHICLETYPE_1);
 
-        createVehicleToDatabase(fleetJorg,"WHR3B86S8W934TZ7U",62500,"MAN","TGS","LOP-090",manager,controllerManager,VEHICLETYPE_2);
-        createVehicleToDatabase(fleetJorg,"5JPUNZCVSF62VFM6Z",47000,"DAF","XF 610","HSA-444",manager,controllerManager,VEHICLETYPE_2);
-        createVehicleToDatabase(fleetJorg,"DWBYG9KH8NRAZHGP3",3400,"DAF","CK Euro 6","JUX-1-PP",manager,controllerManager,VEHICLETYPE_2);
+        createVehicleToDatabase(fleetJorg,"WHR3B86S8W934TZ7U",96000,"MAN","TGS","LOP-090",manager,controllerManager,VEHICLETYPE_2);
+        createVehicleToDatabase(fleetJorg,"5JPUNZCVSF62VFM6Z",10000,"DAF","XF 610","HSA-444",manager,controllerManager,VEHICLETYPE_2);
+        createVehicleToDatabase(fleetJorg,"DWBYG9KH8NRAZHGP3",3300,"DAF","CK Euro 6","JUX-1-PP",manager,controllerManager,VEHICLETYPE_2);
+    }
+
+    private void createVehiclesBillie(Fleet fleetSam,DAOManager manager, ControllerManager controllerManager){
+        createVehicleToDatabase(fleetSam,"W6846L45MWJ60R99V",17000,"Renault","Clio","18-12-C1",manager,controllerManager,VEHICLETYPE_1);
+        createVehicleToDatabase(fleetSam,"EJE8E4771VL5GF2EU",85000,"Citroën","C6","80-PP-OI",manager,controllerManager,VEHICLETYPE_1);
+
+        createVehicleToDatabase(fleetSam,"CCJ7KTWGUKVK51S8L",62500,"MAN","TGX","KPD-820",manager,controllerManager,VEHICLETYPE_2);
+        createVehicleToDatabase(fleetSam,"8VTKLPKPM71P0N7GK",58200,"CAT","V2","9-874-UID",manager,controllerManager,VEHICLETYPE_2);
+        createVehicleToDatabase(fleetSam,"2AK3PXZ4WFGUUH97J",110000,"DAF","LG 710","HUO-090",manager,controllerManager,VEHICLETYPE_2);
+        createVehicleToDatabase(fleetSam,"JNT5XWVTT6JMU5VGC",6000,"DAF","CF Euro 8","KKW-481",manager,controllerManager,VEHICLETYPE_2);
+
+        createVehicleToDatabase(fleetSam,"GX1PJDHJGNMHKLTF7",14000,"DAF","LG 910","560-KMN",manager,controllerManager,VEHICLETYPE_3);
+
+        createVehicleToDatabase(fleetSam,"W7L5990YWTLHCBAE1",54000,"MAN","TGM","UTA-729",manager,controllerManager,VEHICLETYPE_4);
     }
 
 
