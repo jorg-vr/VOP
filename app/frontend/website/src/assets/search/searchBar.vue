@@ -10,7 +10,7 @@
             <div class="input-group-btn">
                 <div class="btn-group" role="group">
                     <!-- This button toggles the search-form -->
-                    <button type="button" class="btn btn-default" data-toggle="collapse" data-target=".panel-collapse" aria-expanded="false">
+                    <button type="button" class="btn btn-default search-btn" data-toggle="collapse" data-target=".panel-collapse" aria-expanded="false">
                         <span class="caret"></span>
                     </button>
                 </div>
@@ -54,5 +54,9 @@
     }
     .search-input-group {
         padding-bottom: 10px;
+    }
+    .search-btn {
+        padding-top: 7px;
+        padding-bottom: 8px;
     }
 </style>
