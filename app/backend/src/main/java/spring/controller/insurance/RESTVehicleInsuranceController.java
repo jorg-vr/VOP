@@ -5,6 +5,8 @@ import controller.ControllerManager;
 import controller.exceptions.UnAuthorizedException;
 import controller.insurance.VehicleInsuranceController;
 import dao.exceptions.DataAccessException;
+import dao.exceptions.ObjectNotFoundException;
+import model.fleet.Vehicle;
 import model.insurance.Contract;
 import model.insurance.VehicleInsurance;
 import org.springframework.web.bind.annotation.*;
@@ -37,16 +39,24 @@ public class RESTVehicleInsuranceController extends RESTAbstractController<RESTV
     public RESTSchema<RESTVehicleInsurance> get(HttpServletRequest request,
                                                 @PathVariable String id,
                                                 Integer page, Integer limit,
+                                                String vehicleId,
                                                 @RequestHeader(value = "Authorization") String token,
                                                 @RequestHeader(value = "Function") String function) throws UnAuthorizedException {
         UUID user = new AuthenticationToken(token).getAccountId();
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
             VehicleInsuranceController controller = manager.getVehicleInsuranceController();
 
-            Contract contract = new Contract();
-            contract.setUuid(toUUID(id));
+            Vehicle vehicle=null;
+            try {
+                vehicle=vehicleId==null||vehicleId.equals("undefined")?null:manager.getVehicleController().get(toUUID(vehicleId));
+            } catch (ObjectNotFoundException e) {}
+            Contract contract=null;
+            if(id!=null&&!id.equals("undefined")) {
+                contract = new Contract();
+                contract.setUuid(toUUID(id));
+            }
 
-            Collection<RESTVehicleInsurance> restModels = controller.getFiltered(contract)
+            Collection<RESTVehicleInsurance> restModels = controller.getFiltered(contract,vehicle)
                     .stream()
                     .map(RESTVehicleInsurance::new)
                     .collect(Collectors.toList());
