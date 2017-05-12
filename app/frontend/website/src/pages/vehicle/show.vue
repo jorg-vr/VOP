@@ -44,14 +44,15 @@
             <h3>
                 {{$t("vehicle_insurance.vehicle_insurances") | capitalize }}
             </h3>
-            <list-component v-if="show" :resource="resource" :listObject="listObject"></list-component>
+            <list-component v-if="this.insurances.length > 0" :resource="resource" :listObject="listObject"></list-component>
         </div>
+        <button-link buttonId="log" :route="{name: 'vehicle_logs'}">{{$t('log.log') | capitalize}}</button-link>
         <button-back v-if="vehicle.fleet" :route="{name: 'fleet', params: {id: vehicle.fleet}}"></button-back>
         <button-back v-else :route="{name: 'fleets'}"></button-back>
-
     </div>
 </template>
 <script>
+    import buttonLink from '../../assets/buttons/buttonLink.vue'
     import buttonBack from '../../assets/buttons/buttonBack.vue'
     import {mapGetters, mapActions} from 'vuex'
     import listComponent from '../../assets/list/listComponent.vue'
@@ -62,11 +63,10 @@
         data(){
             return {
                 resource: resources.INSURANCE,
-                show:false
             }
         },
         components: {
-            buttonBack,listComponent
+            buttonBack,listComponent, buttonLink
         },
         props: {
             id: String
@@ -78,7 +78,6 @@
             this.fetchInsurancesBy({filters: {vehicleId: this.id}}).then(
                     ()=>{
                         utils.translateSuretyTypes(this.insurances);
-                        this.show=true;
                     }
             )
         },
@@ -96,7 +95,6 @@
             }
         },
         methods: {
-
             ...mapActions([
                 'fetchVehicle',
                 'fetchVehicleType',
@@ -105,3 +103,8 @@
         }
     }
 </script>
+<style>
+    #log {
+        margin-right: 10px;
+    }
+</style>

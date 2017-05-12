@@ -62,5 +62,9 @@ export default {
         name:'condition',
         value:'INSURANCE'
     },
+    LOG: {
+        name: 'log',
+        value: 'LOG'
+    }
 
 }

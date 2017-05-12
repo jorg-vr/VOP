@@ -23,9 +23,7 @@ export default {
      * @returns {*}
      */
     popVisitedRoute(state){
-        console.log(state.visitedRoutes)
         let route = state.visitedRoutes.pop()
-        console.log(state.visitedRoutes)
         return route
     },
 
