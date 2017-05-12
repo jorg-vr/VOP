@@ -14,7 +14,10 @@ export default
             vehicleType: 'type',
             mileage: 'mileage',
             year: 'year',
-            value: 'value'
+            value: 'value',
+            sureties: 'sureties',
+            totalCost: 'price',
+            totalTax: 'tax'
         },
         vehicleType: {
             name: 'name',
@@ -26,7 +29,9 @@ export default
             company: 'company',
             companyName: 'company name',
             fleet: 'fleet',
-            fleets: 'fleets'
+            fleets: 'fleets',
+            totalCost: 'price',
+            totalTax: 'tax'
 
         },
         user: {
@@ -119,11 +124,13 @@ export default
             exemptions: 'exemptions',
             contract: 'contract',
             cost: 'total cost',
-            tax: 'tax',
+            tax: 'tax ',
             insuranceCompany: 'insurance company',
+            insuranceCompanyName: 'insurance company',
             brand:'brand',
             licensePlate:'license plate',
-            suretyType:'surety'
+            suretyType:'surety',
+            suretyTypeTranslation:'surety'
         },
         invoice:{
             invoice: 'invoice',
@@ -248,7 +255,10 @@ export default
             vehicleType: 'type',
             mileage: 'kilometerstand',
             year: 'jaar',
-            value: 'waarde'
+            value: 'waarde',
+            sureties: 'waarborgen',
+            totalCost: 'prijs',
+            totalTax: 'btw'
         },
         vehicleType: {
             name: 'naam',
@@ -260,7 +270,9 @@ export default
             company: 'bedrijf',
             companyName: 'bedrijfsnaam',
             fleet: 'vloot',
-            fleets: 'vloten'
+            fleets: 'vloten',
+            totalCost: 'prijs',
+            totalTax: 'btw'
         },
         user: {
             user: 'gebruiker',
@@ -356,9 +368,11 @@ export default
             cost: 'totaal bedrag',
             tax: 'tax',
             insuranceCompany: 'verzekeringsbedrijf',
+            insuranceCompanyName: 'verzekeringsbedrijf',
             brand:'merk',
             licensePlate:'nummer plaat',
-            suretyType:'waarborg'
+            suretyType:'waarborg',
+            suretyTypeTranslation:'waarborg'
         },
         invoice:{
             invoice: 'factuur',

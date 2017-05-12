@@ -64,3 +64,10 @@ export const addShowableDateTime = function(objects, propertyName){
 export const capitalize = function(value) {
     return value.charAt(0).toUpperCase() + value.slice(1);
 }
+
+export const translateSuretyTypes = function (array) {
+    for(let i=0;i<array.length;i++){
+        array[i].suretyTypeTranslation=Vue.t('suretyTypes.'+array[i].suretyType).capitalize();
+    }
+    return array
+}

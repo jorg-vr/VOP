@@ -17,7 +17,7 @@
                     <td>{{$t('contract.customer') | capitalize }}</td>
                     <td>{{contract.customerName}}</td>
                 </tr>
-                <tr>
+                <tr >
                     <td>{{$t('contract.insuranceCompany') | capitalize }}</td>
                     <td>{{contract.insuranceCompanyName}}</td>
                 </tr>
@@ -52,8 +52,7 @@
         </div>
         
 
-        <!-- TODO ADD MORE FIELDS -->
-        <list-component :resource="resource1" :listObject="listObject1">
+        <list-component v-if="show" :resource="resource1" :listObject="listObject1">
         </list-component>
 
          <div class="page-header">
@@ -63,7 +62,7 @@
             </h1>
         </div>
         
-        <h5> {{$t("contract.offer") | capitalize }} {{contract.insuranceCompanyName}} </h5>
+        <h5 v-if="contract!=null"> {{$t("contract.offer") | capitalize }} {{contract.insuranceCompanyName}} </h5>
         <list-component :resource="resource2" :listObject="listObject2">
         </list-component>
 
@@ -78,13 +77,14 @@
     import buttonLink from '../../assets/buttons/buttonLink.vue'
     import insuranceSearchBar from '../../assets/search/types/insuranceSearchBar.vue'
     import {mapGetters, mapActions, mapMutations} from 'vuex'
+    import * as utils from '../../utils/utils'
 
     export default {
         data(){
             return {
                 resource1: resources.INSURANCE,
                 resource2: resources.SURETY,
-                show: true
+                show: false
             }
         },
         components: {
@@ -100,7 +100,9 @@
 
             this.setLoading({loading: true })
             // get all insurances from the contract with contract Id
-            this.fetchInsurances({ids: this.id}).then(() => {
+            this.fetchInsurances({ids: this.id}).then(()=> {
+                utils.translateSuretyTypes(this.contractInsurances);
+                this.show=true;
                 this.setLoading({loading: false })
             })
             // get all possible sureties for the chosen insurance Company of the contract
@@ -126,7 +128,7 @@
             ]),
             listObject1() {
                 var listObj = {};
-                listObj.headers = ['licensePlate','brand','suretyType','insuredValue','showableStartDate','cost','tax'];
+                listObj.headers = ['licensePlate','brand','suretyTypeTranslation','insuredValue','showableStartDate','cost','tax'];
                 listObj.values = this.contractInsurances;
                 return listObj;
             },
