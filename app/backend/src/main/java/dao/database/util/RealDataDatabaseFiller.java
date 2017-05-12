@@ -126,21 +126,15 @@ public class RealDataDatabaseFiller {
             customerJorg(customerRole,manager,user,adminFunction);
             customerBillie(customerRole,manager,user,adminFunction);
 
-            insuranceCompany1(user,adminFunction);
-            insuranceCompany2(user,adminFunction);
+            InsuranceCompany axa = insuranceCompany1(user,adminFunction);
+            InsuranceCompany ethias = insuranceCompany2(user,adminFunction);
+
+            Collection<SpecialCondition> specialConditions = initSpecialConditions(user,adminFunction);
 
             //----------------------------------------------
 
 
-            String[] titles = {"Euromex polisnummer", "Dekking terrorisme TRIP"};
-            String[] texts = {"Voor de dekking rechtsbijstand geldt het Euromes polisnummer 3020980", "lange tekst"};
-            String[] referenceCodes = {"024", "029"};
-            List<SpecialCondition> specialConditions = new ArrayList<>();
 
-            for (int j = 0; j < titles.length; j++) {
-                SpecialCondition specialCondition = new SpecialCondition(titles[j], texts[j], referenceCodes[j]);
-                specialConditions.add(specialCondition);
-            }
 
             Surety flatSurety = new FlatSurety(i * 100);
             flatSurety.setSuretyType(SuretyType.OMNIUM_FULL);
@@ -154,7 +148,7 @@ public class RealDataDatabaseFiller {
             contract.setEndDate(LocalDateTime.now().plusMonths(10));
 
 
-           
+
             contractDAO.create(contract);
             for (SpecialCondition specialCondition: specialConditions) {
                 specialConditionDAO.create(specialCondition);
@@ -177,6 +171,23 @@ public class RealDataDatabaseFiller {
             e.printStackTrace();
         } catch (UnAuthorizedException e) {
             e.printStackTrace();
+        }
+    }
+
+    private Collection<SpecialCondition> initSpecialConditions(User user, Function function) throws DataAccessException, UnAuthorizedException, ConstraintViolationException {
+        String[] titles = {"Euromex polisnummer", "Dekking terrorisme TRIP"};
+        String[] texts = {"Voor de dekking rechtsbijstand geldt het Euromes polisnummer 3020980", "lange tekst"};
+        String[] referenceCodes = {"024", "029"};
+        List<SpecialCondition> specialConditions = new ArrayList<>();
+
+
+
+        try(ControllerManager controllerManager = new ControllerManager(user.getUuid(),function.getUuid())){
+            for (int j = 0; j < titles.length; j++) {
+                SpecialCondition specialCondition = new SpecialCondition(titles[j], texts[j], referenceCodes[j]);
+                specialConditions.add(specialCondition);
+                controllerManager.getSpecialConditionController().create(specialCondition);
+            }
         }
     }
 
