@@ -65,12 +65,13 @@ export default
             name: 'name',
             cancel: 'cancel',
             add: 'add',
-            update: "update"
+            update: "update",
         },
         actions: {
             select: 'select {subject}',
             create: 'create {subject}',
-            update: 'edit {subject}'
+            update: 'edit {subject}',
+            view: 'view {subject}'
         },
         search_bar: {
             search_for: 'Search for',
@@ -261,12 +262,13 @@ export default
             name: 'naam',
             cancel: 'annuleer',
             add: 'voeg toe',
-            update: "bewerken"
+            update: "bewerken",
         },
         actions: {
             select: 'selecteer {subject}',
             create: '{subject} aanmaken',
-            update: '{subject} bewerken'
+            update: '{subject} bewerken',
+            view: "{subject} bekijken",
         },
         search_bar: {
             search_for: 'Zoeken naar',
