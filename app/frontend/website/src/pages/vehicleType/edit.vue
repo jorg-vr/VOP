@@ -1,49 +1,82 @@
 <template>
     <div>
-        <abstract-form :actions="actions" :object="vehicleType" :back="back" :resource="resource">
-            <form-input :vehicleType="vehicleType"></form-input>
-        </abstract-form>
-        <div class="col-lg-12">
-        <commission-edit :id="id" :loc="loc" :back="back" ></commission-edit>
+        <div class="page-header">
+            <h1>{{ submitText }}</h1>
         </div>
+        <form v-if="show" class="form-horizontal col-xs-12 col-sm-11 col-md-9 col-lg-7">
+            <form-input :vehicleType="vehicleType"></form-input>
+            <h2>{{$t('commission.commissions')}}</h2>
+            <commissionForm :commissions="commissions"></commissionForm>
+            <div class="row">
+                <button-link :route="back" buttonClass="pull-right btn btn-sm btn-default form-component-button">
+                    {{ $t('common.cancel') | capitalize }}
+                </button-link>
+                <button-action @click="submit()" buttonClass="pull-right btn btn-sm btn-primary form-component-button">
+                    {{$t('common.update')|capitalize }}
+                </button-action>
+            </div>
+        </form>
     </div>
 </template>
 <script>
     import {mapActions,mapGetters} from 'vuex'
-    import abstractForm from '../../assets/form/AbstractForm.vue'
     import actions from '../../constants/actions'
     import resources from '../../constants/resources'
     import formInput from './vehicleTypeForm.vue'
-    import commissionEdit from '../commission/edit.vue'
+    import commissionForm from '../commission/commissionForm.vue'
     import * as locations from '../../constants/locations'
+    import buttonLink from '../../assets/buttons/buttonLink.vue'
+    import buttonAction from '../../assets/buttons/buttonAction.vue'
+    import {getResourceActionText} from '../../utils/utils'
 
     export default {
         data(){
             return {
-                resource: resources.VEHICLE_TYPE,
-                actions: actions.UPDATE,
-                vehicleType: {address:{}},
+                submitText:  getResourceActionText(resources.VEHICLE_TYPE.name, actions.UPDATE.name),
                 back:{name:resources.VEHICLE_TYPE.name.plural()},
-                loc:locations.VEHICLE_TYPE
+                loc:locations.VEHICLE_TYPE,
+                show:false
             }
         },
         created(){
-            if(this.id){
-                this.fetchVehicleType({id: this.id}).then(o => {
-                    this.vehicleType = o;
-                })
-            }
+            let p1=this.fetchVehicleType({id: this.id});
+            let p2=this.fetchCommissions({ids:{'resource':this.loc,'resourceId':this.id}});
+            Promise.all([p1,p2]).then(() => {
+                this.show=true;
+            })
+            document.addEventListener("keyup", e => {
+                if(e.keyCode === 13){
+                    this.submit()
+                }
+            })
         },
         components: {
-            abstractForm,formInput,commissionEdit
+            buttonLink,
+            buttonAction,formInput,commissionForm
         },
         props: {
             id: String
         },
+        computed: {
+            ...mapGetters([
+                'commissions','error','vehicleType'
+            ])
+        },
         methods: {
             ...mapActions([
-                'fetchVehicleType'
-            ])
+                'fetchVehicleType',
+                'fetchCommissions',
+                'updateVehicleType',
+                'updateCommission'
+            ]),
+            submit(){
+                this.commissions.id='';
+                let p1=this.updateCommission({resource: this.commissions, ids: {'resource':this.loc,'resourceId':this.id}})
+                let p2=this.updateVehicleType({resource:this.vehicleType});
+                Promise.all([p1,p2]).then(() => {
+                    this.$router.push(this.back)
+                })
+            }
 
         }
     }
