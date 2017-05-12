@@ -66,7 +66,7 @@
             },
             listObject() {
                 var listObj = {};
-                listObj.headers = ['showableStartDate','totalCost','totalTax'];
+                listObj.headers = ['customerName','insuranceCompanyName','showableStartDate','totalCost','totalTax'];
                 listObj.values = this.contracts;
                 return listObj;
             }
