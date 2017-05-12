@@ -60,7 +60,11 @@ public class RESTFunctionController extends RESTAbstractController<RESTFunction,
 
             User userObject = new User(toUUID(userId));
             Company companyObject = company != null ? new Company(toUUID(company)) : null;
-            Role roleObject = role != null ? new Role(toUUID(role)) : null;
+            Role roleObject = null;
+            if(role != null){
+                roleObject = new Role();
+                roleObject.setUuid(toUUID(role));
+            }
 
             restFunctions = controller.getFiltered(userObject, companyObject, roleObject)
                     .stream()

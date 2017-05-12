@@ -80,7 +80,11 @@ public class RESTVehicleController extends RESTAbstractController<RESTVehicle, V
             VehicleController controller = manager.getVehicleController();
 
             Fleet fleetObject = fleet != null ? new Fleet(toUUID(fleet)) : null;
-            VehicleType vehicleTypeObject = type != null ? new VehicleType(toUUID(type)) : null;
+            VehicleType vehicleTypeObject = null;
+            if(type != null){
+                vehicleTypeObject = new VehicleType();
+                vehicleTypeObject.setUuid(toUUID(type));
+            }
 
             Collection<RESTVehicle> result = controller.getFiltered(licensePlate, vin, year, fleetObject, vehicleTypeObject)
                     .stream()

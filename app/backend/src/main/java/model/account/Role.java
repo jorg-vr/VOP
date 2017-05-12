@@ -38,15 +38,6 @@ public class Role implements EditableObject, java.io.Serializable {
     /**
      * Constructor
      *
-     * @param uuid the uuid of the role
-     */
-    public Role(UUID uuid) {
-        this.uuid = uuid;
-    }
-
-    /**
-     * Constructor
-     *
      * @param name the name of the role
      */
     public Role(String name) {
