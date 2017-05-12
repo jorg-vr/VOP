@@ -63,7 +63,7 @@
             </h1>
         </div>
         
-        <h5> {{$t("contract.offer") | capitalize }} {{contract.insuranceCompany}} </h5>
+        <h5> {{$t("contract.offer") | capitalize }} {{contract.insuranceCompanyName}} </h5>
         <list-component :resource="resource2" :listObject="listObject2">
         </list-component>
 

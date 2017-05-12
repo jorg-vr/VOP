@@ -18,8 +18,8 @@ export default
         },
         vehicleType: {
             name: 'name',
-            vehicleType: 'type',
-            vehicleTypes: 'vehicleTypes'
+            vehicleType: 'vehicle type',
+            vehicleTypes: 'vehicle types'
         },
         fleet: {
             name: 'fleet name',
@@ -219,8 +219,8 @@ export default
         },
         vehicleType: {
             name: 'naam',
-            vehicleType: 'voertuig type',
-            vehicleTypes: 'voertuig types'
+            vehicleType: 'voertuigtype',
+            vehicleTypes: 'voertuigtypes'
         },
         fleet: {
             name: 'vlootnaam',
