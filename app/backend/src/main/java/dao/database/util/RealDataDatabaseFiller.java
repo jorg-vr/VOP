@@ -297,7 +297,7 @@ public class RealDataDatabaseFiller {
         return specialConditions;
     }
 
-    private InsuranceCompany insuranceCompany1(User user, Function function) throws DataAccessException, UnAuthorizedException {
+    private InsuranceCompany insuranceCompany1(User user, Function function) throws DataAccessException, UnAuthorizedException, ConstraintViolationException {
         try (ControllerManager manager = new ControllerManager(user.getUuid(), function.getUuid())) {
             Address address = new Address("Zwijnaardsesteenweg", "11", "Gent", "9000", "Belgium");
             InsuranceCompany insuranceCompany = new InsuranceCompany();
@@ -305,20 +305,22 @@ public class RealDataDatabaseFiller {
             insuranceCompany.setName("Axa");
             insuranceCompany.setPhoneNumber("0909886543");
             insuranceCompany.setBtwNumber("BE99576430");
-
+            manager.getInsuranceCompanyController().create(insuranceCompany);
             return insuranceCompany;
         }
     }
 
-    private InsuranceCompany insuranceCompany2(User user, Function function) throws DataAccessException, UnAuthorizedException {
-        Address address = new Address("Leo de Bethunelaan", "108", "Aalst", "9300", "Belgium");
-        InsuranceCompany insuranceCompany = new InsuranceCompany();
-        insuranceCompany.setAddress(address);
-        insuranceCompany.setName("Ethias");
-        insuranceCompany.setPhoneNumber("0486532102");
-        insuranceCompany.setBtwNumber("BE1186543");
-
-        return insuranceCompany;
+    private InsuranceCompany insuranceCompany2(User user, Function function) throws DataAccessException, UnAuthorizedException, ConstraintViolationException {
+        try (ControllerManager manager = new ControllerManager(user.getUuid(), function.getUuid())) {
+            Address address = new Address("Leo de Bethunelaan", "108", "Aalst", "9300", "Belgium");
+            InsuranceCompany insuranceCompany = new InsuranceCompany();
+            insuranceCompany.setAddress(address);
+            insuranceCompany.setName("Ethias");
+            insuranceCompany.setPhoneNumber("0486532102");
+            insuranceCompany.setBtwNumber("BE1186543");
+            manager.getInsuranceCompanyController().create(insuranceCompany);
+            return insuranceCompany;
+        }
     }
 
     private void createInsuranceAccount1(Company company, Role insuranceRole, DAOManager manager) throws DataAccessException, ConstraintViolationException {
@@ -376,6 +378,7 @@ public class RealDataDatabaseFiller {
             manager.getFunctionDAO().create(functionSam);
             Fleet fleetSam = createFleet("Antwerpen", customerSam, addressSam);
             controllerManager.getFleetController().create(fleetSam);
+            customerSam.setFleets(new ArrayList<>(Arrays.asList(new Fleet[]{fleetSam})));
             createVehiclesSam(fleetSam, manager, controllerManager);
             return customerSam;
         }
@@ -396,6 +399,7 @@ public class RealDataDatabaseFiller {
             manager.getFunctionDAO().create(functionJorg);
             Fleet fleetJorg = createFleet("West Vlaanderen", customerJorg, addressJorg);
             controllerManager.getFleetController().create(fleetJorg);
+            customerJorg.setFleets(new ArrayList<>(Arrays.asList(new Fleet[]{fleetJorg})));
             createVehiclesJorg(fleetJorg, manager, controllerManager);
             return customerJorg;
         }
@@ -416,6 +420,7 @@ public class RealDataDatabaseFiller {
             manager.getFunctionDAO().create(functionBillie);
             Fleet fleetBillie = createFleet("West Vlaanderen", customerBillie, addressBillie);
             controllerManager.getFleetController().create(fleetBillie);
+            customerBillie.setFleets(new ArrayList<>(Arrays.asList(new Fleet[]{fleetBillie})));
             createVehiclesBillie(fleetBillie, manager, controllerManager);
             return customerBillie;
         }
@@ -434,8 +439,8 @@ public class RealDataDatabaseFiller {
 
         createVehicleToDatabase(fleetSam, "0MRJ7BJPUW58USS19", 14000, "Mercedes", "P2", "560-KIN", manager, controllerManager, VEHICLETYPE_3);
         createVehicleToDatabase(fleetSam, "ZFU2534S79KATB41S", 140000, "MAN", "TGS", "23-81-MT", manager, controllerManager, VEHICLETYPE_3);
-        createVehicleToDatabase(fleetSam, "BY1WRA6CBEZVC50V6", 90000, "Scania", "S", "92-HD-RX", manager, controllerManager, VEHICLETYPE_3);
-        createVehicleToDatabase(fleetSam, "ZFWS3N69STTBFZZCD", 78000, "Scania", "R", "95-LA-AS", manager, controllerManager, VEHICLETYPE_3);
+        createVehicleToDatabase(fleetSam, "BY1WRA6CBEZVC50V6", 90000, "Scania", "S2", "92-HD-RX", manager, controllerManager, VEHICLETYPE_3);
+        createVehicleToDatabase(fleetSam, "ZFWS3N69STTBFZZCD", 78000, "Scania", "R2", "95-LA-AS", manager, controllerManager, VEHICLETYPE_3);
 
         createVehicleToDatabase(fleetSam, "W5P111LHZXW6UGUV5", 6300, "Range Rover", "C7", "121- DKK", manager, controllerManager, VEHICLETYPE_4);
         createVehicleToDatabase(fleetSam, "0ALGKKT4A5BB1Z8TZ", 54000, "MAN", "TGM", "UTA-789", manager, controllerManager, VEHICLETYPE_4);
@@ -542,6 +547,7 @@ public class RealDataDatabaseFiller {
                     vehicle.setModel(model);
                     vehicle.setYear(LocalDate.now());
                     controllerManager.getVehicleController().create(vehicle);
+                    fleet.getVehicles().add(vehicle);
                     return;
                 }
             }
