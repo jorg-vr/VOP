@@ -1,9 +1,6 @@
 package dao.interfaces;
 
 import model.account.User;
-import model.fleet.Vehicle;
-
-import java.util.UUID;
 
 /**
  * Created by Billie Devolder on 5/04/2017.
@@ -38,8 +35,7 @@ public interface UserDAO extends DAO<User> {
      * Returns a user, when the right credentials are given
      *
      * @param login The login to use
-     * @param hashedPassword The hashedPassword
      * @return the account or null when no match
      */
-    User getUserByLogin(String login, String hashedPassword);
+    User getUserByLogin(String login);
 }

@@ -2,6 +2,7 @@ package model.account;
 
 import model.history.EditableObject;
 import model.history.LogResource;
+import org.jasypt.util.password.StrongPasswordEncryptor;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -158,12 +159,23 @@ public class User implements EditableObject, java.io.Serializable {
     }
 
     /**
-     * Sets the password
-     * @param password the password
+     * Sets the hashed password
+     * @param password the hashed password
      */
     public void setPassword(String password) {
         this.password = password;
     }
+
+    /**
+     * Sets the not hashed password.
+     * The password will get hashed in this method
+     * @param password the not hashed password
+     */
+    public void setNotHashedPassword(String password) {
+        StrongPasswordEncryptor passwordEncryptor = new StrongPasswordEncryptor();
+        this.password = passwordEncryptor.encryptPassword(password);
+    }
+
 
     /**
      * Copies the object and sets all its fields

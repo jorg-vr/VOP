@@ -51,6 +51,8 @@ dependencies {
 	compile ("com.fasterxml.jackson.datatype:jackson-datatype-jsr310") // Used for JSON format of LocalDate
 	compile group: 'org.hsqldb', name: 'hsqldb', version: '2.3.4'
 	compile 'com.auth0:java-jwt:3.1.0'
+	compile group: 'org.jasypt', name: 'jasypt', version: '1.9.2'
+
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('junit:junit:4.12')
 

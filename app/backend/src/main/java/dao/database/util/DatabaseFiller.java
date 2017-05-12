@@ -55,6 +55,7 @@ public class DatabaseFiller {
             Company solvas = new Company();
             solvas.setName("Solvas");
             solvas.setCompanyType(CompanyType.CUSTOMER);
+            solvas.setAddress(new Address("a", "b", "c", "d", "e"));
             companyDAO.create(solvas);
 
             for (int i = 1; i < 6; i++) {
@@ -159,7 +160,7 @@ public class DatabaseFiller {
 
             User user = new User();
             user.setEmail("admin&insuranceagent@solvas.be");
-            user.setPassword("123");
+            user.setNotHashedPassword("123");
             user.setFirstName("Jan");
             user.setLastName("Janssens");
             user = userDAO.create(user);
@@ -227,7 +228,7 @@ public class DatabaseFiller {
 
             User user = new User();
             user.setEmail("admin@solvas.be");
-            user.setPassword("123");
+            user.setNotHashedPassword("123");
             user.setFirstName("Stefaan");
             user.setLastName("Deconicnk");
             user = userDAO.create(user);
@@ -285,6 +286,7 @@ public class DatabaseFiller {
 
             InsuranceCompany solvas = new InsuranceCompany();
             solvas.setName("Solvas");
+            solvas.setAddress(new Address("a", "b", "c", "d", "e"));
             companyDAO.create(solvas);
 
             Surety flatSurety = new FlatSurety(100);
@@ -295,7 +297,7 @@ public class DatabaseFiller {
 
             User user = new User();
             user.setEmail("klant@solvas.be");
-            user.setPassword("123");
+            user.setNotHashedPassword("123");
             user.setFirstName("Frederik");
             user.setLastName("Vandenvelde");
             user = userDAO.create(user);
