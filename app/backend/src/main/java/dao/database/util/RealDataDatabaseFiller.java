@@ -37,7 +37,6 @@ public class RealDataDatabaseFiller {
     private static final String VEHICLETYPE_4 = "Lichte vrachtwagen";
 
 
-
     public static void main(String[] args) throws DataAccessException {
         ProductionProvider.initializeProvider("localtest");
         try (DAOProvider provider = ProductionProvider.getInstance()) {
@@ -64,7 +63,7 @@ public class RealDataDatabaseFiller {
         commissions.put(LEGAL_AID, 0.250);
         commissions.put(TRAVEL_AID, 0.250);
         commissions.put(SAFETY, 0.190);
-        try(DAOManager manager = provider.getDaoManager()) {
+        try (DAOManager manager = provider.getDaoManager()) {
             VehicleTypeDAO dao = manager.getVehicleTypeDAO();
             VehicleType vehicleType = new VehicleType();
             vehicleType.setType(VEHICLETYPE_1);
@@ -92,7 +91,7 @@ public class RealDataDatabaseFiller {
     }
 
     private void initUsers(DAOProvider provider) {
-        try(DAOManager manager = provider.getDaoManager()){
+        try (DAOManager manager = provider.getDaoManager()) {
             //Create possible roles
             Role adminRole = adminRole();
             Role productionRole = productionRole();
@@ -100,13 +99,13 @@ public class RealDataDatabaseFiller {
             Role insuranceRole = insuranceRole();
 
             //Create admin Account
-            Address address = createAddress("Kerkstraat","1","Zomergem","9930","België");
-            Company company = createCompany(CompanyType.CUSTOMER,"093725663","Solvas", address );
+            Address address = createAddress("Kerkstraat", "1", "Zomergem", "9930", "België");
+            Company company = createCompany(CompanyType.CUSTOMER, "093725663", "Solvas", address);
 
-            User user = createUser("Patrick","Oostvogels", "patrick.oostvogels@solvas.be","1h8xE660mn");
-            Function adminFunction = createFunction(company,user,LocalDateTime.now().minusMonths(8),LocalDateTime.now().plusMonths(8),"Admin",
+            User user = createUser("Patrick", "Oostvogels", "patrick.oostvogels@solvas.be", "1h8xE660mn");
+            Function adminFunction = createFunction(company, user, LocalDateTime.now().minusMonths(8), LocalDateTime.now().plusMonths(8), "Admin",
                     adminRole);
-            Function productionFunction = createFunction(company,user,LocalDateTime.now().minusMonths(8),LocalDateTime.now().plusMonths(8),"Productiebeheerder",
+            Function productionFunction = createFunction(company, user, LocalDateTime.now().minusMonths(8), LocalDateTime.now().plusMonths(8), "Productiebeheerder",
                     productionRole);
 
             manager.getUserDAO().create(user);
@@ -117,29 +116,24 @@ public class RealDataDatabaseFiller {
             manager.getFunctionDAO().create(adminFunction);
             manager.getFunctionDAO().create(productionFunction);
 
-            createInsuranceAccount1(company,insuranceRole,manager);
-            createInsuranceAccount2(company,insuranceRole,manager);
-            createInsuranceAccount3(company,insuranceRole,manager);
-            createInsuranceAccount4(company,insuranceRole,manager);
+            createInsuranceAccount1(company, insuranceRole, manager);
+            createInsuranceAccount2(company, insuranceRole, manager);
+            createInsuranceAccount3(company, insuranceRole, manager);
+            createInsuranceAccount4(company, insuranceRole, manager);
 
-            customerSam(customerRole,manager,user,adminFunction);
-            customerJorg(customerRole,manager,user,adminFunction);
-            customerBillie(customerRole,manager,user,adminFunction);
+            customerSam(customerRole, manager, user, adminFunction);
+            customerJorg(customerRole, manager, user, adminFunction);
+            customerBillie(customerRole, manager, user, adminFunction);
 
-            InsuranceCompany axa = insuranceCompany1(user,adminFunction);
-            InsuranceCompany ethias = insuranceCompany2(user,adminFunction);
+            InsuranceCompany axa = insuranceCompany1(user, adminFunction);
+            InsuranceCompany ethias = insuranceCompany2(user, adminFunction);
 
-            Collection<SpecialCondition> specialConditions = initSpecialConditions(user,adminFunction);
+            Collection<SpecialCondition> specialConditions = initSpecialConditions(user, adminFunction);
 
+            Collection<Surety> suretiesAxa = initSuretiesAxa(user,adminFunction,specialConditions,axa);
+            Collection<Surety> suretiesEthias = initSuretiesEthias(user,adminFunction,specialConditions,axa);
             //----------------------------------------------
 
-
-
-
-            Surety flatSurety = new FlatSurety(i * 100);
-            flatSurety.setSuretyType(SuretyType.OMNIUM_FULL);
-            flatSurety.setSpecialConditions(specialConditions);
-            flatSurety.setInsuranceCompany(insuranceCompany);
 
             Contract contract = new Contract();
             contract.setCustomer(customer);
@@ -148,9 +142,8 @@ public class RealDataDatabaseFiller {
             contract.setEndDate(LocalDateTime.now().plusMonths(10));
 
 
-
             contractDAO.create(contract);
-            for (SpecialCondition specialCondition: specialConditions) {
+            for (SpecialCondition specialCondition : specialConditions) {
                 specialConditionDAO.create(specialCondition);
             }
             suretyDAO.create(flatSurety);
@@ -174,6 +167,36 @@ public class RealDataDatabaseFiller {
         }
     }
 
+    private Collection<Surety> initSuretiesAxa(User user, Function function, Collection<SpecialCondition> specialConditions, InsuranceCompany insuranceCompany)
+            throws DataAccessException, UnAuthorizedException, ConstraintViolationException {
+        try (ControllerManager controllerManager = new ControllerManager(user.getUuid(), function.getUuid())) {
+            List<Surety> sureties = new ArrayList<>();
+
+            FlatSurety flatSurety1 = new FlatSurety();
+            flatSurety1.setPremium(250);
+            flatSurety1.setSuretyType(SuretyType.OMNIUM_FULL);
+            flatSurety1.setSpecialConditions(specialConditions);
+            flatSurety1.setInsuranceCompany(insuranceCompany);
+            sureties.add(controllerManager.getSuretyController().create(flatSurety1));
+
+            FlatSurety flatSurety2 = new FlatSurety();
+            flatSurety2.setPremium(140);
+            flatSurety2.setSuretyType(SuretyType.LEGAL_AID);
+            flatSurety2.setSpecialConditions(new ArrayList<>(Arrays.asList(new SpecialCondition[]{specialConditions.iterator().next()})));
+            flatSurety2.setInsuranceCompany(insuranceCompany);
+            sureties.add(controllerManager.getSuretyController().create(flatSurety2));
+
+            NonFlatSurety flatSurety3 = new NonFlatSurety();
+            flatSurety3.setMinPremium(300);
+            flatSurety3.setPremiumPercentage(0.165);
+            flatSurety3.setSuretyType(SuretyType.OMNIUM_PARTIAL);
+            flatSurety3.setSpecialConditions(specialConditions);
+            flatSurety3.setInsuranceCompany(insuranceCompany);
+            sureties.add(controllerManager.getSuretyController().create(flatSurety3));
+            return sureties;
+        }
+    }
+
     private Collection<SpecialCondition> initSpecialConditions(User user, Function function) throws DataAccessException, UnAuthorizedException, ConstraintViolationException {
         String[] titles = {"Euromex polisnummer", "Dekking terrorisme TRIP"};
         String[] texts = {"Voor de dekking rechtsbijstand geldt het Euromes polisnummer 3020980", "lange tekst"};
@@ -181,8 +204,7 @@ public class RealDataDatabaseFiller {
         List<SpecialCondition> specialConditions = new ArrayList<>();
 
 
-
-        try(ControllerManager controllerManager = new ControllerManager(user.getUuid(),function.getUuid())){
+        try (ControllerManager controllerManager = new ControllerManager(user.getUuid(), function.getUuid())) {
             for (int j = 0; j < titles.length; j++) {
                 SpecialCondition specialCondition = new SpecialCondition(titles[j], texts[j], referenceCodes[j]);
                 specialConditions.add(specialCondition);
@@ -192,15 +214,16 @@ public class RealDataDatabaseFiller {
     }
 
     private InsuranceCompany insuranceCompany1(User user, Function function) throws DataAccessException, UnAuthorizedException {
-        try(ControllerManager manager = new ControllerManager(user.getUuid(),function.getUuid())){
-        Address address = new Address("Zwijnaardsesteenweg", "11", "Gent", "9000", "Belgium");
-        InsuranceCompany insuranceCompany = new InsuranceCompany();
-        insuranceCompany.setAddress(address);
-        insuranceCompany.setName("Axa");
-        insuranceCompany.setPhoneNumber("0909886543");
-        insuranceCompany.setBtwNumber("BE99576430");
+        try (ControllerManager manager = new ControllerManager(user.getUuid(), function.getUuid())) {
+            Address address = new Address("Zwijnaardsesteenweg", "11", "Gent", "9000", "Belgium");
+            InsuranceCompany insuranceCompany = new InsuranceCompany();
+            insuranceCompany.setAddress(address);
+            insuranceCompany.setName("Axa");
+            insuranceCompany.setPhoneNumber("0909886543");
+            insuranceCompany.setBtwNumber("BE99576430");
 
-        return insuranceCompany;}
+            return insuranceCompany;
+        }
     }
 
     private InsuranceCompany insuranceCompany2(User user, Function function) throws DataAccessException, UnAuthorizedException {
@@ -215,8 +238,8 @@ public class RealDataDatabaseFiller {
     }
 
     private void createInsuranceAccount1(Company company, Role insuranceRole, DAOManager manager) throws DataAccessException, ConstraintViolationException {
-        User userInsurance = createUser("Hans","Termont", "hans.termont@solvas.be","aox897OP");
-        Function insuranceFunction = createFunction(company,userInsurance,LocalDateTime.now().minusMonths(8),LocalDateTime.now().plusMonths(8),"Verzekeringsmakelaar",
+        User userInsurance = createUser("Hans", "Termont", "hans.termont@solvas.be", "aox897OP");
+        Function insuranceFunction = createFunction(company, userInsurance, LocalDateTime.now().minusMonths(8), LocalDateTime.now().plusMonths(8), "Verzekeringsmakelaar",
                 insuranceRole);
 
         manager.getUserDAO().create(userInsurance);
@@ -225,8 +248,8 @@ public class RealDataDatabaseFiller {
     }
 
     private void createInsuranceAccount2(Company company, Role insuranceRole, DAOManager manager) throws DataAccessException, ConstraintViolationException {
-        User userInsurance = createUser("Elisa","Van Parys", "elisa.vanparys@solvas.be","8awOB2M4E");
-        Function insuranceFunction = createFunction(company,userInsurance,LocalDateTime.now().minusMonths(8),LocalDateTime.now().plusMonths(8),"Verzekeringsmakelaar",
+        User userInsurance = createUser("Elisa", "Van Parys", "elisa.vanparys@solvas.be", "8awOB2M4E");
+        Function insuranceFunction = createFunction(company, userInsurance, LocalDateTime.now().minusMonths(8), LocalDateTime.now().plusMonths(8), "Verzekeringsmakelaar",
                 insuranceRole);
 
         manager.getUserDAO().create(userInsurance);
@@ -235,8 +258,8 @@ public class RealDataDatabaseFiller {
     }
 
     private void createInsuranceAccount3(Company company, Role insuranceRole, DAOManager manager) throws DataAccessException, ConstraintViolationException {
-        User userInsurance = createUser("Nikolas","Maenhout", "nikolas.maenhout@solvas.be","5KFKF9QQ02c");
-        Function insuranceFunction = createFunction(company,userInsurance,LocalDateTime.now().minusMonths(8),LocalDateTime.now().plusMonths(8),"Verzekeringsmakelaar",
+        User userInsurance = createUser("Nikolas", "Maenhout", "nikolas.maenhout@solvas.be", "5KFKF9QQ02c");
+        Function insuranceFunction = createFunction(company, userInsurance, LocalDateTime.now().minusMonths(8), LocalDateTime.now().plusMonths(8), "Verzekeringsmakelaar",
                 insuranceRole);
 
         manager.getUserDAO().create(userInsurance);
@@ -245,8 +268,8 @@ public class RealDataDatabaseFiller {
     }
 
     private void createInsuranceAccount4(Company company, Role insuranceRole, DAOManager manager) throws DataAccessException, ConstraintViolationException {
-        User userInsurance = createUser("Kathleen","Bekaert", "kathleen.bekaert@solvas.be","PcU5Q6Ma");
-        Function insuranceFunction = createFunction(company,userInsurance,LocalDateTime.now().minusMonths(8),LocalDateTime.now().plusMonths(8),"Verzekeringsmakelaar",
+        User userInsurance = createUser("Kathleen", "Bekaert", "kathleen.bekaert@solvas.be", "PcU5Q6Ma");
+        Function insuranceFunction = createFunction(company, userInsurance, LocalDateTime.now().minusMonths(8), LocalDateTime.now().plusMonths(8), "Verzekeringsmakelaar",
                 insuranceRole);
 
         manager.getUserDAO().create(userInsurance);
@@ -254,114 +277,113 @@ public class RealDataDatabaseFiller {
         manager.getFunctionDAO().create(insuranceFunction);
     }
 
-    private void customerSam(Role customerRole, DAOManager manager, User user, Function adminFunction){
+    private void customerSam(Role customerRole, DAOManager manager, User user, Function adminFunction) {
         //Create User and Customer Sam
-        try(ControllerManager controllerManager = new ControllerManager(user.getUuid(),adminFunction.getUuid())){
-            Address addressSam = createAddress("Linde","10", "Sint-Jansteen","4564GG","Nederland");
-            User userSam = createUser("Sam","Persoon","persoonsam@gmail.com","sapersoo5");
-            Customer customerSam = createCustomer(addressSam,"Transport De Doncker","00318877066","NL778802024");
-            Function functionSam = createFunction(customerSam,userSam,LocalDateTime.now().minusMonths(20),LocalDateTime.now().plusMonths(4),
-                    "Sam",customerRole);
+        try (ControllerManager controllerManager = new ControllerManager(user.getUuid(), adminFunction.getUuid())) {
+            Address addressSam = createAddress("Linde", "10", "Sint-Jansteen", "4564GG", "Nederland");
+            User userSam = createUser("Sam", "Persoon", "persoonsam@gmail.com", "sapersoo5");
+            Customer customerSam = createCustomer(addressSam, "Transport De Doncker", "00318877066", "NL778802024");
+            Function functionSam = createFunction(customerSam, userSam, LocalDateTime.now().minusMonths(20), LocalDateTime.now().plusMonths(4),
+                    "Sam", customerRole);
 
             manager.getAddressDao().create(addressSam);
             manager.getCustomerDAO().create(customerSam);
             manager.getUserDAO().create(userSam);
             manager.getFunctionDAO().create(functionSam);
-            Fleet fleetSam = createFleet("Antwerpen",customerSam,addressSam);
+            Fleet fleetSam = createFleet("Antwerpen", customerSam, addressSam);
             controllerManager.getFleetController().create(fleetSam);
-            createVehiclesSam(fleetSam,manager,controllerManager);
+            createVehiclesSam(fleetSam, manager, controllerManager);
         } catch (UnAuthorizedException | DataAccessException | ConstraintViolationException e) {
             e.printStackTrace();
         }
     }
 
-    private void customerJorg(Role customerRole, DAOManager manager, User user, Function adminFunction){
+    private void customerJorg(Role customerRole, DAOManager manager, User user, Function adminFunction) {
         //Create User and Customer Sam
-        try(ControllerManager controllerManager = new ControllerManager(user.getUuid(),adminFunction.getUuid())){
-            Address addressJorg = createAddress("Hoofdstraat","125A", "Hansbeke","4564GG","België");
-            User userJorg = createUser("Jorg","Van Renterghem","jorg.vanrenterghem@ugent.be","louise");
-            Customer customerJorg = createCustomer(addressJorg,"Transport Van Renterghem","09887653","BE875623545");
-            Function functionJorg = createFunction(customerJorg,userJorg,LocalDateTime.now().minusMonths(20),LocalDateTime.now().plusMonths(4),
-                    "Jorg",customerRole);
+        try (ControllerManager controllerManager = new ControllerManager(user.getUuid(), adminFunction.getUuid())) {
+            Address addressJorg = createAddress("Hoofdstraat", "125A", "Hansbeke", "4564GG", "België");
+            User userJorg = createUser("Jorg", "Van Renterghem", "jorg.vanrenterghem@ugent.be", "louise");
+            Customer customerJorg = createCustomer(addressJorg, "Transport Van Renterghem", "09887653", "BE875623545");
+            Function functionJorg = createFunction(customerJorg, userJorg, LocalDateTime.now().minusMonths(20), LocalDateTime.now().plusMonths(4),
+                    "Jorg", customerRole);
 
             manager.getAddressDao().create(addressJorg);
             manager.getCustomerDAO().create(customerJorg);
             manager.getUserDAO().create(userJorg);
             manager.getFunctionDAO().create(functionJorg);
-            Fleet fleetJorg = createFleet("West Vlaanderen",customerJorg,addressJorg);
+            Fleet fleetJorg = createFleet("West Vlaanderen", customerJorg, addressJorg);
             controllerManager.getFleetController().create(fleetJorg);
-            createVehiclesJorg(fleetJorg,manager,controllerManager);
+            createVehiclesJorg(fleetJorg, manager, controllerManager);
         } catch (UnAuthorizedException | DataAccessException | ConstraintViolationException e) {
             e.printStackTrace();
         }
     }
 
-    private void customerBillie(Role customerRole, DAOManager manager, User user, Function adminFunction){
+    private void customerBillie(Role customerRole, DAOManager manager, User user, Function adminFunction) {
         //Create User and Customer Sam
-        try(ControllerManager controllerManager = new ControllerManager(user.getUuid(),adminFunction.getUuid())){
-            Address addressBillie = createAddress("Gentsesteenweg","4", "Kortrijk","8000","België");
-            User userBillie = createUser("Billie","Devolder","billie.devolder@gmail.com","informatica");
-            Customer customerBillie = createCustomer(addressBillie,"Transport Devolder","0032483558043","BE82434846");
-            Function functionBillie = createFunction(customerBillie,userBillie,LocalDateTime.now().minusMonths(20),LocalDateTime.now().plusMonths(4),
-                    "Billie",customerRole);
+        try (ControllerManager controllerManager = new ControllerManager(user.getUuid(), adminFunction.getUuid())) {
+            Address addressBillie = createAddress("Gentsesteenweg", "4", "Kortrijk", "8000", "België");
+            User userBillie = createUser("Billie", "Devolder", "billie.devolder@gmail.com", "informatica");
+            Customer customerBillie = createCustomer(addressBillie, "Transport Devolder", "0032483558043", "BE82434846");
+            Function functionBillie = createFunction(customerBillie, userBillie, LocalDateTime.now().minusMonths(20), LocalDateTime.now().plusMonths(4),
+                    "Billie", customerRole);
 
             manager.getAddressDao().create(addressBillie);
             manager.getCustomerDAO().create(customerBillie);
             manager.getUserDAO().create(userBillie);
             manager.getFunctionDAO().create(functionBillie);
-            Fleet fleetBillie = createFleet("West Vlaanderen",customerBillie,addressBillie);
+            Fleet fleetBillie = createFleet("West Vlaanderen", customerBillie, addressBillie);
             controllerManager.getFleetController().create(fleetBillie);
-            createVehiclesBillie(fleetBillie,manager,controllerManager);
+            createVehiclesBillie(fleetBillie, manager, controllerManager);
         } catch (UnAuthorizedException | DataAccessException | ConstraintViolationException e) {
             e.printStackTrace();
         }
     }
 
-    private void createVehiclesSam(Fleet fleetSam,DAOManager manager, ControllerManager controllerManager){
-        createVehicleToDatabase(fleetSam,"AAAAKAAA78ACAAA9P",17000,"Audi","A1","BE-12-CK",manager,controllerManager,VEHICLETYPE_1);
-        createVehicleToDatabase(fleetSam,"WYKMZ4KD7YD0KSJDY",85000,"Mercedes","Benz 2","18-PP-OI",manager,controllerManager,VEHICLETYPE_1);
-        createVehicleToDatabase(fleetSam,"9WPM9X0KK3SUMD0T9",140000,"Fiat","Punto","1-842-PMT",manager,controllerManager,VEHICLETYPE_1);
-        createVehicleToDatabase(fleetSam,"YH6U5TNZKVLKEGVBJ",62500,"Opel","Astra","9-785-PT",manager,controllerManager,VEHICLETYPE_1);
+    private void createVehiclesSam(Fleet fleetSam, DAOManager manager, ControllerManager controllerManager) {
+        createVehicleToDatabase(fleetSam, "AAAAKAAA78ACAAA9P", 17000, "Audi", "A1", "BE-12-CK", manager, controllerManager, VEHICLETYPE_1);
+        createVehicleToDatabase(fleetSam, "WYKMZ4KD7YD0KSJDY", 85000, "Mercedes", "Benz 2", "18-PP-OI", manager, controllerManager, VEHICLETYPE_1);
+        createVehicleToDatabase(fleetSam, "9WPM9X0KK3SUMD0T9", 140000, "Fiat", "Punto", "1-842-PMT", manager, controllerManager, VEHICLETYPE_1);
+        createVehicleToDatabase(fleetSam, "YH6U5TNZKVLKEGVBJ", 62500, "Opel", "Astra", "9-785-PT", manager, controllerManager, VEHICLETYPE_1);
 
-        createVehicleToDatabase(fleetSam,"UC0RBDZYZF6JCFHY0",62500,"MAN","TGX","KPD-129",manager,controllerManager,VEHICLETYPE_2);
-        createVehicleToDatabase(fleetSam,"JSZ63HAZS8LW8F61E",58200,"CAT","V2","9-804-UID",manager,controllerManager,VEHICLETYPE_2);
-        createVehicleToDatabase(fleetSam,"BMCRJRJX9XSPYUMES",110000,"DAF","XF 510","HUS-090",manager,controllerManager,VEHICLETYPE_2);
-        createVehicleToDatabase(fleetSam,"HEVUCMEZB5TXJKH48",6000,"DAF","CF Euro 6","KAW-481",manager,controllerManager,VEHICLETYPE_2);
+        createVehicleToDatabase(fleetSam, "UC0RBDZYZF6JCFHY0", 62500, "MAN", "TGX", "KPD-129", manager, controllerManager, VEHICLETYPE_2);
+        createVehicleToDatabase(fleetSam, "JSZ63HAZS8LW8F61E", 58200, "CAT", "V2", "9-804-UID", manager, controllerManager, VEHICLETYPE_2);
+        createVehicleToDatabase(fleetSam, "BMCRJRJX9XSPYUMES", 110000, "DAF", "XF 510", "HUS-090", manager, controllerManager, VEHICLETYPE_2);
+        createVehicleToDatabase(fleetSam, "HEVUCMEZB5TXJKH48", 6000, "DAF", "CF Euro 6", "KAW-481", manager, controllerManager, VEHICLETYPE_2);
 
-        createVehicleToDatabase(fleetSam,"0MRJ7BJPUW58USS19",14000,"Mercedes","P2","560-KIN",manager,controllerManager,VEHICLETYPE_3);
-        createVehicleToDatabase(fleetSam,"ZFU2534S79KATB41S",140000,"MAN","TGS","23-81-MT",manager,controllerManager,VEHICLETYPE_3);
-        createVehicleToDatabase(fleetSam,"BY1WRA6CBEZVC50V6",90000,"Scania","S","92-HD-RX",manager,controllerManager,VEHICLETYPE_3);
-        createVehicleToDatabase(fleetSam,"ZFWS3N69STTBFZZCD",78000,"Scania","R","95-LA-AS",manager,controllerManager,VEHICLETYPE_3);
+        createVehicleToDatabase(fleetSam, "0MRJ7BJPUW58USS19", 14000, "Mercedes", "P2", "560-KIN", manager, controllerManager, VEHICLETYPE_3);
+        createVehicleToDatabase(fleetSam, "ZFU2534S79KATB41S", 140000, "MAN", "TGS", "23-81-MT", manager, controllerManager, VEHICLETYPE_3);
+        createVehicleToDatabase(fleetSam, "BY1WRA6CBEZVC50V6", 90000, "Scania", "S", "92-HD-RX", manager, controllerManager, VEHICLETYPE_3);
+        createVehicleToDatabase(fleetSam, "ZFWS3N69STTBFZZCD", 78000, "Scania", "R", "95-LA-AS", manager, controllerManager, VEHICLETYPE_3);
 
-        createVehicleToDatabase(fleetSam,"W5P111LHZXW6UGUV5",6300,"Range Rover","C7","121- DKK",manager,controllerManager,VEHICLETYPE_4);
-        createVehicleToDatabase(fleetSam,"0ALGKKT4A5BB1Z8TZ",54000,"MAN","TGM","UTA-789",manager,controllerManager,VEHICLETYPE_4);
-        createVehicleToDatabase(fleetSam,"1U20YYDM0DHU9JM7E",73000,"Opel","Astra","LKO-186",manager,controllerManager,VEHICLETYPE_4);
-        createVehicleToDatabase(fleetSam,"AZXN1V8VDL0CF9WD3",31000,"Fiat","Panda","1-POL-553",manager,controllerManager,VEHICLETYPE_4);
+        createVehicleToDatabase(fleetSam, "W5P111LHZXW6UGUV5", 6300, "Range Rover", "C7", "121- DKK", manager, controllerManager, VEHICLETYPE_4);
+        createVehicleToDatabase(fleetSam, "0ALGKKT4A5BB1Z8TZ", 54000, "MAN", "TGM", "UTA-789", manager, controllerManager, VEHICLETYPE_4);
+        createVehicleToDatabase(fleetSam, "1U20YYDM0DHU9JM7E", 73000, "Opel", "Astra", "LKO-186", manager, controllerManager, VEHICLETYPE_4);
+        createVehicleToDatabase(fleetSam, "AZXN1V8VDL0CF9WD3", 31000, "Fiat", "Panda", "1-POL-553", manager, controllerManager, VEHICLETYPE_4);
     }
 
-    private void createVehiclesJorg(Fleet fleetJorg,DAOManager manager, ControllerManager controllerManager){
-        createVehicleToDatabase(fleetJorg,"RDDRSG2USGRZHT3GK",7400,"Mercedes","Break C","19-KK-OK",manager,controllerManager,VEHICLETYPE_1);
-        createVehicleToDatabase(fleetJorg,"6N8K7YVMKPT9000NV",87000,"Audi","A5","BEE-861",manager,controllerManager,VEHICLETYPE_1);
+    private void createVehiclesJorg(Fleet fleetJorg, DAOManager manager, ControllerManager controllerManager) {
+        createVehicleToDatabase(fleetJorg, "RDDRSG2USGRZHT3GK", 7400, "Mercedes", "Break C", "19-KK-OK", manager, controllerManager, VEHICLETYPE_1);
+        createVehicleToDatabase(fleetJorg, "6N8K7YVMKPT9000NV", 87000, "Audi", "A5", "BEE-861", manager, controllerManager, VEHICLETYPE_1);
 
-        createVehicleToDatabase(fleetJorg,"WHR3B86S8W934TZ7U",96000,"MAN","TGS","LOP-090",manager,controllerManager,VEHICLETYPE_2);
-        createVehicleToDatabase(fleetJorg,"5JPUNZCVSF62VFM6Z",10000,"DAF","XF 610","HSA-444",manager,controllerManager,VEHICLETYPE_2);
-        createVehicleToDatabase(fleetJorg,"DWBYG9KH8NRAZHGP3",3300,"DAF","CK Euro 6","JUX-1-PP",manager,controllerManager,VEHICLETYPE_2);
+        createVehicleToDatabase(fleetJorg, "WHR3B86S8W934TZ7U", 96000, "MAN", "TGS", "LOP-090", manager, controllerManager, VEHICLETYPE_2);
+        createVehicleToDatabase(fleetJorg, "5JPUNZCVSF62VFM6Z", 10000, "DAF", "XF 610", "HSA-444", manager, controllerManager, VEHICLETYPE_2);
+        createVehicleToDatabase(fleetJorg, "DWBYG9KH8NRAZHGP3", 3300, "DAF", "CK Euro 6", "JUX-1-PP", manager, controllerManager, VEHICLETYPE_2);
     }
 
-    private void createVehiclesBillie(Fleet fleetSam,DAOManager manager, ControllerManager controllerManager){
-        createVehicleToDatabase(fleetSam,"W6846L45MWJ60R99V",17000,"Renault","Clio","18-12-C1",manager,controllerManager,VEHICLETYPE_1);
-        createVehicleToDatabase(fleetSam,"EJE8E4771VL5GF2EU",85000,"Citroën","C6","80-PP-OI",manager,controllerManager,VEHICLETYPE_1);
+    private void createVehiclesBillie(Fleet fleetSam, DAOManager manager, ControllerManager controllerManager) {
+        createVehicleToDatabase(fleetSam, "W6846L45MWJ60R99V", 17000, "Renault", "Clio", "18-12-C1", manager, controllerManager, VEHICLETYPE_1);
+        createVehicleToDatabase(fleetSam, "EJE8E4771VL5GF2EU", 85000, "Citroën", "C6", "80-PP-OI", manager, controllerManager, VEHICLETYPE_1);
 
-        createVehicleToDatabase(fleetSam,"CCJ7KTWGUKVK51S8L",62500,"MAN","TGX","KPD-820",manager,controllerManager,VEHICLETYPE_2);
-        createVehicleToDatabase(fleetSam,"8VTKLPKPM71P0N7GK",58200,"CAT","V2","9-874-UID",manager,controllerManager,VEHICLETYPE_2);
-        createVehicleToDatabase(fleetSam,"2AK3PXZ4WFGUUH97J",110000,"DAF","LG 710","HUO-090",manager,controllerManager,VEHICLETYPE_2);
-        createVehicleToDatabase(fleetSam,"JNT5XWVTT6JMU5VGC",6000,"DAF","CF Euro 8","KKW-481",manager,controllerManager,VEHICLETYPE_2);
+        createVehicleToDatabase(fleetSam, "CCJ7KTWGUKVK51S8L", 62500, "MAN", "TGX", "KPD-820", manager, controllerManager, VEHICLETYPE_2);
+        createVehicleToDatabase(fleetSam, "8VTKLPKPM71P0N7GK", 58200, "CAT", "V2", "9-874-UID", manager, controllerManager, VEHICLETYPE_2);
+        createVehicleToDatabase(fleetSam, "2AK3PXZ4WFGUUH97J", 110000, "DAF", "LG 710", "HUO-090", manager, controllerManager, VEHICLETYPE_2);
+        createVehicleToDatabase(fleetSam, "JNT5XWVTT6JMU5VGC", 6000, "DAF", "CF Euro 8", "KKW-481", manager, controllerManager, VEHICLETYPE_2);
 
-        createVehicleToDatabase(fleetSam,"GX1PJDHJGNMHKLTF7",14000,"DAF","LG 910","560-KMN",manager,controllerManager,VEHICLETYPE_3);
+        createVehicleToDatabase(fleetSam, "GX1PJDHJGNMHKLTF7", 14000, "DAF", "LG 910", "560-KMN", manager, controllerManager, VEHICLETYPE_3);
 
-        createVehicleToDatabase(fleetSam,"W7L5990YWTLHCBAE1",54000,"MAN","TGM","UTA-729",manager,controllerManager,VEHICLETYPE_4);
+        createVehicleToDatabase(fleetSam, "W7L5990YWTLHCBAE1", 54000, "MAN", "TGM", "UTA-729", manager, controllerManager, VEHICLETYPE_4);
     }
-
 
 
     private Customer createCustomer(Address address, String name, String phoneNumber, String vatNumber) {
@@ -376,7 +398,7 @@ public class RealDataDatabaseFiller {
     }
 
 
-    private Function createFunction(Company company, User user, LocalDateTime startDate, LocalDateTime endDate, String name, Role role){
+    private Function createFunction(Company company, User user, LocalDateTime startDate, LocalDateTime endDate, String name, Role role) {
         Function function = new Function();
         function.setCompany(company);
         function.setUser(user);
@@ -387,7 +409,7 @@ public class RealDataDatabaseFiller {
         return function;
     }
 
-    private Fleet createFleet(String name, Customer owner, Address address){
+    private Fleet createFleet(String name, Customer owner, Address address) {
         Fleet fleet = new Fleet();
         fleet.setName(name);
         fleet.setOwner(owner);
@@ -395,7 +417,7 @@ public class RealDataDatabaseFiller {
         return fleet;
     }
 
-    private User createUser(String firstName, String lastName, String email, String password){
+    private User createUser(String firstName, String lastName, String email, String password) {
         User user = new User();
         user.setEmail(email);
         user.setPassword(password);
@@ -404,7 +426,7 @@ public class RealDataDatabaseFiller {
         return user;
     }
 
-    private Address createAddress(String street, String number, String town, String postalcode, String country){
+    private Address createAddress(String street, String number, String town, String postalcode, String country) {
         Address address = new Address();
         address.setStreet(street);
         address.setStreetNumber(number);
@@ -427,8 +449,8 @@ public class RealDataDatabaseFiller {
         VehicleTypeDAO vehicleTypeDAO = manager.getVehicleTypeDAO();
 
         try {
-            for(VehicleType vehicleType: vehicleTypeDAO.listFiltered()){
-                if(vehicleType.getType().equals(type)){
+            for (VehicleType vehicleType : vehicleTypeDAO.listFiltered()) {
+                if (vehicleType.getType().equals(type)) {
                     Vehicle vehicle = new Vehicle();
                     vehicle.setFleet(fleet);
                     vehicle.setVin(vin);
@@ -460,51 +482,51 @@ public class RealDataDatabaseFiller {
         return role;
     }
 
-    private Role productionRole(){
+    private Role productionRole() {
         Role role = new Role();
         role.setName("Productiebeheerder");
-        for(Resource resource : Resource.values()){
-            if(resource.equals(Resource.USER)||resource.equals(Resource.VEHICLETYPE)){
+        for (Resource resource : Resource.values()) {
+            if (resource.equals(Resource.USER) || resource.equals(Resource.VEHICLETYPE)) {
                 role.setAccess(resource, Action.CREATE_ALL);
                 role.setAccess(resource, Action.READ_ALL);
                 role.setAccess(resource, Action.REMOVE_ALL);
                 role.setAccess(resource, Action.UPDATE_ALL);
             }
         }
-        role.setAccess(Resource.VEHICLETYPE,Action.READ_ALL);
-        role.setAccess(Resource.USER,Action.READ_MINE);
+        role.setAccess(Resource.VEHICLETYPE, Action.READ_ALL);
+        role.setAccess(Resource.USER, Action.READ_MINE);
         return role;
     }
 
-    private Role customerRole(){
+    private Role customerRole() {
         Role role = new Role();
         role.setName("Klant");
-        for (Resource resource: Resource.values()){
-            if(!(resource.equals(Resource.LOG)||resource.equals(Resource.USER)||
-                    resource.equals(Resource.COMMISSION)||resource.equals(Resource.FUNCTION)||
-                    resource.equals(Resource.ROLE))){
-                role.setAccess(resource,Action.READ_MINE);
+        for (Resource resource : Resource.values()) {
+            if (!(resource.equals(Resource.LOG) || resource.equals(Resource.USER) ||
+                    resource.equals(Resource.COMMISSION) || resource.equals(Resource.FUNCTION) ||
+                    resource.equals(Resource.ROLE))) {
+                role.setAccess(resource, Action.READ_MINE);
             }
         }
-        role.setAccess(Resource.VEHICLETYPE,Action.READ_ALL);
-        role.setAccess(Resource.USER,Action.READ_MINE);
-        role.setAccess(Resource.ROLE,Action.READ_MINE);
-        role.setAccess(Resource.FUNCTION,Action.READ_MINE);
+        role.setAccess(Resource.VEHICLETYPE, Action.READ_ALL);
+        role.setAccess(Resource.USER, Action.READ_MINE);
+        role.setAccess(Resource.ROLE, Action.READ_MINE);
+        role.setAccess(Resource.FUNCTION, Action.READ_MINE);
         return role;
     }
 
-    private Role insuranceRole(){
+    private Role insuranceRole() {
         Role role = new Role();
         role.setName("Verzekeringsmakelaar");
-        for (Resource resource: Resource.values()){
-            if(!(resource.equals(Resource.LOG)||resource.equals(Resource.USER))){
-                role.setAccess(resource,Action.READ_ALL);
-                role.setAccess(resource,Action.CREATE_ALL);
-                role.setAccess(resource,Action.REMOVE_ALL);
-                role.setAccess(resource,Action.UPDATE_ALL);
+        for (Resource resource : Resource.values()) {
+            if (!(resource.equals(Resource.LOG) || resource.equals(Resource.USER))) {
+                role.setAccess(resource, Action.READ_ALL);
+                role.setAccess(resource, Action.CREATE_ALL);
+                role.setAccess(resource, Action.REMOVE_ALL);
+                role.setAccess(resource, Action.UPDATE_ALL);
             }
         }
-        role.setAccess(Resource.USER,Action.READ_MINE);
+        role.setAccess(Resource.USER, Action.READ_MINE);
         return role;
     }
 
