@@ -5,21 +5,27 @@ A button usable for navigating to the previous page. This previous page has to b
 -->
 
 <template>
-    <button @click="back" class="btn btn-default pull-left" id="back">{{$t('common.back') | capitalize }}</button>
+    <button type="button" @click="navigateBack" :class="buttonClass" id="back">{{ text | capitalize }}</button>
 </template>
 <script>
-    import buttonLink from './buttonLink.vue'
-    import {mapMutations} from 'vuex'
+    import {mapMutations, mapActions} from 'vuex'
 
     export default {
-        components: {
-            buttonLink
-        },
         props: {
             route: Object,
+            text: {
+                type: String,
+                default() {
+                    return this.$t('common.back')
+                }
+            },
+            buttonClass: {
+                type: String,
+                default: "btn btn-default pull-left"
+            }
         },
         methods: {
-            back(){
+            navigateBack(){
                 let redirectRoute = this.$store.getters.popVisitedRoute;
                 if(redirectRoute===undefined || redirectRoute.name===null){
                     this.$router.push({name: this.route.name, params: this.route.params})
