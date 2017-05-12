@@ -3,15 +3,20 @@ package dao.database;
 import dao.database.util.unique.ConstraintValidatorFactoryImpl;
 import dao.exceptions.ConstraintViolationException;
 import dao.exceptions.DataAccessException;
+import dao.interfaces.DAOManager;
+import dao.interfaces.DAOProvider;
+import model.history.Description;
+import model.history.LogAction;
+import model.history.LogEntry;
+import model.history.LogResource;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator;
 import org.hibernate.validator.resourceloading.PlatformResourceBundleLocator;
 
 import javax.validation.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.time.LocalDateTime;
+import java.util.*;
 
 /**
  * Util class to communicate with the database using Hibernate
@@ -119,6 +124,24 @@ public class HibernateUtil {
         }
         if (map.size() > 0) {
             throw new ConstraintViolationException(map);
+        }
+    }
+
+    public static void main(String[] args) {
+        ProductionProvider.initializeProvider("localtest");
+        try(DAOProvider provider = ProductionProvider.getInstance(); DAOManager manager = provider.getDaoManager()){
+            LogEntry entry = new LogEntry();
+            entry.setObject(UUID.randomUUID());
+            entry.setInterested(new ArrayList<UUID>(Arrays.asList(new UUID[]{UUID.randomUUID(),UUID.randomUUID(),UUID.randomUUID()})));
+            entry.setDescriptions(new ArrayList<>(Arrays.asList(new Description[]{new Description("test","1","2"),
+            new Description("test2","3","4")})));
+            entry.setResource(LogResource.ADDRESS);
+            entry.setAction(LogAction.CREATE);
+            entry.setTime(LocalDateTime.now());
+
+            manager.getLogEntryDao().create(entry);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
