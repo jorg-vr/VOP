@@ -6,10 +6,15 @@ import dao.interfaces.DAOManager;
 import dao.interfaces.DAOProvider;
 import model.account.Function;
 import model.account.User;
+import model.fleet.Fleet;
+import model.fleet.Vehicle;
+import model.fleet.VehicleType;
 import model.identity.Address;
 import model.identity.Company;
 import model.identity.CompanyType;
 import model.identity.Customer;
+
+import java.time.LocalDate;
 
 /**
  * Created by sam on 5/12/17.
@@ -63,5 +68,19 @@ public class RealDataDatabaseFiller {
         company.setName(name);
         company.setAddress(address);
         return company;
+    }
+
+    private Vehicle createVehicle(Fleet fleet, String vin, int mileage, String brand, String model, String license, VehicleType type) {
+
+        Vehicle vehicle = new Vehicle();
+        vehicle.setFleet(fleet);
+        vehicle.setVin(vin);
+        vehicle.setMileage(mileage);
+        vehicle.setBrand(brand);
+        vehicle.setLicensePlate(license);
+        vehicle.setType(type);
+        vehicle.setModel(model);
+        vehicle.setYear(LocalDate.now());
+
     }
 }
