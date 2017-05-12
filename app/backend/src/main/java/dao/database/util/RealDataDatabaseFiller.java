@@ -11,6 +11,8 @@ import model.identity.Company;
 import model.identity.CompanyType;
 import model.identity.Customer;
 
+import java.util.Collection;
+
 /**
  * Created by sam on 5/12/17.
  */
@@ -44,9 +46,20 @@ public class RealDataDatabaseFiller {
             user.setLastName("Eastbirds");
             user.setEmail("patrick.eastbirds@solvas.be");
             user.setPassword("1h8xE660mn");
+            user.set
 
         }
 
+    }
+
+    private User createUser(String firstName, String lastName, String email, String password, Collection<Function> functions){
+        User user = new User();
+        user.setEmail(email);
+        user.setPassword(password);
+        user.setLastName(lastName);
+        user.setFirstName(firstName);
+        user.setFunctions(functions);
+        return user;
     }
 
     private Address createAddress(String street, String number, String town, String postalcode, String country){
