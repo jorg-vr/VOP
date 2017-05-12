@@ -31,7 +31,7 @@ All of the fields for insurance input for the insurance form
 
       <!-- Flat -->
       <select-input-form-group 
-                     :object="object" name="isFlat" optionPropertyName="value" visibleKey="text"
+                     :object="object" name="flat" optionPropertyName="value" visibleKey="text"
                      :text="$t('surety.flat')" :rules="'required'" :options="flatData">
         </select-input-form-group>
 
@@ -50,7 +50,7 @@ All of the fields for insurance input for the insurance form
       <div class="page-header">
 
         <select-input-form-group 
-                     :object="object" name="selectedCondition" optionPropertyName="id" visibleKey="referenceCode"
+                     :object="selectedCondition" name="id" optionPropertyName="id" visibleKey="referenceCode"
                      :text="$t('condition.condition')" :rules="'required'" :options="conditions">
         </select-input-form-group>
 
@@ -77,7 +77,7 @@ All of the fields for insurance input for the insurance form
         data(){
             return{
                 referenceCode: 'referenceCode',
-                selectedCondition: '',
+                selectedCondition: {},
                 id:'id',
                 resource: resources.CONDITION,
                 flatData: [{text:'true', value: true},{text:"false" , value: false}]
@@ -130,7 +130,7 @@ All of the fields for insurance input for the insurance form
                 ]),
             pushCondition(){
                 // fetch info for selected special condition
-                this.fetchCondition({id: this.object.selectedCondition}).then(condition => {
+                this.fetchCondition({id: this.selectedCondition.id}).then(condition => {
                     // add selected condition to list
                     this.addSelectedCondition(condition)
                 })
