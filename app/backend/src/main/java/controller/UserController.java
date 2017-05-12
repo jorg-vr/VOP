@@ -24,6 +24,15 @@ public class UserController extends AbstractController<User> {
         return function.getUser().equals(user);
     }
 
+    /**
+     *
+     * @param email Only returns users for which the email contains the pattern email
+     * @param firstName Only returns users for which the firstName contains the pattern firstName
+     * @param lastName Only returns users for which the lastName contains the pattern lastName
+     * @return all users, filtered on the arguments
+     * @throws DataAccessException
+     * @throws UnAuthorizedException
+     */
     public Collection<User> getFiltered(String email, String firstName, String lastName) throws DataAccessException, UnAuthorizedException {
         UserDAO dao = (UserDAO) getDao();
 
