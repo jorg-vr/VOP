@@ -15,11 +15,21 @@
 <script>
     import {mapGetters, mapActions} from 'vuex'
     import textInputFormGroup from '../../assets/form/FormGroups/TextInputFormGroup.vue'
+    import suretyTypes from '../../constants/suretyTypes'
 
     export default {
         data(){
             return {
                 commission: {}
+            }
+        },
+        created(){
+            if(this.commissions==false){
+                for(let i=0;i<suretyTypes.length;i++){
+                    this.commissions[i]={};
+                    this.commissions[i].suretyType=suretyTypes[i].name;
+                    this.commissions[i].commission=0;
+                }
             }
         },
         props: {
