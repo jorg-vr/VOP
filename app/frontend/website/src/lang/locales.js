@@ -14,7 +14,8 @@ export default
             vehicleType: 'type',
             mileage: 'mileage',
             year: 'year',
-            value: 'value'
+            value: 'value',
+            sureties: 'sureties'
         },
         vehicleType: {
             name: 'name',
@@ -215,7 +216,8 @@ export default
             vehicleType: 'type',
             mileage: 'kilometerstand',
             year: 'jaar',
-            value: 'waarde'
+            value: 'waarde',
+            sureties: 'waarborgen'
         },
         vehicleType: {
             name: 'naam',

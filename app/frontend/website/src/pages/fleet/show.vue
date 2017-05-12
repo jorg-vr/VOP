@@ -44,14 +44,14 @@
         },
         created() {
             let id = this.id
-            this.setLoading({loading: true })
+            this.setLoading({loading: true });
             this.fetchFleet({id: id}).then(fleet => {
                 this.fetchClient({id: fleet.company}).then(client => {
                     this.addClientName({client})
                 })
-            })
-            let p1 = this.fetchVehiclesBy({filters: {fleet: id}})
-            let p2 = this.fetchVehicleTypes()
+            });
+            let p1 = this.fetchVehiclesBy({filters: {fleet: id}});
+            let p2 = this.fetchVehicleTypes();
             Promise.all([p1, p2]).then(values => {
                 this.getSubfleets({
                     vehicles: values[0],
@@ -77,6 +77,7 @@
                 'fetchFleet',
                 'fetchVehicleTypes',
                 'fetchVehiclesBy',
+                'fetchInsurancesBy',
                 'deleteVehicle',
                 'addClientName'
             ]),
@@ -99,9 +100,20 @@
             },
             listObject(vehicles) {
                 var listObj = {};
-                listObj.headers = ['brand','model', 'licensePlate'];
-                listObj.values = vehicles;
+                listObj.headers = ['brand','model', 'licensePlate','sureties'];
+                listObj.values = this.setVehicleInsurances(vehicles);
                 return listObj;
+            },
+            setVehicleInsurances(vehicles){
+                for(var i in vehicles){
+                    this.fetchInsurancesBy({filters: {vehicleId: vehicles[i].id}}).then(vi=>{
+                        vehicles[i].sureties=[];
+                        for(var j in vi){
+                            vehicles[i].sureties.push(vi[j].suretyType);
+                        }
+                    })
+                }
+                return vehicles;
             }
         }
     }
