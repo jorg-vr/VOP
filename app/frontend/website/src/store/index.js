@@ -6,6 +6,7 @@ import login from './modules/login'
 import invoice from './modules/invoice'
 import insurance from './modules/insurance'
 import currentUser from './modules/currentUser'
+import vehicle from './modules/vehicle'
 
 import resourceModule from './resourceModule'
 import * as locations from '../constants/locations'
@@ -60,7 +61,8 @@ export default new Vuex.Store({
         login,
         currentUser,
         invoice,
-        insurance
+        insurance,
+        vehicle
     },
     state,
     getters,

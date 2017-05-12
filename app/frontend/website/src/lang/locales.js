@@ -65,12 +65,14 @@ export default
             name: 'name',
             cancel: 'cancel',
             add: 'add',
-            update: "update"
+            update: "update",
+            description: 'description'
         },
         actions: {
             select: 'select {subject}',
             create: 'create {subject}',
-            update: 'edit {subject}'
+            update: 'edit {subject}',
+            remove: 'remove {subject}'
         },
         search_bar: {
             search_for: 'Search for',
@@ -108,8 +110,6 @@ export default
             company: 'insurance company',
             premium: 'insurance premium',
             franchise: 'franchise',
-            endDate: 'end date',
-            startDate: 'start date',
             endDate: 'end date',
             showableStartDate: 'startdatum',
             showableEndDate: 'einddatum ',
@@ -202,6 +202,39 @@ export default
             commission:"commission",
             commissions:"commissions",
             suretyType:"surety type"
+        },
+        log: {
+            log: 'log',
+            logEntry: 'log entry',
+            action: 'action',
+            resource: 'resource',
+            dateTime: 'time',
+            showableDateTime: 'time',
+            object: 'object',
+            create: 'created',
+            update: 'updated',
+        },
+        description: {
+            property: 'property',
+            oldValue: 'old value',
+            newValue: 'new value'
+        },
+        resource: {
+            user: 'user',
+            function: 'function',
+            role: 'role',
+            billing: 'billing',
+            vehicle: 'vehicle',
+            fleet: 'fleet',
+            vehicle_type: 'vehicle type',
+            vehicle_insurance: 'insurance',
+            client: 'company',
+            invoice: 'invoice',
+            surety: 'surety',
+            commission: 'commission',
+            contract: 'insurance contract',
+            condition: 'speciale condition',
+            log: 'log'
         }
     },
     nl : {
@@ -266,12 +299,14 @@ export default
             name: 'naam',
             cancel: 'annuleer',
             add: 'voeg toe',
-            update: "bewerken"
+            update: "bewerken",
+            description: 'beschrijving'
         },
         actions: {
             select: 'selecteer {subject}',
             create: '{subject} aanmaken',
-            update: '{subject} bewerken'
+            update: '{subject} bewerken',
+            remove: '{subject} verwijderen'
         },
         search_bar: {
             search_for: 'Zoeken naar',
@@ -401,6 +436,40 @@ export default
             commission:"commissie",
             commissions:"commissies",
             suretyType:"type waarborg"
+        },
+        log: {
+            log: 'log',
+            logEntry: 'log element',
+            action: 'actie',
+            resource: 'resource',
+            dateTime: 'tijdstip',
+            showableDateTime: 'tijdstip',
+            object: 'object',
+            create: 'aangemaakt',
+            update: 'gewijzigd',
+
+        },
+        description: {
+            property: 'eigenschap',
+            oldValue: 'oude waarde',
+            newValue: 'nieuwe waarde'
+        },
+        resource: {
+            user: 'gebruiker',
+            function: 'functie',
+            role: 'rol',
+            billing: 'facturatie',
+            vehicle: 'voertuig',
+            fleet: 'vloot',
+            vehicle_type: 'voertuigtype',
+            vehicle_insurance: 'verzekering',
+            client: 'bedrijf',
+            invoice: 'factuur',
+            surety: 'verzekeringswaarborg',
+            commission: 'commissie',
+            contract: 'verzekeringscontract',
+            condition: 'speciale conditie',
+            log: 'log'
         }
     }
 }

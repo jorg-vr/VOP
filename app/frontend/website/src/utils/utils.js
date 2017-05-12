@@ -29,3 +29,38 @@ export const formatLocation = function(str, data) {
     }
     return str
 }
+
+/**
+ * Add a showable date property to the list of objects with a formatted date.
+ * @param objects A list of objects
+ * @param propertyName The date property of the objects
+ */
+export const addShowableDate = function(objects, propertyName){
+    if(objects.length > 0 && objects[0][propertyName]){
+        for(let i=0; i<objects.length; i++){
+            objects[i]['showable' + capitalize(propertyName)] =  objects[i][propertyName].showableDate()
+        }
+    }
+}
+
+/**
+ * Add a showable dateTime property to the list of objects with a formatted date.
+ * @param objects A list of objects
+ * @param propertyName The date property of the objects
+ */
+export const addShowableDateTime = function(objects, propertyName){
+    if(objects.length > 0 && objects[0][propertyName]){
+        for(let i=0; i<objects.length; i++){
+            objects[i]['showable' + capitalize(propertyName)] =  objects[i][propertyName].showableDateTime()
+        }
+    }
+}
+
+/**
+ * Capitalize a string
+ * @param value
+ * @returns {string}
+ */
+export const capitalize = function(value) {
+    return value.charAt(0).toUpperCase() + value.slice(1);
+}

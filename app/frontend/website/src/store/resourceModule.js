@@ -42,11 +42,7 @@
  * and takes the name of the resource as argument, for example "fleet".
  * */
 import RequestHandler from '../api/requestHandler'
-import {formatLocation} from '../utils/utils'
-
-let capitalize = function(value) {
-    return value.charAt(0).toUpperCase() + value.slice(1);
-}
+import {formatLocation, addShowableDate, capitalize} from '../utils/utils'
 
 export default {
     //Create a new module with all of the basic operations
@@ -190,13 +186,8 @@ export default {
 }
 
 let addShowableDates = function(payload){
-    for(let i=0; i<payload.length; i++){
-        if(payload[i].startDate){
-            payload[i].showableStartDate = payload[i].startDate.showableDate()
-        }
-        if(payload[i].endDate){
-            payload[i].showableEndDate = payload[i].endDate.showableDate()
-        }
-    }
+    addShowableDate(payload, 'startDate')
+    addShowableDate(payload, 'endDate')
 }
+
 

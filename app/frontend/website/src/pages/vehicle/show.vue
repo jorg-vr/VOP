@@ -39,6 +39,7 @@
                     <td>{{vehicle.year}}</td>
                 </tr>
             </table>
+            <button-link buttonId="log" :route="{name: 'vehicle_logs'}">{{$t('log.log') | capitalize}}</button-link>
             <button-back v-if="vehicle.fleet" :route="{name: 'fleet', params: {id: vehicle.fleet}}"></button-back>
             <button-back v-else :route="{name: 'fleets'}"></button-back>
         </div>
@@ -46,12 +47,13 @@
     </div>
 </template>
 <script>
+    import buttonLink from '../../assets/buttons/buttonLink.vue'
     import buttonBack from '../../assets/buttons/buttonBack.vue'
     import {mapGetters, mapActions} from 'vuex'
 
     export default {
         components: {
-            buttonBack
+            buttonBack, buttonLink
         },
         props: {
             id: String
@@ -68,7 +70,6 @@
             ])
         },
         methods: {
-
             ...mapActions([
                 'fetchVehicle',
                 'fetchVehicleType',
@@ -76,3 +77,8 @@
         }
     }
 </script>
+<style>
+    #log {
+        margin-right: 10px;
+    }
+</style>
