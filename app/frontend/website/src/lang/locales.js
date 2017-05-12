@@ -163,6 +163,7 @@ export default
             coverage: 'coverage clauses',
             exceptions: 'exceptions',
             suretyType: 'type',
+            suretyTypeTranslation:'surety',
             flat: 'flat',
             yes: 'yes',
             no: 'no'
@@ -405,6 +406,7 @@ export default
             coverage: 'dekkingsclausules',
             exceptions: 'vrijstellingen',
             suretyType: 'type',
+            suretyTypeTranslation:'waarborg',
             flat: 'flat',
             yes: 'ja',
             no: 'nee'

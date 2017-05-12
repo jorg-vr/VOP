@@ -52,7 +52,7 @@
         </div>
         
 
-        <list-component v-if="show" :resource="resource1" :listObject="listObject1">
+        <list-component v-if="show<=0" :resource="resource1" :listObject="listObject1">
         </list-component>
 
          <div class="page-header">
@@ -63,7 +63,7 @@
         </div>
         
         <h5 v-if="contract!=null"> {{$t("contract.offer") | capitalize }} {{contract.insuranceCompanyName}} </h5>
-        <list-component :resource="resource2" :listObject="listObject2">
+        <list-component v-if="show<=0" :resource="resource2" :listObject="listObject2">
         </list-component>
 
         <button-back :route="{name: 'contracts'}"></button-back>
@@ -84,7 +84,7 @@
             return {
                 resource1: resources.INSURANCE,
                 resource2: resources.SURETY,
-                show: false
+                show: 2
             }
         },
         components: {
@@ -102,12 +102,14 @@
             // get all insurances from the contract with contract Id
             this.fetchInsurances({ids: this.id}).then(()=> {
                 utils.translateSuretyTypes(this.contractInsurances);
-                this.show=true;
+                this.show=this.show-1;
                 this.setLoading({loading: false })
             })
             // get all possible sureties for the chosen insurance Company of the contract
             this.setLoading({loading: true })
             this.fetchSureties().then(() => {
+                utils.translateSuretyTypes(this.sureties);
+                this.show=this.show-1;
                 this.setLoading({loading: false })
             })
 
@@ -134,7 +136,7 @@
             },
             listObject2() {
                 var listObj = {};
-                listObj.headers = ['suretyType','premium'];
+                listObj.headers = ['suretyTypeTranslation','premium'];
                 listObj.values = this.insuranceCompanySureties;
                 return listObj;
             },
