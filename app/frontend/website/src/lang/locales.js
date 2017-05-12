@@ -114,8 +114,6 @@ export default
             premium: 'insurance premium',
             franchise: 'franchise',
             endDate: 'end date',
-            startDate: 'start date',
-            endDate: 'end date',
             showableStartDate: 'startdatum',
             showableEndDate: 'einddatum ',
             insuredValue: 'insured value',
@@ -129,7 +127,8 @@ export default
             insuranceCompanyName: 'insurance company',
             brand:'brand',
             licensePlate:'license plate',
-            suretyType:'surety'
+            suretyType:'surety',
+            suretyTypeTranslation:'surety'
         },
         invoice:{
             invoice: 'invoice',
@@ -335,7 +334,8 @@ export default
             insuranceCompanyName: 'verzekeringsbedrijf',
             brand:'merk',
             licensePlate:'nummer plaat',
-            suretyType:'waarborg'
+            suretyType:'waarborg',
+            suretyTypeTranslation:'waarborg'
         },
         invoice:{
             invoice: 'factuur',
