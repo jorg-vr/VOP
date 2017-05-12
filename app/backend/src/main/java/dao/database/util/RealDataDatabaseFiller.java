@@ -197,6 +197,37 @@ public class RealDataDatabaseFiller {
         }
     }
 
+    private Collection<Surety> initSuretiesEthias(User user, Function function, Collection<SpecialCondition> specialConditions, InsuranceCompany insuranceCompany)
+            throws DataAccessException, UnAuthorizedException, ConstraintViolationException {
+        try (ControllerManager controllerManager = new ControllerManager(user.getUuid(), function.getUuid())) {
+            List<Surety> sureties = new ArrayList<>();
+
+            FlatSurety flatSurety1 = new FlatSurety();
+            flatSurety1.setPremium(1400);
+            flatSurety1.setSuretyType(SuretyType.CIVIL_LIABILITY);
+            flatSurety1.setSpecialConditions(specialConditions);
+            flatSurety1.setInsuranceCompany(insuranceCompany);
+            sureties.add(controllerManager.getSuretyController().create(flatSurety1));
+
+            NonFlatSurety flatSurety2 = new NonFlatSurety();
+            flatSurety2.setPremiumPercentage(0.25);
+            flatSurety2.setMinPremium(140);
+            flatSurety2.setSuretyType(SuretyType.OMNIUM_PARTIAL);
+            flatSurety2.setSpecialConditions(new ArrayList<>(Arrays.asList(new SpecialCondition[]{specialConditions.iterator().next()})));
+            flatSurety2.setInsuranceCompany(insuranceCompany);
+            sureties.add(controllerManager.getSuretyController().create(flatSurety2));
+
+            NonFlatSurety flatSurety3 = new NonFlatSurety();
+            flatSurety3.setMinPremium(300);
+            flatSurety3.setPremiumPercentage(0.165);
+            flatSurety3.setSuretyType(SuretyType.TRAVEL_AID);
+            flatSurety3.setSpecialConditions(specialConditions);
+            flatSurety3.setInsuranceCompany(insuranceCompany);
+            sureties.add(controllerManager.getSuretyController().create(flatSurety3));
+            return sureties;
+        }
+    }
+
     private Collection<SpecialCondition> initSpecialConditions(User user, Function function) throws DataAccessException, UnAuthorizedException, ConstraintViolationException {
         String[] titles = {"Euromex polisnummer", "Dekking terrorisme TRIP"};
         String[] texts = {"Voor de dekking rechtsbijstand geldt het Euromes polisnummer 3020980", "lange tekst"};
