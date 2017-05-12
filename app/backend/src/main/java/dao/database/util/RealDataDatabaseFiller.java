@@ -1,6 +1,7 @@
 package dao.database.util;
 
 import dao.database.ProductionProvider;
+import dao.exceptions.ConstraintViolationException;
 import dao.exceptions.DataAccessException;
 import dao.interfaces.DAOManager;
 import dao.interfaces.DAOProvider;
@@ -38,15 +39,26 @@ public class RealDataDatabaseFiller {
 
     private void initUsers(DAOProvider provider) {
         try(DAOManager manager = provider.getDaoManager()){
+            Role adminRole = adminRole();
 
             Address address = createAddress("Kerkstraat","1","Zomergem","9930","België");
             Company company = createCompany(CompanyType.CUSTOMER,"093725663","Solvas", address );
-    
-            Function function = new Function();
-            function.setCompany(company);
 
             User user = createUser("Patrick","Eastbirds", "patrick.eastbirds@solvas.be","1h8xE660mn");
+            Function adminFunction = createFunction(company,user,LocalDateTime.now().minusMonths(8),LocalDateTime.now().plusMonths(8),"admin",
+                    adminRole);
 
+            manager.getUserDAO().create(user);
+            manager.getRoleDAO().create(adminRole);
+            manager.getCompanyDAO().create(company);
+            manager.getFunctionDAO().create(adminFunction);
+
+
+
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+        } catch (ConstraintViolationException e) {
+            e.printStackTrace();
         }
 
     }
@@ -120,17 +132,32 @@ public class RealDataDatabaseFiller {
         return vehicle;
     }
 
-    private role adminRole() {
+    private Role adminRole() {
 
         Role role = new Role();
-        role1.setName("Admin");
+        role.setName("Admin");
         for (Resource resource : Resource.values()) {
-            role1.setAccess(resource, Action.CREATE_ALL);
-            role1.setAccess(resource, Action.READ_ALL);
-            role1.setAccess(resource, Action.REMOVE_ALL);
-            role1.setAccess(resource, Action.UPDATE_ALL);
+            role.setAccess(resource, Action.CREATE_ALL);
+            role.setAccess(resource, Action.READ_ALL);
+            role.setAccess(resource, Action.REMOVE_ALL);
+            role.setAccess(resource, Action.UPDATE_ALL);
         }
 
+        return role;
+    }
+
+    private Role productionRole(){
+        Role role = new Role();
+        role.setName("Productiebeheerder");
+        for(Resource resource : Resource.values()){
+            if(resource.equals(Resource.USER)||resource.equals(Resource.VEHICLETYPE)){
+                role.setAccess(resource, Action.CREATE_ALL);
+                role.setAccess(resource, Action.READ_ALL);
+                role.setAccess(resource, Action.REMOVE_ALL);
+                role.setAccess(resource, Action.UPDATE_ALL);
+            }
+        }
+        role.setAccess(Resource.VEHICLETYPE,Action.READ_ALL);
         return role;
     }
 
