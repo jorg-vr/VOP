@@ -120,7 +120,10 @@ export default
             contract: 'contract',
             cost: 'total cost',
             tax: 'tax',
-            insuranceCompany: 'insurance company'
+            insuranceCompany: 'insurance company',
+            brand:'brand',
+            licensePlate:'license plate',
+            suretyType:'surety'
         },
         invoice:{
             invoice: 'invoice',
@@ -167,7 +170,9 @@ export default
             totalTax: 'total tax',
             customer: 'company',
             insuranceCompany: 'insurance company',
-            offer: 'all insurance sureties offered by'
+            offer: 'all insurance sureties offered by',
+            customerName:"company",
+            insuranceCompanyName:'insurance company'
         },
         vehicle_insurance:{
             vehicle_insurance: 'vehicle insurance',
@@ -315,7 +320,10 @@ export default
             contract: 'contract',
             cost: 'totaal bedrag',
             tax: 'tax',
-            insuranceCompany: 'verzekeringsbedrijf'
+            insuranceCompany: 'verzekeringsbedrijf',
+            brand:'merk',
+            licensePlate:'nummer plaat',
+            suretyType:'waarborg'
         },
         invoice:{
             invoice: 'factuur',
@@ -361,7 +369,9 @@ export default
             totalTax: 'totale tax',
             customer: 'bedrijf',
             insuranceCompany: 'verzekeringsmaatschappij',
-            offer: 'Alle verzekeringswaarborgen aangeboden door'
+            offer: 'alle verzekeringswaarborgen aangeboden door',
+            customerName:"bedrijf",
+            insuranceCompanyName:'verzekeringsmaatschappij'
         },
         vehicle_insurance:{
             vehicle_insurance: 'voertuigverzekering',

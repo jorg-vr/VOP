@@ -30,6 +30,8 @@ public class RESTContract extends RESTAbstractModel<Contract> {
     private String customer;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
+    private String customerName;
+    private String insuranceCompanyName;
     private int totalCost;
     private int totalTax;
 
@@ -41,6 +43,8 @@ public class RESTContract extends RESTAbstractModel<Contract> {
         this.endDate = contract.getEndDate();
         this.totalCost = contract.calculateCost();
         this.totalTax = contract.calculateTax();
+        this.customerName=contract.getCustomer().getName();
+        this.insuranceCompanyName=contract.getCompany().getName();
     }
 
     public RESTContract() {
@@ -119,5 +123,21 @@ public class RESTContract extends RESTAbstractModel<Contract> {
 
     public void setTotalTax(int totalTax) {
         this.totalTax = totalTax;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
+    public String getInsuranceCompanyName() {
+        return insuranceCompanyName;
+    }
+
+    public void setInsuranceCompanyName(String insuranceCompanyName) {
+        this.insuranceCompanyName = insuranceCompanyName;
     }
 }
