@@ -9,3 +9,10 @@ import Vue from 'vue'
 export const getResourceActionText = function (resourceName, actionsName) {
     return Vue.t('actions.' + actionsName, {subject: Vue.t(resourceName + '.' + resourceName)}).capitalize()
 }
+
+export const translateSuretyTypes = function (array) {
+    for(let i=0;i<array.length;i++){
+        array[i].suretyTypeTranslation=Vue.t('suretyTypes.'+array[i].suretyType).capitalize();
+    }
+    return array
+}

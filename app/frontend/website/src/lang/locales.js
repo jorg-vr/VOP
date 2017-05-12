@@ -14,19 +14,24 @@ export default
             vehicleType: 'type',
             mileage: 'mileage',
             year: 'year',
-            value: 'value'
+            value: 'value',
+            sureties: 'sureties',
+            totalCost: 'price',
+            totalTax: 'tax'
         },
         vehicleType: {
             name: 'name',
-            vehicleType: 'type',
-            vehicleTypes: 'vehicleTypes'
+            vehicleType: 'vehicle type',
+            vehicleTypes: 'vehicle types'
         },
         fleet: {
             name: 'fleet name',
             company: 'company',
             companyName: 'company name',
             fleet: 'fleet',
-            fleets: 'fleets'
+            fleets: 'fleets',
+            totalCost: 'price',
+            totalTax: 'tax'
 
         },
         user: {
@@ -112,8 +117,6 @@ export default
             premium: 'insurance premium',
             franchise: 'franchise',
             endDate: 'end date',
-            startDate: 'start date',
-            endDate: 'end date',
             showableStartDate: 'startdatum',
             showableEndDate: 'einddatum ',
             insuredValue: 'insured value',
@@ -122,8 +125,13 @@ export default
             exemptions: 'exemptions',
             contract: 'contract',
             cost: 'total cost',
-            tax: 'tax',
-            insuranceCompany: 'insurance company'
+            tax: 'tax ',
+            insuranceCompany: 'insurance company',
+            insuranceCompanyName: 'insurance company',
+            brand:'brand',
+            licensePlate:'license plate',
+            suretyType:'surety',
+            suretyTypeTranslation:'surety'
         },
         invoice:{
             invoice: 'invoice',
@@ -170,7 +178,9 @@ export default
             totalTax: 'total tax',
             customer: 'company',
             insuranceCompany: 'insurance company',
-            offer: 'all insurance sureties offered by'
+            offer: 'all insurance sureties offered by',
+            customerName:"company",
+            insuranceCompanyName:'insurance company'
         },
         vehicle_insurance:{
             vehicle_insurance: 'vehicle insurance',
@@ -213,19 +223,24 @@ export default
             vehicleType: 'type',
             mileage: 'kilometerstand',
             year: 'jaar',
-            value: 'waarde'
+            value: 'waarde',
+            sureties: 'waarborgen',
+            totalCost: 'prijs',
+            totalTax: 'btw'
         },
         vehicleType: {
             name: 'naam',
-            vehicleType: 'voertuig type',
-            vehicleTypes: 'voertuig types'
+            vehicleType: 'voertuigtype',
+            vehicleTypes: 'voertuigtypes'
         },
         fleet: {
             name: 'vlootnaam',
             company: 'bedrijf',
             companyName: 'bedrijfsnaam',
             fleet: 'vloot',
-            fleets: 'vloten'
+            fleets: 'vloten',
+            totalCost: 'prijs',
+            totalTax: 'btw'
         },
         user: {
             user: 'gebruiker',
@@ -321,7 +336,12 @@ export default
             contract: 'contract',
             cost: 'totaal bedrag',
             tax: 'tax',
-            insuranceCompany: 'verzekeringsbedrijf'
+            insuranceCompany: 'verzekeringsbedrijf',
+            insuranceCompanyName: 'verzekeringsbedrijf',
+            brand:'merk',
+            licensePlate:'nummer plaat',
+            suretyType:'waarborg',
+            suretyTypeTranslation:'waarborg'
         },
         invoice:{
             invoice: 'factuur',
@@ -367,7 +387,9 @@ export default
             totalTax: 'totale tax',
             customer: 'bedrijf',
             insuranceCompany: 'verzekeringsmaatschappij',
-            offer: 'Alle verzekeringswaarborgen aangeboden door'
+            offer: 'alle verzekeringswaarborgen aangeboden door',
+            customerName:"bedrijf",
+            insuranceCompanyName:'verzekeringsmaatschappij'
         },
         vehicle_insurance:{
             vehicle_insurance: 'voertuigverzekering',

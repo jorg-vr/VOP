@@ -36,6 +36,13 @@ public class RESTVehicleInsurance extends RESTAbstractModel<VehicleInsurance> {
     private int cost;
     private int tax;
 
+    //extra fields for showing
+    private String licensePlate;
+    private String brand;
+    private SuretyType suretyType;
+    private String insuranceCompanyName;
+
+
     public RESTVehicleInsurance() {
     }
 
@@ -50,6 +57,10 @@ public class RESTVehicleInsurance extends RESTAbstractModel<VehicleInsurance> {
         insuredValue = insurance.getInsuredValue();
         cost = insurance.calculateCost();
         tax = insurance.calculateTax();
+        licensePlate= insurance.getVehicle().getLicensePlate();
+        brand=insurance.getVehicle().getBrand();
+        suretyType=insurance.getSurety().getSuretyType();
+        insuranceCompanyName=insurance.getContract().getCompany().getName();
     }
 
     @Override
@@ -161,5 +172,37 @@ public class RESTVehicleInsurance extends RESTAbstractModel<VehicleInsurance> {
 
     public void setTax(int tax) {
         this.tax = tax;
+    }
+
+    public String getLicensePlate() {
+        return licensePlate;
+    }
+
+    public void setLicensePlate(String licensePlate) {
+        this.licensePlate = licensePlate;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public SuretyType getSuretyType() {
+        return suretyType;
+    }
+
+    public void setSuretyType(SuretyType suretyType) {
+        this.suretyType = suretyType;
+    }
+
+    public String getInsuranceCompanyName() {
+        return insuranceCompanyName;
+    }
+
+    public void setInsuranceCompanyName(String insuranceCompanyName) {
+        this.insuranceCompanyName = insuranceCompanyName;
     }
 }
