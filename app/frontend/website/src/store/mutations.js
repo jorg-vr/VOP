@@ -16,7 +16,9 @@ export default {
      * @param route
      */
     pushVisitedRoute(state, {route}){
-        state.visitedRoutes.push(route)
+        if(route.name !== 'login'){
+            state.visitedRoutes.push(route)
+        }
     },
 
     /**

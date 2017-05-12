@@ -26,6 +26,9 @@ import indexVehicle from '../pages/vehicle/index.vue'
 import newVehicle from '../pages/vehicle/new.vue'
 import editVehicle from '../pages/vehicle/edit.vue'
 import showVehicle from '../pages/vehicle/show.vue'
+import vehicleLogs from '../pages/vehicle/logs.vue'
+import vehicleLog from '../pages/vehicle/log.vue'
+
 
 import indexVehicleType from '../pages/vehicleType/index.vue'
 import newVehicleType from '../pages/vehicleType/new.vue'
@@ -84,6 +87,9 @@ export default [
             {path: 'fleets/:fleetId(\\d+)/vehicles/new', name: 'new_vehicle', component: newVehicle, props: true},
             {path: 'vehicles/:id(\\d+)', name: 'vehicle', component: showVehicle, props: true},
             {path: 'vehicles/:id(\\d+)/edit', name: 'edit_vehicle', component: editVehicle, props: true},
+            {path: 'vehicles/:id(\\d+)/logs', name: 'vehicle_logs', component: vehicleLogs, props: true},
+            {path: 'vehicles/:vehicleId(\\d+)/logs/:id(\\d+)', name: 'vehicle_log', component: vehicleLog, props: true},
+
 
             //VehicleType
             {path: 'vehicle_types', name: 'vehicleTypes', component: indexVehicleType},
@@ -120,7 +126,7 @@ export default [
             {path: 'clients/:companyId(\\d+)/invoices/:id(\\d+)', name: 'invoice', component: showInvoice, props: true}
         ],
     },
-    {path: '/login', name: login, component: login},
+    {path: '/login', name: 'login', component: login},
     {path: '*', component: exception, props: {statusCode: 404}}
 ];
 
