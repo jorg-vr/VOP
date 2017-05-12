@@ -56,10 +56,20 @@ public class User implements EditableObject, java.io.Serializable {
 
     /**
      * Constructor
+     *
+     * @param uuid the uuid of the user
+     */
+    public User(UUID uuid) {
+        this.uuid = uuid;
+    }
+
+    /**
+     * Constructor
+     *
      * @param firstName the first name
-     * @param lastName the last name
-     * @param email the email
-     * @param password the hashed password
+     * @param lastName  the last name
+     * @param email     the email
+     * @param password  the hashed password
      */
     public User(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
@@ -71,6 +81,7 @@ public class User implements EditableObject, java.io.Serializable {
 
     /**
      * Gets the functions of the user
+     *
      * @return the functions
      */
     public Collection<Function> getFunctions() {
@@ -79,6 +90,7 @@ public class User implements EditableObject, java.io.Serializable {
 
     /**
      * Sets the functions of the user
+     *
      * @param functions the functions
      */
     public void setFunctions(Collection<Function> functions) {
@@ -87,6 +99,7 @@ public class User implements EditableObject, java.io.Serializable {
 
     /**
      * Gets the id
+     *
      * @return the id
      */
     @Override
@@ -96,6 +109,7 @@ public class User implements EditableObject, java.io.Serializable {
 
     /**
      * Sets the id
+     *
      * @param uuid the id
      */
     public void setUuid(UUID uuid) {
@@ -104,6 +118,7 @@ public class User implements EditableObject, java.io.Serializable {
 
     /**
      * Gets the first name
+     *
      * @return the first name
      */
     public String getFirstName() {
@@ -112,6 +127,7 @@ public class User implements EditableObject, java.io.Serializable {
 
     /**
      * Sets the first name
+     *
      * @param firstName the first name
      */
     public void setFirstName(String firstName) {
@@ -120,6 +136,7 @@ public class User implements EditableObject, java.io.Serializable {
 
     /**
      * Gets the last name
+     *
      * @return the last name
      */
     public String getLastName() {
@@ -128,6 +145,7 @@ public class User implements EditableObject, java.io.Serializable {
 
     /**
      * Sets the last name
+     *
      * @param lastName the last name
      */
     public void setLastName(String lastName) {
@@ -136,6 +154,7 @@ public class User implements EditableObject, java.io.Serializable {
 
     /**
      * Gets the email
+     *
      * @return the email
      */
     public String getEmail() {
@@ -144,6 +163,7 @@ public class User implements EditableObject, java.io.Serializable {
 
     /**
      * Sets the email
+     *
      * @param email the email
      */
     public void setEmail(String email) {
@@ -152,6 +172,7 @@ public class User implements EditableObject, java.io.Serializable {
 
     /**
      * Gets the hashed password
+     *
      * @return the hashed password
      */
     public String getPassword() {
@@ -159,8 +180,14 @@ public class User implements EditableObject, java.io.Serializable {
     }
 
     /**
+<<<<<<< HEAD
      * Sets the hashed password
      * @param password the hashed password
+=======
+     * Sets the password
+     *
+     * @param password the password
+>>>>>>> master
      */
     public void setPassword(String password) {
         this.password = password;
@@ -179,6 +206,7 @@ public class User implements EditableObject, java.io.Serializable {
 
     /**
      * Copies the object and sets all its fields
+     *
      * @return the copied object
      */
     @Override
@@ -205,7 +233,7 @@ public class User implements EditableObject, java.io.Serializable {
 
         User user = (User) o;
 
-        return this.uuid!=null&&getUuid().equals(user.getUuid());
+        return this.uuid != null && getUuid().equals(user.getUuid());
 
     }
 

@@ -49,17 +49,17 @@ public class RESTUserController extends RESTAbstractController<RESTUser, User> {
      */
     @RequestMapping(method = RequestMethod.GET)
     public RESTSchema<RESTUser> get(HttpServletRequest request,
-                                    String email,
-                                    String firstName,
-                                    String lastName,
-                                    Integer page,
-                                    Integer limit,
+                                    @RequestParam(required = false) String email,
+                                    @RequestParam(required = false) String firstName,
+                                    @RequestParam(required = false) String lastName,
+                                    @RequestParam(required = false) Integer page,
+                                    @RequestParam(required = false) Integer limit,
                                     @RequestHeader(value = "Authorization") String token,
                                     @RequestHeader(value = "Function") String function) throws UnAuthorizedException {
         UUID user = new AuthenticationToken(token).getAccountId();
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
             UserController controller = manager.getUserController();
-            Collection<RESTUser> users = controller.getAll()
+            Collection<RESTUser> users = controller.getFiltered(email, firstName, lastName)
                     .stream()
                     .map(RESTUser::new)
                     .collect(Collectors.toList());

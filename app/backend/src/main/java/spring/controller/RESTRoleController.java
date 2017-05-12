@@ -59,7 +59,8 @@ public class RESTRoleController extends RESTAbstractController<RESTRole, Role> {
         UUID user = new AuthenticationToken(token).getAccountId();
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
             RoleController controller = manager.getRoleController();
-            Collection<RESTRole> roles = controller.getAll()
+
+            Collection<RESTRole> roles = controller.getFiltered(name)
                     .stream()
                     .map(RESTRole::new)
                     .collect(Collectors.toList());
