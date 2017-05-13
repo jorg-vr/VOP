@@ -128,11 +128,11 @@
         },
         props: {
             id: String,
-            //contractId: String
+            contractId: String
         },
         created(){
             // fetch vehicle insurance to display
-             this.fetchInsurance({ids: this.contractId, id:this.id}).then(insurance => {
+             this.fetchInsurance({ids:{ contract:this.contractId}, id:this.id}).then(insurance => {
                 // fetch insured vehicle
                 this.fetchVehicle({id: insurance.vehicle})
                 // fetch surety
@@ -145,7 +145,6 @@
                 'suretyData',
                 'suretyDetail',
                 'vehicle',
-                'contractId',
                 'insurance'
             ])
         },

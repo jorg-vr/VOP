@@ -14,7 +14,7 @@ All of the fields for insurance input for the insurance form
 
         <!-- End Date --> 
         <date-input-form-group 
-                    :object="object" name="endDate" :text="$t('insurance.endDate')" :rules="'required'" visibleKey="endDate">
+                    :object="object" name="endDate" rules="" :text="$t('insurance.endDate')" visibleKey="endDate">
         </date-input-form-group>
 
         <!-- Insured value -->
@@ -29,8 +29,8 @@ All of the fields for insurance input for the insurance form
         <h2>{{$t("insurance.type") | capitalize }} </h2>
       </div>
 
-      <select-input-form-group 
-                     :object="object" name="surety" optionPropertyName="id" visibleKey="suretyType"
+      <select-input-form-group  v-if="show"
+                     :object="object" name="surety" optionPropertyName="id" visibleKey="suretyTypeTranslation"
                      :text="$t('surety.surety')" :rules="'required'" :options="sureties">
       </select-input-form-group>
 
@@ -54,6 +54,7 @@ All of the fields for insurance input for the insurance form
     import clientTypes from '../../constants/clientTypes'
     import resources from '../../constants/resources'
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
+    import {translateSuretyTypes} from '../../utils/utils'
 
     export default {
         data(){
@@ -62,7 +63,11 @@ All of the fields for insurance input for the insurance form
                 suretyType: 'suretyType',
                 id:'id',
                 resource: resources.SURETY,
+                show:false
             }
+        },
+        mounted(){
+            this.$parent.$emit('mounted', this.$children)
         },
         props: {
             object: Object,
@@ -76,24 +81,31 @@ All of the fields for insurance input for the insurance form
                 'fleets',
                 'suretyData',
                 'suretyDetail',
-                'contractId',
+                'contract',
                 'sureties',
                 'vehicles',
-                ])
+                'insuranceCompanyId'
+                ]),
+
         },
         methods: {
             ...mapActions([
                 'fetchSureties',
-                'fetchVehicles'
+                'fetchVehiclesBy',
+                'fetchContract'
                 ])
         },
         created(){
-            // set contract id of insurance
-            this.object.contract = this.contractId
-            // fetch all possible sureties
-            this.fetchSureties()
-            // fetch all vehicles
-            this.fetchVehicles()
+            this.fetchContract({id:this.object.contract}).then(()=>{
+                // fetch all possible sureties
+                this.fetchSureties({ids:{ company:this.contract.insuranceCompany}}).then(()=>{
+                    translateSuretyTypes(this.sureties);
+                    this.show=true;
+                });
+                // fetch all vehicles
+                this.fetchVehiclesBy({filters:{company:this.contract.customer}})
+            })
+
         }
     }
 </script>

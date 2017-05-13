@@ -19,18 +19,16 @@
             return {
                 actions: actions.CREATE,
                 resource: resources.INSURANCE,
-                insurance: {},
+                insurance: {contract:this.contractId},
                 back: {name: resources.INSURANCE.name.plural()}
 
             }
         },
+        props:{
+            contractId:String
+        },
         components: {
             insuranceFormInput,abstractForm
-        },
-        computed: {
-            ...mapGetters([
-                'contractId'
-                ])
-        },
+        }
     }
 </script>

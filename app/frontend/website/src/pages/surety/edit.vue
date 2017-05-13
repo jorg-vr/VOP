@@ -10,7 +10,7 @@
 </template>
 
 <script>
-    import {mapActions} from 'vuex'
+    import {mapActions,mapMutations} from 'vuex'
     import abstractForm from '../../assets/form/AbstractForm.vue'
     import actions from '../../constants/actions'
     import resources from '../../constants/resources'
@@ -30,6 +30,7 @@
                 this.fetchSurety({id: this.id}).then(surety => {
                     console.log(surety)
                     this.surety = surety;
+                    this.setSelectedConditions(this.surety.specialConditions)
                 })
             }
         },
@@ -42,7 +43,11 @@
         methods: {
             ...mapActions([
                 'fetchSurety'
-            ])
+            ]),
+            ...mapMutations([
+                'setSelectedConditions',
+                ]),
+
 
         }
     }

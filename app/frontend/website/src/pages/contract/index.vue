@@ -43,9 +43,9 @@
                 })
             }
             else {
-                this.fetchInsurancesByCompany({company: this.activeFunction.company}).then(() => {
+/*                 this.fetchContractsBy({filters: {company: this.activeFunction.company}}).then(() => {
                     this.setLoading({loading: false })
-                })
+                })*/
             }
             // clear vehicle insurances 
             this.clearInsurances()

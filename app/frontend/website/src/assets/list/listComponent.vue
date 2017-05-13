@@ -14,12 +14,22 @@
                         {{value[header]}}
                     </td>
                     <td class="stretch">
-                        <button-edit :resource="resource" :params="{id: value.id}"></button-edit>
-                        <button-remove :resource="resource"></button-remove>
+                        <button-edit :resource="resource" :params="paramsWithId(value.id)" ></button-edit>
+                        <button-remove :resource="resource"  @click="tdshowModal(value.id)"></button-remove>
                     </td>
                 </tr>
             </tbody>
         </table>
+        <!-- Confirmation Modam -->
+        <confirm-modal v-show="showModal" 
+            @cancelModal="showModal=false" 
+            @confirmModal="confirmAction()" 
+            :modalHeaderTitle=" $t('modal.titleConfirm') | capitalize"
+            :modalBodyText="$t('modal.textConfirm') | capitalize" 
+            :confirmButtonText="$t('modal.button1') | capitalize "
+            :cancelButtonText="$t('modal.button2') | capitalize ">        
+        </confirm-modal> 
+
     </div>
 </template>
 <style>
@@ -47,9 +57,21 @@ tr.list-tr {
                 showModal: false
             }
         },
+        computed: {
+            par(){
+                if(this.params==undefined){
+                    return {};
+                }else{
+                    return this.params
+                }
+            }
+        },
+
         props: {
             resource: Object,
             listObject: Object,
+            params:Object,
+            ids: Object //Object with id's for creating the correct POST/PUT route.
             /*
             { "headers" : ["Name", "CompanyName"],
               "values" : [
@@ -71,7 +93,22 @@ tr.list-tr {
         },
         methods: {
             tdclick: function(id) {
-                this.$router.push({name: this.resource.name, params: {id: id}});
+                this.$router.push({name: this.resource.name, params: this.paramsWithId(id)});
+            },
+            confirmAction: function(){
+                // hide modal
+                this.showModal=false
+                // remove object
+                // special case deletion of insurance
+                this.$store.dispatch('delete' + this.resource.name.capitalize(), {id: this.selectedvalue, ids: this.ids})
+            },
+            tdshowModal: function(id) {
+                this.showModal = true
+                this.selectedvalue=id
+            },
+            paramsWithId(id){
+                this.par.id=id;
+                return this.par;
             }
         }
     }

@@ -4,7 +4,7 @@
     @param id: the id of the fleet which is edited.
 -->
 <template>
-    <abstract-form :actions="actions" :object="insurance" :back="back" :resource="resource">
+    <abstract-form :actions="actions" :object="insurance" :back="back" :resource="resource" :ids="{contract: insurance.contract}">
         <insurance-form-input :object="insurance"></insurance-form-input>
     </abstract-form>
 </template>
@@ -21,14 +21,16 @@
             return {
                 actions: actions.UPDATE,
                 resource: resources.INSURANCE,
-                insurance:{},
+                insurance:{contract:this.contractId},
                 back:{name:resources.INSURANCE.name.plural()}
             }
         },
         created(){
             if(this.id){
-                this.fetchInsurance({id: this.id,ids: this.contractId}).then(insurance => {
+                this.fetchInsurance({id: this.id,ids:{contract: this.contractId}}).then(insurance => {
                     this.insurance = insurance;
+                    this.insurance.startDate = this.insurance.startDate.substring(0,10)
+                    this.insurance.endDate = this.insurance.endDate.substring(0,10)
                 })
             }
         },
@@ -36,17 +38,13 @@
             abstractForm,insuranceFormInput
         },
         props: {
-            id: String
+            id: String,
+            contractId:String
         },
         methods: {
             ...mapActions([
                 'fetchInsurance'
-            ]),
-        computed: {
-            ...mapGetters([
-                'contractId'
-                ])
-        },
+            ])
 
         }
     }
