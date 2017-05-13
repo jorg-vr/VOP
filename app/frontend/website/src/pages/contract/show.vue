@@ -52,8 +52,7 @@
         </div>
         
 
-        <!-- TODO ADD MORE FIELDS -->
-        <list-component v-if="show1" :resource="resource1" :listObject="listObject1" :ids="{contract: this.id}">
+        <list-component :ids="ids" v-if="show1" :resource="resource1" :listObject="listObject1" :ids="{contract: this.id}">
         </list-component>
 
          <div class="page-header">
@@ -86,7 +85,8 @@
                 resource1: resources.INSURANCE,
                 resource2: resources.SURETY,
                 show1: false,
-                show2: false
+                show2: false,
+                ids:{contract:this.id}
             }
         },
         components: {

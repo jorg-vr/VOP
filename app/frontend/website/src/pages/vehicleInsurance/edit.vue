@@ -38,7 +38,8 @@
             abstractForm,insuranceFormInput
         },
         props: {
-            id: String
+            id: String,
+            contractId:String
         },
         methods: {
             ...mapActions([

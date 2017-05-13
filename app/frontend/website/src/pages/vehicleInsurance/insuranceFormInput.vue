@@ -30,8 +30,8 @@ All of the fields for insurance input for the insurance form
       </div>
 
       <select-input-form-group  v-if="show"
-                     :object="object" name="surety" optionPropertyName="id" visibleKey="suretyType"
-                     :text="$t('surety.surety')" :rules="'required'" :options="insurancesureties">
+                     :object="object" name="surety" optionPropertyName="id" visibleKey="suretyTypeTranslation"
+                     :text="$t('surety.surety')" :rules="'required'" :options="sureties">
       </select-input-form-group>
 
       <!-- Insured vehicle -->
@@ -54,7 +54,7 @@ All of the fields for insurance input for the insurance form
     import clientTypes from '../../constants/clientTypes'
     import resources from '../../constants/resources'
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
-    import * as utils from '../../utils/utils'
+    import {translateSuretyTypes} from '../../utils/utils'
 
     export default {
         data(){
@@ -81,37 +81,31 @@ All of the fields for insurance input for the insurance form
                 'fleets',
                 'suretyData',
                 'suretyDetail',
-                'contractId',
+                'contract',
                 'sureties',
                 'vehicles',
                 'insuranceCompanyId'
                 ]),
-            insurancesureties(){
-                var s = []
-//                this.sureties=utils.translateSuretyTypes(this.sureties);
-                for(let i=0;i<this.sureties.length;i++){
-                    if(this.sureties[i].insuranceCompany == this.insuranceCompanyId){
-                        s.push(this.sureties[i])
-                    }
-                }
-                return s
-            }
+
         },
         methods: {
             ...mapActions([
                 'fetchSureties',
-                'fetchVehicles'
+                'fetchVehiclesBy',
+                'fetchContract'
                 ])
         },
         created(){
-            // set contract id of insurance
-            this.object.contract = this.contractId
-            // fetch all possible sureties
-          this.fetchSureties().then(()=>{
-              this.show=true;
-          });
-            // fetch all vehicles
-            this.fetchVehicles()
+            this.fetchContract({id:this.object.contractId}).then(()=>{
+                // fetch all possible sureties
+                this.fetchSureties({ids:{ company:this.contract.insuranceCompany}}).then(()=>{
+                    translateSuretyTypes(this.sureties);
+                    this.show=true;
+                });
+                // fetch all vehicles
+                this.fetchVehiclesBy({params:{company:this.contract.customer}})
+            })
+
         }
     }
 </script>
