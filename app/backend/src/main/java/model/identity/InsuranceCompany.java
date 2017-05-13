@@ -135,8 +135,8 @@ public class InsuranceCompany extends Company implements java.io.Serializable {
         company.setName(getName());
         company.setCompanyType(getCompanyType());
         company.setAddress((Address)getAddress().copy());
-        company.setInvoicePeriodicity(getInvoicePeriodicity());
-        company.setStatementPeriodicity(getStatementPeriodicity());
+        company.setPaymentPeriod(getPaymentPeriod());
+        company.setFacturationPeriod(getFacturationPeriod());
         company.setBtwNumber(getBtwNumber());
         company.setUuid(getUuid());
         company.setPhoneNumber(getPhoneNumber());

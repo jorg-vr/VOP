@@ -474,8 +474,8 @@ public class RealDataDatabaseFiller {
         customer.setName(name);
         customer.setPhoneNumber(phoneNumber);
         customer.setBtwNumber(vatNumber);
-        customer.setStatementPeriodicity(Periodicity.MONTHLY);
-        customer.setInvoicePeriodicity(Periodicity.YEARLY);
+        customer.setFacturationPeriod(Periodicity.MONTHLY);
+        customer.setPaymentPeriod(Periodicity.YEARLY);
         return customer;
     }
 
