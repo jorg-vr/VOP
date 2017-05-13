@@ -63,7 +63,7 @@
             </h1>
         </div>
         
-        <h5> {{$t("contract.offer") | capitalize }} {{contract.insuranceCompanyName}} </h5>
+        <h5 v-if="contract!=null"> {{$t("contract.offer") | capitalize }} {{contract.insuranceCompanyName}} </h5>
         <list-component :resource="resource2" :listObject="listObject2">
         </list-component>
 
@@ -96,10 +96,7 @@
         created(){
             // fetch contract to display information
             let contractId = this.id
-            this.fetchContract({id: contractId}).then(contract => {
-                     // set Insurance company id
-                    this.setInsuranceCompanyId(contract.insuranceCompany)
-            })
+            this.fetchContract({id: contractId});
 
             this.setLoading({loading: true })
             // get all insurances from the contract with contract Id
@@ -142,7 +139,7 @@
             insuranceCompanySureties(){
                 var insuranceCompanies = []
                 for(let i=0;i<this.sureties.length;i++){
-                    if(this.sureties[i].insuranceCompany == this.contract.insuranceCompany){
+                    if(this.sureties[i]!=null&&this.contract!=null&&this.sureties[i].insuranceCompany == this.contract.insuranceCompany){
                         insuranceCompanies.push(this.sureties[i])
                     }
                 }

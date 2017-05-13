@@ -14,7 +14,7 @@ All of the fields for insurance input for the insurance form
 
         <!-- End Date --> 
         <date-input-form-group 
-                    :object="object" name="endDate" :text="$t('insurance.endDate')" :rules="'required'" visibleKey="endDate">
+                    :object="object" name="endDate" rules="" :text="$t('insurance.endDate')" visibleKey="endDate">
         </date-input-form-group>
 
         <!-- Insured value -->
@@ -29,7 +29,7 @@ All of the fields for insurance input for the insurance form
         <h2>{{$t("insurance.type") | capitalize }} </h2>
       </div>
 
-      <select-input-form-group 
+      <select-input-form-group  v-if="show"
                      :object="object" name="surety" optionPropertyName="id" visibleKey="suretyType"
                      :text="$t('surety.surety')" :rules="'required'" :options="insurancesureties">
       </select-input-form-group>
@@ -54,6 +54,7 @@ All of the fields for insurance input for the insurance form
     import clientTypes from '../../constants/clientTypes'
     import resources from '../../constants/resources'
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
+    import * as utils from '../../utils/utils'
 
     export default {
         data(){
@@ -62,6 +63,7 @@ All of the fields for insurance input for the insurance form
                 suretyType: 'suretyType',
                 id:'id',
                 resource: resources.SURETY,
+                show:false
             }
         },
         mounted(){
@@ -85,14 +87,15 @@ All of the fields for insurance input for the insurance form
                 'insuranceCompanyId'
                 ]),
             insurancesureties(){
-                  var s = []
-                  for(let i=0;i<this.sureties.length;i++){
-                      if(this.sureties[i].insuranceCompany == this.insuranceCompanyId){
-                          s.push(this.sureties[i])
-                      }
-                  }
-                  return s
+                var s = []
+//                this.sureties=utils.translateSuretyTypes(this.sureties);
+                for(let i=0;i<this.sureties.length;i++){
+                    if(this.sureties[i].insuranceCompany == this.insuranceCompanyId){
+                        s.push(this.sureties[i])
+                    }
                 }
+                return s
+            }
         },
         methods: {
             ...mapActions([
@@ -104,7 +107,9 @@ All of the fields for insurance input for the insurance form
             // set contract id of insurance
             this.object.contract = this.contractId
             // fetch all possible sureties
-            this.fetchSureties()
+          this.fetchSureties().then(()=>{
+              this.show=true;
+          });
             // fetch all vehicles
             this.fetchVehicles()
         }
