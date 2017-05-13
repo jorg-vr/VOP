@@ -22,7 +22,9 @@ export default
         vehicleType: {
             name: 'name',
             vehicleType: 'vehicle type',
-            vehicleTypes: 'vehicle types'
+            vehicleTypes: 'vehicle types',
+            tax:'tax',
+            taxes:'taxes'
         },
         fleet: {
             name: 'fleet name',
@@ -264,7 +266,9 @@ export default
         vehicleType: {
             name: 'naam',
             vehicleType: 'voertuigtype',
-            vehicleTypes: 'voertuigtypes'
+            vehicleTypes: 'voertuigtypes',
+            tax:'btw',
+            taxes:'belastingen'
         },
         fleet: {
             name: 'vlootnaam',
@@ -412,8 +416,8 @@ export default
             no: 'nee'
         },
         contract:{
-            contract: 'verzekeringscontract',
-            contracts: 'verzekeringscontracten',
+            contract: 'contract',
+            contracts: 'contracten',
             showableStartDate: 'startdatum',
             showableEndDate: 'einddatum',
             totalCost: 'totale kost',

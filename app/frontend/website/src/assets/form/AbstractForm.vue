@@ -59,6 +59,7 @@ Generic component for a form. Every form should be encapsulated in this componen
                     this.submit()
                 }
             })
+            SubmitFormHandler.setSubmitFunction(this.submit)
         },
 
         computed: {
@@ -72,6 +73,7 @@ Generic component for a form. Every form should be encapsulated in this componen
              * index page of the resource of the object.
              */
             submit(){
+                console.log("submit")
                 this.$store.dispatch(this.actions.name + this.resource.name.capitalize(), {resource: this.object, ids: this.ids}).then(() => {
                     let redirectRoute = this.$store.getters.popVisitedRoute;
                     if(redirectRoute===undefined || redirectRoute.name===null){
