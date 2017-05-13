@@ -47,7 +47,7 @@
         <div class="page-header">
             <h1>
                 {{$t("vehicle_insurance.vehicle_insurances") | capitalize }}
-                <button-add :resource="resource1" :params="params"></button-add>
+                <button-add :resource="resource1" :params="{contractId:id}"></button-add>
             </h1>
         </div>
 
