@@ -5,12 +5,12 @@
 -->
 <template>
     <div>
-        <div class="page-header">
-            <h1>
+        <div class="page-header" v-if="contract">
+            <h1 >
                 {{$t("contract.contract") | capitalize }} {{contract.customerName}} - {{contract.insuranceCompanyName}}
             </h1>
-            <h4>{{showDate(contract.startDate)}} - {{showDate(contract.endDate)}}</h4>
-            <h4>{{$t('contract.totalCost') | capitalize }} {{contract.totalCost}}€</h4>
+            <h4 >{{showDate(contract.startDate)}} - {{showDate(contract.endDate)}}</h4>
+            <h4> {{$t('contract.totalCost') | capitalize }} {{contract.totalCost}}€</h4>
             <h4>{{$t('contract.totalTax') | capitalize }} {{contract.totalTax}}€</h4>
         </div>
         <!-- show information about insurance contract -->
