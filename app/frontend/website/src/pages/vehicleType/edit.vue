@@ -12,7 +12,7 @@
                     {{ $t('common.cancel') | capitalize }}
                 </button-link>
                 <button-action @click="submit()" buttonClass="pull-right btn btn-sm btn-primary form-component-button">
-                    {{$t('common.update')|capitalize }}
+                    {{ submitText }}
                 </button-action>
             </div>
         </form>
