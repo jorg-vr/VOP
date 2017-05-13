@@ -10,6 +10,7 @@ import model.account.Resource;
 import model.fleet.Fleet;
 import model.fleet.Vehicle;
 import model.fleet.VehicleType;
+import model.identity.Customer;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -36,13 +37,14 @@ public class VehicleController extends CommissionContainerController<Vehicle> {
      * @param vin          vin of vehicle equals the pattern vin
      * @param year         production year of vehicle equals the pattern year
      * @param fleet        only return vehicles of this fleet, if the fleet does not exist in the database, an empty list will be returned
+     * @param customer       only return vehicles of this customer, if the fleet does not exist in the database, an empty list will be returned
      * @param type         vehicleType of vehicle equals the pattern vehicleType
      * @return All Vehicles, filtered on arguments
      * @throws DataAccessException   Something went horribly wrong with the database
      * @throws UnAuthorizedException Function is not authorized to get all the objects.
      */
     public Collection<Vehicle> getFiltered(String licensePlate, String vin,
-                                           Integer year, Fleet fleet, VehicleType type) throws DataAccessException, UnAuthorizedException {
+                                           Integer year, Fleet fleet, Customer customer, VehicleType type) throws DataAccessException, UnAuthorizedException {
         VehicleDAO dao = (VehicleDAO) getDao();
 
         // Filter vehicles on criteria that are supported by the database
@@ -55,6 +57,7 @@ public class VehicleController extends CommissionContainerController<Vehicle> {
         return result.stream()
                 .filter(c -> vin == null || c.getVin().toLowerCase().equals(vin.toLowerCase()))
                 .filter(c -> year == null || c.getYear().getYear() == year)
+                .filter(c -> customer == null || c.getFleet().getOwner().equals(customer))
                 .collect(Collectors.toList());
     }
 }
