@@ -5,43 +5,46 @@
 -->
 <template>
     <div>
-        <div class="page-header">
-            <h1>
-                {{$t("contract.contract") | capitalize }}
+        <div class="page-header" v-if="contract">
+            <h1 >
+                {{$t("contract.contract") | capitalize }} {{contract.customerName}} - {{contract.insuranceCompanyName}}
             </h1>
+            <h4 >{{showDate(contract.startDate)}} - {{showDate(contract.endDate)}}</h4>
+            <h4> {{$t('contract.totalCost') | capitalize }} {{contract.totalCost}}€</h4>
+            <h4>{{$t('contract.totalTax') | capitalize }} {{contract.totalTax}}€</h4>
         </div>
         <!-- show information about insurance contract -->
-        <div class="col-md-8">
-            <table class="table show-table" v-if='contract'>
-                <tr>
-                    <td>{{$t('contract.customer') | capitalize }}</td>
-                    <td>{{contract.customerName}}</td>
-                </tr>
-                <tr>
-                    <td>{{$t('contract.insuranceCompany') | capitalize }}</td>
-                    <td>{{contract.insuranceCompanyName}}</td>
-                </tr>
-                <tr>
-                    <td>{{$t('contract.showableStartDate') | capitalize }}</td>
-                    <td>{{showDate(contract.startDate)}}</td>
-                </tr>
-                <tr>
-                    <td>{{$t('contract.showableEndDate') | capitalize }}</td>
-                    <td>{{showDate(contract.endDate)}}</td>
-                </tr>
+        <!--<div class="col-md-8">-->
+            <!--<table class="table show-table" v-if='contract'>-->
+                <!--<tr>-->
+                    <!--<td>{{$t('contract.customer') | capitalize }}</td>-->
+                    <!--<td>{{contract.customerName}}</td>-->
+                <!--</tr>-->
+                <!--<tr>-->
+                    <!--<td>{{$t('contract.insuranceCompany') | capitalize }}</td>-->
+                    <!--<td>{{contract.insuranceCompanyName}}</td>-->
+                <!--</tr>-->
+                <!--<tr>-->
+                    <!--<td>{{$t('contract.showableStartDate') | capitalize }}</td>-->
+                    <!--<td>{{showDate(contract.startDate)}}</td>-->
+                <!--</tr>-->
+                <!--<tr>-->
+                    <!--<td>{{$t('contract.showableEndDate') | capitalize }}</td>-->
+                    <!--<td>{{showDate(contract.endDate)}}</td>-->
+                <!--</tr>-->
 
-                 <tr>
-                    <td>{{$t('contract.totalCost') | capitalize }}</td>
-                    <td>{{contract.totalCost}}</td>
-                </tr>
+                 <!--<tr>-->
+                    <!--<td>{{$t('contract.totalCost') | capitalize }}</td>-->
+                    <!--<td>{{contract.totalCost}}</td>-->
+                <!--</tr>-->
 
-                 <tr>
-                    <td>{{$t('contract.totalTax') | capitalize }}</td>
-                    <td>{{contract.totalTax}}</td>
-                </tr>
+                 <!--<tr>-->
+                    <!--<td>{{$t('contract.totalTax') | capitalize }}</td>-->
+                    <!--<td>{{contract.totalTax}}</td>-->
+                <!--</tr>-->
 
-            </table>
-        </div>
+            <!--</table>-->
+        <!--</div>-->
 
 
         <div class="page-header">
