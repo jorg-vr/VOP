@@ -47,6 +47,14 @@
                     <td>{{$t('client.phoneNumber') | capitalize }}</td>
                     <td>{{client.phoneNumber}}</td>
                 </tr>
+                <tr>
+                    <td>{{$t('client.facturationPeriod') | capitalize }}</td>
+                    <td>{{getPeriodText(client.facturationPeriod) | capitalize}}</td>
+                </tr>
+                <tr>
+                    <td>{{$t('client.paymentPeriod') | capitalize }}</td>
+                    <td>{{getPeriodText(client.paymentPeriod) | capitalize}}</td>
+                </tr>
             </table>
             <h2>{{$t("fleet.fleets") | capitalize }}</h2>
             <list-component :listObject="listObject" :resource="resource">
@@ -66,6 +74,7 @@
     import buttonBack from '../../assets/buttons/buttonBack.vue'
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
     import buttonInvoice from '../../assets/buttons/buttonInvoice.vue'
+    import periods from '../../constants/periods'
 
     export default {
         data(){
@@ -123,7 +132,10 @@
             ]),
             ...mapMutations([
                 'setLoading'
-            ])
+            ]),
+            getPeriodText(period){
+                return periods.filter(periodObj => periodObj.period === period)[0].translation()
+            }
         }
     }
 </script>
