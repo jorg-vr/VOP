@@ -45,7 +45,7 @@ public class RESTUser extends RESTAbstractModel<User> {
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setEmail(email);
-        user.setPassword(password);
+        user.setNotHashedPassword(password);
         return user;
     }
 
