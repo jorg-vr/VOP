@@ -56,6 +56,9 @@
                 'getInsurancesByAllAdvanced'
             ])
         },
+        props:{
+            contractId:String
+        },
         methods: {
             ...mapActions([
                 'fetchInsurances',

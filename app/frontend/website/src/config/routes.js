@@ -114,10 +114,10 @@ export default [
             {path: 'contracts/:id(\\d+)/edit', name: 'edit_contract', component: editContract, props: true},
 
             // vehicle insurances
-            {path: 'insurances', name: 'insurances', component: indexContract},
-            {path: 'insurances/new', name: 'new_insurance', component: newVehicleInsurance},
-            {path: 'insurances/:id(\\d+)', name: 'insurance', component: showVehicleInsurance, props: true},
-            {path: 'insurances/:id(\\d+)/edit', name: 'edit_insurance', component: editVehicleInsurance, props: true},
+            {path: 'contracts/:contractId(\\d+)/insurances', name: 'insurances', component: indexContract, props: true},
+            {path: 'contracts/:contractId(\\d+)/insurances/new', name: 'new_insurance', component: newVehicleInsurance, props: true},
+            {path: 'contracts/:contractId(\\d+)/insurances/:id(\\d+)', name: 'insurance', component: showVehicleInsurance, props: true},
+            {path: 'contracts/:contractId(\\d+)/insurances/:id(\\d+)/edit', name: 'edit_insurance', component: editVehicleInsurance, props: true},
             
             // special conditions
             {path: 'conditions', name: 'conditions', component: indexSpecialCondition},
