@@ -16,10 +16,17 @@ All of the fields for user input for the client form
         <text-input-form-group :object="client.address" name="houseNumber" :text="$t('address.houseNumber')" :rules="'required|numeric'"></text-input-form-group>
         <text-input-form-group :object="client" name="vatNumber" :text="$t('client.vatNumber')" :rules="'required|min:8'"></text-input-form-group>
         <text-input-form-group :object="client" name="phoneNumber" :text="$t('client.phoneNumber')" :rules="'required|min:6'"></text-input-form-group>
+        <select-input-form-group :object="client" name="paymentPeriod" :text="$t('client.paymentPeriod')" :rules="'required'"
+                                 :options="periods" optionPropertyName="period" visibleKey="translation">
+        </select-input-form-group>
+        <select-input-form-group :object="client" name="facturationPeriod" :text="$t('client.facturationPeriod')" :rules="'required'"
+                                 :options="periods" optionPropertyName="period" visibleKey="translation">
+        </select-input-form-group>
     </div>
 </template>
 <script>
     import clientTypes from '../../constants/clientTypes'
+    import periods from '../../constants/periods'
     import TextInputFormGroup from '../../assets/form/FormGroups/TextInputFormGroup.vue'
     import SelectInputFormGroup from '../../assets/form/FormGroups/SelectInputFormGroup.vue'
 
@@ -28,7 +35,8 @@ All of the fields for user input for the client form
             return {
                 clientTypes: $.map(clientTypes, function (value, index) {
                     return [value]
-                })
+                }),
+                periods : periods
             }
         },
         mounted(){

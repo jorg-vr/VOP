@@ -51,7 +51,9 @@ export default
             company: 'company',
             name: 'name',
             phoneNumber: 'phone number',
-            vatNumber: 'VAT number'
+            vatNumber: 'VAT number',
+            facturationPeriod: 'facturation period',
+            paymentPeriod: 'payment period'
         },
         clientTypes: {
             customer: "customer",
@@ -247,6 +249,12 @@ export default
             contract: 'insurance contract',
             condition: 'speciale condition',
             log: 'log'
+        },
+        period: {
+            quarterly: 'quarterly',
+            yearly: 'yearly',
+            half_yearly: 'half yearly',
+            monthly: 'monthly'
         }
     },
     nl : {
@@ -296,7 +304,10 @@ export default
             company: 'bedrijf',
             name: 'naam',
             phoneNumber: 'telefoonnummer',
-            vatNumber: 'BTW-nummer'
+            vatNumber: 'BTW-nummer',
+            facturationPeriod: 'facturatieperiode',
+            paymentPeriod: 'afrekeningsperiode'
+
         },
         clientTypes: {
             customer: "klant",
@@ -494,6 +505,12 @@ export default
             contract: 'verzekeringscontract',
             condition: 'speciale conditie',
             log: 'log'
+        },
+        period: {
+            quarterly: 'driemaandelijks',
+            yearly: 'jaarlijks',
+            half_yearly: 'halfjaarlijks',
+            monthly: 'maandelijks'
         }
     }
 }
