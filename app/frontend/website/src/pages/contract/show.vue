@@ -47,12 +47,12 @@
         <div class="page-header">
             <h1>
                 {{$t("vehicle_insurance.vehicle_insurances") | capitalize }}
-                <button-add :resource="resource1"></button-add>
+                <button-add :resource="resource1" :params="params"></button-add>
             </h1>
         </div>
         
 
-        <list-component :ids="ids" v-if="show1" :resource="resource1" :listObject="listObject1" :ids="{contract: this.id}">
+        <list-component :params="params" :ids="ids" v-if="show1" :resource="resource1" :listObject="listObject1" >
         </list-component>
 
          <div class="page-header">
@@ -86,7 +86,8 @@
                 resource2: resources.SURETY,
                 show1: false,
                 show2: false,
-                ids:{contract:this.id}
+                ids:{contract:this.id},
+                params:{contractId:this.id}
             }
         },
         components: {
