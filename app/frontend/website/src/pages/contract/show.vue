@@ -47,15 +47,42 @@
         <div class="page-header">
             <h1>
                 {{$t("vehicle_insurance.vehicle_insurances") | capitalize }}
-                <button-add :resource="resource1" :params="params"></button-add>
+                <button-add :resource="resource1" :params="{contractId:id}"></button-add>
             </h1>
         </div>
-        
 
-        <list-component :params="params" :ids="ids" v-if="show1" :resource="resource1" :listObject="listObject1" >
-        </list-component>
 
-         <div class="page-header">
+        <table class="table-hover table">
+            <thead>
+            <tr>
+                <th v-for="head in listObject1.headers">
+                    {{$t(resource1.name + '.' + head).capitalize()}}
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="value in listObject1.values" class="list-tr">
+                <td v-for="header in listObject1.headers" class="clickable-td" @click="tdclick(value)">
+                    {{value[header]}}
+                </td>
+                <td class="stretch">
+                    <button-edit :resource="resource1" :params="{contractId:value.contract ,id:value.id}" ></button-edit>
+                    <button-remove :resource="resource1"  @click="tdshowModal(value.id)"></button-remove>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <!-- Confirmation Modam -->
+        <confirm-modal v-show="showModal"
+                       @cancelModal="showModal=false"
+                       @confirmModal="confirmAction()"
+                       :modalHeaderTitle=" $t('modal.titleConfirm') | capitalize"
+                       :modalBodyText="$t('modal.textConfirm') | capitalize"
+                       :confirmButtonText="$t('modal.button1') | capitalize "
+                       :cancelButtonText="$t('modal.button2') | capitalize ">
+        </confirm-modal>
+
+        <div class="page-header">
             <h1>
                 <button-add :resource="resource2"></button-add>
                 {{$t("surety.sureties") | capitalize }}
@@ -78,6 +105,9 @@
     import insuranceSearchBar from '../../assets/search/types/insuranceSearchBar.vue'
     import {mapGetters, mapActions, mapMutations} from 'vuex'
     import {translateSuretyTypes} from '../../utils/utils'
+    import buttonEdit from '../../assets/buttons/buttonEdit.vue'
+    import buttonRemove from '../../assets/buttons/buttonRemove.vue'
+    import confirmModal from '../../assets/general/modal.vue'
 
     export default {
         data(){
@@ -87,11 +117,12 @@
                 show1: false,
                 show2: false,
                 ids:{contract:this.id},
-                params:{contractId:this.id}
+                showModal:false
             }
         },
         components: {
-            buttonBack,buttonAdd,listComponent,buttonLink,insuranceSearchBar
+            buttonBack,buttonAdd,listComponent,buttonLink,insuranceSearchBar,
+            buttonEdit,buttonRemove,confirmModal
         },
         props: {
             id: String
@@ -185,6 +216,20 @@
             showDate: function (date) {
                 var d=new Date(date)
                 return d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear()
+            },
+            tdclick: function(value) {
+                this.$router.push({name: this.resource.name, params: {contractId:value.contract, id:value.id}});
+            },
+            confirmAction: function(){
+                // hide modal
+                this.showModal=false
+                // remove object
+                // special case deletion of insurance
+                this.$store.dispatch('delete' + this.resource.name.capitalize(), {id: this.selectedvalue, ids: this.ids})
+            },
+            tdshowModal: function(id) {
+                this.showModal = true
+                this.selectedvalue=id
             }
         },
     }
