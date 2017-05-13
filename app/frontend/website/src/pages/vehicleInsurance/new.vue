@@ -20,7 +20,7 @@
                 actions: actions.CREATE,
                 resource: resources.INSURANCE,
                 insurance: {contract:this.contractId},
-                back: {name: resources.INSURANCE.name.plural()}
+                back: {name: resources.INSURANCE.name,params:{id:this.contractId}}
 
             }
         },

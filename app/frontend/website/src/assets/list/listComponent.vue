@@ -14,7 +14,7 @@
                         {{value[header]}}
                     </td>
                     <td class="stretch">
-                        <button-edit :resource="resource" :params="paramsWithId(value.id)" ></button-edit>
+                        <button-edit :resource="resource" :params="{id:value.id}" ></button-edit>
                         <button-remove :resource="resource"  @click="tdshowModal(value.id)"></button-remove>
                     </td>
                 </tr>
@@ -57,20 +57,9 @@ tr.list-tr {
                 showModal: false
             }
         },
-        computed: {
-            par(){
-                if(this.params==undefined){
-                    return {};
-                }else{
-                    return this.params
-                }
-            }
-        },
-
         props: {
             resource: Object,
             listObject: Object,
-            params:Object,
             ids: Object //Object with id's for creating the correct POST/PUT route.
             /*
             { "headers" : ["Name", "CompanyName"],
@@ -93,7 +82,7 @@ tr.list-tr {
         },
         methods: {
             tdclick: function(id) {
-                this.$router.push({name: this.resource.name, params: this.paramsWithId(id)});
+                this.$router.push({name: this.resource.name, params: {id:id}});
             },
             confirmAction: function(){
                 // hide modal
@@ -105,10 +94,6 @@ tr.list-tr {
             tdshowModal: function(id) {
                 this.showModal = true
                 this.selectedvalue=id
-            },
-            paramsWithId(id){
-                this.par.id=id;
-                return this.par;
             }
         }
     }
