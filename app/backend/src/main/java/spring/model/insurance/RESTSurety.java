@@ -98,7 +98,7 @@ public class RESTSurety extends RESTAbstractModel<Surety> {
         if (violations.size() > 0) {
             throw new ConstraintViolationException(violations);
         }
-
+        surety.setSuretyType(getSuretyType());
         surety.setUuid(toUUID(getId()));
         return surety;
     }

@@ -42,7 +42,7 @@ All of the fields for insurance input for the insurance form
 
         <select-input-form-group 
                      :object="selectedCondition" name="id" optionPropertyName="id" visibleKey="referenceCode"
-                     :text="$t('condition.condition')" :options="conditions">
+                     :text="$t('condition.condition')" :options="conditions" rules="">
         </select-input-form-group>
 
        <button @click='pushCondition()' type="button" class="btn pull-right btn btn-primary "> {{$t("common.add") | capitalize }} </button>
