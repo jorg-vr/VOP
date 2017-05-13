@@ -7,6 +7,7 @@ import dao.interfaces.DAOManager;
 import model.identity.Address;
 import model.identity.Company;
 import model.identity.CompanyType;
+import model.identity.Periodicity;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -69,6 +70,8 @@ public class RESTCompanyControllerTest {
                 c.setName(NAMES[i]);
                 c.setPhoneNumber("04789456123");
                 c.setBtwNumber("123456789");
+                c.setFacturationPeriod(Periodicity.HALF_YEARLY);
+                c.setPaymentPeriod(Periodicity.HALF_YEARLY);
                 dao.create(c);
                 companies.add(c);
             }
@@ -112,6 +115,8 @@ public class RESTCompanyControllerTest {
     public void post() throws Exception {
         RESTCompany restCompany = new RESTCompany(null, "frank", "sinatra", "0123456", new RESTAddress("a", "b", "c", "d", "e"));
         restCompany.setType(CompanyType.CUSTOMER.toString());
+        restCompany.setFacturationPeriod(1);
+        restCompany.setPaymentPeriod(1);
         MvcResult result = mvc.perform(MockMvcRequestBuilders.post("/companies")
                 .header("Content-Type", "application/json")
                 .header("Authorization", authPair[0])

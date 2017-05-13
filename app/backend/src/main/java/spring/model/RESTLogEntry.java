@@ -94,6 +94,11 @@ public class RESTLogEntry {
         this.user = user;
     }
 
+    @Override
+    public String toString() {
+        return dateTime.toString();
+    }
+
     public static class RESTDescription {
 
         // The name of the field that has been changed
@@ -137,5 +142,7 @@ public class RESTLogEntry {
         public void setNewValue(String newValue) {
             this.newValue = newValue;
         }
+
+
     }
 }

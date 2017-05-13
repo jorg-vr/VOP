@@ -8,7 +8,6 @@ import dao.exceptions.DataAccessException;
 import model.identity.Company;
 import model.identity.InsuranceCompany;
 import model.insurance.Surety;
-import org.springframework.format.annotation.NumberFormat;
 import org.springframework.web.bind.annotation.*;
 import spring.controller.RESTAbstractController;
 import spring.model.AuthenticationToken;
@@ -42,13 +41,17 @@ public class RESTSuretyController extends RESTAbstractController<RESTSurety, Sur
     public RESTSchema<RESTSurety> get(HttpServletRequest request,
                                        @PathVariable String companyId,
                                         Integer page, Integer limit,
+                                        String insuranceCompany,
                                         @RequestHeader(value = "Authorization") String token,
                                         @RequestHeader(value = "Function") String function) throws UnAuthorizedException, DataAccessException {
         UUID user = new AuthenticationToken(token).getAccountId();
 
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
             SuretyController controller = manager.getSuretyController();
-            Collection<RESTSurety> restSureties = controller.getAll()
+
+            InsuranceCompany insuranceCompanyObject = insuranceCompany != null ? new InsuranceCompany(toUUID(insuranceCompany)) : null;
+
+            Collection<RESTSurety> restSureties = controller.getFiltered(insuranceCompanyObject)
                     .stream()
                     .filter(surety -> companyId == null || surety.getInsuranceCompany().equals(new Company(toUUID(companyId))))
                     .map(RESTSurety::new)

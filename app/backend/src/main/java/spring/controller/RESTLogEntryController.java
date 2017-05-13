@@ -39,7 +39,7 @@ public class RESTLogEntryController {
                     .stream()
                     .map(RESTLogEntry::new)
                     .collect(Collectors.toList());
-            return new RESTSchema<>(entries, page, limit, request);
+            return new RESTSchema<>(entries, page, limit, request, (a, b) -> b.getDateTime().compareTo(a.getDateTime()));
         }
     }
 
@@ -57,7 +57,7 @@ public class RESTLogEntryController {
                     .stream()
                     .map(RESTLogEntry::new)
                     .collect(Collectors.toList());
-            return new RESTSchema<>(entries, page, limit, request);
+            return new RESTSchema<>(entries, page, limit, request, (a, b) -> b.getDateTime().compareTo(a.getDateTime()));
         }
     }
 }

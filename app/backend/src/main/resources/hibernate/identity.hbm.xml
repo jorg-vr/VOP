@@ -18,12 +18,12 @@
             <key column="identity_id"/>
             <property name="name" column="name" type="string"/>
             <property name="btwNumber" column="btw_number" type="string"/>
-            <property name="invoicePeriodicity">
+            <property name="paymentPeriod">
                 <type name="org.hibernate.type.EnumType">
                     <param name="enumClass">model.identity.Periodicity</param>
                 </type>
             </property>
-            <property name="statementPeriodicity">
+            <property name="facturationPeriod">
                 <type name="org.hibernate.type.EnumType">
                     <param name="enumClass">model.identity.Periodicity</param>
                 </type>
