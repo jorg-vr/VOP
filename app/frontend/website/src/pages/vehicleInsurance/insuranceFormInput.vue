@@ -96,7 +96,6 @@ All of the fields for insurance input for the insurance form
                 ])
         },
         created(){
-            console.log(this.object)
             this.fetchContract({id:this.object.contract}).then(()=>{
                 // fetch all possible sureties
                 this.fetchSureties({ids:{ company:this.contract.insuranceCompany}}).then(()=>{
@@ -104,7 +103,7 @@ All of the fields for insurance input for the insurance form
                     this.show=true;
                 });
                 // fetch all vehicles
-                this.fetchVehiclesBy({params:{company:this.contract.customer}})
+                this.fetchVehiclesBy({filters:{company:this.contract.customer}})
             })
 
         }
