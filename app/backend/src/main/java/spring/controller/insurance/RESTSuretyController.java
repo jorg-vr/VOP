@@ -5,6 +5,7 @@ import controller.ControllerManager;
 import controller.exceptions.UnAuthorizedException;
 import controller.insurance.SuretyController;
 import dao.exceptions.DataAccessException;
+import model.identity.InsuranceCompany;
 import model.insurance.Surety;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,12 +42,16 @@ public class RESTSuretyController extends RESTAbstractController<RESTSurety, Sur
     @RequestMapping(method = RequestMethod.GET)
     public RESTSchema<RESTSurety> get(HttpServletRequest request,
                                         Integer page, Integer limit,
+                                        String insuranceCompany,
                                         @RequestHeader(value = "Authorization") String token,
                                         @RequestHeader(value = "Function") String function) throws UnAuthorizedException, DataAccessException {
         UUID user = new AuthenticationToken(token).getAccountId();
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
             SuretyController controller = manager.getSuretyController();
-            Collection<RESTSurety> restSureties = controller.getAll()
+
+            InsuranceCompany insuranceCompanyObject = insuranceCompany != null ? new InsuranceCompany(toUUID(insuranceCompany)) : null;
+
+            Collection<RESTSurety> restSureties = controller.getFiltered(insuranceCompanyObject)
                     .stream()
                     .map(RESTSurety::new)
                     .collect(Collectors.toList());

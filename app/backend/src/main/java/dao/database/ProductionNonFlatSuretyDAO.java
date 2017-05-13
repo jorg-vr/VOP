@@ -1,6 +1,8 @@
 package dao.database;
 
+import dao.interfaces.Filter;
 import dao.interfaces.NonFlatSuretyDAO;
+import model.identity.InsuranceCompany;
 import model.insurance.NonFlatSurety;
 import org.hibernate.Session;
 
@@ -11,5 +13,10 @@ public class ProductionNonFlatSuretyDAO extends ProductionDAO<NonFlatSurety> imp
 
     public ProductionNonFlatSuretyDAO(Session session) {
         super(session, NonFlatSurety.class);
+    }
+
+    @Override
+    public Filter<NonFlatSurety> byOwner(InsuranceCompany company) {
+        return filterEqual("insuranceCompany", company);
     }
 }

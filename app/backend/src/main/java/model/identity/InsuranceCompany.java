@@ -31,6 +31,10 @@ public class InsuranceCompany extends Company implements java.io.Serializable {
         super.setCompanyType(CompanyType.INSURANCE_COMPANY);
     }
 
+    public InsuranceCompany(UUID uuid) {
+        super(uuid);
+    }
+
     /**
      * Constructor
      * @param address the address
