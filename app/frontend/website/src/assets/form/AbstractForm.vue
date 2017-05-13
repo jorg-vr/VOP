@@ -56,7 +56,7 @@ Generic component for a form. Every form should be encapsulated in this componen
             this.$on('mounted', components => this.initializeFormHandler(components))
             document.addEventListener("keyup", e => {
                 if(e.keyCode === 13){
-                    this.submit()
+                    SubmitFormHandler.submit();
                 }
             })
             SubmitFormHandler.setSubmitFunction(this.submit)

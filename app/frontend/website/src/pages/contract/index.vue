@@ -38,8 +38,7 @@
             this.setLoading({loading: true })
             if(this.authorizedForAll){
                 this.fetchContracts().then(() => {
-                    this.setLoading({loading: false })
-                    console.log(this.contracts)
+                    this.setLoading({loading: false });
                 })
             }
             else {
