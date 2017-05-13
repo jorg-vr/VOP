@@ -6,7 +6,7 @@ All of the fields for insurance input for the insurance form
 <template>
     <div>
         <checkbox-input-form-group
-                :object="object" name="flat" :text="$t('surety.flat')" :rules="'required'">
+                :object="object" name="flat" :text="$t('surety.flat')" >
         </checkbox-input-form-group>
       <!--surety type-->
         <select-input-form-group
@@ -15,28 +15,17 @@ All of the fields for insurance input for the insurance form
         </select-input-form-group>
       <!-- premium -->
 
-       <text-input-form-group 
-          :object="object" name="premium" :text="$t('surety.premium')" :rules="'required'">  
+       <text-input-form-group
+          :object="object" name="premium"
+          :rules="'required'"
+          :text="object.flat==true ? $t('surety.premium'): $t('surety.minPremium')" >
       </text-input-form-group>
 
       <!-- premium percentage -->
 
-       <text-input-form-group 
+       <text-input-form-group v-if="object.flat==false||object.flat==undefined"
           :object="object" name="premiumPercentage" :text="$t('surety.premiumPercentage')" :rules="'required'">  
       </text-input-form-group>
-
-      <!-- flat -->
-      <!-- change to select -->
- <!--       <text-input-form-group 
-          :object="object" name="flat" :text="$t('surety.flat')" :rules="'required'">  
-      </text-input-form-group> -->
-
-      <!-- Flat -->
-      <select-input-form-group 
-                     :object="object" name="flat" optionPropertyName="value" visibleKey="text"
-                     :text="$t('surety.flat')" :rules="'required'" :options="flatData">
-        </select-input-form-group>
-
 
       <!-- Insurance Company -->
         <select-input-form-group 
@@ -53,7 +42,7 @@ All of the fields for insurance input for the insurance form
 
         <select-input-form-group 
                      :object="selectedCondition" name="id" optionPropertyName="id" visibleKey="referenceCode"
-                     :text="$t('condition.condition')" :rules="'required'" :options="conditions">
+                     :text="$t('condition.condition')" :options="conditions">
         </select-input-form-group>
 
        <button @click='pushCondition()' type="button" class="btn pull-right btn btn-primary "> {{$t("common.add") | capitalize }} </button>

@@ -12,9 +12,9 @@ Component usable for requesting user input with a checkbox field.
     <div class="row">
         <div class="form-group">
             <label class="col-xs-3 control-label" :for="name">{{text | capitalize}}</label>
-            <p class="col-xs-9">
+            <p class="col-xs-9 pull-left">
                 <input type="checkbox"
-                       class="form-control"
+                       class="form-control pull-left"
                        :value="object[name]"
                        @change="onChange($event.target.checked)"
                        v-validate="validator"
