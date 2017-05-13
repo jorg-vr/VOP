@@ -111,7 +111,6 @@ public class RESTUserControllerTest {
                 assertEquals("firstname field not created correctly", "firstNameTest", user.getFirstName());
                 assertEquals("lastname field not created correctly", "lastNameTest", user.getLastName());
                 assertEquals("email field not created correctly", "emailTest@mail.com", user.getEmail());
-                assertEquals("password field not created correctly", "passwordTest", user.getPassword());
             } finally {
                 remove(restId);
             }

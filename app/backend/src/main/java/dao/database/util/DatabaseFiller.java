@@ -161,7 +161,7 @@ public class DatabaseFiller {
 
             User user = new User();
             user.setEmail("admin&insuranceagent@solvas.be");
-            user.setPassword("123");
+            user.setNotHashedPassword("123");
             user.setFirstName("Jan");
             user.setLastName("Janssens");
             user = userDAO.create(user);
@@ -229,7 +229,7 @@ public class DatabaseFiller {
 
             User user = new User();
             user.setEmail("admin@solvas.be");
-            user.setPassword("123");
+            user.setNotHashedPassword("123");
             user.setFirstName("Stefaan");
             user.setLastName("Deconicnk");
             user = userDAO.create(user);
@@ -298,7 +298,7 @@ public class DatabaseFiller {
 
             User user = new User();
             user.setEmail("klant@solvas.be");
-            user.setPassword("123");
+            user.setNotHashedPassword("123");
             user.setFirstName("Frederik");
             user.setLastName("Vandenvelde");
             user = userDAO.create(user);

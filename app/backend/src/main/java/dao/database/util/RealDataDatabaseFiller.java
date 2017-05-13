@@ -7,7 +7,6 @@ import dao.exceptions.ConstraintViolationException;
 import dao.exceptions.DataAccessException;
 import dao.interfaces.DAOManager;
 import dao.interfaces.DAOProvider;
-import dao.interfaces.VehicleDAO;
 import dao.interfaces.VehicleTypeDAO;
 import model.account.*;
 import model.billing.Invoice;
@@ -20,12 +19,9 @@ import model.insurance.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalDate;
 import java.util.*;
 
 import static model.insurance.SuretyType.*;
-import static model.insurance.SuretyType.SAFETY;
-import static model.insurance.SuretyType.TRAVEL_AID;
 
 /**
  * Created by sam on 5/12/17.
@@ -506,7 +502,7 @@ public class RealDataDatabaseFiller {
     private User createUser(String firstName, String lastName, String email, String password) {
         User user = new User();
         user.setEmail(email);
-        user.setPassword(password);
+        user.setNotHashedPassword(password);
         user.setLastName(lastName);
         user.setFirstName(firstName);
         return user;
@@ -582,6 +578,7 @@ public class RealDataDatabaseFiller {
         }
         role.setAccess(Resource.VEHICLETYPE, Action.READ_ALL);
         role.setAccess(Resource.USER, Action.READ_MINE);
+        role.setAccess(Resource.ROLE, Action.READ_MINE);
         return role;
     }
 
@@ -590,8 +587,7 @@ public class RealDataDatabaseFiller {
         role.setName("Klant");
         for (Resource resource : Resource.values()) {
             if (!(resource.equals(Resource.LOG) || resource.equals(Resource.USER) ||
-                    resource.equals(Resource.COMMISSION) || resource.equals(Resource.FUNCTION) ||
-                    resource.equals(Resource.ROLE))) {
+                    resource.equals(Resource.COMMISSION) || resource.equals(Resource.FUNCTION))) {
                 role.setAccess(resource, Action.READ_MINE);
             }
         }
@@ -614,6 +610,7 @@ public class RealDataDatabaseFiller {
             }
         }
         role.setAccess(Resource.USER, Action.READ_MINE);
+        role.setAccess(Resource.ROLE, Action.READ_MINE);
         return role;
     }
 
