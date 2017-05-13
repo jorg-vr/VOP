@@ -57,9 +57,6 @@ tr.list-tr {
                 showModal: false
             }
         },
-        created(){
-            console.log(this.listObject)
-        },
         props: {
             resource: Object,
             listObject: Object,

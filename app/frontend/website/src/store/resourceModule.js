@@ -157,7 +157,7 @@ export default {
             fixDates(payload.resource)
             return new Promise((resolveSuccess, resolveFailure) => {
                 RequestHandler.postObjectRequest(formatLocation(location, payload.ids), payload.resource).then(createdResource => {
-                    resolveSuccess(createdResource)
+                    resolveSuccess(createdResource.body)
                 }, response => {
                     resolveFailure(response)
                 })
