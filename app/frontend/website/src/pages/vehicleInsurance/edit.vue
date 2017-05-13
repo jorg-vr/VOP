@@ -44,12 +44,7 @@
         methods: {
             ...mapActions([
                 'fetchInsurance'
-            ]),
-        computed: {
-            ...mapGetters([
-                'contractId'
-                ])
-        },
+            ])
 
         }
     }

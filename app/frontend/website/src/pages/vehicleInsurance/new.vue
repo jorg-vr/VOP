@@ -29,11 +29,6 @@
         },
         components: {
             insuranceFormInput,abstractForm
-        },
-        computed: {
-            ...mapGetters([
-                'contractId'
-                ])
-        },
+        }
     }
 </script>

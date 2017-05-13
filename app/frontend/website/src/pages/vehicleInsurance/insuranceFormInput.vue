@@ -96,7 +96,8 @@ All of the fields for insurance input for the insurance form
                 ])
         },
         created(){
-            this.fetchContract({id:this.object.contractId}).then(()=>{
+            console.log(this.object)
+            this.fetchContract({id:this.object.contract}).then(()=>{
                 // fetch all possible sureties
                 this.fetchSureties({ids:{ company:this.contract.insuranceCompany}}).then(()=>{
                     translateSuretyTypes(this.sureties);
