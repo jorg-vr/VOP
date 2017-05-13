@@ -9,10 +9,7 @@ import model.identity.Company;
 import model.identity.InsuranceCompany;
 import model.insurance.Surety;
 import org.springframework.format.annotation.NumberFormat;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import spring.controller.RESTAbstractController;
 import spring.model.AuthenticationToken;
 import spring.model.RESTSchema;
@@ -43,12 +40,11 @@ public class RESTSuretyController extends RESTAbstractController<RESTSurety, Sur
 
     @RequestMapping(method = RequestMethod.GET)
     public RESTSchema<RESTSurety> get(HttpServletRequest request,
-                                      String companyId,
+                                       @PathVariable String companyId,
                                         Integer page, Integer limit,
                                         @RequestHeader(value = "Authorization") String token,
                                         @RequestHeader(value = "Function") String function) throws UnAuthorizedException, DataAccessException {
         UUID user = new AuthenticationToken(token).getAccountId();
-
 
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
             SuretyController controller = manager.getSuretyController();
