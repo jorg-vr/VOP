@@ -129,15 +129,13 @@ export default {
          * @param activeFunction
          */
         setActiveFunction(state, activeFunction){
-            console.log(activeFunction);
-            /*state.activeFunction = activeFunction
+            state.activeFunction = activeFunction
             let functionId = null
             if(activeFunction) {
                 functionId = activeFunction.id
             }
             localStorage.setItem('functionId', functionId)
             Vue.http.headers.common['Function'] = functionId
-            */
         },
 
         /**
@@ -261,7 +259,7 @@ export default {
         },
 
         /**
-         * Sets the active function (This is not a mutation as the permissions for the new function has to be fetched).
+         * Sets the active function (This is not a mutation as the permissions for the new function have to be fetched).
          * @param context
          * @param activeFunction
          * @returns {Promise}
