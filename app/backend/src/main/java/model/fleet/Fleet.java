@@ -47,10 +47,12 @@ public class Fleet implements EditableObject, java.io.Serializable {
      * Default constructor
      */
     public Fleet() {
+        this.vehicles = new ArrayList<>();
     }
 
     public Fleet(UUID uuid) {
         this.uuid = uuid;
+        this.vehicles = new ArrayList<>();
     }
 
     public Fleet(String name, Customer owner, Address address) {

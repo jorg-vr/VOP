@@ -60,7 +60,7 @@ export default new Vuex.Store({
         login,
         currentUser,
         invoice,
-        insurance
+        insurance,
     },
     state,
     getters,

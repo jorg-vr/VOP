@@ -45,9 +45,6 @@ Generic component for a form. Every form should be encapsulated in this componen
         components: {
             buttonAction, buttonBack
         },
-        mixins: [
-            buttonBack //Import the back function
-        ],
         props: {
             back: Object, //link to previous page
             actions: Object, //The action of this form
@@ -62,6 +59,7 @@ Generic component for a form. Every form should be encapsulated in this componen
                     this.submit()
                 }
             })
+            SubmitFormHandler.setSubmitFunction(this.submit)
         },
 
         computed: {
@@ -75,8 +73,15 @@ Generic component for a form. Every form should be encapsulated in this componen
              * index page of the resource of the object.
              */
             submit(){
+                console.log("submit")
                 this.$store.dispatch(this.actions.name + this.resource.name.capitalize(), {resource: this.object, ids: this.ids}).then(() => {
-                    this.navigateBack()
+                    let redirectRoute = this.$store.getters.popVisitedRoute;
+                    if(redirectRoute===undefined || redirectRoute.name===null){
+                        this.$router.push({name: this.back.name, params: this.back.params})
+                    }
+                    else {
+                        this.$router.push(redirectRoute.path)
+                    }
                 })
             },
             initializeFormHandler(components){

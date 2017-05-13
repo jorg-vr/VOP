@@ -21,11 +21,16 @@ import indexFleet from '../pages/fleet/index.vue'
 import newFleet from '../pages/fleet/new.vue'
 import editFleet from '../pages/fleet/edit.vue'
 import showFleet from '../pages/fleet/show.vue'
+import fleetLogs from '../pages/fleet/logs.vue'
+import fleetLog from '../pages/fleet/log.vue'
 
 import indexVehicle from '../pages/vehicle/index.vue'
 import newVehicle from '../pages/vehicle/new.vue'
 import editVehicle from '../pages/vehicle/edit.vue'
 import showVehicle from '../pages/vehicle/show.vue'
+import vehicleLogs from '../pages/vehicle/logs.vue'
+import vehicleLog from '../pages/vehicle/log.vue'
+
 
 import indexVehicleType from '../pages/vehicleType/index.vue'
 import newVehicleType from '../pages/vehicleType/new.vue'
@@ -78,12 +83,17 @@ export default [
             {path: 'fleets/new', name: 'new_fleet', component: newFleet, props: true},
             {path: 'fleets/:id(\\d+)', name: 'fleet', component: showFleet, props: true},
             {path: 'fleets/:id(\\d+)/edit', name: 'edit_fleet', component: editFleet, props: true},
+            {path: 'fleets/:id(\\d+)/logs', name: 'fleet_logs', component: fleetLogs, props: true},
+            {path: 'fleets/:resourceId(\\d+)/logs/:id(\\d+)', name: 'fleet_log', component: fleetLog, props: true},
 
             //Vehicle
             {path: 'vehicles', name: 'vehicles', component: indexVehicle},
             {path: 'fleets/:fleetId(\\d+)/vehicles/new', name: 'new_vehicle', component: newVehicle, props: true},
             {path: 'vehicles/:id(\\d+)', name: 'vehicle', component: showVehicle, props: true},
             {path: 'vehicles/:id(\\d+)/edit', name: 'edit_vehicle', component: editVehicle, props: true},
+            {path: 'vehicles/:id(\\d+)/logs', name: 'vehicle_logs', component: vehicleLogs, props: true},
+            {path: 'vehicles/:resourceId(\\d+)/logs/:id(\\d+)', name: 'vehicle_log', component: vehicleLog, props: true},
+
 
             //VehicleType
             {path: 'vehicle_types', name: 'vehicleTypes', component: indexVehicleType},
@@ -120,7 +130,7 @@ export default [
             {path: 'clients/:companyId(\\d+)/invoices/:id(\\d+)', name: 'invoice', component: showInvoice, props: true}
         ],
     },
-    {path: '/login', name: login, component: login},
+    {path: '/login', name: 'login', component: login},
     {path: '*', component: exception, props: {statusCode: 404}}
 ];
 

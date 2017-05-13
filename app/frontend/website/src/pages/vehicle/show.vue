@@ -39,19 +39,36 @@
                     <td>{{vehicle.year}}</td>
                 </tr>
             </table>
-            <button-back v-if="vehicle.fleet" :route="{name: 'fleet', params: {id: vehicle.fleet}}"></button-back>
-            <button-back v-else :route="{name: 'fleets'}"></button-back>
         </div>
-
+        <div class="col-md-12">
+            <h3>
+                {{$t("vehicle_insurance.vehicle_insurances") | capitalize }}
+            </h3>
+            <list-component v-if="this.insurances.length > 0" :resource="resource" :listObject="listObject"></list-component>
+        </div>
+        <button-link buttonClass="btn btn-default pull-left" buttonId="log" :route="{name: 'vehicle_logs', params: {id: this.id}}">
+            {{$t('log.log') | capitalize}}
+        </button-link>
+        <button-back v-if="vehicle.fleet" :route="{name: 'fleet', params: {id: vehicle.fleet}}"></button-back>
+        <button-back v-else :route="{name: 'fleets'}"></button-back>
     </div>
 </template>
 <script>
+    import buttonLink from '../../assets/buttons/buttonLink.vue'
     import buttonBack from '../../assets/buttons/buttonBack.vue'
     import {mapGetters, mapActions} from 'vuex'
+    import listComponent from '../../assets/list/listComponent.vue'
+    import resources from '../../constants/resources'
+    import * as utils from '../../utils/utils'
 
     export default {
+        data(){
+            return {
+                resource: resources.INSURANCE,
+            }
+        },
         components: {
-            buttonBack
+            buttonBack,listComponent, buttonLink
         },
         props: {
             id: String
@@ -59,20 +76,37 @@
         created() {
             this.fetchVehicle({id: this.id}).then(vehicle => {
                 this.fetchVehicleType({id: vehicle.type})
-            })
+            });
+            this.fetchInsurancesBy({filters: {vehicleId: this.id}}).then(
+                    ()=>{
+                        utils.translateSuretyTypes(this.insurances);
+                    }
+            )
         },
         computed: {
             ...mapGetters([
                 'vehicle',
                 'vehicleType',
-            ])
+                'insurances'
+            ]),
+            listObject() {
+                var listObj = {};
+                listObj.headers = ["insuranceCompanyName",'suretyTypeTranslation','insuredValue','showableStartDate','cost','tax'];
+                listObj.values = this.insurances;
+                return listObj;
+            }
         },
         methods: {
-
             ...mapActions([
                 'fetchVehicle',
                 'fetchVehicleType',
+                'fetchInsurancesBy'
             ])
         }
     }
 </script>
+<style>
+    #log {
+        margin-right: 10px;
+    }
+</style>

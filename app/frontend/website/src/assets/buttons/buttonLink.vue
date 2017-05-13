@@ -17,7 +17,10 @@ A generic button which navigates to the given route once clicked.
     export default {
         props: {
             route: Object,
-            buttonClass: String,
+            buttonClass: {
+                type: String,
+                default: "btn btn-default"
+            },
             buttonId: String
         },
     }

@@ -55,7 +55,8 @@ public class DatabaseFiller {
             Company solvas = new Company();
             solvas.setName("Solvas");
             solvas.setCompanyType(CompanyType.CUSTOMER);
-            solvas.setAddress(new Address("a", "b", "c", "d", "e"));
+            Address addresssolvas = new Address("test", "test", "test", "test","test");
+            solvas.setAddress(addresssolvas);
             companyDAO.create(solvas);
 
             for (int i = 1; i < 6; i++) {
@@ -286,7 +287,7 @@ public class DatabaseFiller {
 
             InsuranceCompany solvas = new InsuranceCompany();
             solvas.setName("Solvas");
-            solvas.setAddress(new Address("a", "b", "c", "d", "e"));
+            solvas.setAddress(new Address("test","test","test","test","test"));
             companyDAO.create(solvas);
 
             Surety flatSurety = new FlatSurety(100);

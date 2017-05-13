@@ -21,7 +21,7 @@
                 resource: resources.VEHICLE,
                 actions: actions.UPDATE,
                 vehicle: {},
-                back:{name: 'fleet'}
+                back:{name:resources.FLEET.name}
             }
         },
         created(){
