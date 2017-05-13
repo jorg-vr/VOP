@@ -39,6 +39,7 @@ public class AuthController implements AutoCloseable {
     public AuthenticationToken getToken(String login, String password) throws DataAccessException, UnAuthorizedException {
         StrongPasswordEncryptor passwordEncryptor = new StrongPasswordEncryptor();
         User account = userDAO.getUserByLogin(login);
+        System.out.println(password);
         if (account == null || ! passwordEncryptor.checkPassword(password, account.getPassword())) {
             throw new InvalidTokenException();
         }
