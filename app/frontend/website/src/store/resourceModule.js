@@ -180,7 +180,7 @@ export default {
                     resolveSuccess()
                 }, response => {
                     resolveFailure(response)
-                }, id)
+                })
             })
         }
         return module

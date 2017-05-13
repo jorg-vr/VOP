@@ -4,7 +4,7 @@
             <button type="button" class="close" @click="setError(null)" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
-            <strong>{{error.error}}:</strong> {{error.message}}
+            <strong>{{error.error}}</strong> <span v-if="error.message">{{error.message}}</span>
         </div>
     </div>
 
@@ -18,7 +18,7 @@
                 'error'
             ]),
             isServerError(){
-                return this.error.status &&this.error.status.toString().startsWith('5')
+                return this.error.status !== undefined && this.error.status.toString().startsWith('5')
             }
         },
         methods: {
