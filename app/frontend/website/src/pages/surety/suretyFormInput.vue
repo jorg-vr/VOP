@@ -63,7 +63,7 @@ All of the fields for insurance input for the insurance form
     import clientTypes from '../../constants/clientTypes'
     import resources from '../../constants/resources'
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
-    import listComponent from "../../assets/list/listComponent.vue"
+    import listComponent from "../../assets/general/listComponent.vue"
     import suretyTypes from "../../constants/suretyTypes"
 
     export default {

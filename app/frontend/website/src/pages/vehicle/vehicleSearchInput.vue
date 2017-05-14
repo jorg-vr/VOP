@@ -12,7 +12,6 @@ All of the fields for user input for the vehicle form
         <select-input-form-group :object="vehicle" name="type" optionPropertyName="id" visibleKey="name"
                                  :text="$t('vehicle.vehicleType')" :options="vehicleTypes">
         </select-input-form-group>
-        <text-input-form-group :object="vehicle" name="mileage" :text="$t('vehicle.mileage')"></text-input-form-group>
         <text-input-form-group :object="vehicle" name="year" :text="$t('vehicle.year')"></text-input-form-group>
     </div>
 </template>

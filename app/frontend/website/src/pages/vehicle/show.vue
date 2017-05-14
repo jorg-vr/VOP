@@ -78,7 +78,7 @@
     import buttonEdit from '../../assets/buttons/buttonEdit.vue'
     import buttonRemove from '../../assets/buttons/buttonRemove.vue'
     import {mapGetters, mapActions} from 'vuex'
-    import listComponent from '../../assets/list/listComponent.vue'
+    import listComponent from '../../assets/general/listComponent.vue'
     import resources from '../../constants/resources'
     import * as utils from '../../utils/utils'
 

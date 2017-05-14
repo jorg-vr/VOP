@@ -15,28 +15,14 @@ export default {
         },
         invoices(state){
         	return state.invoices
-        },
-        filteredInvoices(state){
-        	return state.filteredInvoices
-        },
-		getInvoiceByAll: (state, getters) => (value) => {
-            return getters.filterByAll(state.invoices, value)
-        },
-        getInvoicesByAllAdvanced: (state, getters) => (invoice) => {
-            return getters.filterByAllAdvanced(state.invoices, invoice)
         }
 	},
 	mutations:{
 		/* Mutation used for adding invoices to total collection of all invoices */
 		addInvoices (state, payload) {
-			console.log(payload)
-			console.log(' in addInvoices mutation')
-			console.log(payload.data)
-			var i
-			var data = payload.data
-			
-			for (i = 0; i < data.length; i++) {
-				var obj = data[i]
+			let data = payload.data
+			for (let i = 0; i < data.length; i++) {
+				let obj = data[i]
 				// add name and id of fleet and company for fetching / visual purposes
 				obj.companyId = payload.companyId
 				obj.companyName = payload.companyName
@@ -51,11 +37,7 @@ export default {
 	    setInvoices(state,payload){
 	        addShowableDates(payload)
 	    	state.invoices=payload
-	    },
-	    setFilteredInvoices(state,payload){
-	    	state.filteredInvoices=payload	
 	    }
-
 	},
 	actions:{
 		/* Add invoices from a company to all invoices -> GET /company/{id}/invoices

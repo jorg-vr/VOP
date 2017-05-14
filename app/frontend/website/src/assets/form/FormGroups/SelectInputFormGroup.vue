@@ -88,6 +88,7 @@ This component can be used to let the user select between a list of specified va
         display: flex
     }
     #reset{
+        height: 40px;
         width: 50px;
     }
 </style>

@@ -7,7 +7,7 @@
         <div class="page-header">
             <h1>{{$t("vehicle.vehicles") | capitalize }}</h1>
         </div>
-        <abstract-search-form @reset="fetchVehicles()" @search="fetchVehiclesBy({filters})">
+        <abstract-search-form :resource="resource" :filters="filters">
             <vehicle-search-input :vehicle="filters"></vehicle-search-input>
         </abstract-search-form>
         <!-- Render an info-pane for every vehicle. Once all the data is loaded, the table will be shown.-->
@@ -17,10 +17,10 @@
 <script>
     import { mapGetters, mapActions, mapMutations } from 'vuex'
     import resources from '../../constants/resources'
-    import listComponent from "../../assets/list/listComponent.vue"
+    import listComponent from "../../assets/general/listComponent.vue"
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
-    import AbstractSearchForm from '../../assets/search/AbstractSearchForm.vue'
-    import VehicleSearchInput from './vehicleSearchInput.vue'
+    import AbstractSearchForm from '../../assets/general/AbstractSearchForm.vue'
+    import VehicleSearchInput from './VehicleSearchInput.vue'
 
     export default {
         data(){
@@ -34,6 +34,9 @@
         },
         created() {
             this.clearVehicles()
+        },
+        mounted(){
+            $('.collapse').collapse("show")
         },
         computed: {
             ...mapGetters([
@@ -49,10 +52,6 @@
         methods: {
             ...mapMutations([
                 'clearVehicles'
-            ]),
-            ...mapActions([
-                'fetchVehicles',
-                'fetchVehiclesBy'
             ])
         }
     }

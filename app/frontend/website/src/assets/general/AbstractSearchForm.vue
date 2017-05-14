@@ -21,13 +21,29 @@ A collapsible form part of a searchbar. This form can be used for advanced searc
 </template>
 <script>
     export default {
+        props: {
+            resource: Object,
+            filters: Object,
+            searchFunction: Function, //Optional search function (for exceptions)
+            resetFunction: Function //Optional reset function (for excepions)
+        },
         methods: {
             onSubmit(){
-                this.$emit('search')
+                if(this.searchFunction){
+                    this.searchFunction({filters: this.filters})
+                }
+                else {
+                    this.$store.dispatch('fetch' + this.resource.name.plural().capitalize() + 'By', {filters: this.filters})
+                }
                 $('.collapse').collapse('hide')
             },
             reset(){
-                this.$emit('reset')
+                if(this.resetFunction){
+                    this.resetFunction()
+                }
+                else {
+                    this.$store.dispatch('fetch' + this.resource.name.plural().capitalize() + 'By', {filters: this.filters})
+                }
                 $('.collapse').collapse('hide')
             }
         }

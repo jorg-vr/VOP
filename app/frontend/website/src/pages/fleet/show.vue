@@ -19,8 +19,9 @@
             </h4>
 
         </div>
-        <vehicle-search-bar @search="updateSubfleets" @advancedSearch="updateSubfleetsAdvanced"></vehicle-search-bar>
-        <div v-for="subfleet in filteredSubfleets">
+        <abstract-search-form :resource="resource" :filters="filters">
+            <vehicle-search-input :vehicle="filters"></vehicle-search-input>
+        </abstract-search-form>        <div v-for="subfleet in filteredSubfleets">
             <div v-if="subfleet.vehicles.length > 0">
                 <h3>{{subfleet.type.name | capitalize }}</h3>
                 <list-component :resource="resource" :listObject="listObject(subfleet.vehicles)"></list-component>
@@ -31,21 +32,23 @@
 </template>
 <script>
     import resources from '../../constants/resources'
-    import listComponent from '../../assets/list/listComponent.vue'
+    import listComponent from '../../assets/general/listComponent.vue'
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
     import buttonBack from '../../assets/buttons/buttonBack.vue'
     import buttonLink from '../../assets/buttons/buttonLink.vue'
-    import vehicleSearchBar from '../../assets/search/types/vehicleSearchBar.vue'
     import {mapGetters, mapActions, mapMutations} from 'vuex'
+    import AbstractSearchForm from '../../assets/general/AbstractSearchForm.vue'
+    import VehicleSearchInput from '../vehicle/VehicleSearchInput.vue'
 
     export default {
         data(){
             return {
+                filters: {},
                 resource: resources.VEHICLE
             }
         },
         components: {
-            listComponent, buttonAdd, vehicleSearchBar, buttonBack, buttonLink
+            listComponent, buttonAdd, buttonBack, buttonLink, AbstractSearchForm, VehicleSearchInput
         },
         props: {
             id: String

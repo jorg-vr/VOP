@@ -117,6 +117,9 @@ export default {
 }
 
 let rejectResponse = function(response, reject){
+    if(response.status===401){ //Invalid token
+        window.location = '/login'
+    }
     store.commit('setError', response)
     reject(response)
 }
