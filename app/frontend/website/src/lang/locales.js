@@ -43,6 +43,7 @@ export default
             lastName: 'last name',
             email: 'email',
             password: 'password',
+            role: 'role',
         },
         client: {
             client: 'client',
@@ -81,6 +82,8 @@ export default
             select: 'select {subject}',
             create: 'create {subject}',
             update: 'edit {subject}',
+            view: 'view {subject}',
+            change: 'change {subject}',
             remove: 'remove {subject}'
         },
         search_bar: {
@@ -297,6 +300,7 @@ export default
             lastName: 'achternaam',
             email: 'e-mail',
             password: 'wachtwoord',
+            role: 'rol',
         },
         client: {
             client: 'klant',
@@ -337,6 +341,8 @@ export default
             select: 'selecteer {subject}',
             create: '{subject} aanmaken',
             update: '{subject} bewerken',
+            view: "{subject} bekijken",
+            change: "verander {subject}",
             remove: '{subject} verwijderen'
         },
         search_bar: {

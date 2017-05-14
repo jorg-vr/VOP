@@ -259,7 +259,7 @@ export default {
         },
 
         /**
-         * Sets the active function (This is not a mutation as the permissions for the new function has to be fetched).
+         * Sets the active function (This is not a mutation as the permissions for the new function have to be fetched).
          * @param context
          * @param activeFunction
          * @returns {Promise}

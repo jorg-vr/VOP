@@ -48,21 +48,22 @@
                     <li>
                         <language-picker></language-picker>
                     </li>
-                    <li>
-                        <function-picker></function-picker>
-                    </li>
+                    <function-picker></function-picker>
                     <!-- condition group rendering for navbar login info-->
                     <template v-if="hasActiveAccount">
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" ariahaspopup="true" aria-expanded="false">
-                        {{activeAccount.email}}<span class="caret"></span></a>
+                        {{activeAccount.firstName}} <span class="caret"></span></a>
                         <ul class="dropdown-menu">  
+                            <li><a class="no-hover">{{activeAccount.email}}</a></li>
                             <li role="separator" class="divider"></li>
                             <li>
-                                <a href="#">View activeAccount</a>
+                                <router-link :to="{name: 'user', params: {id: activeAccount.id}}">
+                                    {{$t('actions.view', {subject: $t('account')}) | capitalize}}
+                                </router-link>
                             </li>
                             <li>
-                                <a @click='confirmLogout()'> {{$t("login.logout") | capitalize }} </a>
+                                <a @click='confirmLogout()' class="pointer"> {{$t("login.logout") | capitalize }} </a>
                             </li>
                         </ul>
                     </li>
@@ -140,5 +141,12 @@ import ResourcesLink from './ResourcesLink.vue'
         margin: 0;
         margin-top: -50px;
         font-weight: 600;
+    }
+    .pointer {
+        cursor:pointer;
+    }
+    .dropdown-menu>li>a.no-hover:hover {
+        color: #7b8a8b;
+        background-color: white;
     }
 </style>
