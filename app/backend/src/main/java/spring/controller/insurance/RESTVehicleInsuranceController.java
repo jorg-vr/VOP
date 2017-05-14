@@ -6,7 +6,6 @@ import controller.exceptions.UnAuthorizedException;
 import controller.insurance.VehicleInsuranceController;
 import dao.exceptions.DataAccessException;
 import dao.exceptions.ObjectNotFoundException;
-
 import model.fleet.Vehicle;
 import model.insurance.Contract;
 import model.insurance.VehicleInsurance;
@@ -15,6 +14,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import pdf.GreenCard;
+import pdf.PdfException;
 import spring.controller.RESTAbstractController;
 import spring.model.AuthenticationToken;
 import spring.model.RESTSchema;
@@ -74,7 +74,7 @@ public class RESTVehicleInsuranceController extends RESTAbstractController<RESTV
     @GetMapping("/{id}/${path.green_card}")
     @ResponseBody
     public HttpEntity<byte[]> getGreenCard(@PathVariable("id") String id, @RequestHeader(value = "Authorization") String token,
-                                           @RequestHeader(value = "Function") String function) throws DataAccessException, UnAuthorizedException, ObjectNotFoundException {
+                                           @RequestHeader(value = "Function") String function) throws DataAccessException, UnAuthorizedException, ObjectNotFoundException, PdfException {
         UUID uuid = toUUID(id);
         UUID user = new AuthenticationToken(token).getAccountId();
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {

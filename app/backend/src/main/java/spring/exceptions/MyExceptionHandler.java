@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import pdf.PdfException;
 
 
 /**
@@ -52,6 +53,11 @@ public class MyExceptionHandler {
     @ExceptionHandler(ObjectNotFoundException.class)
     protected ResponseEntity<Object> handleServerErrorException(ObjectNotFoundException ex) {
         return generateErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage());
+    }
+
+    @ExceptionHandler(PdfException.class)
+    protected ResponseEntity<Object> handlePdfException(PdfException ex) {
+        return generateErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
