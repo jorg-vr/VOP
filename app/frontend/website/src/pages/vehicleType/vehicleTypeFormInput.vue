@@ -1,8 +1,8 @@
 <template>
     <div>
         <text-input-form-group :object="vehicleType" name="name" :text="$t('vehicleType.vehicleType')" :rules="'required'"></text-input-form-group>
-        <h2>{{$t('vehicleType.taxes')}}</h2>
-        <div  v-for="tax in vehicleType.taxes">
+        <h2>{{$t('vehicleType.taxes') | capitalize}}</h2>
+        <div v-for="tax in vehicleType.taxes">
             <text-input-form-group
                     :object="tax"
                     name="tax"

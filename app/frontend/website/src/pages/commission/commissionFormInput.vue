@@ -18,7 +18,9 @@
 
     export default {
         props: {
-            commissions: Array
+            commissions: {
+                type: Array
+            }
         },
         components: {
             textInputFormGroup
