@@ -1,5 +1,5 @@
 <template>
-    <abstract-form :actions="actions" :object="comissions" :back="back" :resource="resource">
+    <abstract-form :ids="ids" :actions="actions" :object="comissions" :back="back" :resource="resource">
         <commission-form-input :object="comissions"></commission-form-input>
     </abstract-form>
 </template>
@@ -16,19 +16,15 @@
     export default {
         data(){
             return {
+                ids: {'resource':this.loc,'resourceId':this.id},
                 actions: actions.UPDATE,
                 resource: resources.COMMISSION,
             }
         },
         created(){
             if(this.id){
-                this.fetchCommissions({ids:{'resource':this.loc,'resourceId':this.id}});
+                this.fetchCommissions({ids:this.ids});
             }
-            document.addEventListener("keyup", e => {
-                if(e.keyCode === 13){
-                    this.submit()
-                }
-            })
         },
         components: {
             buttonLink,
@@ -43,21 +39,13 @@
         },
         computed: {
             ...mapGetters([
-                'commissions','error'
+                'commissions'
             ])
         },
         methods: {
             ...mapActions([
                 'fetchCommissions',
-                'updateCommission'
-            ]),
-            submit(){
-                this.commissions.id='';
-                this.updateCommission({resource: this.commissions, ids: {'resource':this.loc,'resourceId':this.id}}).then(() => {
-                    this.$router.push(this.back)
-                })
-            }
-
+            ])
         }
     }
 </script>

@@ -50,7 +50,8 @@ Generic component for a form. Every form should be encapsulated in this componen
             actions: Object, //The action of this form
             resource: Object, //The name of the resource configured by this form
             object: Object, //The resource configured by this form
-            ids: Object //Object with id's for creating the correct POST/PUT route.
+            ids: Object, //Object with id's for creating the correct POST/PUT route.
+            customSubmit: Function //Custom submit function (optional)
         },
         created(){
             this.$on('mounted', components => this.initializeFormHandler(components))
@@ -73,8 +74,15 @@ Generic component for a form. Every form should be encapsulated in this componen
              * index page of the resource of the object.
              */
             submit(){
-                console.log("submit")
-                this.$store.dispatch(this.actions.name + this.resource.name.capitalize(), {resource: this.object, ids: this.ids}).then(() => {
+                let promise
+                if(this.customSubmit){
+                    promise = this.customSubmit()
+                }
+                else {
+                    let functionName = this.actions.name + this.resource.name.capitalize()
+                    promise = this.$store.dispatch(functionName, {resource: this.object, ids: this.ids})
+                }
+                promise.then(() => {
                     let redirectRoute = this.$store.getters.popVisitedRoute;
                     if(redirectRoute===undefined || redirectRoute.name===null){
                         this.$router.push({name: this.back.name, params: this.back.params})

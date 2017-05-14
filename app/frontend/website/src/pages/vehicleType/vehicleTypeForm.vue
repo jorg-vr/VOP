@@ -1,40 +1,56 @@
 <template>
-    <div>
-        <text-input-form-group :object="vehicleType" name="name" :text="$t('vehicleType.vehicleType')" :rules="'required'"></text-input-form-group>
-        <h2>{{$t('vehicleType.taxes')}}</h2>
-        <div  v-for="tax in vehicleType.taxes">
-            <text-input-form-group
-
-                    :object="tax"
-                    name="tax"
-                    :text="$t('suretyTypes.'+tax.suretyType)"
-                    :rules="'required'"
-            ></text-input-form-group>
+    <abstract-form :actions="actions" :resource="resource" :customSubmit="submit" :back="back">
+        <vehicle-type-form-input v-if="vehicleType" :vehicleType="vehicleType"></vehicle-type-form-input>
+        <div  v-if="commissions.length>0" >
+            <h2>{{$t('commission.commissions')}}</h2>
+            <commission-form-input :commissions="commissions"></commission-form-input>
         </div>
-    </div>
-
+    </abstract-form>
 </template>
 <script>
-    import {mapGetters, mapActions} from 'vuex'
-    import textInputFormGroup from '../../assets/form/FormGroups/TextInputFormGroup.vue'
-    import suretyTypes from '../../constants/suretyTypes'
+    import {mapActions,mapGetters} from 'vuex'
+    import resources from '../../constants/resources'
+    import vehicleTypeFormInput from './vehicleTypeFormInput.vue'
+    import commissionFormInput from '../commission/commissionFormInput.vue'
+    import * as locations from '../../constants/locations'
+    import AbstractForm from '../../assets/form/AbstractForm.vue'
 
     export default {
-        props: {
-            vehicleType: Object
-        },
-        created(){
-            if(this.vehicleType.taxes===undefined){
-                this.vehicleType.taxes=[];
-                for(let i=0;i<suretyTypes.length;i++){
-                    this.vehicleType.taxes[i]={};
-                    this.vehicleType.taxes[i].suretyType=suretyTypes[i].name;
-                    this.vehicleType.taxes[i].tax=0;
-                }
+        data(){
+            return {
+                resource: resources.VEHICLE_TYPE,
+                back: {name:resources.VEHICLE_TYPE.name.plural()},
+                commissionIds: {'resource':locations.VEHICLE_TYPE,'resourceId':this.id}
             }
         },
+        created(){
+            this.fetchVehicleType({id: this.id});
+            this.fetchCommissions({ids: this.commissionIds});
+        },
         components: {
-            textInputFormGroup
+            commissionFormInput, vehicleTypeFormInput, AbstractForm
+        },
+        props: {
+            actions: Object,
+            id: String
+        },
+        computed: {
+            ...mapGetters([
+                'commissions', 'vehicleType'
+            ])
+        },
+        methods: {
+            ...mapActions([
+                'fetchVehicleType',
+                'fetchCommissions',
+            ]),
+            submit(){
+                return new Promise((resolve, reject) => {
+                    let p1 = this.$store.dispatch(this.actions.name + 'Commission', {resource: this.commissions, ids: this.commissionIds})
+                    let p2 = this.$store.dispatch(this.actions.name + 'VehicleType', {resource: this.vehicleType})
+                    Promise.all([p1,p2]).then(() => resolve(), () => reject())
+                })
+            }
         }
     }
 </script>
