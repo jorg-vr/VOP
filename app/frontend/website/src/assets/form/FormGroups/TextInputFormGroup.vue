@@ -61,7 +61,7 @@ Component usable for requesting user input with a text field.
         margin-bottom: 0;
     }
     [has-error='true'],
-    [has-error='true']:focus{
+    [has-error='true']:focus {
         border-color: #ff3860;
     }
     .help.is-danger {
@@ -69,4 +69,5 @@ Component usable for requesting user input with a text field.
         font-size: 14px;
         color: #ff3860;
     }
+
 </style>

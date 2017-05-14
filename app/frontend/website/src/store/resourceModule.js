@@ -57,12 +57,8 @@ export default {
         let names = (typeof optionalNames === 'undefined') ? name + 's' : optionalNames;
         let capName = capitalize(name)
         let capNames = capitalize(names)
-        let filteredNames ='filtered' + capNames
-        let getResourceByAll = 'get' + capNames + 'ByAll'
-        let getResourceByAllAdvanced = getResourceByAll + 'Advanced'
         let setResources = 'set' + capNames
         let setResource = 'set' + capName
-        let setFilteredResources = 'setFiltered' + capNames
         let clearResources = 'clear' + capNames
         let removeResource = 'remove' + capName
         let fetchResource = 'fetch' + capName
@@ -79,21 +75,11 @@ export default {
         }
         module.state[name] = null
         module.state[names] = []
-        module.state[filteredNames] = []
         module.getters[name] = (state) => {
             return state[name]
         }
         module.getters[names] = (state) => {
             return state[names]
-        }
-        module.getters[filteredNames] = (state) => {
-            return state[filteredNames]
-        }
-        module.getters[getResourceByAll] = (state, getters) =>  (value) => {
-            return getters.filterByAll(state[capNames], value)
-        }
-        module.getters[getResourceByAllAdvanced] = (state, getters) => (object) => {
-            return getters.filterByAllAdvanced(state[capNames], object)
         }
         module.mutations[setResource] = (state, payload) => {
             state[name] = payload
@@ -102,17 +88,11 @@ export default {
             addShowableDates(payload) //This function will add showable dates if the objects have dates.
             state[names] = payload
         }
-        module.mutations[setFilteredResources] = (state, payload) => {
-            addShowableDates(payload) //This function will add showable dates if the objects have dates.
-            state[filteredNames] = payload
-        }
         module.mutations[clearResources] = (state) => {
             state[names] = []
-            state[filteredNames] = []
         }
         module.mutations[removeResource] = (state, payload) => {
             state[names] = state[names].filter(resource => resource.id !== payload.id)
-            state[filteredNames] = state[filteredNames].filter(resource => resource.id !== payload.id)
         }
         module.actions[fetchResources] = function(context, payload) {
             payload = payload || {} //Set payload to empty object if undefined
@@ -121,8 +101,6 @@ export default {
             return new Promise((resolveSuccess, resolveFailure) => {
                 RequestHandler.getObjectsRequest(formatLocation(location, payload.ids)).then(resources => {
                     context.commit(setResources, resources)
-                    //Initially the filtered resources should equal the actual resources.
-                    context.commit(setFilteredResources, resources)
                     resolveSuccess(resources)
                 }, response => {
                     resolveFailure(response)
@@ -135,8 +113,6 @@ export default {
             return new Promise((resolveSuccess, resolveFailure) => {
                 RequestHandler.getObjectsRequestBy(formatLocation(location, payload.ids), payload.filters).then(resources => {
                     context.commit(setResources, resources)
-                    //Initially the filtered resources should equal the actual resources.
-                    context.commit(setFilteredResources, resources)
                     resolveSuccess(resources)
                 }, response => {
                     resolveFailure(response)

@@ -87,6 +87,7 @@ export default
             remove: 'remove {subject}'
         },
         search_bar: {
+            search: 'Search',
             search_for: 'Search for',
         },
         modal:{
@@ -346,6 +347,7 @@ export default
             remove: '{subject} verwijderen'
         },
         search_bar: {
+            search: 'Zoeken',
             search_for: 'Zoeken naar',
         },
         modal:{

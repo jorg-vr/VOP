@@ -102,10 +102,10 @@ export default [
             {path: 'vehicle_types/:id(\\d+)/edit', name: 'edit_vehicleType', component: editVehicleType, props: true},
 
             // sureties
-            {path: 'surety', name: 'suretys', component: indexContract},
-            {path: 'surety/new', name: 'new_surety', component: newSurety},
-            {path: 'surety/:id(\\d+)', name: 'surety', component: showSurety, props: true},
-            {path: 'surety/:id(\\d+)/edit', name: 'edit_surety', component: editSurety, props: true},   
+            {path: 'sureties', name: 'suretys', component: indexContract},
+            {path: 'sureties/new', name: 'new_surety', component: newSurety},
+            {path: 'sureties/:id(\\d+)', name: 'surety', component: showSurety, props: true},
+            {path: 'sureties/:id(\\d+)/edit', name: 'edit_surety', component: editSurety, props: true},
             
             // contracts
             {path: 'contracts', name: 'contracts', component: indexContract},

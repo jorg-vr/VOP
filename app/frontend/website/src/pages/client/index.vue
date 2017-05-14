@@ -10,7 +10,10 @@
                <button-add :resource="resource"></button-add>
             </h1>
         </div>
-        <client-search-bar @search="updateClients" @advancedSearch="updateClientsAdvanced"></client-search-bar>
+        <abstract-search-form :resource="resource" :filters="filters">
+            <client-search-input :client="filters"></client-search-input>
+        </abstract-search-form>
+
         <!-- Render an info-pane for every client. Once all the data is loaded, the table will be shown.-->
         <list-component :resource="resource" :listObject="listObject" ></list-component>
     </div>
@@ -19,19 +22,21 @@
 <script>
     import { mapGetters, mapActions, mapMutations } from 'vuex'
     import resources from '../../constants/resources'
-    import listComponent from "../../assets/list/listComponent.vue"
+    import listComponent from "../../assets/general/listComponent.vue"
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
-    import clientSearchBar from '../../assets/search/types/clientSearchBar.vue'
     import clientTypes from '../../constants/clientTypes'
+    import AbstractSearchForm from '../../assets/general/AbstractSearchForm.vue'
+    import ClientSearchInput from './ClientSearchInput.vue'
 
     export default {
         data(){
             return {
+                filters: {address: {}},
                 resource: resources.CLIENT
             }
         },
         components: {
-            listComponent, buttonAdd, clientSearchBar
+            listComponent, buttonAdd, AbstractSearchForm, ClientSearchInput
         },
         created() {
             this.setLoading({loading: true})
@@ -41,39 +46,22 @@
         },
         computed: {
             ...mapGetters([
-                'clients',
-                'filteredClients',
-                'getClientsByAll',
-                'getClientsByAllAdvanced'
+                'clients'
             ]),
             listObject() {
                 var listObj = {};
                 listObj.headers = ["name"];
-                listObj.values = this.filteredClients;
+                listObj.values = this.clients;
                 return listObj;
             }
         },
         methods: {
             ...mapActions([
                 'fetchClientsBy',
-                'deleteClient',
             ]),
             ...mapMutations([
-                'setLoading',
-                'setFilteredClients'
-            ]),
-            updateClients(value){
-                if(value!==''){
-                    this.setFilteredClients(this.getClientsByAll(value))
-                }
-                else {
-                    this.setFilteredClients(this.clients)
-                }
-            },
-            updateClientsAdvanced(filterClient){
-                this.setFilteredClients(this.getClientsByAllAdvanced(filterClient))
-
-            }
+                'setLoading'
+            ])
         }
     }
 </script>

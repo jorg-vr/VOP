@@ -49,7 +49,7 @@
 <script>
     import { mapGetters, mapActions, mapMutations } from 'vuex'
     import resources from '../../constants/resources'
-    import listComponent from "../../assets/list/listComponent.vue"
+    import listComponent from "../../assets/general/listComponent.vue"
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
     import * as locations from '../../constants/locations'
     import buttonEdit from '../../assets/buttons/buttonEdit.vue'

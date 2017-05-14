@@ -16,7 +16,7 @@ Component usable for requesting user input with a text field.
                 <input type="date" class="form-control"
                        :value="object[name]"
                        @input="onInput($event.target.value)"
-                       v-validate="rules"
+                       v-validate="validator"
                        :data-vv-name="name"
                        :data-vv-as="text"
                        :has-error="errors.has(name)"
@@ -35,6 +35,11 @@ Component usable for requesting user input with a text field.
             name: String,
             text: String,
             object: Object,
+        },
+        computed: {
+            validator(){
+                return this.rules ? this.rules : ''
+            }
         },
         methods: {
             onInput(value){
