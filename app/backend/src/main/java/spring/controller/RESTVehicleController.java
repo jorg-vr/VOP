@@ -72,6 +72,8 @@ public class RESTVehicleController extends RESTAbstractController<RESTVehicle, V
                                        @RequestParam(required = false) String fleet,
                                        @RequestParam(required = false) String company,
                                        @RequestParam(required = false) String type,
+                                       @RequestParam(required = false) String brand,
+                                       @RequestParam(required = false) String model,
                                        @RequestParam(required = false) Integer page,
                                        @RequestParam(required = false) Integer limit,
                                        @RequestHeader(value = "Authorization") String token,
@@ -92,7 +94,7 @@ public class RESTVehicleController extends RESTAbstractController<RESTVehicle, V
                 vehicleTypeObject.setUuid(toUUID(type));
             }
 
-            Collection<RESTVehicle> result = controller.getFiltered(licensePlate, vin, year, fleetObject, customer, vehicleTypeObject)
+            Collection<RESTVehicle> result = controller.getFiltered(licensePlate, vin, year, fleetObject, customer, vehicleTypeObject, brand, model)
                     .stream()
                     .map(RESTVehicle::new)
                     .collect(Collectors.toList());

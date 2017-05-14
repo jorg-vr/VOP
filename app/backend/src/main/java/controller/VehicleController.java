@@ -44,14 +44,16 @@ public class VehicleController extends CommissionContainerController<Vehicle> {
      * @throws UnAuthorizedException Function is not authorized to get all the objects.
      */
     public Collection<Vehicle> getFiltered(String licensePlate, String vin,
-                                           Integer year, Fleet fleet, Customer customer, VehicleType type) throws DataAccessException, UnAuthorizedException {
+                                           Integer year, Fleet fleet, Customer customer, VehicleType type, String brand, String model) throws DataAccessException, UnAuthorizedException {
         VehicleDAO dao = (VehicleDAO) getDao();
 
         // Filter vehicles on criteria that are supported by the database
         Collection<Vehicle> result = getAll(
                 dao.byLicensePlate(licensePlate),
                 dao.byFleet(fleet),
-                dao.byType(type));
+                dao.byType(type),
+                dao.byBrand(brand),
+                dao.byModel(model));
 
         // Filter vehicles on criteria that are not supported by the database
         return result.stream()
