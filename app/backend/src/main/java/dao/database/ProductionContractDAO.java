@@ -20,29 +20,71 @@ public class ProductionContractDAO extends ProductionDAO<Contract> implements Co
 
     @Override
     public Filter<Contract> byCustomer(Customer customer) {
-        return filterEqual("customer",customer);
+        return filterEqual("customer", customer);
     }
 
     @Override
     public Filter<Contract> byInsuranceCompany(InsuranceCompany company) {
-        return filterEqual("company",company);
+        return filterEqual("company", company);
     }
 
     @Override
     public Filter<Contract> startsBefore(LocalDate date) {
-        if(date==null){
-            return ()->{};
+        if (date == null) {
+            return () -> {
+            };
         }
         return () ->
-                getPredicates().add(getCriteriaBuilder().lessThanOrEqualTo(getRoot().<LocalDate>get("startDate"), date));
+                getPredicates().add(getCriteriaBuilder().lessThan(getRoot().<LocalDate>get("startDate"), date));
+    }
+
+    @Override
+    public Filter<Contract> startsOn(LocalDate date) {
+        if (date == null) {
+            return () -> {
+            };
+        }
+        return () ->
+                getPredicates().add(getCriteriaBuilder().equal(getRoot().<LocalDate>get("startDate"), date));
+    }
+
+    @Override
+    public Filter<Contract> startsAfter(LocalDate date) {
+        if (date == null) {
+            return () -> {
+            };
+        }
+        return () ->
+                getPredicates().add(getCriteriaBuilder().greaterThan(getRoot().<LocalDate>get("startDate"), date));
+    }
+
+    @Override
+    public Filter<Contract> endsBefore(LocalDate date) {
+        if (date == null) {
+            return () -> {
+            };
+        }
+        return () ->
+                getPredicates().add(getCriteriaBuilder().lessThan(getRoot().<LocalDate>get("endDate"), date));
+    }
+
+    @Override
+    public Filter<Contract> endsOn(LocalDate date) {
+        if (date == null) {
+            return () -> {
+            };
+        }
+        return () ->
+                getPredicates().add(getCriteriaBuilder().equal(getRoot().<LocalDate>get("endDate"), date));
     }
 
     @Override
     public Filter<Contract> endsAfter(LocalDate date) {
-        if(date==null){
-            return ()->{};
+        if (date == null) {
+            return () -> {
+            };
         }
         return () ->
-                getPredicates().add(getCriteriaBuilder().lessThanOrEqualTo(getRoot().<LocalDate>get("endDate"), date));
+                getPredicates().add(getCriteriaBuilder().greaterThan(getRoot().<LocalDate>get("endDate"), date));
     }
 }

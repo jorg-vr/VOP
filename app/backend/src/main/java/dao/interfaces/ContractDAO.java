@@ -33,6 +33,34 @@ public interface ContractDAO extends DAO<Contract> {
     Filter<Contract> startsBefore(LocalDate date);
 
     /**
+     * Returns a Filter to use in ListFiltered in this class, which returns all Contracts starting on the given date.
+     * @param date The date to use in the filter
+     * @return A useable Filter for listFiltered
+     */
+    Filter<Contract> startsOn(LocalDate date);
+
+    /**
+     * Returns a Filter to use in ListFiltered in this class, which returns all Contracts starting after the given date.
+     * @param date The date to use in the filter
+     * @return A useable Filter for listFiltered
+     */
+    Filter<Contract> startsAfter(LocalDate date);
+
+    /**
+     * Returns a Filter to use in ListFiltered in this class, which returns all Contracts ending before the given date.
+     * @param date The date to use in the filter
+     * @return A useable Filter for listFiltered
+     */
+    Filter<Contract> endsBefore(LocalDate date);
+
+    /**
+     * Returns a Filter to use in ListFiltered in this class, which returns all Contracts ending on the given date.
+     * @param date The date to use in the filter
+     * @return A useable Filter for listFiltered
+     */
+    Filter<Contract> endsOn(LocalDate date);
+
+    /**
      * Returns a Filter to use in ListFiltered in this class, which returns all Contracts ending after the given date.
      * @param date The date to use in the filter
      * @return A useable Filter for listFiltered

@@ -7,6 +7,7 @@ import controller.exceptions.UnAuthorizedException;
 import controller.insurance.ContractController;
 import dao.exceptions.DataAccessException;
 import model.identity.Customer;
+import model.identity.InsuranceCompany;
 import model.insurance.Contract;
 import model.insurance.SuretyType;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,8 @@ import spring.model.RESTSchema;
 import spring.model.insurance.RESTContract;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -37,16 +40,24 @@ public class RESTContractController extends RESTAbstractController<RESTContract,
     @RequestMapping(method = RequestMethod.GET)
     public RESTSchema<RESTContract> get(HttpServletRequest request,
                                         Integer page, Integer limit,
-                                        String company,
+                                        @RequestParam(required = false) String customer,
+                                        @RequestParam(required = false) String insuranceCompany,
+                                        @RequestParam(required = false) LocalDate startsBefore,
+                                        @RequestParam(required = false) LocalDate startsOn,
+                                        @RequestParam(required = false) LocalDate startsAfter,
+                                        @RequestParam(required = false) LocalDate endsBefore,
+                                        @RequestParam(required = false) LocalDate endsOn,
+                                        @RequestParam(required = false) LocalDate endsAfter,
                                         @RequestHeader(value = "Authorization") String token,
                                         @RequestHeader(value = "Function") String function) throws UnAuthorizedException, DataAccessException {
         UUID user = new AuthenticationToken(token).getAccountId();
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
             ContractController controller = manager.getContractController();
 
-            Customer customer = company != null ? new Customer(toUUID(company)) : null;
+            Customer customerObject = customer != null ? new Customer(toUUID(customer)) : null;
+            InsuranceCompany insuranceCompanyObject = insuranceCompany != null ? new InsuranceCompany(toUUID(insuranceCompany)) : null;
 
-            Collection<RESTContract> restContracts = controller.getFiltered(customer)
+            Collection<RESTContract> restContracts = controller.getFiltered(customerObject,insuranceCompanyObject, startsBefore, startsOn, startsAfter, endsBefore, endsOn, endsAfter)
                     .stream()
                     .map(RESTContract::new)
                     .collect(Collectors.toList());
