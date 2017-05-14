@@ -380,11 +380,9 @@ public class Vehicle implements EditableObject, java.io.Serializable, Commission
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-
-        if (o == null || getClass() != o.getClass()) return false;
-
-        return uuid != null && uuid.equals(((Vehicle) o).getUuid());
+        return this == o ||
+                !(o == null ||
+                        !(o instanceof Vehicle)) && uuid != null && getUuid().equals(((Vehicle) o).getUuid());
     }
 
     @Override

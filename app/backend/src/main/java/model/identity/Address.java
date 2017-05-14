@@ -140,6 +140,7 @@ public class Address implements Serializable, EditableObject {
 
     /**
      * Gets the postal code
+     *
      * @return the postal code
      */
     public String getPostalCode() {
@@ -148,6 +149,7 @@ public class Address implements Serializable, EditableObject {
 
     /**
      * Sets the postal code
+     *
      * @param postalCode the postal code
      */
     public void setPostalCode(String postalCode) {
@@ -156,6 +158,7 @@ public class Address implements Serializable, EditableObject {
 
     /**
      * Gets the country
+     *
      * @return the country
      */
     public String getCountry() {
@@ -164,6 +167,7 @@ public class Address implements Serializable, EditableObject {
 
     /**
      * Sets the country
+     *
      * @param country the country
      */
     public void setCountry(String country) {
@@ -172,6 +176,7 @@ public class Address implements Serializable, EditableObject {
 
     /**
      * Copies the object
+     *
      * @return the copy
      */
     @Override
@@ -196,7 +201,6 @@ public class Address implements Serializable, EditableObject {
         return this == o ||
                 !(o == null ||
                         !(o instanceof Address)) && uuid != null && getUuid().equals(((Address) o).getUuid());
-
     }
 
     @Override

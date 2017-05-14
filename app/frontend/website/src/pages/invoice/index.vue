@@ -20,7 +20,7 @@
     import { mapGetters, mapActions, mapMutations } from 'vuex'
     import resources from '../../constants/resources'
     import actions from '../../constants/actions'
-    import listComponent from '../../assets/list/listComponent.vue'
+    import listComponent from '../../assets/general/listComponent.vue'
     import buttonBack from '../../assets/buttons/buttonBack.vue'
 
     export default {

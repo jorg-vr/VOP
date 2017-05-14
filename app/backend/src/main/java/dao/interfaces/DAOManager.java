@@ -82,7 +82,7 @@ public interface DAOManager extends AutoCloseable {
      * Gets a FlatSuretyDAO
      * @return a FlatSuretyDAO
      */
-    NonFlatSuretyDAO getFlatSuretyDao();
+    NonFlatSuretyDAO getNonFlatSuretyDao();
 
     /**
      * Gets an InvoiceDAO
@@ -94,7 +94,7 @@ public interface DAOManager extends AutoCloseable {
      * Gets a NonFlatSuretyDAO
      * @return a NonFlatSuretyDAO
      */
-    FlatSuretyDAO getNonFlatSuretyDao();
+    FlatSuretyDAO getFlatSuretyDao();
 
     /**
      * Gets a SpecialConditionDAO

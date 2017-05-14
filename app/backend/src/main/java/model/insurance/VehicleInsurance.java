@@ -65,6 +65,27 @@ public class VehicleInsurance implements EditableObject {
     }
 
     /**
+     * Constructor
+     *
+     * @param vehicle
+     * @param surety
+     * @param startDate
+     * @param endDate
+     * @param contract
+     * @param franchise
+     * @param insuredValue
+     */
+    public VehicleInsurance(Vehicle vehicle, Surety surety, LocalDateTime startDate, LocalDateTime endDate, Contract contract, int franchise, int insuredValue) {
+        this.vehicle = vehicle;
+        this.surety = surety;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.contract = contract;
+        this.franchise = franchise;
+        this.insuredValue = insuredValue;
+    }
+
+    /**
      * Calculates the cost of this insurance in eurocents
      *
      * @return the cost of this insurance in eurocents

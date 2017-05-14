@@ -57,7 +57,7 @@ export default {
         let locationTrimmed = location.rtrim('/')
         let query = '?'
         for(const filter in filters){
-            if(filters.hasOwnProperty(filter)){
+            if(filters.hasOwnProperty(filter) && filters[filter] !== ''){
                 query += filter + '=' + filters[filter] + '&'
             }
         }
@@ -117,6 +117,9 @@ export default {
 }
 
 let rejectResponse = function(response, reject){
+    if(response.status===401){ //Invalid token
+        window.location = '/login'
+    }
     store.commit('setError', response)
     reject(response)
 }

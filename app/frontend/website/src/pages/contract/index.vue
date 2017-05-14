@@ -10,7 +10,11 @@
                 <button-add :resource="resource"></button-add>
             </h1>
         </div>
-        
+
+        <abstract-search-form :resource="resource" :filters="filters">
+            <contract-search-input :contract="filters"></contract-search-input>
+        </abstract-search-form>
+
         <!-- Render an info-pane for every contract. Once all the data is loaded, the table will be shown.-->
         <!-- TODO ADD EXTRA FIELDS -->
         <list-component :resource="resource" :listObject="listObject">
@@ -21,48 +25,32 @@
     import { mapGetters, mapActions, mapMutations } from 'vuex'
     import resources from '../../constants/resources'
     import actions from '../../constants/actions'
-    import listComponent from "../../assets/list/listComponent.vue"
+    import listComponent from "../../assets/general/listComponent.vue"
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
-    import insuranceSearchBar from '../../assets/search/types/insuranceSearchBar.vue'
+    import AbstractSearchForm from '../../assets/general/AbstractSearchForm.vue'
+    import ContractSearchInput from './ContractSearchInput.vue'
 
     export default {
         data(){
             return {
+                filters: {},
                 resource: resources.CONTRACT
             }
         },
         components: {
-            listComponent, buttonAdd, insuranceSearchBar
+            listComponent, buttonAdd, ContractSearchInput, AbstractSearchForm
         },
         created() {
             this.setLoading({loading: true })
-            if(this.authorizedForAll){
-                this.fetchContracts().then(() => {
-                    this.setLoading({loading: false });
-                })
-            }
-            else {
-/*                 this.fetchContractsBy({filters: {company: this.activeFunction.company}}).then(() => {
-                    this.setLoading({loading: false })
-                })*/
-            }
-            // clear vehicle insurances 
-            this.clearInsurances()
-
-
+            this.fetchContracts().then(() => {
+                this.setLoading({loading: false });
+            })
         },
         computed: {
             ...mapGetters([
                 'contracts',
-                'filteredContracts',
-                'getContractsByAll',
-                'getContractsByAllAdvanced',
                 'activeFunction',
-                'isAuthorizedForAllResources'
             ]),
-            authorizedForAll(){
-                return this.isAuthorizedForAllResources(this.resource, actions.READ_ALL)
-            },
             listObject() {
                 var listObj = {};
                 listObj.headers = ['customerName','insuranceCompanyName','showableStartDate','totalCost','totalTax'];
@@ -72,32 +60,12 @@
         },
         methods: {
             ...mapActions([
-                'fetchContractsBy',
-                'fetchContracts',
-                'deleteContract',
-                // needed
-                'fetchInsuranceByContract',
-                'fetchInsurancesByCompany'
+                'fetchContracts'
             ]),
 
             ...mapMutations([
-                'setFilteredContracts',
-                'setLoading',
-                'clearInsurances'
+                'setLoading'
             ]),
-
-            // for search bar  
-            updateContract(value){
-                if(value!==''){
-                    this.setFilteredContracts(this.getContractsByAll(value))
-                }
-                else {
-                    this.setFilteredContracts(this.contracts)
-                }
-            },
-            updateContractsAdvanced(filterContract){
-                this.setFilteredContracts(this.getContractsByAllAdvanced(filterContract))
-            }
         }
     }
 </script>

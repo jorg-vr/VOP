@@ -10,67 +10,49 @@
                <button-add :resource="resource"></button-add>
             </h1>
         </div>
-        <user-search-bar @search="updateUsers" @advancedSearch="updateUsersAdvanced"></user-search-bar>
-        <!-- Render an info-pane for every user. Once all the data is loaded, the table will be shown.-->
-        <list-component :resource="resource" :listObject="listObject">
-        </list-component>
+        <abstract-search-form :resource="resource" :filters="filters">
+            <user-search-input :user="filters"></user-search-input>
+        </abstract-search-form>
+        <list-component :resource="resource" :listObject="listObject"></list-component>
     </div>
 </template>
 
 <script>
     import { mapGetters, mapActions, mapMutations } from 'vuex'
     import resources from '../../constants/resources'
-    import listComponent from "../../assets/list/listComponent.vue"
+    import listComponent from "../../assets/general/listComponent.vue"
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
-    import userSearchBar from '../../assets/search/types/userSearchBar.vue'
+    import AbstractSearchForm from '../../assets/general/AbstractSearchForm.vue'
+    import UserSearchInput from './UserSearchInput.vue'
 
     export default {
         data(){
             return {
+                filters: {},
                 resource: resources.USER
             }
         },
         components: {
-            listComponent, buttonAdd, userSearchBar
+            listComponent, buttonAdd, UserSearchInput, AbstractSearchForm
         },
         created() {
-            this.fetchUsers().then(users => {
-                this.setFilteredUsers(users)
-            })
+            this.fetchUsers()
         },
         computed: {
             ...mapGetters([
-                'users',
-                'filteredUsers',
-                'getUsersByAll',
-                'getUsersByAllAdvanced'
+                'users'
             ]),
             listObject() {
                 var listObj = {};
                 listObj.headers = ['firstName', 'lastName'];
-                listObj.values = this.filteredUsers;
+                listObj.values = this.users;
                 return listObj;
             },
         },
         methods: {
             ...mapActions([
                 'fetchUsers',
-                'deleteUser'
-            ]),
-            ...mapMutations([
-                'setFilteredUsers'
-            ]),
-            updateUsers(value){
-                if(value!==''){
-                    this.setFilteredUsers(this.getUsersByAll(value))
-                }
-                else {
-                    this.setFilteredUsers(this.users)
-                }
-            },
-            updateUsersAdvanced(filterUser){
-                this.setFilteredUsers(this.getUsersByAllAdvanced(filterUser))
-            }
+            ])
         }
     }
 </script>

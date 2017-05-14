@@ -38,9 +38,6 @@ Component usable for requesting user input with a checkbox field.
             text: String,
             object: Object,
         },
-        created(){
-
-        },
         computed:{
             validator(){
                 return this.rules ? this.rules : ''
