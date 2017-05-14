@@ -130,7 +130,7 @@ public class ProductionManager implements DAOManager {
     }
 
     @Override
-    public NonFlatSuretyDAO getFlatSuretyDao() {
+    public NonFlatSuretyDAO getNonFlatSuretyDao() {
         if (nonFlatSuretyDAO == null) {
             nonFlatSuretyDAO = new ProductionNonFlatSuretyDAO(session);
         }
@@ -146,7 +146,7 @@ public class ProductionManager implements DAOManager {
     }
 
     @Override
-    public FlatSuretyDAO getNonFlatSuretyDao() {
+    public FlatSuretyDAO getFlatSuretyDao() {
         if (flatSuretyDAO == null) {
             flatSuretyDAO = new ProductionFlatSuretyDAO(session);
         }
