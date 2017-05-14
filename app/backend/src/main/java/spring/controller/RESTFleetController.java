@@ -57,6 +57,7 @@ public class RESTFleetController extends RESTAbstractController<RESTFleet, Fleet
     public RESTSchema<RESTFleet> get(HttpServletRequest request,
                                      @PathVariable Optional<String> companyId,
                                      @RequestParam(required = false) String company,
+                                     @RequestParam(required = false) String name,
                                      @RequestParam(required = false) Integer page,
                                      @RequestParam(required = false) Integer limit,
                                      @RequestHeader(value = "Authorization") String token,
@@ -71,7 +72,7 @@ public class RESTFleetController extends RESTAbstractController<RESTFleet, Fleet
 
             Customer owner = company != null ? new Customer(toUUID(company)) : null;
 
-            Collection<RESTFleet> result = controller.getFiltered(owner)
+            Collection<RESTFleet> result = controller.getFiltered(owner, name)
                     .stream()
                     .map(RESTFleet::new)
                     .collect(Collectors.toList());
