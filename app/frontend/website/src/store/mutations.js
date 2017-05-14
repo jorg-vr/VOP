@@ -22,6 +22,13 @@ export default {
     },
 
     /**
+     *  Indicates if the user is going back on his steps in the visitedRoutes chain
+     */
+    setIsGoingBack(state, {status}){
+        state.isGoingBack = status
+    },
+
+    /**
      * Set the latest error returned by the API
      * @param state
      * @param response
