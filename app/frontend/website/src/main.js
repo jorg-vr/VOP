@@ -53,6 +53,8 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
+    //This variable must be false at the start of a page!
+    store.commit('setLoading', false)
     if(to.path === '/login'){
         next()
     }
@@ -70,7 +72,7 @@ router.beforeEach((to, from, next) => {
                         next(false)
                     }
                     else { //If the user does not come from a page. Redirect the user to the home page
-                        next({name: 'home'})
+                        next({name: 'homeClient'})
                     }
                 }
             }, () => {

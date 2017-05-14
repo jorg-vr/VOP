@@ -103,7 +103,7 @@
 
             Promise.all([p1, p2]).then(() => {
                 this.setLoading({loading: false })
-            });
+            }).catch(() => this.setLoading({loading: false }));
         },
         computed: {
             ...mapGetters([
