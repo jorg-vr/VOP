@@ -5,8 +5,13 @@ import controller.ControllerManager;
 import controller.exceptions.UnAuthorizedException;
 import controller.insurance.VehicleInsuranceController;
 import dao.exceptions.DataAccessException;
+import dao.exceptions.ObjectNotFoundException;
 import model.insurance.VehicleInsurance;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import pdf.GreenCard;
 import spring.controller.RESTAbstractController;
 import spring.model.AuthenticationToken;
 import spring.model.RESTSchema;
@@ -48,5 +53,26 @@ public class RESTVehicleInsuranceController extends RESTAbstractController<RESTV
         } catch (DataAccessException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @GetMapping("/{id}/${path.green_card}")
+    @ResponseBody
+    public HttpEntity<byte[]> getGreenCard(@PathVariable("id") String id, @RequestHeader(value = "Authorization") String token,
+                                           @RequestHeader(value = "Function") String function) throws DataAccessException, UnAuthorizedException, ObjectNotFoundException {
+        UUID uuid = toUUID(id);
+        UUID user = new AuthenticationToken(token).getAccountId();
+        try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
+            VehicleInsuranceController controller = manager.getVehicleInsuranceController();
+            VehicleInsurance insurance = controller.get(uuid);
+            byte[] documentBody = new GreenCard(insurance).getAsByteArray();
+
+            HttpHeaders header = new HttpHeaders();
+            header.setContentType(MediaType.APPLICATION_PDF);
+            header.set(HttpHeaders.CONTENT_DISPOSITION,
+                    "attachment; filename=" + "groene_kaart.pdf");
+            header.setContentLength(documentBody.length);
+            return new HttpEntity<>(documentBody, header);
+        }
+
     }
 }
