@@ -2,14 +2,16 @@ package controller;
 
 import controller.exceptions.UnAuthorizedException;
 import dao.exceptions.DataAccessException;
-import dao.interfaces.*;
-import model.account.*;
+import dao.interfaces.DAOManager;
+import dao.interfaces.FunctionDAO;
+import model.account.Function;
+import model.account.Resource;
+import model.account.Role;
+import model.account.User;
 import model.identity.Company;
-import spring.exceptions.NotImplementedException;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * For more information of what this class does, see AbstractController
@@ -20,37 +22,27 @@ public class FunctionController extends AbstractController<Function> {
     private FunctionDAO functionDAO;
 
     public FunctionController(Function function, DAOManager manager) {
-        super(manager.getFunctionDAO(), Resource.FUNCTION,function);
+        super(manager, manager.getFunctionDAO(), Resource.FUNCTION, function);
         this.manager = manager;
         functionDAO = this.manager.getFunctionDAO();
-    }
-
-
-
-    public Collection<Function> getFiltered(Company company, User user, Boolean active) throws UnAuthorizedException {
-        try {
-            List<Filter<Function>> filters = new ArrayList<>();
-
-
-            if (company != null) {
-                filters.add(functionDAO.byCompany(company));
-            }
-
-            if (active != null) {
-                // ignore for now
-                throw new NotImplementedException();
-            }
-
-
-            return getAll(filters.toArray(new Filter[filters.size()]));
-        } catch (DataAccessException e) {
-            // return empty list
-            return new ArrayList<>();
-        }
     }
 
     @Override
     public boolean isOwner(Function function, Function function2) {
         return function.equals(function2);
+    }
+
+    public Collection<Function> getFiltered(User user, Company company, Role role) throws DataAccessException, UnAuthorizedException {
+
+        FunctionDAO dao = (FunctionDAO) getDao();
+
+        Collection<Function> result = getAll(
+                dao.byCompany(company),
+                dao.byUser(user));
+
+        // Filter companies on criteria that are not supported by the database
+        return result.stream()
+                .filter(c -> role == null || c.getRole().equals(role))
+                .collect(Collectors.toList());
     }
 }

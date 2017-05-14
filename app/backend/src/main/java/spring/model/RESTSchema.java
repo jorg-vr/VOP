@@ -4,10 +4,7 @@ import util.URLUtil;
 import spring.exceptions.InvalidInputException;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static java.lang.Integer.min;
 
@@ -48,11 +45,13 @@ public class RESTSchema<T> {
      * @param page       if null data of the pagination will be set to collection
      * @param limit      if null data of the pastination will be set to collection
      * @param request    request of the HTTP request
+     * @param comparator specifies how the elements should be sorted
      * @return
      */
-    public RESTSchema(Collection<T> collection, Integer page, Integer limit, HttpServletRequest request) {
+    public RESTSchema(Collection<T> collection, Integer page, Integer limit, HttpServletRequest request, Comparator<T> comparator) {
         this.data = collection;
         List<T> list = new ArrayList<>(collection);
+        Collections.sort(list, comparator);
         this.setTotal(list.size());
 
         // queries are null => give back the full collection
@@ -61,7 +60,6 @@ public class RESTSchema<T> {
             return;
         }
 
-        Collections.sort(list, (a, b) -> a.hashCode() - b.hashCode());
         int start = page * limit;
         int end = min(start + limit, this.total);
 
@@ -92,6 +90,14 @@ public class RESTSchema<T> {
         if (page < lastPage) {
             this.next = URLUtil.replace(relativeURL, "page", page + 1);
         }
+    }
+
+    /**
+     * See the constructor above for more information.
+     * The elements will be sorted based on the hashcode to enforce the order of the elements.
+     */
+    public RESTSchema(Collection<T> collection, Integer page, Integer limit, HttpServletRequest request) {
+       this(collection, page, limit, request, (a, b) -> a.hashCode() - b.hashCode());
     }
 
     public Collection<T> getData() {

@@ -5,11 +5,10 @@ import controller.ControllerManager;
 import controller.exceptions.UnAuthorizedException;
 import controller.insurance.SuretyController;
 import dao.exceptions.DataAccessException;
+import model.identity.Company;
+import model.identity.InsuranceCompany;
 import model.insurance.Surety;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import spring.controller.RESTAbstractController;
 import spring.model.AuthenticationToken;
 import spring.model.RESTSchema;
@@ -26,7 +25,7 @@ import static util.UUIDUtil.toUUID;
  * Created by Billie Devolder on 18/04/2017.
  */
 @RestController
-@RequestMapping("${path.sureties}")
+@RequestMapping("/${path.companies}/{companyId}/${path.sureties}")
 public class RESTSuretyController extends RESTAbstractController<RESTSurety, Surety> {
 
     public RESTSuretyController() {
@@ -40,14 +39,21 @@ public class RESTSuretyController extends RESTAbstractController<RESTSurety, Sur
 
     @RequestMapping(method = RequestMethod.GET)
     public RESTSchema<RESTSurety> get(HttpServletRequest request,
+                                       @PathVariable String companyId,
                                         Integer page, Integer limit,
+                                        String insuranceCompany,
                                         @RequestHeader(value = "Authorization") String token,
                                         @RequestHeader(value = "Function") String function) throws UnAuthorizedException, DataAccessException {
         UUID user = new AuthenticationToken(token).getAccountId();
+
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
             SuretyController controller = manager.getSuretyController();
-            Collection<RESTSurety> restSureties = controller.getAll()
+
+            InsuranceCompany insuranceCompanyObject = insuranceCompany != null ? new InsuranceCompany(toUUID(insuranceCompany)) : null;
+
+            Collection<RESTSurety> restSureties = controller.getFiltered(insuranceCompanyObject)
                     .stream()
+                    .filter(surety -> companyId == null || surety.getInsuranceCompany().equals(new Company(toUUID(companyId))))
                     .map(RESTSurety::new)
                     .collect(Collectors.toList());
             return new RESTSchema<>(restSureties, page, limit, request);

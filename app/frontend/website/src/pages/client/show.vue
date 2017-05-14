@@ -51,6 +51,8 @@
             <h2>{{$t("fleet.fleets") | capitalize }}</h2>
             <list-component :listObject="listObject" :resource="resource">
             </list-component>
+            <h2>{{$t("contract.contracts") | capitalize}}</h2>
+            <list-component :resource="resource2" :listObject="listObject2"></list-component>
             <button-back :route="{name: 'clients'}"></button-back>
             <button-add :resource="resource" :params="{clientId: client.id}"></button-add>
         </div>
@@ -69,6 +71,7 @@
         data(){
             return {
                 resource: resources.FLEET,
+                resource2: resources.CONTRACT,
                 type: ''
             }
         },
@@ -82,15 +85,21 @@
             this.setLoading({loading: true})
             let clientId = this.id
             this.fetchClient({id: clientId}).then(client => {
-                this.type = clientTypes[client.type]['name']
-            })
-            this.fetchFleetsBy({filters: {company: clientId}}).then(() => {
+                if(client.type){
+                    this.type = clientTypes[client.type].translation()
+                }
+            });
+            let p1=this.fetchFleetsBy({filters: {company: clientId}});
+            let p2=this.fetchContractsBy({filters: {company: clientId}});
+
+            Promise.all([p1, p2]).then(() => {
                 this.setLoading({loading: false })
-            })
+            });
         },
         computed: {
             ...mapGetters([
                 'client',
+                'contracts',
                 'fleets'
             ]),
             listObject () {
@@ -98,16 +107,23 @@
                 listObj.headers = ["name"];
                 listObj.values = this.fleets;
                 return listObj;
+            },
+            listObject2() {
+                var listObj = {};
+                listObj.headers = ['insuranceCompanyName','showableStartDate','totalCost','totalTax'];
+                listObj.values = this.contracts;
+                return listObj;
             }
         },
         methods: {
             ...mapActions([
                 'fetchClient',
-                'fetchFleetsBy'
+                'fetchFleetsBy',
+                'fetchContractsBy'
             ]),
             ...mapMutations([
                 'setLoading'
             ])
-        },
+        }
     }
 </script>

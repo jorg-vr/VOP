@@ -38,7 +38,8 @@ Component usable for requesting user input with a text field.
         },
         methods: {
             onInput(value){
-                this.$set(this.object, this.name, new Date(value).toISOString().slice(0, -1))
+                var d = new Date(value).toISOString()
+                this.$set(this.object, this.name, d.substring(0,10))
             }
         }
     }

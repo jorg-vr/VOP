@@ -50,6 +50,10 @@ export default {
         name: 'surety',
         value: 'INSURANCE'
     },
+    COMMISSION: {
+        name: 'commission',
+        value: 'COMMISSION'
+    },
     CONTRACT:{
         name: 'contract',
         value: 'INSURANCE'
@@ -58,5 +62,9 @@ export default {
         name:'condition',
         value:'INSURANCE'
     },
+    LOG: {
+        name: 'log',
+        value: 'LOG'
+    }
 
 }

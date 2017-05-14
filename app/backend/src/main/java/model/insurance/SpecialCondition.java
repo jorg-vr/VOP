@@ -1,8 +1,11 @@
 package model.insurance;
 
 import model.history.EditableObject;
+import model.history.LogResource;
 
 import java.util.UUID;
+
+import static util.UUIDUtil.UUIDToNumberString;
 
 /**
  * Class representing special conditions which can apply for a Surety
@@ -107,6 +110,11 @@ public class SpecialCondition implements EditableObject {
     }
 
     @Override
+    public LogResource getLogResource() {
+        return LogResource.SPECIAL_CONDITIION;
+    }
+
+    @Override
     public int hashCode() {
         if(getUuid()!=null){return getUuid().hashCode();}
         return super.hashCode();
@@ -141,5 +149,10 @@ public class SpecialCondition implements EditableObject {
         specialCondition.setText(getText());
         specialCondition.setTitle(getTitle());
         return specialCondition;
+    }
+
+    @Override
+    public String toString() {
+        return UUIDToNumberString(uuid);
     }
 }

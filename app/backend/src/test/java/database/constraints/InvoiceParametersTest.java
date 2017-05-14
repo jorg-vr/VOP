@@ -9,7 +9,6 @@ import model.identity.Address;
 import model.identity.Customer;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
@@ -17,7 +16,6 @@ import java.time.LocalDateTime;
 import static database.DAOTestUtil.*;
 import static org.junit.Assert.fail;
 
-@Ignore
 public class InvoiceParametersTest {
 
     private static Customer customer;
@@ -57,8 +55,8 @@ public class InvoiceParametersTest {
             removeInvoice(invoice.getUuid());
             fail("Invoice succesfully created with payer field null when an exception was expected");
         } catch (ConstraintViolationException e) {
-            e.printStackTrace();
-            fail("Invoice succesfully created with payer field null when an exception was expected");
+            System.out.println( e.getMessage());
+            //nothing since this is supposed to happen
         }
     }
 
@@ -69,8 +67,8 @@ public class InvoiceParametersTest {
             removeInvoice(invoice.getUuid());
             fail("Invoice succesfully created with type field null when an exception was expected");
         } catch (ConstraintViolationException e) {
-            e.printStackTrace();
-            fail("Invoice succesfully created with type field null when an exception was expected");
+            System.out.println( e.getMessage());
+            //nothing since this is supposed to happen
         }
     }
 
@@ -81,8 +79,8 @@ public class InvoiceParametersTest {
             removeInvoice(invoice.getUuid());
             fail("Invoice succesfully created with startDate field null when an exception was expected");
         } catch (ConstraintViolationException e) {
-            e.printStackTrace();
-            fail("Invoice succesfully created with startDate field null when an exception was expected");
+            System.out.println( e.getMessage());
+            //nothing since this is supposed to happen
         }
     }
 
@@ -93,8 +91,8 @@ public class InvoiceParametersTest {
             removeInvoice(invoice.getUuid());
             fail("Invoice succesfully created with endDate field null when an exception was expected");
         } catch (ConstraintViolationException e) {
-            e.printStackTrace();
-            fail("Invoice succesfully created with endDate field null when an exception was expected");
+            System.out.println( e.getMessage());
+            //nothing since this is supposed to happen
         }
     }
 }

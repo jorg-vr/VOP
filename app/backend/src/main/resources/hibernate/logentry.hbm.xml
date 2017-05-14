@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="model.history.LogEntry" table="logentries">
+        <meta attribute="class-description">
+            This class contains the invoice detail.
+        </meta>
+        <id name="uuid" type="uuid-binary" column="id">
+            <generator class="uuid2"/>
+        </id>
+        <property name="object" column="object" type="uuid-binary"/>
+        <many-to-one name="user" column="user_login" class="model.account.User"/>
+        <property name="resource" >
+            <type name = "org.hibernate.type.EnumType" >
+                <param name="enumClass">model.history.LogResource</param>
+            </type>
+        </property>
+        <property name="action" >
+            <type name = "org.hibernate.type.EnumType" >
+                <param name="enumClass">model.history.LogAction</param>
+            </type>
+        </property>
+        <property name="time" column="time" type="java.time.LocalDateTime" />
+        <bag name="descriptions" table="descriptions"
+             cascade="all">
+            <key column="entry_id"/>
+            <one-to-many class="model.history.Description" />
+        </bag>
+        <bag name="interested" table = "interested">
+            <key column="entry_id"/>
+            <element column="id" type="uuid-binary"/>
+        </bag>
+    </class>
+
+
+    <class name="model.history.Description" table="descriptions">
+        <meta attribute="class-description">
+            This class contains the invoice detail.
+        </meta>
+        <id name="uuid" type="uuid-binary" column="id">
+            <generator class="uuid2"/>
+        </id>
+        <property name="field" column="field" type="java.lang.String"/>
+        <property name="newValue" column="new_value" type="java.lang.String"/>
+        <property name="oldValue" column="old_value" type="java.lang.String"/>
+
+
+    </class>
+</hibernate-mapping>

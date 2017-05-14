@@ -86,6 +86,8 @@ router.beforeEach((to, from, next) => {
     store.commit('pushVisitedRoute', {route: from})
 })
 
+//A list of general functions
+
 String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
 }
@@ -97,6 +99,13 @@ String.prototype.rtrim = function(s) {
 String.prototype.showableDate = function() {
     let d = new Date(this)
     return d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear()
+}
+
+String.prototype.showableDateTime = function() {
+    let d = new Date(this)
+    let hours = d.getHours().toString().length==2 ? d.getHours() : '0' + d.getHours()
+    let minutes = d.getMinutes().toString().length==2 ? d.getMinutes() : '0' + d.getMinutes()
+    return this.showableDate() + ' ' + hours + ':' + minutes
 }
 
 String.prototype.plural = function() {

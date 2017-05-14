@@ -1,11 +1,14 @@
 package spring.controller;
 
-import controller.*;
-
+import controller.AbstractController;
+import controller.ControllerManager;
+import controller.VehicleController;
 import controller.exceptions.UnAuthorizedException;
 import dao.exceptions.DataAccessException;
 import model.fleet.Fleet;
 import model.fleet.Vehicle;
+import model.fleet.VehicleType;
+import model.identity.Customer;
 import org.springframework.web.bind.annotation.*;
 import spring.exceptions.InvalidInputException;
 import spring.model.AuthenticationToken;
@@ -14,8 +17,10 @@ import spring.model.RESTVehicle;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.format.DateTimeFormatter;
-
-import java.util.*;
+import java.util.Collection;
+import java.util.Locale;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static util.UUIDUtil.toUUID;
@@ -65,6 +70,7 @@ public class RESTVehicleController extends RESTAbstractController<RESTVehicle, V
                                        @RequestParam(required = false) String vin,
                                        @RequestParam(required = false) Integer year,
                                        @RequestParam(required = false) String fleet,
+                                       @RequestParam(required = false) String company,
                                        @RequestParam(required = false) String type,
                                        @RequestParam(required = false) Integer page,
                                        @RequestParam(required = false) Integer limit,
@@ -79,8 +85,14 @@ public class RESTVehicleController extends RESTAbstractController<RESTVehicle, V
             VehicleController controller = manager.getVehicleController();
 
             Fleet fleetObject = fleet != null ? new Fleet(toUUID(fleet)) : null;
+            Customer customer = company != null ? new Customer(toUUID(company)) : null;
+            VehicleType vehicleTypeObject = null;
+            if(type != null){
+                vehicleTypeObject = new VehicleType();
+                vehicleTypeObject.setUuid(toUUID(type));
+            }
 
-            Collection<RESTVehicle> result = controller.getFiltered(licensePlate, vin, year, fleetObject, type)
+            Collection<RESTVehicle> result = controller.getFiltered(licensePlate, vin, year, fleetObject, customer, vehicleTypeObject)
                     .stream()
                     .map(RESTVehicle::new)
                     .collect(Collectors.toList());

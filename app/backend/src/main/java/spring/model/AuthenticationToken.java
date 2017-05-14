@@ -3,6 +3,7 @@ package spring.model;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.InvalidClaimException;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.SignatureVerificationException;
@@ -64,7 +65,7 @@ public class AuthenticationToken {
                     .build(); //Reusable verifier instance
             DecodedJWT jwt = verifier.verify(token);
             accountId =UUIDUtil.toUUID(jwt.getSubject());
-        } catch (JWTDecodeException | SignatureVerificationException exception){
+        } catch (JWTDecodeException | SignatureVerificationException | InvalidClaimException exception){
             throw new InvalidTokenException();
         }
     }

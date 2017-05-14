@@ -37,9 +37,10 @@ addRoutesForResource(resources.INSURANCE)
 addRoutesForResource(resources.CLIENT)
 addRoutesForResource(resources.INVOICE)
 addRoutesForResource(resources.SURETY)
+addRoutesForResource(resources.VEHICLE_TYPE)
 addRoutesForResource(resources.CONTRACT)
 addRoutesForResource(resources.CONDITION)
-
+addRoutesForResource(resources.LOG)
 //Define exceptions
 
 //Users & client pages can only be seen with READ_ALL permissions.

@@ -37,7 +37,7 @@ public class ProductionUserDAO extends ProductionDAO<User> implements UserDAO {
     }
 
     @Override
-    public User getUserByLogin(String login, String hashedPassword) {
+    public User getUserByLogin(String login) {
         Transaction tx = null;
         try {
 
@@ -46,8 +46,7 @@ public class ProductionUserDAO extends ProductionDAO<User> implements UserDAO {
             CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
             Root<User> root = criteriaQuery.from(User.class);
             Collection<User> users = getSession().createQuery(criteriaQuery.where(
-                    criteriaBuilder.equal(root.get("email"), login),
-                    criteriaBuilder.equal(root.get("password"), hashedPassword))).getResultList();
+                    criteriaBuilder.equal(root.get("email"), login))).getResultList();
             tx.commit();
             if(users.size()>1){
                 throw new DataAccessException();

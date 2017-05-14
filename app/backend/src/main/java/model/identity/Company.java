@@ -2,6 +2,7 @@ package model.identity;
 
 
 import model.history.EditableObject;
+import model.history.LogResource;
 
 import java.util.UUID;
 
@@ -13,12 +14,12 @@ public class Company extends Identity implements java.io.Serializable {
     /**
      * Used to determine how often an invoice has to be send to the company
      */
-    private Periodicity invoicePeriodicity;
+    private Periodicity paymentPeriod;
 
     /**
      * Used to determine how often a statement has to be send to the company
      */
-    private Periodicity statementPeriodicity;
+    private Periodicity facturationPeriod;
 
     /**
      * The company name
@@ -71,16 +72,16 @@ public class Company extends Identity implements java.io.Serializable {
      * @param name the company name
      * @param btwNumber the VAT-number
      * @param companyType the company type
-     * @param invoicePeriodicity the invoice periodicity
-     * @param statementPeriodicity the statement periodicity
+     * @param paymentPeriod the invoice periodicity
+     * @param facturationPeriod the statement periodicity
      */
-    public Company(Address address, String phoneNumber, String name, String btwNumber, CompanyType companyType, Periodicity invoicePeriodicity, Periodicity statementPeriodicity) {
+    public Company(Address address, String phoneNumber, String name, String btwNumber, CompanyType companyType, Periodicity paymentPeriod, Periodicity facturationPeriod) {
         super(address, phoneNumber);
         this.name = name;
         this.btwNumber = btwNumber;
         this.companyType = companyType;
-        this.invoicePeriodicity = invoicePeriodicity;
-        this.statementPeriodicity = statementPeriodicity;
+        this.paymentPeriod = paymentPeriod;
+        this.facturationPeriod = facturationPeriod;
     }
 
     /**
@@ -151,32 +152,37 @@ public class Company extends Identity implements java.io.Serializable {
      * Gets the statement periodicity
      * @return the statement periodicity
      */
-    public Periodicity getStatementPeriodicity() {
-        return statementPeriodicity;
+    public Periodicity getFacturationPeriod() {
+        return facturationPeriod;
     }
 
     /**
      * Sets the statement periodicity
-     * @param statementPeriodicity the statement periodicity
+     * @param facturationPeriod the statement periodicity
      */
-    public void setStatementPeriodicity(Periodicity statementPeriodicity) {
-        this.statementPeriodicity = statementPeriodicity;
+    public void setFacturationPeriod(Periodicity facturationPeriod) {
+        this.facturationPeriod = facturationPeriod;
     }
 
     /**
      * Gets the invoice periodicity
      * @return the invoice periodicity
      */
-    public Periodicity getInvoicePeriodicity() {
-        return invoicePeriodicity;
+    public Periodicity getPaymentPeriod() {
+        return paymentPeriod;
     }
 
     /**
      * Sets the invoice periodicity
-     * @param invoicePeriodicity the invoice periodicity
+     * @param paymentPeriod the invoice periodicity
      */
-    public void setInvoicePeriodicity(Periodicity invoicePeriodicity) {
-        this.invoicePeriodicity = invoicePeriodicity;
+    public void setPaymentPeriod(Periodicity paymentPeriod) {
+        this.paymentPeriod = paymentPeriod;
+    }
+
+    @Override
+    public LogResource getLogResource() {
+        return LogResource.COMPANY;
     }
 
     /**
@@ -189,11 +195,13 @@ public class Company extends Identity implements java.io.Serializable {
         company.setName(getName());
         company.setCompanyType(getCompanyType());
         company.setAddress((Address)getAddress().copy());
-        company.setInvoicePeriodicity(getInvoicePeriodicity());
-        company.setStatementPeriodicity(getStatementPeriodicity());
+        company.setPaymentPeriod(getPaymentPeriod());
+        company.setFacturationPeriod(getFacturationPeriod());
         company.setBtwNumber(getBtwNumber());
         company.setUuid(getUuid());
         company.setPhoneNumber(getPhoneNumber());
         return company;
     }
+
+
 }

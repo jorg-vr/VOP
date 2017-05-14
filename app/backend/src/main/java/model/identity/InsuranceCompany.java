@@ -1,6 +1,8 @@
 package model.identity;
 
 import model.history.EditableObject;
+import model.history.LogResource;
+
 import model.insurance.Contract;
 import model.insurance.Surety;
 
@@ -27,6 +29,10 @@ public class InsuranceCompany extends Company implements java.io.Serializable {
     public InsuranceCompany() {
         this.contracts = new ArrayList<>();
         super.setCompanyType(CompanyType.INSURANCE_COMPANY);
+    }
+
+    public InsuranceCompany(UUID uuid) {
+        super(uuid);
     }
 
     /**
@@ -82,6 +88,11 @@ public class InsuranceCompany extends Company implements java.io.Serializable {
 
     }
 
+    @Override
+    public LogResource getLogResource() {
+        return LogResource.INSURANCE_COMPANY;
+    }
+
     /**
      * Get the contracts
      * @return the contracts
@@ -124,8 +135,8 @@ public class InsuranceCompany extends Company implements java.io.Serializable {
         company.setName(getName());
         company.setCompanyType(getCompanyType());
         company.setAddress((Address)getAddress().copy());
-        company.setInvoicePeriodicity(getInvoicePeriodicity());
-        company.setStatementPeriodicity(getStatementPeriodicity());
+        company.setPaymentPeriod(getPaymentPeriod());
+        company.setFacturationPeriod(getFacturationPeriod());
         company.setBtwNumber(getBtwNumber());
         company.setUuid(getUuid());
         company.setPhoneNumber(getPhoneNumber());

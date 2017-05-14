@@ -83,7 +83,7 @@ public class GreenCard {
         Vehicle vehicle = insurance.getVehicle();
         body = vehicle.getLicensePlate();
         if (vehicle.getLicensePlate() == null) {
-            body = vehicle.getChassisNumber();
+            body = vehicle.getVin();
         }
         table.addCell(new GreenCardCell("Kenteken (of, indien geen kenteken) chassis- of motornummer",body, 6, 2));
         table.addCell(new GreenCardCell("Soort motorrijtuig", vehicle.getType().getType(), 3, 2));

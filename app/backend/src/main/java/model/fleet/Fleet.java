@@ -1,12 +1,15 @@
 package model.fleet;
 
 import model.history.EditableObject;
+import model.history.LogResource;
 import model.identity.Address;
 import model.identity.Customer;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
+
+import static util.UUIDUtil.UUIDToNumberString;
 
 /**
  * Fleet class that contains all Vehicles a Customer owns
@@ -44,10 +47,12 @@ public class Fleet implements EditableObject, java.io.Serializable {
      * Default constructor
      */
     public Fleet() {
+        this.vehicles = new ArrayList<>();
     }
 
     public Fleet(UUID uuid) {
         this.uuid = uuid;
+        this.vehicles = new ArrayList<>();
     }
 
     public Fleet(String name, Customer owner, Address address) {
@@ -158,6 +163,11 @@ public class Fleet implements EditableObject, java.io.Serializable {
     }
 
     @Override
+    public LogResource getLogResource() {
+        return LogResource.FLEET;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || !(o instanceof Fleet)) return false;
@@ -194,4 +204,8 @@ public class Fleet implements EditableObject, java.io.Serializable {
         return super.hashCode();
     }
 
+    @Override
+    public String toString() {
+        return UUIDToNumberString(uuid);
+    }
 }

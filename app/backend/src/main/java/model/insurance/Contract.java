@@ -1,7 +1,7 @@
 package model.insurance;
 
-import model.billing.Invoice;
 import model.history.EditableObject;
+import model.history.LogResource;
 import model.identity.Customer;
 import model.identity.InsuranceCompany;
 
@@ -9,6 +9,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
+
+import static util.UUIDUtil.UUIDToNumberString;
 
 /**
  * Representing a contract: a collection of VehicleInsurance of a Customer from an InsuranceCompany
@@ -208,6 +210,11 @@ public class Contract implements EditableObject {
     }
 
     @Override
+    public LogResource getLogResource() {
+        return LogResource.CONTRACT;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || !(o instanceof Contract)) return false;
@@ -222,5 +229,10 @@ public class Contract implements EditableObject {
     public int hashCode() {
         if(uuid!=null){return getUuid().hashCode();}
         return super.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return UUIDToNumberString(uuid);
     }
 }

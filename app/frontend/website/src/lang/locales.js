@@ -14,14 +14,26 @@ export default
             vehicleType: 'type',
             mileage: 'mileage',
             year: 'year',
-            value: 'value'
+            value: 'value',
+            sureties: 'sureties',
+            totalCost: 'price',
+            totalTax: 'tax'
+        },
+        vehicleType: {
+            name: 'name',
+            vehicleType: 'vehicle type',
+            vehicleTypes: 'vehicle types',
+            tax:'tax',
+            taxes:'taxes'
         },
         fleet: {
             name: 'fleet name',
             company: 'company',
             companyName: 'company name',
             fleet: 'fleet',
-            fleets: 'fleets'
+            fleets: 'fleets',
+            totalCost: 'price',
+            totalTax: 'tax'
 
         },
         user: {
@@ -59,19 +71,24 @@ export default
             back: 'back',
             name: 'name',
             cancel: 'cancel',
-            add: 'add'
+            add: 'add',
+            update: "update",
+            description: 'description'
         },
         actions: {
             select: 'select {subject}',
             create: 'create {subject}',
-            update: 'edit {subject}'
+            update: 'edit {subject}',
+            remove: 'remove {subject}'
         },
         search_bar: {
             search_for: 'Search for',
         },
         modal:{
-            title: 'Confirmation',
-            text: 'Are you sure you want to proceed with this action?',
+            titleConfirm: 'Confirmation',
+            textConfirm: 'Are you sure you want to proceed with this action?',
+            titleCorrection: 'Correction',
+            textCorrection: 'would you like to make a correction for this ',
             button1: 'Yes',
             button2: 'No'
         },
@@ -103,8 +120,6 @@ export default
             premium: 'insurance premium',
             franchise: 'franchise',
             endDate: 'end date',
-            startDate: 'start date',
-            endDate: 'end date',
             showableStartDate: 'startdatum',
             showableEndDate: 'einddatum ',
             insuredValue: 'insured value',
@@ -113,8 +128,13 @@ export default
             exemptions: 'exemptions',
             contract: 'contract',
             cost: 'total cost',
-            tax: 'tax',
-            insuranceCompany: 'insurance company'
+            tax: 'tax ',
+            insuranceCompany: 'insurance company',
+            insuranceCompanyName: 'insurance company',
+            brand:'brand',
+            licensePlate:'license plate',
+            suretyType:'surety',
+            suretyTypeTranslation:'surety'
         },
         invoice:{
             invoice: 'invoice',
@@ -147,6 +167,7 @@ export default
             coverage: 'coverage clauses',
             exceptions: 'exceptions',
             suretyType: 'type',
+            suretyTypeTranslation:'surety',
             flat: 'flat',
             yes: 'yes',
             no: 'no'
@@ -161,7 +182,9 @@ export default
             totalTax: 'total tax',
             customer: 'company',
             insuranceCompany: 'insurance company',
-            offer: 'all insurance sureties offered by'
+            offer: 'all insurance sureties offered by',
+            customerName:"company",
+            insuranceCompanyName:'insurance company'
         },
         vehicle_insurance:{
             vehicle_insurance: 'vehicle insurance',
@@ -178,6 +201,52 @@ export default
             referenceCode: 'code',
             title: 'title',
             text: 'text'
+        },
+        suretyTypes:{
+            CIVIL_LIABILITY:"civil liability",
+            OMNIUM_FULL:"full omnium",
+            OMNIUM_PARTIAL:"partial omnium",
+            LEGAL_AID:"legal aid",
+            TRAVEL_AID:"travel aid",
+            SAFETY:"safety"
+        },
+        commission:{
+            commission:"commission",
+            commissions:"commissions",
+            suretyType:"surety type"
+        },
+        log: {
+            log: 'log',
+            logEntry: 'log entry',
+            action: 'action',
+            resource: 'resource',
+            dateTime: 'time',
+            showableDateTime: 'time',
+            object: 'object',
+            create: 'created',
+            update: 'updated',
+        },
+        description: {
+            property: 'property',
+            oldValue: 'old value',
+            newValue: 'new value'
+        },
+        resource: {
+            user: 'user',
+            function: 'function',
+            role: 'role',
+            billing: 'billing',
+            vehicle: 'vehicle',
+            fleet: 'fleet',
+            vehicle_type: 'vehicle type',
+            vehicle_insurance: 'insurance',
+            client: 'company',
+            invoice: 'invoice',
+            surety: 'surety',
+            commission: 'commission',
+            contract: 'insurance contract',
+            condition: 'speciale condition',
+            log: 'log'
         }
     },
     nl : {
@@ -191,14 +260,26 @@ export default
             vehicleType: 'type',
             mileage: 'kilometerstand',
             year: 'jaar',
-            value: 'waarde'
+            value: 'waarde',
+            sureties: 'waarborgen',
+            totalCost: 'prijs',
+            totalTax: 'btw'
+        },
+        vehicleType: {
+            name: 'naam',
+            vehicleType: 'voertuigtype',
+            vehicleTypes: 'voertuigtypes',
+            tax:'btw',
+            taxes:'belastingen'
         },
         fleet: {
             name: 'vlootnaam',
             company: 'bedrijf',
             companyName: 'bedrijfsnaam',
             fleet: 'vloot',
-            fleets: 'vloten'
+            fleets: 'vloten',
+            totalCost: 'prijs',
+            totalTax: 'btw'
         },
         user: {
             user: 'gebruiker',
@@ -236,21 +317,26 @@ export default
             back: 'terug',
             name: 'naam',
             cancel: 'annuleer',
-            add: 'voeg toe'
+            add: 'voeg toe',
+            update: "bewerken",
+            description: 'beschrijving'
         },
         actions: {
             select: 'selecteer {subject}',
             create: '{subject} aanmaken',
-            update: '{subject} bewerken'
+            update: '{subject} bewerken',
+            remove: '{subject} verwijderen'
         },
         search_bar: {
             search_for: 'Zoeken naar',
         },
         modal:{
-            title: 'Bevestiging',
-            text: 'Weet u zeker dat u wilt doorgaan met deze actie?',
-            button1: 'Ja',
-            button2: 'Nee'
+            titleConfirm: 'Bevestiging',
+            textConfirm: 'Weet u zeker dat u wil doorgaan met deze actie?',
+            titleCorrection: 'Correctie',
+            textCorrection: 'wil u hiervoor een correctie doorvoeren?',
+            button1: 'ja',
+            button2: 'nee'
         },
         exception: {
             e404: 'Pagina niet gevonden',
@@ -290,7 +376,12 @@ export default
             contract: 'contract',
             cost: 'totaal bedrag',
             tax: 'tax',
-            insuranceCompany: 'verzekeringsbedrijf'
+            insuranceCompany: 'verzekeringsbedrijf',
+            insuranceCompanyName: 'verzekeringsbedrijf',
+            brand:'merk',
+            licensePlate:'nummer plaat',
+            suretyType:'waarborg',
+            suretyTypeTranslation:'waarborg'
         },
         invoice:{
             invoice: 'factuur',
@@ -323,20 +414,23 @@ export default
             coverage: 'dekkingsclausules',
             exceptions: 'vrijstellingen',
             suretyType: 'type',
+            suretyTypeTranslation:'waarborg',
             flat: 'flat',
             yes: 'ja',
             no: 'nee'
         },
         contract:{
-            contract: 'verzekeringscontract',
-            contracts: 'verzekeringscontracten',
+            contract: 'contract',
+            contracts: 'contracten',
             showableStartDate: 'startdatum',
             showableEndDate: 'einddatum',
             totalCost: 'totale kost',
             totalTax: 'totale tax',
             customer: 'bedrijf',
             insuranceCompany: 'verzekeringsmaatschappij',
-            offer: 'Alle verzekeringswaarborgen aangeboden door'
+            offer: 'alle verzekeringswaarborgen aangeboden door',
+            customerName:"bedrijf",
+            insuranceCompanyName:'verzekeringsmaatschappij'
         },
         vehicle_insurance:{
             vehicle_insurance: 'voertuigverzekering',
@@ -353,6 +447,53 @@ export default
             referenceCode: 'code',
             title: 'titel',
             text: 'tekst'
+        },
+        suretyTypes:{
+            CIVIL_LIABILITY:"burgerlijke aansprakelijkheid",
+            OMNIUM_FULL:"omnium",
+            OMNIUM_PARTIAL:"partiele omnium",
+            LEGAL_AID:"rechtsbijstand",
+            TRAVEL_AID:"reisbijstand",
+            SAFETY:"veiligheid"
+        },
+        commission:{
+            commission:"commissie",
+            commissions:"commissies",
+            suretyType:"type waarborg"
+        },
+        log: {
+            log: 'log',
+            logEntry: 'log element',
+            action: 'actie',
+            resource: 'resource',
+            dateTime: 'tijdstip',
+            showableDateTime: 'tijdstip',
+            object: 'object',
+            create: 'aangemaakt',
+            update: 'gewijzigd',
+
+        },
+        description: {
+            property: 'eigenschap',
+            oldValue: 'oude waarde',
+            newValue: 'nieuwe waarde'
+        },
+        resource: {
+            user: 'gebruiker',
+            function: 'functie',
+            role: 'rol',
+            billing: 'facturatie',
+            vehicle: 'voertuig',
+            fleet: 'vloot',
+            vehicle_type: 'voertuigtype',
+            vehicle_insurance: 'verzekering',
+            client: 'bedrijf',
+            invoice: 'factuur',
+            surety: 'verzekeringswaarborg',
+            commission: 'commissie',
+            contract: 'verzekeringscontract',
+            condition: 'speciale conditie',
+            log: 'log'
         }
     }
 }

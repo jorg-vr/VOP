@@ -32,6 +32,8 @@
         <mapping resource="hibernate/specialcondition.hbm.xml" />
         <mapping resource="hibernate/surety.hbm.xml" />
         <mapping resource="hibernate/vehicleinsurance.hbm.xml" />
+        <mapping resource="hibernate/logentry.hbm.xml" />
+
 
     </session-factory>
 </hibernate-configuration>

@@ -21,7 +21,7 @@ public class InvoiceController extends AbstractController<Invoice> {
 
 
     public InvoiceController(Function function, DAOManager manager) {
-        super(manager.getInvoiceDao(), Resource.BILLING, function);
+        super(manager, manager.getInvoiceDao(), Resource.BILLING, function);
     }
 
     public Collection<Invoice> getFiltered(Company company) throws UnAuthorizedException {

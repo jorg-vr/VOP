@@ -15,11 +15,11 @@
             <table class="table show-table" v-if='contract'>
                 <tr>
                     <td>{{$t('contract.customer') | capitalize }}</td>
-                    <td>{{contract.customer}}</td>
+                    <td>{{contract.customerName}}</td>
                 </tr>
                 <tr>
                     <td>{{$t('contract.insuranceCompany') | capitalize }}</td>
-                    <td>{{contract.insuranceCompany}}</td>
+                    <td>{{contract.insuranceCompanyName}}</td>
                 </tr>
                 <tr>
                     <td>{{$t('contract.showableStartDate') | capitalize }}</td>
@@ -47,13 +47,12 @@
         <div class="page-header">
             <h1>
                 {{$t("vehicle_insurance.vehicle_insurances") | capitalize }}
-                <button-add :resource="resource1"></button-add>
+                <button-add :resource="resource1" :params="params"></button-add>
             </h1>
         </div>
         
 
-        <!-- TODO ADD MORE FIELDS -->
-        <list-component :resource="resource1" :listObject="listObject1">
+        <list-component :params="params" :ids="ids" v-if="show1" :resource="resource1" :listObject="listObject1" >
         </list-component>
 
          <div class="page-header">
@@ -63,8 +62,8 @@
             </h1>
         </div>
         
-        <h5> {{$t("contract.offer") | capitalize }} {{contract.insuranceCompany}} </h5>
-        <list-component :resource="resource2" :listObject="listObject2">
+        <h5 v-if="contract!=null"> {{$t("contract.offer") | capitalize }} {{contract.insuranceCompanyName}} </h5>
+        <list-component v-if="show2" :resource="resource2" :listObject="listObject2">
         </list-component>
 
         <button-back :route="{name: 'contracts'}"></button-back>
@@ -78,13 +77,17 @@
     import buttonLink from '../../assets/buttons/buttonLink.vue'
     import insuranceSearchBar from '../../assets/search/types/insuranceSearchBar.vue'
     import {mapGetters, mapActions, mapMutations} from 'vuex'
+    import {translateSuretyTypes} from '../../utils/utils'
 
     export default {
         data(){
             return {
                 resource1: resources.INSURANCE,
                 resource2: resources.SURETY,
-                show: true
+                show1: false,
+                show2: false,
+                ids:{contract:this.id},
+                params:{contractId:this.id}
             }
         },
         components: {
@@ -95,19 +98,25 @@
         },
         created(){
             // fetch contract to display information
-            let contractId = this.id
-            this.fetchContract({id: contractId})
+            let contractId = this.id;
+            this.fetchContract({id: contractId}).then(()=>{
+                // get all possible sureties for the chosen insurance Company of the contract
+                this.setLoading({loading: true })
+                this.fetchSureties({ids:{company:this.contract.insuranceCompany}}).then(() => {
+                    this.sureties=translateSuretyTypes(this.sureties);
+                    this.setLoading({loading: false });
+                    this.show2=true;
+                })
+            });
 
             this.setLoading({loading: true })
             // get all insurances from the contract with contract Id
-            this.fetchInsurances({ids: this.id}).then(() => {
-                this.setLoading({loading: false })
-            })
-            // get all possible sureties for the chosen insurance Company of the contract
-            this.setLoading({loading: true })
-            this.fetchSureties().then(() => {
-                this.setLoading({loading: false })
-            })
+            this.fetchInsurances({ids:{contract: this.id}}).then(() => {
+                this.insurances=translateSuretyTypes(this.insurances);
+                this.setLoading({loading: false });
+                this.show1=true;
+            });
+
 
             // set contract Id
             this.setContractId(contractId)
@@ -126,24 +135,15 @@
             ]),
             listObject1() {
                 var listObj = {};
-                listObj.headers = ['cost','tax','showableStartDate','contract'];
+                listObj.headers = ['licensePlate','brand','suretyTypeTranslation','insuredValue','showableStartDate','cost','tax'];
                 listObj.values = this.contractInsurances;
                 return listObj;
             },
             listObject2() {
                 var listObj = {};
-                listObj.headers = ['suretyType','premium'];
-                listObj.values = this.insuranceCompanySureties;
+                listObj.headers = ['suretyTypeTranslation','premium'];
+                listObj.values = this.sureties;
                 return listObj;
-            },
-            insuranceCompanySureties(){
-                var insuranceCompanies = []
-                for(let i=0;i<this.sureties.length;i++){
-                    if(this.sureties[i].insuranceCompany == this.contract.insuranceCompany){
-                        insuranceCompanies.push(this.sureties[i])
-                    }
-                }
-                return insuranceCompanies
             },
             contractInsurances(){
                 var contractInsurances = []
@@ -166,7 +166,8 @@
             ...mapMutations([
                 'setContractId',
                 'setFilteredcontractInsurances',
-                'setLoading'
+                'setLoading',
+                'setInsuranceCompanyId'
             ]),
             // for search
             updateContractInsurances(value){

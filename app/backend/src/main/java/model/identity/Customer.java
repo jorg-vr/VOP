@@ -1,16 +1,19 @@
 package model.identity;
 
+import model.CommissionContainer;
 import model.fleet.Fleet;
 import model.history.EditableObject;
+import model.history.LogResource;
 import model.insurance.Contract;
 import model.insurance.SuretyType;
 
 import java.util.*;
 
+
 /**
  * Class representing a Customer having one or more fleets
  */
-public class Customer extends Company implements java.io.Serializable {
+public class Customer extends Company implements java.io.Serializable, CommissionContainer {
 
     /**
      * Collection of fleets, most of the time only 1
@@ -180,6 +183,11 @@ public class Customer extends Company implements java.io.Serializable {
         commissions.remove(suretyType);
     }
 
+    @Override
+    public LogResource getLogResource() {
+        return LogResource.CUSTOMER;
+    }
+
     /**
      * Copies the object
      * @return the copy
@@ -193,8 +201,8 @@ public class Customer extends Company implements java.io.Serializable {
         customer.setName(getName());
         customer.setCompanyType(getCompanyType());
         customer.setAddress((Address)getAddress().copy());
-        customer.setInvoicePeriodicity(getInvoicePeriodicity());
-        customer.setStatementPeriodicity(getStatementPeriodicity());
+        customer.setPaymentPeriod(getPaymentPeriod());
+        customer.setFacturationPeriod(getFacturationPeriod());
         customer.setBtwNumber(getBtwNumber());
         customer.setUuid(getUuid());
         customer.setPhoneNumber(getPhoneNumber());

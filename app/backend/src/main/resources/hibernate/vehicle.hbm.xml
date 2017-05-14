@@ -11,10 +11,10 @@
         <id name="uuid" type="uuid-binary" column="id">
             <generator class="uuid2"/>
         </id>
-        <property name="productionDate" column="production_date" type="java.time.LocalDate"/>
+        <property name="year" column="production_date" type="java.time.LocalDate"/>
         <property name="brand" column="brand" type="string"/>
         <property name="model" column="model" type="string"/>
-        <property name="chassisNumber" column="chassis_number" type="string"/>
+        <property name="vin" column="chassis_number" type="string"/>
         <property name="licensePlate" column="license_plate" type="string"/>
         <property name="value" column="value" type="int"/>
         <property name="mileage" column="mileage" type="int"/>

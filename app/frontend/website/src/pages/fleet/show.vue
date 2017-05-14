@@ -6,13 +6,20 @@
 <template>
     <div v-if="fleet">
         <div class="page-header">
-            <h1>{{fleet.name}} <span v-if="fleet.companyName">- {{fleet.companyName }}</span>
+            <h1>
+                {{fleet.name}} <span v-if="fleet.companyName">- {{fleet.companyName }}</span>
                 <button-add :resource="resource" :params="{fleetId: fleet.id}"></button-add>
+                <button-link buttonId="log" buttonClass="btn btn-default pull-right" :route="{name: 'fleet_logs'}">
+                    {{$t('log.log') | capitalize}}
+                </button-link>
             </h1>
+            <h4>
+                <span v-if="fleet.totalCost">  {{$t('fleet.totalCost')|capitalize}}: €{{fleet.totalCost }}</span>
+                <span v-if="fleet.totalTax">  |  {{$t('fleet.totalTax')|capitalize}}:  €{{fleet.totalTax }}</span>
+            </h4>
+
         </div>
         <vehicle-search-bar @search="updateSubfleets" @advancedSearch="updateSubfleetsAdvanced"></vehicle-search-bar>
-
-
         <div v-for="subfleet in filteredSubfleets">
             <div v-if="subfleet.vehicles.length > 0">
                 <h3>{{subfleet.type.name | capitalize }}</h3>
@@ -27,6 +34,7 @@
     import listComponent from '../../assets/list/listComponent.vue'
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
     import buttonBack from '../../assets/buttons/buttonBack.vue'
+    import buttonLink from '../../assets/buttons/buttonLink.vue'
     import vehicleSearchBar from '../../assets/search/types/vehicleSearchBar.vue'
     import {mapGetters, mapActions, mapMutations} from 'vuex'
 
@@ -37,28 +45,30 @@
             }
         },
         components: {
-            listComponent, buttonAdd, vehicleSearchBar, buttonBack
+            listComponent, buttonAdd, vehicleSearchBar, buttonBack, buttonLink
         },
         props: {
             id: String
         },
         created() {
             let id = this.id
-            this.setLoading({loading: true })
+            this.setLoading({loading: true });
             this.fetchFleet({id: id}).then(fleet => {
                 this.fetchClient({id: fleet.company}).then(client => {
                     this.addClientName({client})
                 })
-            })
-            let p1 = this.fetchVehiclesBy({filters: {fleet: id}})
-            let p2 = this.fetchVehicleTypes()
+            });
+            let p1 = this.fetchVehiclesBy({filters: {fleet: id}});
+            let p2 = this.fetchVehicleTypes();
             Promise.all([p1, p2]).then(values => {
-                this.getSubfleets({
-                    vehicles: values[0],
-                    vehicleTypes: values[1]
-                }).then(() => {
-                    this.setLoading({loading: false })
-                })
+                this.setVehicleInsurances(values[0]).then(ve =>{
+                    this.getSubfleets({
+                        vehicles: ve,
+                        vehicleTypes: values[1]
+                    }).then(() => {
+                        this.setLoading({loading: false })
+                    })
+                });
             })
         },
         computed: {
@@ -77,6 +87,7 @@
                 'fetchFleet',
                 'fetchVehicleTypes',
                 'fetchVehiclesBy',
+                'fetchInsurancesBy',
                 'deleteVehicle',
                 'addClientName'
             ]),
@@ -99,9 +110,36 @@
             },
             listObject(vehicles) {
                 var listObj = {};
-                listObj.headers = ['brand','model', 'licensePlate'];
+                listObj.headers = ['brand','model', 'licensePlate','sureties','totalCost','totalTax'];
                 listObj.values = vehicles;
                 return listObj;
+            },
+            setVehicleInsurances(vehicles){
+                return new Promise((resolveSuccess, resolveFailure) => {
+                    let p=[];
+                    for (let i in vehicles) {
+                        p[i]=this.fetchInsurancesBy({filters: {vehicleId: vehicles[i].id}});
+                    }
+                    Promise.all(p).then(vi=> {
+                        this.fleet.totalCost=0;
+                        this.fleet.totalTax=0;
+                        for (let i in vehicles) {
+                            vehicles[i].sureties = "";
+                            vehicles[i].totalCost=0;
+                            vehicles[i].totalTax=0;
+                            for (let j in vi[i]) {
+                                if (vi[i][j].suretyType) {
+                                    vehicles[i].sureties = vehicles[i].sureties + this.$t('suretyTypes.' + vi[i][j].suretyType).capitalize() + " ";
+                                    vehicles[i].totalCost=vehicles[i].totalCost+vi[i][j].cost;
+                                    vehicles[i].totalTax=vehicles[i].totalTax+vi[i][j].tax;
+                                }
+                            }
+                            this.fleet.totalCost=this.fleet.totalCost+vehicles[i].totalCost;
+                            this.fleet.totalTax=this.fleet.totalTax+vehicles[i].totalTax;
+                        }
+                        resolveSuccess(vehicles);
+                    }).catch(vi=>{resolveFailure(vehicles)});
+                });
             }
         }
     }

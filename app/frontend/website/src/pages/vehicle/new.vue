@@ -20,7 +20,7 @@
                 actions: actions.CREATE,
                 resource: resources.VEHICLE,
                 vehicle: {},
-                back:{}
+                back:{name:resources.FLEET.name}
             }
         },
         props:{

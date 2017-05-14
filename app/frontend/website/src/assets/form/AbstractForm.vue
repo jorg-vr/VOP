@@ -18,9 +18,9 @@ Generic component for a form. Every form should be encapsulated in this componen
             </div>
             <slot></slot>
             <div class="row">
-                <button-link :route="back" buttonClass="pull-right btn btn-sm btn-default form-component-button">
-                    {{ $t('common.cancel') | capitalize }}
-                </button-link>
+                <button-back :route="back" buttonClass="pull-right btn btn-sm btn-default form-component-button"
+                             :text="$t('common.cancel')">
+                </button-back>
                 <button-action @click="SubmitFormHandler.submit()" buttonClass="pull-right btn btn-sm btn-primary form-component-button">
                     {{ submitText }}
                 </button-action>
@@ -30,7 +30,7 @@ Generic component for a form. Every form should be encapsulated in this componen
 </template>
 <script>
     import {getResourceActionText} from '../../utils/utils'
-    import buttonLink from '../buttons/buttonLink.vue'
+    import buttonBack from '../buttons/buttonBack.vue'
     import buttonAction from '../buttons/buttonAction.vue'
     import { mapGetters, mapActions, mapMutations } from 'vuex'
     import {SubmitFormHandler} from './SubmitFormHandler'
@@ -43,7 +43,7 @@ Generic component for a form. Every form should be encapsulated in this componen
             }
         },
         components: {
-            buttonLink, buttonAction
+            buttonAction, buttonBack
         },
         props: {
             back: Object, //link to previous page
@@ -59,11 +59,11 @@ Generic component for a form. Every form should be encapsulated in this componen
                     this.submit()
                 }
             })
+            SubmitFormHandler.setSubmitFunction(this.submit)
         },
 
         computed: {
             ...mapGetters([
-                'contractId',
                 'error'
             ])
         },
@@ -73,8 +73,15 @@ Generic component for a form. Every form should be encapsulated in this componen
              * index page of the resource of the object.
              */
             submit(){
+                console.log("submit")
                 this.$store.dispatch(this.actions.name + this.resource.name.capitalize(), {resource: this.object, ids: this.ids}).then(() => {
-                    this.$router.push(this.back)
+                    let redirectRoute = this.$store.getters.popVisitedRoute;
+                    if(redirectRoute===undefined || redirectRoute.name===null){
+                        this.$router.push({name: this.back.name, params: this.back.params})
+                    }
+                    else {
+                        this.$router.push(redirectRoute.path)
+                    }
                 })
             },
             initializeFormHandler(components){

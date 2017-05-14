@@ -43,9 +43,9 @@
                 })
             }
             else {
-                this.fetchInsurancesByCompany({company: this.activeFunction.company}).then(() => {
+/*                 this.fetchContractsBy({filters: {company: this.activeFunction.company}}).then(() => {
                     this.setLoading({loading: false })
-                })
+                })*/
             }
             // clear vehicle insurances 
             this.clearInsurances()
@@ -66,7 +66,7 @@
             },
             listObject() {
                 var listObj = {};
-                listObj.headers = ['showableStartDate','totalCost','totalTax'];
+                listObj.headers = ['customerName','insuranceCompanyName','showableStartDate','totalCost','totalTax'];
                 listObj.values = this.contracts;
                 return listObj;
             }

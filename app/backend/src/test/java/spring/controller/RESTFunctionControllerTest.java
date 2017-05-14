@@ -98,9 +98,8 @@ public class RESTFunctionControllerTest {
                     .header("Function", authPair[1])
             )
                     .andExpect(status().isOk())
-                    //Expect 3 instead of 2 because there's 1 extra Function in the database for authentication purposes while testing
-                    .andExpect(jsonPath("$.data", hasSize(greaterThanOrEqualTo(3))))
-                    .andExpect(jsonPath("$.total", greaterThanOrEqualTo(3)));
+                    .andExpect(jsonPath("$.data", hasSize(greaterThanOrEqualTo(2))))
+                    .andExpect(jsonPath("$.total", greaterThanOrEqualTo(2)));
         } catch (Exception e) {
             remove(function1.getUuid());
             remove(function2.getUuid());
