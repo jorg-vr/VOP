@@ -26,7 +26,11 @@ A button usable for navigating to the previous page. This previous page has to b
         },
         methods: {
             back(){
+                this.$store.commit('setIsGoingBack', {status: true})
                 let redirectRoute = this.$store.getters.popVisitedRoute;
+                while(!(redirectRoute===undefined || redirectRoute.name===null) && redirectRoute.path === this.$route.path){
+                    redirectRoute = this.$store.dispatch('popVisitedRoute');
+                }
                 if(redirectRoute===undefined || redirectRoute.name===null){
                     this.$router.push({name: this.route.name, params: this.route.params})
                 }

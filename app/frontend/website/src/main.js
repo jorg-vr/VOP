@@ -83,7 +83,14 @@ router.beforeEach((to, from, next) => {
             next({path: '/login'});
         }
     }
-    store.commit('pushVisitedRoute', {route: from})
+    console.log(store.getters.isGoingBack)
+    if(!store.getters.isGoingBack){
+        store.commit('pushVisitedRoute', {route: from})
+    }
+    else {
+        store.commit('setIsGoingBack', {status: false})
+    }
+
 })
 
 //A list of general functions

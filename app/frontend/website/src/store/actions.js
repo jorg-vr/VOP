@@ -34,5 +34,12 @@ export default {
                 resolve(log)
             }, response => reject(response))
         })
+    },
+
+    /**
+     * Pop a route from the visitedRoutes stack.
+     */
+    popVisitedRoute(context){
+        return context.state.popVisitedRoute()
     }
 }

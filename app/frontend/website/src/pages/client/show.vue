@@ -134,7 +134,8 @@
                 'setLoading'
             ]),
             getPeriodText(period){
-                return periods.filter(periodObj => periodObj.period === period)[0].translation()
+                let periodObj =  periods.filter(periodObj => periodObj.period === period)[0]
+                return periodObj ? periodObj.translation() : ''
             }
         }
     }

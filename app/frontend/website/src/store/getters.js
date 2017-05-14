@@ -18,13 +18,12 @@ export default {
     },
 
     /**
-     * Pop a route from the visitedRoutes stack.
+     * Indicates if the user is going back on his steps in the visitedRoutes chain
      * @param state
-     * @returns {*}
+     * @returns {isGoingBack|boolean|*}
      */
-    popVisitedRoute(state){
-        let route = state.visitedRoutes.pop()
-        return route
+    isGoingBack(state){
+        return state.isGoingBack
     },
 
     /**
