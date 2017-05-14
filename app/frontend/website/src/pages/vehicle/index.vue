@@ -7,9 +7,11 @@
         <div class="page-header">
             <h1>{{$t("vehicle.vehicles") | capitalize }}</h1>
         </div>
-        <vehicle-search-bar @advancedSearch="updateVehiclesAdvanced" :vehicleTypes="vehicleTypes"></vehicle-search-bar>
+        <abstract-search-form @reset="fetchVehicles()" @search="fetchVehiclesBy({filters})">
+            <vehicle-search-input :vehicle="filters"></vehicle-search-input>
+        </abstract-search-form>
         <!-- Render an info-pane for every vehicle. Once all the data is loaded, the table will be shown.-->
-        <list-component v-if="filteredVehicles.length > 0" :resource="resource" :listObject="listObject"></list-component>
+        <list-component v-if="vehicles.length > 0" :resource="resource" :listObject="listObject"></list-component>
     </div>
 </template>
 <script>
@@ -17,48 +19,41 @@
     import resources from '../../constants/resources'
     import listComponent from "../../assets/list/listComponent.vue"
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
-    import vehicleSearchBar from '../../assets/search/types/vehicleSearchForm.vue'
+    import AbstractSearchForm from '../../assets/search/AbstractSearchForm.vue'
+    import VehicleSearchInput from './vehicleSearchInput.vue'
 
     export default {
         data(){
             return {
+                filters: {},
                 resource: resources.VEHICLE
             }
         },
         components: {
-            listComponent, buttonAdd, vehicleSearchBar
+            listComponent, buttonAdd, AbstractSearchForm, VehicleSearchInput
         },
         created() {
             this.clearVehicles()
-            this.fetchVehicleTypes()
         },
         computed: {
             ...mapGetters([
-                'vehicleTypes',
-                'filteredVehicles'
+                'vehicles'
             ]),
             listObject() {
                 var listObj = {};
                 listObj.headers = ['brand','model', 'licensePlate'];
-                listObj.values = this.filteredVehicles;
+                listObj.values = this.vehicles;
                 return listObj;
             }
         },
         methods: {
-            ...mapActions([
-                'deleteVehicle',
-                'fetchVehicleTypes',
-                'fetchVehiclesBy'
-            ]),
-
             ...mapMutations([
-                'clearVehicles',
-                'setFilteredVehicles'
+                'clearVehicles'
             ]),
-
-            updateVehiclesAdvanced(filterVehicle){
-                this.setFilteredVehicles(this.fetchVehiclesBy({filters: {vehicle: filterVehicle}}))
-            }
+            ...mapActions([
+                'fetchVehicles',
+                'fetchVehiclesBy'
+            ])
         }
     }
 </script>

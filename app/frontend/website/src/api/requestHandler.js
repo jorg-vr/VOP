@@ -57,7 +57,7 @@ export default {
         let locationTrimmed = location.rtrim('/')
         let query = '?'
         for(const filter in filters){
-            if(filters.hasOwnProperty(filter)){
+            if(filters.hasOwnProperty(filter) && filters[filter] !== ''){
                 query += filter + '=' + filters[filter] + '&'
             }
         }

@@ -15,11 +15,11 @@ This component can be used to let the user select between a list of specified va
     <div class="row">
         <div class="form-group">
             <label class="col-xs-3 control-label" :for="name">{{text | capitalize}}</label>
-            <p class="col-xs-9  select-row">
+            <p class="col-xs-9 select-row">
                 <select class="form-control select-item" ref="select"
                         :value="object[name]"
                         @change="onInput($event.target.value)"
-                        v-validate="rules"
+                        v-validate="validator"
                         :data-vv-name="name"
                         :data-vv-as="text"
                         :has-error="errors.has(name)">
@@ -58,6 +58,9 @@ This component can be used to let the user select between a list of specified va
         computed: {
             property() {
                 return this.optionPropertyName ? this.optionPropertyName : this.name
+            },
+            validator(){
+                return this.rules ? this.rules : ''
             }
         },
         methods: {

@@ -21,7 +21,7 @@
 </template>
 
 <script>
-    import searchForm from './searchForm.vue'
+    import searchForm from './AbstractSearchForm.vue'
 
     export default {
         data() {
