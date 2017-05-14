@@ -55,7 +55,7 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" ariahaspopup="true" aria-expanded="false">
                         {{activeAccount.firstName}} <span class="caret"></span></a>
                         <ul class="dropdown-menu">  
-                            <li><a>{{activeAccount.email}}</a></li>
+                            <li><a class="no-hover">{{activeAccount.email}}</a></li>
                             <li role="separator" class="divider"></li>
                             <li>
                                 <router-link :to="{name: 'user', params: {id: activeAccount.id}}">
@@ -144,5 +144,9 @@ import ResourcesLink from './ResourcesLink.vue'
     }
     .pointer {
         cursor:pointer;
+    }
+    .dropdown-menu>li>a.no-hover:hover {
+        color: #7b8a8b;
+        background-color: white;
     }
 </style>

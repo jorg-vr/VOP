@@ -3,22 +3,13 @@
     Once a function is chosen the page will reload and the user will be redirected to the home page in order to reset state.
 -->
 <template>
-    <!--TODO update this component to SelectInputFormGrouplect
-    <form-select selectClass="picker" optionKey="roleName" :options="userFunctions"
-                 @input="updateActiveFunction(accountFunction.id)"
-                 v-model="accountFunction.id"></form-select>-->
-
-    <!--<select class="picker form-control" :value="accountFunction.id" @change="onInput($event.target.value)" >
-        <option v-for="userFunction in userFunctions" :selected="accountFunction.id===userFunction.id">{{userFunction.roleName}}</option>
-    </select>-->
-
     <li v-if="userFunctions.length > 1" class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" ariahaspopu="true" aria-expanded="false">
             {{activeFunction.roleName}} <span class="caret"></span>
         </a>
         <ul class="dropdown-menu">
             <li>
-                <a>{{$t('actions.change', {subject: $t('user.role')}) | capitalize}}</a>
+                <a class="no-hover">{{$t('actions.change', {subject: $t('user.role')}) | capitalize}}</a>
             </li>
             <li role="separator" class="divider"></li>
             <li v-for="userFunction in userFunctions">
