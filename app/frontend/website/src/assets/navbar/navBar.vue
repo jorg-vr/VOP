@@ -59,7 +59,7 @@
                             <li role="separator" class="divider"></li>
                             <li>
                                 <router-link :to="{name: 'user', params: {id: activeAccount.id}}">
-                                    {{$t('actions.view', {subject: $t('account')}) | capitalize}}
+                                    {{$t('actions.view', {subject: "account"}) | capitalize}}
                                 </router-link>
                             </li>
                             <li>
