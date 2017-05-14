@@ -90,8 +90,9 @@ export default {
      * @returns {Promise}
      */
     putObjectRequest(location, object){
+        let id = object.id ? object.id : ''
         return new Promise((resolve, reject) => {
-            Vue.http.put(location + object.id, object).then(response => {
+            Vue.http.put(location + id, object).then(response => {
                 resolve(response.body)
             }, response => {
                 rejectResponse(response, reject)

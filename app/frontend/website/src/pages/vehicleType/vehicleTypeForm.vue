@@ -1,40 +1,33 @@
 <template>
-    <div>
-        <text-input-form-group :object="vehicleType" name="name" :text="$t('vehicleType.vehicleType')" :rules="'required'"></text-input-form-group>
-        <h2>{{$t('vehicleType.taxes')}}</h2>
-        <div  v-for="tax in vehicleType.taxes">
-            <text-input-form-group
-
-                    :object="tax"
-                    name="tax"
-                    :text="$t('suretyTypes.'+tax.suretyType)"
-                    :rules="'required'"
-            ></text-input-form-group>
+    <abstract-form :actions="actions" :resource="resource" :customSubmit="submit" :back="back">
+        <vehicle-type-form-input v-if="vehicleType" :vehicleType="vehicleType"></vehicle-type-form-input>
+        <div v-if="commissions.length>0" >
+            <h2>{{$t('commission.commissions')}}</h2>
+            <commission-form-input :commissions="commissions"></commission-form-input>
         </div>
-    </div>
-
+    </abstract-form>
 </template>
 <script>
-    import {mapGetters, mapActions} from 'vuex'
-    import textInputFormGroup from '../../assets/form/FormGroups/TextInputFormGroup.vue'
-    import suretyTypes from '../../constants/suretyTypes'
+    import resources from '../../constants/resources'
+    import vehicleTypeFormInput from './vehicleTypeFormInput.vue'
+    import commissionFormInput from '../commission/commissionFormInput.vue'
+    import AbstractForm from '../../assets/form/AbstractForm.vue'
 
     export default {
-        props: {
-            vehicleType: Object
-        },
-        created(){
-            if(this.vehicleType.taxes===undefined){
-                this.vehicleType.taxes=[];
-                for(let i=0;i<suretyTypes.length;i++){
-                    this.vehicleType.taxes[i]={};
-                    this.vehicleType.taxes[i].suretyType=suretyTypes[i].name;
-                    this.vehicleType.taxes[i].tax=0;
-                }
+        data(){
+            return {
+                resource: resources.VEHICLE_TYPE,
+                back: {name:resources.VEHICLE_TYPE.name.plural()},
             }
         },
         components: {
-            textInputFormGroup
+            commissionFormInput, vehicleTypeFormInput, AbstractForm
+        },
+        props: {
+            submit: Function, //Custom function for submitting this form
+            actions: Object,
+            commissions: Array,
+            vehicleType: Object
         }
     }
 </script>
