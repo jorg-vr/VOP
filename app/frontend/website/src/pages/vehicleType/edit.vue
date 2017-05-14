@@ -5,7 +5,7 @@
     import {mapGetters, mapActions} from 'vuex'
     import * as locations from '../../constants/locations'
     import actions from '../../constants/actions'
-    import VehicleTypeForm from './VehicleTypeForm.vue'
+    import VehicleTypeForm from './vehicleTypeForm.vue'
 
     export default {
         data(){
