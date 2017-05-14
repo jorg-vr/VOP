@@ -43,6 +43,6 @@ public class ProductionContractDAO extends ProductionDAO<Contract> implements Co
             return ()->{};
         }
         return () ->
-                getPredicates().add(getCriteriaBuilder().lessThanOrEqualTo(getRoot().<LocalDate>get("endDate"), date));
+                getPredicates().add(getCriteriaBuilder().greaterThanOrEqualTo(getRoot().<LocalDate>get("endDate"), date));
     }
 }

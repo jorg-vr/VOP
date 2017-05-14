@@ -16,6 +16,7 @@ import spring.model.RESTSchema;
 import spring.model.insurance.RESTContract;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -37,16 +38,23 @@ public class RESTContractController extends RESTAbstractController<RESTContract,
     @RequestMapping(method = RequestMethod.GET)
     public RESTSchema<RESTContract> get(HttpServletRequest request,
                                         Integer page, Integer limit,
-                                        String company,
+                                        @RequestParam(required = false) String customer,
+                                        @RequestParam(required = false) String insuranceCompany,
+                                        @RequestParam(required = false) LocalDateTime startsBefore,
+                                        @RequestParam(required = false) LocalDateTime startsOn,
+                                        @RequestParam(required = false) LocalDateTime startsAfter,
+                                        @RequestParam(required = false) LocalDateTime endsBefore,
+                                        @RequestParam(required = false) LocalDateTime endsOn,
+                                        @RequestParam(required = false) LocalDateTime endsAfter,
                                         @RequestHeader(value = "Authorization") String token,
                                         @RequestHeader(value = "Function") String function) throws UnAuthorizedException, DataAccessException {
         UUID user = new AuthenticationToken(token).getAccountId();
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
             ContractController controller = manager.getContractController();
 
-            Customer customer = company != null ? new Customer(toUUID(company)) : null;
+            Customer customerObject = customer != null ? new Customer(toUUID(customer)) : null;
 
-            Collection<RESTContract> restContracts = controller.getFiltered(customer)
+            Collection<RESTContract> restContracts = controller.getFiltered(customerObject)
                     .stream()
                     .map(RESTContract::new)
                     .collect(Collectors.toList());
