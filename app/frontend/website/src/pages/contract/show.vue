@@ -101,11 +101,10 @@
 </template>
 <script>
     import resources from '../../constants/resources'
-    import listComponent from '../../assets/list/listComponent.vue'
+    import listComponent from '../../assets/general/listComponent.vue'
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
     import buttonBack from '../../assets/buttons/buttonBack.vue'
     import buttonLink from '../../assets/buttons/buttonLink.vue'
-    import insuranceSearchBar from '../../assets/search/types/insuranceSearchBar.vue'
     import {mapGetters, mapActions, mapMutations} from 'vuex'
     import {translateSuretyTypes} from '../../utils/utils'
     import buttonEdit from '../../assets/buttons/buttonEdit.vue'
@@ -124,26 +123,24 @@
             }
         },
         components: {
-            buttonBack,buttonAdd,listComponent,buttonLink,insuranceSearchBar,
+            buttonBack,buttonAdd,listComponent,buttonLink,
             buttonEdit,buttonRemove,confirmModal
         },
         props: {
             id: String
         },
         created(){
+            this.setLoading({loading: true })
             // fetch contract to display information
             let contractId = this.id;
             this.fetchContract({id: contractId}).then(()=>{
                 // get all possible sureties for the chosen insurance Company of the contract
-                this.setLoading({loading: true })
                 this.fetchSureties({ids:{company:this.contract.insuranceCompany}}).then(() => {
                     this.sureties=translateSuretyTypes(this.sureties);
-                    this.setLoading({loading: false });
                     this.show2=true;
                 })
             });
 
-            this.setLoading({loading: true })
             // get all insurances from the contract with contract Id
             this.fetchInsurances({ids:{contract: this.id}}).then(() => {
                 this.insurances=translateSuretyTypes(this.insurances);
@@ -162,10 +159,7 @@
                 'sureties',
                 'insurances',
                 'contractInsurances',
-                'filteredcontractInsurances',
                 'contractId',
-                'getContractInsurancesByAll',
-                'getContractInsurancesByAllAdvanced'
             ]),
             listObject1() {
                 var listObj = {};
@@ -199,36 +193,22 @@
             ]),
             ...mapMutations([
                 'setContractId',
-                'setFilteredcontractInsurances',
                 'setLoading',
                 'setInsuranceCompanyId'
             ]),
-            // for search
-            updateContractInsurances(value){
-                console.log(value)
-                if(value!==''){
-                    this.setFilteredcontractInsurances(this.getContractInsurancesByAll(value))
-                }
-                else {
-                    this.setFilteredcontractInsurances(this.contractInsurances)
-                }
-            },
-            updateContractInsurancesAdvanced(filterInsurance){
-                this.setFilteredInsurances(this.getContractInsurancesByAllAdvanced(filterInsurance))
-            },
             showDate: function (date) {
                 var d=new Date(date)
                 return d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear()
             },
             tdclick: function(value) {
-                this.$router.push({name: this.resource.name, params: {contractId:value.contract, id:value.id}});
+                this.$router.push({name: this.resource1.name, params: {contractId:value.contract, id:value.id}});
             },
             confirmAction: function(){
                 // hide modal
                 this.showModal=false
                 // remove object
                 // special case deletion of insurance
-                this.$store.dispatch('delete' + this.resource.name.capitalize(), {id: this.selectedvalue, ids: this.ids})
+                this.$store.dispatch('delete' + this.resource1.name.capitalize(), {id: this.selectedvalue, ids: this.ids})
             },
             tdshowModal: function(id) {
                 this.showModal = true

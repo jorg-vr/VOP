@@ -7,28 +7,28 @@ All of the fields for contract input for the contract form
 <template>
     <div>
         <!-- Customer -->
-         <select-input-form-group 
+         <select-input-form-group
                      :object="object" name="customer" optionPropertyName="id" visibleKey="name"
                      :text="$t('clientTypes.customer')" :rules="'required'" :options="customers">
         </select-input-form-group>
         <!-- Insurance Company (not editable due to consistency reasons) -->
-        <select-input-form-group v-if="this.actions.name == 'create'"
+        <select-input-form-group v-if="this.actions.name === 'create'"
                      :object="object" name="insuranceCompany" optionPropertyName="id" visibleKey="name"
                      :text="$t('clientTypes.insuranceCompany')" :rules="'required'" :options="insuranceCompanies">
         </select-input-form-group>
 
         <!-- Start Date -->
-        <date-input-form-group 
-                    :object="object" name="startDate" :text="$t('insurance.startDate')" :rules="'required'" visibleKey="startDate">
+        <date-input-form-group
+                    :object="object" name="startDate" :text="$t('insurance.startDate')" :rules="'required'">
         </date-input-form-group>
 
-        <!-- End Date --> 
-        <date-input-form-group 
-                    :object="object" name="endDate" :text="$t('insurance.endDate')" :rules="'required'" visibleKey="endDate">
+        <!-- End Date -->
+        <date-input-form-group
+                    :object="object" name="endDate" :text="$t('insurance.endDate')" :rules="'required'">
         </date-input-form-group>
 
         <!-- Show if contractFormInput is used to edit -->
-        <div v-if="this.actions.name == 'update'">
+        <div v-if="this.actions.name === 'update'">
             <div class="page-header">
                 <button-add :resource="resource1"></button-add>
                 <h2>{{$t("vehicle_insurance.vehicle_insurances") | capitalize }} </h2>
@@ -36,7 +36,7 @@ All of the fields for contract input for the contract form
 
         <list-component :resource="resource1" :listObject="listObject1" :ids="{contract: this.object.id}">
         </list-component>
-            
+
             <div class="page-header">
                 <h2>
                      <button-add :resource="resource2"></button-add>
@@ -61,7 +61,7 @@ All of the fields for contract input for the contract form
     import clientTypes from '../../constants/clientTypes'
     import resources from '../../constants/resources'
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
-    import listComponent from "../../assets/list/listComponent.vue"
+    import listComponent from "../../assets/general/listComponent.vue"
 
     export default {
         data(){
@@ -187,7 +187,7 @@ All of the fields for contract input for the contract form
                 this.fetchSureties()
             }
 
-            
+
         }
     }
 </script>

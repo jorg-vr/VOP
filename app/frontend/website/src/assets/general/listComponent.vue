@@ -49,7 +49,7 @@ tr.list-tr {
     import {mapActions, mapGetters} from 'vuex'
     import buttonEdit from '../buttons/buttonEdit.vue'
     import buttonRemove from '../buttons/buttonRemove.vue'
-    import confirmModal from '../general/modal.vue'
+    import confirmModal from './modal.vue'
 
     export default {
         data() {

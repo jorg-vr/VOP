@@ -5,7 +5,6 @@ import Vue from 'vue'
 export default {
     state: {
         subfleets: [], //A list of subfleets
-        filteredSubfleets: [], //A subset of the list of subfleets.
     },
     getters: {
         /**
@@ -16,51 +15,8 @@ export default {
         subfleets(state) {
             return state.subfleets
         },
-
-        /**
-         * Get a subset of the list of subfleets (Every subfleet is a list aswell, these lists can be subsets aswell of the original list.)
-         * @param state
-         * @returns {Array}
-         */
-        filteredSubfleets(state) {
-            return state.filteredSubfleets
-        },
-
-        /**
-         * Filter the vehicles of the subfleets with the given value.
-         * @param state
-         * @param value
-         */
-        getSubfleetsByAll: (state, getters) => (value) => {
-            let filteredSubfleets = []
-            for(let i=0; i<state.subfleets.length; i++){
-                filteredSubfleets.push({type: state.subfleets[i].type, vehicles: getters.filterByAll(state.subfleets[i].vehicles, value)})
-            }
-            return filteredSubfleets
-        },
-
-        /**
-         * Filter the vehicles of the subfleets with the given object.
-         * @param value
-         */
-        getSubfleetsByAllAdvanced: (state, getters) => (value) => {
-            let filteredSubfleets = []
-            for(let i=0; i<state.subfleets.length; i++){
-                filteredSubfleets.push({type: state.subfleets[i].type, vehicles: getters.filterByAllAdvanced(state.subfleets[i].vehicles, value)})
-            }
-            return filteredSubfleets
-        }
     },
     mutations: {
-        /**
-         * Sets the list of filtered subfleets
-         * @param state
-         * @param subfleets
-         */
-        setFilteredSubfleets(state, subfleets){
-            state.filteredSubfleets = subfleets
-        },
-
         /**
          * Clear the list of subfleets
          * @param state
@@ -138,7 +94,6 @@ export default {
             for(let i=0; i < vehicles.length; i++) {
                 context.commit('addVehicleToSubfleet', {vehicle: vehicles[i]})
             }
-            context.commit('setFilteredSubfleets', context.getters.subfleets)
         },
     }
 }

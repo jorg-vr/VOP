@@ -44,7 +44,7 @@
 <script>
     import {mapGetters, mapActions,mapMutations} from 'vuex'
     import buttonBack from '../../assets/buttons/buttonBack.vue'
-    import listComponent from "../../assets/list/listComponent.vue"
+    import listComponent from "../../assets/general/listComponent.vue"
     import resources from '../../constants/resources'
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
 

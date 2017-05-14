@@ -70,7 +70,7 @@
     import {mapMutations, mapGetters, mapActions} from 'vuex'
     import resources from '../../constants/resources'
     import clientTypes from '../../constants/clientTypes'
-    import listComponent from "../../assets/list/listComponent.vue"
+    import listComponent from "../../assets/general/listComponent.vue"
     import buttonBack from '../../assets/buttons/buttonBack.vue'
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
     import buttonInvoice from '../../assets/buttons/buttonInvoice.vue'
