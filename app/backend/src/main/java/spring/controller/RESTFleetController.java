@@ -1,18 +1,27 @@
 package spring.controller;
 
+import com.opencsv.exceptions.CsvException;
 import controller.AbstractController;
 import controller.ControllerManager;
 import controller.FleetController;
 import controller.exceptions.UnAuthorizedException;
+import csv.CSVtoVehicleParser;
+import csv.InvalidCSVHeaderException;
+import dao.exceptions.ConstraintViolationException;
 import dao.exceptions.DataAccessException;
 import model.fleet.Fleet;
+import model.fleet.Vehicle;
 import model.identity.Customer;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import spring.model.AuthenticationToken;
 import spring.model.RESTFleet;
 import spring.model.RESTSchema;
+import spring.model.RESTVehicle;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
@@ -76,6 +85,22 @@ public class RESTFleetController extends RESTAbstractController<RESTFleet, Fleet
                     .map(RESTFleet::new)
                     .collect(Collectors.toList());
             return new RESTSchema<>(result, page, limit, request);
+        }
+    }
+
+    @PostMapping("/{id}/${path.import}")
+    public Collection<RESTVehicle> importCSV(@PathVariable String id, @RequestParam("file") MultipartFile file) throws ConstraintViolationException {
+        try {
+            Collection<Vehicle> vehicles = CSVtoVehicleParser.parse(file.getInputStream());
+            Collection<RESTVehicle> restVehicles = new ArrayList<>();
+            for (Vehicle vehicle : vehicles) {
+                RESTVehicle restVehicle = new RESTVehicle(vehicle);
+                restVehicle.setFleet(id);
+                restVehicles.add(restVehicle);
+            }
+            return restVehicles;
+        } catch (CsvException | InvalidCSVHeaderException | IOException e) {
+            throw new RuntimeException(e);
         }
     }
 

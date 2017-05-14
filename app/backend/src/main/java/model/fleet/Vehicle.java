@@ -236,11 +236,11 @@ public class Vehicle implements EditableObject, java.io.Serializable, Commission
      */
     public void setVin(String vin) throws InvalidInputException {
         if (vin != null) {
-            String VIN = vin.toUpperCase();
+            /*
             if (!VIN.matches("^[A-HJ-NPR-Z0-9]{9}[A-HJ-NPR-TV-Y1-9][A-HJ-NPR-Z0-9]{7}$")) {
                 throw new InvalidInputException("VIN code has to be 17 characters long, cannot contain character I, O or Q and the 10th character cannot be U, Z or the digit 0");
-            }
-            this.vin = VIN;
+            }*/
+            this.vin = vin.toUpperCase();
         }
     }
 
@@ -260,9 +260,10 @@ public class Vehicle implements EditableObject, java.io.Serializable, Commission
      * @throws InvalidInputException when trying to set a negative value
      */
     public void setValue(int value) throws InvalidInputException {
+        /*
         if (value < 0) {
             throw new InvalidInputException("Value can not be a negative value");
-        }
+        }*/
         this.value = value;
     }
 
@@ -282,9 +283,10 @@ public class Vehicle implements EditableObject, java.io.Serializable, Commission
      * @throws InvalidInputException when trying to set a negative value
      */
     public void setMileage(int mileage) throws InvalidInputException {
+        /*
         if (mileage < 0) {
             throw new InvalidInputException("Mileage can not be a negative value");
-        }
+        }*/
         this.mileage = mileage;
     }
 
