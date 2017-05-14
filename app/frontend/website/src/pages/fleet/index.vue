@@ -33,6 +33,7 @@
                 resource: resources.FLEET,
             }
         },
+
         components: {
             listComponent, buttonAdd, AbstractSearchForm, FleetSearchInput
         },
