@@ -9,9 +9,7 @@
                <button-add :resource="resource"></button-add>
             </h1>
         </div>
-        <abstract-search-form :filters="filters" :resource="resource"
-                              :resetFunction="getFleets"
-                              :searchFunction="searchFleets">
+        <abstract-search-form :filters="filters" :resource="resource" :searchFunction="searchFleets">
             <fleet-search-input :fleet="filters"></fleet-search-input>
         </abstract-search-form>
         <!-- Render an info-pane for every fleet. Once all the data is loaded, the table will be shown.-->
@@ -86,18 +84,6 @@
             ...mapMutations([
                 'setLoading'
             ]),
-            getFleets(){
-                if(this.authorizedForAll) {
-                    this.fetchFleets().then(() => {
-                        this.addClientNames({clients: this.clients})
-                    })
-                }
-                else {
-                    this.fetchFleetsBy({filters: {company: this.activeFunction.company}}).then(() => {
-                        this.addClientNames({clients: this.clients})
-                    })
-                }
-            },
             searchFleets({filters}){
                 if(!this.authorizedForAll) {
                     filters.company = this.activeFunction.company

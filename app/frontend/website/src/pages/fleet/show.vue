@@ -19,9 +19,10 @@
             </h4>
 
         </div>
-        <abstract-search-form :resource="resource" :filters="filters">
+        <abstract-search-form :resource="resource" :filters="filters" :searchFunction="searchVehicles">
             <vehicle-search-input :vehicle="filters"></vehicle-search-input>
-        </abstract-search-form>        <div v-for="subfleet in filteredSubfleets">
+        </abstract-search-form>
+        <div v-for="subfleet in subfleets">
             <div v-if="subfleet.vehicles.length > 0">
                 <h3>{{subfleet.type.name | capitalize }}</h3>
                 <list-component :resource="resource" :listObject="listObject(subfleet.vehicles)"></list-component>
@@ -78,9 +79,7 @@
             ...mapGetters([
                 'fleet',
                 'subfleets',
-                'filteredSubfleets',
-                'getSubfleetsByAll',
-                'getSubfleetsByAllAdvanced'
+                'vehicleTypes'
             ]),
         },
         methods: {
@@ -94,22 +93,21 @@
                 'deleteVehicle',
                 'addClientName'
             ]),
-
             ...mapMutations([
-                'updateFilteredSubfleets',
                 'setLoading'
             ]),
-
-            updateSubfleets(value){
-                if(value!==''){
-                    this.updateFilteredSubfleets(this.getSubfleetsByAll(value))
-                }
-                else {
-                    this.updateFilteredSubfleets(this.subfleets)
-                }
-            },
-            updateSubfleetsAdvanced(filterSubfleet){
-                this.updateFilteredSubfleets(this.getSubfleetsByAllAdvanced(filterSubfleet))
+            searchVehicles({filters}){
+                filters.fleet = this.id
+                let p1 = this.fetchVehiclesBy({filters}).then(vehicles => {
+                    this.setVehicleInsurances(vehicles).then(ve => {
+                        this.getSubfleets({
+                            vehicles: ve,
+                            vehicleTypes: this.vehicleTypes
+                        }).then(() => {
+                            this.setLoading({loading: false })
+                        })
+                    });
+                })
             },
             listObject(vehicles) {
                 var listObj = {};

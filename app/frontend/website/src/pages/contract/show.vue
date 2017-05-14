@@ -201,14 +201,14 @@
                 return d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear()
             },
             tdclick: function(value) {
-                this.$router.push({name: this.resource.name, params: {contractId:value.contract, id:value.id}});
+                this.$router.push({name: this.resource1.name, params: {contractId:value.contract, id:value.id}});
             },
             confirmAction: function(){
                 // hide modal
                 this.showModal=false
                 // remove object
                 // special case deletion of insurance
-                this.$store.dispatch('delete' + this.resource.name.capitalize(), {id: this.selectedvalue, ids: this.ids})
+                this.$store.dispatch('delete' + this.resource1.name.capitalize(), {id: this.selectedvalue, ids: this.ids})
             },
             tdshowModal: function(id) {
                 this.showModal = true

@@ -25,7 +25,6 @@ A collapsible form part of a searchbar. This form can be used for advanced searc
             resource: Object,
             filters: Object,
             searchFunction: Function, //Optional search function (for exceptions)
-            resetFunction: Function //Optional reset function (for excepions)
         },
         methods: {
             onSubmit(){
@@ -38,8 +37,8 @@ A collapsible form part of a searchbar. This form can be used for advanced searc
                 $('.collapse').collapse('hide')
             },
             reset(){
-                if(this.resetFunction){
-                    this.resetFunction()
+                if(this.searchFunction){
+                    this.searchFunction({filters: {}})
                 }
                 else {
                     this.$store.dispatch('fetch' + this.resource.name.plural().capitalize() + 'By', {filters: this.filters})
