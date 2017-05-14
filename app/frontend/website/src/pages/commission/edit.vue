@@ -1,18 +1,7 @@
 <template>
-    <div>
-        <h3>{{$t('commission.commissions')|capitalize}}</h3>
-        <form class="form-horizontal col-xs-12 col-sm-11 col-md-9 col-lg-7">
-            <commissionForm :commissions="commissions"></commissionForm>
-            <div class="row">
-                <button-link :route="back" buttonClass="pull-right btn btn-sm btn-default form-component-button">
-                    {{ $t('common.cancel') | capitalize }}
-                </button-link>
-                <button-action @click="submit()" buttonClass="pull-right btn btn-sm btn-primary form-component-button">
-                    {{$t('common.update')|capitalize }}
-                </button-action>
-            </div>
-        </form>
-    </div>
+    <abstract-form :actions="actions" :object="comissions" :back="back" :resource="resource">
+        <commission-form-input :object="comissions"></commission-form-input>
+    </abstract-form>
 </template>
 <script>
     import actions from '../../constants/actions'
@@ -21,12 +10,14 @@
     import buttonLink from '../../assets/buttons/buttonLink.vue'
     import buttonAction from '../../assets/buttons/buttonAction.vue'
     import { mapGetters, mapActions, mapMutations } from 'vuex'
+    import abstractForm from '../../assets/form/AbstractForm.vue'
+    import commissionFormInput from './commissionFormInput.vue'
 
     export default {
         data(){
             return {
+                actions: actions.UPDATE,
                 resource: resources.COMMISSION,
-                actions: actions.UPDATE
             }
         },
         created(){
@@ -42,7 +33,8 @@
         components: {
             buttonLink,
             buttonAction,
-            commissionForm
+            abstractForm,
+            commissionFormInput
         },
         props: {
             back: Object,
