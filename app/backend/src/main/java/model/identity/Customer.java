@@ -1,6 +1,7 @@
 package model.identity;
 
 import model.CommissionContainer;
+import model.billing.Invoice;
 import model.fleet.Fleet;
 import model.history.EditableObject;
 import model.history.LogResource;
@@ -30,6 +31,13 @@ public class Customer extends Company implements java.io.Serializable, Commissio
      * so commissions can be null in the object
      */
     private Map<SuretyType, Double> commissions;
+
+
+    /**
+     * Current statement
+     */
+    private Invoice currentStatement;
+
 
     /**
      * Default Constructor
@@ -173,6 +181,22 @@ public class Customer extends Company implements java.io.Serializable, Commissio
             commissions = new HashMap<>();
         }
         commissions.put(suretyType, commission);
+    }
+
+    /**
+     * Gets the CurrentStatement
+     * @return The CurrentStatement
+     */
+    public Invoice getCurrentStatement() {
+        return currentStatement;
+    }
+
+    /**
+     * Sets the CurrentStatement
+     * @param currentStatement the CurrentStatement
+     */
+    public void setCurrentStatement(Invoice currentStatement) {
+        this.currentStatement = currentStatement;
     }
 
     /**

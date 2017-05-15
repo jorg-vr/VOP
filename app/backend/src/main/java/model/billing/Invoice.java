@@ -32,7 +32,9 @@ public class Invoice implements EditableObject, java.io.Serializable {
     private Company beneficiary;
 
     /**
-     * Type of Invoice. Can be either a billing (monthly payments), a statement at the end of a billing period or a correction invoice
+     * Type of Invoice. Can be either a billing (monthly payments),
+     * a statement at the end of a billing period or a correction invoice,
+     * or a correction
      */
     private InvoiceType type;
 
@@ -54,13 +56,15 @@ public class Invoice implements EditableObject, java.io.Serializable {
     /**
      * collection of the insurances that are the subject of this invoice
      */
+    private Collection<VehicleInvoice> vehicleInvoices;
+
     private Collection<Contract> contracts;
 
     /**
      * constructor
      */
     public Invoice() {
-        this.contracts = new ArrayList<>();
+        this.vehicleInvoices = new ArrayList<>();
     }
 
     /**
@@ -79,7 +83,7 @@ public class Invoice implements EditableObject, java.io.Serializable {
         this.paid = paid;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.contracts = new ArrayList<>();
+        this.vehicleInvoices = new ArrayList<>();
     }
 
     /**
@@ -87,11 +91,11 @@ public class Invoice implements EditableObject, java.io.Serializable {
      * @return sum of costs of insurances. expressed in cents
      */
     public int calculateCost() {
-        int totalCost = 0;
-        for (Contract contract: contracts) {
-            totalCost += contract.calculateCost();
+        int cost = 0;
+        for(VehicleInvoice vehicleInvoice : vehicleInvoices){
+            cost+=vehicleInvoice.getTotalCost();
         }
-        return totalCost;
+        return cost;
     }
 
     /**
@@ -99,11 +103,11 @@ public class Invoice implements EditableObject, java.io.Serializable {
      * @return sum of taxes of insurances. expressed in cents
      */
     public int calculateTax() {
-        int totalTax = 0;
-        for (Contract contract: contracts) {
-            totalTax += contract.calculateTax();
+        int tax = 0;
+        for(VehicleInvoice vehicleInvoice : vehicleInvoices){
+            tax+=vehicleInvoice.getTotalCost();
         }
-        return totalTax;
+        return tax;
     }
 
     /**
@@ -235,6 +239,23 @@ public class Invoice implements EditableObject, java.io.Serializable {
         this.contracts = contracts;
     }
 
+
+    /**
+     * Gets the vehicleInvoices
+     * @return the vehicle invoices
+     */
+    public Collection<VehicleInvoice> getVehicleInvoices() {
+        return vehicleInvoices;
+    }
+
+    /**
+     * Sets the vehicleInvoices
+     * @param vehicleInvoices the vehicleInvoices
+     */
+    public void setVehicleInvoices(Collection<VehicleInvoice> vehicleInvoices) {
+        this.vehicleInvoices = vehicleInvoices;
+    }
+
     /**
      * Adds a new contract
      * @param contract the contract
@@ -282,6 +303,7 @@ public class Invoice implements EditableObject, java.io.Serializable {
         invoice.setPayer(payer);
         invoice.setBeneficiary(beneficiary);
         invoice.setContracts(contracts);
+        invoice.setVehicleInvoices(new ArrayList<>(vehicleInvoices));
         return invoice;
     }
 }

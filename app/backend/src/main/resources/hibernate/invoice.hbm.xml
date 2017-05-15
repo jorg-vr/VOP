@@ -23,11 +23,32 @@
             <key column="invoice_id" not-null="false"/>
             <many-to-many column="contract_id" class="model.insurance.Contract"/>
         </bag>
+        <bag name="vehicleInvoices" access="field" table="vehicle_invoices" lazy="false"
+             cascade="all">
+            <key column="invoice_id" />
+            <one-to-many class="model.insurance.VehicleInsurance" />
+        </bag>
         <property name="type">
             <type name="org.hibernate.type.EnumType">
                 <param name="enumClass">model.billing.InvoiceType</param>
             </type>
         </property>
 
+    </class>
+    
+    <class name="model.billing.VehicleInvoice" table="vehicle_invoices">
+        <meta attribute="class-description">
+            This class contains the VehicleInvoice detail.
+        </meta>
+        <id name="uuid" type="uuid-binary" column="id">
+            <generator class="uuid2"/>
+        </id>
+        <many-to-one name="vehicleInsurance" column="insurance_id" class="model.insurance.VehicleInsurance" lazy="false" />
+        <property name="franchise" column="franchise" type="int"/>
+        <property name="insuredValue" column="insured_value" type="int"/>
+        <property name="totalCost" column="total_cost" type="int" />
+        <property name="totalTax" column="total_tax" type="int" />
+        <property name="chassisNumber" column="chassis_number" type="java.lang.String"/>
+        <property name="licensePlate" column="license_plate" type="java.lang.String"/>
     </class>
 </hibernate-mapping>
