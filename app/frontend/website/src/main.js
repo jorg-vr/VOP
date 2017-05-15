@@ -20,9 +20,7 @@ Validator.extend('check_vin', check_vin)
 Validator.addLocale(nl)
 
 //Validation support
-Vue.use(VeeValidate, {
-    locale: 'nl'
-});
+Vue.use(VeeValidate);
 //Routing support
 Vue.use(VueRouter);
 //Backend support
@@ -37,15 +35,16 @@ else {
     Vue.config.env = environments['development']
 }
 
-Vue.config.lang = 'nl';
 Vue.http.options.root = Vue.config.env.API_KEY
 Vue.http.headers.common['Accept'] = 'application/json'
 
 Object.keys(locales).forEach(function (lang) {
     Vue.locale(lang, locales[lang])
 })
-window.document.base = Vue.config.env.BASE
 
+window.document.base = Vue.config.env.BASE
+let locale = localStorage.getItem('languageCode')
+store.commit('setLanguage', {language: locale ? locale : 'nl'})
 const router = new VueRouter({
     mode: 'history',
     base: Vue.config.env.BASE,

@@ -46,8 +46,8 @@ export default
             role: 'role',
         },
         client: {
-            client: 'client',
-            clients: 'clients',
+            client: 'company',
+            clients: 'companies',
             type: 'type',
             company: 'company',
             name: 'name',
@@ -304,8 +304,8 @@ export default
             role: 'rol',
         },
         client: {
-            client: 'klant',
-            clients: 'klanten',
+            client: 'bedrijf',
+            clients: 'bedrijven',
             type: 'type',
             company: 'bedrijf',
             name: 'naam',
