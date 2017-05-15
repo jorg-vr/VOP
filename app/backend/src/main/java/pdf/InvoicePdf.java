@@ -82,20 +82,20 @@ public class InvoicePdf extends Pdf {
 
     }
 
-    private static Font smallBold = new Font(Font.FontFamily.TIMES_ROMAN, 30,
+    private static Font largeBold = new Font(Font.FontFamily.TIMES_ROMAN, 20,
             Font.BOLD);
 
     private void generateVehicleInvoices() throws DocumentException {
         Document document = getDocument();
         document.newPage();
-        Paragraph paragraph = new Paragraph("Voertuigverzekeringen", smallBold);
-        paragraph.setAlignment(Element.ALIGN_CENTER);
+
+        Paragraph paragraph = new Paragraph("Specificatie verzekerde voertuigen", largeBold);
         document.add(paragraph);
 
         document.add(Chunk.NEWLINE);
 
         PdfPTable table = new PdfPTable(5);
-        table.setTotalWidth(PageSize.A4.getWidth() - 5);
+        table.setTotalWidth(PageSize.A4.getWidth() - 20);
         table.setLockedWidth(true);
 
         String[] titles = {"Kenteken", "Waarborg", "Netto premie", "Taksen en kosten", "Totale premie"};
