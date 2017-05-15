@@ -26,10 +26,6 @@ public class Invoice implements EditableObject, java.io.Serializable {
      */
     private Company payer;
 
-    /**
-     * company that the amount has to be paid to (should normally be Solvas but adding this just in case)
-     */
-    private Company beneficiary;
 
     /**
      * Type of Invoice. Can be either a billing (monthly payments),
@@ -70,15 +66,13 @@ public class Invoice implements EditableObject, java.io.Serializable {
     /**
      * Constructor
      * @param payer the payer
-     * @param beneficiary the beneficiary
      * @param type the type of invoice
      * @param paid paid (probably false)
      * @param startDate the start date
      * @param endDate the end date
      */
-    public Invoice(Company payer, Company beneficiary, InvoiceType type, boolean paid, LocalDateTime startDate, LocalDateTime endDate) {
+    public Invoice(Company payer, InvoiceType type, boolean paid, LocalDateTime startDate, LocalDateTime endDate) {
         this.payer = payer;
-        this.beneficiary = beneficiary;
         this.type = type;
         this.paid = paid;
         this.startDate = startDate;
@@ -141,22 +135,6 @@ public class Invoice implements EditableObject, java.io.Serializable {
      */
     public void setPayer(Company payer) {
         this.payer = payer;
-    }
-
-    /**
-     * Gets the Beneficiary
-     * @return the beneficiary
-     */
-    public Company getBeneficiary() {
-        return beneficiary;
-    }
-
-    /**
-     * Sets the beneficiary
-     * @param beneficiary the beneficiary
-     */
-    public void setBeneficiary(Company beneficiary) {
-        this.beneficiary = beneficiary;
     }
 
     /**
@@ -301,7 +279,6 @@ public class Invoice implements EditableObject, java.io.Serializable {
         invoice.setStartDate(startDate);
         invoice.setEndDate(endDate);
         invoice.setPayer(payer);
-        invoice.setBeneficiary(beneficiary);
         invoice.setContracts(contracts);
         invoice.setVehicleInvoices(new ArrayList<>(vehicleInvoices));
         return invoice;

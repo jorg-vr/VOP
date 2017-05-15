@@ -142,7 +142,7 @@ public class RealDataDatabaseFiller {
 
             //Create admin Account
             Address address = createAddress("Kerkstraat", "1", "Zomergem", "9930", "België");
-            Company company = createCompany(null, "093725663", "Solvas", address);
+            Company company = createCompany(CompanyType.SOLVAS, "093725663", "Solvas", address);
 
             User user = createUser("Patrick", "Oostvogels", "patrick.oostvogels@solvas.be", "1h8xE660mn");
             Function adminFunction = createFunction(company, user, LocalDateTime.now().minusMonths(8), LocalDateTime.now().plusMonths(8), "Admin",

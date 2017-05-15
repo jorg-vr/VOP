@@ -30,11 +30,10 @@ public class InvoiceController extends AbstractController<Invoice> {
     public void endStatement(Customer customer){
         Collection<Invoice> invoices = new ArrayList<>();
         int numberOfInvoices = customer.getPaymentPeriod().getTime()/customer.getFacturationPeriod().getTime();
-        Company solvas = null;
+
 
         for(int i = 0; i<numberOfInvoices;i+=customer.getPaymentPeriod().getTime()){
             Invoice invoice = new Invoice();
-            invoice.setBeneficiary(null);
             invoices.add(invoice);
         }
     }
@@ -57,7 +56,6 @@ public class InvoiceController extends AbstractController<Invoice> {
 
     @Override
     public boolean isOwner(Invoice invoice, Function function) {
-        return invoice.getPayer().equals(function.getCompany()) ||
-                invoice.getBeneficiary().equals(function.getCompany());
+        return invoice.getPayer().equals(function.getCompany());
     }
 }
