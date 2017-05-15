@@ -48,6 +48,7 @@ public class RESTVehicleInsuranceControllerTest {
     private MockMvc mvc = MockMvcBuilders.standaloneSetup(new RESTVehicleInsuranceController())
             .addPlaceholderValue("path.contracts", "contracts")
             .addPlaceholderValue("path.vehicle_insurances", "insurances")
+            .addPlaceholderValue("path.green_card", "green-card")
             .setControllerAdvice(new MyExceptionHandler())
             .build();
 

@@ -6,13 +6,11 @@
  * ====================
  * resource:
  * resources:
- * filteredResources:
  * ====================
  * GETTERS:
  * ====================
  * resource: Returns this resource
  * resources: Returns a list of this resource
- * filteredResources: Returns a filtered list of this resource
  * getResourcesByAll(value): Returns a filtered list of this resource, filtered with the given value
  * getResourcesByAllAdvanced(object): Returns a filtered list of this resource, filtered with the given object
  * ====================
@@ -21,7 +19,6 @@
  * setResource(resource):  Sets the resource as the given resource
  * setResources(resources) : Sets the list of resources as the given resources
  * clearResources(): Clears the list of resources and the filtered list of resources
- * setFilteredResources(resources): Sets the filtered list of resources as the given resources
  * removeResource(resource): Removes the given resource from the list of resources
  * ====================
  * ACTIONS:
