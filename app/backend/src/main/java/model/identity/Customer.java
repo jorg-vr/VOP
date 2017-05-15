@@ -184,6 +184,22 @@ public class Customer extends Company implements java.io.Serializable, Commissio
     }
 
     /**
+     * Gets the CurrentStatement
+     * @return The CurrentStatement
+     */
+    public Invoice getCurrentStatement() {
+        return currentStatement;
+    }
+
+    /**
+     * Sets the CurrentStatement
+     * @param currentStatement the CurrentStatement
+     */
+    public void setCurrentStatement(Invoice currentStatement) {
+        this.currentStatement = currentStatement;
+    }
+
+    /**
      * Removes a specific
      * @param suretyType the surety type of the commissions which has to be removed
      */
