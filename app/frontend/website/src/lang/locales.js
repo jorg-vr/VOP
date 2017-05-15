@@ -458,8 +458,8 @@ export default
             vehicle_insurances: 'voertuigverzekeringen',
             cost: 'kost',
             tax: 'tax',
-            showableStartDate: 'start datum',
-            showableEndDate: 'end datum',
+            showableStartDate: 'startdatum',
+            showableEndDate: 'einddatum',
             insuredValue: 'verzekerd bedrag'
         },
         condition:{
