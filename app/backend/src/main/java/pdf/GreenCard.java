@@ -147,7 +147,6 @@ public class GreenCard {
      * @throws IOException could not write pdf to file
      */
     public void writeToFile(String path) throws IOException {
-
         FileOutputStream fos = new FileOutputStream(path);
         fos.write(baos.toByteArray());
         fos.close();

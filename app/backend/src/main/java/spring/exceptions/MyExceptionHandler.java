@@ -1,7 +1,9 @@
 package spring.exceptions;
 
+import com.opencsv.exceptions.CsvException;
 import controller.exceptions.InvalidTokenException;
 import controller.exceptions.UnAuthorizedException;
+import csv.InvalidCSVHeaderException;
 import dao.exceptions.ConstraintViolationException;
 import dao.exceptions.DataAccessException;
 import dao.exceptions.ObjectNotFoundException;
@@ -59,6 +61,17 @@ public class MyExceptionHandler {
     protected ResponseEntity<Object> handlePdfException(PdfException ex) {
         return generateErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
     }
+
+    @ExceptionHandler(InvalidCSVHeaderException.class)
+    protected ResponseEntity<Object> handleInvalidCSVHeaderException(InvalidCSVHeaderException ex) {
+        return generateErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+
+    @ExceptionHandler(CsvException.class)
+    protected ResponseEntity<Object> handleCsvException(CsvException ex) {
+        return generateErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+
 
     @ExceptionHandler(ConstraintViolationException.class)
     protected ResponseEntity<Object> handleServerErrorException(ConstraintViolationException ex) {

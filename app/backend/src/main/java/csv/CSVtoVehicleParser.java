@@ -52,11 +52,11 @@ public class CSVtoVehicleParser {
                 manager.getVehicleDAO().validateVehicles(vehicles);
                 return vehicles;
             }
-        } catch(ConstraintViolationException e){
+        } catch(ConstraintViolationException | InvalidCSVHeaderException e){
             throw e;
         }catch (Exception e) {
             e.printStackTrace();
-            throw new CsvException();
+            throw new CsvException(e.getMessage());
         }
     }
 }

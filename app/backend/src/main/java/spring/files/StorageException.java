@@ -1,4 +1,4 @@
-package spring.files.storage;
+package spring.files;
 
 public class StorageException extends RuntimeException {
 
