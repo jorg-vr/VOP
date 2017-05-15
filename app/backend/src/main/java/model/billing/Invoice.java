@@ -91,8 +91,11 @@ public class Invoice implements EditableObject, java.io.Serializable {
      * @return sum of costs of insurances. expressed in cents
      */
     public int calculateCost() {
-        //TODO
-        return 0;
+        int cost = 0;
+        for(VehicleInvoice vehicleInvoice : vehicleInvoices){
+            cost+=vehicleInvoice.getTotalCost();
+        }
+        return cost;
     }
 
     /**
@@ -100,8 +103,11 @@ public class Invoice implements EditableObject, java.io.Serializable {
      * @return sum of taxes of insurances. expressed in cents
      */
     public int calculateTax() {
-        //TODO
-        return 0;
+        int tax = 0;
+        for(VehicleInvoice vehicleInvoice : vehicleInvoices){
+            tax+=vehicleInvoice.getTotalCost();
+        }
+        return tax;
     }
 
     /**
