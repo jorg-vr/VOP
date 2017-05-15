@@ -1,6 +1,6 @@
 <template>
     <abstract-form :actions="actions" :object="commissions" :back="back" :resource="resource" :ids="ids">
-        <commission-form-input :object="commissions"></commission-form-input>
+        <commission-form-input :commissions="commissions" v-if="show"></commission-form-input>
     </abstract-form>
 
 </template>
@@ -10,21 +10,31 @@
     import commissionFormInput from '../commission/commissionFormInput.vue'
     import { mapGetters, mapActions, mapMutations } from 'vuex'
     import abstractForm from '../../assets/form/AbstractFormPart.vue'
+    import suretyTypes from '../../constants/suretyTypes'
 
     export default {
         data(){
             return {
                 actions: actions.UPDATE,
                 resource: resources.COMMISSION,
-                ids: {'resource':this.loc,'resourceId':this.id}
+                ids: {'resource':this.loc,'resourceId':this.id},
+                show:false
             }
         },
         created(){
-            let com=[];
-
-            this.setCommissions()
             if(this.id){
-                this.fetchCommissions({ids: this.ids});
+                this.fetchCommissions({ids: this.ids}).then(()=>{
+                    console.log(this.commissions);
+                    if(this.commissions==false){
+                        for(let i=0;i<suretyTypes.length;i++){
+                            this.commissions[i]={
+                                suretyType: suretyTypes[i].name,
+                                commission: 0
+                            }
+                        }
+                    }
+                    this.show=true;
+                })
             }
         },
         components: {
