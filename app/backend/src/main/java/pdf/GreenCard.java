@@ -3,28 +3,23 @@ package pdf;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
 import model.fleet.Vehicle;
 import model.identity.Address;
 import model.identity.Customer;
 import model.identity.InsuranceCompany;
 import model.insurance.VehicleInsurance;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.time.LocalDateTime;
 
 /**
  * This class is a representation of a green card pdf
  * @author Billie Devolder
  */
-public class GreenCard {
+public class GreenCard extends Pdf {
 
     private VehicleInsurance insurance;
 
-    private Document document;
-    private ByteArrayOutputStream baos;
+
 
     /**
      *
@@ -32,17 +27,11 @@ public class GreenCard {
      * @throws PdfException pdf could not be created
      */
     public GreenCard(VehicleInsurance insurance) {
-        try {
-            this.insurance = insurance;
-            init();
-            createGreenCard();
-            finish();
-        } catch (DocumentException e) {
-            throw new PdfException();
-        }
+        super();
+        this.insurance = insurance;
     }
 
-    private void createGreenCard() throws DocumentException {
+    protected void generatePdf() throws DocumentException {
         PdfPTable table = new PdfPTable(12);
         table.setTotalWidth(PageSize.A4.getWidth() - 5);
         table.setLockedWidth(true);
@@ -100,7 +89,7 @@ public class GreenCard {
                 + "\n" + address.getPostalCode() + " " + address.getTown();
         table.addCell(new GreenCardCell("Naam en andres van verzekeringsnemer (of houder van het motorrijtuig)", body, 12, 4));
 
-        document.add(table);
+        getDocument().add(table);
     }
 
     /**
@@ -121,34 +110,5 @@ public class GreenCard {
         table.addCell(new GreenCardCell("Dag", day + "", 1, 1));
         table.addCell(new GreenCardCell("Maand", month + "", 1, 1));
         table.addCell(new GreenCardCell("Jaar", year + "" + "", 1, 1));
-    }
-
-    private void init() throws DocumentException {
-        document = new Document();
-        baos = new ByteArrayOutputStream();
-        PdfWriter.getInstance(document, baos);
-        document.open();
-    }
-
-    private void finish() {
-        document.close();
-    }
-
-    /**
-     * @return the pdf document as a byte array
-     */
-    public byte[] getAsByteArray() {
-        return baos.toByteArray();
-    }
-
-    /**
-     * Write the green card pdf to a file
-     * @param path path of the file where the green card should be written to
-     * @throws IOException could not write pdf to file
-     */
-    public void writeToFile(String path) throws IOException {
-        FileOutputStream fos = new FileOutputStream(path);
-        fos.write(baos.toByteArray());
-        fos.close();
     }
 }
