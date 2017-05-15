@@ -4,7 +4,6 @@ import dao.database.ProductionProvider;
 import dao.exceptions.DataAccessException;
 import dao.exceptions.ObjectNotFoundException;
 import dao.interfaces.DAOManager;
-import model.account.Function;
 import model.fleet.Fleet;
 import model.fleet.Vehicle;
 import model.fleet.VehicleType;
@@ -25,24 +24,19 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import spring.controller.AuthUtil;
 import spring.controller.TestUtil;
-import spring.exceptions.MyExceptionHandler;
-import spring.model.RESTFunction;
 import spring.model.insurance.RESTVehicleInsurance;
 import util.UUIDUtil;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.UUID;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
-import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 /**
  * Created by tjupo on 14/05/2017.
@@ -53,6 +47,7 @@ public class RESTVehicleInsuranceControllerTest {
     private MockMvc mvc = MockMvcBuilders.standaloneSetup(new RESTVehicleInsuranceController())
             .addPlaceholderValue("path.contracts", "contracts")
             .addPlaceholderValue("path.vehicle_insurances", "insurances")
+            .addPlaceholderValue("path.green_card", "green-card")
             //.setControllerAdvice(new MyExceptionHandler())
             .build();
 
