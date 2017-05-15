@@ -28,7 +28,7 @@ import static model.insurance.SuretyType.*;
  */
 public class RealDataDatabaseFiller {
     private static final String VEHICLETYPE_1 = "Personenwagen";
-    private static final String VEHICLETYPE_2 = "Vrachauto";
+    private static final String VEHICLETYPE_2 = "Vrachtauto";
     private static final String VEHICLETYPE_3 = "Vrachtauto (+12)";
     private static final String VEHICLETYPE_4 = "Lichte vrachtwagen";
 
@@ -45,41 +45,87 @@ public class RealDataDatabaseFiller {
     }
 
     private void initVehicleTypes(DAOProvider provider) {
-        Map<SuretyType, Double> taxes = new HashMap<>();
-        taxes.put(CIVIL_LIABILITY, 0.2710);
-        taxes.put(OMNIUM_FULL, 0.2675);
-        taxes.put(OMNIUM_PARTIAL, 0.2675);
-        taxes.put(LEGAL_AID, 0.1675);
-        taxes.put(TRAVEL_AID, 0.1675);
-        taxes.put(SAFETY, 0.1675);
-        Map<SuretyType, Double> commissions = new HashMap<>();
-        commissions.put(CIVIL_LIABILITY, 0.170);
-        commissions.put(OMNIUM_FULL, 0.190);
-        commissions.put(OMNIUM_PARTIAL, 0.190);
-        commissions.put(LEGAL_AID, 0.250);
-        commissions.put(TRAVEL_AID, 0.250);
-        commissions.put(SAFETY, 0.190);
+
         try (DAOManager manager = provider.getDaoManager()) {
             VehicleTypeDAO dao = manager.getVehicleTypeDAO();
+            Map<SuretyType, Double> taxes1 = new HashMap<>();
+            taxes1.put(CIVIL_LIABILITY, 0.2710);
+            taxes1.put(OMNIUM_FULL, 0.2675);
+            taxes1.put(OMNIUM_PARTIAL, 0.2675);
+            taxes1.put(LEGAL_AID, 0.1675);
+            taxes1.put(TRAVEL_AID, 0.1675);
+            taxes1.put(SAFETY, 0.1675);
+            Map<SuretyType, Double> commissions1 = new HashMap<>();
+            commissions1.put(CIVIL_LIABILITY, 0.170);
+            commissions1.put(OMNIUM_FULL, 0.190);
+            commissions1.put(OMNIUM_PARTIAL, 0.190);
+            commissions1.put(LEGAL_AID, 0.250);
+            commissions1.put(TRAVEL_AID, 0.250);
+            commissions1.put(SAFETY, 0.190);
             VehicleType vehicleType = new VehicleType();
             vehicleType.setType(VEHICLETYPE_1);
-            vehicleType.setCommissions(commissions);
-            vehicleType.setTaxes(taxes);
+            vehicleType.setCommissions(commissions1);
+            vehicleType.setTaxes(taxes1);
             dao.create(vehicleType);
+
+            Map<SuretyType, Double> taxes2 = new HashMap<>();
+            taxes2.put(CIVIL_LIABILITY, 0.1425);
+            taxes2.put(OMNIUM_FULL, 0.139);
+            taxes2.put(OMNIUM_PARTIAL, 0.139);
+            taxes2.put(LEGAL_AID, 0.1675);
+            taxes2.put(TRAVEL_AID, 0.1675);
+            taxes2.put(SAFETY, 0.1675);
+            Map<SuretyType, Double> commissions2 = new HashMap<>();
+            commissions2.put(CIVIL_LIABILITY, 0.170);
+            commissions2.put(OMNIUM_FULL, 0.190);
+            commissions2.put(OMNIUM_PARTIAL, 0.190);
+            commissions2.put(LEGAL_AID, 0.250);
+            commissions2.put(TRAVEL_AID, 0.250);
+            commissions2.put(SAFETY, 0.190);
             vehicleType = new VehicleType();
             vehicleType.setType(VEHICLETYPE_2);
-            vehicleType.setCommissions(commissions);
-            vehicleType.setTaxes(taxes);
+            vehicleType.setCommissions(commissions2);
+            vehicleType.setTaxes(taxes2);
             dao.create(vehicleType);
+
+            Map<SuretyType, Double> taxes3 = new HashMap<>();
+            taxes3.put(CIVIL_LIABILITY, 0.1285);
+            taxes3.put(OMNIUM_FULL, 0.1285);
+            taxes3.put(OMNIUM_PARTIAL, 0.1285);
+            taxes3.put(LEGAL_AID, 0.1675);
+            taxes3.put(TRAVEL_AID, 0.1675);
+            taxes3.put(SAFETY, 0.1675);
+            Map<SuretyType, Double> commissions3 = new HashMap<>();
+            commissions3.put(CIVIL_LIABILITY, 0.170);
+            commissions3.put(OMNIUM_FULL, 0.190);
+            commissions3.put(OMNIUM_PARTIAL, 0.190);
+            commissions3.put(LEGAL_AID, 0.250);
+            commissions3.put(TRAVEL_AID, 0.250);
+            commissions3.put(SAFETY, 0.190);
             vehicleType = new VehicleType();
             vehicleType.setType(VEHICLETYPE_3);
-            vehicleType.setCommissions(commissions);
-            vehicleType.setTaxes(taxes);
+            vehicleType.setCommissions(commissions3);
+            vehicleType.setTaxes(taxes3);
             dao.create(vehicleType);
+
+            Map<SuretyType, Double> taxes4 = new HashMap<>();
+            taxes4.put(CIVIL_LIABILITY, 0.221);
+            taxes4.put(OMNIUM_FULL, 0.2175);
+            taxes4.put(OMNIUM_PARTIAL, 0.2175);
+            taxes4.put(LEGAL_AID, 0.1675);
+            taxes4.put(TRAVEL_AID, 0.1675);
+            taxes4.put(SAFETY, 0.1675);
+            Map<SuretyType, Double> commissions4 = new HashMap<>();
+            commissions4.put(CIVIL_LIABILITY, 0.170);
+            commissions4.put(OMNIUM_FULL, 0.190);
+            commissions4.put(OMNIUM_PARTIAL, 0.190);
+            commissions4.put(LEGAL_AID, 0.250);
+            commissions4.put(TRAVEL_AID, 0.250);
+            commissions4.put(SAFETY, 0.190);
             vehicleType = new VehicleType();
             vehicleType.setType(VEHICLETYPE_4);
-            vehicleType.setCommissions(commissions);
-            vehicleType.setTaxes(taxes);
+            vehicleType.setCommissions(commissions4);
+            vehicleType.setTaxes(taxes4);
             dao.create(vehicleType);
         } catch (Exception e) {
             e.printStackTrace();
@@ -96,7 +142,7 @@ public class RealDataDatabaseFiller {
 
             //Create admin Account
             Address address = createAddress("Kerkstraat", "1", "Zomergem", "9930", "België");
-            Company company = createCompany(CompanyType.CUSTOMER, "093725663", "Solvas", address);
+            Company company = createCompany(null, "093725663", "Solvas", address);
 
             User user = createUser("Patrick", "Oostvogels", "patrick.oostvogels@solvas.be", "1h8xE660mn");
             Function adminFunction = createFunction(company, user, LocalDateTime.now().minusMonths(8), LocalDateTime.now().plusMonths(8), "Admin",
@@ -569,7 +615,7 @@ public class RealDataDatabaseFiller {
         Role role = new Role();
         role.setName("Productiebeheerder");
         for (Resource resource : Resource.values()) {
-            if (resource.equals(Resource.USER) || resource.equals(Resource.VEHICLETYPE)) {
+            if (!resource.equals(Resource.USER) && !resource.equals(Resource.VEHICLETYPE)) {
                 role.setAccess(resource, Action.CREATE_ALL);
                 role.setAccess(resource, Action.READ_ALL);
                 role.setAccess(resource, Action.REMOVE_ALL);
@@ -578,7 +624,6 @@ public class RealDataDatabaseFiller {
         }
         role.setAccess(Resource.VEHICLETYPE, Action.READ_ALL);
         role.setAccess(Resource.USER, Action.READ_MINE);
-        role.setAccess(Resource.ROLE, Action.READ_MINE);
         return role;
     }
 

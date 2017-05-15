@@ -49,9 +49,9 @@
                 <!--<element name="regexp">^.........*$</element>-->
             <!--</constraint>-->
         <!--</field>-->
-        <field name="companyType">
-            <constraint annotation="javax.validation.constraints.NotNull"/>
-        </field>
+        <!--<field name="companyType">-->
+            <!--<constraint annotation="javax.validation.constraints.NotNull"/>-->
+        <!--</field>-->
     </bean>
     
     <bean class="model.identity.Identity">
