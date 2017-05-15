@@ -1,6 +1,7 @@
 package model.identity;
 
 import model.CommissionContainer;
+import model.billing.Invoice;
 import model.fleet.Fleet;
 import model.history.EditableObject;
 import model.history.LogResource;
@@ -30,6 +31,13 @@ public class Customer extends Company implements java.io.Serializable, Commissio
      * so commissions can be null in the object
      */
     private Map<SuretyType, Double> commissions;
+
+
+    /**
+     * Current statement
+     */
+    private Invoice currentStatement;
+
 
     /**
      * Default Constructor
