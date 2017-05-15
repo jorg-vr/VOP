@@ -16,17 +16,18 @@ public abstract class Pdf {
     private Document document;
     private ByteArrayOutputStream baos;
 
-    public Pdf() {
+
+    protected void generatePdf() throws PdfException {
         try {
             init();
-            generatePdf();
+            generateDocument();
             finish();
         } catch (DocumentException e) {
             throw new PdfException();
         }
     }
 
-    protected abstract void generatePdf() throws DocumentException;
+    protected abstract void generateDocument() throws DocumentException;
 
     private void init() throws DocumentException {
         document = new Document();
@@ -48,6 +49,7 @@ public abstract class Pdf {
 
     /**
      * Write the green card pdf to a file
+     *
      * @param path path of the file where the green card should be written to
      * @throws IOException could not write pdf to file
      */

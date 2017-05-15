@@ -3,9 +3,20 @@ package pdf;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
+import model.billing.Invoice;
+import model.billing.VehicleInvoice;
+import model.identity.Address;
+import model.identity.Company;
+import model.identity.Periodicity;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import static util.Formatter.euroFormat;
 
 /**
  * Created by Billie Devolder on 15/05/2017.
@@ -15,12 +26,18 @@ public class InvoicePdf extends Pdf {
     private static Font bold = new Font(Font.FontFamily.TIMES_ROMAN, 12,
             Font.BOLD);
 
-    public InvoicePdf() {
-        super();
+    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+
+    private Invoice invoice;
+
+    public InvoicePdf(Invoice invoice) throws PdfException {
+        this.invoice = invoice;
+        generatePdf();
     }
 
     @Override
-    protected void generatePdf() throws DocumentException {
+    protected void generateDocument() throws DocumentException {
         generateFirstPage();
         generateVehicleInvoices();
     }
@@ -38,8 +55,13 @@ public class InvoicePdf extends Pdf {
             throw new DocumentException();
         }
 
-        Paragraph paragraph = new Paragraph("Aan\na\nb");
-        paragraph.setAlignment(Element.ALIGN_RIGHT);
+        Company payer = invoice.getPayer();
+        Address address = payer.getAddress();
+        Paragraph paragraph = new Paragraph("Aan\n"
+                + payer.getName() + "\n"
+                + address.getStreet() + " " + address.getStreetNumber() + "\n"
+                + address.getPostalCode() + " " + address.getTown());
+        paragraph.setIndentationLeft(400f);
         document.add(paragraph);
 
         PdfPTable table = new PdfPTable(3);
@@ -68,13 +90,20 @@ public class InvoicePdf extends Pdf {
         table.addCell(new InvoiceCell("Maatschappij", "", 3, 1));
         table.addCell(new InvoiceCell("Polisnummer", "", 3, 1));
 
-        table.addCell(new InvoiceCell("Van", "", 2, 1));
-        table.addCell(new InvoiceCell("Tot", "", 2, 1));
-        table.addCell(new InvoiceCell("Periodiciteit", "", 2, 1));
+        LocalDateTime startDate = invoice.getStartDate();
+        LocalDateTime endDate = invoice.getEndDate();
+        table.addCell(new InvoiceCell("Van", startDate.format(formatter), 2, 1));
+        table.addCell(new InvoiceCell("Tot", endDate.format(formatter), 2, 1));
 
-        table.addCell(new InvoiceCell("Netto premie", "", 2, 1));
-        table.addCell(new InvoiceCell("Taksen en kosten", "", 2, 1));
-        table.addCell(new InvoiceCell("Totale premie", "", 2, 1));
+        Periodicity periodicity = payer.getPaymentPeriod();
+        table.addCell(new InvoiceCell("Periodiciteit", periodicity.getDutchTranslation(), 2, 1));
+
+        int cost = invoice.calculateCost();
+        int tax = invoice.calculateTax();
+        int total = cost + tax;
+        table.addCell(new InvoiceCell("Netto premie", euroFormat(cost), 2, 1));
+        table.addCell(new InvoiceCell("Taksen en kosten", euroFormat(tax), 2, 1));
+        table.addCell(new InvoiceCell("Totale premie", euroFormat(total), 2, 1));
 
         table.addCell(new InvoiceCell("Verzekerd risico en waarborgen", "", 12, 1));
 
@@ -99,16 +128,43 @@ public class InvoicePdf extends Pdf {
         table.setLockedWidth(true);
 
         String[] titles = {"Kenteken", "Waarborg", "Netto premie", "Taksen en kosten", "Totale premie"};
-        for (String title: titles) {
+        for (String title : titles) {
             table.addCell(new PdfPCell(new Paragraph(title)));
         }
 
-        for (int i = 0; i < 10; i++) {
-            table.addCell(new PdfPCell(new Paragraph("ABC-123")));
-            table.addCell(new PdfPCell(new Paragraph("Omnium")));
-            table.addCell(new PdfPCell(new Paragraph("10,05")));
-            table.addCell(new PdfPCell(new Paragraph("3,89")));
-            table.addCell(new PdfPCell(new Paragraph("19,90")));
+        ArrayList<VehicleInvoice> invoiceList = new ArrayList<>(invoice.getVehicleInvoices());
+        Collections.sort(invoiceList, (a, b) -> b.getLicensePlate().compareTo(a.getLicensePlate()));
+        VehicleInvoice last = invoiceList.get(invoiceList.size() - 1);
+        String previousLicensePlate = null;
+        for (VehicleInvoice vehicleInvoice : invoiceList) {
+
+            String licencePlate = vehicleInvoice.getLicensePlate();
+            PdfPCell cell;
+            if (licencePlate.equals(previousLicensePlate)) {
+                cell = new PdfPCell();
+                cell.setBorder(Rectangle.RIGHT | Rectangle.LEFT);
+            } else {
+                cell = new PdfPCell(new Paragraph(licencePlate));
+                cell.setBorder(Rectangle.RIGHT | Rectangle.LEFT | Rectangle.TOP);
+            }
+
+            // Draw a bottom border, if this vehicle invoice is the last one
+            if (vehicleInvoice.equals(last)) {
+                cell.setBorder(cell.getBorder() | Rectangle.BOTTOM);
+            }
+
+            table.addCell(cell);
+            previousLicensePlate = licencePlate;
+
+
+            table.addCell(new PdfPCell(new Paragraph(vehicleInvoice.getVehicleInsurance().getSurety().getSuretyType().getDutchTranslation() + "")));
+
+            int cost = vehicleInvoice.getTotalCost();
+            int tax = vehicleInvoice.getTotalTax();
+            int total = cost + tax;
+            table.addCell(new PdfPCell(new Paragraph(euroFormat(cost))));
+            table.addCell(new PdfPCell(new Paragraph(euroFormat(tax))));
+            table.addCell(new PdfPCell(new Paragraph(euroFormat(total))));
         }
         document.add(table);
     }

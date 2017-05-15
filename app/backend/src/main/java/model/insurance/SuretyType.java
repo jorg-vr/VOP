@@ -4,10 +4,20 @@ package model.insurance;
  * Type of surety
  */
 public enum SuretyType {
-    CIVIL_LIABILITY,
-    OMNIUM_FULL,
-    OMNIUM_PARTIAL,
-    LEGAL_AID,
-    TRAVEL_AID,
-    SAFETY
+    CIVIL_LIABILITY("Burgelijke aansprakelijkheid"),
+    OMNIUM_FULL("Omnium"),
+    OMNIUM_PARTIAL("Omnium (half)"),
+    LEGAL_AID("Rechtsbijstand"),
+    TRAVEL_AID("Reisbijstand"),
+    SAFETY("Veiligheid");
+
+    private String dutchTranslation;
+
+    SuretyType(String dutchTranslation) {
+        this.dutchTranslation = dutchTranslation;
+    }
+
+    public String getDutchTranslation() {
+        return dutchTranslation;
+    }
 }

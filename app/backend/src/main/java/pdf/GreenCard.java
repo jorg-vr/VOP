@@ -31,7 +31,7 @@ public class GreenCard extends Pdf {
         this.insurance = insurance;
     }
 
-    protected void generatePdf() throws DocumentException {
+    protected void generateDocument() throws DocumentException {
         PdfPTable table = new PdfPTable(12);
         table.setTotalWidth(PageSize.A4.getWidth() - 5);
         table.setLockedWidth(true);
