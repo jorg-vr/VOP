@@ -1,14 +1,15 @@
 <template>
-    <abstract-form :actions="actions" :object="comissions" :back="back" :resource="resource" :ids="ids">
+    <abstract-form :actions="actions" :object="commissions" :back="back" :resource="resource" :ids="ids">
         <commission-form-input :object="commissions"></commission-form-input>
     </abstract-form>
+
 </template>
 <script>
     import actions from '../../constants/actions'
     import resources from '../../constants/resources'
     import commissionFormInput from '../commission/commissionFormInput.vue'
     import { mapGetters, mapActions, mapMutations } from 'vuex'
-    import abstractForm from '../../assets/form/AbstractForm.vue'
+    import abstractForm from '../../assets/form/AbstractFormPart.vue'
 
     export default {
         data(){
@@ -19,6 +20,9 @@
             }
         },
         created(){
+            let com=[];
+
+            this.setCommissions()
             if(this.id){
                 this.fetchCommissions({ids: this.ids});
             }

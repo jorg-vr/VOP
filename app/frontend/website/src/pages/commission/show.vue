@@ -1,27 +1,32 @@
 <template>
     <div v-if="commissions" >
-        <table class="table-hover table">
-            <thead>
-            <tr>
-                <th >
-                    {{$t('commission.suretyType')| capitalize }}
-                </th>
-                <th >
-                    {{$t('commission.commission')| capitalize }}
-                </th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="commission in commissions" class="list-tr">
-                <td  >
-                    {{$t('suretyTypes.'+commission.suretyType)}}
-                </td>
-                <td  >
-                    {{commission.commission*100}}%
-                </td>
-            </tr>
-            </tbody>
-        </table>
+        <div v-if="commissions.length>0">
+            <h2>
+                {{$t('commission.commissions')}}
+            </h2>
+            <table class="table-hover table">
+                <thead>
+                <tr>
+                    <th >
+                        {{$t('commission.suretyType')| capitalize }}
+                    </th>
+                    <th >
+                        {{$t('commission.commission')| capitalize }}
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="commission in commissions" class="list-tr">
+                    <td  >
+                        {{$t('suretyTypes.'+commission.suretyType)}}
+                    </td>
+                    <td  >
+                        {{commission.commission*100}}%
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </template>
 <script>
@@ -33,7 +38,6 @@
             return {
                 resource: resources.COMMISSION,
                 commission: {}
-
             }
         },
         props:{
