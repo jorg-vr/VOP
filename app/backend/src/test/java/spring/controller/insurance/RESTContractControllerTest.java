@@ -30,7 +30,6 @@ import java.util.UUID;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -46,9 +45,8 @@ public class RESTContractControllerTest {
             //.setControllerAdvice(new MyExceptionHandler())
             .build();
 
-    private static Contract contract;
     private static Customer customer1, customer2;
-    private static InsuranceCompany insuranceCompany;
+    private static InsuranceCompany insuranceCompany1, insuranceCompany2;
     private static String[] authPair;
 
     @BeforeClass
@@ -57,14 +55,16 @@ public class RESTContractControllerTest {
         authPair = AuthUtil.getAdminToken();
         try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()) {
             Address address = new Address("mystreet", "123", "lala", "12345", "land");
-            customer1 = manager.getCustomerDAO().create(new Customer(address, "04789456123", "customerName", "123456789", Periodicity.QUARTERLY, Periodicity.QUARTERLY));
+            customer1 = manager.getCustomerDAO().create(new Customer(address, "04789456123", "customerName1", "123456789", Periodicity.QUARTERLY, Periodicity.QUARTERLY));
             address = new Address("mystreet", "123", "lala", "12345", "land");
-            customer2 = manager.getCustomerDAO().create(new Customer(address, "04789456124", "customerName1", "123456781", Periodicity.QUARTERLY, Periodicity.QUARTERLY));
+            customer2 = manager.getCustomerDAO().create(new Customer(address, "04789456124", "customerName2", "123456781", Periodicity.QUARTERLY, Periodicity.QUARTERLY));
 
             address = new Address("mystreet", "123", "lala", "12345", "land");
-            insuranceCompany = manager.getInsuranceCompanyDao().create(new InsuranceCompany(address, "04789456122", "insuranceCompanyName", "123456780"));
+            insuranceCompany1 = manager.getInsuranceCompanyDao().create(new InsuranceCompany(address, "04789456122", "insuranceCompanyNam1", "123456780"));
+            address = new Address("mystreet", "123", "lala", "12345", "land");
+            insuranceCompany2 = manager.getInsuranceCompanyDao().create(new InsuranceCompany(address, "04789456121", "insuranceCompanyNam2", "123456783"));
 
-            contract = manager.getContractDao().create(new Contract(insuranceCompany, customer1, LocalDateTime.of(2017, 6, 1, 0, 0), LocalDateTime.of(2017, 9, 1, 0, 0)));
+            //contract = manager.getContractDao().create(new Contract(insuranceCompany1, customer1, LocalDateTime.of(2017, 6, 1, 0, 0), LocalDateTime.of(2017, 9, 1, 0, 0)));
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
@@ -74,8 +74,10 @@ public class RESTContractControllerTest {
     @AfterClass
     public static void afterTransaction() throws Exception {
         try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()) {
-            manager.getInsuranceCompanyDao().remove(insuranceCompany.getUuid());
+            manager.getInsuranceCompanyDao().remove(insuranceCompany1.getUuid());
+            manager.getInsuranceCompanyDao().remove(insuranceCompany2.getUuid());
             manager.getCustomerDAO().remove(customer1.getUuid());
+            manager.getCustomerDAO().remove(customer2.getUuid());
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
@@ -87,8 +89,8 @@ public class RESTContractControllerTest {
     public void get() throws Exception {
 
         //Add to database directly with DAO
-        Contract contract1 = create(new Contract(insuranceCompany, customer1, LocalDateTime.of(2017, 6, 1, 0, 0), LocalDateTime.of(2017, 9, 1, 0, 0)));
-        Contract contract2 = create(new Contract(insuranceCompany, customer2, LocalDateTime.of(2017, 6, 1, 0, 0), LocalDateTime.of(2017, 9, 1, 0, 0)));
+        Contract contract1 = create(new Contract(insuranceCompany1, customer1, LocalDateTime.of(2017, 6, 1, 0, 0), LocalDateTime.of(2017, 9, 1, 0, 0)));
+        Contract contract2 = create(new Contract(insuranceCompany1, customer2, LocalDateTime.of(2017, 6, 1, 0, 0), LocalDateTime.of(2017, 9, 1, 0, 0)));
 
         try {
             mvc.perform(MockMvcRequestBuilders.get("/contracts")
@@ -100,20 +102,20 @@ public class RESTContractControllerTest {
                     .andExpect(jsonPath("$.total", greaterThanOrEqualTo(2)));
         } catch (Exception e) {
             remove(contract1.getUuid());
-            remove(contract.getUuid());
+            remove(contract2.getUuid());
             throw e;
         }
 
         //Clean up database for other tests
         remove(contract1.getUuid());
-        remove(contract.getUuid());
+        remove(contract2.getUuid());
     }
 
     @Test
     public void post() throws Exception {
 
-        RESTContract restContract = new RESTContract(new Contract(insuranceCompany, customer1, null, null));
-        //RESTContract restContract = new RESTContract(new Contract(insuranceCompany, customer1, LocalDateTime.of(2017, 6, 1, 0, 0), LocalDateTime.of(2017, 9, 1, 0, 0)));
+        RESTContract restContract = new RESTContract(new Contract(insuranceCompany1, customer1, null, null));
+        //RESTContract restContract = new RESTContract(new Contract(insuranceCompany1, customer1, LocalDateTime.of(2017, 6, 1, 0, 0), LocalDateTime.of(2017, 9, 1, 0, 0)));
 
         //Perform the post request
         ResultActions resultActions = mvc.perform(MockMvcRequestBuilders.post("/contracts")
@@ -128,7 +130,7 @@ public class RESTContractControllerTest {
         try {
             resultActions
                     .andExpect(status().isOk())
-                    .andExpect(jsonPath("$.insuranceCompany", equalTo(UUIDUtil.UUIDToNumberString(insuranceCompany.getUuid()))))
+                    .andExpect(jsonPath("$.insuranceCompany", equalTo(UUIDUtil.UUIDToNumberString(insuranceCompany1.getUuid()))))
                     .andExpect(jsonPath("$.customer", equalTo(UUIDUtil.UUIDToNumberString(customer1.getUuid()))))
                     /*.andExpect(jsonPath("$.startDate[0]", equalTo(restContract.getStartDate().getYear())))
                     .andExpect(jsonPath("$.startDate[1]", equalTo(restContract.getStartDate().getMonthValue())))
@@ -141,7 +143,7 @@ public class RESTContractControllerTest {
                     .andExpect(jsonPath("$.endDate[3]", equalTo(restContract.getEndDate().getHour())))
                     .andExpect(jsonPath("$.endDate[4]", equalTo(restContract.getEndDate().getMinute())))*/
                     .andExpect(jsonPath("$.customerName", equalTo(customer1.getName())))
-                    .andExpect(jsonPath("$.insuranceCompanyName", equalTo(insuranceCompany.getName())))
+                    .andExpect(jsonPath("$.insuranceCompanyName", equalTo(insuranceCompany1.getName())))
                     .andExpect(jsonPath("$.totalCost", equalTo(restContract.getTotalCost())))
                     .andExpect(jsonPath("$.totalTax", equalTo(restContract.getTotalTax())));
         } catch (AssertionError e) {
@@ -153,7 +155,7 @@ public class RESTContractControllerTest {
         try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()) {
             Contract contract = manager.getContractDao().get(restId);
             try {
-                assertEquals("insuranceCompany field not created correctly", insuranceCompany, contract.getCompany());
+                assertEquals("insuranceCompany1 field not created correctly", insuranceCompany1, contract.getCompany());
                 assertEquals("customer field not created correctly", customer1, contract.getCustomer());
                 //assertEquals("startDate field not created correctly", LocalDateTime.of(2017, 6, 1, 0, 0), contract.getStartDate());
                 //assertEquals("endDate field not created correctly", LocalDateTime.of(2017, 9, 1, 0, 0), contract.getEndDate());
@@ -169,7 +171,7 @@ public class RESTContractControllerTest {
     public void deleteId() throws Exception {
 
         //Add to database directly with DAO
-        Contract contract = create(new Contract(insuranceCompany, customer1, LocalDateTime.of(2017, 6, 1, 0, 0), LocalDateTime.of(2017, 9, 1, 0, 0)));
+        Contract contract = create(new Contract(insuranceCompany1, customer1, LocalDateTime.of(2017, 6, 1, 0, 0), LocalDateTime.of(2017, 9, 1, 0, 0)));
 
         //Attempt to remove from the database with delete request
         try {
@@ -197,7 +199,7 @@ public class RESTContractControllerTest {
     public void getId() throws Exception {
 
         //Add to database directly with DAO
-        Contract contract = create(new Contract(insuranceCompany, customer1, LocalDateTime.of(2017, 6, 1, 0, 0), LocalDateTime.of(2017, 9, 1, 0, 0)));
+        Contract contract = create(new Contract(insuranceCompany1, customer1, LocalDateTime.of(2017, 6, 1, 0, 0), LocalDateTime.of(2017, 9, 1, 0, 0)));
 
         //Attempt to retrieve the object with the given id
         try {
@@ -206,7 +208,7 @@ public class RESTContractControllerTest {
                     .header("Function", authPair[1])
             )
                     .andExpect(status().isOk())
-                    .andExpect(jsonPath("$.insuranceCompany", equalTo(UUIDUtil.UUIDToNumberString(insuranceCompany.getUuid()))))
+                    .andExpect(jsonPath("$.insuranceCompany", equalTo(UUIDUtil.UUIDToNumberString(insuranceCompany1.getUuid()))))
                     .andExpect(jsonPath("$.customer", equalTo(UUIDUtil.UUIDToNumberString(customer1.getUuid()))))
                     .andExpect(jsonPath("$.startDate[0]", equalTo(contract.getStartDate().getYear())))
                     .andExpect(jsonPath("$.startDate[1]", equalTo(contract.getStartDate().getMonthValue())))
@@ -219,7 +221,7 @@ public class RESTContractControllerTest {
                     .andExpect(jsonPath("$.endDate[3]", equalTo(contract.getEndDate().getHour())))
                     .andExpect(jsonPath("$.endDate[4]", equalTo(contract.getEndDate().getMinute())))
                     .andExpect(jsonPath("$.customerName", equalTo(customer1.getName())))
-                    .andExpect(jsonPath("$.insuranceCompanyName", equalTo(insuranceCompany.getName())))
+                    .andExpect(jsonPath("$.insuranceCompanyName", equalTo(insuranceCompany1.getName())))
                     .andExpect(jsonPath("$.totalCost", equalTo(contract.calculateCost())))
                     .andExpect(jsonPath("$.totalTax", equalTo(contract.calculateTax())));
         } catch (Exception e) {
@@ -235,8 +237,8 @@ public class RESTContractControllerTest {
     public void putId() throws Exception {
 
         //Add to database directly with DAO
-        Contract contract = create(new Contract(insuranceCompany, customer1, null, null));
-        //Contract contract = create(new Contract(insuranceCompany, customer1, LocalDateTime.of(2017, 6, 1, 0, 0), LocalDateTime.of(2017, 9, 1, 0, 0)));
+        Contract contract = create(new Contract(insuranceCompany1, customer1, null, null));
+        //Contract contract = create(new Contract(insuranceCompany1, customer1, LocalDateTime.of(2017, 6, 1, 0, 0), LocalDateTime.of(2017, 9, 1, 0, 0)));
 
         //Change a field of the object that has to be updated
         contract.setCustomer(customer2);
@@ -250,9 +252,8 @@ public class RESTContractControllerTest {
                     .header("Function", authPair[1])
                     .content(TestUtil.convertObjectToJsonBytes(restContract))
             )
-                    .andDo(print())
                     .andExpect(status().isOk())
-                    .andExpect(jsonPath("$.insuranceCompany", equalTo(UUIDUtil.UUIDToNumberString(insuranceCompany.getUuid()))))
+                    .andExpect(jsonPath("$.insuranceCompany", equalTo(UUIDUtil.UUIDToNumberString(insuranceCompany1.getUuid()))))
                     .andExpect(jsonPath("$.customer", equalTo(UUIDUtil.UUIDToNumberString(customer2.getUuid()))))
                     /*.andExpect(jsonPath("$.startDate[0]", equalTo(contract.getStartDate().getYear())))
                     .andExpect(jsonPath("$.startDate[1]", equalTo(contract.getStartDate().getMonthValue())))
@@ -265,7 +266,7 @@ public class RESTContractControllerTest {
                     .andExpect(jsonPath("$.endDate[3]", equalTo(contract.getEndDate().getHour())))
                     .andExpect(jsonPath("$.endDate[4]", equalTo(contract.getEndDate().getMinute())))*/
                     .andExpect(jsonPath("$.customerName", equalTo(customer2.getName())))
-                    .andExpect(jsonPath("$.insuranceCompanyName", equalTo(insuranceCompany.getName())))
+                    .andExpect(jsonPath("$.insuranceCompanyName", equalTo(insuranceCompany1.getName())))
                     .andExpect(jsonPath("$.totalCost", equalTo(contract.calculateCost())))
                     .andExpect(jsonPath("$.totalTax", equalTo(contract.calculateTax())));
         } catch (Exception e) {
@@ -277,7 +278,7 @@ public class RESTContractControllerTest {
         try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()) {
             contract = manager.getContractDao().get(contract.getUuid());
             try {
-                assertEquals("insuranceCompany field not created correctly", insuranceCompany, contract.getCompany());
+                assertEquals("insuranceCompany1 field not created correctly", insuranceCompany1, contract.getCompany());
                 assertEquals("customer field not created correctly", customer2, contract.getCustomer());
                 //assertEquals("startDate field not created correctly", LocalDateTime.of(2017, 6, 1, 0, 0), contract.getStartDate());
                 //assertEquals("endDate field not created correctly", LocalDateTime.of(2017, 9, 1, 0, 0), contract.getEndDate());
