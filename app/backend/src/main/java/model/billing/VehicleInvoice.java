@@ -40,6 +40,16 @@ public class VehicleInvoice {
      */
     private int insuredValue;
 
+    /**
+     * the VIN-number
+     */
+    private String chassisNumber;
+
+    /**
+     * The license plate
+     */
+    private String licensePlate;
+
 
     /**
      * Default Constructor
@@ -142,5 +152,37 @@ public class VehicleInvoice {
      */
     public void setInsuredValue(int insuredValue) {
         this.insuredValue = insuredValue;
+    }
+
+    /**
+     * Gets VIN-number
+     * @return the VIN-number
+     */
+    public String getChassisNumber() {
+        return chassisNumber;
+    }
+
+    /**
+     * Sets the VIN-number
+     * @param chassisNumber the VIN-number
+     */
+    public void setChassisNumber(String chassisNumber) {
+        this.chassisNumber = chassisNumber;
+    }
+
+    /**
+     * Gets the license plate
+     * @return the license plate
+     */
+    public String getLicensePlate() {
+        return licensePlate;
+    }
+
+    /**
+     * Sets the license plate
+     * @param licensePlate the license plate
+     */
+    public void setLicensePlate(String licensePlate) {
+        this.licensePlate = licensePlate;
     }
 }
