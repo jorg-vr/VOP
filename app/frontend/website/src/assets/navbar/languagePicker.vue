@@ -15,7 +15,7 @@
 
 <script>
     import Vue from 'vue';
-    import { Validator } from 'vee-validate';
+    import {mapMutations} from 'vuex'
 
     export default {
         data() {
@@ -43,10 +43,12 @@
             }
         },
         methods: {
+            ...mapMutations([
+                'setLanguage'
+            ]),
             updateLanguage(name){
-                let lang = this.languages.filter(lang => lang.name === name)[0]
-                Vue.config.lang = lang.code
-                Validator.setLocale(lang.code)
+                let language = this.languages.filter(lang => lang.name === name)[0]
+                this.setLanguage({language: language.code})
             }
         }
     }

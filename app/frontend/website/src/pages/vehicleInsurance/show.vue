@@ -113,7 +113,7 @@
                 </tr>
 
             </table> 
-
+            <!-- TODO route niet correct -->
             <button-back :route="{name: 'contract', params: {id: contractId}}"></button-back>
         </div>
     </div>

@@ -1,4 +1,5 @@
-
+import Vue from 'vue'
+import { Validator } from 'vee-validate'
 
 export default {
     /**
@@ -8,6 +9,17 @@ export default {
      */
     setLoading(state, {loading}){
         state.loading = loading
+    },
+
+    /**
+     * Set the language of the website
+     * @param state
+     * @param language
+     */
+    setLanguage(state, {language}){
+        Vue.config.lang = language
+        localStorage.setItem('languageCode', language)
+        Validator.setLocale(language)
     },
 
     /**

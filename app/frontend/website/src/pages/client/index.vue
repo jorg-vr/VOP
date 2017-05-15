@@ -6,7 +6,7 @@
     <div class="col-lg-8 col-md-9 col-sm-11">
         <div class="page-header">
             <h1>
-                {{$t("client.client") | capitalize}}
+                {{$t("client.clients") | capitalize}}
                <button-add :resource="resource"></button-add>
             </h1>
         </div>
@@ -40,7 +40,7 @@
         },
         created() {
             this.setLoading({loading: true})
-            this.fetchClientsBy({filters: {type: clientTypes.CUSTOMER.type}}).then(() => {
+            this.fetchClients().then(() => {
                 this.setLoading({loading: false })
             })
         },
@@ -57,7 +57,7 @@
         },
         methods: {
             ...mapActions([
-                'fetchClientsBy',
+                'fetchClients',
             ]),
             ...mapMutations([
                 'setLoading'
