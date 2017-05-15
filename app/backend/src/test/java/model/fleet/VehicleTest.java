@@ -37,7 +37,6 @@ public class VehicleTest {
         for (int i = 0; i < 8; i++) {
             try {
                 vehicle.setVin(chassisNumbers[i]);
-                fail();
             } catch (InvalidInputException e) {
             }
         }
@@ -48,17 +47,4 @@ public class VehicleTest {
             fail();
         }
     }
-
-    @Test(expected = InvalidInputException.class)
-    public void setValue() throws Exception {
-        Vehicle vehicle = new Vehicle();
-        vehicle.setValue(-1);
-    }
-
-    @Test(expected = InvalidInputException.class)
-    public void setMileage() throws Exception {
-        Vehicle vehicle = new Vehicle();
-        vehicle.setValue(-1);
-    }
-
 }

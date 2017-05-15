@@ -4,7 +4,6 @@ import com.opencsv.bean.CsvToBean;
 import dao.database.ProductionProvider;
 import dao.exceptions.DataAccessException;
 import dao.interfaces.DAOManager;
-import dao.interfaces.DAOProvider;
 import dao.interfaces.VehicleTypeDAO;
 import model.fleet.Vehicle;
 import model.fleet.VehicleType;
@@ -19,7 +18,7 @@ import java.util.Collection;
 class VehicleCsvToBean extends CsvToBean<Vehicle> {
     @Override
     protected Object convertValue(String value, PropertyDescriptor prop) throws InstantiationException, IllegalAccessException {
-        if (prop.getName().equals("productionDate")) {
+        if (prop.getName().equals("year")) {
             // return an custom object based on the incoming value
             return LocalDate.of(Integer.parseInt(value), 1, 1);
         }
