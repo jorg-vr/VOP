@@ -1,9 +1,6 @@
 <template>
     <div v-if="commissions" >
-        <div v-if="commissions.length>0">
-            <h2>
-                {{$t('commission.commissions')}}
-            </h2>
+        <div v-if="show&&commissions.length>0">
             <table class="table-hover table">
                 <thead>
                 <tr>
@@ -27,6 +24,7 @@
                 </tbody>
             </table>
         </div>
+        <h4 v-else-if="show"> {{$t('commission.none')| capitalize }} </h4>
     </div>
 </template>
 <script>
@@ -37,7 +35,8 @@
         data(){
             return {
                 resource: resources.COMMISSION,
-                commission: {}
+                commissions: [],
+                show:false
             }
         },
         props:{
@@ -48,12 +47,11 @@
             listComponent
         },
         created() {
-            this.fetchCommissions({ids:{'resource':this.loc,'resourceId':this.id}});
-        },
-        computed: {
-            ...mapGetters([
-                'commissions'
-            ])
+            this.fetchCommissions({ids:{'resource':this.loc,'resourceId':this.id}}).then(commissions=>{
+                this.commissions=commissions;
+                this.commissions.sort((a,b)=>a.suretyType>b.suretyType);
+                this.show=true;
+            });
         },
         methods: {
             ...mapActions([

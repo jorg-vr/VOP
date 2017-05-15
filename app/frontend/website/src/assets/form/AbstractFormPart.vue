@@ -1,5 +1,5 @@
 <template>
-        <form class="form-horizontal col-xs-12 col-sm-11 col-md-9 col-lg-7">
+        <form >
             <div v-if="error" class="row text-center">
                 <ul class="list-group">
                     <li class="list-group-item list-group-item-danger" v-for="errorEle in error.errors">{{errorEle}}</li>
@@ -73,7 +73,9 @@
                 promise.then(() => {
                     let redirectRoute = this.$store.getters.popVisitedRoute;
                     if(redirectRoute===undefined || redirectRoute.name===null){
-                        this.$router.push({name: this.back.name, params: this.back.params})
+                        if(!(this.back!==undefined && this.back.name!==null)){
+                            this.$router.push({name: this.back.name, params: this.back.params})
+                        }
                     }
                     else {
                         this.$router.push(redirectRoute.path)

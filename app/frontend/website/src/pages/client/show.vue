@@ -56,8 +56,8 @@
                     <td>{{getPeriodText(client.paymentPeriod) | capitalize}}</td>
                 </tr>
             </table>
-            <commissions v-if="client.type===clientTypes.CUSTOMER.type" :id="client.id" loc="companies"></commissions>
-            <h2 v-if="client.type===clientTypes.CUSTOMER.type" >{{$t("fleet.fleets") | capitalize }}
+            <commissions  v-if="client.type===clientTypes.CUSTOMER.type" :id="client.id" loc="companies" ></commissions>
+            <h2 class="col-md-12" v-if="client.type===clientTypes.CUSTOMER.type" >{{$t("fleet.fleets") | capitalize }}
                 <button-add :resource="resource" :params="{clientId: client.id}"></button-add>
             </h2>
             <list-component v-if="listObject.values.length>0" :listObject="listObject" :resource="resource">

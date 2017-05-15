@@ -18,13 +18,14 @@
                 actions: actions.UPDATE,
                 resource: resources.COMMISSION,
                 ids: {'resource':this.loc,'resourceId':this.id},
-                show:false
+                show:false,
+                commissions:[]
             }
         },
         created(){
             if(this.id){
-                this.fetchCommissions({ids: this.ids}).then(()=>{
-                    console.log(this.commissions);
+                this.fetchCommissions({ids: this.ids}).then(commissions=>{
+                    this.commissions=commissions;
                     if(this.commissions==false){
                         for(let i=0;i<suretyTypes.length;i++){
                             this.commissions[i]={
@@ -33,6 +34,8 @@
                             }
                         }
                     }
+                    this.commissions.sort((a,b)=>a.suretyType>b.suretyType);
+
                     this.show=true;
                 })
             }
@@ -45,11 +48,6 @@
             back: Object,
             id: String,
             loc:String
-        },
-        computed: {
-            ...mapGetters([
-                'commissions'
-            ])
         },
         methods: {
             ...mapActions([

@@ -10,7 +10,8 @@ Generic component for a form. Every form should be encapsulated in this componen
         <div class="page-header">
             <h1>{{ submitText }}</h1>
         </div>
-        <part :back="back" :actions="actions" :resource="resource" :object="object" :ids="ids" :customSubmit="customSubmit">
+        <part class="form-horizontal col-xs-12 col-sm-11 col-md-9 col-lg-7"
+              :back="back" :actions="actions" :resource="resource" :object="object" :ids="ids" :customSubmit="customSubmit">
             <slot></slot>
         </part>
     </div>
