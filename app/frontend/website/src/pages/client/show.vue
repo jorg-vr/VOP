@@ -56,7 +56,7 @@
                     <td>{{getPeriodText(client.paymentPeriod) | capitalize}}</td>
                 </tr>
             </table>
-            <h2>{{$t("fleet.fleets") | capitalize }}
+            <h2 v-if="client.type===clientTypes.CUSTOMER.type" >{{$t("fleet.fleets") | capitalize }}
                 <button-add :resource="resource" :params="{clientId: client.id}"></button-add>
             </h2>
             <list-component v-if="listObject.values.length>0" :listObject="listObject" :resource="resource">
@@ -82,7 +82,8 @@
             return {
                 resource: resources.FLEET,
                 resource2: resources.CONTRACT,
-                type: ''
+                type: '',
+                clientTypes: clientTypes
             }
         },
         components: {
@@ -92,19 +93,24 @@
             id: String
         },
         created(){
+            this.$store.commit('clearFleets')
+            this.$store.commit('clearContracts')
             this.setLoading({loading: true})
             let clientId = this.id
             this.fetchClient({id: clientId}).then(client => {
                 if(client.type){
                     this.type = clientTypes[client.type].translation()
+                    if(client.type===clientTypes.CUSTOMER.type){
+                        this.fetchFleetsBy({filters: {company: clientId}});
+                        this.fetchContractsBy({filters: {customer: clientId}})
+                    }
+                    if(client.type===clientTypes.INSURANCE_COMPANY.type){
+                        this.fetchContractsBy({filters: {insuranceCompany: clientId}})
+                    }
                 }
-            });
-            let p1=this.fetchFleetsBy({filters: {company: clientId}});
-            let p2=this.fetchContractsBy({filters: {company: clientId}});
-
-            Promise.all([p1, p2]).then(() => {
                 this.setLoading({loading: false })
-            }).catch(() => this.setLoading({loading: false }));
+            });
+
         },
         computed: {
             ...mapGetters([
