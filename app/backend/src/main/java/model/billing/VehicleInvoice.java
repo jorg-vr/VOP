@@ -43,7 +43,7 @@ public class VehicleInvoice {
     /**
      * the VIN-number
      */
-    private String chassisNumber;
+    private String vin;
 
     /**
      * The license plate
@@ -158,16 +158,16 @@ public class VehicleInvoice {
      * Gets VIN-number
      * @return the VIN-number
      */
-    public String getChassisNumber() {
-        return chassisNumber;
+    public String getVin() {
+        return vin;
     }
 
     /**
      * Sets the VIN-number
-     * @param chassisNumber the VIN-number
+     * @param vin the VIN-number
      */
-    public void setChassisNumber(String chassisNumber) {
-        this.chassisNumber = chassisNumber;
+    public void setVin(String vin) {
+        this.vin = vin;
     }
 
     /**
