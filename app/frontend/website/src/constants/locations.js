@@ -17,10 +17,10 @@ export const INSURANCE ='contracts/{contract}/insurances/'
 export const PERMISSIONS = 'permissions/'
 export const INVOICE = "invoices/"
 export const SURETY = 'companies/{company}/sureties/'
-export const SURETYDETAIL = 'sureties/'
 export const COMMISSION = '{resource}/{resourceId}/commissions'
 export const CONTRACT = 'contracts/'
 export const CONDITION= 'special-conditions/'
 export const LOG = '{resource}/{resourceId}/logs/'
+export const FUNCTION = 'users/{userId}/functions/'
 
 //Example location for updated resources: export const SURETY = 'contracts/{contract}/insurances'

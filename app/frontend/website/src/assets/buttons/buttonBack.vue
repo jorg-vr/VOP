@@ -41,3 +41,11 @@ A button usable for navigating to the previous page. This previous page has to b
         }
     }
 </script>
+<style>
+    #back {
+        margin-top: 50px;
+    }
+    form #back {
+        margin-top: 25px;
+    }
+</style>
