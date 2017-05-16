@@ -26,18 +26,16 @@ let fleetResource = resourceModule.initializeModule(locations.FLEET, 'fleet')
 let vehicleResource = resourceModule.initializeModule(locations.VEHICLE, 'vehicle')
 let clientResource = resourceModule.initializeModule(locations.CLIENT, 'client')
 let userResource = resourceModule.initializeModule(locations.USER, 'user')
-let functionResource = resourceModule.initializeModule(locations.USER_FUNCTION, 'userFunction')
+let userFunctionResource = resourceModule.initializeModule(locations.USER_FUNCTION, 'userFunction')
 let roleResource = resourceModule.initializeModule(locations.ROLE, 'role')
 let permissionResource = resourceModule.initializeModule(locations.PERMISSIONS, 'permission')
 let vehicleTypeResource = resourceModule.initializeModule(locations.VEHICLE_TYPE, 'vehicleType')
 let commissionResource = resourceModule.initializeModule(locations.COMMISSION, 'commission')
-let contractResoure = resourceModule.initializeModule(locations.CONTRACT,'contract')
-let invoiceResource = resourceModule.initializeModule(locations.INVOICE, 'invoice')
-let suretyResource = resourceModule.initializeModule(locations.SURETY,'surety','sureties')
-let conditionResource = resourceModule.initializeModule(locations.CONDITION,'condition')
-let insuranceResource = resourceModule.initializeModule(locations.INSURANCE,'insurance')
-
-
+let contractResoure = resourceModule.initializeModule(locations.CONTRACT, 'contract')
+let suretyResource = resourceModule.initializeModule(locations.SURETY,'surety', 'sureties')
+let conditionResource = resourceModule.initializeModule(locations.CONDITION, 'condition')
+let insuranceResource = resourceModule.initializeModule(locations.INSURANCE, 'insurance')
+let functionResource = resourceModule.initializeModule(locations.FUNCTION, 'function')
 
 export default new Vuex.Store({
     modules : {
@@ -45,7 +43,7 @@ export default new Vuex.Store({
         vehicleResource,
         clientResource,
         userResource,
-        functionResource,
+        userFunctionResource,
         roleResource,
         permissionResource,
         vehicleTypeResource,
@@ -54,7 +52,7 @@ export default new Vuex.Store({
         conditionResource,
         insuranceResource,
         commissionResource,
-        // invoiceResource,
+        functionResource,
         //The following modules provide additional functions for the previous resources (or are completely new modules).
         fleet,
         login,

@@ -13,7 +13,9 @@ Generic component for a form. Every form should be encapsulated in this componen
         <form class="form-horizontal col-xs-12 col-sm-11 col-md-9 col-lg-7">
             <div v-if="error" class="row text-center">
                 <ul class="list-group">
-                    <li class="list-group-item list-group-item-danger" v-for="errorEle in error.errors">{{errorEle}}</li>
+                    <li class="list-group-item list-group-item-danger" v-for="errorEle in error.errors">
+                        {{$t('error.' + errorEle.message, {subject: $t('field.' + errorEle.field)}) | capitalize}}
+                    </li>
                 </ul>
             </div>
             <slot></slot>
