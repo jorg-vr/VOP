@@ -27,9 +27,6 @@
                 params: {userId: this.userId}
             }
         },
-        created(){
-            console.log(this.params)
-        },
         components: {
             abstractForm,formInput
         },
