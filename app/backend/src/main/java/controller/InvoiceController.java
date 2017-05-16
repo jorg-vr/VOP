@@ -35,7 +35,6 @@ public class InvoiceController extends AbstractController<Invoice> {
 
     public void endStatement(Customer customer) throws DataAccessException, ConstraintViolationException {
 
-
         for(int i = 0; i<customer.getPaymentPeriod().getTime();i+=customer.getFacturationPeriod().getTime()){
             Invoice invoice = new Invoice();
 
@@ -57,7 +56,7 @@ public class InvoiceController extends AbstractController<Invoice> {
 
         statement.setPayer(customer);
         customer.setCurrentStatement(statement);
-        
+
         statement.setContracts(customer.getContracts());
         statement.setStartDate(LocalDateTime.now());
         statement.setEndDate(LocalDateTime.now().plusMonths(customer.getPaymentPeriod().getTime()).minusDays(1));
