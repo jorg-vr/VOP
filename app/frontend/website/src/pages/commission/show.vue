@@ -47,6 +47,8 @@
             listComponent
         },
         created() {
+            console.log(this.loc)
+            console.log(this.id)
             this.fetchCommissions({ids:{'resource':this.loc,'resourceId':this.id}}).then(commissions=>{
                 this.commissions=commissions;
                 this.commissions.sort((a,b)=>a.suretyType>b.suretyType);
