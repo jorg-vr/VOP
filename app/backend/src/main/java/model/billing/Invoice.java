@@ -4,6 +4,7 @@ import model.history.EditableObject;
 import model.history.LogResource;
 import model.identity.Company;
 import model.insurance.Contract;
+import model.insurance.VehicleInsurance;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -102,6 +103,15 @@ public class Invoice implements EditableObject, java.io.Serializable {
             tax+=vehicleInvoice.getTotalCost();
         }
         return tax;
+    }
+
+    public VehicleInvoice getVehicleInvoice(VehicleInsurance insurance){
+        for(VehicleInvoice vehicleInvoice: getVehicleInvoices()){
+            if(vehicleInvoice.getVehicleInsurance().getUuid().equals(insurance.getUuid())){
+                return vehicleInvoice;
+            }
+        }
+        return null;
     }
 
     /**
