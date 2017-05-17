@@ -10,43 +10,8 @@
             </h1>
         </div>
 
-        <div v-if="invoices.length>0">
-            <table class="table-hover table">
-                <thead>
-                <tr>
-                    <th >
-                        {{$t('invoice.startDate')| capitalize }}
-                    </th>
-                    <th >
-                        {{$t('invoice.type')| capitalize }}
-                    </th>
-                    <th >
-                        {{$t('invoice.totalAmount')| capitalize }}
-                    </th>
-                    <th >
-                        {{$t('invoice.totalTax')| capitalize }}
-                    </th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="invoice in invoices" class="list-tr">
-                    <td  >
-                        {{invoice.showableStartDate}}
-                    </td>
-                    <td  >
-                        {{$t('invoiceTypes.'+invoice.type)}}
-                    </td>
-                    <td  >
-                        €{{invoice.totalAmount}}
-                    </td>
-                    <td  >
-                        €{{invoice.totalTax}}
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-        <button-back :route="{name: 'client'}"></button-back>
+        <list-component :resource="resource" :listObject="listObject" :edit="false" :remove="false"></list-component>
+        <button-back :route="{name: 'client',params:{id:companyId}}"></button-back>
 
     </div>
 </template>
@@ -77,7 +42,13 @@
         computed: {
             ...mapGetters([
                 'invoices'
-            ])
+            ]),
+            listObject() {
+                var listObj = {};
+                listObj.headers = ["showableStartDate","type","totalAmount","totalTax"];
+                listObj.values = this.invoices;
+                return listObj;
+            }
         },
         methods: {
             ...mapActions([
