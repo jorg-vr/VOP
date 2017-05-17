@@ -17,9 +17,9 @@ import spring.model.RESTSchema;
 import spring.model.insurance.RESTContract;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static util.UUIDUtil.toUUID;
@@ -42,12 +42,12 @@ public class RESTContractController extends RESTAbstractController<RESTContract,
                                         Integer page, Integer limit,
                                         @RequestParam(required = false) String customer,
                                         @RequestParam(required = false) String insuranceCompany,
-                                        @RequestParam(required = false) LocalDate startsBefore,
-                                        @RequestParam(required = false) LocalDate startsOn,
-                                        @RequestParam(required = false) LocalDate startsAfter,
-                                        @RequestParam(required = false) LocalDate endsBefore,
-                                        @RequestParam(required = false) LocalDate endsOn,
-                                        @RequestParam(required = false) LocalDate endsAfter,
+                                        @RequestParam(required = false) String startsBefore,
+                                        @RequestParam(required = false) String startsOn,
+                                        @RequestParam(required = false) String startsAfter,
+                                        @RequestParam(required = false) String endsBefore,
+                                        @RequestParam(required = false) String endsOn,
+                                        @RequestParam(required = false) String endsAfter,
                                         @RequestHeader(value = "Authorization") String token,
                                         @RequestHeader(value = "Function") String function) throws UnAuthorizedException, DataAccessException {
         UUID user = new AuthenticationToken(token).getAccountId();

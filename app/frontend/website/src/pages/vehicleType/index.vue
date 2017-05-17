@@ -75,7 +75,7 @@
                         Promise.all(p).then(
                                 com=>{
                                     for(let i=0;i<this.vehicleTypes.length;i++) {
-                                        this.vehicleTypes[i].merge = this.mergeCommissionsAndTAxes(com[i], this.vehicleTypes[i].taxes);
+                                        this.vehicleTypes[i].merge = this.mergeCommissionsAndTaxes(com[i], this.vehicleTypes[i].taxes);
                                     }
                                     this.show = true;
                                 }
@@ -100,7 +100,7 @@
                 'fetchVehicleTypes',
                 'fetchCommissions'
             ]),
-            mergeCommissionsAndTAxes(commissions, taxes){
+            mergeCommissionsAndTaxes(commissions, taxes){
                 let merge={};
                 for(let i=0;i<commissions.length;i++){
                     merge[commissions[i].suretyType]={};

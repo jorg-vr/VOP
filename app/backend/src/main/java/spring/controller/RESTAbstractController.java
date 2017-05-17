@@ -27,7 +27,7 @@ import static util.UUIDUtil.toUUID;
  * @param <R> A subclass of RESTAbstractModel
  * @param <M> The model that corresponds to the RESTModel of type R
  */
-public abstract class RESTAbstractController<R extends RESTAbstractModel<M>, M extends EditableObject> extends RESTSimpleController {
+public abstract class RESTAbstractController<R extends RESTAbstractModel<M>, M extends EditableObject> {
 
     private RESTModelFactory<R, M> factory;
 

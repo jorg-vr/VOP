@@ -3,9 +3,9 @@ package controller.insurance;
 
 import controller.AbstractController;
 import controller.exceptions.UnAuthorizedException;
+import dao.exceptions.DataAccessException;
 import dao.interfaces.ContractDAO;
 import dao.interfaces.DAOManager;
-import dao.exceptions.DataAccessException;
 import model.account.Function;
 import model.account.Resource;
 import model.identity.Company;
@@ -13,7 +13,8 @@ import model.identity.Customer;
 import model.identity.InsuranceCompany;
 import model.insurance.Contract;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 
 public class ContractController extends AbstractController<Contract> {
@@ -29,18 +30,32 @@ public class ContractController extends AbstractController<Contract> {
     }
 
     public Collection<Contract> getFiltered(Customer customer, InsuranceCompany insuranceCompany,
-                                            LocalDate startsBefore, LocalDate startsOn, LocalDate startsAfter,
-                                            LocalDate endsBefore, LocalDate endsOn, LocalDate endsAfter) throws DataAccessException, UnAuthorizedException {
+                                            String startsBefore, String startsOn, String startsAfter,
+                                            String endsBefore, String endsOn, String endsAfter) throws DataAccessException, UnAuthorizedException {
         ContractDAO dao = (ContractDAO) getDao();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm");
+
+        LocalDateTime startsBeforeDate = startsBefore == null ? null : LocalDateTime.parse(startsBefore + " 00-00", formatter);
+        LocalDateTime startsAfterDate = startsAfter == null ? null : LocalDateTime.parse(startsAfter + " 00-00", formatter);
+        LocalDateTime endsBeforeDate = endsBefore == null ? null : LocalDateTime.parse(endsBefore + " 00-00", formatter);
+        LocalDateTime endsAfterDate = endsAfter == null ? null : LocalDateTime.parse(endsAfter + " 00-00", formatter);
+
+        if(startsOn != null){
+            startsBeforeDate = LocalDateTime.parse(startsOn + " 00-00", formatter).plusDays(1);
+            startsAfterDate = LocalDateTime.parse(startsOn + " 00-00", formatter).minusDays(1);
+        }
+        if(endsOn != null){
+            endsBeforeDate = LocalDateTime.parse(endsOn + " 00-00", formatter).plusDays(1);
+            endsAfterDate = LocalDateTime.parse(endsOn + " 00-00", formatter).minusDays(1);
+        }
+
         return getAll(
                 dao.byCustomer(customer),
                 dao.byInsuranceCompany(insuranceCompany),
-                dao.startsBefore(startsBefore),
-                dao.startsOn(startsOn),
-                dao.startsAfter(startsAfter),
-                dao.endsBefore(endsBefore),
-                dao.endsOn(endsOn),
-                dao.endsAfter(endsAfter)
+                dao.startsBefore(startsBeforeDate),
+                dao.startsAfter(startsAfterDate),
+                dao.endsBefore(endsBeforeDate),
+                dao.endsAfter(endsAfterDate)
         );
     }
 }

@@ -24,6 +24,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import spring.controller.AuthUtil;
 import spring.controller.TestUtil;
+import spring.exceptions.MyExceptionHandler;
 import spring.model.insurance.RESTVehicleInsurance;
 import util.UUIDUtil;
 
@@ -48,7 +49,7 @@ public class RESTVehicleInsuranceControllerTest {
             .addPlaceholderValue("path.contracts", "contracts")
             .addPlaceholderValue("path.vehicle_insurances", "insurances")
             .addPlaceholderValue("path.green_card", "green-card")
-            //.setControllerAdvice(new MyExceptionHandler())
+            .setControllerAdvice(new MyExceptionHandler())
             .build();
 
     private static Vehicle vehicle1, vehicle2;
@@ -302,7 +303,6 @@ public class RESTVehicleInsuranceControllerTest {
                     .header("Function", authPair[1])
                     .content(TestUtil.convertObjectToJsonBytes(restVehicleInsurance))
             )
-                    .andDo(print())
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.vehicle", equalTo(UUIDUtil.UUIDToNumberString(vehicleInsurance.getVehicle().getUuid()))))
                     .andExpect(jsonPath("$.surety", equalTo(UUIDUtil.UUIDToNumberString(vehicleInsurance.getSurety().getUuid()))))
