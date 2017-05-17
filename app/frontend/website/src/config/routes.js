@@ -34,7 +34,6 @@ import vehicleLog from '../pages/vehicle/log.vue'
 import indexVehicleType from '../pages/vehicleType/index.vue'
 import newVehicleType from '../pages/vehicleType/new.vue'
 import editVehicleType from '../pages/vehicleType/edit.vue'
-import showVehicleType from '../pages/vehicleType/show.vue'
 
 import newFunction from '../pages/function/new.vue'
 
@@ -99,7 +98,6 @@ export default [
             //VehicleType
             {path: 'vehicles/types', name: 'vehicleTypes', component: indexVehicleType},
             {path: 'vehicles/types/new', name: 'new_vehicleType', component: newVehicleType},
-            {path: 'vehicles/types/:id(\\d+)', name: 'vehicleType', component: showVehicleType, props: true},
             {path: 'vehicles/types/:id(\\d+)/edit', name: 'edit_vehicleType', component: editVehicleType, props: true},
 
             // sureties
