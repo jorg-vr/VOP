@@ -1,5 +1,5 @@
 <template>
-    <form >
+    <form>
         <errors></errors>
 
         <slot></slot>

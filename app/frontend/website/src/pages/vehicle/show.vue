@@ -40,6 +40,7 @@
                 </tr>
             </table>
         </div>
+        <commissions :id="id" loc="vehicles" :back="back" ></commissions>
         <div class="col-md-12">
             <h3>
                 {{$t("vehicle_insurance.vehicle_insurances") | capitalize }}
@@ -81,15 +82,17 @@
     import listComponent from '../../assets/general/listComponent.vue'
     import resources from '../../constants/resources'
     import * as utils from '../../utils/utils'
+    import commissions from '../commission/collapse.vue'
 
     export default {
         data(){
             return {
                 resource: resources.INSURANCE,
+                back:{name:resources.VEHICLE.name,params:{id:this.id}}
             }
         },
         components: {
-            buttonBack,listComponent, buttonLink,buttonEdit,buttonRemove
+            buttonBack,listComponent, buttonLink,buttonEdit,buttonRemove,commissions
         },
         props: {
             id: String
