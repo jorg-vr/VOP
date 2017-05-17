@@ -13,16 +13,13 @@ import model.billing.Invoice;
 import model.billing.InvoiceType;
 import model.billing.VehicleInvoice;
 import model.fleet.Vehicle;
-import model.history.EditableObject;
+import model.insurance.Contract;
 import model.insurance.VehicleInsurance;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Month;
 import java.time.Period;
 import java.util.Collection;
-import model.insurance.Contract;
-
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -79,7 +76,7 @@ public class VehicleInsuranceController extends AbstractController<VehicleInsura
                 Period period = Period.between(date, LocalDate.now());
                 int months = period.getMonths();
                 int days = Period.between(date.plusMonths(months), LocalDate.now()).getDays();
-                VehicleInvoice vehicleInvoice = createVehicleInvoice(vehicleInsurance,months,days);
+                VehicleInvoice vehicleInvoice = createVehicleInvoice(vehicleInsurance,vehicleInsurance.calculateTax(),vehicleInsurance.calculateCost(),months,days);
                 Invoice correction = new Invoice();
                 correction.setStartDate(LocalDateTime.now());
                 correction.setEndDate(LocalDateTime.now());
@@ -144,8 +141,17 @@ public class VehicleInsuranceController extends AbstractController<VehicleInsura
             Period period = Period.between(LocalDate.now(),currentStatement.getEndDate().toLocalDate());
             int months = period.getMonths();
             int days = Period.between(date.plusMonths(months), currentStatement.getEndDate().toLocalDate()).getDays();
-            //VehicleInvoice vehicleInvoice = createVehicleInvoice(vehicleInsurance,taxDifference,costDifference,months,days);
-            currentStatement.getVehicleInvoices().add(vehicleInvoice);
+            VehicleInvoice vehicleInvoice = currentStatement.getVehicleInvoice(currentInsurance);
+            if(vehicleInvoice==null){
+                vehicleInvoice = createVehicleInvoice(vehicleInsurance,taxDifference,costDifference,months,days);
+                currentStatement.getVehicleInvoices().add(vehicleInvoice);
+            } else {
+                LocalDate now = LocalDate.now();
+                double monthFactor = (double) days/ (double) now.getMonth().length(now.isLeapYear());
+                vehicleInvoice.setTotalTax(vehicleInvoice.getTotalTax()+taxDifference*months+(int) Math.round(monthFactor*taxDifference));
+                vehicleInvoice.setTotalCost(vehicleInvoice.getTotalCost()+costDifference*months+(int) Math.round(monthFactor*costDifference));
+            }
+
             manager.getInvoiceDao().update(currentStatement);
             return vehicleInsurance;
         }
