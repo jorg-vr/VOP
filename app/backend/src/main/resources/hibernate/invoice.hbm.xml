@@ -41,6 +41,7 @@
         <property name="insuredValue" column="insured_value" type="int"/>
         <property name="totalCost" column="total_cost" type="int" />
         <property name="totalTax" column="total_tax" type="int" />
+        <property name="vin" column="chassis_number" type="java.lang.String"/>
         <property name="licensePlate" column="license_plate" type="java.lang.String"/>
     </class>
 </hibernate-mapping>
