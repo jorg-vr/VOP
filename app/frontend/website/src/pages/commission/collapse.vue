@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <protected-element :permission="permission">
         <button  type="button" class="btn btn-default btn-block" data-toggle="collapse" data-target=".panel-collapse" aria-expanded="false">
             {{$t('commission.commissions')}}
             <span class="caret"></span>
@@ -11,15 +11,22 @@
             <show v-if="edit.edit===false" :id="id" :loc="loc"></show>
             <edit v-if="edit.edit===true" :id="id" :loc="loc"></edit>
         </div>
-    </div>
+    </protected-element>
 </template>
 <script>
     import show from './show.vue'
     import edit from './edit.vue'
     import CheckboxInputFormGroup from '../../assets/form/FormGroups/CheckBoxInputGroup.vue'
+    import ProtectedElement from '../../assets/protection/ProtectedElement.js'
+    import actions from '../../constants/actions'
+    import resources from '../../constants/resources'
     export default {
         data(){
             return{
+                permission: {
+                    resource: resources.COMMISSION,
+                    actions: actions.UPDATE
+                },
                 edit:{
                     edit:false
                 }
