@@ -106,7 +106,8 @@ export default
             titleCorrection: 'Correction',
             textCorrection: 'would you like to make a correction for this ',
             button1: 'Yes',
-            button2: 'No'
+            button2: 'No',
+            cancel: 'cancel'
         },
         exception: {
             e404: 'Not Found',
@@ -378,7 +379,8 @@ export default
             titleCorrection: 'Correctie',
             textCorrection: 'wil u hiervoor een correctie doorvoeren?',
             button1: 'ja',
-            button2: 'nee'
+            button2: 'nee',
+            cancel: 'annuleer'
         },
         exception: {
             e404: 'Pagina niet gevonden',
