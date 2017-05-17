@@ -3,7 +3,7 @@
 -->
 <template>
     <abstract-form :actions="actions" :object="user" :back="back" :resource="resource">
-        <form-input :user="user"></form-input>
+        <form-input :user="user" :showPasswordField="true"></form-input>
     </abstract-form>
 </template>
 <script>

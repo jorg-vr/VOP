@@ -5,17 +5,14 @@ import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.HeaderColumnNameTranslateMappingStrategy;
 import com.opencsv.exceptions.CsvException;
 import dao.database.ProductionProvider;
-import dao.database.util.unique.ConstraintValidatorFactoryImpl;
-import dao.exceptions.*;
 import dao.exceptions.ConstraintViolationException;
 import dao.interfaces.DAOManager;
-import dao.interfaces.VehicleDAO;
 import model.fleet.Vehicle;
 import org.apache.commons.io.IOUtils;
-import org.hibernate.Session;
 
-import javax.validation.*;
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.*;
 
 /**
@@ -30,10 +27,10 @@ public class CSVtoVehicleParser {
         columnMapping.put("Merk", "brand");
         columnMapping.put("Model", "model");
         columnMapping.put("Nummerplaat", "licensePlate");
-        columnMapping.put("Productiejaar", "productionDate");
+        columnMapping.put("Productiejaar", "year");
         columnMapping.put("Kilometerstand", "mileage");
         columnMapping.put("Voertuigtype","type");
-        columnMapping.put("Chassisnummer","chassisNumber");
+        columnMapping.put("Chassisnummer","vin");
 
         HeaderColumnNameTranslateMappingStrategy<Vehicle> strategy = new HeaderColumnNameTranslateMappingStrategy<>();
         strategy.setType(Vehicle.class);
@@ -55,10 +52,11 @@ public class CSVtoVehicleParser {
                 manager.getVehicleDAO().validateVehicles(vehicles);
                 return vehicles;
             }
-        } catch(ConstraintViolationException e){
+        } catch(ConstraintViolationException | InvalidCSVHeaderException e){
             throw e;
         }catch (Exception e) {
-            throw new CsvException();
+            e.printStackTrace();
+            throw new CsvException(e.getMessage());
         }
     }
 }

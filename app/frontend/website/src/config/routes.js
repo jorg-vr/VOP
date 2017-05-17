@@ -31,10 +31,11 @@ import showVehicle from '../pages/vehicle/show.vue'
 import vehicleLogs from '../pages/vehicle/logs.vue'
 import vehicleLog from '../pages/vehicle/log.vue'
 
-
 import indexVehicleType from '../pages/vehicleType/index.vue'
 import newVehicleType from '../pages/vehicleType/new.vue'
 import editVehicleType from '../pages/vehicleType/edit.vue'
+
+import newFunction from '../pages/function/new.vue'
 
 import newSurety from '../pages/surety/new.vue'
 import editSurety from '../pages/surety/edit.vue'
@@ -123,6 +124,9 @@ export default [
             {path: 'conditions/new', name: 'new_condition', component: newSpecialCondition},
             {path: 'conditions/:id(\\d+)', name: 'condition', component: showSpecialCondition, props: true},
             {path: 'conditions/:id(\\d+)/edit', name: 'edit_condition', component: editSpecialCondition, props: true},
+
+            // function pages
+            {path: 'users/:userId(\\d+)/functions/new', name: 'new_function', component: newFunction, props: true},
 
             // invoice
             {path: 'clients/:companyId(\\d+)/invoices', name: 'invoices', component: indexInvoice, props: true},

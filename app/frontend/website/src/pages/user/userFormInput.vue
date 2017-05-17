@@ -8,14 +8,20 @@ All of the fields for user input for the user form
         <text-input-form-group :object="user" name="firstName" :text="$t('user.firstName')" :rules="'required'"></text-input-form-group>
         <text-input-form-group :object="user" name="lastName" :text="$t('user.lastName')" :rules="'required'"></text-input-form-group>
         <text-input-form-group :object="user" name="email" :text="$t('user.email')" :rules="'required|email'"></text-input-form-group>
-        <text-input-form-group type="password" :object="user" name="password" :text="$t('user.password')" :rules="'required'"></text-input-form-group>
+        <text-input-form-group v-if="showPasswordField"
+                               type="password" :object="user" name="password" :text="$t('user.password')" :rules="'required'">
+        </text-input-form-group>
     </div>
 </template>
 <script>
     import TextInputFormGroup from '../../assets/form/FormGroups/TextInputFormGroup.vue'
     export default {
         props: {
-            user: Object
+            user: Object,
+            showPasswordField: {
+                type: Boolean,
+                default: false
+            }
         },
         components: {
             TextInputFormGroup

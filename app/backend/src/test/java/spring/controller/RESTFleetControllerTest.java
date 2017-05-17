@@ -40,6 +40,8 @@ public class RESTFleetControllerTest {
     private MockMvc mvc = MockMvcBuilders.standaloneSetup(new RESTFleetController())
             .addPlaceholderValue("path.fleets", "fleets")
             .addPlaceholderValue("path.companies", "companies")
+            .addPlaceholderValue("path.import", "import")
+            .addPlaceholderValue("path.example", "example")
             .setControllerAdvice(new MyExceptionHandler())
             .build();
 
