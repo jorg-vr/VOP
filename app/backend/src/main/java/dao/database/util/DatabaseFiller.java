@@ -104,7 +104,6 @@ public class DatabaseFiller {
 
 
                 Invoice invoice = new Invoice();
-                invoice.setContracts(new ArrayList<Contract>(Arrays.asList(new Contract[]{contract})));
                 invoice.setPayer(customer);
                 invoice.setPaid(false);
                 invoice.setStartDate(LocalDateTime.now().minusMonths(1));
@@ -344,7 +343,6 @@ public class DatabaseFiller {
             contractDAO.create(contract);
 
             Invoice invoice = new Invoice();
-            invoice.setContracts(new ArrayList<Contract>(Arrays.asList(new Contract[]{contract})));
             invoice.setPayer(customer);
             invoice.setPaid(false);
             invoice.setStartDate(LocalDateTime.now().minusMonths(1));

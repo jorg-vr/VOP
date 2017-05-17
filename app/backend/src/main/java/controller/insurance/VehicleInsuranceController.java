@@ -142,7 +142,6 @@ public class VehicleInsuranceController extends AbstractController<VehicleInsura
         correction.setStartDate(LocalDateTime.now());
         correction.setEndDate(LocalDateTime.now());
         correction.setPayer(currentStatement.getPayer());
-        correction.setContracts(currentStatement.getContracts());
         correction.setType(InvoiceType.CORRECTION);
         correction.setPaid(false);
         correction.getVehicleInvoices().add(vehicleInvoice);

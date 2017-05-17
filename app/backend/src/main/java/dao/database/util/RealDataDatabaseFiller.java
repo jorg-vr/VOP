@@ -234,7 +234,6 @@ public class RealDataDatabaseFiller {
     private Invoice initInvoice(User user, Function function,Company solvas, Customer customer, Collection<Contract> contracts) throws DataAccessException, UnAuthorizedException, ConstraintViolationException {
         try (ControllerManager controllerManager = new ControllerManager(user.getUuid(), function.getUuid())) {
             Invoice invoice = new Invoice();
-            invoice.setContracts(new ArrayList<>(contracts));
             invoice.setPayer(customer);
             invoice.setPaid(false);
             invoice.setStartDate(LocalDateTime.now().minusMonths(1));

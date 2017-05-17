@@ -16,11 +16,6 @@
         <many-to-one name="payer" column="payer_id" class="model.identity.Company" lazy="proxy" fetch="select"/>
         <property name="startDate" column="start_data" type="java.time.LocalDateTime"/>
         <property name="endDate" column="end_data" type="java.time.LocalDateTime"/>
-        <bag name="contracts" access="field" table="contract_invoice"
-             lazy="true" fetch="select">
-            <key column="invoice_id" not-null="false"/>
-            <many-to-many column="contract_id" class="model.insurance.Contract"/>
-        </bag>
         <bag name="vehicleInvoices" access="field" table="vehicle_invoices" lazy="false"
              cascade="all">
             <key column="invoice_id" />

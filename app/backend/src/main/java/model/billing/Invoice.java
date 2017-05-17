@@ -55,7 +55,6 @@ public class Invoice implements EditableObject, java.io.Serializable {
      */
     private Collection<VehicleInvoice> vehicleInvoices;
 
-    private Collection<Contract> contracts;
 
     /**
      * constructor
@@ -212,23 +211,6 @@ public class Invoice implements EditableObject, java.io.Serializable {
     }
 
     /**
-     * Gets the contracts
-     * @return the contracts
-     */
-    public Collection<Contract> getContracts() {
-        return contracts;
-    }
-
-    /**
-     * Sets the contracts
-     * @param contracts the contracts
-     */
-    public void setContracts(Collection<Contract> contracts) {
-        this.contracts = contracts;
-    }
-
-
-    /**
      * Gets the vehicleInvoices
      * @return the vehicle invoices
      */
@@ -244,16 +226,6 @@ public class Invoice implements EditableObject, java.io.Serializable {
         this.vehicleInvoices = vehicleInvoices;
     }
 
-    /**
-     * Adds a new contract
-     * @param contract the contract
-     */
-    public void addContract(Contract contract){
-        if(contracts==null){
-            contracts = new HashSet<>();
-        }
-        contracts.add(contract);
-    }
 
     @Override
     public LogResource getLogResource() {
@@ -289,7 +261,6 @@ public class Invoice implements EditableObject, java.io.Serializable {
         invoice.setStartDate(startDate);
         invoice.setEndDate(endDate);
         invoice.setPayer(payer);
-        invoice.setContracts(contracts);
         invoice.setVehicleInvoices(new ArrayList<>(vehicleInvoices));
         return invoice;
     }

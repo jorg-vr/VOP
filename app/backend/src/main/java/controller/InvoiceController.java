@@ -44,7 +44,6 @@ public class InvoiceController extends AbstractController<Invoice> {
             invoice.setEndDate(LocalDateTime.now().
                     plusMonths(i+customer.getFacturationPeriod().getTime()).
                     minusDays(1));
-            invoice.setContracts(customer.getContracts());
             invoice.setPaid(false);
             invoice.setVehicleInvoices(createVehicleInvoices(customer,customer.getFacturationPeriod().getTime()));
             getDao().create(invoice);
@@ -57,7 +56,6 @@ public class InvoiceController extends AbstractController<Invoice> {
         statement.setPayer(customer);
         customer.setCurrentStatement(statement);
 
-        statement.setContracts(customer.getContracts());
         statement.setStartDate(LocalDateTime.now());
         statement.setEndDate(LocalDateTime.now().plusMonths(customer.getPaymentPeriod().getTime()).minusDays(1));
         getDao().create(statement);
