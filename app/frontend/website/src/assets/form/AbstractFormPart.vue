@@ -1,20 +1,17 @@
 <template>
-        <form >
-            <div v-if="error" class="row text-center">
-                <ul class="list-group">
-                    <li class="list-group-item list-group-item-danger" v-for="errorEle in error.errors">{{errorEle}}</li>
-                </ul>
-            </div>
-            <slot></slot>
-            <div class="row">
-                <button-back :route="back" buttonClass="pull-right btn btn-sm btn-default form-component-button"
-                             :text="$t('common.cancel')">
-                </button-back>
-                <button-action @click="SubmitFormHandler.submit()" buttonClass="pull-right btn btn-sm btn-primary form-component-button">
-                    {{ submitText }}
-                </button-action>
-            </div>
-        </form>
+    <form >
+        <errors></errors>
+
+        <slot></slot>
+        <div class="row">
+            <button-back :route="back" buttonClass="pull-right btn btn-sm btn-default form-component-button"
+                         :text="$t('common.cancel')">
+            </button-back>
+            <button-action @click="SubmitFormHandler.submit()" buttonClass="pull-right btn btn-sm btn-primary form-component-button">
+                {{ submitText }}
+            </button-action>
+        </div>
+    </form>
 </template>
 <script>
     import {getResourceActionText} from '../../utils/utils'
@@ -22,6 +19,7 @@
     import buttonAction from '../buttons/buttonAction.vue'
     import { mapGetters, mapActions, mapMutations } from 'vuex'
     import {SubmitFormHandler} from './SubmitFormHandler'
+    import errors from './AbstractFormErrors.vue'
 
     export default {
         data(){
@@ -31,7 +29,7 @@
             }
         },
         components: {
-            buttonAction, buttonBack
+            buttonAction, buttonBack, errors
         },
         props: {
             back: Object, //link to previous page
@@ -50,7 +48,6 @@
             })
             SubmitFormHandler.setSubmitFunction(this.submit)
         },
-
         computed: {
             ...mapGetters([
                 'error'
@@ -71,15 +68,18 @@
                     promise = this.$store.dispatch(functionName, {resource: this.object, ids: this.ids})
                 }
                 promise.then(() => {
+                    this.$store.commit('setIsGoingBack', {status: true})
                     let redirectRoute = this.$store.getters.popVisitedRoute;
+                    while(!(redirectRoute===undefined || redirectRoute.name===null) && redirectRoute.path === this.$route.path){
+                        redirectRoute = this.$store.dispatch('popVisitedRoute');
+                    }
                     if(redirectRoute===undefined || redirectRoute.name===null){
-                        if(!(this.back!==undefined && this.back.name!==null)){
-                            this.$router.push({name: this.back.name, params: this.back.params})
-                        }
+                        this.$router.push({name: this.back.name, params: this.back.params})
                     }
                     else {
                         this.$router.push(redirectRoute.path)
                     }
+
                 })
             },
             initializeFormHandler(components){
@@ -93,13 +93,5 @@
     .form-component-button {
         margin-top: 25px;
         margin-left: 20px;
-    }
-    .errors {
-        margin-left: 50px;
-    }
-
-    .list-group-item-danger {
-        color: #a94442;
-        background-color: #f2dede;
     }
 </style>

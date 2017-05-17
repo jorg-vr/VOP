@@ -18,7 +18,9 @@ export default
             sureties: 'sureties',
             totalCost: 'price',
             totalTax: 'tax',
-            import: 'import'
+            import: 'import',
+            failImport: 'The given CSV file does not have the correct format.',
+            example: 'Download example file'
         },
         vehicleType: {
             name: 'name',
@@ -293,7 +295,9 @@ export default
             sureties: 'waarborgen',
             totalCost: 'prijs',
             totalTax: 'btw',
-            import: 'importeer'
+            import: 'importeer',
+            failImport: 'Het gegeven CSV bestand voldoet niet aan het correcte formaat.',
+            example: 'Download voorbeeld bestand'
         },
         vehicleType: {
             name: 'naam',

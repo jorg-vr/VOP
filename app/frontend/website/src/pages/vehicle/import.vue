@@ -4,6 +4,11 @@
             <h1> {{$t('vehicle.import') | capitalize}} {{$t('vehicle.vehicles')}} </h1>
         </div>
         <form class="import-vehicles form-horizontal col-xs-12 col-sm-11 col-md-9 col-lg-7">
+            <div id="example" class="row">
+                <a href="https://vopro5.ugent.be/test/app/api/fleets/1/vehicles/import/example" class="btn btn-primary">
+                    {{$t('vehicle.example')}}
+                </a>
+            </div>
             <div class="row">
                 <div class="input-group col-lg-6 col-sm-6 col-12">
                     <label class="input-group-btn">
@@ -13,6 +18,9 @@
                     </span>
                     </label>
                     <input type="text" class="form-control" :value="file ? file.name : ''" readonly>
+                </div>
+                <div class="fail-import">
+                    <span v-show="failImport" class="alert alert-danger" role="alert">{{$t('vehicle.failImport')}}</span>
                 </div>
             </div>
             <div class="row button-row">
@@ -36,6 +44,7 @@
     export default {
         data() {
             return {
+                failImport: false,
                 file: null,
                 back: {name: 'fleet', params: {id: this.fleetId}}
             }
@@ -48,31 +57,39 @@
         },
         methods: {
             filesChange(fileList){
+                this.failImport = false
                 if(fileList.length===1){
                     this.file = fileList[0]
                 }
             },
             onClick(){
                 //Source: https://developer.mozilla.org/en-US/docs/Web/API/FormData/Using_FormData_Objects
-                var data = new FormData();
+                let data = new FormData();
                 data.append("file", this.file)
                 this.importVehicles({fleetId: this.fleetId, data}).then(() => {
-                    console.log('aaa')
                     this.$router.push(this.back)
+                }, () => {
+                    this.failImport = true
                 })
             },
             ...mapActions([
-                'importVehicles'
+                'importVehicles',
             ])
 
         }
     }
 </script>
 <style>
+    #example a {
+        margin-left: 0;
+        margin-bottom: 20px;
+        height: 40px;
+    }
     #browse {
         height: 40px;
     }
-    .import-vehicles .button-row {
+    .fail-import {
         margin-top: 20px;
+
     }
 </style>
