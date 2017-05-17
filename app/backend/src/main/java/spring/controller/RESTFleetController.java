@@ -14,6 +14,7 @@ import dao.exceptions.ObjectNotFoundException;
 import model.fleet.Fleet;
 import model.fleet.Vehicle;
 import model.identity.Customer;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,9 +25,8 @@ import spring.model.RESTSchema;
 import spring.model.RESTVehicle;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
@@ -136,13 +136,13 @@ public class RESTFleetController extends RESTAbstractController<RESTFleet, Fleet
      */
     @GetMapping("/{id}/vehicles/${path.import}/${path.example}")
     @ResponseBody
-    public ResponseEntity<byte[]> serveExample(@PathVariable String id) throws IOException {
+    public ResponseEntity<InputStreamResource> serveExample(@PathVariable String id) throws IOException {
         ClassLoader classLoader = getClass().getClassLoader();
-        File file = new File(classLoader.getResource("csv/example.csv").getFile());
-        byte[] bytes = Files.readAllBytes(file.toPath());
+        InputStream inputStream = classLoader.getResourceAsStream("csv/example.csv");
+        InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
         return ResponseEntity
                 .ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + "example.csv" + "\"")
-                .body(bytes);
+                .body(inputStreamResource);
     }
 }
