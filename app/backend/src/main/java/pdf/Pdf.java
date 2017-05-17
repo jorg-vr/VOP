@@ -27,8 +27,15 @@ public abstract class Pdf {
         }
     }
 
+    /**
+     * Generate the pdf itself. Gets called after the init function.
+     */
     protected abstract void generateDocument() throws DocumentException;
 
+    /**
+     * Initialize the creation of the pdf
+     * @throws DocumentException
+     */
     private void init() throws DocumentException {
         document = new Document();
         baos = new ByteArrayOutputStream();
@@ -36,6 +43,9 @@ public abstract class Pdf {
         document.open();
     }
 
+    /**
+     * Finish the creation of the pdf
+     */
     private void finish() {
         document.close();
     }
@@ -48,7 +58,7 @@ public abstract class Pdf {
     }
 
     /**
-     * Write the green card pdf to a file
+     * Write the pdf to a file
      *
      * @param path path of the file where the green card should be written to
      * @throws IOException could not write pdf to file
@@ -59,12 +69,11 @@ public abstract class Pdf {
         fos.close();
     }
 
-    public Document getDocument() {
+    protected Document getDocument() {
         return document;
     }
 
-    public void setDocument(Document document) {
+    protected void setDocument(Document document) {
         this.document = document;
     }
-
 }

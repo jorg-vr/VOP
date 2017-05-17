@@ -26,11 +26,19 @@ public class InvoicePdf extends Pdf {
     private static Font bold = new Font(Font.FontFamily.TIMES_ROMAN, 12,
             Font.BOLD);
 
+    private static Font largeBold = new Font(Font.FontFamily.TIMES_ROMAN, 20,
+            Font.BOLD);
+
     private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
 
     private Invoice invoice;
 
+    /**
+     *
+     * @param invoice for which the pdf should be created
+     * @throws PdfException pdf could not be created
+     */
     public InvoicePdf(Invoice invoice) throws PdfException {
         this.invoice = invoice;
         generatePdf();
@@ -105,14 +113,8 @@ public class InvoicePdf extends Pdf {
         table.addCell(new InvoiceCell("Taksen en kosten", euroFormat(tax), 2, 1));
         table.addCell(new InvoiceCell("Totale premie", euroFormat(total), 2, 1));
 
-        table.addCell(new InvoiceCell("Verzekerd risico en waarborgen", "", 12, 1));
-
         document.add(table);
-
     }
-
-    private static Font largeBold = new Font(Font.FontFamily.TIMES_ROMAN, 20,
-            Font.BOLD);
 
     private void generateVehicleInvoices() throws DocumentException {
         Document document = getDocument();

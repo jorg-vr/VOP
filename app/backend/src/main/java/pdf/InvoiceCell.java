@@ -3,7 +3,7 @@ package pdf;
 import com.itextpdf.text.Font;
 
 /**
- * A cell for in the table of the green card
+ * A cell for in the table of the invoice
  *
  * @author Billie Devolder
  */

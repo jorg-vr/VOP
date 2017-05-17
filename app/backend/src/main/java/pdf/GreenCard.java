@@ -19,8 +19,6 @@ public class GreenCard extends Pdf {
 
     private VehicleInsurance insurance;
 
-
-
     /**
      *
      * @param insurance vehicle insurance for which the greencard should be created
