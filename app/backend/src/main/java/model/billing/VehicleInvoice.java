@@ -185,4 +185,20 @@ public class VehicleInvoice {
     public void setLicensePlate(String licensePlate) {
         this.licensePlate = licensePlate;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || o instanceof VehicleInvoice) return false;
+
+        VehicleInvoice that = (VehicleInvoice) o;
+
+        return getUuid().equals(that.getUuid());
+
+    }
+
+    @Override
+    public int hashCode() {
+        return getUuid().hashCode();
+    }
 }
