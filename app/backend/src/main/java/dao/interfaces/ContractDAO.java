@@ -4,7 +4,7 @@ import model.identity.Customer;
 import model.identity.InsuranceCompany;
 import model.insurance.Contract;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * Created by sam on 4/12/17.
@@ -30,40 +30,28 @@ public interface ContractDAO extends DAO<Contract> {
      * @param date The date to use in the filter
      * @return A useable Filter for listFiltered
      */
-    Filter<Contract> startsBefore(LocalDate date);
-
-    /**
-     * Returns a Filter to use in ListFiltered in this class, which returns all Contracts starting on the given date.
-     * @param date The date to use in the filter
-     * @return A useable Filter for listFiltered
-     */
-    Filter<Contract> startsOn(LocalDate date);
+    Filter<Contract> startsBefore(LocalDateTime date);
 
     /**
      * Returns a Filter to use in ListFiltered in this class, which returns all Contracts starting after the given date.
+     * Only the LocalDate part is considered for comparison (Hours/Minutes are ignored)
      * @param date The date to use in the filter
      * @return A useable Filter for listFiltered
      */
-    Filter<Contract> startsAfter(LocalDate date);
+    Filter<Contract> startsAfter(LocalDateTime date);
 
     /**
      * Returns a Filter to use in ListFiltered in this class, which returns all Contracts ending before the given date.
      * @param date The date to use in the filter
      * @return A useable Filter for listFiltered
      */
-    Filter<Contract> endsBefore(LocalDate date);
-
-    /**
-     * Returns a Filter to use in ListFiltered in this class, which returns all Contracts ending on the given date.
-     * @param date The date to use in the filter
-     * @return A useable Filter for listFiltered
-     */
-    Filter<Contract> endsOn(LocalDate date);
+    Filter<Contract> endsBefore(LocalDateTime date);
 
     /**
      * Returns a Filter to use in ListFiltered in this class, which returns all Contracts ending after the given date.
+     * Only the LocalDate part is considered for comparison (Hours/Minutes are ignored)
      * @param date The date to use in the filter
      * @return A useable Filter for listFiltered
      */
-    Filter<Contract> endsAfter(LocalDate date);
+    Filter<Contract> endsAfter(LocalDateTime date);
 }

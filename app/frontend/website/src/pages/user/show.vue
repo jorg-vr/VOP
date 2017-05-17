@@ -23,6 +23,7 @@
                     <td>{{user.email}}</td>
                 </tr>
             </table>
+            <function-index :userId="id"></function-index>
             <button-back :route="{name: 'users'}"></button-back>
         </div>
     </div>
@@ -30,9 +31,11 @@
 <script>
     import {mapGetters, mapActions} from 'vuex'
     import buttonBack from '../../assets/buttons/buttonBack.vue'
+    import FunctionIndex from '../function/index.vue'
+
     export default {
         components: {
-            buttonBack
+            buttonBack, FunctionIndex
         },
         props: {
             id: String

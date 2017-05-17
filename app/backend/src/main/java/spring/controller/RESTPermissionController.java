@@ -30,7 +30,7 @@ import static util.UUIDUtil.toUUID;
  * 3) PUT /auth/roles/{id}/permissions
  */
 @RestController
-public class RESTPermissionController extends RESTSimpleController {
+public class RESTPermissionController {
 
     @RequestMapping(value = "/${path.auth}/${path.permissions}", method = RequestMethod.GET)
     public RESTSchema<RESTPermission> getAllPermissions(HttpServletRequest request,

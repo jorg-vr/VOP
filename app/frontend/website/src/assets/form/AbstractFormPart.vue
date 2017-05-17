@@ -2,7 +2,9 @@
         <form >
             <div v-if="error" class="row text-center">
                 <ul class="list-group">
-                    <li class="list-group-item list-group-item-danger" v-for="errorEle in error.errors">{{errorEle}}</li>
+                    <li class="list-group-item list-group-item-danger" v-for="errorEle in error.errors">
+                        {{$t('error.' + errorEle.message, {subject: $t('field.' + errorEle.field)}) | capitalize}}
+                    </li>
                 </ul>
             </div>
             <slot></slot>

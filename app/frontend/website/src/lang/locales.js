@@ -26,6 +26,12 @@ export default
             tax:'tax',
             taxes:'taxes'
         },
+        function: {
+            function: 'function',
+            functions: 'functions',
+            roleName: 'role',
+            companyName: 'company'
+        },
         fleet: {
             name: 'fleet name',
             company: 'company',
@@ -261,6 +267,13 @@ export default
             yearly: 'yearly',
             half_yearly: 'half yearly',
             monthly: 'monthly'
+        },
+        error: {
+            NOT_FOUND: "{subject} was not found.",
+            INVALID: "{subject} is incorrect."
+        },
+        field: {
+            company: 'company'
         }
     },
     nl : {
@@ -523,6 +536,19 @@ export default
             yearly: 'jaarlijks',
             half_yearly: 'halfjaarlijks',
             monthly: 'maandelijks'
+        },
+        function: {
+            function: 'functie',
+            functions: 'functies',
+            roleName: 'rol',
+            companyName: 'bedrijf'
+        },
+        error: {
+            NOT_FOUND: "{subject} werd niet gevonden.",
+            INVALID: "{subject} is incorrect."
+        },
+        field: {
+            company: 'bedrijf'
         }
     }
 }

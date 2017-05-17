@@ -76,12 +76,12 @@ router.beforeEach((to, from, next) => {
                 }
             }, () => {
                 store.commit('setNextRoute' , {route: to})
-                next({path: '/login'});
+                next({name: 'login'});
             })
         }
         else {
             store.commit('setNextRoute' , {route: to})
-            next({path: '/login'});
+            next({name: 'login'});
         }
     }
     if(!store.getters.isGoingBack){

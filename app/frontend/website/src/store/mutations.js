@@ -46,8 +46,12 @@ export default {
      * @param response
      */
     setError(state, response){
-        if(response!==null){
-            state.error = response.body
+        if(response && response.body){
+            let error = response.body
+            if(error.code && !error.status){
+                error.status = error.code
+            }
+            state.error = error
         }
         else {
             state.error = null
