@@ -226,7 +226,8 @@ export default
         commission:{
             commission:"commission",
             commissions:"commissions",
-            suretyType:"surety type"
+            suretyType:"surety type",
+            none:"No commissions available"
         },
         log: {
             log: 'log',
@@ -493,7 +494,8 @@ export default
         commission:{
             commission:"commissie",
             commissions:"commissies",
-            suretyType:"type waarborg"
+            suretyType:"type waarborg",
+            none:"Geen commissies beschikbaar"
         },
         log: {
             log: 'log',

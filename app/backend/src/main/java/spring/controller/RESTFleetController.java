@@ -14,13 +14,11 @@ import dao.exceptions.ObjectNotFoundException;
 import model.fleet.Fleet;
 import model.fleet.Vehicle;
 import model.identity.Customer;
-import org.springframework.core.io.Resource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import spring.files.FileSystemStorageService;
-import spring.files.StorageService;
 import spring.model.AuthenticationToken;
 import spring.model.RESTFleet;
 import spring.model.RESTSchema;
@@ -28,6 +26,7 @@ import spring.model.RESTVehicle;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
@@ -61,8 +60,6 @@ import static util.UUIDUtil.toUUID;
 @RestController
 @RequestMapping(value = {"/${path.fleets}", "/${path.companies}/{companyId}/${path.fleets}"})
 public class RESTFleetController extends RESTAbstractController<RESTFleet, Fleet> {
-
-    private StorageService storageService = new FileSystemStorageService();
 
     public RESTFleetController() {
         super(RESTFleet::new);
@@ -134,15 +131,18 @@ public class RESTFleetController extends RESTAbstractController<RESTFleet, Fleet
 
     /**
      * Return a template for importing csv files
+     *
      * @param id doesn't matter
      */
     @GetMapping("/{id}/vehicles/${path.import}/${path.example}")
     @ResponseBody
-    public ResponseEntity<Resource> serveExample(@PathVariable String id) {
-        Resource file = storageService.loadAsResource("example.csv");
+    public ResponseEntity<InputStreamResource> serveExample(@PathVariable String id) throws IOException {
+        ClassLoader classLoader = getClass().getClassLoader();
+        InputStream inputStream = classLoader.getResourceAsStream("csv/example.csv");
+        InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
         return ResponseEntity
                 .ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + "example.csv" + "\"")
-                .body(file);
+                .body(inputStreamResource);
     }
 }

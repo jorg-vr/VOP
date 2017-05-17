@@ -56,7 +56,8 @@
                     <td>{{getPeriodText(client.paymentPeriod) | capitalize}}</td>
                 </tr>
             </table>
-            <h2 v-if="client.type===clientTypes.CUSTOMER.type" >{{$t("fleet.fleets") | capitalize }}
+            <commissions  v-if="client.type===clientTypes.CUSTOMER.type" :id="id" loc="companies" :back="back" ></commissions>
+            <h2 class="col-md-12" v-if="client.type===clientTypes.CUSTOMER.type" >{{$t("fleet.fleets") | capitalize }}
                 <button-add :resource="resource" :params="{clientId: client.id}"></button-add>
             </h2>
             <list-component v-if="listObject.values.length>0" :listObject="listObject" :resource="resource">
@@ -76,6 +77,7 @@
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
     import buttonInvoice from '../../assets/buttons/buttonInvoice.vue'
     import periods from '../../constants/periods'
+    import commissions from '../commission/collapse.vue'
 
     export default {
         data(){
@@ -83,11 +85,12 @@
                 resource: resources.FLEET,
                 resource2: resources.CONTRACT,
                 type: '',
-                clientTypes: clientTypes
+                clientTypes: clientTypes,
+                back:{name:resources.CLIENT.name,params:{id:this.id}}
             }
         },
         components: {
-            buttonBack, listComponent, buttonAdd, buttonInvoice
+            buttonBack, listComponent, buttonAdd, buttonInvoice,commissions
         },
         props: {
             id: String
