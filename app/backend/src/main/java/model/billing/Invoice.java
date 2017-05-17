@@ -99,7 +99,7 @@ public class Invoice implements EditableObject, java.io.Serializable {
     public int calculateTax() {
         int tax = 0;
         for(VehicleInvoice vehicleInvoice : vehicleInvoices){
-            tax+=vehicleInvoice.getTotalCost();
+            tax+=vehicleInvoice.getTotalTax();
         }
         return tax;
     }

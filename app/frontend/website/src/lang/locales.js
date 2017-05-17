@@ -167,6 +167,11 @@ export default
             export: 'export as pdf'
 
         },
+        invoiceTypes:{
+            BILLING:"billing",
+            STATEMENT:"statement",
+            CORRECTION:"correction"
+        },
         surety:{
             surety:'insurance surety',
             sureties: 'insurance sureties',
@@ -435,6 +440,11 @@ export default
             totalTax: 'totale belasting',
             export: 'exporteer als pdf'
 
+        },
+        invoiceTypes:{
+            BILLING:"factuur",
+            STATEMENT:"afrekening",
+            CORRECTION:"correctie"
         },
         surety: {
             surety:'verzekeringswaarborg',

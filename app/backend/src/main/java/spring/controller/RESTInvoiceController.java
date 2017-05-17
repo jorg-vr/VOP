@@ -19,6 +19,7 @@ import util.UUIDUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -56,12 +57,12 @@ public class RESTInvoiceController extends RESTAbstractController<RESTInvoice, I
 
             Company company = companyController.get(UUIDUtil.toUUID(companyId));
 
-            Collection<RESTInvoice> invoices = controller
+            List<RESTInvoice> invoices = controller
                     .getFiltered(company)
                     .stream()
                     .map(RESTInvoice::new)
                     .collect(Collectors.toList());
-            return new RESTSchema<>(invoices, page, limit, request);
+            return new RESTSchema<>(invoices, page, limit, request,(a,b)->b.getStartDate().compareTo(a.getStartDate()));
         } catch (UnAuthorizedException e) {
             throw new NotAuthorizedException();
         } catch (DataAccessException e) {
