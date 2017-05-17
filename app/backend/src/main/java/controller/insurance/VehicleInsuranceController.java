@@ -148,7 +148,7 @@ public class VehicleInsuranceController extends AbstractController<VehicleInsura
         correction.getVehicleInvoices().add(vehicleInvoice);
         manager.getInvoiceDao().create(correction);
     }
-    
+
     @Override
     public boolean isOwner(VehicleInsurance insurance, Function function) {
         return insurance.getVehicle().getFleet().getOwner().equals(function.getCompany());
