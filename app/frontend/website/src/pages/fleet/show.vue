@@ -9,6 +9,9 @@
             <h1>
                 {{fleet.name}} <span v-if="fleet.companyName">- {{fleet.companyName }}</span>
                 <button-add :resource="resource" :params="{fleetId: fleet.id}"></button-add>
+                <button-link buttonId="import" buttonClass="pull-right btn btn-primary" :route="{name: 'import_vehicles', params: {fleetId: id}}">
+                    {{$t('vehicle.import') | capitalize}} {{$t('vehicle.vehicles')}}
+                </button-link>
                 <button-link buttonId="log" buttonClass="btn btn-default pull-right" :route="{name: 'fleet_logs'}">
                     {{$t('log.log') | capitalize}}
                 </button-link>
@@ -17,7 +20,6 @@
                 <span v-if="fleet.totalCost">  {{$t('fleet.totalCost')|capitalize}}: €{{fleet.totalCost }}</span>
                 <span v-if="fleet.totalTax">  |  {{$t('fleet.totalTax')|capitalize}}:  €{{fleet.totalTax }}</span>
             </h4>
-
         </div>
         <abstract-search-form :resource="resource" :filters="filters" :searchFunction="searchVehicles">
             <vehicle-search-input :vehicle="filters"></vehicle-search-input>
@@ -40,6 +42,7 @@
     import {mapGetters, mapActions, mapMutations} from 'vuex'
     import AbstractSearchForm from '../../assets/general/AbstractSearchForm.vue'
     import VehicleSearchInput from '../vehicle/VehicleSearchInput.vue'
+    import ImportVehicles from '../vehicle/import.vue'
 
     export default {
         data(){
@@ -49,7 +52,7 @@
             }
         },
         components: {
-            listComponent, buttonAdd, buttonBack, buttonLink, AbstractSearchForm, VehicleSearchInput
+            listComponent, buttonAdd, buttonBack, buttonLink, AbstractSearchForm, VehicleSearchInput, ImportVehicles
         },
         props: {
             id: String
@@ -152,5 +155,8 @@
     }
     h3 {
         margin-top: 40px;
+    }
+    #import {
+        margin-right: 10px;
     }
 </style>

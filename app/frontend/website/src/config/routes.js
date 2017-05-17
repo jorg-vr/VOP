@@ -57,9 +57,10 @@ import showSpecialCondition from '../pages/specialCondition/show.vue'
 import indexInvoice from '../pages/invoice/index.vue'
 import showInvoice from '../pages/invoice/show.vue'
 
-
 import exception from '../pages/exception/exception.vue'
 import login from '../pages/login/login.vue'
+
+import ImportVehicles from '../pages/vehicle/import.vue'
 
 export default [
     {
@@ -92,7 +93,7 @@ export default [
             {path: 'vehicles/:id(\\d+)/edit', name: 'edit_vehicle', component: editVehicle, props: true},
             {path: 'vehicles/:id(\\d+)/logs', name: 'vehicle_logs', component: vehicleLogs, props: true},
             {path: 'vehicles/:resourceId(\\d+)/logs/:id(\\d+)', name: 'vehicle_log', component: vehicleLog, props: true},
-
+            {path: 'fleets/:fleetId(\\d+)/vehicles/import', name: 'import_vehicles', component: ImportVehicles, props:true},
 
             //VehicleType
             {path: 'vehicles/types', name: 'vehicleTypes', component: indexVehicleType},

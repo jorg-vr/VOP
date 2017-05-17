@@ -17,7 +17,8 @@ export default
             value: 'value',
             sureties: 'sureties',
             totalCost: 'price',
-            totalTax: 'tax'
+            totalTax: 'tax',
+            import: 'import'
         },
         vehicleType: {
             name: 'name',
@@ -76,7 +77,8 @@ export default
             cancel: 'cancel',
             add: 'add',
             update: "update",
-            description: 'description'
+            description: 'description',
+            browse: 'browse'
         },
         actions: {
             select: 'select {subject}',
@@ -277,7 +279,8 @@ export default
             value: 'waarde',
             sureties: 'waarborgen',
             totalCost: 'prijs',
-            totalTax: 'btw'
+            totalTax: 'btw',
+            import: 'importeer'
         },
         vehicleType: {
             name: 'naam',
@@ -337,7 +340,8 @@ export default
             cancel: 'annuleer',
             add: 'voeg toe',
             update: "bewerken",
-            description: 'beschrijving'
+            description: 'beschrijving',
+            browse: 'bladeren'
         },
         actions: {
             select: 'selecteer {subject}',
