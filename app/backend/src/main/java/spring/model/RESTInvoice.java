@@ -74,7 +74,7 @@ public class RESTInvoice extends RESTAbstractModel<Invoice> {
         setTotalAmount(invoice.calculateCost());
         setTotalTax(invoice.calculateTax());
         setPayer(UUIDUtil.UUIDToNumberString(invoice.getPayer().getUuid()));
-        setVehicleInvoices(getVehicleInvoices());
+        setVehicleInvoices(invoice.getVehicleInvoices());
     }
 
     /**
