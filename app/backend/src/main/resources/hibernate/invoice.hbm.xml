@@ -14,8 +14,6 @@
 
         <property name="paid" column="paid" type="java.lang.Boolean"/>
         <many-to-one name="payer" column="payer_id" class="model.identity.Company" lazy="proxy" fetch="select"/>
-        <many-to-one name="beneficiary" column="beneficiary_id" class="model.identity.Company" lazy="proxy"
-                     fetch="select"/>
         <property name="startDate" column="start_data" type="java.time.LocalDateTime"/>
         <property name="endDate" column="end_data" type="java.time.LocalDateTime"/>
         <bag name="contracts" access="field" table="contract_invoice"
@@ -48,7 +46,6 @@
         <property name="insuredValue" column="insured_value" type="int"/>
         <property name="totalCost" column="total_cost" type="int" />
         <property name="totalTax" column="total_tax" type="int" />
-        <property name="getVin" column="chassis_number" type="java.lang.String"/>
         <property name="licensePlate" column="license_plate" type="java.lang.String"/>
     </class>
 </hibernate-mapping>
