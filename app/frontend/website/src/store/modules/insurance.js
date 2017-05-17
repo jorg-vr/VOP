@@ -1,6 +1,7 @@
 import * as locations from '../../constants/locations'
 import RequestHandler from '../../api/requestHandler'
 import Vue from 'vue'
+import * as utils from '../../utils/utils'
 
 export default {
     state: {
@@ -14,7 +15,7 @@ export default {
             return state.selectedConditions
         },
 
-         contractId(state){
+        contractId(state){
             return state.contractId
         },
         insuranceCompanyId(state){
@@ -34,10 +35,10 @@ export default {
                 }
             }
             if(possible){
-             state.selectedConditions.push(value)
+                state.selectedConditions.push(value)
             }
         },
-         setContractId(state,id){
+        setContractId(state,id){
             state.contractId = id
         },
         setInsuranceCompanyId(state,id){
@@ -47,7 +48,19 @@ export default {
             state.selectedConditions = []
         }
     },
+    actions: {
+        fetchGreenCard(context, {contractId, insuranceId}){
+            return new Promise((resolve, reject) => {
+                RequestHandler.getObjectsRequest(utils.formatLocation(locations.GREEN_CARD, {contractId, insuranceId}))
+                    .then(response => {
+                        resolve(response)
+                    }, response => {
+                        reject(response)
+                    })
+            })
+        }
     }
+}
 
 
 

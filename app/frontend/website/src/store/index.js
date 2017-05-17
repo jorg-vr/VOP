@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import vehicle from './modules/vehicle'
 import fleet from './modules/fleet'
 import login from './modules/login'
 import invoice from './modules/invoice'
@@ -55,7 +54,6 @@ export default new Vuex.Store({
         commissionResource,
         functionResource,
         //The following modules provide additional functions for the previous resources (or are completely new modules).
-        vehicle,
         fleet,
         login,
         currentUser,

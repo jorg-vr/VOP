@@ -32,6 +32,11 @@
                     <td> {{insurance.tax}} </td>
                 </tr>
             </table>
+            <div class="row">
+                <button-action @click="downloadGreenCard({contractId, insuranceId: id})" buttonClass="pull-left btn btn-primary">
+                    {{$t('vehicle.generate_green_card')}}
+                </button-action>
+            </div>
 
             <!-- insured vehicle -->
 
@@ -74,8 +79,6 @@
                     <td>{{$t('vehicle.leasingCompany') | capitalize }}</td>
                     <td>{{vehicle.leasingCompany}}</td>
                 </tr>
-
-
             </table> 
          
              <!-- surety -->
@@ -121,10 +124,11 @@
 <script>
     import {mapGetters, mapActions} from 'vuex'
     import buttonBack from '../../assets/buttons/buttonBack.vue'
+    import buttonAction from '../../assets/buttons/buttonAction.vue'
 
     export default {
         components: {
-            buttonBack
+            buttonBack, buttonAction
         },
         props: {
             id: String,
@@ -153,8 +157,21 @@
                 'fetchSurety',
                 'fetchInsurance',
                 'fetchVehicle',
-                'fetchSureties'
+                'fetchSureties',
+                'fetchGreenCard'
             ]),
+            downloadGreenCard({contractId, insuranceId}){
+                this.fetchGreenCard({contractId, insuranceId}).then(response => {
+                    //Download the response.
+                    //Based on: https://github.com/pagekit/vue-resource/issues/285
+                    let headers = response.headers;
+                    let blob = new Blob([response.body],{type:headers['content-type']});
+                    let link = document.createElement('a');
+                    link.href = window.URL.createObjectURL(blob);
+                    link.download = "green_card.pdf";
+                    link.click();
+                })
+            },
             showDate: function (date) {
                 var d=new Date(date)
                 return d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear()

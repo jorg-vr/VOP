@@ -7,9 +7,6 @@
     <div v-if="vehicle">
         <div class="page-header">
             <h1> {{$t('vehicle.vehicle') | capitalize }} {{vehicle.licensePlate}}</h1>
-            <button-action @click="fetchGreenCard({id, extention: 'pdf'})" buttonClass="pull-right btn btn-primary">
-                {{$t('vehicle.generate_green_card')}}
-            </button-action>
         </div>
         <div class="col-md-8">
             <table id="show-vehicle" class="table show-table">
@@ -129,7 +126,6 @@
                 'fetchVehicle',
                 'fetchVehicleType',
                 'fetchInsurancesBy',
-                'fetchGreenCard'
             ]),
             tdshowModal: function(id) {
                 this.showModal = true
