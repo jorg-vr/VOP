@@ -13,6 +13,7 @@ import spring.exceptions.NotAuthorizedException;
 import spring.model.AuthenticationToken;
 import spring.model.RESTInvoice;
 import spring.model.RESTSchema;
+import spring.model.RESTVehicleInvoice;
 import spring.model.insurance.RESTContract;
 import util.UUIDUtil;
 
@@ -66,8 +67,31 @@ public class RESTInvoiceController extends RESTAbstractController<RESTInvoice, I
         } catch (DataAccessException e) {
             throw new RuntimeException(e);
         }
+    }
 
+    @RequestMapping(value="/{id}/${path.vehicleInvoices}" ,method = RequestMethod.GET)
+    public RESTSchema<RESTVehicleInvoice> getAllVehicleInvoices(@PathVariable String companyId,
+                                                                @PathVariable String id,
+                                                                HttpServletRequest request,
+                                                                Integer page, Integer limit,
+                                                                @RequestHeader(value = "Authorization") String token,
+                                                                @RequestHeader(value = "Function") String function) throws ObjectNotFoundException {
+        UUID user = new AuthenticationToken(token).getAccountId();
+        try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
+            InvoiceController controller = manager.getInvoiceController();
 
+            Collection<RESTVehicleInvoice> invoices = controller
+                    .get(toUUID(id))
+                    .getVehicleInvoices()
+                    .stream()
+                    .map(RESTVehicleInvoice::new)
+                    .collect(Collectors.toList());
+            return new RESTSchema<>(invoices, page, limit, request);
+        } catch (UnAuthorizedException e) {
+            throw new NotAuthorizedException();
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @RequestMapping(method = RequestMethod.PUT)

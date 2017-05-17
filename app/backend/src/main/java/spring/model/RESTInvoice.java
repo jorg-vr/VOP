@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by Billie Devolder on 16/04/2017.
@@ -56,10 +57,6 @@ public class RESTInvoice extends RESTAbstractModel<Invoice> {
 
     private int totalTax;
 
-    /**
-     * collection of the insurances that are the subject of this invoice
-     */
-    private Collection<VehicleInvoice> vehicleInvoices;
 
     public RESTInvoice() {
 
@@ -74,7 +71,6 @@ public class RESTInvoice extends RESTAbstractModel<Invoice> {
         setTotalAmount(invoice.calculateCost());
         setTotalTax(invoice.calculateTax());
         setPayer(UUIDUtil.UUIDToNumberString(invoice.getPayer().getUuid()));
-        setVehicleInvoices(invoice.getVehicleInvoices());
     }
 
     /**
@@ -127,13 +123,7 @@ public class RESTInvoice extends RESTAbstractModel<Invoice> {
         this.endDate = endDate;
     }
 
-    public Collection<VehicleInvoice> getVehicleInvoices() {
-        return vehicleInvoices;
-    }
 
-    public void setVehicleInvoices(Collection<VehicleInvoice> vehicleInvoices) {
-        this.vehicleInvoices = vehicleInvoices;
-    }
 
 
     public int getTotalAmount() {
