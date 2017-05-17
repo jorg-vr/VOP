@@ -6,12 +6,46 @@
     <div class="col-lg-8 col-md-9 col-sm-11">
         <div class="page-header">
             <h1>
-                {{$t("invoice.invoices") | capitalize }} {{client.name}}
+                {{$t("invoice.invoices") | capitalize }}
             </h1>
         </div>
 
-        <list-component :objects="invoices" :resource="resource" :visibleKeys="['showableStartDate', 'showableEndDate', 'totalAmount']">
-        </list-component>
+        <div v-if="invoices.length>0">
+            <table class="table-hover table">
+                <thead>
+                <tr>
+                    <th >
+                        {{$t('invoice.startDate')| capitalize }}
+                    </th>
+                    <th >
+                        {{$t('invoice.type')| capitalize }}
+                    </th>
+                    <th >
+                        {{$t('invoice.totalAmount')| capitalize }}
+                    </th>
+                    <th >
+                        {{$t('invoice.totalTax')| capitalize }}
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="invoice in invoices" class="list-tr">
+                    <td  >
+                        {{invoice.showableStartDate}}
+                    </td>
+                    <td  >
+                        {{$t('invoiceTypes.'+invoice.type)}}
+                    </td>
+                    <td  >
+                        €{{invoice.totalAmount}}
+                    </td>
+                    <td  >
+                        €{{invoice.totalTax}}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
         <button-back :route="{name: 'client'}"></button-back>
 
     </div>
@@ -36,25 +70,20 @@
         },
         created() {
             this.setLoading({loading: true })
-            this.fetchInvoicesByCompany({companyId: this.companyId}).then(() => {
+            this.fetchInvoices({ids:{company: this.companyId}}).then(() => {
                 this.setLoading({loading: false })
             })
         },
         computed: {
             ...mapGetters([
-                'invoices',
-                'clients',
-                'client'
+                'invoices'
             ])
         },
         methods: {
             ...mapActions([
-                'fetchClients',
-                'fetchClient',
-                'fetchInvoicesByCompany',
+                'fetchInvoices',
             ]),
             ...mapMutations([
-                'setFilteredClients',
                 'setLoading'
             ])
 
