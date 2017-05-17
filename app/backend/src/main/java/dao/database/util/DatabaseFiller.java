@@ -105,7 +105,6 @@ public class DatabaseFiller {
 
                 Invoice invoice = new Invoice();
                 invoice.setContracts(new ArrayList<Contract>(Arrays.asList(new Contract[]{contract})));
-                invoice.setBeneficiary(solvas);
                 invoice.setPayer(customer);
                 invoice.setPaid(false);
                 invoice.setStartDate(LocalDateTime.now().minusMonths(1));
@@ -346,7 +345,6 @@ public class DatabaseFiller {
 
             Invoice invoice = new Invoice();
             invoice.setContracts(new ArrayList<Contract>(Arrays.asList(new Contract[]{contract})));
-            invoice.setBeneficiary(solvas);
             invoice.setPayer(customer);
             invoice.setPaid(false);
             invoice.setStartDate(LocalDateTime.now().minusMonths(1));

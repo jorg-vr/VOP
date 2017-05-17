@@ -11,6 +11,7 @@ import dao.interfaces.VehicleTypeDAO;
 import model.account.*;
 import model.billing.Invoice;
 import model.billing.InvoiceType;
+import model.billing.VehicleInvoice;
 import model.fleet.Fleet;
 import model.fleet.Vehicle;
 import model.fleet.VehicleType;
@@ -234,12 +235,12 @@ public class RealDataDatabaseFiller {
         try (ControllerManager controllerManager = new ControllerManager(user.getUuid(), function.getUuid())) {
             Invoice invoice = new Invoice();
             invoice.setContracts(new ArrayList<>(contracts));
-            invoice.setBeneficiary(solvas);
             invoice.setPayer(customer);
             invoice.setPaid(false);
             invoice.setStartDate(LocalDateTime.now().minusMonths(1));
             invoice.setEndDate(LocalDateTime.now().plusMonths(1));
             invoice.setType(InvoiceType.BILLING);
+            invoice.setVehicleInvoices(createVehicleInvoices(customer,1));
             controllerManager.getInvoiceController().create(invoice);
             return invoice;
         }
@@ -657,6 +658,32 @@ public class RealDataDatabaseFiller {
         role.setAccess(Resource.USER, Action.READ_MINE);
         role.setAccess(Resource.ROLE, Action.READ_MINE);
         return role;
+    }
+
+    private Collection<VehicleInvoice> createVehicleInvoices(Customer customer, int duration){
+        Collection<VehicleInsurance> insurances = new ArrayList<>();
+
+        for(Contract contract: customer.getContracts()){
+            for(VehicleInsurance insurance: contract.getVehicleInsurances()){
+                insurances.add(insurance);
+            }
+        }
+
+        Collection<VehicleInvoice> vehicleInvoices = new ArrayList<>();
+        for(VehicleInsurance insurance: insurances){
+            VehicleInvoice vehicleInvoice = new VehicleInvoice();
+
+            vehicleInvoice.setVin(insurance.getVehicle().getVin());
+            vehicleInvoice.setLicensePlate(insurance.getVehicle().getLicensePlate());
+            vehicleInvoice.setFranchise(insurance.getFranchise());
+            vehicleInvoice.setVehicleInsurance(insurance);
+            vehicleInvoice.setTotalCost(insurance.calculateCost()*duration);
+            vehicleInvoice.setTotalTax(insurance.calculateTax()*duration);
+            vehicleInvoice.setInsuredValue(insurance.getInsuredValue());
+
+            vehicleInvoices.add(vehicleInvoice);
+        }
+        return vehicleInvoices;
     }
 
 }
