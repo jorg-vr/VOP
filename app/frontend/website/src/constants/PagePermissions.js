@@ -38,6 +38,7 @@ addRoutesForResource(resources.CONTRACT)
 addRoutesForResource(resources.CONDITION)
 addRoutesForResource(resources.LOG)
 addRoutesForResource(resources.FUNCTION)
+addRoutesForResource(resources.ROLE)
 //Define exceptions
 
 //Users & client pages can only be seen with READ_ALL permissions.

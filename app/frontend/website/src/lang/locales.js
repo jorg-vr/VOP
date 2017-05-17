@@ -65,6 +65,12 @@ export default
             facturationPeriod: 'facturation period',
             paymentPeriod: 'payment period'
         },
+        role: {
+            role: "role",
+            roles: "roles",
+            name: "naam",
+            permissions: "permissions"
+        },
         clientTypes: {
             customer: "customer",
             insuranceCompany: "insurance company"
@@ -249,6 +255,16 @@ export default
             oldValue: 'old value',
             newValue: 'new value'
         },
+        action: {
+            READ_MINE: 'read all',
+            READ_ALL: 'read own',
+            CREATE_ALL: 'create all',
+            CREATE_MINE: 'create own',
+            UPDATE_ALL: 'update all',
+            UPDATE_MINE: 'update own',
+            REMOVE_ALL: 'remove all',
+            REMOVE_MINE: 'remove own'
+        },
         resource: {
             user: 'user',
             function: 'function',
@@ -264,7 +280,10 @@ export default
             commission: 'commission',
             contract: 'insurance contract',
             condition: 'speciale condition',
-            log: 'log'
+            log: 'log',
+            company: 'company',
+            insurance: 'insurance',
+            vehicletype: 'vehicle type'
         },
         period: {
             quarterly: 'quarterly',
@@ -336,6 +355,12 @@ export default
             paymentPeriod: 'afrekeningsperiode'
 
         },
+        role: {
+            role: "rol",
+            roles: "rollen",
+            name: 'naam',
+            permissions: "permissies"
+        },
         clientTypes: {
             customer: "klant",
             insuranceCompany: "verzekeringsbedrijf"
@@ -360,6 +385,7 @@ export default
             description: 'beschrijving',
             browse: 'bladeren'
         },
+
         actions: {
             select: 'selecteer {subject}',
             create: '{subject} aanmaken',
@@ -537,7 +563,10 @@ export default
             commission: 'commissie',
             contract: 'verzekeringscontract',
             condition: 'speciale conditie',
-            log: 'log'
+            log: 'log',
+            company: 'bedrijf',
+            insurance: 'verzekering',
+            vehicletype: 'voertuigtype'
         },
         period: {
             quarterly: 'driemaandelijks',
@@ -557,6 +586,16 @@ export default
         },
         field: {
             company: 'bedrijf'
-        }
+        },
+        action: {
+            READ_MINE: 'eigen lezen',
+            READ_ALL: 'alles lezen',
+            CREATE_ALL: 'alles maken',
+            CREATE_MINE: 'eigen maken',
+            UPDATE_ALL: 'alles bewerken',
+            UPDATE_MINE: 'eigen bewerken',
+            REMOVE_ALL: 'alles verwijderen',
+            REMOVE_MINE: 'eigen verwijderen'
+        },
     }
 }

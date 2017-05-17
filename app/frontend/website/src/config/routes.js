@@ -50,6 +50,11 @@ import newContract from '../pages/contract/new.vue'
 import editContract from '../pages/contract/edit.vue'
 import showContract from '../pages/contract/show.vue'
 
+import indexRole from '../pages/role/index.vue'
+import newRole from '../pages/role/new.vue'
+import editRole from '../pages/role/edit.vue'
+import showRole from '../pages/role/show.vue'
+
 import indexSpecialCondition from '../pages/specialCondition/index.vue'
 import newSpecialCondition from '../pages/specialCondition/new.vue'
 import editSpecialCondition from '../pages/specialCondition/edit.vue'
@@ -124,6 +129,11 @@ export default [
             {path: 'conditions/new', name: 'new_condition', component: newSpecialCondition},
             {path: 'conditions/:id(\\d+)', name: 'condition', component: showSpecialCondition, props: true},
             {path: 'conditions/:id(\\d+)/edit', name: 'edit_condition', component: editSpecialCondition, props: true},
+
+            {path: 'roles', name: 'roles', component: indexRole},
+            {path: 'roles/new', name: 'new_role', component: newRole},
+            {path: 'roles/:id(\\d+)', name: 'role', component: showRole, props: true},
+            {path: 'roles/:id(\\d+)/edit', name: 'edit_role', component: editRole, props: true},
 
             // function pages
             {path: 'users/:userId(\\d+)/functions/new', name: 'new_function', component: newFunction, props: true},
