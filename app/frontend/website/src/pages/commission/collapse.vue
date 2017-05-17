@@ -1,15 +1,17 @@
 <template>
     <protected-element :permission="permission">
-        <button  type="button" class="btn btn-default btn-block" data-toggle="collapse" data-target=".panel-collapse" aria-expanded="false">
-            {{$t('commission.commissions')}}
-            <span class="caret"></span>
-        </button>
-        <div class="panel-collapse collapse">
-            <checkbox-input-form-group
-                    :object="edit" name="edit" :text="$t('common.edit')" >
-            </checkbox-input-form-group>
-            <show v-if="edit.edit===false" :id="id" :loc="loc"></show>
-            <edit v-if="edit.edit===true" :id="id" :loc="loc"></edit>
+        <div>
+            <button  type="button" class="btn btn-default btn-block" data-toggle="collapse" data-target=".panel-collapse" aria-expanded="false">
+                {{$t('commission.commissions')}}
+                <span class="caret"></span>
+            </button>
+            <div class="panel-collapse collapse">
+                <checkbox-input-form-group
+                        :object="edit" name="edit" :text="$t('common.edit')" >
+                </checkbox-input-form-group>
+                <show v-if="edit.edit===false" :id="id" :loc="loc"></show>
+                <edit v-if="edit.edit===true" :id="id" :loc="loc" :back="back"></edit>
+            </div>
         </div>
     </protected-element>
 </template>
@@ -34,10 +36,11 @@
         },
         props:{
             id:String,
-            loc:String
+            loc:String,
+            back:Object
         },
         components: {
-            show,edit,CheckboxInputFormGroup
+            show,edit,CheckboxInputFormGroup,ProtectedElement
         }
     }
 </script>
