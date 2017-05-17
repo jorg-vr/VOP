@@ -7,6 +7,9 @@
     <div v-if="vehicle">
         <div class="page-header">
             <h1> {{$t('vehicle.vehicle') | capitalize }} {{vehicle.licensePlate}}</h1>
+            <button-action @click="fetchGreenCard({id, extention: 'pdf'})" buttonClass="pull-right btn btn-primary">
+                {{$t('vehicle.generate_green_card')}}
+            </button-action>
         </div>
         <div class="col-md-8">
             <table id="show-vehicle" class="table show-table">
@@ -83,6 +86,7 @@
     import resources from '../../constants/resources'
     import * as utils from '../../utils/utils'
     import commissions from '../commission/collapse.vue'
+    import buttonAction from '../../assets/buttons/buttonAction.vue'
 
     export default {
         data(){
@@ -92,7 +96,7 @@
             }
         },
         components: {
-            buttonBack,listComponent, buttonLink,buttonEdit,buttonRemove,commissions
+            buttonBack,listComponent, buttonLink,buttonEdit,buttonRemove,commissions, buttonAction
         },
         props: {
             id: String
@@ -124,7 +128,8 @@
             ...mapActions([
                 'fetchVehicle',
                 'fetchVehicleType',
-                'fetchInsurancesBy'
+                'fetchInsurancesBy',
+                'fetchGreenCard'
             ]),
             tdshowModal: function(id) {
                 this.showModal = true

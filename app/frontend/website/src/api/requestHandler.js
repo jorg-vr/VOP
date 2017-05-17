@@ -19,6 +19,7 @@ export default {
     getObjectsRequest(location){
         return new Promise((resolve, reject) => {
             Vue.http.get(location).then(response => {
+                console.log(response)
                 resolve(response.body.data)
             }, response => {
                 rejectResponse(response, reject)
