@@ -84,7 +84,8 @@ All of the fields for insurance input for the insurance form
                 'contract',
                 'sureties',
                 'vehicles',
-                'insuranceCompanyId'
+                'insuranceCompanyId',
+                'contractId'
                 ]),
 
         },
@@ -96,7 +97,7 @@ All of the fields for insurance input for the insurance form
                 ])
         },
         created(){
-            this.fetchContract({id:this.object.contract}).then(()=>{
+            this.fetchContract({id:this.contractId}).then(()=>{
                 // fetch all possible sureties
                 this.fetchSureties({ids:{ company:this.contract.insuranceCompany}}).then(()=>{
                     translateSuretyTypes(this.sureties);
