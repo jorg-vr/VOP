@@ -21,6 +21,7 @@ export const COMMISSION = '{resource}/{resourceId}/commissions'
 export const CONTRACT = 'contracts/'
 export const CONDITION= 'special-conditions/'
 export const LOG = '{resource}/{resourceId}/logs/'
+export const IMPORT_VEHICLES = 'fleets/{id}/vehicles/import/'
 export const FUNCTION = 'users/{userId}/functions/'
 
 //Example location for updated resources: export const SURETY = 'contracts/{contract}/insurances'

@@ -1,6 +1,6 @@
+
 <!--
 Generic component for a form. Every form should be encapsulated in this component.
-
 @param actions: The action this form is intended for.
 @param resource: The name of the resource configured by this form
 @param object: The resource configured by this form
@@ -19,7 +19,6 @@ Generic component for a form. Every form should be encapsulated in this componen
 <script>
     import {getResourceActionText} from '../../utils/utils'
     import part from './AbstractFormPart.vue'
-
     export default {
         data(){
             return {

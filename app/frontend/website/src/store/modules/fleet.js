@@ -1,6 +1,7 @@
 import * as locations from '../../constants/locations'
 import RequestHandler from '../../api/requestHandler'
 import Vue from 'vue'
+import * as utils from '../../utils/utils'
 
 export default {
     state: {
@@ -95,6 +96,13 @@ export default {
                 context.commit('addVehicleToSubfleet', {vehicle: vehicles[i]})
             }
         },
+
+        importVehicles(context, {fleetId, data}){
+            return new Promise((resolve, reject) => {
+                RequestHandler.postObjectRequest(utils.formatLocation(locations.IMPORT_VEHICLES, {id: fleetId}), data)
+                    .then(response => resolve(response), response => reject(response))
+            })
+        }
     }
 }
 

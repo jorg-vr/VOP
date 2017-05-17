@@ -17,7 +17,10 @@ export default
             value: 'value',
             sureties: 'sureties',
             totalCost: 'price',
-            totalTax: 'tax'
+            totalTax: 'tax',
+            import: 'import',
+            failImport: 'The given CSV file does not have the correct format.',
+            example: 'Download example file'
         },
         vehicleType: {
             name: 'name',
@@ -82,7 +85,8 @@ export default
             cancel: 'cancel',
             add: 'add',
             update: "update",
-            description: 'description'
+            description: 'description',
+            browse: 'browse'
         },
         actions: {
             select: 'select {subject}',
@@ -290,7 +294,10 @@ export default
             value: 'waarde',
             sureties: 'waarborgen',
             totalCost: 'prijs',
-            totalTax: 'btw'
+            totalTax: 'btw',
+            import: 'importeer',
+            failImport: 'Het gegeven CSV bestand voldoet niet aan het correcte formaat.',
+            example: 'Download voorbeeld bestand'
         },
         vehicleType: {
             name: 'naam',
@@ -350,7 +357,8 @@ export default
             cancel: 'annuleer',
             add: 'voeg toe',
             update: "bewerken",
-            description: 'beschrijving'
+            description: 'beschrijving',
+            browse: 'bladeren'
         },
         actions: {
             select: 'selecteer {subject}',
