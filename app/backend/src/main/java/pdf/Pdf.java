@@ -28,7 +28,7 @@ public abstract class Pdf {
     }
 
     /**
-     * Generate the pdf itself. Gets called after the init function.
+     * Generate the document itself. Gets called after the init function.
      */
     protected abstract void generateDocument() throws DocumentException;
 
