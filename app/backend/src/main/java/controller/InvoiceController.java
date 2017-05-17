@@ -46,7 +46,7 @@ public class InvoiceController extends AbstractController<Invoice> {
                     minusDays(1));
             invoice.setContracts(customer.getContracts());
             invoice.setPaid(false);
-            invoice.setVehicleInvoices(createVehicleInvoices(customer));
+            invoice.setVehicleInvoices(createVehicleInvoices(customer,customer.getFacturationPeriod().getTime()));
             getDao().create(invoice);
         }
 
@@ -63,7 +63,7 @@ public class InvoiceController extends AbstractController<Invoice> {
         getDao().create(statement);
     }
 
-    private Collection<VehicleInvoice> createVehicleInvoices(Customer customer){
+    private Collection<VehicleInvoice> createVehicleInvoices(Customer customer, int duration){
         Collection<VehicleInsurance> insurances = new ArrayList<>();
 
         for(Contract contract: customer.getContracts()){
@@ -80,8 +80,8 @@ public class InvoiceController extends AbstractController<Invoice> {
             vehicleInvoice.setLicensePlate(insurance.getVehicle().getLicensePlate());
             vehicleInvoice.setFranchise(insurance.getFranchise());
             vehicleInvoice.setVehicleInsurance(insurance);
-            vehicleInvoice.setTotalCost(insurance.calculateCost());
-            vehicleInvoice.setTotalTax(insurance.calculateTax());
+            vehicleInvoice.setTotalCost(insurance.calculateCost()*duration);
+            vehicleInvoice.setTotalTax(insurance.calculateTax()*duration);
             vehicleInvoice.setInsuredValue(insurance.getInsuredValue());
 
             vehicleInvoices.add(vehicleInvoice);
