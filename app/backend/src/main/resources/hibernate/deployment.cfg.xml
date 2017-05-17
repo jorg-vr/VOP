@@ -11,19 +11,12 @@
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
         <property name="hibernate.connection.username">production</property>
         <property name="hibernate.connection.password">ny5rfg8scu7p3c9h7gef</property>
-        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5430/production</property>
-
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/production</property>
+        <property name="connection.pool_size">100</property>
         <property name="hbm2ddl.auto">none</property>
         <property name="show_sql">false</property>
         <property name="hibernate.connection.autocommit">false</property>
         <property name="javax.persistence.validation.mode">none</property>
-
-        <property name="hibernate.c3p0.min_size">5</property>
-        <property name="hibernate.c3p0.max_size">100</property>
-        <property name="hibernate.c3p0.timeout">300</property>
-        <property name="hibernate.c3p0.max_statements">50</property>
-        <property name="hibernate.c3p0.idle_test_period">3000</property>
-
 
         <mapping resource="hibernate/invoice.hbm.xml" />
         <mapping resource="hibernate/address.hbm.xml" />

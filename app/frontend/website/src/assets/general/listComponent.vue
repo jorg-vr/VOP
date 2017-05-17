@@ -14,8 +14,8 @@
                         {{value[header]}}
                     </td>
                     <td class="stretch">
-                        <button-edit :resource="resource" :params="{id:value.id}" ></button-edit>
-                        <button-remove :resource="resource"  @click="tdshowModal(value.id)"></button-remove>
+                        <button-edit v-if="edit" :resource="resource" :params="{id:value.id}" ></button-edit>
+                        <button-remove v-if="remove" :resource="resource"  @click="tdshowModal(value.id)"></button-remove>
                     </td>
                 </tr>
             </tbody>
@@ -60,7 +60,7 @@ tr.list-tr {
         props: {
             resource: Object,
             listObject: Object,
-            ids: Object //Object with id's for creating the correct POST/PUT route.
+            ids: Object, //Object with id's for creating the correct POST/PUT route.
             /*
             { "headers" : ["Name", "CompanyName"],
               "values" : [
@@ -74,6 +74,20 @@ tr.list-tr {
              }]
             }
             */
+
+            //These booleans tell if the listComponent should give access to the show, edit and delete of the resource.
+            show: {
+                type: Boolean,
+                default: true
+            },
+            edit: {
+                Boolean,
+                default: true
+            },
+            remove: {
+                Boolean,
+                default: true
+            }
         },
         components: {
             buttonRemove,
@@ -82,7 +96,9 @@ tr.list-tr {
         },
         methods: {
             tdclick: function(id) {
-                this.$router.push({name: this.resource.name, params: {id:id}});
+                if(this.show){
+                    this.$router.push({name: this.resource.name, params: {id:id}});
+                }
             },
             confirmAction: function(){
                 // hide modal

@@ -1,9 +1,6 @@
 package spring.model;
 
-import controller.ControllerManager;
-import controller.CustomerController;
-import controller.RoleController;
-import controller.UserController;
+import controller.*;
 import controller.exceptions.UnAuthorizedException;
 import dao.exceptions.ConstraintViolationException;
 import dao.exceptions.DataAccessException;
@@ -62,8 +59,8 @@ public class RESTFunction extends RESTAbstractModel<Function> {
 
         Map<String, String> violations = new HashMap<>();
         try {
-            CustomerController customerController = manager.getCustomerController();
-            function.setCompany(customerController.get(UUIDUtil.toUUID(getCompany())));
+            CompanyController controller = manager.getCompanyController();
+            function.setCompany(controller.get(UUIDUtil.toUUID(getCompany())));
         } catch (ObjectNotFoundException e) {
             violations.put("company", ErrorCode.NOT_FOUND.toString());
         }
