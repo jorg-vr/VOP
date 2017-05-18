@@ -64,13 +64,13 @@
             <h2 class="col-md-12" v-if="client.type===clientTypes.CUSTOMER.type" >{{$t("fleet.fleets") | capitalize }}
                 <button-add :resource="resources.FLEET" :params="{clientId: client.id}"></button-add>
             </h2>
-            <list-component v-if="listObjectFleets.values.length>0" :listObject="listObjectFleets" :resource="resources.FLEET">
+            <list-component v-if="client.type===clientTypes.CUSTOMER.type&&listObjectFleets.values.length>0" :listObject="listObjectFleets" :resource="resources.FLEET">
             </list-component>
 
             <h2 class="col-md-12" v-if="client.type===clientTypes.INSURANCE_COMPANY.type" >{{$t("surety.sureties") | capitalize }}
                 <button-add :resource="resources.SURETY" :params="{clientId: client.id}"></button-add>
             </h2>
-            <list-component v-if="show&&listObjectSureties.values.length>0" :listObject="listObjectSureties" :resource="resources.SURETY">
+            <list-component v-if="client.type===clientTypes.INSURANCE_COMPANY.type$$show&&listObjectSureties.values.length>0" :listObject="listObjectSureties" :resource="resources.SURETY">
             </list-component>
 
             <h2>{{$t("contract.contracts") | capitalize}}</h2>
