@@ -23,9 +23,9 @@ All of the fields for insurance input for the insurance form
 
       <!-- premium percentage -->
 
-       <text-input-form-group v-if="object.flat==false||object.flat==undefined"
+       <percent-input-form-group v-if="object.flat==false||object.flat==undefined"
           :object="object" name="premiumPercentage" :text="$t('surety.premiumPercentage')" :rules="'required'">  
-      </text-input-form-group>
+      </percent-input-form-group>
 
       <!-- Insurance Company -->
         <select-input-form-group 
@@ -56,7 +56,7 @@ All of the fields for insurance input for the insurance form
 </template>
 <script>
     import {mapGetters, mapActions,mapMutations} from 'vuex'
-    import TextInputFormGroup from '../../assets/form/FormGroups/TextInputFormGroup.vue'
+    import percentInputFormGroup from '../../assets/form/FormGroups/PercentInputformGroup.vue'
     import EuroInputFormGroup from '../../assets/form/FormGroups/EuroInputFormGroup.vue'
     import CheckboxInputFormGroup from '../../assets/form/FormGroups/CheckBoxInputGroup.vue'
     import SelectInputFormGroup from '../../assets/form/FormGroups/SelectInputFormGroup.vue'
@@ -83,7 +83,7 @@ All of the fields for insurance input for the insurance form
             object: Object,
         },
         components: {
-            TextInputFormGroup,CheckboxInputFormGroup,SelectInputFormGroup,DateInputFormGroup,listComponent,buttonAdd,EuroInputFormGroup
+            percentInputFormGroup,CheckboxInputFormGroup,SelectInputFormGroup,DateInputFormGroup,listComponent,buttonAdd,EuroInputFormGroup
         },
         mounted(){
             this.$parent.$emit('mounted', this.$children)
