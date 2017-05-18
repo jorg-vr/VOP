@@ -9,7 +9,10 @@
         <div class="page-header">
             <h1>
                 {{client.name| capitalize }}
-                <button-invoice  :id="client.id" ></button-invoice>
+                <button-link v-if="hasPermissionForRoute('invoices')"
+                        buttonClass="pull-right btn btn-primary btn-add" :route="{name: 'invoices', params: {companyId: id}}">
+                    {{$t("invoice.invoices") | capitalize }}
+                </button-link>
             </h1>
 
         </div>
@@ -75,7 +78,7 @@
     import listComponent from "../../assets/general/listComponent.vue"
     import buttonBack from '../../assets/buttons/buttonBack.vue'
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
-    import buttonInvoice from '../../assets/buttons/buttonInvoice.vue'
+    import buttonLink from '../../assets/buttons/buttonLink.vue'
     import periods from '../../constants/periods'
     import commissions from '../commission/collapse.vue'
 
@@ -90,7 +93,7 @@
             }
         },
         components: {
-            buttonBack, listComponent, buttonAdd, buttonInvoice,commissions
+            buttonBack, listComponent, buttonAdd, buttonLink,commissions
         },
         props: {
             id: String
@@ -117,6 +120,7 @@
         },
         computed: {
             ...mapGetters([
+                'hasPermissionForRoute',
                 'client',
                 'contracts',
                 'fleets'

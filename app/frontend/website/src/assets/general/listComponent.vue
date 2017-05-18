@@ -10,7 +10,7 @@
             </thead>
             <tbody>
                 <tr v-for="value in listObject.values" class="list-tr">
-                    <td v-for="header in listObject.headers" class="clickable-td" @click="tdclick(value.id)">
+                    <td v-for="header in listObject.headers" :class="(clickable ? '' : 'non-') + 'clickable-td'" @click="tdclick(value.id)">
                         {{value[header]}}
                     </td>
                     <td class="stretch">
@@ -55,7 +55,8 @@ tr.list-tr {
     export default {
         data() {
             return {
-                showModal: false
+                showModal: false,
+                clickable: false
             }
         },
         props: {
@@ -90,14 +91,22 @@ tr.list-tr {
                 default: true
             }
         },
+        created(){
+            this.clickable = this.show && this.hasPermissionForRoute(this.resource.name)
+        },
         components: {
             buttonRemove,
             buttonEdit,
             confirmModal
         },
+        computed: {
+            ...mapGetters([
+                'hasPermissionForRoute'
+            ])
+        },
         methods: {
             tdclick: function(id) {
-                if(this.show){
+                if(this.clickable){
                     this.$router.push({name: this.resource.name, params: {id:id}});
                 }
             },
@@ -114,5 +123,4 @@ tr.list-tr {
             }
         }
     }
-    
 </script>

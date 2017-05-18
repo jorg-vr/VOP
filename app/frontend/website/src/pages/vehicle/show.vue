@@ -66,7 +66,8 @@
                 </tbody>
             </table>
         </div>
-        <button-link buttonClass="btn btn-default pull-left" buttonId="log" :route="{name: 'vehicle_logs', params: {id: this.id}}">
+        <button-link v-if="hasPermissionForRoute('vehicle_logs')" buttonClass="btn btn-default pull-left" buttonId="log"
+                     :route="{name: 'vehicle_logs', params: {id: this.id}}">
             {{$t('log.log') | capitalize}}
         </button-link>
         <button-back v-if="vehicle.fleet" :route="{name: 'fleet', params: {id: vehicle.fleet}}"></button-back>
