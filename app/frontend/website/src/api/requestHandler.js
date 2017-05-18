@@ -128,6 +128,7 @@ export default {
 }
 
 let rejectResponse = function(response, reject){
+    console.log(response)
     if(response.status===401){ //Invalid token
         window.location = '/login'
     }

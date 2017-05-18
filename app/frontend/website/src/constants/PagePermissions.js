@@ -60,6 +60,30 @@ permissions[actions.READ_ALL.path(resources.CLIENT.name)] = {
     }
 }
 
+permissions['import_vehicles'] = [
+    {
+        resource: resources.FLEET,
+        actions: {
+            values: ['READ_MINE', 'READ_ALL']
+        }
+    },
+    {
+        resource: resources.VEHICLE,
+        actions: {
+            values: ['CREATE_MINE', 'CREATE_ALL']
+        }
+    }
+]
+
+permissions['vehicle_logs'] = permissions['fleet_logs'] = [
+    {
+        resource: resources.LOG,
+        actions: {
+            values: ['READ_MINE', 'READ_ALL']
+        }
+    }
+]
+
 export const PagePermissions = permissions
 
 /* For future reference if necessary...
