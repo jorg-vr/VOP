@@ -32,9 +32,7 @@ springBoot {
 
 sonarqube {
 	properties {
-		property "sonar.exclusions", "**/*Test.java"
-		property "sonar.exclusions", "**/*Filler.java"
-
+		property 'sonar.exclusions', "**/*Test.java,**/*TestSuite.java,**/*Filler.java"
 	}
 }
 
