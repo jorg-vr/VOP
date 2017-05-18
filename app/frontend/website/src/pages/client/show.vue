@@ -70,7 +70,7 @@
             <h2 class="col-md-12" v-if="client.type===clientTypes.INSURANCE_COMPANY.type" >{{$t("surety.sureties") | capitalize }}
                 <button-add :resource="resources.SURETY" :params="{clientId: client.id}"></button-add>
             </h2>
-            <list-component v-if="client.type===clientTypes.INSURANCE_COMPANY.type$$show&&listObjectSureties.values.length>0" :listObject="listObjectSureties" :resource="resources.SURETY">
+            <list-component v-if="client.type===clientTypes.INSURANCE_COMPANY.type&&show&&listObjectSureties.values.length>0" :listObject="listObjectSureties" :resource="resources.SURETY">
             </list-component>
 
             <h2>{{$t("contract.contracts") | capitalize}}</h2>
