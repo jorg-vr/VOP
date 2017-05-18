@@ -24,6 +24,7 @@
         <confirm-modal v-show="showModal" 
             @cancelModal="showModal=false" 
             @confirmModal="confirmAction()" 
+            @close="showModal=false "
             :modalHeaderTitle=" $t('modal.titleConfirm') | capitalize"
             :modalBodyText="$t('modal.textConfirm') | capitalize" 
             :confirmButtonText="$t('modal.button1') | capitalize "

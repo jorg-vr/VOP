@@ -77,12 +77,17 @@
         </table>
         <!-- Confirmation Modam -->
         <confirm-modal v-show="showModal"
-                       @cancelModal="showModal=false"
-                       @confirmModal="confirmAction()"
-                       :modalHeaderTitle=" $t('modal.titleConfirm') | capitalize"
-                       :modalBodyText="$t('modal.textConfirm') | capitalize"
+                       @cancelModal="cancelCorrection"
+                       @confirmModal="confirmCorrection()"
+                       @optional="showModal=false"
+                       @close="showModal=false"
+                       :object="insurance"
+                       :endDate="$t('insurance.endDate') | capitalize"
+                       :modalHeaderTitle=" $t('modal.titleCorrection') | capitalize"
+                       :modalBodyText="$t('modal.textCorrection') | capitalize"
                        :confirmButtonText="$t('modal.button1') | capitalize "
-                       :cancelButtonText="$t('modal.button2') | capitalize ">
+                       :cancelButtonText="$t('modal.button2') | capitalize "
+                       :optionalButtonText="$t('modal.cancel') | capitalize ">
         </confirm-modal>
 
         <div class="page-header">
@@ -189,7 +194,9 @@
                 'fetchInsurances',
                 'fetchContract',
                 'fetchInsurances',
-                'fetchSureties'
+                'fetchSureties',
+                'fetchInsurance',
+                'createCorrection'
             ]),
             ...mapMutations([
                 'setContractId',
@@ -203,16 +210,31 @@
             tdclick: function(value) {
                 this.$router.push({name: this.resource1.name, params: {contractId:value.contract, id:value.id}});
             },
-            confirmAction: function(){
+            confirmCorrection: function(){
                 // hide modal
+                let correction = {}
                 this.showModal=false
-                // remove object
-                // special case deletion of insurance
+                // create correction object
+                correction.vehicle= this.insurance.vehicle
+                correction.contract = this.insurance.contract
+                correction.date = this.insurance.endDate + "T00:00:00.00"
+                correction.tax = this.insurance.tax
+                this.deleteObject()
+                this.createCorrection({companyId: this.contract.customer, resource:correction})
+            },
+            cancelCorrection : function(){
+                this.showModal = false
+                this.deleteObject()
+            },
+            deleteObject : function(){
                 this.$store.dispatch('delete' + this.resource1.name.capitalize(), {id: this.selectedvalue, ids: this.ids})
             },
             tdshowModal: function(id) {
                 this.showModal = true
                 this.selectedvalue=id
+                // fetch clicked insuranc
+                this.fetchInsurance({ids:{ contract:this.id}, id:this.selectedvalue}).then(insurance => {
+                 })
             }
         },
     }

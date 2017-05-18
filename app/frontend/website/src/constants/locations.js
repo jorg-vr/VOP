@@ -23,5 +23,6 @@ export const CONDITION= 'special-conditions/'
 export const LOG = '{resource}/{resourceId}/logs/'
 export const IMPORT_VEHICLES = 'fleets/{id}/vehicles/import/'
 export const FUNCTION = 'users/{userId}/functions/'
+export const CORRECTION = "corrections/"
 
 //Example location for updated resources: export const SURETY = 'contracts/{contract}/insurances'
