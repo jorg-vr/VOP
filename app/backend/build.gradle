@@ -30,6 +30,14 @@ springBoot {
     executable = true
 }
 
+sonarqube {
+	properties {
+		property "sonar.exclusions", "**/*Test.java"
+		property "sonar.exclusions", "**/*Filler.java"
+
+	}
+}
+
 repositories {
 	mavenCentral()
 }
