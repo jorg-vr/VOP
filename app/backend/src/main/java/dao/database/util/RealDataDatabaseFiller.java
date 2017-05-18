@@ -148,14 +148,21 @@ public class RealDataDatabaseFiller {
                     adminRole);
             Function productionFunction = createFunction(company, user, LocalDateTime.now().minusMonths(8), LocalDateTime.now().plusMonths(8), "Productiebeheerder",
                     productionRole);
+            Function customerFunction = createFunction(company, user, LocalDateTime.now().minusMonths(8), LocalDateTime.now().plusMonths(8), "Klant",
+                    customerRole);
+            Function insuranceFunction = createFunction(company, user, LocalDateTime.now().minusMonths(8), LocalDateTime.now().plusMonths(8), "Verzekeringsmakelaar",
+                    insuranceRole);
 
             manager.getUserDAO().create(user);
             manager.getRoleDAO().create(adminRole);
             manager.getRoleDAO().create(productionRole);
             manager.getRoleDAO().create(customerRole);
+            manager.getRoleDAO().create(insuranceRole);
             manager.getCompanyDAO().create(company);
             manager.getFunctionDAO().create(adminFunction);
             manager.getFunctionDAO().create(productionFunction);
+            manager.getFunctionDAO().create(customerFunction);
+            manager.getFunctionDAO().create(insuranceFunction);
 
             createInsuranceAccount1(company, insuranceRole, manager);
             createInsuranceAccount2(company, insuranceRole, manager);
@@ -370,7 +377,6 @@ public class RealDataDatabaseFiller {
                 insuranceRole);
 
         manager.getUserDAO().create(userInsurance);
-        manager.getRoleDAO().create(insuranceRole);
         manager.getFunctionDAO().create(insuranceFunction);
     }
 
@@ -380,7 +386,6 @@ public class RealDataDatabaseFiller {
                 insuranceRole);
 
         manager.getUserDAO().create(userInsurance);
-        manager.getRoleDAO().create(insuranceRole);
         manager.getFunctionDAO().create(insuranceFunction);
     }
 
@@ -390,7 +395,6 @@ public class RealDataDatabaseFiller {
                 insuranceRole);
 
         manager.getUserDAO().create(userInsurance);
-        manager.getRoleDAO().create(insuranceRole);
         manager.getFunctionDAO().create(insuranceFunction);
     }
 
@@ -400,7 +404,6 @@ public class RealDataDatabaseFiller {
                 insuranceRole);
 
         manager.getUserDAO().create(userInsurance);
-        manager.getRoleDAO().create(insuranceRole);
         manager.getFunctionDAO().create(insuranceFunction);
     }
 
@@ -586,7 +589,7 @@ public class RealDataDatabaseFiller {
                     vehicle.setLicensePlate(license);
                     vehicle.setType(vehicleType);
                     vehicle.setModel(model);
-                    vehicle.setYear(LocalDate.now());
+                    vehicle.setYear(LocalDate.of(2017-new Random().nextInt(10),1,1));
                     controllerManager.getVehicleController().create(vehicle);
                     fleet.getVehicles().add(vehicle);
                     return;

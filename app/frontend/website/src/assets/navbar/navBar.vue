@@ -38,6 +38,9 @@
                         <li>
                             <resources-link :resource="resources.VEHICLE_TYPE"></resources-link>
                         </li>
+                        <li>
+                            <resources-link :resource="resources.ROLE"></resources-link>
+                        </li>
                     </template>
                 </ul><!-- /.navbar-nav -->
 

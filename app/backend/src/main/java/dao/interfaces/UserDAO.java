@@ -3,6 +3,7 @@ package dao.interfaces;
 import model.account.User;
 
 /**
+ * DAO for bean User
  * Created by Billie Devolder on 5/04/2017.
  */
 public interface UserDAO extends DAO<User> {

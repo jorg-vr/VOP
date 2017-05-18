@@ -8,6 +8,7 @@ import model.insurance.VehicleInsurance;
 import java.time.LocalDate;
 
 /**
+ * DAO for the bean Invoice
  * Created by sam on 4/13/17.
  */
 public interface InvoiceDAO extends DAO<Invoice> {

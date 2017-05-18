@@ -14,8 +14,22 @@ import java.util.UUID;
  */
 public interface DAO<T>  {
 
+    /**
+     * Persists the given Object to the database and initializes not lazy loaded properties
+     * @param t the object
+     * @return the same object but some nonlazy properties might be loaded
+     * @throws DataAccessException Thrown when something goes wrong in the database
+     * @throws ConstraintViolationException Thrown when some properties violate the existing constraints
+     */
     T create(T t) throws DataAccessException, ConstraintViolationException;
 
+    /**
+     * Updates the given Object to the database
+     * @param t the object to update
+     * @return the same object given to the method
+     * @throws DataAccessException Thrown when something goes wrong in the database
+     * @throws ConstraintViolationException Thrown when some properties violate the existing constraints
+     */
     T update(T t) throws DataAccessException, ConstraintViolationException;
 
 

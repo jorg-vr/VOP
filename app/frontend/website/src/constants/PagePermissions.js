@@ -38,7 +38,21 @@ addRoutesForResource(resources.CONTRACT)
 addRoutesForResource(resources.CONDITION)
 addRoutesForResource(resources.LOG)
 addRoutesForResource(resources.FUNCTION)
+addRoutesForResource(resources.ROLE)
+
+
 //Define exceptions
+/**
+ * Fictional example:
+ * permissions[route] = {             ---> route indicates the name of the route for which we define a permission requirement
+ *  resource: resources.VEHICLE       ---> resource indicates which resource the user needs to have access to
+ *  actions: {
+ *      name: actions.READ_ALL.name,  ---> the name of the action
+ *      path: actions.READ_ALL.path,  ---> the path to where the actions leads
+ *      values: ['CREATE_ALL', 'CREATE_MINE']
+ *      ---> The user needs to have one of these actions for the given resource as permission to get access to the page.
+ *  }
+ */
 
 //Users & client pages can only be seen with READ_ALL permissions.
 permissions[actions.READ_ALL.path(resources.USER.name)] = {
@@ -58,6 +72,50 @@ permissions[actions.READ_ALL.path(resources.CLIENT.name)] = {
         values: ['READ_ALL']
     }
 }
+
+
+
+permissions[actions.READ_ALL.path(resources.VEHICLE_TYPE.name)] = {
+    resource: resources.CLIENT,
+    actions: {
+        name: actions.READ_ALL.name,
+        path: actions.READ_ALL.path,
+        values: ['CREATE_MINE', 'CREATE_ALL', 'EDIT_MINE', 'EDIT_ALL', 'REMOVE_MINE', 'REMOVE_ALL']
+    }
+}
+
+permissions[actions.READ_ALL.path(resources.ROLE.name)] = {
+    resource: resources.CLIENT,
+    actions: {
+        name: actions.READ_ALL.name,
+        path: actions.READ_ALL.path,
+        values: ['CREATE_MINE', 'CREATE_ALL', 'EDIT_MINE', 'EDIT_ALL', 'REMOVE_MINE', 'REMOVE_ALL']
+    }
+}
+
+permissions['import_vehicles'] = [
+    {
+        resource: resources.FLEET,
+        actions: {
+            values: ['READ_MINE', 'READ_ALL']
+        }
+    },
+    {
+        resource: resources.VEHICLE,
+        actions: {
+            values: ['CREATE_MINE', 'CREATE_ALL']
+        }
+    }
+]
+
+permissions['vehicle_logs'] = permissions['fleet_logs'] = [
+    {
+        resource: resources.LOG,
+        actions: {
+            values: ['READ_MINE', 'READ_ALL']
+        }
+    }
+]
 
 export const PagePermissions = permissions
 

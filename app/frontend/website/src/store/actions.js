@@ -4,6 +4,19 @@ import {formatLocation, addShowableDateTime} from '../utils/utils'
 
 export default {
     /**
+     * Fetch a list of all the available permissions
+     * @param context
+     */
+    fetchPermissionList(context){
+        return new Promise((resolve, reject) => {
+            RequestHandler.getObjectsRequest(locations.PERMISSION_LIST).then(response => {
+                resolve(response)
+            }, response => {
+                reject(response)
+            })
+        })
+    },
+    /**
      * Fetch the logs of the resource with the given name and the given id.
      * @param context
      * @param resource Name of the resource

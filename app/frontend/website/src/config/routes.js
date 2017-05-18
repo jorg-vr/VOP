@@ -50,6 +50,11 @@ import newContract from '../pages/contract/new.vue'
 import editContract from '../pages/contract/edit.vue'
 import showContract from '../pages/contract/show.vue'
 
+import indexRole from '../pages/role/index.vue'
+import newRole from '../pages/role/new.vue'
+import editRole from '../pages/role/edit.vue'
+import showRole from '../pages/role/show.vue'
+
 import indexSpecialCondition from '../pages/specialCondition/index.vue'
 import newSpecialCondition from '../pages/specialCondition/new.vue'
 import editSpecialCondition from '../pages/specialCondition/edit.vue'
@@ -58,9 +63,10 @@ import showSpecialCondition from '../pages/specialCondition/show.vue'
 import indexInvoice from '../pages/invoice/index.vue'
 import showInvoice from '../pages/invoice/show.vue'
 
-
 import exception from '../pages/exception/exception.vue'
 import login from '../pages/login/login.vue'
+
+import ImportVehicles from '../pages/vehicle/import.vue'
 
 export default [
     {
@@ -93,7 +99,7 @@ export default [
             {path: 'vehicles/:id(\\d+)/edit', name: 'edit_vehicle', component: editVehicle, props: true},
             {path: 'vehicles/:id(\\d+)/logs', name: 'vehicle_logs', component: vehicleLogs, props: true},
             {path: 'vehicles/:resourceId(\\d+)/logs/:id(\\d+)', name: 'vehicle_log', component: vehicleLog, props: true},
-
+            {path: 'fleets/:fleetId(\\d+)/vehicles/import', name: 'import_vehicles', component: ImportVehicles, props:true},
 
             //VehicleType
             {path: 'vehicles/types', name: 'vehicleTypes', component: indexVehicleType},
@@ -123,6 +129,11 @@ export default [
             {path: 'conditions/new', name: 'new_condition', component: newSpecialCondition},
             {path: 'conditions/:id(\\d+)', name: 'condition', component: showSpecialCondition, props: true},
             {path: 'conditions/:id(\\d+)/edit', name: 'edit_condition', component: editSpecialCondition, props: true},
+
+            {path: 'roles', name: 'roles', component: indexRole},
+            {path: 'roles/new', name: 'new_role', component: newRole},
+            {path: 'roles/:id(\\d+)', name: 'role', component: showRole, props: true},
+            {path: 'roles/:id(\\d+)/edit', name: 'edit_role', component: editRole, props: true},
 
             // function pages
             {path: 'users/:userId(\\d+)/functions/new', name: 'new_function', component: newFunction, props: true},

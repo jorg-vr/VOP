@@ -17,7 +17,10 @@ export default
             value: 'value',
             sureties: 'sureties',
             totalCost: 'price',
-            totalTax: 'tax'
+            totalTax: 'tax',
+            import: 'import',
+            failImport: 'The given CSV file does not have the correct format.',
+            example: 'Download example file'
         },
         vehicleType: {
             name: 'name',
@@ -62,6 +65,12 @@ export default
             facturationPeriod: 'facturation period',
             paymentPeriod: 'payment period'
         },
+        role: {
+            role: "role",
+            roles: "roles",
+            name: "naam",
+            permissions: "permissions"
+        },
         clientTypes: {
             customer: "customer",
             insuranceCompany: "insurance company"
@@ -82,7 +91,8 @@ export default
             cancel: 'cancel',
             add: 'add',
             update: "update",
-            description: 'description'
+            description: 'description',
+            browse: 'browse'
         },
         actions: {
             select: 'select {subject}',
@@ -102,7 +112,8 @@ export default
             titleCorrection: 'Correction',
             textCorrection: 'would you like to make a correction for this ',
             button1: 'Yes',
-            button2: 'No'
+            button2: 'No',
+            cancel: 'cancel'
         },
         exception: {
             e404: 'Not Found',
@@ -259,6 +270,16 @@ export default
             oldValue: 'old value',
             newValue: 'new value'
         },
+        action: {
+            READ_MINE: 'read all',
+            READ_ALL: 'read own',
+            CREATE_ALL: 'create all',
+            CREATE_MINE: 'create own',
+            UPDATE_ALL: 'update all',
+            UPDATE_MINE: 'update own',
+            REMOVE_ALL: 'remove all',
+            REMOVE_MINE: 'remove own'
+        },
         resource: {
             user: 'user',
             function: 'function',
@@ -274,7 +295,10 @@ export default
             commission: 'commission',
             contract: 'insurance contract',
             condition: 'speciale condition',
-            log: 'log'
+            log: 'log',
+            company: 'company',
+            insurance: 'insurance',
+            vehicletype: 'vehicle type'
         },
         period: {
             quarterly: 'quarterly',
@@ -304,7 +328,10 @@ export default
             value: 'waarde',
             sureties: 'waarborgen',
             totalCost: 'prijs',
-            totalTax: 'btw'
+            totalTax: 'btw',
+            import: 'importeer',
+            failImport: 'Het gegeven CSV bestand voldoet niet aan het correcte formaat.',
+            example: 'Download voorbeeld bestand'
         },
         vehicleType: {
             name: 'naam',
@@ -343,6 +370,12 @@ export default
             paymentPeriod: 'afrekeningsperiode'
 
         },
+        role: {
+            role: "rol",
+            roles: "rollen",
+            name: 'naam',
+            permissions: "permissies"
+        },
         clientTypes: {
             customer: "klant",
             insuranceCompany: "verzekeringsbedrijf"
@@ -364,8 +397,10 @@ export default
             cancel: 'annuleer',
             add: 'voeg toe',
             update: "bewerken",
-            description: 'beschrijving'
+            description: 'beschrijving',
+            browse: 'bladeren'
         },
+
         actions: {
             select: 'selecteer {subject}',
             create: '{subject} aanmaken',
@@ -384,7 +419,8 @@ export default
             titleCorrection: 'Correctie',
             textCorrection: 'wil u hiervoor een correctie doorvoeren?',
             button1: 'ja',
-            button2: 'nee'
+            button2: 'nee',
+            cancel: 'annuleer'
         },
         exception: {
             e404: 'Pagina niet gevonden',
@@ -557,7 +593,10 @@ export default
             commission: 'commissie',
             contract: 'verzekeringscontract',
             condition: 'speciale conditie',
-            log: 'log'
+            log: 'log',
+            company: 'bedrijf',
+            insurance: 'verzekering',
+            vehicletype: 'voertuigtype'
         },
         period: {
             quarterly: 'driemaandelijks',
@@ -577,6 +616,16 @@ export default
         },
         field: {
             company: 'bedrijf'
-        }
+        },
+        action: {
+            READ_MINE: 'eigen lezen',
+            READ_ALL: 'alles lezen',
+            CREATE_ALL: 'alles maken',
+            CREATE_MINE: 'eigen maken',
+            UPDATE_ALL: 'alles bewerken',
+            UPDATE_MINE: 'eigen bewerken',
+            REMOVE_ALL: 'alles verwijderen',
+            REMOVE_MINE: 'eigen verwijderen'
+        },
     }
 }
