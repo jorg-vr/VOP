@@ -10,8 +10,6 @@ import dao.interfaces.DAOProvider;
 import dao.interfaces.VehicleTypeDAO;
 import model.account.*;
 import model.billing.Invoice;
-import model.billing.InvoiceType;
-import model.billing.VehicleInvoice;
 import model.fleet.Fleet;
 import model.fleet.Vehicle;
 import model.fleet.VehicleType;

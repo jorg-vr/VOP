@@ -9,7 +9,6 @@ import dao.exceptions.DataAccessException;
 import dao.exceptions.ObjectNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import pdf.PdfException;
@@ -27,10 +26,11 @@ public class MyExceptionHandler {
                 .body(new RESTError(status.value(), message));
     }
 
+    /*
     @ExceptionHandler(HttpMessageNotReadableException.class)
     protected ResponseEntity<Object> handleBadInput(HttpMessageNotReadableException ex) {
         return generateErrorResponse(HttpStatus.BAD_REQUEST, "The JSON is malformed. This is a syntax error.");
-    }
+    }*/
 
     @ExceptionHandler(UnAuthorizedException.class)
     protected ResponseEntity<Object> handleUnAuthorizedException(UnAuthorizedException ex) {
