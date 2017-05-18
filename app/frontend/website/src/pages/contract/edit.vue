@@ -28,7 +28,7 @@
         created(){
             if(this.id){
                 this.fetchContract({id: this.id}).then(contract => {
-                    this.contract = contract;$
+                    this.contract = contract;
                     // Enable dates to fill in datepicker
                     this.contract.startDate = this.contract.startDate.substring(0,10)
                     this.contract.endDate = this.contract.endDate.substring(0,10)
