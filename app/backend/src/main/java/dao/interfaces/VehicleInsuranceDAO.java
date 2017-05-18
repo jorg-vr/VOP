@@ -7,6 +7,7 @@ import model.insurance.VehicleInsurance;
 import java.time.LocalDate;
 
 /**
+ * DAO for bean VehicleInsurance
  * Created by sam on 4/12/17.
  */
 public interface VehicleInsuranceDAO extends DAO<VehicleInsurance>{

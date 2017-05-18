@@ -15,10 +15,14 @@ import java.lang.reflect.Method;
 import java.util.Collection;
 
 /**
+ * Validator for the UniqueKey annotation
  * Created by sam on 4/18/17.
  */
 public class UniqueKeyValidator implements ConstraintValidator<UniqueKey, Serializable>, EntityManagerAwareValidator {
 
+    /**
+     * The session to use
+     */
     private Session session;
 
     @Override
@@ -26,6 +30,9 @@ public class UniqueKeyValidator implements ConstraintValidator<UniqueKey, Serial
         this.session = session;
     }
 
+    /**
+     * The columnnames to check
+     */
     private String[] columnNames;
 
     @Override

@@ -4,6 +4,7 @@ import model.identity.InsuranceCompany;
 import model.insurance.Surety;
 
 /**
+ * DAO for bean Surety
  * Created by sam on 4/12/17.
  */
 public interface SuretyDAO<T extends Surety> extends DAO<T>{
