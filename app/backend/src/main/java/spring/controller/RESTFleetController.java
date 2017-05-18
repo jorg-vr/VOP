@@ -79,15 +79,16 @@ public class RESTFleetController extends RESTAbstractController<RESTFleet, Fleet
                                      @RequestParam(required = false) Integer limit,
                                      @RequestHeader(value = "Authorization") String token,
                                      @RequestHeader(value = "Function") String function) throws UnAuthorizedException, DataAccessException {
+        String companyFilter = company;
         if (companyId.isPresent()) {
-            company = companyId.get();
+            companyFilter = companyId.get();
         }
 
         UUID user = new AuthenticationToken(token).getAccountId();
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
             FleetController controller = manager.getFleetController();
 
-            Customer owner = company != null ? new Customer(toUUID(company)) : null;
+            Customer owner = companyFilter != null ? new Customer(toUUID(companyFilter)) : null;
 
             Collection<RESTFleet> result = controller.getFiltered(owner, name)
                     .stream()
