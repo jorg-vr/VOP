@@ -173,6 +173,14 @@ export default
             STATEMENT:"statement",
             CORRECTION:"correction"
         },
+        vehicleInvoice:{
+            vehicleInvoices:"cost objects",
+            licensePlate:"license plate",
+            insuredValue:"insured value" ,
+            franchise:"franchise",
+            totalCost:"price",
+            totalTax:"tax"
+        },
         surety:{
             surety:'insurance surety',
             sureties: 'insurance sureties',
@@ -447,6 +455,14 @@ export default
             BILLING:"factuur",
             STATEMENT:"afrekening",
             CORRECTION:"correctie"
+        },
+        vehicleInvoice:{
+            vehicleInvoices:"aangerekende kosten",
+            licensePlate:"nummer plaat",
+            insuredValue:"verzekerde waarde" ,
+            franchise:"franchise",
+            totalCost:"prijs",
+            totalTax:"BTW"
         },
         surety: {
             surety:'verzekeringswaarborg',

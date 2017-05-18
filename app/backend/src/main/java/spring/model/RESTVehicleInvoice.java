@@ -39,7 +39,7 @@ public class RESTVehicleInvoice {
 
     public RESTVehicleInvoice(VehicleInvoice vehicleInvoice) {
         setFranchise(vehicleInvoice.getFranchise());
-        setInsuredValue(vehicleInvoice.getFranchise());
+        setInsuredValue(vehicleInvoice.getInsuredValue());
         setLicensePlate(vehicleInvoice.getLicensePlate());
         setTotalCost(vehicleInvoice.getTotalCost());
         setTotalTax(vehicleInvoice.getTotalTax());

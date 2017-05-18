@@ -10,7 +10,8 @@
             <h4>{{$t('invoice.totalTax') | capitalize }}: {{invoice.totalTax}}€</h4>
         </div>
 
-            <h2>{{$t("invoice.contracts") | capitalize }}</h2>
+            <h2>{{$t("vehicleInvoice.vehicleInvoices") | capitalize }}</h2>
+            <list-component :resource="resource" :listObject="listObject" :edit="false" :remove="false" :show="false"></list-component>
             <button-back :route="{name: 'invoices'}"></button-back>
         </div>
     </div>
@@ -25,7 +26,7 @@
     export default {
         data() {
             return {
-                resource: resources.INSURANCE
+                resource: resources.VEHICLE_INVOICE
             }
         },
         components: {
@@ -45,7 +46,13 @@
                 'client',
                 'invoice',
                 'vehicleInvoices'
-            ])
+            ]),
+            listObject() {
+                var listObj = {};
+                listObj.headers = ["licensePlate","insuredValue","franchise","totalCost","totalTax"];
+                listObj.values = this.vehicleInvoices;
+                return listObj;
+            }
         },
         methods: {
             ...mapActions([
