@@ -18,6 +18,8 @@ export default
             sureties: 'sureties',
             totalCost: 'price',
             totalTax: 'tax',
+            totalCostEuro: 'price',
+            totalTaxEuro: 'tax',
             import: 'import',
             failImport: 'The given CSV file does not have the correct format.',
             example: 'Download example file'
@@ -322,6 +324,8 @@ export default
             sureties: 'waarborgen',
             totalCost: 'prijs',
             totalTax: 'btw',
+            totalCostEuro: 'prijs',
+            totalTaxEuro: 'btw',
             import: 'importeer',
             failImport: 'Het gegeven CSV bestand voldoet niet aan het correcte formaat.',
             example: 'Download voorbeeld bestand'

@@ -19,8 +19,8 @@
                 </button-link>
             </h1>
             <h4>
-                <span v-if="fleet.totalCost">  {{$t('fleet.totalCost')|capitalize}}: €{{fleet.totalCost }}</span>
-                <span v-if="fleet.totalTax">  |  {{$t('fleet.totalTax')|capitalize}}:  €{{fleet.totalTax }}</span>
+                <span v-if="fleet.totalCost">  {{$t('fleet.totalCost')|capitalize}}: {{fleet.totalCostEuro }}</span>
+                <span v-if="fleet.totalTax">  |  {{$t('fleet.totalTax')|capitalize}}:  {{fleet.totalTaxEuro }}</span>
             </h4>
         </div>
         <abstract-search-form :resource="resource" :filters="filters" :searchFunction="searchVehicles">
@@ -45,6 +45,7 @@
     import AbstractSearchForm from '../../assets/general/AbstractSearchForm.vue'
     import VehicleSearchInput from '../vehicle/VehicleSearchInput.vue'
     import ImportVehicles from '../vehicle/import.vue'
+    import {centsToEuroObject,centsToEuroArray} from '../../utils/utils'
 
     export default {
         data(){
@@ -71,6 +72,8 @@
             let p2 = this.fetchVehicleTypes();
             Promise.all([p1, p2]).then(values => {
                 this.setVehicleInsurances(values[0]).then(ve =>{
+                    centsToEuroArray(ve,"totalCost");
+                    centsToEuroArray(ve,"totalTax");
                     this.getSubfleets({
                         vehicles: ve,
                         vehicleTypes: values[1]
@@ -117,7 +120,7 @@
             },
             listObject(vehicles) {
                 var listObj = {};
-                listObj.headers = ['brand','model', 'licensePlate','sureties','totalCost','totalTax'];
+                listObj.headers = ['brand','model', 'licensePlate','sureties','totalCostEuro','totalTaxEuro'];
                 listObj.values = vehicles;
                 return listObj;
             },
@@ -144,6 +147,8 @@
                             this.fleet.totalCost=this.fleet.totalCost+vehicles[i].totalCost;
                             this.fleet.totalTax=this.fleet.totalTax+vehicles[i].totalTax;
                         }
+                        centsToEuroObject(this.fleet,"totalCost");
+                        centsToEuroObject(this.fleet,"totalTax");
                         resolveSuccess(vehicles);
                     }).catch(vi=>{resolveFailure(vehicles)});
                 });
