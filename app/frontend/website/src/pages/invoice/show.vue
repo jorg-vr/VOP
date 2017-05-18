@@ -3,37 +3,14 @@
 -->
 <template>
     <div>
-        <div class="page-header">
-            <h1>{{$t("invoice.invoice") | capitalize }} {{client.name}}</h1>
+        <div v-if="invoice" class="page-header">
+            <h1>{{$t("invoiceTypes."+invoice.type) | capitalize }} {{client.name}}</h1>
+            <h4 >{{showDate(invoice.startDate)}} - {{showDate(invoice.endDate)}}</h4>
+            <h4> {{$t('invoice.totalAmount') | capitalize }}: {{invoice.totalAmount}}€</h4>
+            <h4>{{$t('invoice.totalTax') | capitalize }}: {{invoice.totalTax}}€</h4>
         </div>
-        <div class="col-md-8">
-            <table class="table show-table">
-                <tr>
-                    <td>{{$t('invoice.type') | capitalize }}</td>
-                    <td>{{invoice.type}}</td>
-                </tr>
-                <tr>
-                    <td>{{$t('invoice.totalAmount') | capitalize }}</td>
-                    <td>€ {{invoice.totalAmount}}</td>
-                </tr>
-                <tr>
-                    <td>{{$t('invoice.totalTax') | capitalize }}</td>
-                    <td>€ {{invoice.totalTax}}</td>
-                </tr>
-                <tr>
-                    <td>{{$t('invoice.startDate') | capitalize }}</td>
-                    <td>{{showDate(invoice.startDate)}}</td>
-                </tr>
-                <tr>
-                    <td>{{$t('invoice.endDate') | capitalize }}</td>
-                    <td>{{showDate(invoice.endDate)}}</td>
-                </tr>
-            </table>
+
             <h2>{{$t("invoice.contracts") | capitalize }}</h2>
-            <list-component :objects="insurances"
-                            :visibleKeys="new Array('insuranceCompany','type','vehicle')"
-                            :resource="resource">
-            </list-component>
             <button-back :route="{name: 'invoices'}"></button-back>
         </div>
     </div>
@@ -59,30 +36,22 @@
             companyId: String
         },
         created(){
-            let invoiceId = this.id;
-            let companyId= this.companyId;
-            this.setLoading({loading: true })
-            // fetch information about this invoice
-            let p1 = this.fetchInvoice({id:invoiceId,companyId:companyId});
-            let p2 = this.fetchClient({id: companyId});
-            let p3 = this.fetchInsurancesByInvoice({id:invoiceId,companyId:companyId});
-            Promise.all([p1, p2, p3]).then(() => {
-                this.setLoading({loading: false })
-            })
-
+            this.fetchInvoice({id:this.id,ids:{company: this.companyId}});
+            this.fetchClient({id:this.companyId});
+            this.fetchVehicleInvoices({ids:{company: this.companyId,invoice:this.id}})
         },
         computed: {
             ...mapGetters([
                 'client',
                 'invoice',
-                'insurances'
+                'vehicleInvoices'
             ])
         },
         methods: {
             ...mapActions([
                 'fetchInvoice',
                 'fetchClient',
-                'fetchInsurancesByInvoice'
+                'fetchVehicleInvoices'
             ]),
             ...mapMutations([
                 'setLoading'

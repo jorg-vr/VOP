@@ -6,7 +6,7 @@
     <div class="col-lg-8 col-md-9 col-sm-11">
         <div class="page-header">
             <h1>
-                {{$t("invoice.invoices") | capitalize }}
+                {{$t("invoice.invoices") | capitalize }} {{client.name}}
             </h1>
         </div>
 
@@ -36,16 +36,18 @@
             companyId: String
         },
         created() {
-            this.setLoading({loading: true })
+            this.setLoading({loading: true });
             this.fetchInvoices({ids:{company: this.companyId}}).then(() => {
-                translateInvoiceTypes(this.invoices)
+                translateInvoiceTypes(this.invoices);
                 this.show=true;
                 this.setLoading({loading: false })
-            })
+            });
+            this.fetchClient({id:this.companyId});
         },
         computed: {
             ...mapGetters([
-                'invoices'
+                'invoices',
+                'client'
             ]),
             listObject() {
                 var listObj = {};
@@ -57,6 +59,7 @@
         methods: {
             ...mapActions([
                 'fetchInvoices',
+                'fetchClient'
             ]),
             ...mapMutations([
                 'setLoading'
