@@ -112,7 +112,8 @@
             ...mapGetters([
                 'vehicle',
                 'vehicleType',
-                'insurances'
+                'insurances',
+                'hasPermissionForRoute'
             ]),
             listObject() {
                 var listObj = {};
