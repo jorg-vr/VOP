@@ -14,7 +14,7 @@
     <div class="col-md-8">
         <h4>{{$t('suretyTypes.'+surety.suretyType) | capitalize }}</h4>
         <h4>{{surety==true ? $t('surety.premium'): $t('surety.minPremium') | capitalize }}:  {{surety.premiumEuro}}</h4>
-        <h4 v-if="surety.flat==false">{{$t('surety.premiumPercentage') | capitalize }}: {{surety.premiumPercentage}} %</h4>
+        <h4 v-if="surety.flat==false">{{$t('surety.premiumPercentage') | capitalize }}: {{(surety.premiumPercentage*100).toFixed(2)}} %</h4>
     </table> 
 
     <!-- special conditions for the insurance surety -->

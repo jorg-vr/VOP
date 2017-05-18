@@ -77,7 +77,7 @@
 
                 <tr>
                     <td>{{$t('surety.premiumPercentage') | capitalize }}</td>
-                    <td> {{ surety.premiumPercentage }}</td>
+                    <td> {{ (surety.premiumPercentage*100).toFixed(2) }}%</td>
                 </tr>
             </table> 
 
