@@ -1,9 +1,8 @@
 <template>
     <form>
         <errors></errors>
-
         <slot></slot>
-        <div class="row">
+        <div class="row col-md-12">
             <button-back :route="back" buttonClass="pull-right btn btn-sm btn-default form-component-button"
                          :text="$t('common.cancel')">
             </button-back>

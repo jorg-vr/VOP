@@ -2,6 +2,8 @@ import * as locations from '../../constants/locations'
 import {PagePermissions} from '../../constants/PagePermissions'
 import RequestHandler from '../../api/requestHandler'
 import Vue from 'vue'
+import * as utils from '../../utils/utils'
+
 
 export default {
     state: {
@@ -248,7 +250,7 @@ export default {
          */
         fetchPermissionsFunction(context, activeFunction){
             return new Promise((resolve, reject) => {
-                RequestHandler.getObjectsRequest(locations.ROLE + activeFunction.role + '/' + locations.PERMISSIONS)
+                context.dispatch('fetchPermissions', {ids: {id: activeFunction.role}})
                     .then(permissions => {
                         context.commit('setActivePermissions', permissions)
                         resolve(permissions)

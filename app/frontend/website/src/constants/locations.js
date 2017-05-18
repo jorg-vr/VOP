@@ -14,7 +14,7 @@ export const CURRENT_USER =  USER + 'me/'
 export const ROLE = AUTHENTICATION + 'roles/'
 export const USER_FUNCTION = CURRENT_USER + 'functions/'
 export const INSURANCE ='contracts/{contract}/insurances/'
-export const PERMISSIONS = 'permissions/'
+export const PERMISSIONS = 'auth/roles/{id}/permissions/'
 export const INVOICE = "invoices/"
 export const SURETY = 'companies/{company}/sureties/'
 export const COMMISSION = '{resource}/{resourceId}/commissions'
@@ -23,6 +23,7 @@ export const CONDITION= 'special-conditions/'
 export const LOG = '{resource}/{resourceId}/logs/'
 export const IMPORT_VEHICLES = 'fleets/{id}/vehicles/import/'
 export const FUNCTION = 'users/{userId}/functions/'
+export const PERMISSION_LIST = 'auth/permissions'
 export const CORRECTION = "corrections/"
 
 //Example location for updated resources: export const SURETY = 'contracts/{contract}/insurances'

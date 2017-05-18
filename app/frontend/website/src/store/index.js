@@ -6,6 +6,7 @@ import login from './modules/login'
 import invoice from './modules/invoice'
 import insurance from './modules/insurance'
 import currentUser from './modules/currentUser'
+import role from './modules/role'
 import correction from './modules/correction'
 
 import resourceModule from './resourceModule'
@@ -60,7 +61,8 @@ export default new Vuex.Store({
         currentUser,
         invoice,
         insurance,
-        correction
+        role,
+        correction,
     },
     state,
     getters,
