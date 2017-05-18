@@ -192,6 +192,7 @@ export default
             suretyType: 'type',
             suretyTypeTranslation:'surety',
             flat: 'flat',
+            flatAdjective: 'flat',
             minPremium:'minimal premium',
             yes: 'yes',
             no: 'no'
@@ -486,6 +487,7 @@ export default
             suretyType: 'type',
             suretyTypeTranslation:'waarborg',
             flat: 'forfaitair',
+            flatAdjective: 'forfaitaire',
             minPremium:'minimum premie',
             yes: 'ja',
             no: 'nee'
