@@ -28,6 +28,9 @@ public class MyProperties {
     public static final String PATH_CONTRACTS = "path.contracts";
     public static final String PATH_SPECIAL_CONDITIONS = "path.special_conditions";
 
+    public static final String PATH_INVOICES = "path.invoices";
+
+
 
 
     private static final String APPLICATION_PROPERTIES = "application.properties";
