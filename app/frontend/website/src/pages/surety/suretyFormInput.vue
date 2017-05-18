@@ -15,11 +15,11 @@ All of the fields for insurance input for the insurance form
         </select-input-form-group>
       <!-- premium -->
 
-       <text-input-form-group
+       <euro-input-form-group
           :object="object" name="premium"
           :rules="'required'"
           :text="object.flat==true ? $t('surety.premium'): $t('surety.minPremium')" >
-      </text-input-form-group>
+      </euro-input-form-group>
 
       <!-- premium percentage -->
 
@@ -57,6 +57,7 @@ All of the fields for insurance input for the insurance form
 <script>
     import {mapGetters, mapActions,mapMutations} from 'vuex'
     import TextInputFormGroup from '../../assets/form/FormGroups/TextInputFormGroup.vue'
+    import EuroInputFormGroup from '../../assets/form/FormGroups/EuroInputFormGroup.vue'
     import CheckboxInputFormGroup from '../../assets/form/FormGroups/CheckBoxInputGroup.vue'
     import SelectInputFormGroup from '../../assets/form/FormGroups/SelectInputFormGroup.vue'
     import DateInputFormGroup from '../../assets/form/FormGroups/DateInputFormGroup.vue'
@@ -82,7 +83,7 @@ All of the fields for insurance input for the insurance form
             object: Object,
         },
         components: {
-            TextInputFormGroup,CheckboxInputFormGroup,SelectInputFormGroup,DateInputFormGroup,listComponent,buttonAdd
+            TextInputFormGroup,CheckboxInputFormGroup,SelectInputFormGroup,DateInputFormGroup,listComponent,buttonAdd,EuroInputFormGroup
         },
         mounted(){
             this.$parent.$emit('mounted', this.$children)

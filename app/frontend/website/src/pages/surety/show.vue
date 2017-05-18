@@ -13,7 +13,7 @@
         </div>
     <div class="col-md-8">
         <h4>{{$t('suretyTypes.'+surety.suretyType) | capitalize }}</h4>
-        <h4>{{surety==true ? $t('surety.premium'): $t('surety.minPremium') | capitalize }}:  {{surety.premium}}</h4>
+        <h4>{{surety==true ? $t('surety.premium'): $t('surety.minPremium') | capitalize }}:  {{surety.premiumEuro}}</h4>
         <h4 v-if="surety.flat==false">{{$t('surety.premiumPercentage') | capitalize }}: {{surety.premiumPercentage}} %</h4>
     </table> 
 
@@ -39,6 +39,7 @@
     import listComponent from "../../assets/general/listComponent.vue"
     import resources from '../../constants/resources'
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
+    import {centsToEuroObject} from '../../utils/utils'
 
     export default {
         data(){
@@ -57,6 +58,7 @@
         created(){
            let suretyId = this.id
            this.fetchSurety({id:suretyId}).then(surety => {
+               centsToEuroObject(this.surety,"premium");
                 this.values = this.surety.specialConditions
            })
        },
