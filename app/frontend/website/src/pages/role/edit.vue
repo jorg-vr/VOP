@@ -1,19 +1,15 @@
 <template>
-    <abstract-form :actions="actions" :object="role" :back="back" :resource="resource">
-        <form-input :role="role" :id="id" ></form-input>
-    </abstract-form>
+    <role-form :id="id" :role="role" :actions="actions" :back="back"></role-form>
 </template>
 <script>
     import {mapActions} from 'vuex'
-    import abstractForm from '../../assets/form/AbstractForm.vue'
     import actions from '../../constants/actions'
     import resources from '../../constants/resources'
-    import formInput from './RoleFormInput.vue'
+    import RoleForm from './RoleForm.vue'
 
     export default {
         data(){
             return {
-                resource: resources.ROLE,
                 actions: actions.UPDATE,
                 role: {},
                 back:{name:resources.ROLE.name.plural()}
@@ -25,7 +21,7 @@
             })
         },
         components: {
-            abstractForm,formInput
+            RoleForm
         },
         props: {
             id: String
