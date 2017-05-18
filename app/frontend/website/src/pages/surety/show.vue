@@ -6,23 +6,15 @@
 -->
 <template>
     <div>
-       <div class="page-header">
-        <h1>{{$t("surety.surety") | capitalize }} </h1>
+       <div v-if="surety" class="page-header">
+           <h1 v-if="surety.flat">{{$t('surety.flatAdjective') | capitalize }} {{$t("surety.surety")}} </h1>
+           <h1 v-else>{{$t("surety.surety") | capitalize }} </h1>
+
         </div>
     <div class="col-md-8">
-      <table class="table show-table" v-if="surety">
-        <tr>
-            <td>{{$t('surety.surety') | capitalize }}</td>
-            <td>{{surety.suretyType}} </td>
-        </tr>
-        <tr>
-            <td>{{$t('surety.premium') | capitalize }}</td>
-            <td> {{surety.premium}}  </td>
-        </tr>
-        <tr>
-            <td>{{$t('surety.premiumPercentage') | capitalize }}</td>
-            <td> {{surety.premiumPercentage}} % </td>
-        </tr>
+        <h4>{{$t('suretyTypes.'+surety.suretyType) | capitalize }}</h4>
+        <h4>{{surety==true ? $t('surety.premium'): $t('surety.minPremium') | capitalize }}:  {{surety.premium}}</h4>
+        <h4 v-if="surety.flat==false">{{$t('surety.premiumPercentage') | capitalize }}: {{surety.premiumPercentage}} %</h4>
     </table> 
 
     <!-- special conditions for the insurance surety -->
@@ -67,10 +59,6 @@
            this.fetchSurety({id:suretyId}).then(surety => {
                 this.values = this.surety.specialConditions
            })
-           // Needs to be removed after back end support
-           // if back end support
-           // this.setSpecialConditions(this.surety.specialConditions)
-           // bind specialConditions in store to surety resource
        },
        computed: {
         ...mapGetters([
