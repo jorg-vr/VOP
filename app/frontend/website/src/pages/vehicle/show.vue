@@ -45,7 +45,7 @@
             <h3>
                 {{$t("vehicle_insurance.vehicle_insurances") | capitalize }}
             </h3>
-            <table class="table-hover table">
+            <table v-if="show" class="table-hover table">
                 <thead>
                 <tr>
                     <th v-for="head in listObject.headers">
@@ -82,14 +82,15 @@
     import {mapGetters, mapActions} from 'vuex'
     import listComponent from '../../assets/general/listComponent.vue'
     import resources from '../../constants/resources'
-    import * as utils from '../../utils/utils'
     import commissions from '../commission/collapse.vue'
+    import {translateSuretyTypes,centsToEuroArray} from '../../utils/utils'
 
     export default {
         data(){
             return {
                 resource: resources.INSURANCE,
-                back:{name:resources.VEHICLE.name,params:{id:this.id}}
+                back:{name:resources.VEHICLE.name,params:{id:this.id}},
+                show:false
             }
         },
         components: {
@@ -104,7 +105,11 @@
             });
             this.fetchInsurancesBy({filters: {vehicleId: this.id}}).then(
                     ()=>{
-                        utils.translateSuretyTypes(this.insurances);
+                        translateSuretyTypes(this.insurances);
+                        centsToEuroArray(this.insurances,"cost");
+                        centsToEuroArray(this.insurances,"tax");
+                        centsToEuroArray(this.insurances,"insuredValue");
+                        this.show=true;
                     }
             )
         },
@@ -117,7 +122,7 @@
             ]),
             listObject() {
                 var listObj = {};
-                listObj.headers = ["insuranceCompanyName",'suretyTypeTranslation','insuredValue','showableStartDate','cost','tax'];
+                listObj.headers = ["insuranceCompanyName",'suretyTypeTranslation','insuredValueEuro','showableStartDate','costEuro','taxEuro'];
                 listObj.values = this.insurances;
                 return listObj;
             }
