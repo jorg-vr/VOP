@@ -109,6 +109,12 @@ public class HibernateUtil {
         }
     }
 
+    /**
+     * Automatic constraint validation is turned off, to validate a specific object call this method
+     * @param session the session to use
+     * @param object the object to validate
+     * @throws ConstraintViolationException thrown when constraint are violated
+     */
     public synchronized static void validate(Session session, Object object) throws ConstraintViolationException {
         Map<String, String> map = new HashMap<>();
 
