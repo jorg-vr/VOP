@@ -10,7 +10,7 @@
             </h1>
         </div>
 
-        <list-component :resource="resource" :listObject="listObject" :edit="false" :remove="false"></list-component>
+        <list-component v-if="show" :resource="resource" :listObject="listObject" :edit="false" :remove="false"></list-component>
         <button-back :route="{name: 'client',params:{id:companyId}}"></button-back>
 
     </div>
@@ -21,11 +21,13 @@
     import actions from '../../constants/actions'
     import listComponent from '../../assets/general/listComponent.vue'
     import buttonBack from '../../assets/buttons/buttonBack.vue'
+    import {translateInvoiceTypes} from '../../utils/utils'
 
     export default {
         data(){
             return {
-                resource: resources.INVOICE
+                resource: resources.INVOICE,
+                show:false
             }
         },components: {
             listComponent,buttonBack
@@ -36,6 +38,8 @@
         created() {
             this.setLoading({loading: true })
             this.fetchInvoices({ids:{company: this.companyId}}).then(() => {
+                translateInvoiceTypes(this.invoices)
+                this.show=true;
                 this.setLoading({loading: false })
             })
         },
@@ -45,7 +49,7 @@
             ]),
             listObject() {
                 var listObj = {};
-                listObj.headers = ["showableStartDate","type","totalAmount","totalTax"];
+                listObj.headers = ["showableStartDate","invoiceTypeTranslation","totalAmount","totalTax"];
                 listObj.values = this.invoices;
                 return listObj;
             }

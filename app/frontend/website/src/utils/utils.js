@@ -71,3 +71,10 @@ export const translateSuretyTypes = function (array) {
     }
     return array
 }
+
+export const translateInvoiceTypes = function (array) {
+    for(let i=0;i<array.length;i++){
+        array[i].invoiceTypeTranslation=Vue.t('invoiceTypes.'+array[i].type).capitalize();
+    }
+    return array
+}

@@ -164,7 +164,8 @@ export default
             paymentPeriod: 'payment period',
             totalAmount: 'total amount',
             totalTax: 'total tax',
-            export: 'export as pdf'
+            export: 'export as pdf',
+            invoiceTypeTranslation:'type'
 
         },
         invoiceTypes:{
@@ -438,7 +439,8 @@ export default
             paymentPeriod: 'afrekeningsperiode',
             totalAmount: 'totaal bedrag',
             totalTax: 'totale belasting',
-            export: 'exporteer als pdf'
+            export: 'exporteer als pdf',
+            invoiceTypeTranslation:'type'
 
         },
         invoiceTypes:{
