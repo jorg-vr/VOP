@@ -5,6 +5,7 @@ import controller.exceptions.UnAuthorizedException;
 import dao.database.ProductionProvider;
 import dao.exceptions.ConstraintViolationException;
 import dao.exceptions.DataAccessException;
+import dao.exceptions.ObjectNotFoundException;
 import dao.interfaces.DAOManager;
 import dao.interfaces.DAOProvider;
 import dao.interfaces.VehicleTypeDAO;
@@ -37,7 +38,8 @@ public class RealDataDatabaseFiller {
         try (DAOProvider provider = ProductionProvider.getInstance()) {
             RealDataDatabaseFiller filler = new RealDataDatabaseFiller();
             filler.initVehicleTypes(provider);
-            filler.initUsers(provider);
+            UUID admin= filler.initUsers(provider);
+            filler.initVehicleInsurances(provider,admin);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -131,7 +133,10 @@ public class RealDataDatabaseFiller {
         }
     }
 
-    private void initUsers(DAOProvider provider) {
+
+
+
+    private UUID initUsers(DAOProvider provider) throws ObjectNotFoundException {
         try (DAOManager manager = provider.getDaoManager()) {
             //Create possible roles
             Role adminRole = adminRole();
@@ -185,30 +190,31 @@ public class RealDataDatabaseFiller {
             Contract samContract = initContract(user,adminFunction,sam,axa);
             Contract billieContract = initContract(user,adminFunction,billie,ethias);
 
-            Invoice jorgInvoice = initInvoice(user,adminFunction,company,jorg,new ArrayList<>(Arrays.asList(new Contract[]{jorgContract})));
-            Invoice samInvoice = initInvoice(user,adminFunction,company,sam,new ArrayList<>(Arrays.asList(new Contract[]{samContract})));
-            Invoice billieInvoice = initInvoice(user,adminFunction,company,billie,new ArrayList<>(Arrays.asList(new Contract[]{billieContract})));
+            initInvoice(user,adminFunction,jorg);
+            initInvoice(user,adminFunction,sam);
+            initInvoice(user,adminFunction,billie);
 
-            for(Fleet fleet: sam.getFleets()){
-                for(Vehicle vehicle: fleet.getVehicles()){
-                    initVehicleInsurance(user,adminFunction,samContract,getRandomSurety(suretiesAxa),vehicle);
-                }
-            }
-
-            for(Fleet fleet: billie.getFleets()){
-                for(Vehicle vehicle: fleet.getVehicles()){
-                    initVehicleInsurance(user,adminFunction,billieContract,getRandomSurety(suretiesEthias),vehicle);
-                }
-            }
-
-            for(Fleet fleet: jorg.getFleets()){
-                for(Vehicle vehicle: fleet.getVehicles()){
-                    initVehicleInsurance(user,adminFunction,jorgContract,getRandomSurety(suretiesAxa),vehicle);
-                }
-            }
-
+            return adminFunction.getUuid();
         } catch (DataAccessException | ConstraintViolationException | UnAuthorizedException e) {
             e.printStackTrace();
+            return  null;
+        }
+    }
+
+    private void initVehicleInsurances(DAOProvider provider, UUID admin) throws DataAccessException, ObjectNotFoundException, ConstraintViolationException, UnAuthorizedException {
+        try (DAOManager manager = provider.getDaoManager()) {
+            User user=manager.getUserDAO().getUserByLogin("patrick.oostvogels@solvas.be");
+            Function function=manager.getFunctionDAO().get(admin);
+            for(Customer customer:manager.getCustomerDAO().listFiltered()) {
+                System.out.println(customer.getCurrentStatement());
+                for(Contract contract:customer.getContracts()) {
+                    for (Fleet fleet : customer.getFleets()) {
+                        for (Vehicle vehicle : fleet.getVehicles()) {
+                            initVehicleInsurance(user, function, contract, getRandomSurety(contract.getCompany().getSureties()), vehicle);
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -218,7 +224,7 @@ public class RealDataDatabaseFiller {
         return collection.toArray(new Surety[collection.size()])[i];
     }
 
-    private void initVehicleInsurance(User user, Function function, Contract contract, Surety surety, Vehicle vehicle) throws DataAccessException, UnAuthorizedException, ConstraintViolationException {
+    private void initVehicleInsurance(User user, Function function, Contract contract, Surety surety, Vehicle vehicle) throws DataAccessException, UnAuthorizedException, ConstraintViolationException, ObjectNotFoundException {
         try (ControllerManager controllerManager = new ControllerManager(user.getUuid(), function.getUuid())) {
             int franchiseMinimum = 10000;
             int franchiseMaximum = 100000;
@@ -236,19 +242,14 @@ public class RealDataDatabaseFiller {
         }
     }
 
-    private Invoice initInvoice(User user, Function function,Company solvas, Customer customer, Collection<Contract> contracts) throws DataAccessException, UnAuthorizedException, ConstraintViolationException {
-//        try (ControllerManager controllerManager = new ControllerManager(user.getUuid(), function.getUuid())) {
-//            Invoice invoice = new Invoice();
-//            invoice.setPayer(customer);
-//            invoice.setPaid(false);
-//            invoice.setStartDate(LocalDateTime.now().minusMonths(1));
-//            invoice.setEndDate(LocalDateTime.now().plusMonths(1));
-//            invoice.setType(InvoiceType.BILLING);
-//            invoice.setVehicleInvoices(createVehicleInvoices(customer,1));
-//            controllerManager.getInvoiceController().create(invoice);
-//            return invoice;
-//        }
-        return null;
+
+
+    private void initInvoice(User user, Function function,Customer customer) throws DataAccessException, UnAuthorizedException, ConstraintViolationException, ObjectNotFoundException {
+        try (ControllerManager controllerManager = new ControllerManager(user.getUuid(), function.getUuid())) {
+            customer=controllerManager.getCustomerController().get(customer.getUuid());//needed for initalation and lazy fetching issues
+            controllerManager.getInvoiceController().endStatement(customer);
+            System.out.println(customer.getCurrentStatement());
+        }
 
     }
 
