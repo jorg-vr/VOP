@@ -56,7 +56,7 @@ export default {
     },
     CONTRACT:{
         name: 'contract',
-        value: 'CONTRACT'
+        value: 'INSURANCE'
     },
     CONDITION:{
         name:'condition',
