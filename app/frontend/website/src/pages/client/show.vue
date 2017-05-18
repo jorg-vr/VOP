@@ -60,13 +60,21 @@
                 </tr>
             </table>
             <commissions  v-if="client.type===clientTypes.CUSTOMER.type" :id="id" loc="companies" :back="back" ></commissions>
+
             <h2 class="col-md-12" v-if="client.type===clientTypes.CUSTOMER.type" >{{$t("fleet.fleets") | capitalize }}
-                <button-add :resource="resource" :params="{clientId: client.id}"></button-add>
+                <button-add :resource="resources.FLEET" :params="{clientId: client.id}"></button-add>
             </h2>
-            <list-component v-if="listObject.values.length>0" :listObject="listObject" :resource="resource">
+            <list-component v-if="listObjectFleets.values.length>0" :listObject="listObjectFleets" :resource="resources.FLEET">
             </list-component>
+
+            <h2 class="col-md-12" v-if="client.type===clientTypes.INSURANCE_COMPANY.type" >{{$t("surety.sureties") | capitalize }}
+                <button-add :resource="resources.SURETY" :params="{clientId: client.id}"></button-add>
+            </h2>
+            <list-component v-if="show&&listObjectSureties.values.length>0" :listObject="listObjectSureties" :resource="resources.SURETY">
+            </list-component>
+
             <h2>{{$t("contract.contracts") | capitalize}}</h2>
-            <list-component v-if="listObject2.values.length>0" :resource="resource2" :listObject="listObject2"></list-component>
+            <list-component v-if="listObjectContracts.values.length>0" :resource="resources.CONTRACT" :listObject="listObjectContracts"></list-component>
             <button-back :route="{name: 'clients'}"></button-back>
         </div>
     </div>
@@ -81,15 +89,16 @@
     import buttonLink from '../../assets/buttons/buttonLink.vue'
     import periods from '../../constants/periods'
     import commissions from '../commission/collapse.vue'
+    import {translateSuretyTypes} from '../../utils/utils'
 
     export default {
         data(){
             return {
-                resource: resources.FLEET,
-                resource2: resources.CONTRACT,
+                resources:resources,
                 type: '',
                 clientTypes: clientTypes,
-                back:{name:resources.CLIENT.name,params:{id:this.id}}
+                back:{name:resources.CLIENT.name,params:{id:this.id}},
+                show:false
             }
         },
         components: {
@@ -112,6 +121,10 @@
                     }
                     if(client.type===clientTypes.INSURANCE_COMPANY.type){
                         this.fetchContractsBy({filters: {insuranceCompany: clientId}})
+                        this.fetchSureties({ids:{company:clientId}}).then(() => {
+                            this.sureties=translateSuretyTypes(this.sureties);
+                            this.show=true;
+                        })
                     }
                 }
                 this.setLoading({loading: false })
@@ -123,18 +136,25 @@
                 'hasPermissionForRoute',
                 'client',
                 'contracts',
-                'fleets'
+                'fleets',
+                'sureties'
             ]),
-            listObject () {
+            listObjectFleets () {
                 var listObj = {};
                 listObj.headers = ["name"];
                 listObj.values = this.fleets;
                 return listObj;
             },
-            listObject2() {
+            listObjectContracts() {
                 var listObj = {};
                 listObj.headers = ['insuranceCompanyName','showableStartDate','totalCost','totalTax'];
                 listObj.values = this.contracts;
+                return listObj;
+            },
+            listObjectSureties() {
+                var listObj = {};
+                listObj.headers = ['suretyTypeTranslation','premium'];
+                listObj.values = this.sureties;
                 return listObj;
             }
         },
@@ -142,7 +162,8 @@
             ...mapActions([
                 'fetchClient',
                 'fetchFleetsBy',
-                'fetchContractsBy'
+                'fetchContractsBy',
+                'fetchSureties'
             ]),
             ...mapMutations([
                 'setLoading'
