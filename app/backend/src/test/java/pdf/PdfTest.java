@@ -62,6 +62,9 @@ public class PdfTest {
         }
     }
 
+    /**
+     * Check if no PdfExceptions get thrown when creating a invoice pdf
+     */
     @Test
     public void canCreateInvoice() throws Exception {
         Invoice invoice = new Invoice();
