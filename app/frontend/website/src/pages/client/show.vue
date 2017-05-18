@@ -74,7 +74,7 @@
             </list-component>
 
             <h2>{{$t("contract.contracts") | capitalize}}</h2>
-            <list-component v-if="listObjectContracts.values.length>0" :resource="resources.CONTRACT" :listObject="listObjectContracts"></list-component>
+            <list-component v-if="show&&listObjectContracts.values.length>0" :resource="resources.CONTRACT" :listObject="listObjectContracts"></list-component>
             <button-back :route="{name: 'clients'}"></button-back>
         </div>
     </div>
@@ -89,7 +89,7 @@
     import buttonLink from '../../assets/buttons/buttonLink.vue'
     import periods from '../../constants/periods'
     import commissions from '../commission/collapse.vue'
-    import {translateSuretyTypes} from '../../utils/utils'
+    import {translateSuretyTypes,centsToEuroArray} from '../../utils/utils'
 
     export default {
         data(){
@@ -114,19 +114,28 @@
             let clientId = this.id
             this.fetchClient({id: clientId}).then(client => {
                 if(client.type){
-                    this.type = clientTypes[client.type].translation()
+                    this.type = clientTypes[client.type].translation();
                     if(client.type===clientTypes.CUSTOMER.type){
                         this.fetchFleetsBy({filters: {company: clientId}});
-                        this.fetchContractsBy({filters: {customer: clientId}})
+                        this.fetchContractsBy({filters: {customer: clientId}}).then(()=>{
+                            centsToEuroArray(this.contracts,"totalCost");
+                            centsToEuroArray(this.contracts,"totalTax");
+                            this.show=true;
+                        });
                     }
                     if(client.type===clientTypes.INSURANCE_COMPANY.type){
-                        this.fetchContractsBy({filters: {insuranceCompany: clientId}})
-                        this.fetchSureties({ids:{company:clientId}}).then(() => {
+                        let p1=this.fetchContractsBy({filters: {insuranceCompany: clientId}});
+                        let p2=this.fetchSureties({ids:{company:clientId}});
+                        Promise.all([p1,p2]).then(()=>{
+                            centsToEuroArray(this.contracts,"totalCost");
+                            centsToEuroArray(this.contracts,"totalTax");
+                            centsToEuroArray(this.sureties,"premium");
                             this.sureties=translateSuretyTypes(this.sureties);
                             this.show=true;
-                        })
+                        });
                     }
                 }
+
                 this.setLoading({loading: false })
             });
 
@@ -147,13 +156,13 @@
             },
             listObjectContracts() {
                 var listObj = {};
-                listObj.headers = ['insuranceCompanyName','showableStartDate','totalCost','totalTax'];
+                listObj.headers = ['insuranceCompanyName','showableStartDate','totalCostEuro','totalTaxEuro'];
                 listObj.values = this.contracts;
                 return listObj;
             },
             listObjectSureties() {
                 var listObj = {};
-                listObj.headers = ['suretyTypeTranslation','premium'];
+                listObj.headers = ['suretyTypeTranslation','premiumEuro'];
                 listObj.values = this.sureties;
                 return listObj;
             }
