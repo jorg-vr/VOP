@@ -39,6 +39,8 @@ addRoutesForResource(resources.CONDITION)
 addRoutesForResource(resources.LOG)
 addRoutesForResource(resources.FUNCTION)
 addRoutesForResource(resources.ROLE)
+
+
 //Define exceptions
 /**
  * Fictional example:
@@ -51,7 +53,6 @@ addRoutesForResource(resources.ROLE)
  *      ---> The user needs to have one of these actions for the given resource as permission to get access to the page.
  *  }
  */
-
 
 //Users & client pages can only be seen with READ_ALL permissions.
 permissions[actions.READ_ALL.path(resources.USER.name)] = {
@@ -79,7 +80,16 @@ permissions[actions.READ_ALL.path(resources.VEHICLE_TYPE.name)] = {
     actions: {
         name: actions.READ_ALL.name,
         path: actions.READ_ALL.path,
-        values: ['CREATE_MINE', 'CREATE_ALL']
+        values: ['CREATE_MINE', 'CREATE_ALL', 'EDIT_MINE', 'EDIT_ALL', 'REMOVE_MINE', 'REMOVE_ALL']
+    }
+}
+
+permissions[actions.READ_ALL.path(resources.ROLE.name)] = {
+    resource: resources.CLIENT,
+    actions: {
+        name: actions.READ_ALL.name,
+        path: actions.READ_ALL.path,
+        values: ['CREATE_MINE', 'CREATE_ALL', 'EDIT_MINE', 'EDIT_ALL', 'REMOVE_MINE', 'REMOVE_ALL']
     }
 }
 
