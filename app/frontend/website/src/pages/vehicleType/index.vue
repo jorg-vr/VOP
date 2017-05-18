@@ -33,10 +33,10 @@
                             {{$t('suretyTypes.'+suretyType.name)}}
                         </td>
                         <td  >
-                            {{suretyType.commission*100}}%
+                            {{(suretyType.commission*100).toFixed(2)}}%
                         </td>
                         <td  >
-                            {{suretyType.tax*100}}%
+                            {{(suretyType.tax*100).toFixed(2)}}%
                         </td>
                     </tr>
                     </tbody>
