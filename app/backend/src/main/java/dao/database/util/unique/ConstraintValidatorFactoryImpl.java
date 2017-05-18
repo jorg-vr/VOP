@@ -35,7 +35,6 @@ public class ConstraintValidatorFactoryImpl implements ConstraintValidatorFactor
                 validator.setSession(session);
             }
         }
-
         return instance;
     }
 
