@@ -23,7 +23,7 @@
             <h2>{{$t("surety.coverage") | capitalize }}</h2>
         </div>   
 
-    <list-component :resource="resource" :listObject="listObject">
+    <list-component :resource="resource" :listObject="listObject" :remove="false" :edit="false">
     </list-component>
 
     <!-- Go back to overview contract page -->
