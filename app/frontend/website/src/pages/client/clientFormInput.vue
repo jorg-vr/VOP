@@ -9,7 +9,7 @@ All of the fields for user input for the client form
         <select-input-form-group :object="client" name="type" :text="$t('client.type')" :rules="'required'"
                                  :options="clientTypes" visibleKey="translation">
         </select-input-form-group>
-        <country-select :object="client" name="country" :text="$t('address.country')" :rules="'required'"></country-select>
+        <country-select :object="client.address" name="country" :text="$t('address.country')" :rules="'required'"></country-select>
         <text-input-form-group :object="client.address" name="city" :text="$t('address.city')" :rules="'required'"></text-input-form-group>
         <text-input-form-group :object="client.address" name="street" :text="$t('address.street')" :rules="'required'"></text-input-form-group>
         <text-input-form-group :object="client.address" name="postalCode" :text="$t('address.postalCode')" :rules="'required'"></text-input-form-group>

@@ -41,8 +41,8 @@ TODO: document this page.
         data() {
             return {
                 credentials:{
-                    login:'billie.devolder@gmail.com',
-                    password:'informatica'
+                    login:'patrick.oostvogels@solvas.be',
+                    password:'1h8xE660mn'
                 },
                 showError: false
             }
