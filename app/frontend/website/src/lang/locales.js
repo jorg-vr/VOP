@@ -89,6 +89,7 @@ export default
         common: {
             new: 'new',
             remove: 'remove',
+            removed: 'removed',
             back: 'back',
             name: 'name',
             cancel: 'cancel',
@@ -260,6 +261,7 @@ export default
             object: 'object',
             create: 'created',
             update: 'updated',
+            user: 'user'
         },
         description: {
             property: 'property',
@@ -390,6 +392,7 @@ export default
         common: {
             new: 'nieuwe',
             remove: 'verwijder',
+            removed: 'verwijderd',
             edit: 'wijzig',
             back: 'terug',
             name: 'naam',
@@ -563,6 +566,7 @@ export default
             object: 'object',
             create: 'aangemaakt',
             update: 'gewijzigd',
+            user: 'gebruiker'
 
         },
         description: {
