@@ -9,12 +9,12 @@ All of the fields for insurance input for the insurance form
 
        <!-- Start Date -->
         <date-input-form-group 
-                    :object="object" name="startDate" :text="$t('insurance.startDate')" :rules="'required'" visibleKey="startDate">
+                    :object="object" name="startDate" :text="$t('insurance.startDate')" :rules="'required'">
         </date-input-form-group>
 
         <!-- End Date --> 
         <date-input-form-group 
-                    :object="object" name="endDate" rules="" :text="$t('insurance.endDate')" visibleKey="endDate">
+                    :object="object" name="endDate" rules="" :text="$t('insurance.endDate')">
         </date-input-form-group>
 
         <!-- Insured value -->
@@ -66,7 +66,8 @@ All of the fields for insurance input for the insurance form
             this.$parent.$emit('mounted', this.$children)
         },
         props: {
-            object: Object,
+            contractId: String,
+            object: Object
         },
         components: {
           EuroInputFormGroup, SelectInputFormGroup, DateInputFormGroup, buttonAdd
@@ -87,10 +88,9 @@ All of the fields for insurance input for the insurance form
                 ])
         },
         created(){
-            this.fetchContract({id:this.contractId}).then(contract =>{
-                console.log(contract)
+            this.fetchContract({id: this.contractId}).then(contract =>{
                 // fetch all possible sureties
-                this.fetchSureties({ids:{ company:this.contract.insuranceCompany}}).then(()=>{
+                this.fetchSureties({ids:{ company: this.contract.insuranceCompany}}).then(()=>{
                     translateSuretyTypes(this.sureties);
                     this.show=true;
                 });
