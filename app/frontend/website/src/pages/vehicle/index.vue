@@ -21,6 +21,7 @@
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
     import AbstractSearchForm from '../../assets/general/AbstractSearchForm.vue'
     import VehicleSearchInput from './VehicleSearchInput.vue'
+    import actions from '../../constants/actions'
 
     export default {
         data(){
@@ -37,9 +38,14 @@
         },
         mounted(){
             $('.collapse').collapse("show")
+            if(this.isAuthorizedForOwnResourcesButNotAll(this.resource, actions.READ_ALL)){
+                this.filters.company = this.activeFunction.company
+            }
         },
         computed: {
             ...mapGetters([
+                'isAuthorizedForOwnResourcesButNotAll',
+                'activeFunction',
                 'vehicles'
             ]),
             listObject() {

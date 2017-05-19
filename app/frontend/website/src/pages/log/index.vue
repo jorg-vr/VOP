@@ -12,13 +12,16 @@
             <tr v-for="value in listObject.values" class="list-tr">
                 <td class="clickable-td" @click="tdclick(value.id, value)">
                     {{value.showableDateTime}}
-            </td>
+                </td>
                 <td class="clickable-td" @click="tdclick(value.id, value)">
                     {{$t('log.' + value.action.toLowerCase()) | capitalize}}
-            </td>
+                </td>
                 <td class="clickable-td" @click="tdclick(value.id, value)">
                     {{$t('resource.' + value.resource.toLowerCase()) | capitalize}}
-            </td>
+                </td>
+                <td class="clickable-td" @click="tdclick(value.id, value)">
+                    {{value.userName}}
+                </td>
             </tr>
             </tbody>
         </table>
@@ -44,13 +47,14 @@
         },
         created(){
             this.fetchLogs({id: this.id, resource: this.resource}).then(logs => {
+                console.log(logs)
                 this.logs = logs
             })
         },
         computed: {
             listObject(){
                 return {
-                    headers: ["showableDateTime", "action", "resource"],
+                    headers: ["showableDateTime", "action", "resource", "userName"],
                     values: this.logs
                 }
             }
