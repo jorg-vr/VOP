@@ -22,7 +22,7 @@
                     <td v-if="type!==''">Type</td>
                     <td>{{type | capitalize}}</td>
                 </tr>
-                <tr>
+                <tr v-if="country">
                     <td>{{$t('address.country') | capitalize }}</td>
                     <td>{{country}}</td>
                 </tr>
@@ -152,7 +152,7 @@
                 if(this.client.address){
                     let code = this.client.address.country
                     let country = countries[Vue.config.lang].filter(country => country.code === code)[0]
-                    return country.name
+                    return country ? country.name : ''
                 }
                 else {
                     return ''

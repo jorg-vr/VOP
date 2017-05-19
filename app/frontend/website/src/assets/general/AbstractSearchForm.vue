@@ -21,10 +21,18 @@ A collapsible form part of a searchbar. This form can be used for advanced searc
 </template>
 <script>
     export default {
+        data(){
+            return {
+                initialFilters: null
+            }
+        },
         props: {
             resource: Object,
             filters: Object,
             searchFunction: Function, //Optional search function (for exceptions)
+        },
+        created(){
+            this.initialFilters = $.extend(true, {}, this.filters);
         },
         methods: {
             onSubmit(){
@@ -38,10 +46,10 @@ A collapsible form part of a searchbar. This form can be used for advanced searc
             },
             reset(){
                 if(this.searchFunction){
-                    this.searchFunction({filters: {}})
+                    this.searchFunction({filters: this.initialFilters})
                 }
                 else {
-                    this.$store.dispatch('fetch' + this.resource.name.plural().capitalize() + 'By', {filters: this.filters})
+                    this.$store.dispatch('fetch' + this.resource.name.plural().capitalize() + 'By', {filters: this.initialFilters})
                 }
                 $('.collapse').collapse('hide')
             }
