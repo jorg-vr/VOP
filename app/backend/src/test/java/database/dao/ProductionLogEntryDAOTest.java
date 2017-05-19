@@ -1,12 +1,14 @@
 package database.dao;
 
 import dao.database.ProductionProvider;
+import dao.exceptions.ObjectNotFoundException;
 import dao.interfaces.DAOManager;
 import model.history.LogAction;
 import model.history.LogEntry;
 import model.account.User;
 import model.history.LogResource;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -54,7 +56,7 @@ public class ProductionLogEntryDAOTest {
         logEntry.setAction(LogAction.CREATE);
 
         logEntry.setUser(user);
-        logEntry.setInterested(new ArrayList<>(Arrays.asList(new UUID[]{uuid2,uuid3})));
+        logEntry.setInterested(new ArrayList<>(Arrays.asList(new UUID[]{uuid2, uuid3})));
         logEntry.setResource(LogResource.CONTRACT);
         logEntry.setObject(uuid1);
 
@@ -63,7 +65,7 @@ public class ProductionLogEntryDAOTest {
         logEntry2.setAction(LogAction.CREATE);
 
         logEntry2.setUser(user);
-        logEntry2.setInterested(new ArrayList<>(Arrays.asList(new UUID[]{uuid5,uuid6,uuid3})));
+        logEntry2.setInterested(new ArrayList<>(Arrays.asList(new UUID[]{uuid5, uuid6, uuid3})));
         logEntry2.setResource(LogResource.CONTRACT);
         logEntry2.setObject(uuid4);
 
@@ -72,26 +74,26 @@ public class ProductionLogEntryDAOTest {
         logEntry3.setAction(LogAction.CREATE);
 
         logEntry3.setUser(user);
-        logEntry3.setInterested(new ArrayList<>(Arrays.asList(new UUID[]{uuid1,uuid5,uuid6,uuid3})));
+        logEntry3.setInterested(new ArrayList<>(Arrays.asList(new UUID[]{uuid1, uuid5, uuid6, uuid3})));
         logEntry3.setResource(LogResource.CONTRACT);
         logEntry3.setObject(uuid2);
 
-        try(DAOManager manager = ProductionProvider.getInstance().getDaoManager()){
+        try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()) {
             manager.getUserDAO().create(user);
             manager.getLogEntryDao().create(logEntry);
             manager.getLogEntryDao().create(logEntry2);
             manager.getLogEntryDao().create(logEntry3);
         }
-        try(DAOManager manager = ProductionProvider.getInstance().getDaoManager()){
-            Collection<LogEntry> ids= manager.getLogEntryDao().getAllLogs(uuid1);
+        try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()) {
+            Collection<LogEntry> ids = manager.getLogEntryDao().getAllLogs(uuid1);
             assertTrue(ids.contains(logEntry));
             assertTrue(!ids.contains(logEntry2));
             assertTrue(ids.contains(logEntry3));
-            ids= manager.getLogEntryDao().getAllLogs(uuid4);
+            ids = manager.getLogEntryDao().getAllLogs(uuid4);
             assertTrue(!ids.contains(logEntry));
             assertTrue(ids.contains(logEntry2));
             assertTrue(!ids.contains(logEntry3));
-            ids= manager.getLogEntryDao().getAllLogs(uuid3);
+            ids = manager.getLogEntryDao().getAllLogs(uuid3);
             assertTrue(ids.contains(logEntry));
             assertTrue(ids.contains(logEntry2));
             assertTrue(ids.contains(logEntry3));
@@ -110,7 +112,7 @@ public class ProductionLogEntryDAOTest {
         User user = new User();
         user.setLastName("test");
         user.setFirstName("test2");
-        user.setEmail("test@test.be");
+        user.setEmail("test2@test.be");
         user.setNotHashedPassword("test");
 
         LogEntry logEntry = new LogEntry();
@@ -118,7 +120,7 @@ public class ProductionLogEntryDAOTest {
         logEntry.setAction(LogAction.CREATE);
 
         logEntry.setUser(user);
-        logEntry.setInterested(new ArrayList<>(Arrays.asList(new UUID[]{uuid2,uuid3})));
+        logEntry.setInterested(new ArrayList<>(Arrays.asList(new UUID[]{uuid2, uuid3})));
         logEntry.setResource(LogResource.CONTRACT);
         logEntry.setObject(uuid1);
 
@@ -127,7 +129,7 @@ public class ProductionLogEntryDAOTest {
         logEntry2.setAction(LogAction.CREATE);
 
         logEntry2.setUser(user);
-        logEntry2.setInterested(new ArrayList<>(Arrays.asList(new UUID[]{uuid5,uuid6,uuid3})));
+        logEntry2.setInterested(new ArrayList<>(Arrays.asList(new UUID[]{uuid5, uuid6, uuid3})));
         logEntry2.setResource(LogResource.CONTRACT);
         logEntry2.setObject(uuid4);
 
@@ -136,10 +138,10 @@ public class ProductionLogEntryDAOTest {
         logEntry3.setAction(LogAction.CREATE);
 
         logEntry3.setUser(user);
-        logEntry3.setInterested(new ArrayList<>(Arrays.asList(new UUID[]{uuid1,uuid5,uuid3})));
+        logEntry3.setInterested(new ArrayList<>(Arrays.asList(new UUID[]{uuid1, uuid5, uuid3})));
         logEntry3.setResource(LogResource.CONTRACT);
         logEntry3.setObject(uuid2);
-        try(DAOManager manager = ProductionProvider.getInstance().getDaoManager()){
+        try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()) {
             manager.getUserDAO().create(user);
             manager.getLogEntryDao().create(logEntry);
             manager.getLogEntryDao().create(logEntry2);
@@ -149,7 +151,47 @@ public class ProductionLogEntryDAOTest {
         logEntry2.setResource(LogResource.ROLE);
         logEntry3.setObject(uuid6);
         logEntry.getInterested().add(uuid6);
-        
+        try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()) {
+            manager.getLogEntryDao().update(logEntry);
+            manager.getLogEntryDao().update(logEntry2);
+            manager.getLogEntryDao().update(logEntry3);
+        }
+        try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()) {
+            LogEntry tmp = manager.getLogEntryDao().get(logEntry.getUuid());
+            assertTrue(tmp.getInterested().contains(uuid6));
+            assertTrue(tmp.getAction().equals(LogAction.UPDATE));
+
+            assertTrue(manager.getLogEntryDao().get(logEntry2.getUuid()).getResource().equals(LogResource.ROLE));
+            assertTrue(
+                    manager.getLogEntryDao().get(logEntry3.getUuid()).getObject().equals(uuid6));
+        }
+        try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()) {
+            manager.getLogEntryDao().remove(logEntry.getUuid());
+            manager.getLogEntryDao().remove(logEntry2.getUuid());
+            manager.getLogEntryDao().remove(logEntry3.getUuid());
+        }
+        try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()) {
+
+            try {
+                manager.getLogEntryDao().get(logEntry.getUuid());
+                Assert.fail();
+            } catch (ObjectNotFoundException e) {
+
+            }
+            try {
+                manager.getLogEntryDao().get(logEntry2.getUuid());
+                Assert.fail();
+            } catch (ObjectNotFoundException e) {
+
+            }
+            try {
+                manager.getLogEntryDao().get(logEntry3.getUuid());
+                Assert.fail();
+            } catch (ObjectNotFoundException e) {
+
+            }
+
+        }
     }
 
 }
