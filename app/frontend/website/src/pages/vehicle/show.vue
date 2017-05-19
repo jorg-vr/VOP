@@ -40,7 +40,7 @@
                 </tr>
             </table>
         </div>
-        <commissions :id="id" loc="vehicles" :back="back" ></commissions>
+        <commissions :id="id" loc="vehicles" ></commissions>
         <div class="col-md-12">
             <h3>
                 {{$t("vehicle_insurance.vehicle_insurances") | capitalize }}
@@ -89,7 +89,6 @@
         data(){
             return {
                 resource: resources.INSURANCE,
-                back:{name:resources.VEHICLE.name,params:{id:this.id}},
                 show:false
             }
         },

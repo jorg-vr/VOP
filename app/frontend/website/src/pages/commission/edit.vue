@@ -1,5 +1,5 @@
 <template>
-    <abstract-form :actions="actions" :object="commissions" :back="back" :resource="resource" :ids="ids">
+    <abstract-form :actions="actions" :object="commissions"  :resource="resource" :customSubmit="submit">
         <commission-form-input :commissions="commissions" v-if="show"></commission-form-input>
     </abstract-form>
 
@@ -45,14 +45,20 @@
             commissionFormInput
         },
         props: {
-            back: Object,
             id: String,
-            loc:String
+            loc:String,
+            back:Function
         },
         methods: {
             ...mapActions([
-                'fetchCommissions'
-            ])
+                'fetchCommissions',
+                'updateCommission'
+            ]),
+            submit(){
+                console.log("submit");
+                this.updateCommission({resource: this.commissions, ids: this.ids});
+                this.back();
+            }
         }
     }
 </script>
