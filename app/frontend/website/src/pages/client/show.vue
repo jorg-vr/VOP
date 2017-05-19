@@ -136,7 +136,6 @@
                         });
                     }
                 }
-
                 this.setLoading({loading: false })
             });
 
