@@ -96,6 +96,7 @@ public class VehicleInsuranceController extends AbstractController<VehicleInsura
             VehicleInvoice vehicleInvoice = createVehicleInvoice(vehicleInsurance, vehicleInsurance.calculateTax(), vehicleInsurance.calculateCost(), months, days);
             currentStatement.getVehicleInvoices().add(vehicleInvoice);
             vehicleInsurance = super.create(vehicleInsurance);
+            vehicleInvoice.setVehicleInsuranceID(vehicleInsurance.getUuid());
             manager.getInvoiceDao().update(currentStatement);
             return vehicleInsurance;
         }
@@ -148,6 +149,7 @@ public class VehicleInsuranceController extends AbstractController<VehicleInsura
         vehicleInvoice.setFranchise(insurance.getFranchise());
         vehicleInvoice.setVin(insurance.getVehicle().getVin());
         vehicleInvoice.setLicensePlate(insurance.getVehicle().getLicensePlate());
+        vehicleInvoice.setVehicleInsuranceID(insurance.getUuid());
 
         double monthFactor = (double) days / (double) now.getMonth().length(now.isLeapYear());
         vehicleInvoice.setTotalTax(tax * months + (int) Math.round(monthFactor * tax));

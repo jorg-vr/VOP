@@ -94,11 +94,12 @@ public class RESTVehicleInsuranceController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public void deleteCorrection(@PathVariable String id, @RequestBody LocalDate localDate,
+    public void deleteCorrection(@PathVariable String id, @RequestBody(required = false) LocalDate localDate,
                                  @RequestHeader(value = "Authorization") String token,
                                  @RequestHeader(value = "Function") String function) throws DataAccessException, UnAuthorizedException, ConstraintViolationException, ObjectNotFoundException {
         UUID uuid = toUUID(id);
         UUID user = new AuthenticationToken(token).getAccountId();
+        localDate=localDate==null?LocalDate.now():localDate;
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
             VehicleInsuranceController controller = manager.getVehicleInsuranceController();
             controller.archive(uuid, localDate);
