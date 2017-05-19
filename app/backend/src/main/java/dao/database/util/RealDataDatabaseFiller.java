@@ -192,9 +192,9 @@ public class RealDataDatabaseFiller {
         Contract samContract = initContract(user, adminFunction, sam, axa);
         Contract billieContract = initContract(user, adminFunction, billie, ethias);
 
-        initInvoice(user, adminFunction, jorg);
-        initInvoice(user, adminFunction, sam);
-        initInvoice(user, adminFunction, billie);
+//        initInvoice(user, adminFunction, jorg);
+//        initInvoice(user, adminFunction, sam);
+//        initInvoice(user, adminFunction, billie);
 
         return adminFunction.getUuid();
 

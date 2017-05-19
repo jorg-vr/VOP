@@ -46,15 +46,13 @@
         <confirm-modal v-show="showModal"
                        @cancelModal="cancelCorrection()"
                        @confirmModal="confirmCorrection()"
-                       @optional="showModal=false"
                        @close="showModal=false"
                        :object="correction"
                        :endDate="$t('insurance.endDate') | capitalize"
                        :modalHeaderTitle=" $t('modal.titleCorrection') | capitalize"
                        :modalBodyText="$t('modal.textCorrection') | capitalize"
                        :confirmButtonText="$t('modal.button1') | capitalize "
-                       :cancelButtonText="$t('modal.button2') | capitalize "
-                       :optionalButtonText="$t('modal.cancel') | capitalize ">
+                       :cancelButtonText="$t('modal.button2') | capitalize ">
         </confirm-modal>
 
         <div class="page-header">
@@ -185,21 +183,20 @@
                 this.$router.push({name: this.resource1.name, params: {contractId:value.contract, id:value.id}});
             },
             confirmCorrection: function(){
-                // hide modal
-                this.showModal=false
-                this.correction.endDate += "T00:00:00.00"
-                this.deleteBodyInsurance({id: this.selectedvalue, ids: this.ids, data:this.correction.endDate})
+                console.log(this.correction.endDate);
+                if(this.correction.endDate) {
+                    this.showModal = false
+                    this.correction.endDate =  this.correction.endDate;
+                    console.log(this.correction.endDate);
+                    this.deleteBodyInsurance({id: this.selectedvalue, ids: this.ids, data: this.correction.endDate})
+                }
             },
             cancelCorrection : function(){
                 this.showModal = false
-                this.$store.dispatch('delete' + this.resource1.name.capitalize(), {id: this.selectedvalue, ids: this.ids})
             },
             tdshowModal: function(id) {
-                this.showModal = true
-                this.selectedvalue=id
-                // fetch clicked insuranc
-                this.fetchInsurance({ids:{ contract:this.id}, id:this.selectedvalue}).then(insurance => {
-                 })
+                this.showModal = true;
+                this.selectedvalue=id;
             }
         },
     }

@@ -22,6 +22,7 @@ import spring.model.insurance.RESTVehicleInsuranceContainer;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -71,17 +72,17 @@ public class RESTVehicleInsuranceController {
      *                  vehicleInsurance = insurance object that should have been added
      */
     @RequestMapping(method = RequestMethod.POST)
-    public VehicleInsurance createCorrection(@RequestBody RESTVehicleInsurance insurance, @RequestHeader(value = "Authorization") String token,
+    public RESTVehicleInsurance createCorrection(@RequestBody RESTVehicleInsurance insurance, @RequestHeader(value = "Authorization") String token,
                                              @RequestHeader(value = "Function") String function) throws DataAccessException, UnAuthorizedException, ConstraintViolationException {
         UUID user = new AuthenticationToken(token).getAccountId();
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
             VehicleInsuranceController controller = manager.getVehicleInsuranceController();
-            return controller.create(insurance.translate(manager));
+            return new RESTVehicleInsurance(controller.create(insurance.translate(manager)));
         }
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public VehicleInsurance putCorrection(@PathVariable String id, @RequestBody RESTVehicleInsuranceContainer container,
+    public RESTVehicleInsurance putCorrection(@PathVariable String id, @RequestBody RESTVehicleInsuranceContainer container,
                                           @RequestHeader(value = "Authorization") String token,
                                           @RequestHeader(value = "Function") String function) throws DataAccessException, UnAuthorizedException, ConstraintViolationException, ObjectNotFoundException {
         UUID user = new AuthenticationToken(token).getAccountId();
@@ -89,20 +90,31 @@ public class RESTVehicleInsuranceController {
             RESTVehicleInsurance insurance = container.getVehicleInsurance();
             insurance.setId(id);
             VehicleInsuranceController controller = manager.getVehicleInsuranceController();
-            return controller.update(container.getVehicleInsurance().translate(manager), container.getDate());
+            return new RESTVehicleInsurance(controller.update(container.getVehicleInsurance().translate(manager), container.getDate()));
         }
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public void deleteCorrection(@PathVariable String id, @RequestBody(required = false) LocalDate localDate,
+    public void deleteCorrection(@PathVariable String id, @RequestBody String date,
                                  @RequestHeader(value = "Authorization") String token,
                                  @RequestHeader(value = "Function") String function) throws DataAccessException, UnAuthorizedException, ConstraintViolationException, ObjectNotFoundException {
         UUID uuid = toUUID(id);
         UUID user = new AuthenticationToken(token).getAccountId();
-        localDate=localDate==null?LocalDate.now():localDate;
+        LocalDate localDate=LocalDate.parse(date, DateTimeFormatter.ISO_DATE);
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
             VehicleInsuranceController controller = manager.getVehicleInsuranceController();
             controller.archive(uuid, localDate);
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/{id}")
+    public RESTVehicleInsurance getId(@PathVariable("id") String id, @RequestHeader(value = "Authorization") String token,
+                   @RequestHeader(value = "Function") String function) throws UnAuthorizedException, ObjectNotFoundException, DataAccessException {
+        UUID uuid = toUUID(id);
+        UUID user = new AuthenticationToken(token).getAccountId();
+        try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
+            VehicleInsuranceController controller = manager.getVehicleInsuranceController();
+            return new RESTVehicleInsurance(controller.get(uuid));
         }
     }
 

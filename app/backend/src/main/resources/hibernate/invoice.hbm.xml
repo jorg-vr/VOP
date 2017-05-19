@@ -12,16 +12,16 @@
             <generator class="uuid2"/>
         </id>
 
-        <property name="paid" column="paid" type="java.lang.Boolean"/>
-        <many-to-one name="payer" column="payer_id" class="model.identity.Company" lazy="proxy" fetch="select"/>
-        <property name="startDate" column="start_data" type="java.time.LocalDateTime"/>
-        <property name="endDate" column="end_data" type="java.time.LocalDateTime"/>
+        <property name="paid" column="paid" type="java.lang.Boolean" lazy="false"/>
+        <many-to-one name="payer" column="payer_id" class="model.identity.Company" lazy="false" fetch="select"/>
+        <property name="startDate" column="start_data" type="java.time.LocalDateTime" lazy="false"/>
+        <property name="endDate" column="end_data" type="java.time.LocalDateTime" lazy="false"/>
         <bag name="vehicleInvoices" access="field" table="vehicle_invoices" lazy="false"
              cascade="all">
             <key column="invoice_id" />
             <one-to-many class="model.billing.VehicleInvoice" />
         </bag>
-        <property name="type">
+        <property name="type" lazy="false">
             <type name="org.hibernate.type.EnumType">
                 <param name="enumClass">model.billing.InvoiceType</param>
             </type>

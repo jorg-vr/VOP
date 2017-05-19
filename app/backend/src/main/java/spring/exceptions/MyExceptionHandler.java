@@ -75,6 +75,7 @@ public class MyExceptionHandler {
 
     @ExceptionHandler(ConstraintViolationException.class)
     protected ResponseEntity<Object> handleServerErrorException(ConstraintViolationException ex) {
+        ex.printStackTrace();
         return ResponseEntity
                 .status(HttpStatus.UNPROCESSABLE_ENTITY)
                 .body(new RESTConstraintsError(HttpStatus.UNPROCESSABLE_ENTITY.value(),

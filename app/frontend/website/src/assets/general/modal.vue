@@ -35,7 +35,7 @@
           </div>
 
           <div class="modal-footer " id="modalFooter" >
-              <button v-if="optionalButtonText" type="button" class="modal-default-button btn" @click="$emit('optional')">  {{ optionalButtonText }}  </button>
+              <!--<button v-if="optionalButtonText" type="button" class="modal-default-button btn" @click="$emit('optional')">  {{ optionalButtonText }}  </button>-->
               <button v-if="cancelButtonText" type="button" class="modal-default-button btn" @click="$emit('cancelModal')"> {{ cancelButtonText}}  </button>
               <button v-if="confirmButtonText" type="button" class="modal-default-button btn" @click="$emit('confirmModal')">  {{ confirmButtonText }}  </button>
     
