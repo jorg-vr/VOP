@@ -70,13 +70,10 @@
                      :route="{name: 'vehicle_logs', params: {id: this.id}}">
             {{$t('log.log') | capitalize}}
         </button-link>
-        <button-back v-if="vehicle.fleet" :route="{name: 'fleet', params: {id: vehicle.fleet}}"></button-back>
-        <button-back v-else :route="{name: 'fleets'}"></button-back>
     </div>
 </template>
 <script>
     import buttonLink from '../../assets/buttons/buttonLink.vue'
-    import buttonBack from '../../assets/buttons/buttonBack.vue'
     import buttonEdit from '../../assets/buttons/buttonEdit.vue'
     import buttonRemove from '../../assets/buttons/buttonRemove.vue'
     import {mapGetters, mapActions} from 'vuex'
@@ -93,7 +90,7 @@
             }
         },
         components: {
-            buttonBack,listComponent, buttonLink,buttonEdit,buttonRemove,commissions
+            listComponent, buttonLink,buttonEdit,buttonRemove,commissions
         },
         props: {
             id: String
