@@ -53,7 +53,7 @@
             ]),
             listObject() {
                 var listObj = {};
-                listObj.headers = ["showableStartDate","invoiceTypeTranslation","suretyTypeTranslation","totalAmountEuro","totalTaxEuro"];
+                listObj.headers = ["showableStartDate","invoiceTypeTranslation","totalAmountEuro","totalTaxEuro"];
                 listObj.values = this.invoices;
                 return listObj;
             }
