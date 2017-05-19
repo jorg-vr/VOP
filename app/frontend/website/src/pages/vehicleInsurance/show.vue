@@ -100,6 +100,7 @@
     import {centsToEuroObject} from '../../utils/utils'
     import listComponent from "../../assets/general/listComponent.vue"
     import resources from '../../constants/resources'
+    import buttonAction from '../../assets/buttons/buttonAction.vue'
 
     export default {
         data(){
@@ -109,7 +110,7 @@
             }
         },
         components: {
-            buttonBack,listComponent
+            buttonBack,listComponent, buttonAction
         },
         props: {
             id: String,
