@@ -22,7 +22,8 @@ export default
             totalTaxEuro: 'tax',
             import: 'import',
             failImport: 'The given CSV file does not have the correct format.',
-            example: 'Download example file'
+            example: 'Download example file',
+            generate_green_card: 'Generate green card'
         },
         vehicleType: {
             name: 'name',
@@ -343,7 +344,8 @@ export default
             totalTaxEuro: 'btw',
             import: 'importeer',
             failImport: 'Het gegeven CSV bestand voldoet niet aan het correcte formaat.',
-            example: 'Download voorbeeld bestand'
+            example: 'Download voorbeeld bestand',
+            generate_green_card: 'Genereer groene kaart'
         },
         vehicleType: {
             name: 'naam',
