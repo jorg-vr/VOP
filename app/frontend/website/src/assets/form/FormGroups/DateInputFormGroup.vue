@@ -42,7 +42,7 @@ Component usable for requesting user input with a text field.
             },
             date(){
                 if(this.object[this.name]){
-                    //Only show the date part of the date time. 
+                    //Only show the date part of the date time.
                     return this.object[this.name].slice(0,10);
                 }
 

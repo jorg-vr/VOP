@@ -11,6 +11,7 @@ export default {
         selectedConditions(state){
             return state.selectedConditions
         }
+
     },
     mutations: {
         setSelectedConditions(state,value){
