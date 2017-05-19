@@ -6,23 +6,19 @@
 <template>
     <div v-if="user">
         <div class="page-header">
-            <h1>{{$t("user.user") | capitalize }}</h1>
+            <h1>{{user.lastName|capitalize}} {{user.firstName|capitalize}}
+                <button-edit v-if="user" :resource="resource" :params="{id: user.id}" ></button-edit>
+            </h1>
         </div>
         <div class="col-md-8">
+            <h4>
             <table class="table show-table">
-                <tr>
-                    <td>{{$t('user.firstName') | capitalize }}</td>
-                    <td>{{user.firstName}}</td>
-                </tr>
-                <tr>
-                    <td>{{$t('user.lastName') | capitalize }}</td>
-                    <td>{{user.lastName}}</td>
-                </tr>
                 <tr>
                     <td>{{$t('user.email') | capitalize }}</td>
                     <td>{{user.email}}</td>
                 </tr>
             </table>
+            </h4>
             <function-index :userId="id"></function-index>
             <button-back :route="{name: 'users'}"></button-back>
         </div>
@@ -31,11 +27,18 @@
 <script>
     import {mapGetters, mapActions} from 'vuex'
     import buttonBack from '../../assets/buttons/buttonBack.vue'
+    import buttonEdit from '../../assets/buttons/buttonEdit.vue'
     import FunctionIndex from '../function/index.vue'
+    import resources from '../../constants/resources'
 
     export default {
+        data(){
+            return {
+                resource: resources.USER
+            }
+        },
         components: {
-            buttonBack, FunctionIndex
+            buttonBack, FunctionIndex,buttonEdit
         },
         props: {
             id: String

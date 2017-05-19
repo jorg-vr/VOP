@@ -1,10 +1,10 @@
 <template>
     <div>
-        <button id="search-vehicle" type="button" class="btn btn-default btn-block" data-toggle="collapse" data-target=".panel-collapse" aria-expanded="false">
-            {{$t("function.functions") | capitalize}}
-            <span class="caret"></span>
-        </button>
-        <div class="function-panel panel-collapse collapse">
+        <!--<button id="search-vehicle" type="button" class="btn btn-default btn-block" data-toggle="collapse" data-target=".panel-collapse" aria-expanded="false">-->
+            <!--{{$t("function.functions") | capitalize}}-->
+            <!--<span class="caret"></span>-->
+        <!--</button>-->
+        <div class="function-panel ">
             <list-component :resource="resource" :listObject="listObject" :show="false" :edit="false"></list-component>
             <button-add :resource="resource" :params="params"></button-add>
         </div>
