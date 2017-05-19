@@ -1,24 +1,12 @@
 package spring.model;
 
-import controller.CompanyController;
 import controller.ControllerManager;
-import controller.exceptions.UnAuthorizedException;
-import dao.exceptions.ConstraintViolationException;
-import dao.exceptions.DataAccessException;
-import dao.exceptions.ObjectNotFoundException;
 import model.billing.Invoice;
 import model.billing.InvoiceType;
-import model.billing.VehicleInvoice;
-import spring.exceptions.ErrorCode;
-import spring.exceptions.InvalidInputException;
 import spring.exceptions.NotImplementedException;
 import util.UUIDUtil;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Created by Billie Devolder on 16/04/2017.

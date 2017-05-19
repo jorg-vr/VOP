@@ -10,8 +10,8 @@
                 {{$t("contract.contract") | capitalize }} {{contract.customerName}} - {{contract.insuranceCompanyName}}
             </h1>
             <h4 >{{showDate(contract.startDate)}} - {{showDate(contract.endDate)}}</h4>
-            <h4> {{$t('contract.totalCost') | capitalize }} {{contract.totalCost}}€</h4>
-            <h4>{{$t('contract.totalTax') | capitalize }} {{contract.totalTax}}€</h4>
+            <h4> {{$t('contract.totalCostEuro') | capitalize }}: {{contract.totalCostEuro}}</h4>
+            <h4>{{$t('contract.totalTaxEuro') | capitalize }}: {{contract.totalTaxEuro}}</h4>
         </div>
 
         <div class="page-header">
@@ -44,11 +44,11 @@
         </table>
         <!-- Confirmation Modam -->
         <confirm-modal v-show="showModal"
-                       @cancelModal="cancelCorrection"
+                       @cancelModal="cancelCorrection()"
                        @confirmModal="confirmCorrection()"
                        @optional="showModal=false"
                        @close="showModal=false"
-                       :object="insurance"
+                       :object="correction"
                        :endDate="$t('insurance.endDate') | capitalize"
                        :modalHeaderTitle=" $t('modal.titleCorrection') | capitalize"
                        :modalBodyText="$t('modal.textCorrection') | capitalize"
@@ -78,7 +78,7 @@
     import buttonBack from '../../assets/buttons/buttonBack.vue'
     import buttonLink from '../../assets/buttons/buttonLink.vue'
     import {mapGetters, mapActions, mapMutations} from 'vuex'
-    import {translateSuretyTypes} from '../../utils/utils'
+    import {translateSuretyTypes,centsToEuroObject,centsToEuroArray} from '../../utils/utils'
     import buttonEdit from '../../assets/buttons/buttonEdit.vue'
     import buttonRemove from '../../assets/buttons/buttonRemove.vue'
     import confirmModal from '../../assets/general/modal.vue'
@@ -91,7 +91,8 @@
                 show1: false,
                 show2: false,
                 ids:{contract:this.id},
-                showModal:false
+                showModal:false,
+                correction: {}
             }
         },
         components: {
@@ -106,8 +107,11 @@
             // fetch contract to display information
             let contractId = this.id;
             this.fetchContract({id: contractId}).then(()=>{
+                centsToEuroObject(this.contract,"totalCost")
+                centsToEuroObject(this.contract,"totalTax")
                 // get all possible sureties for the chosen insurance Company of the contract
                 this.fetchSureties({ids:{company:this.contract.insuranceCompany}}).then(() => {
+                    centsToEuroArray(this.sureties,"premium");
                     this.sureties=translateSuretyTypes(this.sureties);
                     this.show2=true;
                 })
@@ -115,7 +119,10 @@
 
             // get all insurances from the contract with contract Id
             this.fetchInsurances({ids:{contract: this.id}}).then(() => {
-                this.insurances=translateSuretyTypes(this.insurances);
+                translateSuretyTypes(this.insurances);
+                centsToEuroArray(this.insurances,"cost");
+                centsToEuroArray(this.insurances,"tax");
+                centsToEuroArray(this.insurances,"insuredValue");
                 this.setLoading({loading: false });
                 this.show1=true;
             });
@@ -135,13 +142,13 @@
             ]),
             listObject1() {
                 var listObj = {};
-                listObj.headers = ['licensePlate','brand','suretyTypeTranslation','insuredValue','showableStartDate','cost','tax'];
+                listObj.headers = ['licensePlate','brand','suretyTypeTranslation','insuredValueEuro','showableStartDate','costEuro','taxEuro'];
                 listObj.values = this.contractInsurances;
                 return listObj;
             },
             listObject2() {
                 var listObj = {};
-                listObj.headers = ['suretyTypeTranslation','premium'];
+                listObj.headers = ['suretyTypeTranslation','premiumEuro'];
                 listObj.values = this.sureties;
                 return listObj;
             },
@@ -163,7 +170,7 @@
                 'fetchInsurances',
                 'fetchSureties',
                 'fetchInsurance',
-                'createCorrection'
+                'deleteBodyInsurance'
             ]),
             ...mapMutations([
                 'setContractId',
@@ -179,21 +186,12 @@
             },
             confirmCorrection: function(){
                 // hide modal
-                let correction = {}
                 this.showModal=false
-                // create correction object
-                correction.vehicle= this.insurance.vehicle
-                correction.contract = this.insurance.contract
-                correction.date = this.insurance.endDate + "T00:00:00.00"
-                correction.tax = this.insurance.tax
-                this.deleteObject()
-                this.createCorrection({companyId: this.contract.customer, resource:correction})
+                this.correction.endDate += "T00:00:00.00"
+                this.deleteBodyInsurance({id: this.selectedvalue, ids: this.ids, data:this.correction.endDate})
             },
             cancelCorrection : function(){
                 this.showModal = false
-                this.deleteObject()
-            },
-            deleteObject : function(){
                 this.$store.dispatch('delete' + this.resource1.name.capitalize(), {id: this.selectedvalue, ids: this.ids})
             },
             tdshowModal: function(id) {

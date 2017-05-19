@@ -7,10 +7,10 @@
             </button>
             <div class="panel-collapse collapse">
                 <checkbox-input-form-group
-                        :object="edit" name="edit" :text="$t('common.edit')" >
+                        :object="editc" name="edit" :text="$t('common.edit')" >
                 </checkbox-input-form-group>
-                <show v-if="edit.edit===false" :id="id" :loc="loc"></show>
-                <edit v-if="edit.edit===true" :id="id" :loc="loc" :back="back"></edit>
+                <edit v-if="editc.edit" :id="id" :loc="loc" :back="setEditFalse" ></edit>
+                <show v-else :id="id" :loc="loc"></show>
             </div>
         </div>
     </protected-element>
@@ -34,13 +34,23 @@
                 }
             }
         },
+        computed:{
+            editc(){
+                return this.edit;
+            }
+        },
         props:{
             id:String,
-            loc:String,
-            back:Object
+            loc:String
         },
         components: {
             show,edit,CheckboxInputFormGroup,ProtectedElement
+        },
+        methods:{
+            setEditFalse(){
+                console.log("setEditFalse");
+                this.edit.edit=false;
+            }
         }
     }
 </script>

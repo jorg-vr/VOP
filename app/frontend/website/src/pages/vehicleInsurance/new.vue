@@ -2,13 +2,13 @@
     This page is used to create a new insurance.
 -->
 <template>
-    <abstract-form :actions="actions" :object="insurance" :back="back" :resource="resource">
+    <correction-form :actions="actions" :object="insurance" :ids="ids" :back="back" :resource="resource">
         <insurance-form-input :object="insurance" :actions="actions"></insurance-form-input>
-    </abstract-form>
+    </correction-form>
 </template>
 
 <script>
-    import abstractForm from '../../assets/form/AbstractForm.vue'
+    import correctionForm from '../../assets/form/FormParts/CorrectionFormPart.vue'
     import actions from '../../constants/actions'
     import resources from '../../constants/resources'
     import insuranceFormInput from './insuranceFormInput.vue'
@@ -20,7 +20,8 @@
                 actions: actions.CREATE,
                 resource: resources.INSURANCE,
                 insurance: {contract:this.contractId},
-                back: {name: resources.INSURANCE.name,params:{id:this.contractId}}
+                back: {name: resources.CONTRACT.name,params:{id:this.contractId}},
+                ids:{contract:this.contractId}
 
             }
         },
@@ -28,7 +29,7 @@
             contractId:String
         },
         components: {
-            insuranceFormInput,abstractForm
+            insuranceFormInput,correctionForm
         }
     }
 </script>
