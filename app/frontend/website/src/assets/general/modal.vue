@@ -27,11 +27,11 @@
 
           <div class="modal-body" id="modalBody">
             <p> {{modalBodyText}}</p>
-            <div>
+            <form id="modal-form">
               <date-input-form-group v-if="object != null"
                                      :object="object" name="endDate" :text="endDate" :rules="'required'">
               </date-input-form-group>
-            </div>
+            </form>
           </div>
 
           <div class="modal-footer " id="modalFooter" >
@@ -139,6 +139,9 @@ import DateInputFormGroup from '../form/FormGroups/DateInputFormGroup.vue'
         color:white;
     }
 
+    #modal-form label{
+      padding-top: 30px;
+    }
 
 .modal-default-button {
   float: right;
