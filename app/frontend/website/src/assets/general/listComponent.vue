@@ -20,7 +20,7 @@
                 </tr>
             </tbody>
         </table>
-        <!-- Confirmation Modam -->
+        <!-- Confirmation Modal -->
         <confirm-modal v-show="showModal" 
             @cancelModal="showModal=false" 
             @confirmModal="confirmAction()" 
@@ -114,7 +114,6 @@ tr.list-tr {
                 // hide modal
                 this.showModal=false
                 // remove object
-                // special case deletion of insurance
                 this.$store.dispatch('delete' + this.resource.name.capitalize(), {id: this.selectedvalue, ids: this.ids})
             },
             tdshowModal: function(id) {

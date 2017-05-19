@@ -10,7 +10,7 @@
             <h3>
                 {{vehicleType.name | capitalize }}
                 <button-edit :resource="resource" :params="{id: vehicleType.id}"></button-edit>
-                <button-remove :resource="resource"></button-remove>
+                <button-remove :resource="resource" @click="tdshowModal(vehicleType.id)"></button-remove>
             </h3>
             <div v-if="show" >
                 <table class="table-hover table">
@@ -43,6 +43,16 @@
                 </table>
             </div>
         </div>
+        <!-- Confirmation Modal -->
+        <confirm-modal v-show="showModal"
+                       @cancelModal="showModal=false"
+                       @confirmModal="confirmAction()"
+                       @close="showModal=false "
+                       :modalHeaderTitle=" $t('modal.titleConfirm') | capitalize"
+                       :modalBodyText="$t('modal.textConfirm') | capitalize"
+                       :confirmButtonText="$t('modal.button1') | capitalize "
+                       :cancelButtonText="$t('modal.button2') | capitalize ">
+        </confirm-modal>
     </div>
 </template>
 
@@ -54,35 +64,22 @@
     import * as locations from '../../constants/locations'
     import buttonEdit from '../../assets/buttons/buttonEdit.vue'
     import buttonRemove from '../../assets/buttons/buttonRemove.vue'
+    import confirmModal from '../../assets/general/modal.vue'
 
     export default {
         data(){
             return {
                 resource: resources.VEHICLE_TYPE,
-                show:false
+                show:false,
+                showModal:false,
+                selectedvalue:""
             }
         },
         components: {
-            listComponent, buttonAdd,buttonEdit,buttonRemove
+            listComponent, buttonAdd,buttonEdit,buttonRemove,confirmModal
         },
         created(){
-            this.fetchVehicleTypes().then(
-                    ()=>{
-                        let p=[]
-                        for(let i=0;i<this.vehicleTypes.length;i++) {
-                            p[i]=this.fetchCommissions({ids: {'resource': locations.VEHICLE_TYPE, 'resourceId': this.vehicleTypes[i].id}})
-                        }
-                        Promise.all(p).then(
-                                com=>{
-                                    for(let i=0;i<this.vehicleTypes.length;i++) {
-                                        this.vehicleTypes[i].merge = this.mergeCommissionsAndTaxes(com[i], this.vehicleTypes[i].taxes);
-                                    }
-                                    this.show = true;
-                                }
-                        )
-
-                    }
-            );
+            this.refreshVehicleTypes;
         },
         computed: {
             ...mapGetters([
@@ -98,7 +95,8 @@
         methods: {
             ...mapActions([
                 'fetchVehicleTypes',
-                'fetchCommissions'
+                'fetchCommissions',
+                'deleteVehicleType'
             ]),
             mergeCommissionsAndTaxes(commissions, taxes){
                 let merge={};
@@ -115,6 +113,36 @@
                     merge[taxes[i].suretyType].name=taxes[i].suretyType;
                 }
                 return merge;
+            },
+            refreshVehicleTypes(){
+                this.fetchVehicleTypes().then(
+                        ()=>{
+                            let p=[]
+                            for(let i=0;i<this.vehicleTypes.length;i++) {
+                                p[i]=this.fetchCommissions({ids: {'resource': locations.VEHICLE_TYPE, 'resourceId': this.vehicleTypes[i].id}})
+                            }
+                            Promise.all(p).then(
+                                    com=>{
+                                        for(let i=0;i<this.vehicleTypes.length;i++) {
+                                            this.vehicleTypes[i].merge = this.mergeCommissionsAndTaxes(com[i], this.vehicleTypes[i].taxes);
+                                        }
+                                        this.show = true;
+                                    }
+                            )
+
+                        }
+                );
+            },
+            confirmAction: function(){
+                // hide modal
+                this.showModal=false
+                // remove object
+                this.deleteVehicleType({id: this.selectedvalue, ids: this.ids});
+                this.refreshVehicleTypes();
+            },
+            tdshowModal: function(id) {
+                this.showModal = true
+                this.selectedvalue=id
             }
         }
     }
