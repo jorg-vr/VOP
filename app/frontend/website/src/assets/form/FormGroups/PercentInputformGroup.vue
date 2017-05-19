@@ -5,7 +5,7 @@
             <p class="col-xs-9 input-icon ">
                 <i>%</i>
                 <input :type="'number'" class="form-control"
-                       :value="object[name]*100"
+                       :value="(object[name]*100).toFixed(2)"
                        @input="onInput($event.target.value)"
                        v-validate="validator"
                        :data-vv-name="name"

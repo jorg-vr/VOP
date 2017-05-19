@@ -16,6 +16,7 @@
 <script>
     import {mapGetters, mapActions} from 'vuex'
     import percentInputFormGroup from '../../assets/form/FormGroups/PercentInputformGroup.vue'
+    import textInputFormGroup from '../../assets/form/FormGroups/TextInputFormGroup.vue'
     import suretyTypes from '../../constants/suretyTypes'
 
     export default {
@@ -33,7 +34,8 @@
             }
         },
         components: {
-            percentInputFormGroup
+            percentInputFormGroup,
+            textInputFormGroup
         }
     }
 </script>
