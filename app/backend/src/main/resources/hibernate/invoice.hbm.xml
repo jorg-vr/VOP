@@ -36,7 +36,8 @@
         <id name="uuid" type="uuid-binary" column="id">
             <generator class="uuid2"/>
         </id>
-        <many-to-one name="vehicleInsurance" column="insurance_id" class="model.insurance.VehicleInsurance" lazy="false" />
+        <many-to-one name="surety" column="surety_id" class="model.insurance.Surety" lazy="false" not-null="false" />
+        <property name="vehicleInsuranceID" column="vehicle_insurance_id" type="uuid-binary"/>
         <property name="franchise" column="franchise" type="int"/>
         <property name="insuredValue" column="insured_value" type="int"/>
         <property name="totalCost" column="total_cost" type="int" />

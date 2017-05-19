@@ -38,7 +38,7 @@ public class VehicleInsuranceController extends AbstractController<VehicleInsura
 
     public void archive(UUID uuid, LocalDate date) throws DataAccessException, UnAuthorizedException, ObjectNotFoundException, ConstraintViolationException {
         VehicleInsurance insurance = get(uuid);
-        Invoice currentStatement = insurance.getVehicle().getFleet().getOwner().getCurrentStatement();
+        Invoice currentStatement = manager.getInvoiceDao().get(insurance.getVehicle().getFleet().getOwner().getCurrentStatement().getUuid());
         if (!date.isAfter(currentStatement.getEndDate().toLocalDate())) {
             //Add as Correction
             if (date.isBefore(LocalDate.now())) {
@@ -52,17 +52,31 @@ public class VehicleInsuranceController extends AbstractController<VehicleInsura
             Period period = Period.between(LocalDate.now(), currentStatement.getEndDate().toLocalDate());
             int months = period.getMonths();
             int days = Period.between(date.plusMonths(months), LocalDate.now()).getDays();
-            VehicleInvoice vehicleInvoice = createVehicleInvoice(insurance, insurance.calculateTax(), insurance.calculateCost(), -months, -days);
-            currentStatement.getVehicleInvoices().add(vehicleInvoice);
+            VehicleInvoice vehicleInvoice = currentStatement.getVehicleInvoice(uuid);
+            if (vehicleInvoice == null) {
+                vehicleInvoice = createVehicleInvoice(null, insurance.calculateTax(), insurance.calculateCost(), -months, -days);
+                currentStatement.getVehicleInvoices().add(vehicleInvoice);
+            } else {
+                LocalDate now = LocalDate.now();
+                double monthFactor = (double) days / (double) now.getMonth().length(now.isLeapYear());
+                vehicleInvoice.setTotalTax(vehicleInvoice.getTotalTax() - insurance.calculateTax() * months + (int) Math.round(monthFactor * insurance.calculateTax()));
+                vehicleInvoice.setTotalCost(vehicleInvoice.getTotalCost() + insurance.calculateCost() * months + (int) Math.round(monthFactor * insurance.calculateCost()));
+            }
             manager.getInvoiceDao().update(currentStatement);
         }
         super.archive(uuid);
     }
 
 
-    public VehicleInsurance create(VehicleInsurance vehicleInsurance) throws DataAccessException, UnAuthorizedException, ConstraintViolationException {
+    public VehicleInsurance create(VehicleInsurance vehicleInsurance) throws DataAccessException, UnAuthorizedException, ConstraintViolationException{
         LocalDate date = vehicleInsurance.getStartDate().toLocalDate();
-        Invoice currentStatement = vehicleInsurance.getVehicle().getFleet().getOwner().getCurrentStatement();
+        Invoice currentStatement = null;
+        try {
+            currentStatement = manager.getInvoiceDao().get(vehicleInsurance.getVehicle().getFleet().getOwner().getCurrentStatement().getUuid());
+        } catch (ObjectNotFoundException e) {
+            e.printStackTrace();
+        }
+
         if (!date.isAfter(currentStatement.getEndDate().toLocalDate())) {
             //Add as Correction
             if (date.isBefore(LocalDate.now())) {
@@ -77,15 +91,19 @@ public class VehicleInsuranceController extends AbstractController<VehicleInsura
             Period period = Period.between(LocalDate.now(), currentStatement.getEndDate().toLocalDate());
             int months = period.getMonths();
             int days = Period.between(date.plusMonths(months), currentStatement.getEndDate().toLocalDate()).getDays();
+
+
             VehicleInvoice vehicleInvoice = createVehicleInvoice(vehicleInsurance, vehicleInsurance.calculateTax(), vehicleInsurance.calculateCost(), months, days);
             currentStatement.getVehicleInvoices().add(vehicleInvoice);
+            vehicleInsurance = super.create(vehicleInsurance);
             manager.getInvoiceDao().update(currentStatement);
+            return vehicleInsurance;
         }
         return super.create(vehicleInsurance);
     }
 
     public VehicleInsurance update(VehicleInsurance vehicleInsurance, LocalDate date) throws DataAccessException, UnAuthorizedException, ObjectNotFoundException, ConstraintViolationException {
-        Invoice currentStatement = vehicleInsurance.getVehicle().getFleet().getOwner().getCurrentStatement();
+        Invoice currentStatement = manager.getInvoiceDao().get(vehicleInsurance.getVehicle().getFleet().getOwner().getCurrentStatement().getUuid());
         System.out.println("CurrentStatement: " + currentStatement);
         System.out.println("Date: " + date);
         VehicleInsurance currentInsurance = get(vehicleInsurance.getUuid());
@@ -105,7 +123,7 @@ public class VehicleInsuranceController extends AbstractController<VehicleInsura
             Period period = Period.between(LocalDate.now(), currentStatement.getEndDate().toLocalDate());
             int months = period.getMonths();
             int days = Period.between(date.plusMonths(months), currentStatement.getEndDate().toLocalDate()).getDays();
-            VehicleInvoice vehicleInvoice = currentStatement.getVehicleInvoice(currentInsurance);
+            VehicleInvoice vehicleInvoice = currentStatement.getVehicleInvoice(currentInsurance.getUuid());
             if (vehicleInvoice == null) {
                 vehicleInvoice = createVehicleInvoice(vehicleInsurance, taxDifference, costDifference, months, days);
                 currentStatement.getVehicleInvoices().add(vehicleInvoice);
@@ -123,7 +141,7 @@ public class VehicleInsuranceController extends AbstractController<VehicleInsura
         }
     }
 
-    private VehicleInvoice createVehicleInvoice(VehicleInsurance insurance, int tax, int cost, int months, int days) {
+    private VehicleInvoice createVehicleInvoice(VehicleInsurance insurance, int tax, int cost, int months, int days) throws DataAccessException{
         VehicleInvoice vehicleInvoice = new VehicleInvoice();
         LocalDate now = LocalDate.now();
         vehicleInvoice.setInsuredValue(insurance.getInsuredValue());
@@ -134,7 +152,11 @@ public class VehicleInsuranceController extends AbstractController<VehicleInsura
         double monthFactor = (double) days / (double) now.getMonth().length(now.isLeapYear());
         vehicleInvoice.setTotalTax(tax * months + (int) Math.round(monthFactor * tax));
         vehicleInvoice.setTotalCost(cost * months + (int) Math.round(monthFactor * cost));
-        vehicleInvoice.setVehicleInsurance(insurance);
+        try {
+            vehicleInvoice.setSurety(manager.getSuretyDao().get(insurance.getSurety().getUuid()));
+        } catch (ObjectNotFoundException e) {
+            throw new DataAccessException(e);
+        }
         return vehicleInvoice;
     }
 

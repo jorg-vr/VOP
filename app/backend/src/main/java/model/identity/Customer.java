@@ -24,7 +24,7 @@ public class Customer extends Company implements java.io.Serializable, Commissio
     /**
      * All contracts the customer has
      */
-    private Collection<Contract> contracts;
+    private Collection<Contract> contracts = new ArrayList<>();
 
     /**
      * Commissions can be determined by VehicleType, by Customer and By vehicle, Default is vehicleType,

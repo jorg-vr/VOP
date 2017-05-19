@@ -2,6 +2,7 @@ package controller;
 
 import controller.exceptions.UnAuthorizedException;
 import dao.exceptions.ConstraintViolationException;
+import dao.exceptions.ObjectNotFoundException;
 import dao.interfaces.DAOManager;
 import dao.exceptions.DataAccessException;
 import dao.interfaces.Filter;
@@ -33,7 +34,7 @@ public class InvoiceController extends AbstractController<Invoice> {
         this.manager = manager;
     }
 
-    public void endStatement(Customer customer) throws DataAccessException, ConstraintViolationException {
+    public void endStatement(Customer customer) throws DataAccessException, ConstraintViolationException, ObjectNotFoundException {
 
         for(int i = 0; i<customer.getPaymentPeriod().getTime();i+=customer.getFacturationPeriod().getTime()){
             Invoice invoice = new Invoice();
@@ -61,7 +62,7 @@ public class InvoiceController extends AbstractController<Invoice> {
         getDao().create(statement);
     }
 
-    private Collection<VehicleInvoice> createVehicleInvoices(Customer customer, int duration){
+    private Collection<VehicleInvoice> createVehicleInvoices(Customer customer, int duration) throws DataAccessException, ObjectNotFoundException {
         Collection<VehicleInsurance> insurances = new ArrayList<>();
 
         for(Contract contract: customer.getContracts()){
@@ -77,7 +78,7 @@ public class InvoiceController extends AbstractController<Invoice> {
             vehicleInvoice.setVin(insurance.getVehicle().getVin());
             vehicleInvoice.setLicensePlate(insurance.getVehicle().getLicensePlate());
             vehicleInvoice.setFranchise(insurance.getFranchise());
-            vehicleInvoice.setVehicleInsurance(insurance);
+            vehicleInvoice.setSurety(manager.getSuretyDao().get(insurance.getSurety().getUuid()));
             vehicleInvoice.setTotalCost(insurance.calculateCost()*duration);
             vehicleInvoice.setTotalTax(insurance.calculateTax()*duration);
             vehicleInvoice.setInsuredValue(insurance.getInsuredValue());

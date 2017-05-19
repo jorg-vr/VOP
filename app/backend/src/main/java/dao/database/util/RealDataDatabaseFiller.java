@@ -38,8 +38,8 @@ public class RealDataDatabaseFiller {
         try (DAOProvider provider = ProductionProvider.getInstance()) {
             RealDataDatabaseFiller filler = new RealDataDatabaseFiller();
             filler.initVehicleTypes(provider);
-            UUID admin= filler.initUsers(provider);
-            filler.initVehicleInsurances(provider,admin);
+            UUID admin = filler.initUsers(provider);
+            filler.initVehicleInsurances(provider, admin);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -134,30 +134,28 @@ public class RealDataDatabaseFiller {
     }
 
 
+    private UUID initUsers(DAOProvider provider) throws ObjectNotFoundException, DataAccessException, UnAuthorizedException, ConstraintViolationException {
 
+        //Create possible roles
+        Role adminRole = adminRole();
+        Role productionRole = productionRole();
+        Role customerRole = customerRole();
+        Role insuranceRole = insuranceRole();
 
-    private UUID initUsers(DAOProvider provider) throws ObjectNotFoundException {
+        //Create admin Account
+        Address address = createAddress("Kerkstraat", "1", "Zomergem", "9930", "België");
+        Company company = createCompany(CompanyType.SOLVAS, "093725663", "Solvas", address);
+
+        User user = createUser("Patrick", "Oostvogels", "patrick.oostvogels@solvas.be", "1h8xE660mn");
+        Function adminFunction = createFunction(company, user, LocalDateTime.now().minusMonths(8), LocalDateTime.now().plusMonths(8), "Admin",
+                adminRole);
+        Function productionFunction = createFunction(company, user, LocalDateTime.now().minusMonths(8), LocalDateTime.now().plusMonths(8), "Productiebeheerder",
+                productionRole);
+        Function customerFunction = createFunction(company, user, LocalDateTime.now().minusMonths(8), LocalDateTime.now().plusMonths(8), "Klant",
+                customerRole);
+        Function insuranceFunction = createFunction(company, user, LocalDateTime.now().minusMonths(8), LocalDateTime.now().plusMonths(8), "Verzekeringsmakelaar",
+                insuranceRole);
         try (DAOManager manager = provider.getDaoManager()) {
-            //Create possible roles
-            Role adminRole = adminRole();
-            Role productionRole = productionRole();
-            Role customerRole = customerRole();
-            Role insuranceRole = insuranceRole();
-
-            //Create admin Account
-            Address address = createAddress("Kerkstraat", "1", "Zomergem", "9930", "België");
-            Company company = createCompany(CompanyType.SOLVAS, "093725663", "Solvas", address);
-
-            User user = createUser("Patrick", "Oostvogels", "patrick.oostvogels@solvas.be", "1h8xE660mn");
-            Function adminFunction = createFunction(company, user, LocalDateTime.now().minusMonths(8), LocalDateTime.now().plusMonths(8), "Admin",
-                    adminRole);
-            Function productionFunction = createFunction(company, user, LocalDateTime.now().minusMonths(8), LocalDateTime.now().plusMonths(8), "Productiebeheerder",
-                    productionRole);
-            Function customerFunction = createFunction(company, user, LocalDateTime.now().minusMonths(8), LocalDateTime.now().plusMonths(8), "Klant",
-                    customerRole);
-            Function insuranceFunction = createFunction(company, user, LocalDateTime.now().minusMonths(8), LocalDateTime.now().plusMonths(8), "Verzekeringsmakelaar",
-                    insuranceRole);
-
             manager.getUserDAO().create(user);
             manager.getRoleDAO().create(adminRole);
             manager.getRoleDAO().create(productionRole);
@@ -173,41 +171,42 @@ public class RealDataDatabaseFiller {
             createInsuranceAccount2(company, insuranceRole, manager);
             createInsuranceAccount3(company, insuranceRole, manager);
             createInsuranceAccount4(company, insuranceRole, manager);
-
-            InsuranceCompany axa = insuranceCompany1(user, adminFunction);
-            InsuranceCompany ethias = insuranceCompany2(user, adminFunction);
-
-            Collection<SpecialCondition> specialConditions = initSpecialConditions(user, adminFunction);
-
-            Collection<Surety> suretiesAxa = initSuretiesAxa(user, adminFunction, specialConditions, axa);
-            Collection<Surety> suretiesEthias = initSuretiesEthias(user, adminFunction, specialConditions, ethias);
-
-            Customer sam = customerSam(customerRole, manager, user, adminFunction);
-            Customer jorg = customerJorg(customerRole, manager, user, adminFunction);
-            Customer billie = customerBillie(customerRole, manager, user, adminFunction);
-
-            Contract jorgContract = initContract(user,adminFunction,jorg,axa);
-            Contract samContract = initContract(user,adminFunction,sam,axa);
-            Contract billieContract = initContract(user,adminFunction,billie,ethias);
-
-            initInvoice(user,adminFunction,jorg);
-            initInvoice(user,adminFunction,sam);
-            initInvoice(user,adminFunction,billie);
-
-            return adminFunction.getUuid();
-        } catch (DataAccessException | ConstraintViolationException | UnAuthorizedException e) {
-            e.printStackTrace();
-            return  null;
         }
+        InsuranceCompany axa = insuranceCompany1(user, adminFunction);
+        InsuranceCompany ethias = insuranceCompany2(user, adminFunction);
+
+        Collection<SpecialCondition> specialConditions = initSpecialConditions(user, adminFunction);
+
+        Collection<Surety> suretiesAxa = initSuretiesAxa(user, adminFunction, specialConditions, axa);
+        Collection<Surety> suretiesEthias = initSuretiesEthias(user, adminFunction, specialConditions, ethias);
+
+        Customer sam = null;
+        Customer jorg = null;
+        Customer billie = null;
+        try (DAOManager manager = provider.getDaoManager()) {
+            sam = customerSam(customerRole, manager, user, adminFunction);
+            jorg = customerJorg(customerRole, manager, user, adminFunction);
+            billie = customerBillie(customerRole, manager, user, adminFunction);
+        }
+        Contract jorgContract = initContract(user, adminFunction, jorg, axa);
+        Contract samContract = initContract(user, adminFunction, sam, axa);
+        Contract billieContract = initContract(user, adminFunction, billie, ethias);
+
+        initInvoice(user, adminFunction, jorg);
+        initInvoice(user, adminFunction, sam);
+        initInvoice(user, adminFunction, billie);
+
+        return adminFunction.getUuid();
+
     }
 
     private void initVehicleInsurances(DAOProvider provider, UUID admin) throws DataAccessException, ObjectNotFoundException, ConstraintViolationException, UnAuthorizedException {
         try (DAOManager manager = provider.getDaoManager()) {
-            User user=manager.getUserDAO().getUserByLogin("patrick.oostvogels@solvas.be");
-            Function function=manager.getFunctionDAO().get(admin);
-            for(Customer customer:manager.getCustomerDAO().listFiltered()) {
+            User user = manager.getUserDAO().getUserByLogin("patrick.oostvogels@solvas.be");
+            Function function = manager.getFunctionDAO().get(admin);
+            for (Customer customer : manager.getCustomerDAO().listFiltered()) {
                 System.out.println(customer.getCurrentStatement());
-                for(Contract contract:customer.getContracts()) {
+                for (Contract contract : customer.getContracts()) {
                     for (Fleet fleet : customer.getFleets()) {
                         for (Vehicle vehicle : fleet.getVehicles()) {
                             initVehicleInsurance(user, function, contract, getRandomSurety(contract.getCompany().getSureties()), vehicle);
@@ -233,8 +232,8 @@ public class RealDataDatabaseFiller {
             VehicleInsurance insurance = new VehicleInsurance();
             insurance.setContract(contract);
             insurance.setSurety(surety);
-            insurance.setFranchise(new Random().nextInt(franchiseMaximum-franchiseMinimum)+franchiseMinimum);
-            insurance.setInsuredValue(new Random().nextInt(insuredMaximum-insuredMinimum)+insuredMinimum);
+            insurance.setFranchise(new Random().nextInt(franchiseMaximum - franchiseMinimum) + franchiseMinimum);
+            insurance.setInsuredValue(new Random().nextInt(insuredMaximum - insuredMinimum) + insuredMinimum);
             insurance.setVehicle(vehicle);
             insurance.setStartDate(LocalDateTime.now().minusMonths(10));
             insurance.setStartDate(LocalDateTime.now().plusMonths(10));
@@ -243,10 +242,9 @@ public class RealDataDatabaseFiller {
     }
 
 
-
-    private void initInvoice(User user, Function function,Customer customer) throws DataAccessException, UnAuthorizedException, ConstraintViolationException, ObjectNotFoundException {
+    private void initInvoice(User user, Function function, Customer customer) throws DataAccessException, UnAuthorizedException, ConstraintViolationException, ObjectNotFoundException {
         try (ControllerManager controllerManager = new ControllerManager(user.getUuid(), function.getUuid())) {
-            customer=controllerManager.getCustomerController().get(customer.getUuid());//needed for initalation and lazy fetching issues
+            customer = controllerManager.getCustomerController().get(customer.getUuid());//needed for initalation and lazy fetching issues
             controllerManager.getInvoiceController().endStatement(customer);
             System.out.println(customer.getCurrentStatement());
         }
@@ -264,8 +262,6 @@ public class RealDataDatabaseFiller {
             return contract;
         }
     }
-
-
 
 
     private Collection<Surety> initSuretiesAxa(User user, Function function, Collection<SpecialCondition> specialConditions, InsuranceCompany insuranceCompany)
@@ -408,7 +404,7 @@ public class RealDataDatabaseFiller {
         manager.getFunctionDAO().create(insuranceFunction);
     }
 
-    private Customer customerSam(Role customerRole, DAOManager manager, User user, Function adminFunction) throws DataAccessException, ConstraintViolationException, UnAuthorizedException {
+    private Customer customerSam(Role customerRole, DAOManager manager, User user, Function adminFunction) throws DataAccessException, ConstraintViolationException, UnAuthorizedException, ObjectNotFoundException {
         //Create User and Customer Sam
         try (ControllerManager controllerManager = new ControllerManager(user.getUuid(), adminFunction.getUuid())) {
             Address addressSam = createAddress("Linde", "10", "Sint-Jansteen", "4564GG", "Nederland");
@@ -421,6 +417,7 @@ public class RealDataDatabaseFiller {
             manager.getCustomerDAO().create(customerSam);
             manager.getUserDAO().create(userSam);
             manager.getFunctionDAO().create(functionSam);
+            controllerManager.getInvoiceController().endStatement(customerSam);
             Fleet fleetSam = createFleet("Antwerpen", customerSam, addressSam);
             controllerManager.getFleetController().create(fleetSam);
             customerSam.setFleets(new ArrayList<>(Arrays.asList(new Fleet[]{fleetSam})));
@@ -429,7 +426,7 @@ public class RealDataDatabaseFiller {
         }
     }
 
-    private Customer customerJorg(Role customerRole, DAOManager manager, User user, Function adminFunction) throws DataAccessException, UnAuthorizedException, ConstraintViolationException {
+    private Customer customerJorg(Role customerRole, DAOManager manager, User user, Function adminFunction) throws DataAccessException, UnAuthorizedException, ConstraintViolationException, ObjectNotFoundException {
         //Create User and Customer Sam
         try (ControllerManager controllerManager = new ControllerManager(user.getUuid(), adminFunction.getUuid())) {
             Address addressJorg = createAddress("Hoofdstraat", "125A", "Hansbeke", "4564GG", "België");
@@ -442,6 +439,7 @@ public class RealDataDatabaseFiller {
             manager.getCustomerDAO().create(customerJorg);
             manager.getUserDAO().create(userJorg);
             manager.getFunctionDAO().create(functionJorg);
+            controllerManager.getInvoiceController().endStatement(customerJorg);
             Fleet fleetJorg = createFleet("West Vlaanderen", customerJorg, addressJorg);
             controllerManager.getFleetController().create(fleetJorg);
             customerJorg.setFleets(new ArrayList<>(Arrays.asList(new Fleet[]{fleetJorg})));
@@ -450,7 +448,7 @@ public class RealDataDatabaseFiller {
         }
     }
 
-    private Customer customerBillie(Role customerRole, DAOManager manager, User user, Function adminFunction) throws DataAccessException, UnAuthorizedException, ConstraintViolationException {
+    private Customer customerBillie(Role customerRole, DAOManager manager, User user, Function adminFunction) throws DataAccessException, UnAuthorizedException, ConstraintViolationException, ObjectNotFoundException {
         //Create User and Customer Sam
         try (ControllerManager controllerManager = new ControllerManager(user.getUuid(), adminFunction.getUuid())) {
             Address addressBillie = createAddress("Gentsesteenweg", "4", "Kortrijk", "8000", "België");
@@ -463,6 +461,7 @@ public class RealDataDatabaseFiller {
             manager.getCustomerDAO().create(customerBillie);
             manager.getUserDAO().create(userBillie);
             manager.getFunctionDAO().create(functionBillie);
+            controllerManager.getInvoiceController().endStatement(customerBillie);
             Fleet fleetBillie = createFleet("West Vlaanderen", customerBillie, addressBillie);
             controllerManager.getFleetController().create(fleetBillie);
             customerBillie.setFleets(new ArrayList<>(Arrays.asList(new Fleet[]{fleetBillie})));
@@ -590,7 +589,7 @@ public class RealDataDatabaseFiller {
                     vehicle.setLicensePlate(license);
                     vehicle.setType(vehicleType);
                     vehicle.setModel(model);
-                    vehicle.setYear(LocalDate.of(2017-new Random().nextInt(10),1,1));
+                    vehicle.setYear(LocalDate.of(2017 - new Random().nextInt(10), 1, 1));
                     controllerManager.getVehicleController().create(vehicle);
                     fleet.getVehicles().add(vehicle);
                     return;
@@ -661,7 +660,6 @@ public class RealDataDatabaseFiller {
         role.setAccess(Resource.ROLE, Action.READ_MINE);
         return role;
     }
-
 
 
 }

@@ -104,9 +104,9 @@ public class Invoice implements EditableObject, java.io.Serializable {
         return tax;
     }
 
-    public VehicleInvoice getVehicleInvoice(VehicleInsurance insurance){
+    public VehicleInvoice getVehicleInvoice(UUID insuranceID){
         for(VehicleInvoice vehicleInvoice: getVehicleInvoices()){
-            if(vehicleInvoice.getVehicleInsurance().getUuid().equals(insurance.getUuid())){
+            if(vehicleInvoice.getVehicleInsuranceID().equals(insuranceID)){
                 return vehicleInvoice;
             }
         }
