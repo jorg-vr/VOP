@@ -23,7 +23,7 @@
                     <td>{{user.email}}</td>
                 </tr>
                 <tr v-if="user.id == activeAccount.id">
-                    <td>Language</td>
+                    <td>{{$t('language.language') | capitalize}}</td>
                     <td><language-picker></language-picker></td>
                 </tr>
             </table>
