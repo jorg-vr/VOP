@@ -24,7 +24,7 @@
                 </tr>
                 <tr>
                     <td>{{$t('address.country') | capitalize }}</td>
-                    <td>{{client.address.country}}</td>
+                    <td>{{country}}</td>
                 </tr>
                 <tr>
                     <td>{{$t('address.city') | capitalize }}</td>
@@ -90,6 +90,8 @@
     import periods from '../../constants/periods'
     import commissions from '../commission/collapse.vue'
     import {translateSuretyTypes,centsToEuroArray} from '../../utils/utils'
+    import countries from './countries'
+    import Vue from 'vue'
 
     export default {
         data(){
@@ -134,7 +136,6 @@
                         });
                     }
                 }
-
                 this.setLoading({loading: false })
             });
 
@@ -147,6 +148,16 @@
                 'fleets',
                 'sureties'
             ]),
+            country(){
+                if(this.client.address){
+                    let code = this.client.address.country
+                    let country = countries[Vue.config.lang].filter(country => country.code === code)[0]
+                    return country.name
+                }
+                else {
+                    return ''
+                }
+            },
             listObjectFleets () {
                 var listObj = {};
                 listObj.headers = ["name"];
