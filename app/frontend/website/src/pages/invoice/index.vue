@@ -21,7 +21,7 @@
     import actions from '../../constants/actions'
     import listComponent from '../../assets/general/listComponent.vue'
     import buttonBack from '../../assets/buttons/buttonBack.vue'
-    import {translateInvoiceTypes} from '../../utils/utils'
+    import {translateInvoiceTypes,centsToEuroArray} from '../../utils/utils'
 
     export default {
         data(){
@@ -39,6 +39,8 @@
             this.setLoading({loading: true });
             this.fetchInvoices({ids:{company: this.companyId}}).then(() => {
                 translateInvoiceTypes(this.invoices);
+                centsToEuroArray(this.invoices,"totalAmount");
+                centsToEuroArray(this.invoices,"totalTax");
                 this.show=true;
                 this.setLoading({loading: false })
             });
@@ -51,7 +53,7 @@
             ]),
             listObject() {
                 var listObj = {};
-                listObj.headers = ["showableStartDate","invoiceTypeTranslation","totalAmount","totalTax"];
+                listObj.headers = ["showableStartDate","invoiceTypeTranslation","totalAmountEuro","totalTaxEuro"];
                 listObj.values = this.invoices;
                 return listObj;
             }

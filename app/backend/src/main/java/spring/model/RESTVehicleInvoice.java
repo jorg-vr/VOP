@@ -1,6 +1,7 @@
 package spring.model;
 
 import model.billing.VehicleInvoice;
+import model.insurance.SuretyType;
 
 /**
  * Created by jorg on 5/17/17.
@@ -37,6 +38,8 @@ public class RESTVehicleInvoice {
      */
     private String licensePlate;
 
+    private SuretyType suretyType;
+
     public RESTVehicleInvoice(VehicleInvoice vehicleInvoice) {
         setFranchise(vehicleInvoice.getFranchise());
         setInsuredValue(vehicleInvoice.getInsuredValue());
@@ -44,6 +47,15 @@ public class RESTVehicleInvoice {
         setTotalCost(vehicleInvoice.getTotalCost());
         setTotalTax(vehicleInvoice.getTotalTax());
         setVin(vehicleInvoice.getVin());
+        setSuretyType(vehicleInvoice.getSurety().getSuretyType());
+    }
+
+    public SuretyType getSuretyType() {
+        return suretyType;
+    }
+
+    public void setSuretyType(SuretyType suretyType) {
+        this.suretyType = suretyType;
     }
 
     public int getTotalCost() {
