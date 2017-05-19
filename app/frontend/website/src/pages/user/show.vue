@@ -22,6 +22,10 @@
                     <td>{{$t('user.email') | capitalize }}</td>
                     <td>{{user.email}}</td>
                 </tr>
+                <tr v-if="user.id == activeAccount.id">
+                    <td>Language</td>
+                    <td><language-picker></language-picker></td>
+                </tr>
             </table>
             <function-index :userId="id"></function-index>
             <button-back :route="{name: 'users'}"></button-back>
@@ -32,10 +36,11 @@
     import {mapGetters, mapActions} from 'vuex'
     import buttonBack from '../../assets/buttons/buttonBack.vue'
     import FunctionIndex from '../function/index.vue'
+    import languagePicker from '../../assets/navbar/languagePicker.vue'
 
     export default {
         components: {
-            buttonBack, FunctionIndex
+            buttonBack, FunctionIndex, languagePicker
         },
         props: {
             id: String
@@ -45,7 +50,7 @@
         },
         computed: {
             ...mapGetters([
-                'user'
+                'user', 'activeAccount'
             ])
         },
         methods: {

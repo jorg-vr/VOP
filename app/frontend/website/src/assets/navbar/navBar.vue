@@ -48,9 +48,6 @@
                     <li v-if="hasActiveAccount == false">
                         <router-link :to="{path: '/login'}"> {{$t("login.login") | capitalize }}  </router-link>
                     </li>
-                    <li>
-                        <language-picker></language-picker>
-                    </li>
                     <function-picker></function-picker>
                     <!-- condition group rendering for navbar login info-->
                     <template v-if="hasActiveAccount">
@@ -79,7 +76,6 @@
 <script>
 import { mapGetters, mapActions, mapMutations } from 'vuex'
 import resources from '../../constants/resources'
-import languagePicker from './languagePicker.vue'
 import functionPicker from './functionPicker.vue'
 import formSelect from '../form/FormGroups/SelectInputFormGroup.vue'
 import ResourcesLink from './ResourcesLink.vue'
@@ -91,7 +87,7 @@ import ResourcesLink from './ResourcesLink.vue'
             }
         },
         components: {
-            languagePicker, functionPicker, formSelect, ResourcesLink
+            functionPicker, formSelect, ResourcesLink
         },
         computed: {
             ...mapGetters([
