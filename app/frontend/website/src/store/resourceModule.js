@@ -128,7 +128,6 @@ export default {
             })
         }
         module.actions[createResource] = function(context, payload){
-            fixDates(payload.resource)
             return new Promise((resolveSuccess, resolveFailure) => {
                 RequestHandler.postObjectRequest(formatLocation(location, payload.ids), payload.resource).then(createdResource => {
                     resolveSuccess(createdResource.body)
@@ -138,7 +137,6 @@ export default {
             })
         }
         module.actions[updateResource] = function(context, payload){
-            fixDates(payload.resource)
             return new Promise((resolveSuccess, resolveFailure) => {
                 RequestHandler.putObjectRequest(formatLocation(location, payload.ids), payload.resource).then(updatedResource => {
                     resolveSuccess(updatedResource)
@@ -176,11 +174,4 @@ let addShowableDates = function(payload){
     addShowableDate(payload, 'endDate')
 }
 
-let fixDates = function(object){
-    if(object.startDate != undefined){
-        object.startDate += "T00:00:00.00"
-    }
-    if(object.endDate != undefined){
-        object.endDate += "T00:00:00.00"
-    }
-}
+

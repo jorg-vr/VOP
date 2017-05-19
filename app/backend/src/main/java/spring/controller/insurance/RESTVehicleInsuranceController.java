@@ -82,15 +82,13 @@ public class RESTVehicleInsuranceController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public RESTVehicleInsurance putCorrection(@PathVariable String id, @RequestBody RESTVehicleInsuranceContainer container,
+    public RESTVehicleInsurance putCorrection(@PathVariable String id, @RequestBody RESTVehicleInsurance restVehicleInsurance,
                                           @RequestHeader(value = "Authorization") String token,
                                           @RequestHeader(value = "Function") String function) throws DataAccessException, UnAuthorizedException, ConstraintViolationException, ObjectNotFoundException {
         UUID user = new AuthenticationToken(token).getAccountId();
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
-            RESTVehicleInsurance insurance = container.getVehicleInsurance();
-            insurance.setId(id);
             VehicleInsuranceController controller = manager.getVehicleInsuranceController();
-            return new RESTVehicleInsurance(controller.update(container.getVehicleInsurance().translate(manager), container.getDate()));
+            return new RESTVehicleInsurance(controller.update(restVehicleInsurance.translate(manager), LocalDate.now()));
         }
     }
 

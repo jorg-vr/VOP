@@ -4,14 +4,14 @@
     @param id: the id of the fleet which is edited.
 -->
 <template>
-    <correction-form :actions="actions" :object="insurance" :back="back" :resource="resource" :ids="{contract: insurance.contract}">
+    <abstract-form :actions="actions" :object="insurance" :back="back" :resource="resource" :ids="{contract: insurance.contract}">
         <insurance-form-input :contractId="contractId" :object="insurance"></insurance-form-input>
-    </correction-form>
+    </abstract-form>
 </template>
 
 <script>
     import {mapActions,mapGetters} from 'vuex'
-    import correctionForm from '../../assets/form/FormParts/CorrectionFormPart.vue'
+    import abstractForm from '../../assets/form/AbstractForm.vue'
     import actions from '../../constants/actions'
     import resources from '../../constants/resources'
     import insuranceFormInput from './insuranceFormInput.vue'
@@ -22,7 +22,7 @@
                 actions: actions.UPDATE,
                 resource: resources.INSURANCE,
                 insurance: {contract:this.contractId},
-                back: {name:resources.INSURANCE.name,params:{id:this.contractId}}
+                back: {name:resources.INSURANCE.name,params:{contractId:this.contractId}}
 
             }
         },
@@ -32,7 +32,7 @@
             })
         },
         components: {
-            correctionForm,insuranceFormInput
+            abstractForm,insuranceFormInput
         },
         props: {
             id: String,
