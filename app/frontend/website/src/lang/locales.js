@@ -316,6 +316,9 @@ export default
         },
         field: {
             company: 'company'
+        },
+        language: {
+            language: 'language'
         }
     },
     nl : {
@@ -635,5 +638,8 @@ export default
             REMOVE_ALL: 'alles verwijderen',
             REMOVE_MINE: 'eigen verwijderen'
         },
+        language: {
+            language: 'taal'
+        }
     }
 }
