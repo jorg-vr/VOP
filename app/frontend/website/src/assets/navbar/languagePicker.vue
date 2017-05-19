@@ -55,7 +55,6 @@
 </script>
 <style>
      .picker {
-     .picker {
          margin-top: 8px;
      }
     .lang-sm{

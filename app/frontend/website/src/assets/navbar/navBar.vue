@@ -106,15 +106,18 @@ import ResourcesLink from './ResourcesLink.vue'
     }
 </script>
 <style>
-    .navbar-right {
-        margin-right: 0px;
-    }
     .navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus {
         color: white;
     }
     .navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:hover, .navbar-default .navbar-nav>.open>a:focus {
         background-color: #2c3e50;
         color: #18bc9c;
+    }
+    .nav>li>a {
+        padding-right: 5px;
+    }
+    .nav>li:last-child {
+        margin-right: 10px;
     }
 
     #submenu li{
@@ -128,9 +131,6 @@ import ResourcesLink from './ResourcesLink.vue'
     #usericon{
         margin-right: 5px;
         font-size: 20px;
-    }
-    .dropdown{
-        text-indent: 10px;
     }
 
     #logout{
