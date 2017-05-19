@@ -64,6 +64,7 @@ export default {
         let createResource = 'create' + capName
         let updateResource = 'update' + capName
         let deleteResource = 'delete' + capName
+        let deleteBodyResource = 'deleteBody'+ capName
         module = {
             state: {},
             getters: {},
@@ -149,6 +150,16 @@ export default {
         module.actions[deleteResource] = function(context, payload){
             return new Promise((resolveSuccess, resolveFailure) => {
                 RequestHandler.deleteObjectRequest(formatLocation(location, payload.ids), payload.id).then(() => {
+                    context.commit(removeResource, {id: payload.id})
+                    resolveSuccess()
+                }, response => {
+                    resolveFailure(response)
+                })
+            })
+        }
+        module.actions[deleteBodyResource] = function(context, payload){
+            return new Promise((resolveSuccess, resolveFailure) => {
+                RequestHandler.deleteWithBodyRequest(formatLocation(location, payload.ids), payload.id,payload.data).then(() => {
                     context.commit(removeResource, {id: payload.id})
                     resolveSuccess()
                 }, response => {
