@@ -9,7 +9,7 @@ TODO: document this page.
                     <h3> {{$t("login.header") | capitalize }} Solvas Fleet</h3>
                     <h5> {{$t("login.text") | capitalize }}  </h5>
                 </div>
-                <div class="modal-body" id="loginBody">
+                <div class="modal-body col-lg-offset-4 col-lg-4 col-md-offset-3 col-md-6 col-sm-offset-2 col-sm-8" id="loginBody">
                     <form id="loginform">
                         <p id="error" v-show="showError"> {{$t("login.error") | capitalize }}  </p>
                         <div class="input-group" id="username">
@@ -41,8 +41,8 @@ TODO: document this page.
         data() {
             return {
                 credentials:{
-                    login:'billie.devolder@gmail.com',
-                    password:'informatica'
+                    login:'',
+                    password:''
                 },
                 showError: false
             }
@@ -136,7 +136,6 @@ TODO: document this page.
     }
 
     #loginContainer{
-        width: 40%;
         margin: auto;
         background-color: #304052;
         padding:25px;
