@@ -64,19 +64,6 @@
             </table>
 
 
-<<<<<<< HEAD
-                <tr>
-                    <td>{{$t('vehicle.value') | capitalize }}</td>
-                    <td>€ {{vehicle.value}}</td>
-                </tr>
-                <tr v-if='vehicle.leasingCompany != null'>
-                    <td>{{$t('vehicle.leasingCompany') | capitalize }}</td>
-                    <td>{{vehicle.leasingCompany}}</td>
-                </tr>
-            </table> 
-         
-=======
->>>>>>> master
              <!-- surety -->
               <h2>{{$t("surety.surety") | capitalize }}</h2>
 
