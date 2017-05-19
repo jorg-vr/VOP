@@ -3,7 +3,7 @@
 -->
 <template>
     <correction-form :actions="actions" :object="insurance" :ids="ids" :back="back" :resource="resource">
-        <insurance-form-input :object="insurance" :actions="actions"></insurance-form-input>
+        <insurance-form-input :contractId="contractId"  :object="insurance" :actions="actions"></insurance-form-input>
     </correction-form>
 </template>
 
@@ -19,10 +19,9 @@
             return {
                 actions: actions.CREATE,
                 resource: resources.INSURANCE,
-                insurance: {contract:this.contractId},
                 back: {name: resources.CONTRACT.name,params:{id:this.contractId}},
-                ids:{contract:this.contractId}
-
+                ids:{contract:this.contractId},
+                insurance: {contract:this.contractId}
             }
         },
         props:{

@@ -25,6 +25,17 @@ import static util.UUIDUtil.toUUID;
 @RestController
 public class RESTLogEntryController {
 
+    @RequestMapping(value = {"/${path.vehicles}/{vehicleId}/${path.logs}/{id}", "/${path.fleets}/{fleetId}/${path.logs}/{id}"}, method = RequestMethod.GET)
+    public RESTLogEntry get(@PathVariable String id,
+                            @RequestHeader(value = "Authorization") String token,
+                            @RequestHeader(value = "Function") String function) throws DataAccessException, UnAuthorizedException, ObjectNotFoundException {
+        UUID user = new AuthenticationToken(token).getAccountId();
+        try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
+            LogEntryController controller = manager.getLogEntryController();
+            return new RESTLogEntry(controller.getEntry(toUUID(id)));
+        }
+    }
+
     @RequestMapping(value = "/${path.vehicles}/{id}/${path.logs}", method = RequestMethod.GET)
     public RESTSchema<RESTLogEntry> getVehicleEntries(@PathVariable String id,
                                                       HttpServletRequest request,

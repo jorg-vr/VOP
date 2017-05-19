@@ -89,6 +89,7 @@ export default
         common: {
             new: 'new',
             remove: 'remove',
+            removed: 'removed',
             back: 'back',
             name: 'name',
             cancel: 'cancel',
@@ -164,7 +165,13 @@ export default
             brand:'brand',
             licensePlate:'license plate',
             suretyType:'surety',
-            suretyTypeTranslation:'surety'
+            suretyTypeTranslation:'surety',
+            startsBefore: 'starts before',
+            startsOn: 'starts on',
+            startsAfter: 'starts after',
+            endsBefore: 'ends before',
+            endsOn: 'ends on',
+            endsAfter: 'ends after'
         },
         invoice:{
             invoice: 'invoice',
@@ -282,6 +289,7 @@ export default
             object: 'object',
             create: 'created',
             update: 'updated',
+            user: 'user'
         },
         description: {
             property: 'property',
@@ -330,6 +338,9 @@ export default
         },
         field: {
             company: 'company'
+        },
+        language: {
+            language: 'language'
         }
     },
     nl : {
@@ -412,6 +423,7 @@ export default
         common: {
             new: 'nieuwe',
             remove: 'verwijder',
+            removed: 'verwijderd',
             edit: 'wijzig',
             back: 'terug',
             name: 'naam',
@@ -490,7 +502,13 @@ export default
             brand:'merk',
             licensePlate:'nummer plaat',
             suretyType:'waarborg',
-            suretyTypeTranslation:'waarborg'
+            suretyTypeTranslation:'waarborg',
+            startsBefore: 'begint voor',
+            startsOn: 'begint op',
+            startsAfter: 'begint na',
+            endsBefore: 'eindigt voor',
+            endsOn: 'eindigt op',
+            endsAfter: 'eindigt na'
         },
         invoice:{
             invoice: 'factuur',
@@ -607,6 +625,7 @@ export default
             object: 'object',
             create: 'aangemaakt',
             update: 'gewijzigd',
+            user: 'gebruiker'
 
         },
         description: {
@@ -663,5 +682,8 @@ export default
             REMOVE_ALL: 'alles verwijderen',
             REMOVE_MINE: 'eigen verwijderen'
         },
+        language: {
+            language: 'taal'
+        }
     }
 }

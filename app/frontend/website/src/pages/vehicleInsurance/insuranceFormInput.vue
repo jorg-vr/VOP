@@ -9,12 +9,12 @@ All of the fields for insurance input for the insurance form
 
        <!-- Start Date -->
         <date-input-form-group 
-                    :object="object" name="startDate" :text="$t('insurance.startDate')" :rules="'required'" visibleKey="startDate">
+                    :object="object" name="startDate" :text="$t('insurance.startDate')" :rules="'required'">
         </date-input-form-group>
 
         <!-- End Date --> 
         <date-input-form-group 
-                    :object="object" name="endDate" rules="" :text="$t('insurance.endDate')" visibleKey="endDate">
+                    :object="object" name="endDate" rules="" :text="$t('insurance.endDate')">
         </date-input-form-group>
 
         <!-- Insured value -->
@@ -48,11 +48,9 @@ All of the fields for insurance input for the insurance form
 </template>
 <script>
     import {mapGetters, mapActions,mapMutations} from 'vuex'
-    import TextInputFormGroup from '../../assets/form/FormGroups/TextInputFormGroup.vue'
     import SelectInputFormGroup from '../../assets/form/FormGroups/SelectInputFormGroup.vue'
     import DateInputFormGroup from '../../assets/form/FormGroups/DateInputFormGroup.vue'
     import EuroInputFormGroup from '../../assets/form/FormGroups/EuroInputFormGroup.vue'
-    import clientTypes from '../../constants/clientTypes'
     import resources from '../../constants/resources'
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
     import {translateSuretyTypes} from '../../utils/utils'
@@ -60,9 +58,6 @@ All of the fields for insurance input for the insurance form
     export default {
         data(){
             return{
-                licensePlate: 'licensePlate',
-                suretyType: 'suretyType',
-                id:'id',
                 resource: resources.SURETY,
                 show:false
             }
@@ -71,21 +66,17 @@ All of the fields for insurance input for the insurance form
             this.$parent.$emit('mounted', this.$children)
         },
         props: {
-            object: Object,
+            contractId: String,
+            object: Object
         },
         components: {
-          TextInputFormGroup,EuroInputFormGroup,SelectInputFormGroup,DateInputFormGroup,buttonAdd
+          EuroInputFormGroup, SelectInputFormGroup, DateInputFormGroup, buttonAdd
         },
         computed: {
             ...mapGetters([
-                'clients',
-                'fleets',
-                'suretyData',
-                'suretyDetail',
                 'contract',
                 'sureties',
-                'vehicles',
-                'insuranceCompanyId'
+                'vehicles'
                 ]),
 
         },
@@ -97,9 +88,10 @@ All of the fields for insurance input for the insurance form
                 ])
         },
         created(){
-            this.fetchContract({id:this.object.contract}).then(()=>{
+
+            this.fetchContract({id: this.contractId}).then(contract =>{
                 // fetch all possible sureties
-                this.fetchSureties({ids:{ company:this.contract.insuranceCompany}}).then(()=>{
+                this.fetchSureties({ids:{ company: this.contract.insuranceCompany}}).then(()=>{
                     translateSuretyTypes(this.sureties);
                     this.show=true;
                 });

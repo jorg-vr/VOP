@@ -2,7 +2,7 @@
     This page shows a certain client in detail.
 -->
 <template>
-    <div>
+    <div v-if="entry!==null">
         <div class="col-md-8">
             <table class="table show-table">
                 <tr>
@@ -16,6 +16,12 @@
                 <tr>
                     <td>{{$t('log.dateTime') | capitalize }}</td>
                     <td>{{entry.dateTime.showableDateTime()}}</td>
+                </tr>
+                <tr>
+                    <td>{{$t('log.user') | capitalize }}</td>
+                    <td><router-link :to="{name: 'user', params: {id: entry.user.id}}">
+                        {{entry.user.firstName}} {{entry.user.lastName}}
+                    </router-link></td>
                 </tr>
             </table>
             <div v-if="entry.description.length > 0">
@@ -45,7 +51,7 @@
     export default {
         data() {
             return {
-                log: {},
+                entry: null,
             }
         },
         components: {
@@ -55,11 +61,10 @@
             id: String, //ID of the log entry.
             resource: String,
             resourceId: String,
-            entry: Object
         },
         created(){
-            this.fetchLog({resource: this.resource, resourceId: this.resourceId, id: this.id}).then(log => {
-                this.log = log
+            this.fetchLog({resource: this.resource, resourceId: this.resourceId, id: this.id}).then(entry => {
+                this.entry = entry
             })
         },
         methods: {

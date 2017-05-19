@@ -9,7 +9,7 @@
             <h1 >
                 {{$t("contract.contract") | capitalize }} {{contract.customerName}} - {{contract.insuranceCompanyName}}
             </h1>
-            <h4 >{{showDate(contract.startDate)}} - {{showDate(contract.endDate)}}</h4>
+            <h4 >{{contract.startDate.showableDate()}} - {{contract.endDate.showableDate()}}</h4>
             <h4> {{$t('contract.totalCostEuro') | capitalize }}: {{contract.totalCostEuro}}</h4>
             <h4>{{$t('contract.totalTaxEuro') | capitalize }}: {{contract.totalTaxEuro}}</h4>
         </div>
@@ -127,9 +127,8 @@
                 this.setLoading({loading: false });
                 this.show1=true;
             });
+         SubmitFormHandler.setSubmitFunction(this.confirmCorrection)
 
-
-            SubmitFormHandler.setSubmitFunction(this.confirmCorrection)
         },
         computed: {
             ...mapGetters([
@@ -173,12 +172,7 @@
             ]),
             ...mapMutations([
                 'setLoading',
-                'setInsuranceCompanyId'
             ]),
-            showDate: function (date) {
-                var d=new Date(date)
-                return d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear()
-            },
             tdclick: function(value) {
                 this.$router.push({name: this.resource1.name, params: {contractId:value.contract, id:value.id}});
             },
