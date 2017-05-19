@@ -16,7 +16,7 @@ This component can be used to let the user select between a list of specified va
         <div class="form-group">
             <label class="col-xs-3 control-label" :for="name">{{text | capitalize}}</label>
             <p class="col-xs-9 select-row">
-                <select class="form-control select-item" ref="select"
+                <select :id="id ? id : ''" class="form-control select-item" ref="select"
                         :value="object[name]"
                         @change="onInput($event.target.value)"
                         v-validate="validator"
@@ -53,7 +53,8 @@ This component can be used to let the user select between a list of specified va
             resetButton: {
                 type: Boolean,
                 default: true
-            }
+            },
+            id: String //HTML id for the select element.
         },
         computed: {
             property() {
