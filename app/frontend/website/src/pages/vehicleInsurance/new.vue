@@ -3,7 +3,7 @@
 -->
 <template>
     <abstract-form :actions="actions" :object="insurance" :back="back" :resource="resource">
-        <insurance-form-input :object="insurance" :actions="actions"></insurance-form-input>
+        <insurance-form-input :contractId="contractId" :object="insurance" :actions="actions"></insurance-form-input>
     </abstract-form>
 </template>
 
@@ -19,8 +19,8 @@
             return {
                 actions: actions.CREATE,
                 resource: resources.INSURANCE,
-                insurance: {contract:this.contractId},
-                back: {name: resources.INSURANCE.name,params:{id:this.contractId}}
+                insurance: {},
+                back: {name: resources.INSURANCE.name, params:{id: this.contractId}}
 
             }
         },
