@@ -50,13 +50,18 @@ export default {
     },
     actions: {
         fetchGreenCard(context, {contractId, insuranceId}){
-            return new Promise((resolve, reject) => {
-                RequestHandler.getObjectsRequest(utils.formatLocation(locations.GREEN_CARD, {contractId, insuranceId}))
-                    .then(response => {
-                        resolve(response)
-                    }, response => {
-                        reject(response)
-                    })
+            return new Promise(resolve => {
+                //VueResource cannot handle the responseType property.
+                //For this API call we need to use XMLHttpRequests to set the responseType
+                let oReq = new XMLHttpRequest();
+                oReq.open("GET", Vue.http.options.root + '/' + utils.formatLocation(locations.GREEN_CARD, {contractId, insuranceId}), true);
+                oReq.setRequestHeader('Function', Vue.http.headers.common['Function'])
+                oReq.setRequestHeader('Authorization', Vue.http.headers.common['Authorization'])
+                oReq.responseType = "blob";
+                oReq.onload = function(oEvent) {
+                    resolve(oReq.response)
+                };
+                oReq.send();
             })
         }
     }

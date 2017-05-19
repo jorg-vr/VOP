@@ -161,17 +161,16 @@
                 'fetchGreenCard'
             ]),
             downloadGreenCard({contractId, insuranceId}){
-                this.fetchGreenCard({contractId, insuranceId}).then(response => {
+                this.fetchGreenCard({contractId, insuranceId}).then(blob => {
+                    console.log(blob)
                     //Download the response.
                     //Based on: https://github.com/pagekit/vue-resource/issues/285
                     //TODO: no content disposition is part of the headers, however one is returned.
-                    let headers = response.headers;
-                    let blob = new Blob([response.body],{type:headers.get('content-type')});
                     //var filename = contentDisposition.split('filename=')[1];
                     let link = document.createElement('a');
                     link.href = window.URL.createObjectURL(blob);
                     link.download = "green_card.pdf";
-                    //link.click();
+                    link.click();
                 })
             },
             showDate: function (date) {
