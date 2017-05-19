@@ -44,11 +44,11 @@
         </table>
         <!-- Confirmation Modam -->
         <confirm-modal v-show="showModal"
-                       @cancelModal="cancelCorrection"
+                       @cancelModal="cancelCorrection()"
                        @confirmModal="confirmCorrection()"
                        @optional="showModal=false"
                        @close="showModal=false"
-                       :object="insurance"
+                       :object="correction"
                        :endDate="$t('insurance.endDate') | capitalize"
                        :modalHeaderTitle=" $t('modal.titleCorrection') | capitalize"
                        :modalBodyText="$t('modal.textCorrection') | capitalize"
@@ -91,7 +91,8 @@
                 show1: false,
                 show2: false,
                 ids:{contract:this.id},
-                showModal:false
+                showModal:false,
+                correction: {}
             }
         },
         components: {
@@ -169,7 +170,7 @@
                 'fetchInsurances',
                 'fetchSureties',
                 'fetchInsurance',
-                'createCorrection'
+                'deleteBodyInsurance'
             ]),
             ...mapMutations([
                 'setContractId',
@@ -185,21 +186,12 @@
             },
             confirmCorrection: function(){
                 // hide modal
-                let correction = {}
                 this.showModal=false
-                // create correction object
-                correction.vehicle= this.insurance.vehicle
-                correction.contract = this.insurance.contract
-                correction.date = this.insurance.endDate + "T00:00:00.00"
-                correction.tax = this.insurance.tax
-                this.deleteObject()
-                this.createCorrection({companyId: this.contract.customer, resource:correction})
+                this.correction.endDate += "T00:00:00.00"
+                this.deleteBodyInsurance({id: this.selectedvalue, ids: this.ids, data:this.correction.endDate})
             },
             cancelCorrection : function(){
                 this.showModal = false
-                this.deleteObject()
-            },
-            deleteObject : function(){
                 this.$store.dispatch('delete' + this.resource1.name.capitalize(), {id: this.selectedvalue, ids: this.ids})
             },
             tdshowModal: function(id) {
