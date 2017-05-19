@@ -164,7 +164,13 @@ export default
             brand:'brand',
             licensePlate:'license plate',
             suretyType:'surety',
-            suretyTypeTranslation:'surety'
+            suretyTypeTranslation:'surety',
+            startsBefore: 'starts before',
+            startsOn: 'starts on',
+            startsAfter: 'starts after',
+            endsBefore: 'ends before',
+            endsOn: 'ends on',
+            endsAfter: 'ends after'
         },
         invoice:{
             invoice: 'invoice',
@@ -470,7 +476,13 @@ export default
             brand:'merk',
             licensePlate:'nummer plaat',
             suretyType:'waarborg',
-            suretyTypeTranslation:'waarborg'
+            suretyTypeTranslation:'waarborg',
+            startsBefore: 'begint voor',
+            startsOn: 'begint op',
+            startsAfter: 'begint na',
+            endsBefore: 'eindigt voor',
+            endsOn: 'eindigt op',
+            endsAfter: 'eindigt na'
         },
         invoice:{
             invoice: 'factuur',

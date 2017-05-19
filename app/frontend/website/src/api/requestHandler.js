@@ -60,12 +60,7 @@ export default {
     //For example, some properties can't be filtered, some properties might be nested
     getObjectsRequestBy(location, filters){
         let locationTrimmed = location.rtrim('/')
-        let query = '?'
-        for(const filter in filters){
-            if(filters.hasOwnProperty(filter) && filters[filter] !== ''){
-                query += filter + '=' + filters[filter] + '&'
-            }
-        }
+        let query = '?' + formQuery(filters)
         query =  query.slice(0, -1)
         return this.getObjectsRequest(locationTrimmed + query)
     },
@@ -130,6 +125,29 @@ export default {
             })
         })
     },
+}
+
+/**
+ * Create a query with the given filters.
+ * @param currentQuery the current value of the query
+ * @param filters A remaining object with filters.
+ */
+let formQuery = function(filters){
+    let query = ''
+    for(const filter in filters){
+        if(filters.hasOwnProperty(filter)){
+            let filterValue = filters[filter]
+            if(filterValue instanceof Object){
+                query += formQuery(filterValue)
+            }
+            else {
+                if(filterValue !== ''){
+                    query += filter + '=' + filters[filter] + '&'
+                }
+            }
+        }
+    }
+    return query
 }
 
 let rejectResponse = function(response, reject){
