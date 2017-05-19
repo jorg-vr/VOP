@@ -49,6 +49,7 @@ public class VehicleController extends CommissionContainerController<Vehicle> {
 
         // Filter vehicles on criteria that are supported by the database
         Collection<Vehicle> result = getAll(
+                dao.byCustomer(customer),
                 dao.byLicensePlate(licensePlate),
                 dao.byFleet(fleet),
                 dao.byType(type),
@@ -59,7 +60,6 @@ public class VehicleController extends CommissionContainerController<Vehicle> {
         return result.stream()
                 .filter(c -> vin == null || c.getVin().toLowerCase().equals(vin.toLowerCase()))
                 .filter(c -> year == null || c.getYear().getYear() == year)
-                .filter(c -> customer == null || c.getFleet().getOwner().equals(customer))
                 .collect(Collectors.toList());
     }
 }
