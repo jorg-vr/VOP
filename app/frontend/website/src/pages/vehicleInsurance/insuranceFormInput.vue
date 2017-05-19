@@ -48,11 +48,9 @@ All of the fields for insurance input for the insurance form
 </template>
 <script>
     import {mapGetters, mapActions,mapMutations} from 'vuex'
-    import TextInputFormGroup from '../../assets/form/FormGroups/TextInputFormGroup.vue'
     import SelectInputFormGroup from '../../assets/form/FormGroups/SelectInputFormGroup.vue'
     import DateInputFormGroup from '../../assets/form/FormGroups/DateInputFormGroup.vue'
     import EuroInputFormGroup from '../../assets/form/FormGroups/EuroInputFormGroup.vue'
-    import clientTypes from '../../constants/clientTypes'
     import resources from '../../constants/resources'
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
     import {translateSuretyTypes} from '../../utils/utils'
@@ -60,9 +58,6 @@ All of the fields for insurance input for the insurance form
     export default {
         data(){
             return{
-                licensePlate: 'licensePlate',
-                suretyType: 'suretyType',
-                id:'id',
                 resource: resources.SURETY,
                 show:false
             }
@@ -74,19 +69,13 @@ All of the fields for insurance input for the insurance form
             object: Object,
         },
         components: {
-          TextInputFormGroup,EuroInputFormGroup,SelectInputFormGroup,DateInputFormGroup,buttonAdd
+          EuroInputFormGroup, SelectInputFormGroup, DateInputFormGroup, buttonAdd
         },
         computed: {
             ...mapGetters([
-                'clients',
-                'fleets',
-                'suretyData',
-                'suretyDetail',
                 'contract',
                 'sureties',
                 'vehicles',
-                'insuranceCompanyId',
-                'contractId'
                 ]),
 
         },
@@ -98,7 +87,8 @@ All of the fields for insurance input for the insurance form
                 ])
         },
         created(){
-            this.fetchContract({id:this.contractId}).then(()=>{
+            this.fetchContract({id:this.contractId}).then(contract =>{
+                console.log(contract)
                 // fetch all possible sureties
                 this.fetchSureties({ids:{ company:this.contract.insuranceCompany}}).then(()=>{
                     translateSuretyTypes(this.sureties);
