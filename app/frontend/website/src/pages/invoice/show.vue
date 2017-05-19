@@ -2,12 +2,12 @@
     This page shows a certain client in detail. 
 -->
 <template>
-    <div>
+    <div v-if="show">
         <div v-if="invoice" class="page-header">
             <h1>{{$t("invoiceTypes."+invoice.type) | capitalize }} {{client.name}}</h1>
             <h4 >{{showDate(invoice.startDate)}} - {{showDate(invoice.endDate)}}</h4>
-            <h4> {{$t('invoice.totalAmount') | capitalize }}: {{invoice.totalAmount}}€</h4>
-            <h4>{{$t('invoice.totalTax') | capitalize }}: {{invoice.totalTax}}€</h4>
+            <h4> {{$t('invoice.totalAmountEuro') | capitalize }}: {{invoice.totalAmountEuro}}</h4>
+            <h4>{{$t('invoice.totalTaxEuro') | capitalize }}: {{invoice.totalTaxEuro}}</h4>
         </div>
 
             <h2>{{$t("vehicleInvoice.vehicleInvoices") | capitalize }}</h2>
@@ -22,11 +22,13 @@
     import listComponent from '../../assets/general/listComponent.vue'
     import buttonBack from '../../assets/buttons/buttonBack.vue'
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
+    import {translateSuretyTypes,centsToEuroArray,centsToEuroObject} from '../../utils/utils'
 
     export default {
         data() {
             return {
-                resource: resources.VEHICLE_INVOICE
+                resource: resources.VEHICLE_INVOICE,
+                show:false
             }
         },
         components: {
@@ -37,9 +39,23 @@
             companyId: String
         },
         created(){
-            this.fetchInvoice({id:this.id,ids:{company: this.companyId}});
+
+            this.setLoading({loading: true });
+            let p1 = this.fetchInvoice({id:this.id,ids:{company: this.companyId}});
             this.fetchClient({id:this.companyId});
-            this.fetchVehicleInvoices({ids:{company: this.companyId,invoice:this.id}})
+            let p2= this.fetchVehicleInvoices({ids:{company: this.companyId,invoice:this.id}});
+
+            Promise.all([p1,p2]).then(()=>{
+                centsToEuroArray(this.vehicleInvoices,"totalCost");
+                centsToEuroArray(this.vehicleInvoices,"totalTax");
+                centsToEuroArray(this.vehicleInvoices,"insuredValue");
+                centsToEuroArray(this.vehicleInvoices,"franchise");
+                translateSuretyTypes(this.vehicleInvoices);
+                centsToEuroObject(this.invoice,"totalAmount");
+                centsToEuroObject(this.invoice,"totalTax");
+                this.setLoading({loading: false });
+                this.show=true;
+            });
         },
         computed: {
             ...mapGetters([
@@ -49,7 +65,7 @@
             ]),
             listObject() {
                 var listObj = {};
-                listObj.headers = ["licensePlate","insuredValue","franchise","totalCost","totalTax"];
+                listObj.headers = ["licensePlate","suretyTypeTranslation","insuredValueEuro","franchiseEuro","totalCostEuro","totalTaxEuro"];
                 listObj.values = this.vehicleInvoices;
                 return listObj;
             }

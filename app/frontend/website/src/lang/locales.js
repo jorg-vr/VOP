@@ -182,6 +182,8 @@ export default
             paymentPeriod: 'payment period',
             totalAmount: 'total amount',
             totalTax: 'total tax',
+            totalAmountEuro: 'price',
+            totalTaxEuro: 'tax',
             export: 'export as pdf',
             invoiceTypeTranslation:'type'
 
@@ -197,7 +199,12 @@ export default
             insuredValue:"insured value" ,
             franchise:"franchise",
             totalCost:"price",
-            totalTax:"tax"
+            totalTax:"tax",
+            insuredValueEuro:"insured value" ,
+            franchiseEuro:"franchise",
+            totalCostEuro:"price",
+            totalTaxEuro:"tax",
+            suretyTypeTranslation:'surety'
         },
         surety:{
             surety:'insurance surety',
@@ -501,6 +508,8 @@ export default
             paymentPeriod: 'afrekeningsperiode',
             totalAmount: 'totaal bedrag',
             totalTax: 'totale belasting',
+            totalAmountEuro: 'bedrag',
+            totalTaxEuro: 'btw',
             export: 'exporteer als pdf',
             invoiceTypeTranslation:'type'
 
@@ -516,7 +525,12 @@ export default
             insuredValue:"verzekerde waarde" ,
             franchise:"franchise",
             totalCost:"prijs",
-            totalTax:"BTW"
+            totalTax:"BTW",
+            insuredValueEuro:"verzekerde waarde" ,
+            franchiseEuro:"franchise",
+            totalCostEuro:"prijs",
+            totalTaxEuro:"BTW",
+            suretyTypeTranslation:'waarborg'
         },
         surety: {
             surety:'verzekeringswaarborg',
