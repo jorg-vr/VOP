@@ -112,8 +112,8 @@ export default
         modal:{
             titleConfirm: 'Confirmation',
             textConfirm: 'Are you sure you want to proceed with this action?',
-            titleCorrection: 'Correction',
-            textCorrection: 'would you like to make a correction for this ',
+            titleCorrection: 'End date',
+            textCorrection: 'On which date do you wish to end this insurance?',
             bodyCorrection: 'The entered start date is in the past. The system will automatically make a correction for this insurance. ',
             button1: 'Yes',
             button2: 'No',
@@ -430,8 +430,8 @@ export default
         modal:{
             titleConfirm: 'Bevestiging',
             textConfirm: 'Weet u zeker dat u wil doorgaan met deze actie?',
-            titleCorrection: 'Correctie',
-            textCorrection: 'wil u hiervoor een correctie doorvoeren?',
+            titleCorrection: 'eind datum',
+            textCorrection: 'vanaf welke datum wilt u deze verzekering stopzetten?',
             bodyCorrection: 'De ingevoerde startdatum ligt in het verleden. Het systeem zal voor deze verzekering automatisch een correctie doorvoeren. ',
             button1: 'ja',
             button2: 'nee',

@@ -28,10 +28,10 @@
           <div class="modal-body" id="modalBody">
             <p> {{modalBodyText}}</p>
             <div>
-        <date-input-form-group v-if="object != null"
-                    :object="object" name="endDate" :text="endDate" :rules="'required'">
-        </date-input-form-group>
-        </div>
+              <date-input-form-group v-if="object != null"
+                                     :object="object" name="endDate" :text="endDate" :rules="'required'">
+              </date-input-form-group>
+            </div>
           </div>
 
           <div class="modal-footer " id="modalFooter" >
