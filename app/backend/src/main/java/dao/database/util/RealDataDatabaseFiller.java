@@ -192,10 +192,6 @@ public class RealDataDatabaseFiller {
         Contract samContract = initContract(user, adminFunction, sam, axa);
         Contract billieContract = initContract(user, adminFunction, billie, ethias);
 
-//        initInvoice(user, adminFunction, jorg);
-//        initInvoice(user, adminFunction, sam);
-//        initInvoice(user, adminFunction, billie);
-
         return adminFunction.getUuid();
 
     }
@@ -205,7 +201,6 @@ public class RealDataDatabaseFiller {
             User user = manager.getUserDAO().getUserByLogin("patrick.oostvogels@solvas.be");
             Function function = manager.getFunctionDAO().get(admin);
             for (Customer customer : manager.getCustomerDAO().listFiltered()) {
-                System.out.println(customer.getCurrentStatement());
                 for (Contract contract : customer.getContracts()) {
                     for (Fleet fleet : customer.getFleets()) {
                         for (Vehicle vehicle : fleet.getVehicles()) {
@@ -239,16 +234,6 @@ public class RealDataDatabaseFiller {
             insurance.setStartDate(LocalDateTime.now().plusMonths(10));
             controllerManager.getVehicleInsuranceController().create(insurance);
         }
-    }
-
-
-    private void initInvoice(User user, Function function, Customer customer) throws DataAccessException, UnAuthorizedException, ConstraintViolationException, ObjectNotFoundException {
-        try (ControllerManager controllerManager = new ControllerManager(user.getUuid(), function.getUuid())) {
-            customer = controllerManager.getCustomerController().get(customer.getUuid());//needed for initalation and lazy fetching issues
-            controllerManager.getInvoiceController().endStatement(customer);
-            System.out.println(customer.getCurrentStatement());
-        }
-
     }
 
     private Contract initContract(User user, Function function, Customer customer, InsuranceCompany company) throws DataAccessException, UnAuthorizedException, ConstraintViolationException {
