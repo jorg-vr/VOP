@@ -64,8 +64,6 @@ export default {
         },
         // Get one invoice
         fetchInvoice(context, payload){
-        	console.log(payload)
-        	console.log('API CALL NAAR: '+locations.CLIENT+payload.companyId+'/'+locations.INVOICE+payload.id)
             return new Promise(resolve => {
                 RequestHandler.getObjectRequest(locations.CLIENT+payload.companyId+'/'+locations.INVOICE, payload.id).then(invoice => {
                     context.commit('setInvoice', invoice)
@@ -75,7 +73,6 @@ export default {
         },
         // Get one invoice in a specified format (currently only .pdf supported)
         exportAsPDF(context,payload){
-        	console.log(locations.FLEET+payload.fleetId+'/'+locations.INVOICE+payload.id)
 			return new Promise(resolve => {
                 RequestHandler.getObjectRequest(locations.CLIENT+payload.companyId+locations.INVOICE+payload.id, '.pdf').then(invoice => {
                     context.commit('setInvoice', {invoice})
