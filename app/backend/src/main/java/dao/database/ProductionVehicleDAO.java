@@ -6,6 +6,7 @@ import dao.interfaces.VehicleDAO;
 import model.fleet.Fleet;
 import model.fleet.Vehicle;
 import model.fleet.VehicleType;
+import model.identity.Customer;
 import org.hibernate.Session;
 
 import java.time.LocalDate;
@@ -86,5 +87,14 @@ public class ProductionVehicleDAO extends ProductionDAO<Vehicle> implements Vehi
     @Override
     public Filter<Vehicle> byFleet(Fleet fleet) {
         return filterEqual("fleet",fleet);
+    }
+
+    @Override
+    public Filter<Vehicle> byCustomer(Customer customer) {
+        if(customer==null){
+            return () -> {};
+        }
+        return () ->
+                getPredicates().add(getCriteriaBuilder().equal(getRoot().get("fleet").get("owner"), customer));
     }
 }

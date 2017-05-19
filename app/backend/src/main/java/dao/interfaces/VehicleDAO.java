@@ -4,10 +4,10 @@ import dao.exceptions.ConstraintViolationException;
 import model.fleet.Fleet;
 import model.fleet.Vehicle;
 import model.fleet.VehicleType;
+import model.identity.Customer;
 
 import java.time.LocalDate;
 import java.util.Collection;
-import java.util.UUID;
 
 
 /**
@@ -100,4 +100,12 @@ public interface VehicleDAO extends DAO<Vehicle> {
      * @return A useable Filter for listFiltered
      */
     Filter<Vehicle> byFleet(Fleet fleet);
+
+    /**
+     * Returns a Filter to use in ListFiltered in this class, which returns all Vehicles in fleets owned by the given Customer.
+     *
+     * @param customer The customer to use in the filter
+     * @return A useable Filter for listFiltered
+     */
+    Filter<Vehicle> byCustomer(Customer customer);
 }

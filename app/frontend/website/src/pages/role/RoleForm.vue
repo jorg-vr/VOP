@@ -14,7 +14,7 @@ All of the fields for user input for the user form
             <div v-for="resource in resourceNames" class="col-md-3">
                 <h3>{{$t('resource.' + resource.toLowerCase()) | capitalize}}</h3>
                 <div v-for="permission in permissionsMap[resource]" class="radio">
-                    <label><input type="radio" :checked="permission.selected===true" @click="updatePermission(permission)">
+                    <label><input :id="permission.id" type="radio" :checked="permission.selected===true" @click="updatePermission(permission)">
                         {{$t('action.' + permission.action)}}
                     </label>
                 </div>
@@ -86,6 +86,7 @@ All of the fields for user input for the user form
             ]),
             updatePermission(permission){
                 permission.selected = !permission.selected
+                document.getElementById(permission.id).checked = permission.selected
             },
             submit(){
                 //Make a list of permissions for the role
@@ -108,7 +109,8 @@ All of the fields for user input for the user form
                                     resolve()
                                 }, () => reject())
                             },
-                            () => {
+                            response => {
+                                console.log(response)
                                 reject()
                             })
                 })

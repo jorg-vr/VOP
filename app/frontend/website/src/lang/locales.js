@@ -18,9 +18,12 @@ export default
             sureties: 'sureties',
             totalCost: 'price',
             totalTax: 'tax',
+            totalCostEuro: 'price',
+            totalTaxEuro: 'tax',
             import: 'import',
             failImport: 'The given CSV file does not have the correct format.',
-            example: 'Download example file'
+            example: 'Download example file',
+            generate_green_card: 'Generate green card'
         },
         vehicleType: {
             name: 'name',
@@ -86,6 +89,7 @@ export default
         common: {
             new: 'new',
             remove: 'remove',
+            removed: 'removed',
             back: 'back',
             name: 'name',
             cancel: 'cancel',
@@ -146,18 +150,27 @@ export default
             showableStartDate: 'startdatum',
             showableEndDate: 'einddatum ',
             insuredValue: 'insured value',
+            insuredValueEuro: 'insured value',
             percentage: 'percentage',
             coverageClauses: 'coverage clauses',
             exemptions: 'exemptions',
             contract: 'contract',
             cost: 'total cost',
             tax: 'tax ',
+            costEuro: 'price',
+            taxEuro: 'tax ',
             insuranceCompany: 'insurance company',
             insuranceCompanyName: 'insurance company',
             brand:'brand',
             licensePlate:'license plate',
             suretyType:'surety',
-            suretyTypeTranslation:'surety'
+            suretyTypeTranslation:'surety',
+            startsBefore: 'starts before',
+            startsOn: 'starts on',
+            startsAfter: 'starts after',
+            endsBefore: 'ends before',
+            endsOn: 'ends on',
+            endsAfter: 'ends after'
         },
         invoice:{
             invoice: 'invoice',
@@ -186,12 +199,14 @@ export default
             startDate: 'start date',
             showableStartDate: 'start date',
             premium: 'premium',
+            premiumEuro: 'premium',
             premiumPercentage: 'premium percentage',
             coverage: 'coverage clauses',
             exceptions: 'exceptions',
             suretyType: 'type',
             suretyTypeTranslation:'surety',
             flat: 'flat',
+            flatAdjective: 'flat',
             minPremium:'minimal premium',
             yes: 'yes',
             no: 'no'
@@ -204,6 +219,8 @@ export default
             showableEndDate: 'end date',
             totalCost: 'total cost',
             totalTax: 'total tax',
+            totalCostEuro: 'total cost',
+            totalTaxEuro: 'total tax',
             customer: 'company',
             insuranceCompany: 'insurance company',
             offer: 'all insurance sureties offered by',
@@ -250,6 +267,7 @@ export default
             object: 'object',
             create: 'created',
             update: 'updated',
+            user: 'user'
         },
         description: {
             property: 'property',
@@ -318,9 +336,12 @@ export default
             sureties: 'waarborgen',
             totalCost: 'prijs',
             totalTax: 'btw',
+            totalCostEuro: 'prijs',
+            totalTaxEuro: 'btw',
             import: 'importeer',
             failImport: 'Het gegeven CSV bestand voldoet niet aan het correcte formaat.',
-            example: 'Download voorbeeld bestand'
+            example: 'Download voorbeeld bestand',
+            generate_green_card: 'Genereer groene kaart'
         },
         vehicleType: {
             name: 'naam',
@@ -380,6 +401,7 @@ export default
         common: {
             new: 'nieuwe',
             remove: 'verwijder',
+            removed: 'verwijderd',
             edit: 'wijzig',
             back: 'terug',
             name: 'naam',
@@ -443,18 +465,27 @@ export default
             showableStartDate: 'startdatum',
             showableEndDate: 'einddatum ',
             insuredValue: 'verzekerd bedrag',
+            insuredValueEuro: 'verzekerd bedrag',
             percentage: 'percentage',
             coverageClauses: 'dekkingsclausules',
             exemptions: 'vrijstellingen',
             contract: 'contract',
             cost: 'totaal bedrag',
             tax: 'tax',
+            costEuro: 'prijs',
+            taxEuro: 'BTW',
             insuranceCompany: 'verzekeringsbedrijf',
             insuranceCompanyName: 'verzekeringsbedrijf',
             brand:'merk',
             licensePlate:'nummer plaat',
             suretyType:'waarborg',
-            suretyTypeTranslation:'waarborg'
+            suretyTypeTranslation:'waarborg',
+            startsBefore: 'begint voor',
+            startsOn: 'begint op',
+            startsAfter: 'begint na',
+            endsBefore: 'eindigt voor',
+            endsOn: 'eindigt op',
+            endsAfter: 'eindigt na'
         },
         invoice:{
             invoice: 'factuur',
@@ -483,12 +514,14 @@ export default
             startDate: 'startdatum',
             showableStartDate: 'startdatum',
             premium: 'premie',
+            premiumEuro: 'premie',
             premiumPercentage: 'premie percentage',
             coverage: 'dekkingsclausules',
             exceptions: 'vrijstellingen',
             suretyType: 'type',
             suretyTypeTranslation:'waarborg',
             flat: 'forfaitair',
+            flatAdjective: 'forfaitaire',
             minPremium:'minimum premie',
             yes: 'ja',
             no: 'nee'
@@ -500,6 +533,8 @@ export default
             showableEndDate: 'einddatum',
             totalCost: 'totale kost',
             totalTax: 'totale tax',
+            totalCostEuro: 'prijs',
+            totalTaxEuro: 'BTW',
             customer: 'bedrijf',
             insuranceCompany: 'verzekeringsmaatschappij',
             offer: 'alle verzekeringswaarborgen aangeboden door',
@@ -546,6 +581,7 @@ export default
             object: 'object',
             create: 'aangemaakt',
             update: 'gewijzigd',
+            user: 'gebruiker'
 
         },
         description: {

@@ -15,17 +15,17 @@ All of the fields for insurance input for the insurance form
         </select-input-form-group>
       <!-- premium -->
 
-       <text-input-form-group
+       <euro-input-form-group
           :object="object" name="premium"
           :rules="'required'"
           :text="object.flat==true ? $t('surety.premium'): $t('surety.minPremium')" >
-      </text-input-form-group>
+      </euro-input-form-group>
 
       <!-- premium percentage -->
 
-       <text-input-form-group v-if="object.flat==false||object.flat==undefined"
+       <percent-input-form-group v-if="object.flat==false||object.flat==undefined"
           :object="object" name="premiumPercentage" :text="$t('surety.premiumPercentage')" :rules="'required'">  
-      </text-input-form-group>
+      </percent-input-form-group>
 
       <!-- Insurance Company -->
         <select-input-form-group 
@@ -49,14 +49,43 @@ All of the fields for insurance input for the insurance form
       </div>
 
     <!-- All special conditions of surety -->
-    <list-component :resource="resource" :listObject="listObject">
-    </list-component> 
+            <table class="table-hover table">
+            <thead>
+                <tr>
+                    <th v-for="head in listObject.headers">
+                        {{$t(resource.name + '.' + head).capitalize()}}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="value in listObject.values" class="list-tr">
+                    <td v-for="header in listObject.headers" class="clickable-td" @click="tdclick(value)">
+                        {{value[header]}}
+                    </td>
+                    <td class="stretch">
+                    <button-edit :resource="resource" :params="{id:value.id}" ></button-edit>
+                    <button-remove :resource="resource"  @click="tdshowModal(value.id)"></button-remove>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- Confirmation Modam -->
+        <confirm-modal v-show="showModal" 
+            @cancelModal="showModal=false" 
+            @confirmModal="confirmAction()" 
+            @close="showModal=false "
+            :modalHeaderTitle=" $t('modal.titleConfirm') | capitalize"
+            :modalBodyText="$t('modal.textConfirm') | capitalize" 
+            :confirmButtonText="$t('modal.button1') | capitalize "
+            :cancelButtonText="$t('modal.button2') | capitalize ">        
+        </confirm-modal>  
 
   </div>
 </template>
 <script>
     import {mapGetters, mapActions,mapMutations} from 'vuex'
-    import TextInputFormGroup from '../../assets/form/FormGroups/TextInputFormGroup.vue'
+    import percentInputFormGroup from '../../assets/form/FormGroups/PercentInputformGroup.vue'
+    import EuroInputFormGroup from '../../assets/form/FormGroups/EuroInputFormGroup.vue'
     import CheckboxInputFormGroup from '../../assets/form/FormGroups/CheckBoxInputGroup.vue'
     import SelectInputFormGroup from '../../assets/form/FormGroups/SelectInputFormGroup.vue'
     import DateInputFormGroup from '../../assets/form/FormGroups/DateInputFormGroup.vue'
@@ -65,6 +94,9 @@ All of the fields for insurance input for the insurance form
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
     import listComponent from "../../assets/general/listComponent.vue"
     import suretyTypes from "../../constants/suretyTypes"
+    import buttonEdit from '../../assets/buttons/buttonEdit.vue'
+    import buttonRemove from '../../assets/buttons/buttonRemove.vue'
+    import confirmModal from '../../assets/general/modal.vue'
 
     export default {
         data(){
@@ -74,7 +106,8 @@ All of the fields for insurance input for the insurance form
                 id:'id',
                 suretyTypes:suretyTypes,
                 resource: resources.CONDITION,
-                flatData: [{text:'true', value: true},{text:"false" , value: false}]
+                flatData: [{text:'true', value: true},{text:"false" , value: false}],
+                showModal: false
             }
         },
         props: {
@@ -82,7 +115,7 @@ All of the fields for insurance input for the insurance form
             object: Object,
         },
         components: {
-            TextInputFormGroup,CheckboxInputFormGroup,SelectInputFormGroup,DateInputFormGroup,listComponent,buttonAdd
+            percentInputFormGroup,CheckboxInputFormGroup,SelectInputFormGroup,DateInputFormGroup,listComponent,buttonAdd,EuroInputFormGroup,buttonEdit,buttonRemove,buttonEdit,confirmModal
         },
         mounted(){
             this.$parent.$emit('mounted', this.$children)
@@ -127,8 +160,32 @@ All of the fields for insurance input for the insurance form
                 this.fetchCondition({id: this.selectedCondition.id}).then(condition => {
                     // add selected condition to list
                     this.addSelectedCondition(condition)
+                    this.object.specialConditions = this.selectedConditions
                 })
             },
+            tdclick: function(value) {
+                this.$router.push({name: this.resource.name, params: {id:value.id}});
+            },
+            tdshowModal: function(id) {
+                this.showModal = true
+                this.selectedvalue=id
+            },
+            confirmAction: function(){
+                // hide modal
+                this.showModal=false
+                this.object.specialConditions = this.removeSpecialCondition(this.selectedvalue,this.object.specialConditions)
+                console.log(this.object)
+            },
+            removeSpecialCondition : function(id,arr){
+              console.log('removing '+id+' on '+arr)
+                  for(let i=0; i<arr.length; i++){
+                      if(arr[i].id === id){
+                          let newArr = arr.filter(obj => obj.id !== id)
+                          this.selectedConditions.splice(i, 1);
+                          return newArr
+                      }
+                  }
+            }
         },
         created(){
           // set correct insurance company id 

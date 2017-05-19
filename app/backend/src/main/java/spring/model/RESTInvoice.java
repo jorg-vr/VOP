@@ -9,12 +9,14 @@ import dao.exceptions.ObjectNotFoundException;
 import model.billing.Invoice;
 import model.billing.InvoiceType;
 import spring.exceptions.ErrorCode;
-import spring.exceptions.InvalidInputException;
 import util.UUIDUtil;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+
+import static util.MyProperties.PATH_INVOICES;
+import static util.MyProperties.getProperty;
 
 /**
  * Created by Billie Devolder on 16/04/2017.
@@ -59,7 +61,7 @@ public class RESTInvoice extends RESTAbstractModel<Invoice> {
     }
 
     public RESTInvoice(Invoice invoice) {
-        super(invoice.getUuid(), "invoices");
+        super(invoice.getUuid(), getProperty(PATH_INVOICES));
         setType(invoice.getType().toString());
         setBeneficiary(UUIDUtil.UUIDToNumberString(invoice.getBeneficiary().getUuid()));
         setPaid(invoice.isPaid());
