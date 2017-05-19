@@ -9,7 +9,7 @@
     </abstract-form>
 </template>
 <script>
-    import {mapActions} from 'vuex'
+    import {mapActions, mapGetters} from 'vuex'
     import abstractForm from '../../assets/form/AbstractForm.vue'
     import actions from '../../constants/actions'
     import resources from '../../constants/resources'
@@ -40,6 +40,11 @@
         },
         props: {
             id: String
+        },
+        computed: {
+            ...mapGetters([
+                'isAuthorizedForOwnResourcesButNotAll'
+            ])
         },
         methods: {
             ...mapActions([

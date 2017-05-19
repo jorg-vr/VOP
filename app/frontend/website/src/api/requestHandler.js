@@ -96,8 +96,18 @@ export default {
      */
     putObjectRequest(location, object){
         let id = object.id ? object.id : ''
+        return this.putRequest(location + id, object)
+    },
+
+    /**
+     * This function does a PUT request to the specified location.
+     * @param location: The location of the resource of the old object.
+     * @param object: The object which should be updated with this new value.
+     * @returns {Promise}
+     */
+    putRequest(location, object){
         return new Promise((resolve, reject) => {
-            Vue.http.put(location + id, object).then(response => {
+            Vue.http.put(location, object).then(response => {
                 resolve(response.body)
             }, response => {
                 rejectResponse(response, reject)

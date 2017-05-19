@@ -116,6 +116,10 @@ public interface DAOManager extends AutoCloseable {
     InsuranceCompanyDAO getInsuranceCompanyDao();
 
 
+    /**
+     * Gets a LogEntryDAO
+     * @return a LogEntryDAO
+     */
     LogEntryDAO getLogEntryDao();
 
     /**

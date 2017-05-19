@@ -18,6 +18,8 @@ export default
             sureties: 'sureties',
             totalCost: 'price',
             totalTax: 'tax',
+            totalCostEuro: 'price',
+            totalTaxEuro: 'tax',
             import: 'import',
             failImport: 'The given CSV file does not have the correct format.',
             example: 'Download example file',
@@ -66,6 +68,12 @@ export default
             facturationPeriod: 'facturation period',
             paymentPeriod: 'payment period'
         },
+        role: {
+            role: "role",
+            roles: "roles",
+            name: "naam",
+            permissions: "permissions"
+        },
         clientTypes: {
             customer: "customer",
             insuranceCompany: "insurance company"
@@ -107,7 +115,8 @@ export default
             titleCorrection: 'Correction',
             textCorrection: 'would you like to make a correction for this ',
             button1: 'Yes',
-            button2: 'No'
+            button2: 'No',
+            cancel: 'cancel'
         },
         exception: {
             e404: 'Not Found',
@@ -140,12 +149,15 @@ export default
             showableStartDate: 'startdatum',
             showableEndDate: 'einddatum ',
             insuredValue: 'insured value',
+            insuredValueEuro: 'insured value',
             percentage: 'percentage',
             coverageClauses: 'coverage clauses',
             exemptions: 'exemptions',
             contract: 'contract',
             cost: 'total cost',
             tax: 'tax ',
+            costEuro: 'price',
+            taxEuro: 'tax ',
             insuranceCompany: 'insurance company',
             insuranceCompanyName: 'insurance company',
             brand:'brand',
@@ -180,12 +192,14 @@ export default
             startDate: 'start date',
             showableStartDate: 'start date',
             premium: 'premium',
+            premiumEuro: 'premium',
             premiumPercentage: 'premium percentage',
             coverage: 'coverage clauses',
             exceptions: 'exceptions',
             suretyType: 'type',
             suretyTypeTranslation:'surety',
             flat: 'flat',
+            flatAdjective: 'flat',
             minPremium:'minimal premium',
             yes: 'yes',
             no: 'no'
@@ -198,6 +212,8 @@ export default
             showableEndDate: 'end date',
             totalCost: 'total cost',
             totalTax: 'total tax',
+            totalCostEuro: 'total cost',
+            totalTaxEuro: 'total tax',
             customer: 'company',
             insuranceCompany: 'insurance company',
             offer: 'all insurance sureties offered by',
@@ -250,6 +266,16 @@ export default
             oldValue: 'old value',
             newValue: 'new value'
         },
+        action: {
+            READ_MINE: 'read all',
+            READ_ALL: 'read own',
+            CREATE_ALL: 'create all',
+            CREATE_MINE: 'create own',
+            UPDATE_ALL: 'update all',
+            UPDATE_MINE: 'update own',
+            REMOVE_ALL: 'remove all',
+            REMOVE_MINE: 'remove own'
+        },
         resource: {
             user: 'user',
             function: 'function',
@@ -265,7 +291,10 @@ export default
             commission: 'commission',
             contract: 'insurance contract',
             condition: 'speciale condition',
-            log: 'log'
+            log: 'log',
+            company: 'company',
+            insurance: 'insurance',
+            vehicletype: 'vehicle type'
         },
         period: {
             quarterly: 'quarterly',
@@ -296,6 +325,8 @@ export default
             sureties: 'waarborgen',
             totalCost: 'prijs',
             totalTax: 'btw',
+            totalCostEuro: 'prijs',
+            totalTaxEuro: 'btw',
             import: 'importeer',
             failImport: 'Het gegeven CSV bestand voldoet niet aan het correcte formaat.',
             example: 'Download voorbeeld bestand',
@@ -338,6 +369,12 @@ export default
             paymentPeriod: 'afrekeningsperiode'
 
         },
+        role: {
+            role: "rol",
+            roles: "rollen",
+            name: 'naam',
+            permissions: "permissies"
+        },
         clientTypes: {
             customer: "klant",
             insuranceCompany: "verzekeringsbedrijf"
@@ -362,6 +399,7 @@ export default
             description: 'beschrijving',
             browse: 'bladeren'
         },
+
         actions: {
             select: 'selecteer {subject}',
             create: '{subject} aanmaken',
@@ -380,7 +418,8 @@ export default
             titleCorrection: 'Correctie',
             textCorrection: 'wil u hiervoor een correctie doorvoeren?',
             button1: 'ja',
-            button2: 'nee'
+            button2: 'nee',
+            cancel: 'annuleer'
         },
         exception: {
             e404: 'Pagina niet gevonden',
@@ -414,12 +453,15 @@ export default
             showableStartDate: 'startdatum',
             showableEndDate: 'einddatum ',
             insuredValue: 'verzekerd bedrag',
+            insuredValueEuro: 'verzekerd bedrag',
             percentage: 'percentage',
             coverageClauses: 'dekkingsclausules',
             exemptions: 'vrijstellingen',
             contract: 'contract',
             cost: 'totaal bedrag',
             tax: 'tax',
+            costEuro: 'prijs',
+            taxEuro: 'BTW',
             insuranceCompany: 'verzekeringsbedrijf',
             insuranceCompanyName: 'verzekeringsbedrijf',
             brand:'merk',
@@ -454,12 +496,14 @@ export default
             startDate: 'startdatum',
             showableStartDate: 'startdatum',
             premium: 'premie',
+            premiumEuro: 'premie',
             premiumPercentage: 'premie percentage',
             coverage: 'dekkingsclausules',
             exceptions: 'vrijstellingen',
             suretyType: 'type',
             suretyTypeTranslation:'waarborg',
             flat: 'forfaitair',
+            flatAdjective: 'forfaitaire',
             minPremium:'minimum premie',
             yes: 'ja',
             no: 'nee'
@@ -471,6 +515,8 @@ export default
             showableEndDate: 'einddatum',
             totalCost: 'totale kost',
             totalTax: 'totale tax',
+            totalCostEuro: 'prijs',
+            totalTaxEuro: 'BTW',
             customer: 'bedrijf',
             insuranceCompany: 'verzekeringsmaatschappij',
             offer: 'alle verzekeringswaarborgen aangeboden door',
@@ -539,7 +585,10 @@ export default
             commission: 'commissie',
             contract: 'verzekeringscontract',
             condition: 'speciale conditie',
-            log: 'log'
+            log: 'log',
+            company: 'bedrijf',
+            insurance: 'verzekering',
+            vehicletype: 'voertuigtype'
         },
         period: {
             quarterly: 'driemaandelijks',
@@ -559,6 +608,16 @@ export default
         },
         field: {
             company: 'bedrijf'
-        }
+        },
+        action: {
+            READ_MINE: 'eigen lezen',
+            READ_ALL: 'alles lezen',
+            CREATE_ALL: 'alles maken',
+            CREATE_MINE: 'eigen maken',
+            UPDATE_ALL: 'alles bewerken',
+            UPDATE_MINE: 'eigen bewerken',
+            REMOVE_ALL: 'alles verwijderen',
+            REMOVE_MINE: 'eigen verwijderen'
+        },
     }
 }

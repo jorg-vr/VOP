@@ -109,6 +109,12 @@ public class HibernateUtil {
         }
     }
 
+    /**
+     * Automatic constraint validation is turned off, to validate a specific object call this method
+     * @param session the session to use
+     * @param object the object to validate
+     * @throws ConstraintViolationException thrown when constraint are violated
+     */
     public synchronized static void validate(Session session, Object object) throws ConstraintViolationException {
         Map<String, String> map = new HashMap<>();
 
@@ -124,24 +130,6 @@ public class HibernateUtil {
         }
         if (map.size() > 0) {
             throw new ConstraintViolationException(map);
-        }
-    }
-
-    public static void main(String[] args) {
-        ProductionProvider.initializeProvider("localtest");
-        try(DAOProvider provider = ProductionProvider.getInstance(); DAOManager manager = provider.getDaoManager()){
-            LogEntry entry = new LogEntry();
-            entry.setObject(UUID.randomUUID());
-            entry.setInterested(new ArrayList<UUID>(Arrays.asList(new UUID[]{UUID.randomUUID(),UUID.randomUUID(),UUID.randomUUID()})));
-            entry.setDescriptions(new ArrayList<>(Arrays.asList(new Description[]{new Description("test","1","2"),
-            new Description("test2","3","4")})));
-            entry.setResource(LogResource.ADDRESS);
-            entry.setAction(LogAction.CREATE);
-            entry.setTime(LocalDateTime.now());
-
-            manager.getLogEntryDao().create(entry);
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 }

@@ -40,12 +40,12 @@
                 </tr>
             </table>
         </div>
-        <commissions :id="id" loc="vehicles" :back="back" ></commissions>
+        <commissions :id="id" loc="vehicles" ></commissions>
         <div class="col-md-12">
             <h3>
                 {{$t("vehicle_insurance.vehicle_insurances") | capitalize }}
             </h3>
-            <table class="table-hover table">
+            <table v-if="show" class="table-hover table">
                 <thead>
                 <tr>
                     <th v-for="head in listObject.headers">
@@ -66,7 +66,8 @@
                 </tbody>
             </table>
         </div>
-        <button-link buttonClass="btn btn-default pull-left" buttonId="log" :route="{name: 'vehicle_logs', params: {id: this.id}}">
+        <button-link v-if="hasPermissionForRoute('vehicle_logs')" buttonClass="btn btn-default pull-left" buttonId="log"
+                     :route="{name: 'vehicle_logs', params: {id: this.id}}">
             {{$t('log.log') | capitalize}}
         </button-link>
         <button-back v-if="vehicle.fleet" :route="{name: 'fleet', params: {id: vehicle.fleet}}"></button-back>
@@ -81,19 +82,18 @@
     import {mapGetters, mapActions} from 'vuex'
     import listComponent from '../../assets/general/listComponent.vue'
     import resources from '../../constants/resources'
-    import * as utils from '../../utils/utils'
     import commissions from '../commission/collapse.vue'
-    import buttonAction from '../../assets/buttons/buttonAction.vue'
+    import {translateSuretyTypes,centsToEuroArray} from '../../utils/utils'
 
     export default {
         data(){
             return {
                 resource: resources.INSURANCE,
-                back:{name:resources.VEHICLE.name,params:{id:this.id}}
+                show:false
             }
         },
         components: {
-            buttonBack,listComponent, buttonLink,buttonEdit,buttonRemove,commissions, buttonAction
+            buttonBack,listComponent, buttonLink,buttonEdit,buttonRemove,commissions
         },
         props: {
             id: String
@@ -104,7 +104,11 @@
             });
             this.fetchInsurancesBy({filters: {vehicleId: this.id}}).then(
                     ()=>{
-                        utils.translateSuretyTypes(this.insurances);
+                        translateSuretyTypes(this.insurances);
+                        centsToEuroArray(this.insurances,"cost");
+                        centsToEuroArray(this.insurances,"tax");
+                        centsToEuroArray(this.insurances,"insuredValue");
+                        this.show=true;
                     }
             )
         },
@@ -112,11 +116,12 @@
             ...mapGetters([
                 'vehicle',
                 'vehicleType',
-                'insurances'
+                'insurances',
+                'hasPermissionForRoute'
             ]),
             listObject() {
                 var listObj = {};
-                listObj.headers = ["insuranceCompanyName",'suretyTypeTranslation','insuredValue','showableStartDate','cost','tax'];
+                listObj.headers = ["insuranceCompanyName",'suretyTypeTranslation','insuredValueEuro','showableStartDate','costEuro','taxEuro'];
                 listObj.values = this.insurances;
                 return listObj;
             }
@@ -125,7 +130,7 @@
             ...mapActions([
                 'fetchVehicle',
                 'fetchVehicleType',
-                'fetchInsurancesBy',
+                'fetchInsurancesBy'
             ]),
             tdshowModal: function(id) {
                 this.showModal = true

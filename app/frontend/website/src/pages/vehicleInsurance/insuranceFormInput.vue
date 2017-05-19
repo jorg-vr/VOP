@@ -18,10 +18,10 @@ All of the fields for insurance input for the insurance form
         </date-input-form-group>
 
         <!-- Insured value -->
-        <text-input-form-group :object="object" name="insuredValue" :text="$t('insurance.insuredValue')" :rules="'required|numeric'"></text-input-form-group>
+        <euro-input-form-group :object="object" name="insuredValue" :text="$t('insurance.insuredValue')" :rules="'required'"></euro-input-form-group>
 
         <!-- Franchise -->
-        <text-input-form-group :object="object" name="franchise" :text="$t('insurance.franchise')" :rules="'required|numeric'"></text-input-form-group>
+        <euro-input-form-group :object="object" name="franchise" :text="$t('insurance.franchise')" :rules="'required'"></euro-input-form-group>
 
       <!-- insurance surety for which vehicle is insured -->
       <div class="page-header">
@@ -51,6 +51,7 @@ All of the fields for insurance input for the insurance form
     import TextInputFormGroup from '../../assets/form/FormGroups/TextInputFormGroup.vue'
     import SelectInputFormGroup from '../../assets/form/FormGroups/SelectInputFormGroup.vue'
     import DateInputFormGroup from '../../assets/form/FormGroups/DateInputFormGroup.vue'
+    import EuroInputFormGroup from '../../assets/form/FormGroups/EuroInputFormGroup.vue'
     import clientTypes from '../../constants/clientTypes'
     import resources from '../../constants/resources'
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
@@ -73,7 +74,7 @@ All of the fields for insurance input for the insurance form
             object: Object,
         },
         components: {
-            TextInputFormGroup,SelectInputFormGroup,DateInputFormGroup,buttonAdd
+          TextInputFormGroup,EuroInputFormGroup,SelectInputFormGroup,DateInputFormGroup,buttonAdd
         },
         computed: {
             ...mapGetters([
@@ -84,7 +85,8 @@ All of the fields for insurance input for the insurance form
                 'contract',
                 'sureties',
                 'vehicles',
-                'insuranceCompanyId'
+                'insuranceCompanyId',
+                'contractId'
                 ]),
 
         },
@@ -96,7 +98,7 @@ All of the fields for insurance input for the insurance form
                 ])
         },
         created(){
-            this.fetchContract({id:this.object.contract}).then(()=>{
+            this.fetchContract({id:this.contractId}).then(()=>{
                 // fetch all possible sureties
                 this.fetchSureties({ids:{ company:this.contract.insuranceCompany}}).then(()=>{
                     translateSuretyTypes(this.sureties);

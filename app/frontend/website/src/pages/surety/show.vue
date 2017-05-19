@@ -6,23 +6,15 @@
 -->
 <template>
     <div>
-       <div class="page-header">
-        <h1>{{$t("surety.surety") | capitalize }} </h1>
+       <div v-if="surety" class="page-header">
+           <h1 v-if="surety.flat">{{$t('surety.flatAdjective') | capitalize }} {{$t("surety.surety")}} </h1>
+           <h1 v-else>{{$t("surety.surety") | capitalize }} </h1>
+
         </div>
     <div class="col-md-8">
-      <table class="table show-table" v-if="surety">
-        <tr>
-            <td>{{$t('surety.surety') | capitalize }}</td>
-            <td>{{surety.suretyType}} </td>
-        </tr>
-        <tr>
-            <td>{{$t('surety.premium') | capitalize }}</td>
-            <td> {{surety.premium}}  </td>
-        </tr>
-        <tr>
-            <td>{{$t('surety.premiumPercentage') | capitalize }}</td>
-            <td> {{surety.premiumPercentage}} % </td>
-        </tr>
+        <h4>{{$t('suretyTypes.'+surety.suretyType) | capitalize }}</h4>
+        <h4>{{surety==true ? $t('surety.premium'): $t('surety.minPremium') | capitalize }}:  {{surety.premiumEuro}}</h4>
+        <h4 v-if="surety.flat==false">{{$t('surety.premiumPercentage') | capitalize }}: {{(surety.premiumPercentage*100).toFixed(2)}} %</h4>
     </table> 
 
     <!-- special conditions for the insurance surety -->
@@ -31,7 +23,7 @@
             <h2>{{$t("surety.coverage") | capitalize }}</h2>
         </div>   
 
-    <list-component :resource="resource" :listObject="listObject">
+    <list-component :resource="resource" :listObject="listObject" :remove="false" :edit="false">
     </list-component>
 
     <!-- Go back to overview contract page -->
@@ -47,6 +39,7 @@
     import listComponent from "../../assets/general/listComponent.vue"
     import resources from '../../constants/resources'
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
+    import {centsToEuroObject} from '../../utils/utils'
 
     export default {
         data(){
@@ -65,12 +58,9 @@
         created(){
            let suretyId = this.id
            this.fetchSurety({id:suretyId}).then(surety => {
+               centsToEuroObject(this.surety,"premium");
                 this.values = this.surety.specialConditions
            })
-           // Needs to be removed after back end support
-           // if back end support
-           // this.setSpecialConditions(this.surety.specialConditions)
-           // bind specialConditions in store to surety resource
        },
        computed: {
         ...mapGetters([

@@ -3,47 +3,64 @@
  This component will emit events to its parent who then can handles these events.
 
  Emitted events are:
- 	confirm option: 'confirmModal' on click-event
- 	cancel option: 'cancelModal' on click event 
+  confirm option: 'confirmModal' on click-event
+  cancel option: 'cancelModal' on click event 
 
 @param confirmButtonText: The text to be shown on the confirm option button. Required to have a confirm option.
 @param cancelButtonText: The text to be shown on the cancel option button. Required to have a cancel option.
+@param optionalButtonText: The text to be shown on the option button. Required to have an optional button.
 @param modalHeaderTitle: The title to be shown in the modal header. Description of what the modal is intended for.
 @param modalBodyText: The text to be shown in the modal body. General modal description.
-
+@param endDate: The text to be shown in the label of the date input. Required to have a date input option.
+@param object: The object to bind the date input to. Required to enbale date input!!
 -->
 
 <template>
-	<transition name="modal">
-		<div class="modal-mask"  transition="modal" id="modalMask">
-			<div class="modal-wrapper" id="modalWrapper">
-				<div class="modal-container" id="modalContainer">
-					<div class="modal-header" id="modalHeader">
-						<button type="button" id="closebtn" class="close" @click="$emit('cancelModal')" ><i class="fa fa-times" aria-hidden="true"></i></button>
-						<h3> {{modalHeaderTitle}} </h3>
-					</div>
+  <transition name="modal">
+    <div class="modal-mask"  transition="modal" id="modalMask">
+      <div class="modal-wrapper" id="modalWrapper">
+        <div class="modal-container" id="modalContainer">
+          <div class="modal-header" id="modalHeader">
+            <button type="button" id="closebtn" class="close" @click="$emit('close')" ><i class="fa fa-times" aria-hidden="true"></i></button>
+            <h3> {{modalHeaderTitle}} </h3>
+          </div>
 
-					<div class="modal-body" id="modalBody">
-						<p> {{modalBodyText}}</p>
-					</div>
+          <div class="modal-body" id="modalBody">
+            <p> {{modalBodyText}}</p>
+            <div>
+        <date-input-form-group v-if="object != null"
+                    :object="object" name="endDate" :text="endDate" :rules="'required'">
+        </date-input-form-group>
+        </div>
+          </div>
 
-					<div class="modal-footer " id="modalFooter" >
-							<button v-if="cancelButtonText" type="button" class="modal-default-button btn" @click="$emit('cancelModal')"> {{ cancelButtonText}}  </button>
-							<button v-if="confirmButtonText" type="button" class="modal-default-button btn" @click="$emit('confirmModal')">  {{ confirmButtonText }}  </button>
-					</div>
+          <div class="modal-footer " id="modalFooter" >
+              <button v-if="optionalButtonText" type="button" class="modal-default-button btn" @click="$emit('optional')">  {{ optionalButtonText }}  </button>
+              <button v-if="cancelButtonText" type="button" class="modal-default-button btn" @click="$emit('cancelModal')"> {{ cancelButtonText}}  </button>
+              <button v-if="confirmButtonText" type="button" class="modal-default-button btn" @click="$emit('confirmModal')">  {{ confirmButtonText }}  </button>
+    
+          </div>
 
-				</div>
-			</div>
-		</div>
-	</transition>
+        </div>
+      </div>
+    </div>
+  </transition>
 </template>
 <script>
+import DateInputFormGroup from '../form/FormGroups/DateInputFormGroup.vue'
+
  export default {
         props: {
             confirmButtonText: String, // Shown text on confirmation button 
             cancelButtonText: String, // Shown text on cancel button
+            optionalButtonText: String, // Shown text on optional button
             modalHeaderTitle: String, // Shown text on modal header
             modalBodyText: String, // shown text on modal body
+            endDate: String, // Shown text on date input
+            object: Object // Object to bind date input to
+        },
+        components: {
+            DateInputFormGroup
         },
 
  }
@@ -89,21 +106,21 @@
 }
 
 #modalBody p{
-	color:#304052;
-	font-size:18px;
-	margin-top:4%;
-	font-weight: 600;
+  color:#304052;
+  font-size:18px;
+  margin-top:4%;
+  font-weight: 600;
 
  }
 
 #modalFooter{
- 	background: #ffffff;
- 	border:none;
+  background: #ffffff;
+  border:none;
 
  }
 
 #modalBody{
-	background-color: #ffffff;
+  background-color: #ffffff;
 }
 
     #modalFooter button{
@@ -147,36 +164,36 @@
 /* responsive */
 
 @media (max-width: 990px) {
-	#modalContainer {
-	  width:55%;
-	}
+  #modalContainer {
+    width:55%;
+  }
 }
 /* Tablet support */
 @media (max-width: 764px) {
-	#modalContainer {
-	  width:75%;
-	}
+  #modalContainer {
+    width:75%;
+  }
 }
 /* Mobile support (support until 480x320 and 320x480 )*/
 
 @media (max-width: 540px) {
 
-	#modalContainer {
-	  width:70%;
-	}
+  #modalContainer {
+    width:70%;
+  }
 
-	#modalFooter button{
-		width: 35%;
-		margin:10px;
-	}
+  #modalFooter button{
+    width: 35%;
+    margin:10px;
+  }
 
-	#modalHeader h3 {
-		font-size:17px;
-	}
+  #modalHeader h3 {
+    font-size:17px;
+  }
 
-	#modalBody p{
-		font-size:15px;
+  #modalBody p{
+    font-size:15px;
 
-	 }
+   }
 }
 </style>

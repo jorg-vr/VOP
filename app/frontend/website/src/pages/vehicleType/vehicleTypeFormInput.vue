@@ -3,18 +3,19 @@
         <text-input-form-group :object="vehicleType" name="name" :text="$t('vehicleType.vehicleType')" :rules="'required'"></text-input-form-group>
         <h2>{{$t('vehicleType.taxes') | capitalize}}</h2>
         <div v-for="tax in vehicleType.taxes">
-            <text-input-form-group
+            <percent-input-form-group
                     :object="tax"
                     name="tax"
                     :text="$t('suretyTypes.'+tax.suretyType)"
                     :rules="'required'"
-            ></text-input-form-group>
+            ></percent-input-form-group>
         </div>
     </div>
 
 </template>
 <script>
     import {mapGetters, mapActions} from 'vuex'
+    import percentInputFormGroup from '../../assets/form/FormGroups/PercentInputformGroup.vue'
     import textInputFormGroup from '../../assets/form/FormGroups/TextInputFormGroup.vue'
     import suretyTypes from '../../constants/suretyTypes'
 
@@ -33,6 +34,7 @@
             }
         },
         components: {
+            percentInputFormGroup,
             textInputFormGroup
         }
     }

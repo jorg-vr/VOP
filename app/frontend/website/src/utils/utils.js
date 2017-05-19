@@ -71,3 +71,15 @@ export const translateSuretyTypes = function (array) {
     }
     return array
 }
+
+export const centsToEuroArray = function (array,field) {
+    for(let i=0;i<array.length;i++){
+        array[i]=centsToEuroObject(array[i],field);
+    }
+    return array
+}
+
+export const centsToEuroObject = function (object,field) {
+    object[field+"Euro"] = "€" + object[field]/100;
+    return object
+}
