@@ -50,18 +50,21 @@
 import DateInputFormGroup from '../form/FormGroups/DateInputFormGroup.vue'
 
  export default {
-        props: {
-            confirmButtonText: String, // Shown text on confirmation button 
-            cancelButtonText: String, // Shown text on cancel button
-            optionalButtonText: String, // Shown text on optional button
-            modalHeaderTitle: String, // Shown text on modal header
-            modalBodyText: String, // shown text on modal body
-            endDate: String, // Shown text on date input
-            object: Object // Object to bind date input to
-        },
-        components: {
-            DateInputFormGroup
-        },
+   props: {
+     confirmButtonText: String, // Shown text on confirmation button
+     cancelButtonText: String, // Shown text on cancel button
+     optionalButtonText: String, // Shown text on optional button
+     modalHeaderTitle: String, // Shown text on modal header
+     modalBodyText: String, // shown text on modal body
+     endDate: String, // Shown text on date input
+     object: Object // Object to bind date input to
+   },
+   components: {
+     DateInputFormGroup
+   },
+   mounted(){
+     this.$parent.$emit('mounted', this.$children)
+   },
 
  }
 </script>

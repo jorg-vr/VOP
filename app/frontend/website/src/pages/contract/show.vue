@@ -45,7 +45,7 @@
         <!-- Confirmation Modam -->
         <confirm-modal v-show="showModal"
                        @cancelModal="cancelCorrection()"
-                       @confirmModal="confirmCorrection()"
+                       @confirmModal="SubmitFormHandler.submit()"
                        @close="showModal=false"
                        :object="correction"
                        :endDate="$t('insurance.endDate') | capitalize"
@@ -80,6 +80,7 @@
     import buttonEdit from '../../assets/buttons/buttonEdit.vue'
     import buttonRemove from '../../assets/buttons/buttonRemove.vue'
     import confirmModal from '../../assets/general/modal.vue'
+    import {SubmitFormHandler} from '../../assets/form/SubmitFormHandler'
 
     export default {
         data(){
@@ -90,7 +91,8 @@
                 show2: false,
                 ids:{contract:this.id},
                 showModal:false,
-                correction: {}
+                correction: {},
+                SubmitFormHandler: SubmitFormHandler,
             }
         },
         components: {
@@ -101,6 +103,7 @@
             id: String
         },
         created(){
+            this.$on('mounted', components => this.initializeFormHandler(components));
             this.setLoading({loading: true })
             // fetch contract to display information
             let contractId = this.id;
@@ -126,8 +129,7 @@
             });
 
 
-            // set contract Id
-            this.setContractId(contractId)
+            SubmitFormHandler.setSubmitFunction(this.confirmCorrection)
         },
         computed: {
             ...mapGetters([
@@ -136,7 +138,6 @@
                 'sureties',
                 'insurances',
                 'contractInsurances',
-                'contractId',
             ]),
             listObject1() {
                 var listObj = {};
@@ -171,7 +172,6 @@
                 'deleteBodyInsurance'
             ]),
             ...mapMutations([
-                'setContractId',
                 'setLoading',
                 'setInsuranceCompanyId'
             ]),
@@ -183,12 +183,12 @@
                 this.$router.push({name: this.resource1.name, params: {contractId:value.contract, id:value.id}});
             },
             confirmCorrection: function(){
-                console.log(this.correction.endDate);
                 if(this.correction.endDate) {
                     this.showModal = false
                     this.correction.endDate =  this.correction.endDate;
-                    console.log(this.correction.endDate);
                     this.deleteBodyInsurance({id: this.selectedvalue, ids: this.ids, data: this.correction.endDate})
+                }else{
+
                 }
             },
             cancelCorrection : function(){
@@ -197,6 +197,10 @@
             tdshowModal: function(id) {
                 this.showModal = true;
                 this.selectedvalue=id;
+            },
+            initializeFormHandler(components){
+                SubmitFormHandler.setInputComponents(components)
+                SubmitFormHandler.setSubmitFunction(this.confirmCorrection)
             }
         },
     }
