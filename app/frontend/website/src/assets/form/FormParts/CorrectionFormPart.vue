@@ -34,7 +34,7 @@ Generic component for a form. Every form should be encapsulated in this componen
                        @cancelModal="showModal=false"
                        @confirmModal="confirmCorrection()"
                        @close="showModal=false"
-                       :modalHeaderTitle=" $t('modal.titleCorrection') | capitalize"
+                       :modalHeaderTitle=" $t('modal.titleConfirm') | capitalize"
                        :modalBodyText="$t('modal.bodyCorrection') + $t('modal.textConfirm') | capitalize"
                        :confirmButtonText="$t('modal.button1') | capitalize "
                        :cancelButtonText="$t('modal.button2') | capitalize ">
