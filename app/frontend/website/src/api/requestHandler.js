@@ -62,7 +62,6 @@ export default {
         let locationTrimmed = location.rtrim('/')
         let query = '?' + formQuery(filters)
         query =  query.slice(0, -1)
-        console.log(query)
         return this.getObjectsRequest(locationTrimmed + query)
     },
 
