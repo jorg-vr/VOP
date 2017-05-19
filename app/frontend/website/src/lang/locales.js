@@ -113,6 +113,7 @@ export default
             textConfirm: 'Are you sure you want to proceed with this action?',
             titleCorrection: 'Correction',
             textCorrection: 'would you like to make a correction for this ',
+            bodyCorrection: 'The entered start date is in the past. The system will automatically make a correction for this insurance. ',
             button1: 'Yes',
             button2: 'No',
             cancel: 'cancel'
@@ -415,6 +416,7 @@ export default
             textConfirm: 'Weet u zeker dat u wil doorgaan met deze actie?',
             titleCorrection: 'Correctie',
             textCorrection: 'wil u hiervoor een correctie doorvoeren?',
+            bodyCorrection: 'De ingevoerde startdatum ligt in het verleden. Het systeem zal voor deze verzekering automatisch een correctie doorvoeren. ',
             button1: 'ja',
             button2: 'nee',
             cancel: 'annuleer'
