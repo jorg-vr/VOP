@@ -38,7 +38,7 @@ export const formatLocation = function(str, data) {
 export const addShowableDate = function(objects, propertyName){
     if(objects.length > 0 && objects[0][propertyName]){
         for(let i=0; i<objects.length; i++){
-            objects[i]['showable' + capitalize(propertyName)] =  objects[i][propertyName].showableDate()
+            objects[i]['showable' + capitalize(propertyName)] =objects[i][propertyName]?  objects[i][propertyName].showableDate():objects[i][propertyName]
         }
     }
 }

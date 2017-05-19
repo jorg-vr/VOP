@@ -2,7 +2,7 @@
     This page is used to create a new insurance.
 -->
 <template>
-    <correction-form :actions="actions" :object="insurance" :back="back" :resource="resource">
+    <correction-form :actions="actions" :object="insurance" :ids="ids" :back="back" :resource="resource">
         <insurance-form-input :object="insurance" :actions="actions"></insurance-form-input>
     </correction-form>
 </template>
@@ -20,7 +20,8 @@
                 actions: actions.CREATE,
                 resource: resources.INSURANCE,
                 insurance: {contract:this.contractId},
-                back: {name: resources.INSURANCE.name,params:{id:this.contractId}}
+                back: {name: resources.CONTRACT.name,params:{id:this.contractId}},
+                ids:{contract:this.contractId}
 
             }
         },
