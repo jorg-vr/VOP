@@ -1,6 +1,8 @@
 package controller;
 
 import controller.exceptions.UnAuthorizedException;
+import dao.exceptions.DataAccessException;
+import dao.exceptions.ObjectNotFoundException;
 import dao.interfaces.DAOManager;
 import dao.interfaces.LogEntryDAO;
 import model.account.Function;
@@ -33,7 +35,23 @@ public class LogEntryController {
     }
 
     /**
+     * Get the entry with the gived id
+     * @param id the id of the entry
+     * @return LogEntry corresponding to the id
+     */
+    public LogEntry getEntry(UUID id) throws DataAccessException, ObjectNotFoundException, UnAuthorizedException {
+        LogEntry entry = dao.get(id);
+        if (role.hasAccess(Resource.LOG, READ_ALL)
+                || (role.hasAccess(Resource.LOG, READ_MINE))) {
+            return entry;
+        } else {
+            throw new UnAuthorizedException();
+        }
+    }
+
+    /**
      * Get all the log entries that are relevant to the object with uuid objectId
+     *
      * @param vehicle uuid of the object which all the relevant log entries should be returned
      * @return a collection of all the log entries. The collection is empty if there are nog log entries for that uuid.
      */
@@ -44,6 +62,7 @@ public class LogEntryController {
 
     /**
      * Get all the log entries that are relevant to the object with uuid objectId
+     *
      * @param fleet uuid of the object which all the relevant log entries should be returned
      * @return a collection of all the log entries. The collection is empty if there are nog log entries for that uuid.
      */
@@ -54,13 +73,14 @@ public class LogEntryController {
 
     /**
      * Get all the log entries that are relevant to the object with uuid objectId
+     *
      * @param id uuid of the object which all the relevant log entries should be returned
      * @return a collection of all the log entries. The collection is empty if there are nog log entries for that uuid.
      */
     private Collection<LogEntry> getLogEntries(UUID id, boolean isOwner) throws UnAuthorizedException {
         Collection<LogEntry> entries = dao.getAllLogs(id);
         if (role.hasAccess(Resource.LOG, READ_ALL)
-                || role.hasAccess(Resource.LOG, READ_MINE)) {
+                || (role.hasAccess(Resource.LOG, READ_MINE) && isOwner)) {
             return entries;
         } else {
             throw new UnAuthorizedException();
