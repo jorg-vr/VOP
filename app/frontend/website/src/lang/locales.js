@@ -27,7 +27,7 @@ export default
         vehicleType: {
             name: 'name',
             vehicleType: 'vehicle type',
-            vehicleTypes: 'vehicle types',
+            vehicleTypes: 'commissions & taxes',
             tax:'tax',
             taxes:'taxes'
         },
@@ -293,7 +293,7 @@ export default
             log: 'log',
             company: 'company',
             insurance: 'insurance',
-            vehicletype: 'vehicle type'
+            vehicletype: 'commissions & taxes'
         },
         period: {
             quarterly: 'quarterly',
@@ -333,7 +333,7 @@ export default
         vehicleType: {
             name: 'naam',
             vehicleType: 'voertuigtype',
-            vehicleTypes: 'voertuigtypes',
+            vehicleTypes: 'commissies & taksen',
             tax:'btw',
             taxes:'belastingen'
         },
@@ -586,7 +586,7 @@ export default
             log: 'log',
             company: 'bedrijf',
             insurance: 'verzekering',
-            vehicletype: 'voertuigtype'
+            vehicletype: 'Taksen'
         },
         period: {
             quarterly: 'driemaandelijks',

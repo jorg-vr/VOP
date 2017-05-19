@@ -2,7 +2,7 @@
     <div class="col-lg-8 col-md-9 col-sm-11">
         <div class="page-header">
             <h1>
-                {{$t("vehicleType.vehicleType") | capitalize}}
+                {{$t("vehicleType.vehicleTypes") | capitalize}}
                 <button-add :resource="resource"></button-add>
             </h1>
         </div>
@@ -79,7 +79,7 @@
             listComponent, buttonAdd,buttonEdit,buttonRemove,confirmModal
         },
         created(){
-            this.refreshVehicleTypes;
+            this.refreshVehicleTypes();
         },
         computed: {
             ...mapGetters([
