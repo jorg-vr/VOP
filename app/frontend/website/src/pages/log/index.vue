@@ -20,7 +20,8 @@
                     {{$t('resource.' + value.resource.toLowerCase()) | capitalize}}
                 </td>
                 <td class="clickable-td" @click="tdclick(value.id, value)">
-                    {{value.userName}}
+                    <span v-if="value.user!==null">{{value.user.firstName}} {{value.user.lastName}}</span>
+                    <span v-else>{{$t('log.user')}} {{$t('common.removed')}}</span>
                 </td>
             </tr>
             </tbody>
@@ -47,14 +48,13 @@
         },
         created(){
             this.fetchLogs({id: this.id, resource: this.resource}).then(logs => {
-                console.log(logs)
                 this.logs = logs
             })
         },
         computed: {
             listObject(){
                 return {
-                    headers: ["showableDateTime", "action", "resource", "userName"],
+                    headers: ["showableDateTime", "action", "resource", "user"],
                     values: this.logs
                 }
             }
