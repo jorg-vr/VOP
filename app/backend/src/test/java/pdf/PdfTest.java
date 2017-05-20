@@ -1,6 +1,7 @@
 package pdf;
 
 import model.billing.Invoice;
+import model.billing.InvoiceType;
 import model.billing.VehicleInvoice;
 import model.fleet.Vehicle;
 import model.fleet.VehicleType;
@@ -70,6 +71,7 @@ public class PdfTest {
         Invoice invoice = new Invoice();
         invoice.setStartDate(LocalDateTime.now());
         invoice.setEndDate(LocalDateTime.now().plusYears(1));
+        invoice.setType(InvoiceType.BILLING);
         Customer customer = new Customer();
         customer.setName("Freddy en dochters");
         customer.setPaymentPeriod(Periodicity.MONTHLY);
@@ -80,11 +82,9 @@ public class PdfTest {
             VehicleInvoice vehicleInvoice = new VehicleInvoice();
             vehicleInvoice.setTotalCost(i * 51);
             vehicleInvoice.setTotalTax(i * 19);
-            VehicleInsurance insurance = new VehicleInsurance();
             FlatSurety surety = new FlatSurety();
             surety.setSuretyType(SuretyType.values()[i % SuretyType.values().length]);
-            insurance.setSurety(surety);
-            vehicleInvoice.setVehicleInsurance(insurance);
+            vehicleInvoice.setSurety(surety);
             vehicleInvoice.setLicensePlate("ABC-" + i / 4);
             vehicleInvoices.add(vehicleInvoice);
         }
