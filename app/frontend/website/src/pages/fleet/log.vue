@@ -8,7 +8,7 @@
                 {{$t("log.logEntry") | capitalize}} {{$t("resource.fleet")}} {{fleet.name}}
             </h1>
         </div>
-        <log :resourceId="resourceId" :id="id" :entry="entry" resource="fleet"></log>
+        <log :resourceId="resourceId" :id="id" :entry="entry" resource="fleets"></log>
     </div>
 </template>
 <script>
