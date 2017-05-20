@@ -62,7 +62,7 @@ public class RESTInvoiceController extends RESTAbstractController<RESTInvoice, I
                     .stream()
                     .map(RESTInvoice::new)
                     .collect(Collectors.toList());
-            return new RESTSchema<>(invoices, page, limit, request,(kzama,b)->b.getStartDate().compareTo(a.getStartDate()));
+            return new RESTSchema<>(invoices, page, limit, request,(a,b)->b.getStartDate().compareTo(a.getStartDate()));
         } catch (UnAuthorizedException e) {
             throw new NotAuthorizedException();
         } catch (DataAccessException e) {

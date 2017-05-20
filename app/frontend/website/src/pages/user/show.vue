@@ -7,7 +7,7 @@
     <div v-if="user">
         <div class="page-header">
             <h1>{{user.lastName|capitalize}} {{user.firstName|capitalize}}
-                <button-edit v-if="user" :resource="resource" :params="{id: user.id}" ></button-edit>
+                <delete-component v-if="user" :resource="resource" :id="user.id" ></delete-component>
             </h1>
         </div>
         <div class="col-md-8">
@@ -31,7 +31,7 @@
 <script>
     import {mapGetters, mapActions} from 'vuex'
     import buttonBack from '../../assets/buttons/buttonBack.vue'
-    import buttonEdit from '../../assets/buttons/buttonEdit.vue'
+    import deleteComponent from '../../assets/general/deleteComponent.vue'
     import FunctionIndex from '../function/index.vue'
     import resources from '../../constants/resources'
     import languagePicker from '../../assets/navbar/languagePicker.vue'
@@ -43,7 +43,7 @@
             }
         },
         components: {
-            buttonBack, FunctionIndex,buttonEdit, languagePicker
+            buttonBack, FunctionIndex,deleteComponent, languagePicker
         },
         props: {
             id: String
