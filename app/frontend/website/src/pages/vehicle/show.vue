@@ -6,7 +6,9 @@
 <template>
     <div v-if="vehicle">
         <div class="page-header">
-            <h1> {{$t('vehicle.vehicle') | capitalize }} {{vehicle.licensePlate}}</h1>
+            <h1> {{$t('vehicle.vehicle') | capitalize }} {{vehicle.licensePlate}}
+                <delete-component v-if="vehicle" :resource="resourceVehicle" :id="vehicle.id" :back="back" ></delete-component>
+            </h1>
         </div>
         <div class="col-md-8">
             <table id="show-vehicle" class="table show-table">
@@ -60,7 +62,6 @@
                     </td>
                     <td class="stretch">
                         <button-edit :resource="resource" :params="{id:value.id,contractId:value.contract}" ></button-edit>
-                        <button-remove :resource="resource"  @click="tdshowModal(value.id)"></button-remove>
                     </td>
                 </tr>
                 </tbody>
@@ -83,17 +84,19 @@
     import listComponent from '../../assets/general/listComponent.vue'
     import resources from '../../constants/resources'
     import commissions from '../commission/collapse.vue'
+    import deleteComponent from '../../assets/general/deleteComponent.vue'
     import {translateSuretyTypes,centsToEuroArray} from '../../utils/utils'
 
     export default {
         data(){
             return {
                 resource: resources.INSURANCE,
+                resourceVehicle: resources.VEHICLE,
                 show:false
             }
         },
         components: {
-            buttonBack,listComponent, buttonLink,buttonEdit,buttonRemove,commissions
+            buttonBack,listComponent, buttonLink,buttonEdit,buttonRemove,commissions,deleteComponent
         },
         props: {
             id: String
@@ -124,6 +127,9 @@
                 listObj.headers = ["insuranceCompanyName",'suretyTypeTranslation','insuredValueEuro','showableStartDate','costEuro','taxEuro'];
                 listObj.values = this.insurances;
                 return listObj;
+            },
+            back(){
+                return {name:resources.FLEET.name,params:{id:this.vehicle.fleet}};
             }
         },
         methods: {
