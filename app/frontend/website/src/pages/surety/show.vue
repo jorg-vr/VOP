@@ -8,9 +8,9 @@
     <div>
        <div v-if="surety" class="page-header">
            <h1 v-if="surety.flat">{{$t('surety.flatAdjective') | capitalize }} {{$t("surety.surety")}}
-               <delete-component v-if="user" :resource="resource" :id="surety.id" ></delete-component> </h1>
+               <delete-component  :resource="resourceSurety" :id="surety.id" :back="back"></delete-component> </h1>
            <h1 v-else>{{$t("surety.surety") | capitalize }}
-               <delete-component v-if="user" :resource="resource" :id="surety.id" ></delete-component> </h1>
+               <delete-component :resource="resourceSurety" :id="surety.id" :back="back"></delete-component> </h1>
 
         </div>
     <div class="col-md-8">
@@ -29,7 +29,7 @@
     </list-component>
 
     <!-- Go back to overview contract page -->
-    <button-back :route="{name: 'contracts'}"></button-back>
+    <button-back :route="back"></button-back>
 
 
     </div>
@@ -48,6 +48,7 @@
         data(){
             return{
                 resource: resources.CONDITION,
+                resourceSurety: resources.SURETY,
                 values: []
             }
         },
@@ -76,7 +77,10 @@
                 listObj.headers = ['referenceCode','title'];
                 listObj.values = this.values
                 return listObj;
-        }
+        },
+           back(){
+               return {name:resources.company,params:{id:this.surety.insuranceCompany}};
+           }
     },
     methods: {
         ...mapActions([
