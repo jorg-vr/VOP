@@ -1,27 +1,30 @@
 <template>
     <div v-if="commissions" >
-        <table class="table-hover table">
-            <thead>
-            <tr>
-                <th >
-                    {{$t('commission.suretyType')| capitalize }}
-                </th>
-                <th >
-                    {{$t('commission.commission')| capitalize }}
-                </th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="commission in commissions" class="list-tr">
-                <td  >
-                    {{$t('suretyTypes.'+commission.suretyType)}}
-                </td>
-                <td  >
-                    {{commission.commission*100}}%
-                </td>
-            </tr>
-            </tbody>
-        </table>
+        <div v-if="show&&commissions.length>0">
+            <table class="table-hover table">
+                <thead>
+                <tr>
+                    <th >
+                        {{$t('commission.suretyType')| capitalize }}
+                    </th>
+                    <th >
+                        {{$t('commission.commission')| capitalize }}
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="commission in commissions" class="list-tr">
+                    <td  >
+                        {{$t('suretyTypes.'+commission.suretyType)}}
+                    </td>
+                    <td  >
+                        {{(commission.commission*100).toFixed(2)}}%
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <h4 v-else-if="show"> {{$t('commission.none')| capitalize }} </h4>
     </div>
 </template>
 <script>
@@ -32,8 +35,8 @@
         data(){
             return {
                 resource: resources.COMMISSION,
-                commission: {}
-
+                commissions: [],
+                show:false
             }
         },
         props:{
@@ -44,12 +47,11 @@
             listComponent
         },
         created() {
-            this.fetchCommissions({ids:{'resource':this.loc,'resourceId':this.id}});
-        },
-        computed: {
-            ...mapGetters([
-                'commissions'
-            ])
+            this.fetchCommissions({ids:{'resource':this.loc,'resourceId':this.id}}).then(commissions=>{
+                this.commissions=commissions;
+                this.commissions.sort((a,b)=>a.suretyType>b.suretyType);
+                this.show=true;
+            });
         },
         methods: {
             ...mapActions([

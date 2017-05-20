@@ -9,43 +9,10 @@
             <h1 >
                 {{$t("contract.contract") | capitalize }} {{contract.customerName}} - {{contract.insuranceCompanyName}}
             </h1>
-            <h4 >{{showDate(contract.startDate)}} - {{showDate(contract.endDate)}}</h4>
-            <h4> {{$t('contract.totalCost') | capitalize }} {{contract.totalCost}}€</h4>
-            <h4>{{$t('contract.totalTax') | capitalize }} {{contract.totalTax}}€</h4>
+            <h4 >{{contract.startDate.showableDate()}} - {{contract.endDate.showableDate()}}</h4>
+            <h4> {{$t('contract.totalCostEuro') | capitalize }}: {{contract.totalCostEuro}}</h4>
+            <h4>{{$t('contract.totalTaxEuro') | capitalize }}: {{contract.totalTaxEuro}}</h4>
         </div>
-        <!-- show information about insurance contract -->
-        <!--<div class="col-md-8">-->
-            <!--<table class="table show-table" v-if='contract'>-->
-                <!--<tr>-->
-                    <!--<td>{{$t('contract.customer') | capitalize }}</td>-->
-                    <!--<td>{{contract.customerName}}</td>-->
-                <!--</tr>-->
-                <!--<tr>-->
-                    <!--<td>{{$t('contract.insuranceCompany') | capitalize }}</td>-->
-                    <!--<td>{{contract.insuranceCompanyName}}</td>-->
-                <!--</tr>-->
-                <!--<tr>-->
-                    <!--<td>{{$t('contract.showableStartDate') | capitalize }}</td>-->
-                    <!--<td>{{showDate(contract.startDate)}}</td>-->
-                <!--</tr>-->
-                <!--<tr>-->
-                    <!--<td>{{$t('contract.showableEndDate') | capitalize }}</td>-->
-                    <!--<td>{{showDate(contract.endDate)}}</td>-->
-                <!--</tr>-->
-
-                 <!--<tr>-->
-                    <!--<td>{{$t('contract.totalCost') | capitalize }}</td>-->
-                    <!--<td>{{contract.totalCost}}</td>-->
-                <!--</tr>-->
-
-                 <!--<tr>-->
-                    <!--<td>{{$t('contract.totalTax') | capitalize }}</td>-->
-                    <!--<td>{{contract.totalTax}}</td>-->
-                <!--</tr>-->
-
-            <!--</table>-->
-        <!--</div>-->
-
 
         <div class="page-header">
             <h1>
@@ -77,10 +44,13 @@
         </table>
         <!-- Confirmation Modam -->
         <confirm-modal v-show="showModal"
-                       @cancelModal="showModal=false"
-                       @confirmModal="confirmAction()"
-                       :modalHeaderTitle=" $t('modal.titleConfirm') | capitalize"
-                       :modalBodyText="$t('modal.textConfirm') | capitalize"
+                       @cancelModal="cancelCorrection()"
+                       @confirmModal="SubmitFormHandler.submit()"
+                       @close="showModal=false"
+                       :object="correction"
+                       :endDate="$t('insurance.endDate') | capitalize"
+                       :modalHeaderTitle=" $t('modal.titleCorrection') | capitalize"
+                       :modalBodyText="$t('modal.textCorrection') | capitalize"
                        :confirmButtonText="$t('modal.button1') | capitalize "
                        :cancelButtonText="$t('modal.button2') | capitalize ">
         </confirm-modal>
@@ -106,10 +76,11 @@
     import buttonBack from '../../assets/buttons/buttonBack.vue'
     import buttonLink from '../../assets/buttons/buttonLink.vue'
     import {mapGetters, mapActions, mapMutations} from 'vuex'
-    import {translateSuretyTypes} from '../../utils/utils'
+    import {translateSuretyTypes,centsToEuroObject,centsToEuroArray} from '../../utils/utils'
     import buttonEdit from '../../assets/buttons/buttonEdit.vue'
     import buttonRemove from '../../assets/buttons/buttonRemove.vue'
     import confirmModal from '../../assets/general/modal.vue'
+    import {SubmitFormHandler} from '../../assets/form/SubmitFormHandler'
 
     export default {
         data(){
@@ -119,7 +90,9 @@
                 show1: false,
                 show2: false,
                 ids:{contract:this.id},
-                showModal:false
+                showModal:false,
+                correction: {},
+                SubmitFormHandler: SubmitFormHandler,
             }
         },
         components: {
@@ -130,12 +103,16 @@
             id: String
         },
         created(){
+            this.$on('mounted', components => this.initializeFormHandler(components));
             this.setLoading({loading: true })
             // fetch contract to display information
             let contractId = this.id;
             this.fetchContract({id: contractId}).then(()=>{
+                centsToEuroObject(this.contract,"totalCost")
+                centsToEuroObject(this.contract,"totalTax")
                 // get all possible sureties for the chosen insurance Company of the contract
                 this.fetchSureties({ids:{company:this.contract.insuranceCompany}}).then(() => {
+                    centsToEuroArray(this.sureties,"premium");
                     this.sureties=translateSuretyTypes(this.sureties);
                     this.show2=true;
                 })
@@ -143,14 +120,15 @@
 
             // get all insurances from the contract with contract Id
             this.fetchInsurances({ids:{contract: this.id}}).then(() => {
-                this.insurances=translateSuretyTypes(this.insurances);
+                translateSuretyTypes(this.insurances);
+                centsToEuroArray(this.insurances,"cost");
+                centsToEuroArray(this.insurances,"tax");
+                centsToEuroArray(this.insurances,"insuredValue");
                 this.setLoading({loading: false });
                 this.show1=true;
             });
+         SubmitFormHandler.setSubmitFunction(this.confirmCorrection)
 
-
-            // set contract Id
-            this.setContractId(contractId)
         },
         computed: {
             ...mapGetters([
@@ -159,17 +137,16 @@
                 'sureties',
                 'insurances',
                 'contractInsurances',
-                'contractId',
             ]),
             listObject1() {
                 var listObj = {};
-                listObj.headers = ['licensePlate','brand','suretyTypeTranslation','insuredValue','showableStartDate','cost','tax'];
+                listObj.headers = ['licensePlate','brand','suretyTypeTranslation','insuredValueEuro','showableStartDate','costEuro','taxEuro'];
                 listObj.values = this.contractInsurances;
                 return listObj;
             },
             listObject2() {
                 var listObj = {};
-                listObj.headers = ['suretyTypeTranslation','premium'];
+                listObj.headers = ['suretyTypeTranslation','premiumEuro'];
                 listObj.values = this.sureties;
                 return listObj;
             },
@@ -189,30 +166,35 @@
                 'fetchInsurances',
                 'fetchContract',
                 'fetchInsurances',
-                'fetchSureties'
+                'fetchSureties',
+                'fetchInsurance',
+                'deleteBodyInsurance'
             ]),
             ...mapMutations([
-                'setContractId',
                 'setLoading',
-                'setInsuranceCompanyId'
             ]),
-            showDate: function (date) {
-                var d=new Date(date)
-                return d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear()
-            },
             tdclick: function(value) {
                 this.$router.push({name: this.resource1.name, params: {contractId:value.contract, id:value.id}});
             },
-            confirmAction: function(){
-                // hide modal
-                this.showModal=false
-                // remove object
-                // special case deletion of insurance
-                this.$store.dispatch('delete' + this.resource1.name.capitalize(), {id: this.selectedvalue, ids: this.ids})
+            confirmCorrection: function(){
+                if(this.correction.endDate) {
+                    this.showModal = false
+                    this.correction.endDate =  this.correction.endDate;
+                    this.deleteBodyInsurance({id: this.selectedvalue, ids: this.ids, data: this.correction.endDate})
+                }else{
+
+                }
+            },
+            cancelCorrection : function(){
+                this.showModal = false
             },
             tdshowModal: function(id) {
-                this.showModal = true
-                this.selectedvalue=id
+                this.showModal = true;
+                this.selectedvalue=id;
+            },
+            initializeFormHandler(components){
+                SubmitFormHandler.setInputComponents(components)
+                SubmitFormHandler.setSubmitFunction(this.confirmCorrection)
             }
         },
     }

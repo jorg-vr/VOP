@@ -34,8 +34,26 @@ All of the fields for contract input for the contract form
                 <h2>{{$t("vehicle_insurance.vehicle_insurances") | capitalize }} </h2>
             </div>
 
-        <list-component :resource="resource1" :listObject="listObject1" :ids="{contract: this.object.id}">
-        </list-component>
+        <table class="table-hover table">
+            <thead>
+            <tr>
+                <th v-for="head in listObject1.headers">
+                    {{$t(resource1.name + '.' + head).capitalize()}}
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="value in listObject1.values" class="list-tr">
+                <td v-for="header in listObject1.headers" class="clickable-td" @click="tdclick(value)">
+                    {{value[header]}}
+                </td>
+                <td class="stretch">
+                    <button-edit :resource="resource1" :params="{contractId:value.contract ,id:value.id}" ></button-edit>
+                    <button-remove :resource="resource1"  @click="tdshowModal(value.id)"></button-remove>
+                </td>
+            </tr>
+            </tbody>
+        </table>
 
             <div class="page-header">
                 <h2>
@@ -44,12 +62,25 @@ All of the fields for contract input for the contract form
                 </h2>
             </div>
         <h5> {{$t("contract.offer") | capitalize }} {{object.insuranceCompanyName}} </h5>
-        <list-component :resource="resource2" :listObject="listObject2">
+        <list-component v-if="show2" :resource="resource2" :listObject="listObject2">
         </list-component>
 
         </div>
 
-
+        <!-- Confirmation Modam -->
+        <confirm-modal v-show="showModal"
+                       @cancelModal="cancelCorrection"
+                       @confirmModal="confirmCorrection()"
+                       @optional="showModal=false"
+                       @close="showModal=false"
+                       :object="correction"
+                       :endDate="$t('insurance.endDate') | capitalize"
+                       :modalHeaderTitle=" $t('modal.titleCorrection') | capitalize"
+                       :modalBodyText="$t('modal.textCorrection') | capitalize"
+                       :confirmButtonText="$t('modal.button1') | capitalize "
+                       :cancelButtonText="$t('modal.button2') | capitalize "
+                       :optionalButtonText="$t('modal.cancel') | capitalize ">
+        </confirm-modal>
 
   </div>
 </template>
@@ -62,6 +93,10 @@ All of the fields for contract input for the contract form
     import resources from '../../constants/resources'
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
     import listComponent from "../../assets/general/listComponent.vue"
+    import {translateSuretyTypes} from '../../utils/utils'
+    import buttonEdit from '../../assets/buttons/buttonEdit.vue'
+    import buttonRemove from '../../assets/buttons/buttonRemove.vue'
+    import confirmModal from '../../assets/general/modal.vue'
 
     export default {
         data(){
@@ -69,11 +104,14 @@ All of the fields for contract input for the contract form
                 id:'id',
                 name:'name',
                 customer: 'customer',
-                show: false,
+                show1: false,
+                show2: false,
                 resource1: resources.INSURANCE,
                 resource2: resources.SURETY,
                 customers:[],
-                insuranceCompanies:[]
+                insuranceCompanies:[],
+                showModal: false,
+                correction: {}
             }
         },
         mounted(){
@@ -84,7 +122,7 @@ All of the fields for contract input for the contract form
             object: Object,
         },
         components: {
-            TextInputFormGroup,SelectInputFormGroup,DateInputFormGroup,buttonAdd,listComponent
+            TextInputFormGroup,SelectInputFormGroup,DateInputFormGroup,buttonAdd,listComponent,buttonRemove,buttonEdit,confirmModal
         },
         computed: {
             ...mapGetters([
@@ -96,18 +134,20 @@ All of the fields for contract input for the contract form
                 'contractId',
                 'sureties',
                 'vehicles',
-                'filteredcontractInsurances'
+                'filteredcontractInsurances',
+                'insuranceCompanyId',
+                'insurance'
                 ]),
             listObject1() {
                 var listObj = {};
-                listObj.headers = ['licensePlate','brand','suretyType','insuredValue','showableStartDate','cost','tax'];
-                listObj.values = this.contractInsurances;
+                listObj.headers = ['licensePlate','brand','suretyTypeTranslation','insuredValue','showableStartDate','cost','tax'];
+                listObj.values = translateSuretyTypes(this.contractInsurances);
                 return listObj;
             },
             listObject2() {
                 var listObj = {};
-                listObj.headers = ['suretyType','premium'];
-                listObj.values = this.insuranceCompanySureties;
+                listObj.headers = ['suretyTypeTranslation','premium'];
+                listObj.values = translateSuretyTypes(this.sureties);
                 return listObj;
             },
             insuranceCompanySureties(){
@@ -128,24 +168,6 @@ All of the fields for contract input for the contract form
                 }
                 return contractInsurances
             }
-            /*customers(){
-                var customers = []
-                for(let i=0; i<this.clients.length;i++){
-                    if(this.clients[i].type == "CUSTOMER"){
-                        customers.push(this.clients[i])
-                    }
-                }
-                return customers
-            },
-            insuranceCompanies(){
-                var insuranceCompanies = []
-                for(let i=0;i<this.clients.length;i++){
-                    if(this.clients[i].type == "INSURANCE_COMPANY"){
-                        insuranceCompanies.push(this.clients[i])
-                    }
-                }
-                return insuranceCompanies
-            }*/
         },
         methods: {
             ...mapActions([
@@ -153,11 +175,35 @@ All of the fields for contract input for the contract form
                 'fetchVehicles',
                 'fetchClients',
                 'fetchInsurances',
-                'fetchClientsBy'
+                'fetchClientsBy',
+                'fetchContract',
+                'fetchInsurance',
+                'createCorrection',
+                'deleteBodyInsurance'
                 ]),
             ...mapMutations([
                 'setLoading'
             ]),
+            tdclick: function(value) {
+                this.$router.push({name: this.resource1.name, params: {contractId:value.contract, id:value.id}});
+            },
+            confirmCorrection: function(){
+                // hide modal
+                this.showModal=false
+                this.correction.endDate += "T00:00:00.00"
+                this.deleteBodyInsurance({id: this.selectedvalue, ids: this.ids, data:this.correction.endDate})
+            },
+            cancelCorrection : function(){
+                this.showModal = false
+                this.$store.dispatch('delete' + this.resource1.name.capitalize(), {id: this.selectedvalue, ids: this.ids})
+            },
+            tdshowModal: function(id) {
+                this.showModal = true
+                this.selectedvalue=id
+                // fetch clicked insuranc
+                this.fetchInsurance({ids:{ contract:this.id}, id:this.selectedvalue}).then(insurance => {
+                 })
+            }
         },
         created(){
             // fetch all possible clients
@@ -174,6 +220,7 @@ All of the fields for contract input for the contract form
             })
 
 
+
             // EDIT
             if(this.actions.name == 'update'){
                 // fetch all vehicle insurance for contract
@@ -182,9 +229,15 @@ All of the fields for contract input for the contract form
                 // get all insurances from the contract with contract Id
                 this.fetchInsurances({ids:{contract: this.contractId}}).then(() => {
                     this.setLoading({loading: false })
+                    this.show1=true
                 })
                 // get all sureties for the chose insuranceCompany
-                this.fetchSureties()
+                // ERROR FIX
+                this.fetchContract({id: this.contractId}).then(contract => {
+                    this.fetchSureties({ids:{company: contract.insuranceCompany}})
+                    this.show2=true
+                })
+                
             }
 
 

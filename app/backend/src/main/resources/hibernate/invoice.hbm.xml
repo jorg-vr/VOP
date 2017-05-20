@@ -12,23 +12,16 @@
             <generator class="uuid2"/>
         </id>
 
-        <property name="paid" column="paid" type="java.lang.Boolean"/>
-        <many-to-one name="payer" column="payer_id" class="model.identity.Company" lazy="proxy" fetch="select"/>
-        <many-to-one name="beneficiary" column="beneficiary_id" class="model.identity.Company" lazy="proxy"
-                     fetch="select"/>
-        <property name="startDate" column="start_data" type="java.time.LocalDateTime"/>
-        <property name="endDate" column="end_data" type="java.time.LocalDateTime"/>
-        <bag name="contracts" access="field" table="contract_invoice"
-             lazy="true" fetch="select">
-            <key column="invoice_id" not-null="false"/>
-            <many-to-many column="contract_id" class="model.insurance.Contract"/>
-        </bag>
+        <property name="paid" column="paid" type="java.lang.Boolean" lazy="false"/>
+        <many-to-one name="payer" column="payer_id" class="model.identity.Company" lazy="false" fetch="select"/>
+        <property name="startDate" column="start_data" type="java.time.LocalDateTime" lazy="false"/>
+        <property name="endDate" column="end_data" type="java.time.LocalDateTime" lazy="false"/>
         <bag name="vehicleInvoices" access="field" table="vehicle_invoices" lazy="false"
              cascade="all">
             <key column="invoice_id" />
-            <one-to-many class="model.insurance.VehicleInsurance" />
+            <one-to-many class="model.billing.VehicleInvoice" />
         </bag>
-        <property name="type">
+        <property name="type" lazy="false">
             <type name="org.hibernate.type.EnumType">
                 <param name="enumClass">model.billing.InvoiceType</param>
             </type>
@@ -43,12 +36,13 @@
         <id name="uuid" type="uuid-binary" column="id">
             <generator class="uuid2"/>
         </id>
-        <many-to-one name="vehicleInsurance" column="insurance_id" class="model.insurance.VehicleInsurance" lazy="false" />
+        <many-to-one name="surety" column="surety_id" class="model.insurance.Surety" lazy="false" not-null="false" />
+        <property name="vehicleInsuranceID" column="vehicle_insurance_id" type="uuid-binary"/>
         <property name="franchise" column="franchise" type="int"/>
         <property name="insuredValue" column="insured_value" type="int"/>
         <property name="totalCost" column="total_cost" type="int" />
         <property name="totalTax" column="total_tax" type="int" />
-        <property name="chassisNumber" column="chassis_number" type="java.lang.String"/>
+        <property name="vin" column="chassis_number" type="java.lang.String"/>
         <property name="licensePlate" column="license_plate" type="java.lang.String"/>
     </class>
 </hibernate-mapping>

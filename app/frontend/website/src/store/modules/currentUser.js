@@ -2,6 +2,8 @@ import * as locations from '../../constants/locations'
 import {PagePermissions} from '../../constants/PagePermissions'
 import RequestHandler from '../../api/requestHandler'
 import Vue from 'vue'
+import * as utils from '../../utils/utils'
+
 
 export default {
     state: {
@@ -51,7 +53,18 @@ export default {
          */
         hasPermissionForRoute: (state, getters) => (routeName) => {
             if(PagePermissions[routeName]){
-                return getters.hasPermission(PagePermissions[routeName])
+                let permissionRequirements = PagePermissions[routeName]
+                if(permissionRequirements instanceof Array){
+                    for(let i=0; i<permissionRequirements.length; i++){
+                        if(!getters.hasPermission(permissionRequirements[i])){
+                            return false
+                        }
+                    }
+                    return true
+                }
+                else {
+                    return getters.hasPermission(permissionRequirements)
+                }
             }
             else { //If a route doesn't have a permission requirement. The user should always get access.
                 return true
@@ -248,7 +261,7 @@ export default {
          */
         fetchPermissionsFunction(context, activeFunction){
             return new Promise((resolve, reject) => {
-                RequestHandler.getObjectsRequest(locations.ROLE + activeFunction.role + '/' + locations.PERMISSIONS)
+                context.dispatch('fetchPermissions', {ids: {id: activeFunction.role}})
                     .then(permissions => {
                         context.commit('setActivePermissions', permissions)
                         resolve(permissions)

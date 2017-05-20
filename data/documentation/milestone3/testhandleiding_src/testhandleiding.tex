@@ -1,0 +1,43 @@
+\documentclass{article}
+\usepackage[dvipnames, table]{xcolor}
+\usepackage[utf8]{inputenc}
+\usepackage{tabularx}
+\usepackage{ltablex}
+\usepackage{geometry}
+ \geometry{
+ a4paper,
+ total={170mm,257mm},
+ left=27mm,
+ top=20mm,
+ }
+\usepackage{pdfpages}
+\begin{document}
+\includepdf[pages={1}]{voorblad.pdf}
+
+\section{Lagen}
+\subsection{Presentatielaag}
+Voor de presentatielaag zijn er momenteel geen geautomatiseerde testen en wordt manueel testen toegepast.
+
+\subsection{Applicatie laag (controller/creator patterns)}
+De testen voor spring controllers voeren gesimuleerde HTTP requests uit. Hierbij testen ze of data kan worden opgevraagd, aangepast en verwijderd. Daarbij wordt ook getest of eventuele wijziggingen behouden blijven.
+
+\subsection{Domein laag}
+De tests in de domein laag beperken zich momenteel tot unit tests die het correct werken van de data-validatie (zoals nagaan of een chassisnummer het juiste formaat heeft) in de models controleren.
+
+\subsection{Persistence laag}
+De persistence laag wordt momenteel getest aan de hand van integratietests op de verschillende methodes van de DAO's. Er wordt momenteel getest of er succesvol data kan toegevoegd/opgevraagd/geupdate/verwijderd worden uit de database en of alle filters voor het opvragen van specifieke data correct werken. Er zijn nog geen tests die de consistentie van de database zelf nagaan.\\
+Voor deze (en andere database gerelateerde) tests wordt gebruik gemaakt van hsqldb om hibernate te kunnen testen met een in-memory database zodanig dat er geen externe database nodig is om de tests te kunnen uitvoeren. Dit maakt meteen ook het runnen van de databasegerelateerde tests veel sneller. \\
+
+Verder zijn er ook tests die de niet-null constraints in de database tabellen controleren en (voorlopig enkel voor de Vehicle klasse) tests die nagaan of de verwijzingen tussen klassen consistent zijn (bv. als een object verwijderd wordt uit de database, wordt hij dan ook verwijderd uit de collecties in andere klassen waarin dit object bijgehouden werd).\\
+
+Momenteel hebben deze laatste tests een @Ignore annotatie in de code omdat deze tests nog niet slagen en het om veiligheidsredenen niet mogelijk is builds te deployen met falende tests.
+
+\section{Uitvoeren van de tests}
+%nog aan te vullen want ik weet bijgod niet oe ge met de commandline werkt vo java code uit te voeren...
+Voor het testen van de backend wordt gebruik gemaakt van het Junit test framework. Met het volgende commando (uit te voeren vanuit de "`2016-2017-groep-05/app/backend/build"' folder) kan men alle tests uitvoeren. Indien men enkel de tests op de models, DAOs, controllers of database consistentie wenst uit te voeren geeft men dit mee als optie~:\\
+\begin{center}
+	\texttt{java -cp "`classes\textbackslash test;classes\textbackslash main;resources\textbackslash main;<Junit jar dependency location>;<hamcrest jar dependency location>;<hsqldb jar dependency location>;<hibernate jar dependency location>"' TestRunner [model, dao, controller, database]}
+\end{center}
+
+
+\end{document}

@@ -14,11 +14,12 @@ All of the fields for user input for the vehicle form
         </select-input-form-group>
         <text-input-form-group :object="vehicle" name="mileage" :text="$t('vehicle.mileage')" :rules="'required|numeric'"></text-input-form-group>
         <text-input-form-group :object="vehicle" name="year" :text="$t('vehicle.year')" :rules="'required|numeric'"></text-input-form-group>
-        <text-input-form-group :object="vehicle" name="value" :text="$t('vehicle.value')" :rules="'numeric'"></text-input-form-group>
+        <euro-input-form-group :object="vehicle" name="value" :text="$t('vehicle.value')" :rules="''"></euro-input-form-group>
     </div>
 </template>
 <script>
     import TextInputFormGroup from '../../assets/form/FormGroups/TextInputFormGroup.vue'
+    import EuroInputFormGroup from '../../assets/form/FormGroups/EuroInputFormGroup.vue'
     import SelectInputFormGroup from '../../assets/form/FormGroups/SelectInputFormGroup.vue'
     import clientTypes from '../../constants/clientTypes'
     import {mapGetters, mapActions} from 'vuex'
@@ -28,7 +29,7 @@ All of the fields for user input for the vehicle form
             vehicle: Object,
         },
         components: {
-            TextInputFormGroup, SelectInputFormGroup
+            EuroInputFormGroup, SelectInputFormGroup,TextInputFormGroup
         },
         created(){
             this.fetchVehicleTypes()

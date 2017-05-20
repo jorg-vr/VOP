@@ -1,5 +1,6 @@
 package model.billing;
 
+import model.insurance.Surety;
 import model.insurance.VehicleInsurance;
 
 import java.util.UUID;
@@ -15,10 +16,16 @@ public class VehicleInvoice {
     private UUID uuid;
 
     /**
-     * The VehicleInsurance of the invoice
+     * The Surety of the invoice
      */
-    private VehicleInsurance vehicleInsurance;
+    private Surety surety;
 
+    /**
+     * The proper way should be to have the vehicleInsurance itself as a property.
+     * Because the vehicleinsurance can be deleted and vehicleInvoice is an orphan of VehicleInsurance,
+     * vehicleinsurance can't be deleted or this object gets deleted, so we hold the id;
+     */
+    private UUID vehicleInsuranceID;
     /**
      * The total cost of a VehicleInsurance or the new calculated cost of a statement or correction
      */
@@ -43,7 +50,7 @@ public class VehicleInvoice {
     /**
      * the VIN-number
      */
-    private String chassisNumber;
+    private String vin;
 
     /**
      * The license plate
@@ -73,20 +80,37 @@ public class VehicleInvoice {
         this.uuid = uuid;
     }
 
+
     /**
-     * Gets the VehicleInsurance
-     * @return
+     * Gets the surety
+     * @return the surety
      */
-    public VehicleInsurance getVehicleInsurance() {
-        return vehicleInsurance;
+    public Surety getSurety() {
+        return surety;
     }
 
     /**
-     * Sets the VehicleInsurance
-     * @param vehicleInsurance the VehicleInsurance
+     * Sets the surety
+     * @param surety the surety
      */
-    public void setVehicleInsurance(VehicleInsurance vehicleInsurance) {
-        this.vehicleInsurance = vehicleInsurance;
+    public void setSurety(Surety surety) {
+        this.surety = surety;
+    }
+
+    /**
+     * Gets the VehicleInsuranceID
+     * @return the VehicleInsuranceID
+     */
+    public UUID getVehicleInsuranceID() {
+        return vehicleInsuranceID;
+    }
+
+    /**
+     * Sets the vehicleInsuranceID
+     * @param vehicleInsuranceID
+     */
+    public void setVehicleInsuranceID(UUID vehicleInsuranceID) {
+        this.vehicleInsuranceID = vehicleInsuranceID;
     }
 
     /**
@@ -158,16 +182,16 @@ public class VehicleInvoice {
      * Gets VIN-number
      * @return the VIN-number
      */
-    public String getChassisNumber() {
-        return chassisNumber;
+    public String getVin() {
+        return vin;
     }
 
     /**
      * Sets the VIN-number
-     * @param chassisNumber the VIN-number
+     * @param vin the VIN-number
      */
-    public void setChassisNumber(String chassisNumber) {
-        this.chassisNumber = chassisNumber;
+    public void setVin(String vin) {
+        this.vin = vin;
     }
 
     /**
@@ -184,5 +208,21 @@ public class VehicleInvoice {
      */
     public void setLicensePlate(String licensePlate) {
         this.licensePlate = licensePlate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || o instanceof VehicleInvoice) return false;
+
+        VehicleInvoice that = (VehicleInvoice) o;
+
+        return getUuid().equals(that.getUuid());
+
+    }
+
+    @Override
+    public int hashCode() {
+        return getUuid().hashCode();
     }
 }

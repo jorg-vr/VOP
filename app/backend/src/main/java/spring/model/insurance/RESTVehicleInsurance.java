@@ -14,6 +14,7 @@ import spring.exceptions.ErrorCode;
 import spring.exceptions.InvalidInputException;
 import spring.model.RESTAbstractModel;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,8 +29,8 @@ public class RESTVehicleInsurance extends RESTAbstractModel<VehicleInsurance> {
     private String vehicle;
     private String surety;
     private String contract;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
 
     private int franchise;
     private int insuredValue;
@@ -51,8 +52,8 @@ public class RESTVehicleInsurance extends RESTAbstractModel<VehicleInsurance> {
         vehicle = UUIDToNumberString(insurance.getVehicle().getUuid());
         surety = UUIDToNumberString(insurance.getSurety().getUuid());
         contract = UUIDToNumberString(insurance.getContract().getUuid());
-        startDate = insurance.getStartDate();
-        endDate = insurance.getEndDate();
+        startDate = insurance.getStartDate().toLocalDate();
+        endDate = insurance.getEndDate()==null?null:insurance.getEndDate().toLocalDate();
         franchise = insurance.getFranchise();
         insuredValue = insurance.getInsuredValue();
         cost = insurance.calculateCost();
@@ -67,8 +68,8 @@ public class RESTVehicleInsurance extends RESTAbstractModel<VehicleInsurance> {
     public VehicleInsurance translate(ControllerManager manager) throws UnAuthorizedException, DataAccessException, ConstraintViolationException {
         VehicleInsurance insurance = new VehicleInsurance();
         insurance.setUuid(toUUID(getId()));
-        insurance.setStartDate(startDate);
-        insurance.setEndDate(endDate);
+        insurance.setStartDate(startDate==null?null:startDate.atStartOfDay());
+        insurance.setEndDate(endDate==null?null:endDate.atStartOfDay());
         insurance.setFranchise(franchise);
         insurance.setInsuredValue(insuredValue);
 
@@ -126,19 +127,19 @@ public class RESTVehicleInsurance extends RESTAbstractModel<VehicleInsurance> {
         this.contract = contract;
     }
 
-    public LocalDateTime getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDateTime startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public LocalDateTime getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDateTime endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 

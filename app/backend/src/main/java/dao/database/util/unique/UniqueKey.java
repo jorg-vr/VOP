@@ -11,6 +11,7 @@ import java.lang.annotation.Target;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
+ * Annotation to check uniqueness before persisting in database
  * Created by sam on 4/18/17.
  */
 @Constraint(validatedBy={UniqueKeyValidator.class})

@@ -19,6 +19,7 @@ All of the fields for user input for the fleet form
     import actions from '../../constants/actions'
     import TextInputFormGroup from '../../assets/form/FormGroups/TextInputFormGroup.vue'
     import SelectInputFormGroup from '../../assets/form/FormGroups/SelectInputFormGroup.vue'
+    import clientTypes from '../../constants/clientTypes'
 
     export default {
         data() {
@@ -29,7 +30,7 @@ All of the fields for user input for the fleet form
         },
         created(){
             if(this.isAuthorizedForAllResources(resources.FLEET, actions.READ_ALL)){
-                this.fetchClients()
+                this.fetchClientsBy({filters: {type: clientTypes.CUSTOMER.type}})
                 if(this.object && !this.object.company){
                     this.showCompanySelect = true
                 }
@@ -52,7 +53,7 @@ All of the fields for user input for the fleet form
         },
         methods: {
             ...mapActions([
-                'fetchClients'
+                'fetchClientsBy'
             ])
         }
     }
