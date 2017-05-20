@@ -66,6 +66,7 @@ export default new Vuex.Store({
         insurance,
         role,
         correction,
+        invoice
     },
     state,
     getters,
