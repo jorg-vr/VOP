@@ -7,7 +7,6 @@ import controller.exceptions.UnAuthorizedException;
 import dao.exceptions.DataAccessException;
 import model.fleet.VehicleType;
 import org.springframework.web.bind.annotation.*;
-import spring.exceptions.InvalidInputException;
 import spring.model.AuthenticationToken;
 import spring.model.RESTSchema;
 import spring.model.RESTVehicleType;
@@ -42,10 +41,10 @@ public class RESTVehicleTypeController extends RESTAbstractController<RESTVehicl
 
     @RequestMapping(method = RequestMethod.GET)
     public RESTSchema<RESTVehicleType> getAllVehicleTypes(HttpServletRequest request,
-                                                         @RequestParam(required = false) Integer page,
-                                                         @RequestParam(required = false) Integer limit,
-                                                         @RequestHeader(value = "Authorization") String token,
-                                                         @RequestHeader(value = "Function") String function) throws UnAuthorizedException {
+                                                          @RequestParam(required = false) Integer page,
+                                                          @RequestParam(required = false) Integer limit,
+                                                          @RequestHeader(value = "Authorization") String token,
+                                                          @RequestHeader(value = "Function") String function) throws UnAuthorizedException, DataAccessException {
         UUID user = new AuthenticationToken(token).getAccountId();
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
             VehicleTypeController controller = manager.getVehicleTypeController();
@@ -53,10 +52,7 @@ public class RESTVehicleTypeController extends RESTAbstractController<RESTVehicl
                     .stream()
                     .map(RESTVehicleType::new)
                     .collect(Collectors.toList());
-
             return new RESTSchema<>(types, page, limit, request);
-        } catch (DataAccessException e) {
-            throw new InvalidInputException("Some parameters where invalid");
         }
     }
 

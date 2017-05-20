@@ -8,7 +8,6 @@ import controller.exceptions.UnAuthorizedException;
 import dao.exceptions.DataAccessException;
 import model.account.Role;
 import org.springframework.web.bind.annotation.*;
-import spring.exceptions.InvalidInputException;
 import spring.model.AuthenticationToken;
 import spring.model.RESTRole;
 import spring.model.RESTSchema;
@@ -55,7 +54,7 @@ public class RESTRoleController extends RESTAbstractController<RESTRole, Role> {
                                     @RequestParam(required = false) Integer page,
                                     @RequestParam(required = false) Integer limit,
                                     @RequestHeader(value = "Authorization") String token,
-                                    @RequestHeader(value = "Function") String function) throws UnAuthorizedException {
+                                    @RequestHeader(value = "Function") String function) throws UnAuthorizedException, DataAccessException {
         UUID user = new AuthenticationToken(token).getAccountId();
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
             RoleController controller = manager.getRoleController();
@@ -65,8 +64,6 @@ public class RESTRoleController extends RESTAbstractController<RESTRole, Role> {
                     .map(RESTRole::new)
                     .collect(Collectors.toList());
             return new RESTSchema<>(roles, page, limit, request);
-        } catch (DataAccessException e) {
-            throw new InvalidInputException("Something is wrong with the database");
         }
     }
 }
