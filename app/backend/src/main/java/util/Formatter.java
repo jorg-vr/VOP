@@ -7,7 +7,7 @@ public class Formatter {
 
     /**
      * Create a string from the amount in euro
-     * @param amount the amount in eurocents
+     * @param amount the amount in euro cents
      * @return e.g 150 -> 1,50€
      */
     public static String euroFormat(int amount) {

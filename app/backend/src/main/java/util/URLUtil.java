@@ -5,9 +5,9 @@ import javax.servlet.http.HttpServletRequest;
 public class URLUtil {
 
     /**
-     * @param request
+     * @param request the request from which the relative url should be retrieved
      * @return if there is a query: format = /x?a=b&c=d
-     *         if there is no query: format = /x
+     * if there is no query: format = /x
      */
     public static String getRelativeURL(HttpServletRequest request) {
         String url = request.getRequestURI();
@@ -19,9 +19,10 @@ public class URLUtil {
 
     /**
      * Replaces the value of the query parameter with newValue
+     *
      * @param relativeURL string representation of relative url that contains the paramter
-     * @param parameter parameter whose value should be changed
-     * @param newValue the new value of the parameter
+     * @param parameter   parameter whose value should be changed
+     * @param newValue    the new value of the parameter
      * @return string with updated value of parameter
      */
     public static String replace(String relativeURL, String parameter, String newValue) {
