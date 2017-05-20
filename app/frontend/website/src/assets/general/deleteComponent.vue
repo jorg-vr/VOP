@@ -1,0 +1,78 @@
+<template>
+    <div class="delete-component">
+        <button-edit v-if="edit" :resource="resource" :params="par" ></button-edit>
+        <button-remove v-if="remove" :resource="resource"  @click="tdshowModal()"></button-remove>
+        <!-- Confirmation Modal -->
+        <confirm-modal v-show="showModal"
+                       @cancelModal="showModal=false"
+                       @confirmModal="confirmAction()"
+                       @close="showModal=false "
+                       :modalHeaderTitle=" $t('modal.titleConfirm') | capitalize"
+                       :modalBodyText="$t('modal.textConfirm') | capitalize"
+                       :confirmButtonText="$t('modal.button1') | capitalize "
+                       :cancelButtonText="$t('modal.button2') | capitalize ">
+        </confirm-modal>
+
+    </div>
+</template>
+<script>
+    import {mapActions, mapGetters} from 'vuex'
+    import buttonEdit from '../buttons/buttonEdit.vue'
+    import buttonRemove from '../buttons/buttonRemove.vue'
+    import confirmModal from './modal.vue'
+
+    export default {
+        data() {
+            return {
+                showModal: false
+            }
+        },
+        props: {
+            id:String,
+            resource: Object,
+            params:Object,//for routing
+            ids: Object, //for api
+            back:Object, //route used after delete
+            edit: {
+                Boolean,
+                default: true
+            },
+            remove: {
+                Boolean,
+                default: true
+            }
+        },
+        computed:{
+            //not adviced to edit props
+            // so make a computed value to edit
+            par(){
+                let par=this.params?this.params:{};
+                par.id=this.id;
+                return par;
+            }
+        },
+        components: {
+            buttonRemove,
+            buttonEdit,
+            confirmModal
+        },
+        methods: {
+            confirmAction: function(){
+                // hide modal
+                this.showModal=false
+                // remove object
+                this.$store.dispatch('delete' + this.resource.name.capitalize(), {id: this.id, ids: this.ids}).then(()=>
+                    this.$router.push(this.back?this.back:{name:this.resource.name.plural()})
+                )
+            },
+            tdshowModal: function() {
+                this.showModal = true
+            }
+        }
+    }
+</script>
+<style>
+    .delete-component{
+        display: inline;
+    }
+</style>

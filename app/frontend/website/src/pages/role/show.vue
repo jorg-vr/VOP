@@ -2,7 +2,9 @@
 <template>
     <div v-if="role">
         <div class="page-header">
-            <h1>{{ role.name | capitalize }}</h1>
+            <h1>{{ role.name | capitalize }}
+                <delete-component  :resource="resource" :id="role.id" ></delete-component>
+            </h1>
         </div>
         <div class="show-role">
             <h2>{{$t('role.permissions') | capitalize}}</h2>
@@ -24,18 +26,21 @@
     import {createPermissionsMap} from './utils'
     import {mapGetters, mapActions} from 'vuex'
     import buttonBack from '../../assets/buttons/buttonBack.vue'
+    import deleteComponent from '../../assets/general/deleteComponent.vue'
+    import resources from '../../constants/resources'
 
     export default {
         data(){
             return {
                 permissionsMap: {},
+                resource:resources.ROLE
             }
         },
         props: {
             id: String
         },
         components: {
-            buttonBack
+            buttonBack,deleteComponent
         },
         created(){
             this.fetchRole({id: this.id});
