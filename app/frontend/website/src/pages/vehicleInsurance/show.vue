@@ -7,7 +7,9 @@
 <template>
     <div>
          <div class="page-header">
-             <h1>{{$t("vehicle_insurance.vehicle_insurance") | capitalize }}  </h1>
+             <h1>{{$t("vehicle_insurance.vehicle_insurance") | capitalize }}
+                 <delete-component v-if="insurance" :resource="resourceVI" :id="insurance.id" :remove="false" :params="params"></delete-component>
+             </h1>
              <h4 v-if="insurance" >{{showDate(insurance.startDate)}} - {{showDate(insurance.endDate)}}</h4>
         </div>
         <div class="col-md-8">
@@ -101,16 +103,20 @@
     import listComponent from "../../assets/general/listComponent.vue"
     import resources from '../../constants/resources'
     import buttonAction from '../../assets/buttons/buttonAction.vue'
+    import deleteComponent from '../../assets/general/deleteComponent.vue'
 
     export default {
         data(){
             return{
                 resource: resources.CONDITION,
-                values:[]
+                resourceVI: resources.INSURANCE,
+                values:[],
+                params:{contractId:this.contractId}
+
             }
         },
         components: {
-            buttonBack,listComponent, buttonAction
+            buttonBack,listComponent, buttonAction,deleteComponent
         },
         props: {
             id: String,
