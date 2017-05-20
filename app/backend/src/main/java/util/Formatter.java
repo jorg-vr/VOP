@@ -7,10 +7,12 @@ public class Formatter {
 
     /**
      * Create a string from the amount in euro
-     * @param amount the amount in euro cents
+     *
+     * @param money the amount in euro cents
      * @return e.g 150 -> 1,50€
      */
-    public static String euroFormat(int amount) {
+    public static String euroFormat(int money) {
+        int amount = money;
         String sign = "";
         if (amount < 0) {
             sign = "-";

@@ -70,7 +70,8 @@ public class VehicleInsuranceController extends AbstractController<VehicleInsura
     }
 
 
-    public VehicleInsurance create(VehicleInsurance vehicleInsurance) throws DataAccessException, UnAuthorizedException, ConstraintViolationException {
+    public VehicleInsurance create(VehicleInsurance insurance) throws DataAccessException, UnAuthorizedException, ConstraintViolationException {
+        VehicleInsurance vehicleInsurance = insurance;
         LocalDate date = vehicleInsurance.getStartDate().toLocalDate();
         Invoice currentStatement = null;
         try {
@@ -105,7 +106,8 @@ public class VehicleInsuranceController extends AbstractController<VehicleInsura
         return super.create(vehicleInsurance);
     }
 
-    public VehicleInsurance update(VehicleInsurance vehicleInsurance, LocalDate date) throws DataAccessException, UnAuthorizedException, ObjectNotFoundException, ConstraintViolationException {
+    public VehicleInsurance update(VehicleInsurance insurance, LocalDate date) throws DataAccessException, UnAuthorizedException, ObjectNotFoundException, ConstraintViolationException {
+        VehicleInsurance vehicleInsurance = insurance;
         Invoice currentStatement = manager.getInvoiceDao().get(vehicleInsurance.getVehicle().getFleet().getOwner().getCurrentStatement().getUuid());
         System.out.println("CurrentStatement: " + currentStatement);
         System.out.println("Date: " + date);
