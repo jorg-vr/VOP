@@ -28,6 +28,14 @@ import java.util.stream.Collectors;
 
 import static util.UUIDUtil.toUUID;
 
+/**
+ * Requests that are implemented in this class
+ * 1) GET /contracts/{contractId}/insurances
+ * 2) GET /contracts/{contractId}/insurances/{id}
+ * 3) POST /contracts/{contractId}/insurances
+ * 4) PUT /contracts/{contractId}/insurances/{id}
+ * 5) DELETE /contracts/{contractId}/insurances/{id}
+ */
 @RestController
 @RequestMapping("${path.contracts}/{id}/${path.vehicle_insurances}")
 public class RESTVehicleInsuranceController {

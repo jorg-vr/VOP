@@ -20,6 +20,12 @@ import java.util.stream.Collectors;
 import static util.UUIDUtil.toUUID;
 
 /**
+ * Requests that are implemented in this class:
+ * 1) GET /vehicles/{vehicleId}/logs/
+ * 2) GET /vehicles/{vehicleId}/logs/{id}
+ * 3) GET /fleets/{fleetId}/logs/
+ * 4) GET /fleets/{fleetId}/logs/{id}
+ *
  * @author Billie Devolder
  */
 @RestController

@@ -23,7 +23,12 @@ import java.util.stream.Collectors;
 import static util.UUIDUtil.toUUID;
 
 /**
- * Created by Billie Devolder on 7/05/2017.
+ * Requests that are implemented in this class
+ * 1) GET /special-conditions
+ * 2) GET /special-conditions/{id}
+ * 3) POST /special-conditions
+ * 4) PUT /special-conditions/{id}
+ * 5) DELETE /special-conditions/{id}
  */
 @RestController
 @RequestMapping("/${path.special_conditions}")

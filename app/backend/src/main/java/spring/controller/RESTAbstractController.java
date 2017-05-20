@@ -24,6 +24,8 @@ import static util.UUIDUtil.toUUID;
  * and that it calls the appropriate method of the controller corresponding with the Model M.
  * Authentication and exception handling is also implemented in the methods.
  *
+ * There is no generic implementation for GET all requests because these requests have filters.
+ *
  * @param <R> A subclass of RESTAbstractModel
  * @param <M> The model that corresponds to the RESTModel of type R
  */

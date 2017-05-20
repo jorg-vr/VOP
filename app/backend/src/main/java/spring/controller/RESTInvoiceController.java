@@ -35,7 +35,7 @@ import static util.UUIDUtil.toUUID;
  * 2) GET /companies/{id}/invoices/{id}
  * 3) GET /companies/{id}/invoices/{id}/pdf
  * 4) GET /companies/{id}/invoices/current
- * 5) GEt /companies/{id}/invoices/current/pdf
+ * 5) GET /companies/{id}/invoices/current/pdf
  */
 @RestController
 @RequestMapping("/${path.companies}/{companyId}/${path.invoices}")
