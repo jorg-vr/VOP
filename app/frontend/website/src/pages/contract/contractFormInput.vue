@@ -131,7 +131,6 @@ All of the fields for contract input for the contract form
                 'fleets',
                 'suretyData',
                 'suretyDetail',
-                'contractId',
                 'sureties',
                 'vehicles',
                 'filteredcontractInsurances',
@@ -227,13 +226,13 @@ All of the fields for contract input for the contract form
                 this.show = true
                 this.setLoading({loading: true })
                 // get all insurances from the contract with contract Id
-                this.fetchInsurances({ids:{contract: this.contractId}}).then(() => {
+                this.fetchInsurances({ids:{contract: this.object.id}}).then(() => {
                     this.setLoading({loading: false })
                     this.show1=true
                 })
                 // get all sureties for the chose insuranceCompany
                 // ERROR FIX
-                this.fetchContract({id: this.contractId}).then(contract => {
+                this.fetchContract({id: this.object.id}).then(contract => {
                     this.fetchSureties({ids:{company: contract.insuranceCompany}})
                     this.show2=true
                 })

@@ -8,6 +8,7 @@
         <div class="page-header" v-if="contract">
             <h1 >
                 {{$t("contract.contract") | capitalize }} {{contract.customerName}} - {{contract.insuranceCompanyName}}
+                <delete-component  :resource="resourceContract" :id="contract.id" ></delete-component> </h1>
             </h1>
             <h4 >{{contract.startDate.showableDate()}} - {{contract.endDate.showableDate()}}</h4>
             <h4> {{$t('contract.totalCostEuro') | capitalize }}: {{contract.totalCostEuro}}</h4>
@@ -81,12 +82,14 @@
     import buttonRemove from '../../assets/buttons/buttonRemove.vue'
     import confirmModal from '../../assets/general/modal.vue'
     import {SubmitFormHandler} from '../../assets/form/SubmitFormHandler'
+    import deleteComponent from '../../assets/general/deleteComponent.vue'
 
     export default {
         data(){
             return {
                 resource1: resources.INSURANCE,
                 resource2: resources.SURETY,
+                resourceContract:resources.CONTRACT,
                 show1: false,
                 show2: false,
                 ids:{contract:this.id},
@@ -97,7 +100,7 @@
         },
         components: {
             buttonBack,buttonAdd,listComponent,buttonLink,
-            buttonEdit,buttonRemove,confirmModal
+            buttonEdit,buttonRemove,confirmModal,deleteComponent
         },
         props: {
             id: String
