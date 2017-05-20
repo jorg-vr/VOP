@@ -7,6 +7,7 @@ import model.insurance.SuretyType;
  * Created by jorg on 5/17/17.
  */
 public class RESTVehicleInvoice {
+
     /**
      * The total cost of a VehicleInsurance or the new calculated cost of a statement or correction
      */

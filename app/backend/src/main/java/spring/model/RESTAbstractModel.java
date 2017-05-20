@@ -24,17 +24,15 @@ public abstract class RESTAbstractModel<T extends EditableObject> {
     }
 
     /**
-     * @param uuid uuid of the model that the RESTModel is based on, it will be translated to a string in the constructor
+     * @param uuid    uuid of the model that the RESTModel is based on, it will be translated to a string in the constructor
      * @param baseUrl the base URL of the RESTModel.
-     *            Appending the id to the url will be handled in the constructor, so it should NOT be /vehicles/123 for example but /vehicles.
-     *            If url does not start with '/' it will be added
+     *                Appending the id to the url will be handled in the constructor, so it should NOT be /vehicles/123 for example but /vehicles.
+     *                If url does not start with '/' it will be added
      */
     public RESTAbstractModel(UUID uuid, String baseUrl) {
         this.id = UUIDUtil.UUIDToNumberString(uuid);
-        //this.createdAt = createdAt.getEditTime(); TODO milestone3
-        //this.lastUpdated = lastUpdated.getEditTime(); TODO milestone3
         String url = baseUrl;
-        if (! url.startsWith("/")) {
+        if (!url.startsWith("/")) {
             url = "/" + url;
         }
         this.url = url + "/" + id;
@@ -42,6 +40,7 @@ public abstract class RESTAbstractModel<T extends EditableObject> {
 
     /**
      * Translate a RESTModel to a Model
+     *
      * @return the model corresponding to te RESTModel
      * @throws UnAuthorizedException the function is not authorized to retrieve certain objects.
      */
