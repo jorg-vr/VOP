@@ -35,7 +35,6 @@ public class InvoicePdf extends Pdf {
     private Invoice invoice;
 
     /**
-     *
      * @param invoice for which the pdf should be created
      * @throws PdfException pdf could not be created
      */
@@ -62,6 +61,9 @@ public class InvoicePdf extends Pdf {
             e.printStackTrace();
             throw new DocumentException();
         }
+
+        document.add(new Paragraph(invoice.getType().getDutchTranslation(), new Font(Font.FontFamily.TIMES_ROMAN, 30,
+                Font.NORMAL)));
 
         Company payer = invoice.getPayer();
         Address address = payer.getAddress();
@@ -120,8 +122,12 @@ public class InvoicePdf extends Pdf {
         Document document = getDocument();
         document.newPage();
 
+        ArrayList<VehicleInvoice> invoiceList = new ArrayList<>(invoice.getVehicleInvoices());
+
         Paragraph paragraph = new Paragraph("Specificatie verzekerde voertuigen", largeBold);
         document.add(paragraph);
+
+        document.add(new Paragraph("Aantal: " + invoiceList.size()));
 
         document.add(Chunk.NEWLINE);
 
@@ -134,9 +140,11 @@ public class InvoicePdf extends Pdf {
             table.addCell(new PdfPCell(new Paragraph(title)));
         }
 
-        ArrayList<VehicleInvoice> invoiceList = new ArrayList<>(invoice.getVehicleInvoices());
-        Collections.sort(invoiceList, (a, b) -> b.getLicensePlate().compareTo(a.getLicensePlate()));
-        VehicleInvoice last = invoiceList.get(invoiceList.size() - 1);
+        Collections.sort(invoiceList, (a, b) -> a.getLicensePlate().compareTo(b.getLicensePlate()));
+        VehicleInvoice last = null;
+        if (invoiceList.size() > 0) {
+            last = invoiceList.get(invoiceList.size() - 1);
+        }
         String previousLicensePlate = null;
         for (VehicleInvoice vehicleInvoice : invoiceList) {
 
@@ -159,7 +167,7 @@ public class InvoicePdf extends Pdf {
             previousLicensePlate = licencePlate;
 
 
-            table.addCell(new PdfPCell(new Paragraph(vehicleInvoice.getVehicleInsurance().getSurety().getSuretyType().getDutchTranslation() + "")));
+            table.addCell(new PdfPCell(new Paragraph(vehicleInvoice.getSurety().getSuretyType().getDutchTranslation() + "")));
 
             int cost = vehicleInvoice.getTotalCost();
             int tax = vehicleInvoice.getTotalTax();

@@ -1,23 +1,20 @@
 package pdf;
 
-import model.fleet.Vehicle;
-import model.fleet.VehicleType;
-import model.identity.Address;
-import model.identity.Customer;
-import model.identity.InsuranceCompany;
-import model.identity.Periodicity;
-import model.insurance.Contract;
-import model.insurance.VehicleInsurance;
+import dao.database.ProductionProvider;
+import dao.exceptions.DataAccessException;
+import dao.interfaces.DAOManager;
+import dao.interfaces.InvoiceDAO;
+import model.billing.Invoice;
 
 import java.io.IOException;
-import java.time.LocalDate;
 
 /**
  * Created by Billie Devolder on 15/05/2017.
  */
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws DataAccessException {
+        /*
         VehicleInsurance vehicleInsurance = new VehicleInsurance();
         Contract contract = new Contract();
         InsuranceCompany insuranceCompany = new InsuranceCompany();
@@ -47,37 +44,21 @@ public class Main {
             greenCard.writeToFile("green.pdf");
         } catch (IOException e) {
             e.printStackTrace();
+        }*/
+        ProductionProvider.initializeProvider("localtest");
+        try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()) {
+            InvoiceDAO dao = manager.getInvoiceDao();
+            for (Invoice invoice : dao.listFiltered()) {
+                try {
+                    InvoicePdf invoicePdf = new InvoicePdf(invoice);
+                    invoicePdf.writeToFile("invoice.pdf");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+            }
+            System.out.println("DONE");
         }
-        /*
-        Invoice invoice = new Invoice();
-        invoice.setStartDate(LocalDateTime.now());
-        invoice.setEndDate(LocalDateTime.now().plusYears(1));
-        Customer customer = new Customer();
-        customer.setName("Freddy en dochters");
-        customer.setPaymentPeriod(Periodicity.MONTHLY);
-        customer.setAddress(new Address("street", "12", "town", "postalCode", "country"));
-        invoice.setPayer(customer);
-        Collection<VehicleInvoice> vehicleInvoices = new ArrayList<>();
-        for (int i = 0; i < 1000; i++) {
-            VehicleInvoice vehicleInvoice = new VehicleInvoice();
-            vehicleInvoice.setTotalCost(i * 51);
-            vehicleInvoice.setTotalTax(i * 19);
-            VehicleInsurance insurance = new VehicleInsurance();
-            FlatSurety surety = new FlatSurety();
-            surety.setSuretyType(SuretyType.values()[i % SuretyType.values().length]);
-            insurance.setSurety(surety);
-            vehicleInvoice.setVehicleInsurance(insurance);
-            vehicleInvoice.setLicensePlate("ABC-" + i / 4);
-            vehicleInvoices.add(vehicleInvoice);
-        }
-        invoice.setVehicleInvoices(vehicleInvoices);
 
-        try {
-            InvoicePdf invoicePdf = new InvoicePdf(invoice);
-            invoicePdf.writeToFile("invoice.pdf");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        */
     }
 }
