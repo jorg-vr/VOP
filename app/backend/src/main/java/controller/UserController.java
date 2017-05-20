@@ -18,8 +18,11 @@ import java.util.Collection;
  */
 public class UserController extends AbstractController<User> {
 
+    private UserDAO dao;
+
     public UserController(Function function, DAOManager manager) {
         super(manager, manager.getUserDAO(), Resource.USER, function);
+        this.dao = manager.getUserDAO();
     }
 
     @Override
@@ -38,17 +41,14 @@ public class UserController extends AbstractController<User> {
     }
 
     /**
-     *
-     * @param email Only returns users for which the email contains the pattern email
+     * @param email     Only returns users for which the email contains the pattern email
      * @param firstName Only returns users for which the firstName contains the pattern firstName
-     * @param lastName Only returns users for which the lastName contains the pattern lastName
+     * @param lastName  Only returns users for which the lastName contains the pattern lastName
      * @return all users, filtered on the arguments
      * @throws DataAccessException
      * @throws UnAuthorizedException
      */
     public Collection<User> getFiltered(String email, String firstName, String lastName) throws DataAccessException, UnAuthorizedException {
-        UserDAO dao = (UserDAO) getDao();
-
         return getAll(
                 dao.byEmail(email),
                 dao.byFirstName(firstName),

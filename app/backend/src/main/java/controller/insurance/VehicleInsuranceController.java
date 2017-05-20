@@ -29,10 +29,12 @@ import java.util.stream.Collectors;
 public class VehicleInsuranceController extends AbstractController<VehicleInsurance> {
 
     private final DAOManager manager;
+    private VehicleInsuranceDAO dao;
 
     public VehicleInsuranceController(Function function, DAOManager manager) {
         super(manager, manager.getVehicleInsuranceDao(), Resource.INSURANCE, function);
         this.manager = manager;
+        this.dao = manager.getVehicleInsuranceDao();
     }
 
 
@@ -68,7 +70,7 @@ public class VehicleInsuranceController extends AbstractController<VehicleInsura
     }
 
 
-    public VehicleInsurance create(VehicleInsurance vehicleInsurance) throws DataAccessException, UnAuthorizedException, ConstraintViolationException{
+    public VehicleInsurance create(VehicleInsurance vehicleInsurance) throws DataAccessException, UnAuthorizedException, ConstraintViolationException {
         LocalDate date = vehicleInsurance.getStartDate().toLocalDate();
         Invoice currentStatement = null;
         try {
@@ -142,7 +144,7 @@ public class VehicleInsuranceController extends AbstractController<VehicleInsura
         }
     }
 
-    private VehicleInvoice createVehicleInvoice(VehicleInsurance insurance, int tax, int cost, int months, int days) throws DataAccessException{
+    private VehicleInvoice createVehicleInvoice(VehicleInsurance insurance, int tax, int cost, int months, int days) throws DataAccessException {
         VehicleInvoice vehicleInvoice = new VehicleInvoice();
         LocalDate now = LocalDate.now();
         vehicleInvoice.setInsuredValue(insurance.getInsuredValue());
@@ -179,7 +181,7 @@ public class VehicleInsuranceController extends AbstractController<VehicleInsura
     }
 
     public Collection<VehicleInsurance> getBy(Vehicle vehicle) throws DataAccessException, UnAuthorizedException {
-        return vehicle == null ? getAll() : getAll(((VehicleInsuranceDAO) getDao()).byVehicle(vehicle));
+        return vehicle == null ? getAll() : getAll(dao.byVehicle(vehicle));
     }
 
     public Collection<VehicleInsurance> getFiltered(Contract contract, Vehicle vehicle) throws DataAccessException, UnAuthorizedException {

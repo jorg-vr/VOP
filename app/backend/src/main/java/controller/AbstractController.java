@@ -26,7 +26,7 @@ import static model.account.Action.*;
  * 1) Logging
  * 2) Authorization
  * <p>
- * Currently there is a generic implementation for the get, update, create and archive methods.
+ * Currently there is a generic implementation for the get all , get id, update, create and archive methods.
  */
 public abstract class AbstractController<T extends EditableObject> {
 
@@ -50,12 +50,12 @@ public abstract class AbstractController<T extends EditableObject> {
     }
 
     /**
-     * This gets called when the role corresponding with the function has the READ/UPDATE/DELETE/CREATE_MINE action of the resource.
+     * This gets called when the role corresponding with the function has the READ_MINE/UPDATE_MINE/DELETE_MINE/CREATE_MINE action of the resource.
      * It should determine whether the function is the "owner" of the object.
      *
      * @param t        object that should be checked
      * @param function the user field of function will be used to determine if the user is the owner
-     * @return true if function is the "owner" of the object
+     * @return true if the user is authorized to perform an action on the object if it has *_MINE rights.
      */
     public abstract boolean isOwner(T t, Function function);
 
@@ -78,13 +78,10 @@ public abstract class AbstractController<T extends EditableObject> {
         } else {
             throw new UnAuthorizedException();
         }
-
     }
 
     /**
      * Attempt to get all object of type T that pass the filters.
-     * <p>
-     * This method should become protected in the near future.
      *
      * @param filters filters where the objects should be filtered
      * @return Object of type T corresponding with the uuid
@@ -199,7 +196,7 @@ public abstract class AbstractController<T extends EditableObject> {
         }
     }
 
-    public DAO<T> getDao() {
+    protected DAO<T> getDao() {
         return dao;
     }
 
