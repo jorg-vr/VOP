@@ -107,7 +107,10 @@ All of the fields for user input for the user form
                         .then(role => {
                                 this.updatePermissions({roleId: role.id, permissions}).then(() => {
                                     resolve()
-                                }, () => reject())
+                                }, () => {
+                                    reject()
+                                    this.$router.push({name: this.back.name, params: this.back.params})
+                                })
                             },
                             response => {
                                 console.log(response)
