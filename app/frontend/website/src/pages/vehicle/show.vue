@@ -70,7 +70,7 @@
                      :route="{name: 'vehicle_logs', params: {id: this.id}}">
             {{$t('log.log') | capitalize}}
         </button-link>
-        <button-back v-if="vehicle.fleet" :route="{name: 'fleet', params: {id: vehicle.fleet}}"></button-back>
+        <button-back v-if="vehicle.fleet" :route="{name: 'fleet', params: {id: vehicle.fleet}}" buttonClass="btn btn-default pull-left vehicle-back"></button-back>
         <button-back v-else :route="{name: 'fleets'}"></button-back>
     </div>
 </template>
@@ -93,7 +93,7 @@
             }
         },
         components: {
-            buttonBack,listComponent, buttonLink,buttonEdit,buttonRemove,commissions
+            buttonBack, listComponent, buttonLink,buttonEdit,buttonRemove,commissions
         },
         props: {
             id: String
@@ -145,5 +145,8 @@
 <style>
     #log {
         margin-right: 10px;
+    }
+    .vehicle-back {
+        margin-top: 0;
     }
 </style>
