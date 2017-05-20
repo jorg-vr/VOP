@@ -41,10 +41,11 @@ TODO: document this page.
         data() {
             return {
                 credentials:{
-                    login:'',
-                    password:''
+                    login:'patrick.oostvogels@solvas.be',
+                    password:'1h8xE660mn'
                 },
-                showError: false
+                showError: false,
+                loading: false
             }
         },
         components: {
@@ -53,7 +54,6 @@ TODO: document this page.
         computed: {
             ...mapGetters([
                 'nextRoute',
-                'loading'
             ]),
             buttonClass() {
                 return this.loading ? 'loading' : ''
@@ -69,7 +69,7 @@ TODO: document this page.
             confirmLogin:function(){
                 this.showError=false;
                 if(!this.loading){
-                    this.setLoading({loading: true})
+                    this.loading = true
                     // Get webtoken and account information
                     this.authenticate(this.credentials).then(() => {
                         // Succes, return to home
@@ -79,10 +79,10 @@ TODO: document this page.
                         else {
                             this.$router.push({name: 'homeClient'})
                         }
-                        this.setLoading({loading: false})
+                        this.loading = false
                     }, () => {
                         this.showError=true
-                        this.setLoading({loading: false})
+                        this.loading = false
                     })
                 }
             }

@@ -126,7 +126,6 @@ All of the fields for insurance input for the insurance form
                 'fleets',
                 'suretyData',
                 'suretyDetail',
-                'contractId',
                 'sureties',
                 'vehicles',
                 'conditions',

@@ -6,32 +6,29 @@
 -->
 <template>
     <div>
-       <div v-if="surety" class="page-header">
-           <h1 v-if="surety.flat">{{$t('surety.flatAdjective') | capitalize }} {{$t("surety.surety")}} </h1>
-           <h1 v-else>{{$t("surety.surety") | capitalize }} </h1>
+        <div v-if="surety" class="page-header">
+            <h1 v-if="surety.flat">{{$t('surety.flatAdjective') | capitalize }} {{$t("surety.surety")}} </h1>
+            <h1 v-else>{{$t("surety.surety") | capitalize }} </h1>
 
         </div>
-    <div class="col-md-8">
-        <h4>{{$t('suretyTypes.'+surety.suretyType) | capitalize }}</h4>
-        <h4>{{surety==true ? $t('surety.premium'): $t('surety.minPremium') | capitalize }}:  {{surety.premiumEuro}}</h4>
-        <h4 v-if="surety.flat==false">{{$t('surety.premiumPercentage') | capitalize }}: {{(surety.premiumPercentage*100).toFixed(2)}} %</h4>
-    </table>
+        <div class="col-md-8">
+            <h4>{{$t('suretyTypes.'+surety.suretyType) | capitalize }}</h4>
+            <h4>{{surety==true ? $t('surety.premium'): $t('surety.minPremium') | capitalize }}:  {{surety.premiumEuro}}</h4>
+            <h4 v-if="surety.flat==false">{{$t('surety.premiumPercentage') | capitalize }}: {{(surety.premiumPercentage*100).toFixed(2)}} %</h4>
 
-    <!-- special conditions for the insurance surety -->
-        <div class="page-header">
-            <!-- <button-add :resource="resource"></button-add>   -->
-            <h2>{{$t("surety.coverage") | capitalize }}</h2>
+            <!-- special conditions for the insurance surety -->
+            <div class="page-header">
+                <!-- <button-add :resource="resource"></button-add>   -->
+                <h2>{{$t("surety.coverage") | capitalize }}</h2>
+            </div>
+
+            <list-component :resource="resource" :listObject="listObject" :remove="false" :edit="false">
+            </list-component>
+
+            <!-- Go back to overview contract page -->
+            <button-back :route="{name: 'contracts', params: {id: contractId}}"></button-back>
         </div>
-
-    <list-component :resource="resource" :listObject="listObject" :remove="false" :edit="false">
-    </list-component>
-
-    <!-- Go back to overview contract page -->
-    <button-back :route="{name: 'contracts'}"></button-back>
-
-
     </div>
-</div>
 </template>
 <script>
     import {mapGetters, mapActions,mapMutations} from 'vuex'
@@ -53,39 +50,36 @@
         },
         props: {
             id: String,
-            //contractId: String
+            contractId: String
         },
         created(){
-           let suretyId = this.id
-           this.fetchSurety({id:suretyId}).then(surety => {
-               centsToEuroObject(this.surety,"premium");
-                this.values = this.surety.specialConditions
-           })
-       },
-       computed: {
-        ...mapGetters([
-            'contractId',
-            'surety',
-            'conditions'
+            this.fetchSurety({id: this.id}).then(surety => {
+                centsToEuroObject(surety,"premium");
+            })
+        },
+        computed: {
+            ...mapGetters([
+                'surety',
+                'conditions'
             ]),
-        listObject() {
-                var listObj = {};
+            listObject() {
+                let listObj = {};
                 listObj.headers = ['referenceCode','title'];
-                listObj.values = this.values
+                listObj.values = this.surety.specialConditions
                 return listObj;
-        }
-    },
-    methods: {
-        ...mapActions([
-            'fetchSurety',
+            }
+        },
+        methods: {
+            ...mapActions([
+                'fetchSurety',
             ]),
-        ...mapMutations([
-            'setConditions'
+            ...mapMutations([
+                'setConditions'
             ]),
-        showDate: function (date) {
-            var d=new Date(date)
-            return d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear()
-        }
-    },
-}
+            showDate: function (date) {
+                var d=new Date(date)
+                return d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear()
+            }
+        },
+    }
 </script>
