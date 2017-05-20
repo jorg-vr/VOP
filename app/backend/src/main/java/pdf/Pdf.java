@@ -9,13 +9,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
- * Created by Billie Devolder on 15/05/2017.
+ * An abstract class representation of a pdf
  */
 public abstract class Pdf {
 
     private Document document;
     private ByteArrayOutputStream baos;
-
 
     protected void generatePdf() throws PdfException {
         try {
@@ -34,6 +33,7 @@ public abstract class Pdf {
 
     /**
      * Initialize the creation of the pdf
+     *
      * @throws DocumentException
      */
     private void init() throws DocumentException {

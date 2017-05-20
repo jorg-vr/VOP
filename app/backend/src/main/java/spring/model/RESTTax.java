@@ -8,7 +8,6 @@ import model.insurance.SuretyType;
 public class RESTTax {
 
     private SuretyType suretyType;
-
     private Double tax;
 
     public RESTTax() {

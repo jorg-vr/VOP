@@ -14,7 +14,7 @@
                         {{value[header]}}
                     </td>
                     <td class="stretch">
-                        <button-edit v-if="edit" :resource="resource" :params="{id:value.id}" ></button-edit>
+                        <button-edit v-if="edit" :resource="resource" :params="getRouteParams(value.id)"></button-edit>
                         <button-remove v-if="remove" :resource="resource"  @click="tdshowModal(value.id)"></button-remove>
                     </td>
                 </tr>
@@ -107,7 +107,7 @@ tr.list-tr {
         methods: {
             tdclick: function(id) {
                 if(this.clickable){
-                    this.$router.push({name: this.resource.name, params: {id:id}});
+                    this.$router.push({name: this.resource.name, params: this.getRouteParams(id)});
                 }
             },
             confirmAction: function(){
@@ -119,6 +119,21 @@ tr.list-tr {
             tdshowModal: function(id) {
                 this.showModal = true
                 this.selectedvalue=id
+            },
+
+            /**
+             * Get the params for the show and edit route of the object with the given ID
+             * @param id the ID of the object
+             * @returns {{id}} An object with route parameters
+             */
+            getRouteParams(id){
+                let params = {id}
+                for (let key in this.ids) {
+                    if (this.ids.hasOwnProperty(key)) {
+                        params[key] = this.ids[key]
+                    }
+                }
+                return params
             }
         }
     }

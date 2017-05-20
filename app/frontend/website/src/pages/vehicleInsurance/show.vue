@@ -7,7 +7,10 @@
 <template>
     <div>
          <div class="page-header">
-             <h1>{{$t("vehicle_insurance.vehicle_insurance") | capitalize }}  </h1>
+             <h1>{{$t("vehicle_insurance.vehicle_insurance") | capitalize }}
+                 <delete-component v-if="insurance" :resource="resourceVI" :id="insurance.id" :remove="false" :params="params"></delete-component>
+                 <button-remove :resource="resourceVI"  @click="tdshowModal(insurance.id)"></button-remove>
+             </h1>
              <h4 v-if="insurance" >{{showDate(insurance.startDate)}} - {{showDate(insurance.endDate)}}</h4>
         </div>
         <div class="col-md-8">
@@ -91,6 +94,18 @@
 
             <!-- TODO route niet correct -->
             <button-back :route="{name: 'contract', params: {id: contractId}}"></button-back>
+            <!-- Confirmation Modam -->
+            <confirm-modal v-show="showModal"
+                           @cancelModal="cancelCorrection()"
+                           @confirmModal="SubmitFormHandler.submit()"
+                           @close="showModal=false"
+                           :object="correction"
+                           :endDate="$t('insurance.endDate') | capitalize"
+                           :modalHeaderTitle=" $t('modal.titleCorrection') | capitalize"
+                           :modalBodyText="$t('modal.textCorrection') | capitalize"
+                           :confirmButtonText="$t('modal.button1') | capitalize "
+                           :cancelButtonText="$t('modal.button2') | capitalize ">
+            </confirm-modal>
         </div>
     </div>
 </template>
@@ -101,22 +116,34 @@
     import listComponent from "../../assets/general/listComponent.vue"
     import resources from '../../constants/resources'
     import buttonAction from '../../assets/buttons/buttonAction.vue'
+    import deleteComponent from '../../assets/general/deleteComponent.vue'
+    import {SubmitFormHandler} from '../../assets/form/SubmitFormHandler'
+    import buttonRemove from '../../assets/buttons/buttonRemove.vue'
+    import confirmModal from '../../assets/general/modal.vue'
 
     export default {
         data(){
             return{
                 resource: resources.CONDITION,
-                values:[]
+                resourceVI: resources.INSURANCE,
+                values:[],
+                params:{contractId:this.contractId},
+                showModal:false,
+                correction: {},
+                SubmitFormHandler: SubmitFormHandler,
+                back:{name:resources.CONTRACT.name,params:{id:this.contractId}}
+
             }
         },
         components: {
-            buttonBack,listComponent, buttonAction
+            buttonBack,listComponent, buttonAction,deleteComponent,buttonRemove,confirmModal
         },
         props: {
             id: String,
             contractId: String
         },
         created(){
+            this.$on('mounted', components => this.initializeFormHandler(components));
             // fetch vehicle insurance to display
              this.fetchInsurance({ids:{ contract:this.contractId}, id:this.id}).then(insurance => {
                  centsToEuroObject(insurance,"tax");
@@ -129,7 +156,8 @@
                     centsToEuroObject(this.surety,"premium")
                     this.values = this.surety.specialConditions
                 })
-            })
+            });
+            SubmitFormHandler.setSubmitFunction(this.confirmCorrection)
         },
         computed: {
             ...mapGetters([
@@ -150,7 +178,8 @@
                 'fetchInsurance',
                 'fetchVehicle',
                 'fetchSureties',
-                'fetchGreenCard'
+                'fetchGreenCard',
+                'deleteBodyInsurance'
             ]),
             downloadGreenCard({contractId, insuranceId}){
                 this.fetchGreenCard({contractId, insuranceId}).then(blob => {
@@ -168,7 +197,28 @@
             showDate: function (date) {
                 var d=new Date(date)
                 return d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear()
+            },
+            confirmCorrection: function(){
+                console.log(this.correction.endDate);
+                if(this.correction.endDate) {
+                    this.showModal = false
+                    this.correction.endDate =  this.correction.endDate;
+                    this.deleteBodyInsurance({id: this.id, ids: this.ids, data: this.correction.endDate})
+                    this.$router.push(this.back);
+                }else{
+
+                }
+            },
+            cancelCorrection : function(){
+                this.showModal = false
+            },
+            tdshowModal: function(id) {
+                this.showModal = true;
+            },
+            initializeFormHandler(components){
+                SubmitFormHandler.setInputComponents(components)
+                SubmitFormHandler.setSubmitFunction(this.confirmCorrection)
             }
-        },
+        }
     }
 </script>

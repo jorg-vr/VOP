@@ -22,13 +22,12 @@
                 actions: actions.UPDATE,
                 resource: resources.SURETY,
                 surety:{},
-                back:{name:resources.SURETY.name.plural()}
+                back:{name:resources.CLIENT.name, params: {id: this.clientId}}
             }
         },
         created(){
             if(this.id){
                 this.fetchSurety({id: this.id}).then(surety => {
-                    console.log(surety)
                     this.surety = surety;
                     this.setSelectedConditions(this.surety.specialConditions)
                 })
@@ -38,6 +37,7 @@
             abstractForm,suretyFormInput
         },
         props: {
+            clientId: String,
             id: String
         },
         methods: {

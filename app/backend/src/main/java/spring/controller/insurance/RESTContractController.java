@@ -24,6 +24,15 @@ import java.util.stream.Collectors;
 
 import static util.UUIDUtil.toUUID;
 
+/**
+ * Requests that are implemented in this class:
+ * 1) GET /contracts/types
+ * 2) GET /contracts
+ * 3) GET /contracts/{id}
+ * 4) POST /contracts
+ * 5) PUT /contracts/{id}
+ * 6) DELETE /contracts/{id}
+ */
 @RestController
 @RequestMapping("/${path.contracts}")
 public class RESTContractController extends RESTAbstractController<RESTContract, Contract> {
@@ -57,7 +66,7 @@ public class RESTContractController extends RESTAbstractController<RESTContract,
             Customer customerObject = customer != null ? new Customer(toUUID(customer)) : null;
             InsuranceCompany insuranceCompanyObject = insuranceCompany != null ? new InsuranceCompany(toUUID(insuranceCompany)) : null;
 
-            Collection<RESTContract> restContracts = controller.getFiltered(customerObject,insuranceCompanyObject, startsBefore, startsOn, startsAfter, endsBefore, endsOn, endsAfter)
+            Collection<RESTContract> restContracts = controller.getFiltered(customerObject, insuranceCompanyObject, startsBefore, startsOn, startsAfter, endsBefore, endsOn, endsAfter)
                     .stream()
                     .map(RESTContract::new)
                     .collect(Collectors.toList());
@@ -72,7 +81,8 @@ public class RESTContractController extends RESTAbstractController<RESTContract,
                                         @RequestHeader(value = "Function") String function) throws UnAuthorizedException, DataAccessException {
         // Check authentication and authorization
         UUID user = new AuthenticationToken(token).getAccountId();
-        try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {}
+        try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
+        }
 
         Collection<String> result = new ArrayList<>();
         for (SuretyType suretyType : SuretyType.values()) {

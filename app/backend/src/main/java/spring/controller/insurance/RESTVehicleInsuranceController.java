@@ -28,6 +28,14 @@ import java.util.stream.Collectors;
 
 import static util.UUIDUtil.toUUID;
 
+/**
+ * Requests that are implemented in this class
+ * 1) GET /contracts/{contractId}/insurances
+ * 2) GET /contracts/{contractId}/insurances/{id}
+ * 3) POST /contracts/{contractId}/insurances
+ * 4) PUT /contracts/{contractId}/insurances/{id}
+ * 5) DELETE /contracts/{contractId}/insurances/{id}
+ */
 @RestController
 @RequestMapping("${path.contracts}/{id}/${path.vehicle_insurances}")
 public class RESTVehicleInsuranceController {
@@ -38,7 +46,7 @@ public class RESTVehicleInsuranceController {
                                                 Integer page, Integer limit,
                                                 String vehicleId,
                                                 @RequestHeader(value = "Authorization") String token,
-                                                @RequestHeader(value = "Function") String function) throws UnAuthorizedException {
+                                                @RequestHeader(value = "Function") String function) throws UnAuthorizedException, DataAccessException {
         UUID user = new AuthenticationToken(token).getAccountId();
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
             VehicleInsuranceController controller = manager.getVehicleInsuranceController();
@@ -59,8 +67,6 @@ public class RESTVehicleInsuranceController {
                     .map(RESTVehicleInsurance::new)
                     .collect(Collectors.toList());
             return new RESTSchema<>(restModels, page, limit, request);
-        } catch (DataAccessException e) {
-            throw new RuntimeException(e);
         }
     }
 

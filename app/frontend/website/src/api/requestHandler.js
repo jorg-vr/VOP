@@ -13,7 +13,7 @@ import router from '../config/routes'
 export default {
 
     /**
-     * This function does a GET request to the specified location.
+     * This function does a GET request to the specified location and returns the data
      * @param location: The location of the objects
      * @returns {Promise}
      */
@@ -26,6 +26,21 @@ export default {
                 else {
                     resolve(response)
                 }
+            }, response => {
+                rejectResponse(response, reject)
+            })
+        })
+    },
+
+    /**
+     * This function does a GET request to the specified location and returns the body
+     * @param location: The location of the objects
+     * @returns {Promise}
+     */
+    getObjectsRequestBody(location){
+        return new Promise((resolve, reject) => {
+            Vue.http.get(location).then(response => {
+                resolve(response)
             }, response => {
                 rejectResponse(response, reject)
             })
@@ -75,7 +90,7 @@ export default {
     postObjectRequest(location, object){
         return new Promise((resolve, reject) => {
             Vue.http.post(location, object).then(response => {
-                resolve(response)
+                resolve(response.body)
             }, response => {
                 rejectResponse(response, reject)
             })

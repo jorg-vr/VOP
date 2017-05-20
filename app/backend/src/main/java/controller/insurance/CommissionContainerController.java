@@ -13,7 +13,6 @@ import model.account.Resource;
 import model.account.Role;
 import model.insurance.SuretyType;
 
-import javax.persistence.criteria.Root;
 import java.util.Map;
 import java.util.UUID;
 

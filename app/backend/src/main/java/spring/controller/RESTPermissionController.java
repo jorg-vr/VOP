@@ -11,14 +11,16 @@ import model.account.Resource;
 import model.account.Role;
 import org.springframework.web.bind.annotation.*;
 import spring.exceptions.InvalidInputException;
-import spring.exceptions.NotFoundException;
 import spring.model.AuthenticationToken;
 import spring.model.RESTPermission;
 import spring.model.RESTSchema;
 import util.UUIDUtil;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static util.UUIDUtil.toUUID;
@@ -49,7 +51,7 @@ public class RESTPermissionController {
                                           Integer page, Integer limit,
                                           String resource, String action,
                                           @RequestHeader(value = "Authorization") String token,
-                                          @RequestHeader(value = "Function") String function) throws UnAuthorizedException, ObjectNotFoundException {
+                                          @RequestHeader(value = "Function") String function) throws UnAuthorizedException, ObjectNotFoundException, DataAccessException {
         UUID uuid = UUIDUtil.toUUID(id);
         UUID user = new AuthenticationToken(token).getAccountId();
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
@@ -60,8 +62,6 @@ public class RESTPermissionController {
             Collection<RESTPermission> filtered = filter(restPermissions, resource, action);
 
             return new RESTSchema<>(filtered, page, limit, request);
-        } catch (DataAccessException e) {
-            throw new NotFoundException();
         }
     }
 
@@ -69,7 +69,7 @@ public class RESTPermissionController {
     public void put(@PathVariable String id,
                     @RequestBody List<Long> permissions,
                     @RequestHeader(value = "Authorization") String token,
-                    @RequestHeader(value = "Function") String function) throws UnAuthorizedException, ObjectNotFoundException, ConstraintViolationException {
+                    @RequestHeader(value = "Function") String function) throws UnAuthorizedException, ObjectNotFoundException, ConstraintViolationException, DataAccessException {
         UUID uuid = UUIDUtil.toUUID(id);
         UUID user = new AuthenticationToken(token).getAccountId();
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
@@ -78,8 +78,6 @@ public class RESTPermissionController {
             Role role = controller.get(uuid);
             setPermissions(role, permissions);
             controller.update(role);
-        } catch (DataAccessException e) {
-            throw new NotFoundException();
         }
     }
 

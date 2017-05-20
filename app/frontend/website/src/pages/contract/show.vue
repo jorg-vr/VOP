@@ -8,6 +8,7 @@
         <div class="page-header" v-if="contract">
             <h1 >
                 {{$t("contract.contract") | capitalize }} {{contract.customerName}} - {{contract.insuranceCompanyName}}
+                <delete-component  :resource="resourceContract" :id="contract.id" ></delete-component>
             </h1>
             <h4 >{{contract.startDate.showableDate()}} - {{contract.endDate.showableDate()}}</h4>
             <h4> {{$t('contract.totalCostEuro') | capitalize }}: {{contract.totalCostEuro}}</h4>
@@ -17,27 +18,26 @@
         <div class="page-header">
             <h1>
                 {{$t("vehicle_insurance.vehicle_insurances") | capitalize }}
-                <button-add :resource="resource1" :params="{contractId:id}"></button-add>
+                <button-add :resource="resourceInsurance" :params="{contractId:id}"></button-add>
             </h1>
         </div>
-
-
+        
         <table class="table-hover table">
             <thead>
             <tr>
-                <th v-for="head in listObject1.headers">
-                    {{$t(resource1.name + '.' + head).capitalize()}}
+                <th v-for="head in listObject.headers">
+                    {{$t(resourceInsurance.name + '.' + head).capitalize()}}
                 </th>
             </tr>
             </thead>
             <tbody>
-            <tr v-for="value in listObject1.values" class="list-tr">
-                <td v-for="header in listObject1.headers" class="clickable-td" @click="tdclick(value)">
+            <tr v-for="value in listObject.values" class="list-tr">
+                <td v-for="header in listObject.headers" class="clickable-td" @click="tdclick(value)">
                     {{value[header]}}
                 </td>
                 <td class="stretch">
-                    <button-edit :resource="resource1" :params="{contractId:value.contract ,id:value.id}" ></button-edit>
-                    <button-remove :resource="resource1"  @click="tdshowModal(value.id)"></button-remove>
+                    <button-edit :resource="resourceInsurance" :params="{contractId:value.contract ,id:value.id}" ></button-edit>
+                    <button-remove :resource="resourceInsurance"  @click="tdshowModal(value.id)"></button-remove>
                 </td>
             </tr>
             </tbody>
@@ -54,18 +54,6 @@
                        :confirmButtonText="$t('modal.button1') | capitalize "
                        :cancelButtonText="$t('modal.button2') | capitalize ">
         </confirm-modal>
-
-        <div class="page-header">
-            <h1>
-                <button-add :resource="resource2"></button-add>
-                {{$t("surety.sureties") | capitalize }}
-            </h1>
-        </div>
-        
-        <h5 v-if="contract!=null"> {{$t("contract.offer") | capitalize }} {{contract.insuranceCompanyName}} </h5>
-        <list-component v-if="show2" :resource="resource2" :listObject="listObject2">
-        </list-component>
-
         <button-back :route="{name: 'contracts'}"></button-back>
     </div>
 </template>
@@ -81,23 +69,22 @@
     import buttonRemove from '../../assets/buttons/buttonRemove.vue'
     import confirmModal from '../../assets/general/modal.vue'
     import {SubmitFormHandler} from '../../assets/form/SubmitFormHandler'
+    import deleteComponent from '../../assets/general/deleteComponent.vue'
 
     export default {
         data(){
             return {
-                resource1: resources.INSURANCE,
-                resource2: resources.SURETY,
-                show1: false,
-                show2: false,
+                resourceInsurance: resources.INSURANCE,
+                resourceContract:resources.CONTRACT,
                 ids:{contract:this.id},
-                showModal:false,
                 correction: {},
                 SubmitFormHandler: SubmitFormHandler,
+                showModal: false
             }
         },
         components: {
             buttonBack,buttonAdd,listComponent,buttonLink,
-            buttonEdit,buttonRemove,confirmModal
+            buttonEdit,buttonRemove,confirmModal,deleteComponent
         },
         props: {
             id: String
@@ -110,12 +97,6 @@
             this.fetchContract({id: contractId}).then(()=>{
                 centsToEuroObject(this.contract,"totalCost")
                 centsToEuroObject(this.contract,"totalTax")
-                // get all possible sureties for the chosen insurance Company of the contract
-                this.fetchSureties({ids:{company:this.contract.insuranceCompany}}).then(() => {
-                    centsToEuroArray(this.sureties,"premium");
-                    this.sureties=translateSuretyTypes(this.sureties);
-                    this.show2=true;
-                })
             });
 
             // get all insurances from the contract with contract Id
@@ -125,7 +106,7 @@
                 centsToEuroArray(this.insurances,"tax");
                 centsToEuroArray(this.insurances,"insuredValue");
                 this.setLoading({loading: false });
-                this.show1=true;
+                this.show=true;
             });
          SubmitFormHandler.setSubmitFunction(this.confirmCorrection)
 
@@ -138,16 +119,10 @@
                 'insurances',
                 'contractInsurances',
             ]),
-            listObject1() {
+            listObject() {
                 var listObj = {};
                 listObj.headers = ['licensePlate','brand','suretyTypeTranslation','insuredValueEuro','showableStartDate','costEuro','taxEuro'];
                 listObj.values = this.contractInsurances;
-                return listObj;
-            },
-            listObject2() {
-                var listObj = {};
-                listObj.headers = ['suretyTypeTranslation','premiumEuro'];
-                listObj.values = this.sureties;
                 return listObj;
             },
             contractInsurances(){
@@ -174,7 +149,7 @@
                 'setLoading',
             ]),
             tdclick: function(value) {
-                this.$router.push({name: this.resource1.name, params: {contractId:value.contract, id:value.id}});
+                this.$router.push({name: this.resourceInsurance.name, params: {contractId:value.contract, id:value.id}});
             },
             confirmCorrection: function(){
                 if(this.correction.endDate) {

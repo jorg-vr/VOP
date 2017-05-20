@@ -102,6 +102,13 @@ import ResourcesLink from './ResourcesLink.vue'
                 this.logout()
                 this.$router.push({path: '/login'})
             }
+        },
+        mounted() {
+            $(document).on('click','.navbar-collapse.in',function(e) {
+                if( $(e.target).is('a') ) {
+                    $(this).collapse('hide');
+                }
+            });
         }
     }
 </script>

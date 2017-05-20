@@ -51,7 +51,7 @@ public class RESTFunctionController extends RESTAbstractController<RESTFunction,
                                         @RequestParam(required = false) Integer limit,
                                         @RequestParam(required = false) String sort,
                                         @RequestHeader(value = "Authorization") String token,
-                                        @RequestHeader(value = "Function") String function) throws UnAuthorizedException {
+                                        @RequestHeader(value = "Function") String function) throws UnAuthorizedException, DataAccessException {
 
         Collection<RESTFunction> restFunctions;
         UUID user = new AuthenticationToken(token).getAccountId();
@@ -61,7 +61,7 @@ public class RESTFunctionController extends RESTAbstractController<RESTFunction,
             User userObject = new User(toUUID(userId));
             Company companyObject = company != null ? new Company(toUUID(company)) : null;
             Role roleObject = null;
-            if(role != null){
+            if (role != null) {
                 roleObject = new Role();
                 roleObject.setUuid(toUUID(role));
             }
@@ -70,10 +70,7 @@ public class RESTFunctionController extends RESTAbstractController<RESTFunction,
                     .stream()
                     .map(RESTFunction::new)
                     .collect(Collectors.toList());
-        } catch (DataAccessException e) {
-            throw new RuntimeException(e);
         }
-
         return new RESTSchema<>(restFunctions, page, limit, request);
     }
 }

@@ -7,7 +7,6 @@ import controller.exceptions.UnAuthorizedException;
 import dao.exceptions.DataAccessException;
 import model.fleet.VehicleType;
 import org.springframework.web.bind.annotation.*;
-import spring.exceptions.InvalidInputException;
 import spring.model.AuthenticationToken;
 import spring.model.RESTSchema;
 import spring.model.RESTVehicleType;
@@ -20,10 +19,6 @@ import java.util.stream.Collectors;
 import static util.UUIDUtil.toUUID;
 
 /**
- * Created by jorg on 3/14/17.
- * Although the api doesn't offer this, this is an improvement to the program
- * It offers the frontend applications a way to view wich vehicletypes are correct inputs
- * may be enlarged when admin gets rights to edit vehicletypes
  * Requests that are implemented in this class:
  * 1)  GET /vehicles/types
  * 2)  GET /vehicles/types/{id}
@@ -46,10 +41,10 @@ public class RESTVehicleTypeController extends RESTAbstractController<RESTVehicl
 
     @RequestMapping(method = RequestMethod.GET)
     public RESTSchema<RESTVehicleType> getAllVehicleTypes(HttpServletRequest request,
-                                                         @RequestParam(required = false) Integer page,
-                                                         @RequestParam(required = false) Integer limit,
-                                                         @RequestHeader(value = "Authorization") String token,
-                                                         @RequestHeader(value = "Function") String function) throws UnAuthorizedException {
+                                                          @RequestParam(required = false) Integer page,
+                                                          @RequestParam(required = false) Integer limit,
+                                                          @RequestHeader(value = "Authorization") String token,
+                                                          @RequestHeader(value = "Function") String function) throws UnAuthorizedException, DataAccessException {
         UUID user = new AuthenticationToken(token).getAccountId();
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
             VehicleTypeController controller = manager.getVehicleTypeController();
@@ -57,10 +52,7 @@ public class RESTVehicleTypeController extends RESTAbstractController<RESTVehicl
                     .stream()
                     .map(RESTVehicleType::new)
                     .collect(Collectors.toList());
-
             return new RESTSchema<>(types, page, limit, request);
-        } catch (DataAccessException e) {
-            throw new InvalidInputException("Some parameters where invalid");
         }
     }
 

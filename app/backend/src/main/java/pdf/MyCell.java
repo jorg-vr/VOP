@@ -14,9 +14,6 @@ import com.itextpdf.text.pdf.PdfPTable;
  */
 public class MyCell extends PdfPCell {
 
-    private static Font smallItalic = new Font(Font.FontFamily.TIMES_ROMAN, 6,
-            Font.ITALIC);
-
     /**
      * @param title title of this cell
      * @param body  body of this cell

@@ -22,7 +22,12 @@ import java.util.stream.Collectors;
 import static util.UUIDUtil.toUUID;
 
 /**
- * Created by Billie Devolder on 18/04/2017.
+ * Requests that are implemented in this class
+ * 1) GET /companies/{companyId}/sureties
+ * 2) GET /companies/{companyId}/sureties/{id}
+ * 3) POST /companies/{companyId}/sureties
+ * 4) PUT /companies/{companyId}/sureties/{id}
+ * 5) DELETE /companies/{companyId}/sureties/{id}
  */
 @RestController
 @RequestMapping("/${path.companies}/{companyId}/${path.sureties}")

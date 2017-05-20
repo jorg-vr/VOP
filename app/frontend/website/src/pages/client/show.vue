@@ -9,8 +9,9 @@
         <div class="page-header">
             <h1>
                 {{client.name| capitalize }}
+                <delete-component :resource="resources.CLIENT" :id="client.id" ></delete-component>
                 <button-link v-if="hasPermissionForRoute('invoices')"
-                        buttonClass="pull-right btn btn-primary btn-add" :route="{name: 'invoices', params: {companyId: id}}">
+                             buttonClass="pull-right btn btn-primary btn-add" :route="{name: 'invoices', params: {companyId: id}}">
                     {{$t("invoice.invoices") | capitalize }}
                 </button-link>
             </h1>
@@ -70,13 +71,15 @@
             <h2 class="col-md-12" v-if="client.type===clientTypes.INSURANCE_COMPANY.type" >{{$t("surety.sureties") | capitalize }}
                 <button-add :resource="resources.SURETY" :params="{clientId: client.id}"></button-add>
             </h2>
-            <list-component v-if="client.type===clientTypes.INSURANCE_COMPANY.type&&show&&listObjectSureties.values.length>0" :listObject="listObjectSureties" :resource="resources.SURETY">
+            <list-component v-if="client.type===clientTypes.INSURANCE_COMPANY.type&&show&&listObjectSureties.values.length>0"
+                            :listObject="listObjectSureties" :resource="resources.SURETY" :ids="{clientId: id}">
             </list-component>
 
-            <div v-if="show&&listObjectContracts.values.length>0" >
-                <h2>{{$t("contract.contracts") | capitalize}}</h2>
-                <list-component :resource="resources.CONTRACT" :listObject="listObjectContracts"></list-component>
-            </div>
+            <h2>{{$t("contract.contracts") | capitalize}}
+                    <button-add :resource="resources.CONTRACT" :params="{clientId: client.id}"></button-add>
+            </h2>
+            <list-component v-if="show&&listObjectContracts.values.length>0" :resource="resources.CONTRACT" :listObject="listObjectContracts">
+            </list-component>
 
             <button-back v-if="displayBack" :route="{name: 'clients'}"></button-back>
         </div>
@@ -95,6 +98,7 @@
     import {translateSuretyTypes,centsToEuroArray} from '../../utils/utils'
     import countries from './countries'
     import Vue from 'vue'
+    import deleteComponent from '../../assets/general/deleteComponent.vue'
 
     export default {
         data(){
@@ -106,7 +110,7 @@
             }
         },
         components: {
-            buttonBack, listComponent, buttonAdd, buttonLink,commissions
+            buttonBack, listComponent, buttonAdd, buttonLink,commissions,deleteComponent
         },
         props: {
             id: String,

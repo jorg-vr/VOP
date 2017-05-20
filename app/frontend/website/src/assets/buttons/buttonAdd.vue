@@ -10,7 +10,7 @@ The button will only be shown if the user has the correct permissions.
 <template>
     <protected-element :permission="permission">
         <button-link :route="route" :buttonClass="'pull-right btn btn-primary btn-add ' + buttonClass">
-            {{$t('common.new') | capitalize }} {{$t(resource.name + '.' + resource.name)}}
+            {{ submitText }}
         </button-link>
     </protected-element>
 </template>
@@ -18,6 +18,7 @@ The button will only be shown if the user has the correct permissions.
     import actions from '../../constants/actions'
     import buttonLink from './buttonLink.vue'
     import ProtectedElement from '../protection/ProtectedElement.js'
+    import {getResourceActionText} from '../../utils/utils'
 
     export default {
         data() {
@@ -29,14 +30,15 @@ The button will only be shown if the user has the correct permissions.
                 route: {
                     name: 'new_' + this.resource.name,
                     params: this.params
-                }
+                },
+                submitText: getResourceActionText(this.resource.name, actions.CREATE.name)
             }
         },
         components: {
             buttonLink, ProtectedElement
         },
         props: {
-            resource: Object ,
+            resource: Object,
             params: { //Initial params for adding
                 type: Object,
                 default(){
