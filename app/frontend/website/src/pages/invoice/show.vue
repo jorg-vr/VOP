@@ -5,9 +5,10 @@
     <div v-if="show">
         <div v-if="invoice" class="page-header">
             <h1>{{$t("invoiceTypes."+invoice.type) | capitalize }} {{client.name}}
-                <button-action @click="downloadGreenCard({contractId, insuranceId: id})" buttonClass="pull-right btn btn-primary">
-                    {{$t('vehicle.generate_green_card')}}
-                </button-action></h1>
+                <button-action @click="fetchPdf()" buttonClass="pull-right btn btn-primary">
+                    {{$t('invoice.export')}}
+                </button-action>
+            </h1>
             <h4 >{{showDate(invoice.startDate)}} - {{showDate(invoice.endDate)}}</h4>
             <h4> {{$t('invoice.totalAmountEuro') | capitalize }}: {{invoice.totalAmountEuro}}</h4>
             <h4>{{$t('invoice.totalTaxEuro') | capitalize }}: {{invoice.totalTaxEuro}}</h4>
@@ -26,6 +27,7 @@
     import buttonBack from '../../assets/buttons/buttonBack.vue'
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
     import {translateSuretyTypes,centsToEuroArray,centsToEuroObject} from '../../utils/utils'
+    import buttonAction from '../../assets/buttons/buttonAction.vue'
 
     export default {
         data() {
@@ -35,7 +37,7 @@
             }
         },
         components: {
-            buttonBack, listComponent, buttonAdd
+            buttonBack, listComponent, buttonAdd, buttonAction
         },
         props: {
             id: String,
@@ -77,15 +79,30 @@
             ...mapActions([
                 'fetchInvoice',
                 'fetchClient',
-                'fetchVehicleInvoices'
+                'fetchVehicleInvoices',
+                'fetchInvoicePdf'
             ]),
             ...mapMutations([
                 'setLoading'
             ]),
-            showDate: function (date) {
-                var d=new Date(date)
-                return d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear()
+            fetchPdf(){
+                this.fetchInvoicePdf({companyId:this.companyId, invoiceId:this.id}).then(blob => {
+                    console.log(blob)
+                    //Download the response.
+                    //Based on: https://github.com/pagekit/vue-resource/issues/285
+                    //TODO: no content disposition is part of the headers, however one is returned.
+                    //var filename = contentDisposition.split('filename=')[1];
+                    let link = document.createElement('a');
+                    link.href = window.URL.createObjectURL(blob);
+                    link.download = this.$t("invoiceTypes."+this.invoice.type)+this.showDate(this.invoice.endDate)+".pdf";
+                    link.click();
+                })
+            },
+            showDate(date) {
+                var d = new Date(date);
+                return d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
             }
+
         },
     }
 </script>
