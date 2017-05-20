@@ -46,7 +46,7 @@
             ]),
             ...mapMutations([
                 'setSelectedConditions',
-                ]),
+            ]),
 
 
         }

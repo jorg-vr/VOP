@@ -6,11 +6,10 @@
     <div class="col-lg-8 col-md-9 col-sm-11">
         <div class="page-header">
             <h1>
-                {{$t("invoice.invoices") | capitalize }} {{client.name}}
+                {{$t("invoice.invoices") | capitalize }} <span v-if="client">{{client.name}}</span>
             </h1>
         </div>
-
-        <list-component :objects="invoices" :resource="resource" :visibleKeys="['showableStartDate', 'showableEndDate', 'totalAmount']">
+        <list-component :objects="invoices" :resource="resource" :listObject="listObject">
         </list-component>
         <button-back :route="{name: 'client'}"></button-back>
 
@@ -36,28 +35,31 @@
         },
         created() {
             this.setLoading({loading: true })
-            this.fetchInvoicesByCompany({companyId: this.companyId}).then(() => {
+            this.fetchClient({id: this.companyId})
+            this.fetchInvoicesByCompany({ filters: {companyId: this.companyId}).then(() => {
                 this.setLoading({loading: false })
             })
         },
         computed: {
+            listObject() {
+                let listObj = {};
+                listObj.headers = ['showableStartDate', 'showableEndDate', 'totalAmount'];
+                listObj.values = this.invoices;
+                return listObj;
+            },
             ...mapGetters([
                 'invoices',
-                'clients',
                 'client'
             ])
         },
         methods: {
             ...mapActions([
-                'fetchClients',
                 'fetchClient',
-                'fetchInvoicesByCompany',
+                'fetchInvoicesBy',
             ]),
             ...mapMutations([
-                'setFilteredClients',
                 'setLoading'
             ])
-
         }
     }
 </script>

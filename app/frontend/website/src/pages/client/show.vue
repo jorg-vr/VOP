@@ -73,9 +73,12 @@
             <list-component v-if="client.type===clientTypes.INSURANCE_COMPANY.type&&show&&listObjectSureties.values.length>0" :listObject="listObjectSureties" :resource="resources.SURETY">
             </list-component>
 
-            <h2>{{$t("contract.contracts") | capitalize}}</h2>
-            <list-component v-if="show&&listObjectContracts.values.length>0" :resource="resources.CONTRACT" :listObject="listObjectContracts"></list-component>
-            <button-back :route="{name: 'clients'}"></button-back>
+            <div v-if="show&&listObjectContracts.values.length>0" >
+                <h2>{{$t("contract.contracts") | capitalize}}</h2>
+                <list-component :resource="resources.CONTRACT" :listObject="listObjectContracts"></list-component>
+            </div>
+
+            <button-back v-if="displayBack" :route="{name: 'clients'}"></button-back>
         </div>
     </div>
 </template>
@@ -106,7 +109,11 @@
             buttonBack, listComponent, buttonAdd, buttonLink,commissions
         },
         props: {
-            id: String
+            id: String,
+            displayBack: { //Tells if the back button should be displayed
+                type: Boolean,
+                default: true
+            }
         },
         created(){
             this.$store.commit('clearFleets')
