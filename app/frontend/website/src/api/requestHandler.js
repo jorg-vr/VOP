@@ -90,7 +90,7 @@ export default {
     postObjectRequest(location, object){
         return new Promise((resolve, reject) => {
             Vue.http.post(location, object).then(response => {
-                resolve(response.body)
+                resolve(response)
             }, response => {
                 rejectResponse(response, reject)
             })
