@@ -1,6 +1,6 @@
 
 <template>
-    <client-show :id=activeFunction.company ></client-show>
+    <client-show :displayBack="false" :id=activeFunction.company ></client-show>
 </template>
 <script>
     import { mapGetters, mapActions, mapMutations } from 'vuex'
