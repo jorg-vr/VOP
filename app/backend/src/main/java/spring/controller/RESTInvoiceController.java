@@ -8,13 +8,17 @@ import dao.exceptions.ObjectNotFoundException;
 import model.billing.Invoice;
 import model.identity.Company;
 import model.identity.Customer;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import pdf.InvoicePdf;
+import pdf.PdfException;
 import spring.exceptions.NotAuthorizedException;
 import spring.model.AuthenticationToken;
 import spring.model.RESTInvoice;
 import spring.model.RESTSchema;
 import spring.model.RESTVehicleInvoice;
-import spring.model.insurance.RESTContract;
 import util.UUIDUtil;
 
 import javax.servlet.http.HttpServletRequest;
@@ -62,7 +66,7 @@ public class RESTInvoiceController extends RESTAbstractController<RESTInvoice, I
                     .stream()
                     .map(RESTInvoice::new)
                     .collect(Collectors.toList());
-            return new RESTSchema<>(invoices, page, limit, request,(a,b)->b.getStartDate().compareTo(a.getStartDate()));
+            return new RESTSchema<>(invoices, page, limit, request, (a, b) -> b.getStartDate().compareTo(a.getStartDate()));
         } catch (UnAuthorizedException e) {
             throw new NotAuthorizedException();
         } catch (DataAccessException e) {
@@ -70,7 +74,7 @@ public class RESTInvoiceController extends RESTAbstractController<RESTInvoice, I
         }
     }
 
-    @RequestMapping(value="/{id}/${path.vehicleInvoices}" ,method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}/${path.vehicleInvoices}", method = RequestMethod.GET)
     public RESTSchema<RESTVehicleInvoice> getAllVehicleInvoices(@PathVariable String companyId,
                                                                 @PathVariable String id,
                                                                 HttpServletRequest request,
@@ -95,14 +99,62 @@ public class RESTInvoiceController extends RESTAbstractController<RESTInvoice, I
         }
     }
 
-    @RequestMapping(method = RequestMethod.PUT)
-    public void create(@PathVariable String companyId,
-                                          @RequestHeader(value = "Authorization") String token,
-                                          @RequestHeader(value = "Function") String function) throws ObjectNotFoundException, ConstraintViolationException {
+    @GetMapping("/${path.current}")
+    @ResponseBody
+    public RESTInvoice getCurrent(@PathVariable("companyId") String companyId, @RequestHeader(value = "Authorization") String token,
+                                     @RequestHeader(value = "Function") String function) throws DataAccessException, UnAuthorizedException, ObjectNotFoundException, PdfException {
+        UUID uuid = toUUID(companyId);
+        UUID user = new AuthenticationToken(token).getAccountId();
+        try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
+            Customer customer = manager.getCustomerController().get(uuid);
+            return new RESTInvoice(customer.getCurrentStatement());
+        }
+    }
+
+    @GetMapping("/${path.current}/${path.pdf}")
+    @ResponseBody
+    public HttpEntity<byte[]> getCurrentPdf(@PathVariable("companyId") String companyId, @RequestHeader(value = "Authorization") String token,
+                                            @RequestHeader(value = "Function") String function) throws DataAccessException, UnAuthorizedException, ObjectNotFoundException, PdfException {
+        UUID uuid = toUUID(companyId);
+        UUID user = new AuthenticationToken(token).getAccountId();
+        try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
+            Customer customer = manager.getCustomerController().get(uuid);
+            return createEntity(customer.getCurrentStatement());
+        }
+    }
+
+    @GetMapping("/{id}/${path.pdf}")
+    @ResponseBody
+    public HttpEntity<byte[]> getPdf(@PathVariable("id") String id, @RequestHeader(value = "Authorization") String token,
+                                     @RequestHeader(value = "Function") String function) throws DataAccessException, UnAuthorizedException, ObjectNotFoundException, PdfException {
+        UUID uuid = toUUID(id);
         UUID user = new AuthenticationToken(token).getAccountId();
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
             InvoiceController controller = manager.getInvoiceController();
-            CustomerController customerController=manager.getCustomerController();
+            Invoice invoice = controller.get(uuid);
+            return createEntity(invoice);
+        }
+    }
+
+    private HttpEntity<byte[]> createEntity(Invoice invoice) {
+        byte[] documentBody = new InvoicePdf(invoice).getAsByteArray();
+
+        HttpHeaders header = new HttpHeaders();
+        header.setContentType(MediaType.APPLICATION_PDF);
+        header.set(HttpHeaders.CONTENT_DISPOSITION,
+                "attachment; filename=" + "invoice.pdf");
+        header.setContentLength(documentBody.length);
+        return new HttpEntity<>(documentBody, header);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT)
+    public void create(@PathVariable String companyId,
+                       @RequestHeader(value = "Authorization") String token,
+                       @RequestHeader(value = "Function") String function) throws ObjectNotFoundException, ConstraintViolationException {
+        UUID user = new AuthenticationToken(token).getAccountId();
+        try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
+            InvoiceController controller = manager.getInvoiceController();
+            CustomerController customerController = manager.getCustomerController();
 
             Customer company = customerController.get(UUIDUtil.toUUID(companyId));
             controller.endStatement(company);
