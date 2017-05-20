@@ -12,6 +12,7 @@ import static java.lang.Integer.min;
  * This represents a pagination object of generic type T
  */
 public class RESTSchema<T> {
+
     private Collection<T> data;
     private Integer total;
     private Integer offset;
@@ -46,7 +47,6 @@ public class RESTSchema<T> {
      * @param limit      if null data of the pastination will be set to collection
      * @param request    request of the HTTP request
      * @param comparator specifies how the elements should be sorted
-     * @return
      */
     public RESTSchema(Collection<T> collection, Integer page, Integer limit, HttpServletRequest request, Comparator<T> comparator) {
         this.data = collection;

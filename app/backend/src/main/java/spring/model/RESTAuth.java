@@ -4,6 +4,7 @@ package spring.model;
  * Created by jorg on 4/5/17.
  */
 public class RESTAuth {
+
     private String login;
     private String password;
 

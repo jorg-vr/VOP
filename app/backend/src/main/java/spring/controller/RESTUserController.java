@@ -55,7 +55,7 @@ public class RESTUserController extends RESTAbstractController<RESTUser, User> {
                                     @RequestParam(required = false) Integer page,
                                     @RequestParam(required = false) Integer limit,
                                     @RequestHeader(value = "Authorization") String token,
-                                    @RequestHeader(value = "Function") String function) throws UnAuthorizedException {
+                                    @RequestHeader(value = "Function") String function) throws UnAuthorizedException, DataAccessException {
         UUID user = new AuthenticationToken(token).getAccountId();
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
             UserController controller = manager.getUserController();
@@ -64,8 +64,6 @@ public class RESTUserController extends RESTAbstractController<RESTUser, User> {
                     .map(RESTUser::new)
                     .collect(Collectors.toList());
             return new RESTSchema<>(users, page, limit, request);
-        } catch (DataAccessException e) {
-            throw new RuntimeException(e);
         }
     }
 }

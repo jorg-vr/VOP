@@ -11,33 +11,24 @@ public class MyProperties {
     public static final String PATH_AUTH = "path.auth";
     public static final String PATH_LOGIN = "path.login";
     public static final String PATH_REFRESH = "path.refresh";
-
     public static final String PATH_USERS = "path.users";
     public static final String PATH_ROLES = "path.roles";
     public static final String PATH_FUNCTIONS = "path.functions";
     public static final String PATH_PERMISSIONS = "path.permissions";
-
     public static final String PATH_FLEETS = "path.fleets";
     public static final String PATH_VEHICLES = "path.vehicles";
     public static final String PATH_TYPES = "path.types";
-
     public static final String PATH_COMPANIES = "path.companies";
-
     public static final String PATH_SURETIES = "path.sureties";
     public static final String PATH_VEHICLE_INSURANCES = "path.vehicle_insurances";
     public static final String PATH_CONTRACTS = "path.contracts";
     public static final String PATH_SPECIAL_CONDITIONS = "path.special_conditions";
-
     public static final String PATH_INVOICES = "path.invoices";
-
-
-
 
     private static final String APPLICATION_PROPERTIES = "application.properties";
 
     private static MyProperties myProperties;
     private Properties properties;
-
 
     private MyProperties() {
         properties = new Properties();
