@@ -64,6 +64,7 @@ export default {
         let createResource = 'create' + capName
         let updateResource = 'update' + capName
         let deleteResource = 'delete' + capName
+        let deleteBodyResource = 'deleteBody'+ capName
         module = {
             state: {},
             getters: {},
@@ -127,7 +128,6 @@ export default {
             })
         }
         module.actions[createResource] = function(context, payload){
-            fixDates(payload.resource)
             return new Promise((resolveSuccess, resolveFailure) => {
                 RequestHandler.postObjectRequest(formatLocation(location, payload.ids), payload.resource).then(createdResource => {
                     resolveSuccess(createdResource.body)
@@ -137,7 +137,6 @@ export default {
             })
         }
         module.actions[updateResource] = function(context, payload){
-            fixDates(payload.resource)
             return new Promise((resolveSuccess, resolveFailure) => {
                 RequestHandler.putObjectRequest(formatLocation(location, payload.ids), payload.resource).then(updatedResource => {
                     resolveSuccess(updatedResource)
@@ -156,6 +155,16 @@ export default {
                 })
             })
         }
+        module.actions[deleteBodyResource] = function(context, payload){
+            return new Promise((resolveSuccess, resolveFailure) => {
+                RequestHandler.deleteWithBodyRequest(formatLocation(location, payload.ids), payload.id,payload.data).then(() => {
+                    context.commit(removeResource, {id: payload.id})
+                    resolveSuccess()
+                }, response => {
+                    resolveFailure(response)
+                })
+            })
+        }
         return module
     }
 }
@@ -165,11 +174,4 @@ let addShowableDates = function(payload){
     addShowableDate(payload, 'endDate')
 }
 
-let fixDates = function(object){
-    if(object.startDate != undefined){
-        object.startDate += "T00:00:00.00"
-    }
-    if(object.endDate != undefined){
-        object.endDate += "T00:00:00.00"
-    }
-}
+

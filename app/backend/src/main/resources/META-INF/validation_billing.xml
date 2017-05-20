@@ -4,21 +4,21 @@
                      xmlns="http://jboss.org/xml/ns/javax/validation/mapping">
 
     <bean class="model.billing.Invoice" >
-        <field name="payer" >
-            <constraint annotation="javax.validation.constraints.NotNull"/>
-        </field>
-        <field name="paid" >
-            <constraint annotation="javax.validation.constraints.NotNull"/>
-        </field>
-        <field name="startDate" >
-            <constraint annotation="javax.validation.constraints.NotNull"/>
-        </field>
-        <field name="endDate" >
-            <constraint annotation="javax.validation.constraints.NotNull"/>
-        </field>
-        <field name="type" >
-            <constraint annotation="javax.validation.constraints.NotNull"/>
-        </field>
+        <!--<field name="payer" >-->
+            <!--<constraint annotation="javax.validation.constraints.NotNull"/>-->
+        <!--</field>-->
+        <!--<field name="paid" >-->
+            <!--<constraint annotation="javax.validation.constraints.NotNull"/>-->
+        <!--</field>-->
+        <!--<field name="startDate" >-->
+            <!--<constraint annotation="javax.validation.constraints.NotNull"/>-->
+        <!--</field>-->
+        <!--<field name="endDate" >-->
+            <!--<constraint annotation="javax.validation.constraints.NotNull"/>-->
+        <!--</field>-->
+        <!--<field name="type" >-->
+            <!--<constraint annotation="javax.validation.constraints.NotNull"/>-->
+        <!--</field>-->
 
 
     </bean>

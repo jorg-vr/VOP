@@ -27,9 +27,12 @@
                     </tr>
                 </table>
             </h4>
+            <div class="row">
+                <button-action @click="downloadGreenCard({contractId, insuranceId: id})" buttonClass="pull-left btn btn-primary">
+                    {{$t('vehicle.generate_green_card')}}
+                </button-action>
+            </div>
             <!-- insured vehicle -->
-
-         
              <h2>{{$t("vehicle.vehicle") | capitalize }}</h2>
 
             
@@ -97,6 +100,7 @@
     import {centsToEuroObject} from '../../utils/utils'
     import listComponent from "../../assets/general/listComponent.vue"
     import resources from '../../constants/resources'
+    import buttonAction from '../../assets/buttons/buttonAction.vue'
 
     export default {
         data(){
@@ -106,7 +110,7 @@
             }
         },
         components: {
-            buttonBack,listComponent
+            buttonBack,listComponent, buttonAction
         },
         props: {
             id: String,
@@ -145,8 +149,22 @@
                 'fetchSurety',
                 'fetchInsurance',
                 'fetchVehicle',
-                'fetchSureties'
+                'fetchSureties',
+                'fetchGreenCard'
             ]),
+            downloadGreenCard({contractId, insuranceId}){
+                this.fetchGreenCard({contractId, insuranceId}).then(blob => {
+                    console.log(blob)
+                    //Download the response.
+                    //Based on: https://github.com/pagekit/vue-resource/issues/285
+                    //TODO: no content disposition is part of the headers, however one is returned.
+                    //var filename = contentDisposition.split('filename=')[1];
+                    let link = document.createElement('a');
+                    link.href = window.URL.createObjectURL(blob);
+                    link.download = "green_card.pdf";
+                    link.click();
+                })
+            },
             showDate: function (date) {
                 var d=new Date(date)
                 return d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear()

@@ -19,12 +19,33 @@ All of the fields for contract input for the contract form
 
         <!-- Start Date -->
         <date-input-form-group
-                :object="contract" name="startDate" :text="$t('insurance.startDate')">
+                :object="contract" name="startsBefore" :text="$t('insurance.startsBefore')">
+        </date-input-form-group>
+
+        <!-- Start Date -->
+        <date-input-form-group
+                :object="contract" name="startsOn" :text="$t('insurance.startsOn')">
+        </date-input-form-group>
+
+        <!-- Start Date -->
+        <date-input-form-group
+                :object="contract" name="startsAfter" :text="$t('insurance.startsAfter')">
         </date-input-form-group>
 
         <!-- End Date -->
         <date-input-form-group
-                :object="contract" name="endDate" :text="$t('insurance.endDate')">
+                :object="contract" name="endsBefore" :text="$t('insurance.endsBefore')">
+        </date-input-form-group>
+
+        <!-- End Date -->
+        <date-input-form-group
+                :object="contract" name="endsOn" :text="$t('insurance.endsOn')">
+        </date-input-form-group>
+
+
+        <!-- End Date -->
+        <date-input-form-group
+                :object="contract" name="endsAfter" :text="$t('insurance.endsAfter')">
         </date-input-form-group>
     </div>
 </template>

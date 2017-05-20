@@ -73,7 +73,7 @@ All of the fields for contract input for the contract form
                        @confirmModal="confirmCorrection()"
                        @optional="showModal=false"
                        @close="showModal=false"
-                       :object="insurance"
+                       :object="correction"
                        :endDate="$t('insurance.endDate') | capitalize"
                        :modalHeaderTitle=" $t('modal.titleCorrection') | capitalize"
                        :modalBodyText="$t('modal.textCorrection') | capitalize"
@@ -110,7 +110,8 @@ All of the fields for contract input for the contract form
                 resource2: resources.SURETY,
                 customers:[],
                 insuranceCompanies:[],
-                showModal: false
+                showModal: false,
+                correction: {}
             }
         },
         mounted(){
@@ -177,7 +178,8 @@ All of the fields for contract input for the contract form
                 'fetchClientsBy',
                 'fetchContract',
                 'fetchInsurance',
-                'createCorrection'
+                'createCorrection',
+                'deleteBodyInsurance'
                 ]),
             ...mapMutations([
                 'setLoading'
@@ -187,21 +189,12 @@ All of the fields for contract input for the contract form
             },
             confirmCorrection: function(){
                 // hide modal
-                let correction = {}
                 this.showModal=false
-                // create correction object
-                correction.vehicle= this.insurance.vehicle
-                correction.contract = this.insurance.contract
-                correction.date = this.insurance.endDate + "T00:00:00.00"
-                correction.tax = this.insurance.tax
-                this.deleteObject()
-                this.createCorrection({companyId: this.object.customer, resource:correction})
+                this.correction.endDate += "T00:00:00.00"
+                this.deleteBodyInsurance({id: this.selectedvalue, ids: this.ids, data:this.correction.endDate})
             },
             cancelCorrection : function(){
                 this.showModal = false
-                this.deleteObject()
-            },
-            deleteObject : function(){
                 this.$store.dispatch('delete' + this.resource1.name.capitalize(), {id: this.selectedvalue, ids: this.ids})
             },
             tdshowModal: function(id) {

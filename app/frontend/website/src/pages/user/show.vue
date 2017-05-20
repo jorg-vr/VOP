@@ -17,6 +17,10 @@
                     <td>{{$t('user.email') | capitalize }}</td>
                     <td>{{user.email}}</td>
                 </tr>
+                <tr v-if="user.id == activeAccount.id">
+                    <td>{{$t('language.language') | capitalize}}</td>
+                    <td><language-picker></language-picker></td>
+                </tr>
             </table>
             </h4>
             <function-index :userId="id"></function-index>
@@ -30,6 +34,7 @@
     import buttonEdit from '../../assets/buttons/buttonEdit.vue'
     import FunctionIndex from '../function/index.vue'
     import resources from '../../constants/resources'
+    import languagePicker from '../../assets/navbar/languagePicker.vue'
 
     export default {
         data(){
@@ -38,7 +43,7 @@
             }
         },
         components: {
-            buttonBack, FunctionIndex,buttonEdit
+            buttonBack, FunctionIndex,buttonEdit, languagePicker
         },
         props: {
             id: String
@@ -48,7 +53,7 @@
         },
         computed: {
             ...mapGetters([
-                'user'
+                'user', 'activeAccount'
             ])
         },
         methods: {

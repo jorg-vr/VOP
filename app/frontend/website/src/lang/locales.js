@@ -22,7 +22,8 @@ export default
             totalTaxEuro: 'tax',
             import: 'import',
             failImport: 'The given CSV file does not have the correct format.',
-            example: 'Download example file'
+            example: 'Download example file',
+            generate_green_card: 'Generate green card'
         },
         vehicleType: {
             name: 'name',
@@ -88,6 +89,7 @@ export default
         common: {
             new: 'new',
             remove: 'remove',
+            removed: 'removed',
             back: 'back',
             name: 'name',
             cancel: 'cancel',
@@ -111,8 +113,9 @@ export default
         modal:{
             titleConfirm: 'Confirmation',
             textConfirm: 'Are you sure you want to proceed with this action?',
-            titleCorrection: 'Correction',
-            textCorrection: 'would you like to make a correction for this ',
+            titleCorrection: 'End date',
+            textCorrection: 'On which date do you wish to end this insurance?',
+            bodyCorrection: 'The entered start date is in the past. The system will automatically make a correction for this insurance. ',
             button1: 'Yes',
             button2: 'No',
             cancel: 'cancel'
@@ -162,7 +165,13 @@ export default
             brand:'brand',
             licensePlate:'license plate',
             suretyType:'surety',
-            suretyTypeTranslation:'surety'
+            suretyTypeTranslation:'surety',
+            startsBefore: 'starts before',
+            startsOn: 'starts on',
+            startsAfter: 'starts after',
+            endsBefore: 'ends before',
+            endsOn: 'ends on',
+            endsAfter: 'ends after'
         },
         invoice:{
             invoice: 'invoice',
@@ -180,8 +189,29 @@ export default
             paymentPeriod: 'payment period',
             totalAmount: 'total amount',
             totalTax: 'total tax',
-            export: 'export as pdf'
+            totalAmountEuro: 'price',
+            totalTaxEuro: 'tax',
+            export: 'export as pdf',
+            invoiceTypeTranslation:'type'
 
+        },
+        invoiceTypes:{
+            BILLING:"billing",
+            STATEMENT:"statement",
+            CORRECTION:"correction"
+        },
+        vehicleInvoice:{
+            vehicleInvoices:"cost objects",
+            licensePlate:"license plate",
+            insuredValue:"insured value" ,
+            franchise:"franchise",
+            totalCost:"price",
+            totalTax:"tax",
+            insuredValueEuro:"insured value" ,
+            franchiseEuro:"franchise",
+            totalCostEuro:"price",
+            totalTaxEuro:"tax",
+            suretyTypeTranslation:'surety'
         },
         surety:{
             surety:'insurance surety',
@@ -259,6 +289,7 @@ export default
             object: 'object',
             create: 'created',
             update: 'updated',
+            user: 'user'
         },
         description: {
             property: 'property',
@@ -307,6 +338,9 @@ export default
         },
         field: {
             company: 'company'
+        },
+        language: {
+            language: 'language'
         }
     },
     nl : {
@@ -328,7 +362,8 @@ export default
             totalTaxEuro: 'btw',
             import: 'importeer',
             failImport: 'Het gegeven CSV bestand voldoet niet aan het correcte formaat.',
-            example: 'Download voorbeeld bestand'
+            example: 'Download voorbeeld bestand',
+            generate_green_card: 'Genereer groene kaart'
         },
         vehicleType: {
             name: 'naam',
@@ -388,6 +423,7 @@ export default
         common: {
             new: 'nieuwe',
             remove: 'verwijder',
+            removed: 'verwijderd',
             edit: 'wijzig',
             back: 'terug',
             name: 'naam',
@@ -413,8 +449,9 @@ export default
         modal:{
             titleConfirm: 'Bevestiging',
             textConfirm: 'Weet u zeker dat u wil doorgaan met deze actie?',
-            titleCorrection: 'Correctie',
-            textCorrection: 'wil u hiervoor een correctie doorvoeren?',
+            titleCorrection: 'eind datum',
+            textCorrection: 'vanaf welke datum wilt u deze verzekering stopzetten?',
+            bodyCorrection: 'De ingevoerde startdatum ligt in het verleden. Het systeem zal voor deze verzekering automatisch een correctie doorvoeren. ',
             button1: 'ja',
             button2: 'nee',
             cancel: 'annuleer'
@@ -465,7 +502,13 @@ export default
             brand:'merk',
             licensePlate:'nummer plaat',
             suretyType:'waarborg',
-            suretyTypeTranslation:'waarborg'
+            suretyTypeTranslation:'waarborg',
+            startsBefore: 'begint voor',
+            startsOn: 'begint op',
+            startsAfter: 'begint na',
+            endsBefore: 'eindigt voor',
+            endsOn: 'eindigt op',
+            endsAfter: 'eindigt na'
         },
         invoice:{
             invoice: 'factuur',
@@ -483,8 +526,29 @@ export default
             paymentPeriod: 'afrekeningsperiode',
             totalAmount: 'totaal bedrag',
             totalTax: 'totale belasting',
-            export: 'exporteer als pdf'
+            totalAmountEuro: 'bedrag',
+            totalTaxEuro: 'btw',
+            export: 'exporteer als pdf',
+            invoiceTypeTranslation:'type'
 
+        },
+        invoiceTypes:{
+            BILLING:"factuur",
+            STATEMENT:"afrekening",
+            CORRECTION:"correctie"
+        },
+        vehicleInvoice:{
+            vehicleInvoices:"aangerekende kosten",
+            licensePlate:"nummer plaat",
+            insuredValue:"verzekerde waarde" ,
+            franchise:"franchise",
+            totalCost:"prijs",
+            totalTax:"BTW",
+            insuredValueEuro:"verzekerde waarde" ,
+            franchiseEuro:"franchise",
+            totalCostEuro:"prijs",
+            totalTaxEuro:"BTW",
+            suretyTypeTranslation:'waarborg'
         },
         surety: {
             surety:'verzekeringswaarborg',
@@ -561,6 +625,7 @@ export default
             object: 'object',
             create: 'aangemaakt',
             update: 'gewijzigd',
+            user: 'gebruiker'
 
         },
         description: {
@@ -617,5 +682,8 @@ export default
             REMOVE_ALL: 'alles verwijderen',
             REMOVE_MINE: 'eigen verwijderen'
         },
+        language: {
+            language: 'taal'
+        }
     }
 }
