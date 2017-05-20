@@ -14,7 +14,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import pdf.InvoicePdf;
 import pdf.PdfException;
-import spring.exceptions.NotAuthorizedException;
 import spring.model.AuthenticationToken;
 import spring.model.RESTInvoice;
 import spring.model.RESTSchema;
@@ -79,7 +78,7 @@ public class RESTInvoiceController extends RESTAbstractController<RESTInvoice, I
                                                                 HttpServletRequest request,
                                                                 Integer page, Integer limit,
                                                                 @RequestHeader(value = "Authorization") String token,
-                                                                @RequestHeader(value = "Function") String function) throws ObjectNotFoundException {
+                                                                @RequestHeader(value = "Function") String function) throws ObjectNotFoundException, DataAccessException, UnAuthorizedException {
         UUID user = new AuthenticationToken(token).getAccountId();
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
             InvoiceController controller = manager.getInvoiceController();
@@ -91,10 +90,6 @@ public class RESTInvoiceController extends RESTAbstractController<RESTInvoice, I
                     .map(RESTVehicleInvoice::new)
                     .collect(Collectors.toList());
             return new RESTSchema<>(invoices, page, limit, request);
-        } catch (UnAuthorizedException e) {
-            throw new NotAuthorizedException();
-        } catch (DataAccessException e) {
-            throw new RuntimeException(e);
         }
     }
 

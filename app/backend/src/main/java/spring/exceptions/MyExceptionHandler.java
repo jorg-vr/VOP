@@ -9,28 +9,36 @@ import dao.exceptions.DataAccessException;
 import dao.exceptions.ObjectNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import pdf.PdfException;
 
 
 /**
- * Created by jorg on 3/10/17.
+ * This class is translates all the exceptions that get thrown in the application to the correct HTTP return code.
  */
 @ControllerAdvice
 public class MyExceptionHandler {
 
+    /**
+     * Generate a response entity with a certain http resonse code
+     *
+     * @param status  the status that should be returned
+     * @param message message with more information about what went wrong
+     * @return a response entity with a status equal to the status argument and a body that contains a RESTError with the message argument
+     */
     private ResponseEntity<Object> generateErrorResponse(HttpStatus status, String message) {
         return ResponseEntity
                 .status(status)
                 .body(new RESTError(status.value(), message));
     }
 
-    /*
+
     @ExceptionHandler(HttpMessageNotReadableException.class)
     protected ResponseEntity<Object> handleBadInput(HttpMessageNotReadableException ex) {
         return generateErrorResponse(HttpStatus.BAD_REQUEST, "The JSON is malformed. This is a syntax error.");
-    }*/
+    }
 
     @ExceptionHandler(UnAuthorizedException.class)
     protected ResponseEntity<Object> handleUnAuthorizedException(UnAuthorizedException ex) {
