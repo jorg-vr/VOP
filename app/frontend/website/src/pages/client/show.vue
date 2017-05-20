@@ -9,6 +9,7 @@
         <div class="page-header">
             <h1>
                 {{client.name| capitalize }}
+                <delete-component :resource="resources.CLIENT" :id="client.id" ></delete-component>
                 <button-link v-if="hasPermissionForRoute('invoices')"
                         buttonClass="pull-right btn btn-primary btn-add" :route="{name: 'invoices', params: {companyId: id}}">
                     {{$t("invoice.invoices") | capitalize }}
@@ -95,6 +96,7 @@
     import {translateSuretyTypes,centsToEuroArray} from '../../utils/utils'
     import countries from './countries'
     import Vue from 'vue'
+    import deleteComponent from '../../assets/general/deleteComponent.vue'
 
     export default {
         data(){
@@ -106,7 +108,7 @@
             }
         },
         components: {
-            buttonBack, listComponent, buttonAdd, buttonLink,commissions
+            buttonBack, listComponent, buttonAdd, buttonLink,commissions,deleteComponent
         },
         props: {
             id: String,
