@@ -27,45 +27,9 @@ All of the fields for contract input for the contract form
                     :object="object" name="endDate" :text="$t('insurance.endDate')" :rules="'required'">
         </date-input-form-group>
 
-        <!-- Show if contractFormInput is used to edit -->
-        <div v-if="this.actions.name === 'update'">
-            <div class="page-header">
-                <button-add :resource="resource1"></button-add>
-                <h2>{{$t("vehicle_insurance.vehicle_insurances") | capitalize }} </h2>
-            </div>
 
-        <table class="table-hover table">
-            <thead>
-            <tr>
-                <th v-for="head in listObject1.headers">
-                    {{$t(resource1.name + '.' + head).capitalize()}}
-                </th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="value in listObject1.values" class="list-tr">
-                <td v-for="header in listObject1.headers" class="clickable-td" @click="tdclick(value)">
-                    {{value[header]}}
-                </td>
-                <td class="stretch">
-                    <button-edit :resource="resource1" :params="{contractId:value.contract ,id:value.id}" ></button-edit>
-                    <button-remove :resource="resource1"  @click="tdshowModal(value.id)"></button-remove>
-                </td>
-            </tr>
-            </tbody>
-        </table>
 
-            <div class="page-header">
-                <h2>
-                     <button-add :resource="resource2"></button-add>
-                    {{$t("surety.sureties") | capitalize }}
-                </h2>
-            </div>
-        <h5> {{$t("contract.offer") | capitalize }} {{object.insuranceCompanyName}} </h5>
-        <list-component v-if="show2" :resource="resource2" :listObject="listObject2">
-        </list-component>
 
-        </div>
 
         <!-- Confirmation Modam -->
         <confirm-modal v-show="showModal"
@@ -220,24 +184,7 @@ All of the fields for contract input for the contract form
 
 
 
-            // EDIT
-            if(this.actions.name == 'update'){
-                // fetch all vehicle insurance for contract
-                this.show = true
-                this.setLoading({loading: true })
-                // get all insurances from the contract with contract Id
-                this.fetchInsurances({ids:{contract: this.object.id}}).then(() => {
-                    this.setLoading({loading: false })
-                    this.show1=true
-                })
-                // get all sureties for the chose insuranceCompany
-                // ERROR FIX
-                this.fetchContract({id: this.object.id}).then(contract => {
-                    this.fetchSureties({ids:{company: contract.insuranceCompany}})
-                    this.show2=true
-                })
-                
-            }
+
 
 
         }
