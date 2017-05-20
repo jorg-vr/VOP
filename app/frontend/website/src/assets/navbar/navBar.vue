@@ -21,18 +21,8 @@
                      <!-- conditional group rendering for navbar links-->
                     <template v-if="hasActiveAccount">
                         <dropdown :title="resources.CLIENT" :resources="[resources.FLEET,resources.VEHICLE]"></dropdown>
-                        <li>
-                            <resources-link :resource="resources.USER"></resources-link>
-                        </li>
-                        <li>
-                            <resources-link :resource="resources.CONTRACT"></resources-link>
-                        </li>
-                        <li>
-                            <resources-link :resource="resources.VEHICLE_TYPE"></resources-link>
-                        </li>
-                        <li>
-                            <resources-link :resource="resources.ROLE"></resources-link>
-                        </li>
+                        <dropdown :title="resources.USER" :resources="[resources.ROLE]"></dropdown>
+                        <dropdown :title="resources.CONTRACT" :resources="[resources.CONDITION,resources.VEHICLE_TYPE]"></dropdown>
                     </template>
                 </ul><!-- /.navbar-nav -->
 
