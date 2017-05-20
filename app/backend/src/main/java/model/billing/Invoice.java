@@ -4,6 +4,7 @@ import model.history.EditableObject;
 import model.history.LogResource;
 import model.identity.Company;
 import model.insurance.Contract;
+import model.insurance.VehicleInsurance;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -26,13 +27,11 @@ public class Invoice implements EditableObject, java.io.Serializable {
      */
     private Company payer;
 
-    /**
-     * company that the amount has to be paid to (should normally be Solvas but adding this just in case)
-     */
-    private Company beneficiary;
 
     /**
-     * Type of Invoice. Can be either a billing (monthly payments), a statement at the end of a billing period or a correction invoice
+     * Type of Invoice. Can be either a billing (monthly payments),
+     * a statement at the end of a billing period or a correction invoice,
+     * or a correction
      */
     private InvoiceType type;
 
@@ -54,32 +53,31 @@ public class Invoice implements EditableObject, java.io.Serializable {
     /**
      * collection of the insurances that are the subject of this invoice
      */
-    private Collection<Contract> contracts;
+    private Collection<VehicleInvoice> vehicleInvoices;
+
 
     /**
      * constructor
      */
     public Invoice() {
-        this.contracts = new ArrayList<>();
+        this.vehicleInvoices = new ArrayList<>();
     }
 
     /**
      * Constructor
      * @param payer the payer
-     * @param beneficiary the beneficiary
      * @param type the type of invoice
      * @param paid paid (probably false)
      * @param startDate the start date
      * @param endDate the end date
      */
-    public Invoice(Company payer, Company beneficiary, InvoiceType type, boolean paid, LocalDateTime startDate, LocalDateTime endDate) {
+    public Invoice(Company payer, InvoiceType type, boolean paid, LocalDateTime startDate, LocalDateTime endDate) {
         this.payer = payer;
-        this.beneficiary = beneficiary;
         this.type = type;
         this.paid = paid;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.contracts = new ArrayList<>();
+        this.vehicleInvoices = new ArrayList<>();
     }
 
     /**
@@ -87,11 +85,11 @@ public class Invoice implements EditableObject, java.io.Serializable {
      * @return sum of costs of insurances. expressed in cents
      */
     public int calculateCost() {
-        int totalCost = 0;
-        for (Contract contract: contracts) {
-            totalCost += contract.calculateCost();
+        int cost = 0;
+        for(VehicleInvoice vehicleInvoice : vehicleInvoices){
+            cost+=vehicleInvoice.getTotalCost();
         }
-        return totalCost;
+        return cost;
     }
 
     /**
@@ -99,11 +97,20 @@ public class Invoice implements EditableObject, java.io.Serializable {
      * @return sum of taxes of insurances. expressed in cents
      */
     public int calculateTax() {
-        int totalTax = 0;
-        for (Contract contract: contracts) {
-            totalTax += contract.calculateTax();
+        int tax = 0;
+        for(VehicleInvoice vehicleInvoice : vehicleInvoices){
+            tax+=vehicleInvoice.getTotalTax();
         }
-        return totalTax;
+        return tax;
+    }
+
+    public VehicleInvoice getVehicleInvoice(UUID insuranceID){
+        for(VehicleInvoice vehicleInvoice: getVehicleInvoices()){
+            if(vehicleInvoice.getVehicleInsuranceID().equals(insuranceID)){
+                return vehicleInvoice;
+            }
+        }
+        return null;
     }
 
     /**
@@ -137,22 +144,6 @@ public class Invoice implements EditableObject, java.io.Serializable {
      */
     public void setPayer(Company payer) {
         this.payer = payer;
-    }
-
-    /**
-     * Gets the Beneficiary
-     * @return the beneficiary
-     */
-    public Company getBeneficiary() {
-        return beneficiary;
-    }
-
-    /**
-     * Sets the beneficiary
-     * @param beneficiary the beneficiary
-     */
-    public void setBeneficiary(Company beneficiary) {
-        this.beneficiary = beneficiary;
     }
 
     /**
@@ -220,31 +211,21 @@ public class Invoice implements EditableObject, java.io.Serializable {
     }
 
     /**
-     * Gets the contracts
-     * @return the contracts
+     * Gets the vehicleInvoices
+     * @return the vehicle invoices
      */
-    public Collection<Contract> getContracts() {
-        return contracts;
+    public Collection<VehicleInvoice> getVehicleInvoices() {
+        return vehicleInvoices;
     }
 
     /**
-     * Sets the contracts
-     * @param contracts the contracts
+     * Sets the vehicleInvoices
+     * @param vehicleInvoices the vehicleInvoices
      */
-    public void setContracts(Collection<Contract> contracts) {
-        this.contracts = contracts;
+    public void setVehicleInvoices(Collection<VehicleInvoice> vehicleInvoices) {
+        this.vehicleInvoices = vehicleInvoices;
     }
 
-    /**
-     * Adds a new contract
-     * @param contract the contract
-     */
-    public void addContract(Contract contract){
-        if(contracts==null){
-            contracts = new HashSet<>();
-        }
-        contracts.add(contract);
-    }
 
     @Override
     public LogResource getLogResource() {
@@ -280,8 +261,7 @@ public class Invoice implements EditableObject, java.io.Serializable {
         invoice.setStartDate(startDate);
         invoice.setEndDate(endDate);
         invoice.setPayer(payer);
-        invoice.setBeneficiary(beneficiary);
-        invoice.setContracts(contracts);
+        invoice.setVehicleInvoices(new ArrayList<>(vehicleInvoices));
         return invoice;
     }
 }

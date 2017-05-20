@@ -38,7 +38,7 @@ export const formatLocation = function(str, data) {
 export const addShowableDate = function(objects, propertyName){
     if(objects.length > 0 && objects[0][propertyName]){
         for(let i=0; i<objects.length; i++){
-            objects[i]['showable' + capitalize(propertyName)] =  objects[i][propertyName].showableDate()
+            objects[i]['showable' + capitalize(propertyName)] =objects[i][propertyName]?  objects[i][propertyName].showableDate():objects[i][propertyName]
         }
     }
 }
@@ -72,6 +72,13 @@ export const translateSuretyTypes = function (array) {
     return array
 }
 
+export const translateInvoiceTypes = function (array) {
+    for(let i=0;i<array.length;i++){
+        array[i].invoiceTypeTranslation=Vue.t('invoiceTypes.'+array[i].type).capitalize();
+    }
+    return array
+}
+
 export const centsToEuroArray = function (array,field) {
     for(let i=0;i<array.length;i++){
         array[i]=centsToEuroObject(array[i],field);
@@ -83,3 +90,4 @@ export const centsToEuroObject = function (object,field) {
     object[field+"Euro"] = "€" + object[field]/100;
     return object
 }
+

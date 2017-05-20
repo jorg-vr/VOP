@@ -10,17 +10,6 @@
                 {{ submitText }}
             </button-action>
         </div>
-        <!-- Confirmation modal -->
-        <confirm-modal v-show="showModal"
-                       @cancelModal="cancelCorrection()"
-                       @confirmModal="confirmCorrection()"
-                       @close="showModal=false"
-                       :modalHeaderTitle=" $t('modal.titleCorrection') | capitalize"
-                       :modalBodyText="$t('modal.textCorrection') | capitalize"
-                       :confirmButtonText="$t('modal.button1') | capitalize "
-                       :cancelButtonText="$t('modal.button2') | capitalize ">
-        </confirm-modal>
-
     </form>
 </template>
 <script>
@@ -30,19 +19,16 @@
     import { mapGetters, mapActions, mapMutations } from 'vuex'
     import {SubmitFormHandler} from './SubmitFormHandler'
     import errors from './AbstractFormErrors.vue'
-    import confirmModal from '../../assets/general/modal.vue'
 
     export default {
         data(){
             return {
                 submitText:  getResourceActionText(this.resource.name, this.actions.name),
                 SubmitFormHandler: SubmitFormHandler,
-                showModal:false,
-                checked: false
             }
         },
         components: {
-            buttonAction, buttonBack, errors,confirmModal
+            buttonAction, buttonBack, errors
         },
         props: {
             back: Object, //link to previous page
@@ -64,8 +50,6 @@
         computed: {
             ...mapGetters([
                 'error',
-                'contractId',
-                'contract'
             ])
         },
         methods: {
@@ -75,7 +59,6 @@
              */
             submit(){
                 let promise
-                if(!this.correctionHandler()){
                     if(this.customSubmit){
                         promise = this.customSubmit()
                     }
@@ -97,82 +80,11 @@
                         }
 
                     })
-                }
             },
             initializeFormHandler(components){
                 SubmitFormHandler.setInputComponents(components)
                 SubmitFormHandler.setSubmitFunction(this.submit)
             },
-
-            /*  Function to check if a correction needs to be performed. 
-                It will check if the current resource is an insurances and
-                show the modal if the start date of this insurance is in the past
-                by calling datesHandler()
-
-            */
-            correctionHandler(){
-                if(this.resource.name == 'insurance' && this.checked == false){
-                    // check dates
-                    if(this.datesHandler()){
-                        this.showModal = true
-                        return true
-                    }
-                }
-                return false
-            },
-
-            /* Function used to check if start date is in the past 
-                @return true if start date is in the past
-                @return false if start is current date or in the future
-            */
-            datesHandler(){
-                var d = new Date(this.object.startDate.substring(0,4), this.object.startDate.substring(5,7)-1,this.object.startDate.substring(8,10))
-                var dnow = new Date();
-                // Make sure current date is not considered as date in the past
-                dnow.setHours(0,0,0,0);
-                if (d < dnow) {
-                  return true
-                }
-                else{
-                    return false
-                }
-            },
-            /*  Function to handle request to perform a correction
-                It will create a correction object with the right fields
-                and call the createCorrction function. Finally it calls
-                the submit() function again to continue the submission of the form.
-            */
-
-            confirmCorrection: function(){
-                // hide modal
-                let correction = {}
-                this.showModal=false
-                // create correction object
-                correction.vehicle= this.object.vehicle
-                correction.contract = this.object.contract
-                correction.date = this.object.startDate + "T00:00:00.00"
-                correction.tax = this.object.tax
-                // fetch contract to get company id
-                this.fetchContract({id: this.contractId})
-                this.createCorrection({companyId: this.contract.customer, resource:correction})
-                // Allow submit method to continue
-                this.checked = true
-                this.submit()
-            },
-            /*  Function to handle a request to not perform a correction
-                It calls the submit() function again to continue the submission of the form.
-            */
-            cancelCorrection : function(){
-                this.showModal = false
-                // Allow submit method to continue
-                this.checked = true
-                this.submit()
-            },
-            ...mapActions([
-                'fetchContract',
-                'createCorrection'
-            ]),
-
         }
     }
 </script>

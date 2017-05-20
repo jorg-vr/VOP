@@ -76,7 +76,7 @@ All of the fields for insurance input for the insurance form
             ...mapGetters([
                 'contract',
                 'sureties',
-                'vehicles',
+                'vehicles'
                 ]),
 
         },
@@ -88,6 +88,7 @@ All of the fields for insurance input for the insurance form
                 ])
         },
         created(){
+
             this.fetchContract({id: this.contractId}).then(contract =>{
                 // fetch all possible sureties
                 this.fetchSureties({ids:{ company: this.contract.insuranceCompany}}).then(()=>{

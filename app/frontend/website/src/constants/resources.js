@@ -46,6 +46,10 @@ export default {
         name: 'invoice',
         value: 'BILLING'
     },
+    VEHICLE_INVOICE: {
+        name: 'vehicleInvoice',
+        value: 'BILLING'
+    },
     SURETY: {
         name: 'surety',
         value: 'INSURANCE'

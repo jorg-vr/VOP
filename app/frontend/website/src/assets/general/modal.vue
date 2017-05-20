@@ -27,15 +27,15 @@
 
           <div class="modal-body" id="modalBody">
             <p> {{modalBodyText}}</p>
-            <div>
-        <date-input-form-group v-if="object != null"
-                    :object="object" name="endDate" :text="endDate" :rules="'required'">
-        </date-input-form-group>
-        </div>
+            <form id="modal-form">
+              <date-input-form-group v-if="object != null"
+                                     :object="object" name="endDate" :text="endDate" :rules="'required'">
+              </date-input-form-group>
+            </form>
           </div>
 
           <div class="modal-footer " id="modalFooter" >
-              <button v-if="optionalButtonText" type="button" class="modal-default-button btn" @click="$emit('optional')">  {{ optionalButtonText }}  </button>
+              <!--<button v-if="optionalButtonText" type="button" class="modal-default-button btn" @click="$emit('optional')">  {{ optionalButtonText }}  </button>-->
               <button v-if="cancelButtonText" type="button" class="modal-default-button btn" @click="$emit('cancelModal')"> {{ cancelButtonText}}  </button>
               <button v-if="confirmButtonText" type="button" class="modal-default-button btn" @click="$emit('confirmModal')">  {{ confirmButtonText }}  </button>
     
@@ -50,18 +50,21 @@
 import DateInputFormGroup from '../form/FormGroups/DateInputFormGroup.vue'
 
  export default {
-        props: {
-            confirmButtonText: String, // Shown text on confirmation button 
-            cancelButtonText: String, // Shown text on cancel button
-            optionalButtonText: String, // Shown text on optional button
-            modalHeaderTitle: String, // Shown text on modal header
-            modalBodyText: String, // shown text on modal body
-            endDate: String, // Shown text on date input
-            object: Object // Object to bind date input to
-        },
-        components: {
-            DateInputFormGroup
-        },
+   props: {
+     confirmButtonText: String, // Shown text on confirmation button
+     cancelButtonText: String, // Shown text on cancel button
+     optionalButtonText: String, // Shown text on optional button
+     modalHeaderTitle: String, // Shown text on modal header
+     modalBodyText: String, // shown text on modal body
+     endDate: String, // Shown text on date input
+     object: Object // Object to bind date input to
+   },
+   components: {
+     DateInputFormGroup
+   },
+   mounted(){
+     this.$parent.$emit('mounted', this.$children)
+   },
 
  }
 </script>
@@ -136,6 +139,9 @@ import DateInputFormGroup from '../form/FormGroups/DateInputFormGroup.vue'
         color:white;
     }
 
+    #modal-form label{
+      padding-top: 30px;
+    }
 
 .modal-default-button {
   float: right;

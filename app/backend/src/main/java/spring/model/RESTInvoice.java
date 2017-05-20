@@ -1,44 +1,33 @@
 package spring.model;
 
-import controller.CompanyController;
 import controller.ControllerManager;
-import controller.exceptions.UnAuthorizedException;
-import dao.exceptions.ConstraintViolationException;
-import dao.exceptions.DataAccessException;
-import dao.exceptions.ObjectNotFoundException;
 import model.billing.Invoice;
 import model.billing.InvoiceType;
-import spring.exceptions.ErrorCode;
+import spring.exceptions.NotImplementedException;
 import util.UUIDUtil;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
-
-import static util.MyProperties.PATH_INVOICES;
-import static util.MyProperties.getProperty;
 
 /**
  * Created by Billie Devolder on 16/04/2017.
  */
 public class RESTInvoice extends RESTAbstractModel<Invoice> {
+
     /**
      * Company that has to pay the invoice/is the receiver of the invoice
      */
     private String payer;
 
-    /**
-     * company that the amount has to be paid to (should normally be Solvas but adding this just in case)
-     */
-    private String beneficiary;
 
     /**
-     * Type of Invoice. Can be either a billing (monthly payments), a statement at the end of a billing period or a correction invoice
+     * Type of Invoice. Can be either a billing (monthly payments),
+     * a statement at the end of a billing period or a correction invoice,
+     * or a correction
      */
-    private String type;
+    private InvoiceType type;
 
     /**
-     * indicates whether a bail has been paid for already or is still awaiting payment.
+     * indicates whether a bill has been paid for already or is still awaiting payment.
      */
     private boolean paid;
 
@@ -56,14 +45,14 @@ public class RESTInvoice extends RESTAbstractModel<Invoice> {
 
     private int totalTax;
 
+
     public RESTInvoice() {
 
     }
 
     public RESTInvoice(Invoice invoice) {
-        super(invoice.getUuid(), getProperty(PATH_INVOICES));
-        setType(invoice.getType().toString());
-        setBeneficiary(UUIDUtil.UUIDToNumberString(invoice.getBeneficiary().getUuid()));
+        super(invoice.getUuid(), "invoices");
+        setType(invoice.getType());
         setPaid(invoice.isPaid());
         setEndDate(invoice.getEndDate());
         setStartDate(invoice.getStartDate());
@@ -72,36 +61,31 @@ public class RESTInvoice extends RESTAbstractModel<Invoice> {
         setPayer(UUIDUtil.UUIDToNumberString(invoice.getPayer().getUuid()));
     }
 
+    /**
+     * Cannot be used for put or post so no implementation needed
+     * @throws NotImplementedException
+     */
     @Override
-    public Invoice translate(ControllerManager manager) throws UnAuthorizedException, DataAccessException, ConstraintViolationException {
-        Invoice invoice = new Invoice();
-        invoice.setUuid(UUIDUtil.toUUID(getId()));
-        invoice.setEndDate(getEndDate());
-        invoice.setStartDate(getStartDate());
-        invoice.setPaid(isPaid());
-        invoice.setType(InvoiceType.valueOf(getType()));
-
-        CompanyController controller = manager.getCompanyController();
-
-        Map<String, String> violations = new HashMap<>();
-        try {
-            invoice.setBeneficiary(controller.get(UUIDUtil.toUUID(getBeneficiary())));
-        } catch (ObjectNotFoundException e) {
-            violations.put("benificiary", ErrorCode.NOT_FOUND.toString());
-        }
-
-        try {
-            invoice.setPayer(controller.get(UUIDUtil.toUUID(getPayer())));
-        } catch (ObjectNotFoundException e) {
-            violations.put("payer", ErrorCode.NOT_FOUND.toString());
-        }
-
-        if (violations.size() > 0) {
-            throw new ConstraintViolationException(violations);
-        }
-        return invoice;
+    public Invoice translate(ControllerManager manager) throws NotImplementedException {
+        throw new NotImplementedException();
     }
 
+
+    public String getPayer() {
+        return payer;
+    }
+
+    public void setPayer(String payer) {
+        this.payer = payer;
+    }
+
+    public InvoiceType getType() {
+        return type;
+    }
+
+    public void setType(InvoiceType type) {
+        this.type = type;
+    }
 
     public boolean isPaid() {
         return paid;
@@ -109,22 +93,6 @@ public class RESTInvoice extends RESTAbstractModel<Invoice> {
 
     public void setPaid(boolean paid) {
         this.paid = paid;
-    }
-
-    public int getTotalAmount() {
-        return totalAmount;
-    }
-
-    public void setTotalAmount(int totalAmount) {
-        this.totalAmount = totalAmount;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public LocalDateTime getStartDate() {
@@ -143,20 +111,15 @@ public class RESTInvoice extends RESTAbstractModel<Invoice> {
         this.endDate = endDate;
     }
 
-    public String getPayer() {
-        return payer;
+
+
+
+    public int getTotalAmount() {
+        return totalAmount;
     }
 
-    public void setPayer(String payer) {
-        this.payer = payer;
-    }
-
-    public String getBeneficiary() {
-        return beneficiary;
-    }
-
-    public void setBeneficiary(String beneficiary) {
-        this.beneficiary = beneficiary;
+    public void setTotalAmount(int totalAmount) {
+        this.totalAmount = totalAmount;
     }
 
     public int getTotalTax() {
