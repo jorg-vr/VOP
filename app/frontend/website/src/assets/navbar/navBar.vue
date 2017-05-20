@@ -20,9 +20,9 @@
                 <ul class="nav navbar-nav">
                      <!-- conditional group rendering for navbar links-->
                     <template v-if="hasActiveAccount">
-                        <dropdown :title="resources.CLIENT" :resources="[resources.FLEET,resources.VEHICLE]"></dropdown>
-                        <dropdown :title="resources.USER" :resources="[resources.ROLE]"></dropdown>
-                        <dropdown :title="resources.CONTRACT" :resources="[resources.CONDITION,resources.VEHICLE_TYPE]"></dropdown>
+                        <dropdown :resources="[resources.CLIENT,resources.FLEET,resources.VEHICLE]"></dropdown>
+                        <dropdown :resources="[resources.USER,resources.ROLE]"></dropdown>
+                        <dropdown :resources="[resources.CONTRACT,resources.CONDITION,resources.VEHICLE_TYPE]"></dropdown>
                     </template>
                 </ul><!-- /.navbar-nav -->
 
