@@ -48,4 +48,5 @@ A button usable for navigating to the previous page. This previous page has to b
     form #back {
         margin-top: 25px;
     }
+
 </style>
