@@ -33,6 +33,9 @@ import static util.UUIDUtil.toUUID;
  * Requests that are implemented in this class:
  * 1) GET /companies/{id}/invoices
  * 2) GET /companies/{id}/invoices/{id}
+ * 3) GET /companies/{id}/invoices/{id}/pdf
+ * 4) GET /companies/{id}/invoices/current
+ * 5) GEt /companies/{id}/invoices/current/pdf
  */
 @RestController
 @RequestMapping("/${path.companies}/{companyId}/${path.invoices}")
