@@ -30,8 +30,15 @@
         props: {
             id:String,
             resource: Object,
-            params:Object, //for routing
+            params:{
+                Object,
+                default: {}
+            },//for routing
             ids: Object, //for api
+            back:{
+                Object,
+                default: {name:this.resource.name.plural()}
+            }, //route used after delete
             edit: {
                 Boolean,
                 default: true
@@ -42,7 +49,6 @@
             }
         },
         created(){
-            this.params=this.params?this.params:{};
             this.params.id=this.id;
         },
         components: {
@@ -55,7 +61,9 @@
                 // hide modal
                 this.showModal=false
                 // remove object
-                this.$store.dispatch('delete' + this.resource.name.capitalize(), {id: this.id, ids: this.ids})
+                this.$store.dispatch('delete' + this.resource.name.capitalize(), {id: this.id, ids: this.ids}).then(()=>
+                    this.$router.push(this.back)
+                )
             },
             tdshowModal: function() {
                 this.showModal = true
