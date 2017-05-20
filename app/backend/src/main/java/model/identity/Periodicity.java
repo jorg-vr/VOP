@@ -8,20 +8,28 @@ import java.util.Map;
  * Created by jorg on 4/9/17.
  */
 public enum  Periodicity {
-    MONTHLY(1),
-    YEARLY(12),
-    HALF_YEARLY(6),
-    QUARTERLY(4);
+
+    MONTHLY(1, "Maandelijks"),
+    YEARLY(12, "Jaarlijks"),
+    HALF_YEARLY(6, "Halfjaarlijks"),
+    QUARTERLY(4, "Driemaandelijks");
 
     // The time between payments in months
     private int time;
 
-    Periodicity(int time) {
+    private String dutchTranslation;
+
+    Periodicity(int time, String dutchTranslation) {
         this.time = time;
+        this.dutchTranslation = dutchTranslation;
     }
 
     public int getTime() {
         return time;
+    }
+
+    public String getDutchTranslation() {
+        return dutchTranslation;
     }
 
     private static Map<Integer, Periodicity> map =  new HashMap<>();
@@ -31,6 +39,10 @@ public enum  Periodicity {
         }
     }
 
+    /**
+     * Create a periodicity based on the time
+     * @param time the months between payments
+     */
     public static Periodicity fromTime(int time) {
         return map.get(time);
     }

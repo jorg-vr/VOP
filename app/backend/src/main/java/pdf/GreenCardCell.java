@@ -1,15 +1,13 @@
 package pdf;
 
-import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.Font;
 
 /**
- * A more advanced table cell that has a title and a body
+ * A cell for in the table of the green card
  *
  * @author Billie Devolder
  */
-public class GreenCardCell extends PdfPCell {
+public class GreenCardCell extends MyCell {
 
     private static Font smallItalic = new Font(Font.FontFamily.TIMES_ROMAN, 6,
             Font.ITALIC);
@@ -21,23 +19,7 @@ public class GreenCardCell extends PdfPCell {
      * @param rows  rowspan of the cell
      */
     public GreenCardCell(String title, String body, int cols, int rows) {
-
-        PdfPTable table = new PdfPTable(1);
-        table.setHorizontalAlignment(Element.ALIGN_LEFT);
-        PdfPCell c = new PdfPCell(new Paragraph(title, smallItalic));
-        c.setBorder(Rectangle.NO_BORDER);
-        c.setHorizontalAlignment(Element.ALIGN_LEFT);
-        table.addCell(c);
-
-        c = new PdfPCell();
-        c.addElement(new Paragraph(body));
-        c.setBorder(Rectangle.NO_BORDER);
-        c.setHorizontalAlignment(Element.ALIGN_CENTER);
-        table.addCell(c);
-
-        addElement(table);
-        setRowspan(rows);
-        setColspan(cols);
+        super(title, body, cols, rows, smallItalic);
     }
 
 }

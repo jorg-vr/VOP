@@ -18,7 +18,6 @@ import pdf.PdfException;
 import spring.model.AuthenticationToken;
 import spring.model.RESTSchema;
 import spring.model.insurance.RESTVehicleInsurance;
-import spring.model.insurance.RESTVehicleInsuranceContainer;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
@@ -73,7 +72,7 @@ public class RESTVehicleInsuranceController {
      */
     @RequestMapping(method = RequestMethod.POST)
     public RESTVehicleInsurance createCorrection(@RequestBody RESTVehicleInsurance insurance, @RequestHeader(value = "Authorization") String token,
-                                             @RequestHeader(value = "Function") String function) throws DataAccessException, UnAuthorizedException, ConstraintViolationException {
+                                                 @RequestHeader(value = "Function") String function) throws DataAccessException, UnAuthorizedException, ConstraintViolationException {
         UUID user = new AuthenticationToken(token).getAccountId();
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
             VehicleInsuranceController controller = manager.getVehicleInsuranceController();
@@ -83,8 +82,8 @@ public class RESTVehicleInsuranceController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public RESTVehicleInsurance putCorrection(@PathVariable String id, @RequestBody RESTVehicleInsurance restVehicleInsurance,
-                                          @RequestHeader(value = "Authorization") String token,
-                                          @RequestHeader(value = "Function") String function) throws DataAccessException, UnAuthorizedException, ConstraintViolationException, ObjectNotFoundException {
+                                              @RequestHeader(value = "Authorization") String token,
+                                              @RequestHeader(value = "Function") String function) throws DataAccessException, UnAuthorizedException, ConstraintViolationException, ObjectNotFoundException {
         UUID user = new AuthenticationToken(token).getAccountId();
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
             VehicleInsuranceController controller = manager.getVehicleInsuranceController();
@@ -98,7 +97,7 @@ public class RESTVehicleInsuranceController {
                                  @RequestHeader(value = "Function") String function) throws DataAccessException, UnAuthorizedException, ConstraintViolationException, ObjectNotFoundException {
         UUID uuid = toUUID(id);
         UUID user = new AuthenticationToken(token).getAccountId();
-        LocalDate localDate=LocalDate.parse(date, DateTimeFormatter.ISO_DATE);
+        LocalDate localDate = LocalDate.parse(date, DateTimeFormatter.ISO_DATE);
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
             VehicleInsuranceController controller = manager.getVehicleInsuranceController();
             controller.archive(uuid, localDate);
@@ -107,7 +106,7 @@ public class RESTVehicleInsuranceController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
     public RESTVehicleInsurance getId(@PathVariable("id") String id, @RequestHeader(value = "Authorization") String token,
-                   @RequestHeader(value = "Function") String function) throws UnAuthorizedException, ObjectNotFoundException, DataAccessException {
+                                      @RequestHeader(value = "Function") String function) throws UnAuthorizedException, ObjectNotFoundException, DataAccessException {
         UUID uuid = toUUID(id);
         UUID user = new AuthenticationToken(token).getAccountId();
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
@@ -116,11 +115,12 @@ public class RESTVehicleInsuranceController {
         }
     }
 
-
     @GetMapping("/{id}/${path.green_card}")
     @ResponseBody
-    public HttpEntity<byte[]> getGreenCard(@PathVariable("id") String id, @RequestHeader(value = "Authorization") String token,
-                                           @RequestHeader(value = "Function") String function) throws DataAccessException, UnAuthorizedException, ObjectNotFoundException, PdfException {
+    public HttpEntity<byte[]> getGreenCard(@PathVariable("id") String
+                                                   id, @RequestHeader(value = "Authorization") String token,
+                                           @RequestHeader(value = "Function") String function) throws
+            DataAccessException, UnAuthorizedException, ObjectNotFoundException, PdfException {
         UUID uuid = toUUID(id);
         UUID user = new AuthenticationToken(token).getAccountId();
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {

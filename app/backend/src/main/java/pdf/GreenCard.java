@@ -3,46 +3,39 @@ package pdf;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
 import model.fleet.Vehicle;
 import model.identity.Address;
 import model.identity.Customer;
 import model.identity.InsuranceCompany;
 import model.insurance.VehicleInsurance;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.time.LocalDateTime;
 
 /**
  * This class is a representation of a green card pdf
+ *
  * @author Billie Devolder
  */
-public class GreenCard {
+public class GreenCard extends Pdf {
+
+    // Codes of the countries that are on the green card
+    private String[] countries = {"A", "B", "BG", "CY", "CZ", "D", "DK", "E", "F", "FIN", "GB", "GR", "H", "HR", "I", "IRL"
+            , "IS", "L", "LT", "LV", "M", "N", "NL", "P", "PL", "RO", "S", "SK", "SLO", "CH", "AL", "AND", "BIH"
+            , "BY", "IL", "IR", "MA", "MD", "MK", "MNE", "RUS", "SRB", "TN", "TR", "UA"};
 
     private VehicleInsurance insurance;
 
-    private Document document;
-    private ByteArrayOutputStream baos;
-
     /**
-     *
      * @param insurance vehicle insurance for which the greencard should be created
      * @throws PdfException pdf could not be created
      */
     public GreenCard(VehicleInsurance insurance) {
-        try {
-            this.insurance = insurance;
-            init();
-            createGreenCard();
-            finish();
-        } catch (DocumentException e) {
-            throw new PdfException();
-        }
+        super();
+        this.insurance = insurance;
+        generatePdf();
     }
 
-    private void createGreenCard() throws DocumentException {
+    protected void generateDocument() throws DocumentException {
         PdfPTable table = new PdfPTable(12);
         table.setTotalWidth(PageSize.A4.getWidth() - 5);
         table.setLockedWidth(true);
@@ -59,16 +52,26 @@ public class GreenCard {
         c.setColspan(6);
         table.addCell(c);
 
-        // Add information about the insurance company
+        addInsuranceCompanyInformation(table);
+        addDateInformation(table);
+        addVehicleInformation(table);
+        addCoverageArea(table);
+        addCustomerInformation(table);
+
+        getDocument().add(table);
+    }
+
+    private void addInsuranceCompanyInformation(PdfPTable table) {
         InsuranceCompany insuranceCompany = insurance.getContract().getCompany();
         Address address = insuranceCompany.getAddress();
 
         String body = insuranceCompany.getName() + "\n" + address.getStreet() + " " + address.getStreetNumber()
                 + "\n" + address.getPostalCode() + " " + address.getTown();
         table.addCell(new GreenCardCell("Landcode/Code verzekeraar/Nummer", body, 6, 3));
+    }
 
-        // Add information about the start and end date
-        c = new PdfPCell(new Phrase("VAN"));
+    private void addDateInformation(PdfPTable table) {
+        PdfPCell c = new PdfPCell(new Phrase("VAN"));
         c.setBorder(Rectangle.LEFT);
         c.setHorizontalAlignment(Element.ALIGN_CENTER);
         c.setColspan(3);
@@ -82,32 +85,14 @@ public class GreenCard {
 
         addDateTimeCells(table, insurance.getStartDate());
         addDateTimeCells(table, insurance.getEndDate());
-
-        // Add information about the vehicle
-        Vehicle vehicle = insurance.getVehicle();
-        body = vehicle.getLicensePlate();
-        if (vehicle.getLicensePlate() == null) {
-            body = vehicle.getVin();
-        }
-        table.addCell(new GreenCardCell("Kenteken (of, indien geen kenteken) chassis- of motornummer", body, 6, 2));
-        table.addCell(new GreenCardCell("Soort motorrijtuig", vehicle.getType().getType(), 3, 2));
-        table.addCell(new GreenCardCell("Merk motorrijtuig", vehicle.getBrand() + " " + vehicle.getModel(), 3, 2));
-
-        // Add information about the customer
-        Customer customer = insurance.getContract().getCustomer();
-        address = customer.getAddress();
-        body = customer.getName() + "\n" + address.getStreet() + " " + address.getStreetNumber()
-                + "\n" + address.getPostalCode() + " " + address.getTown();
-        table.addCell(new GreenCardCell("Naam en andres van verzekeringsnemer (of houder van het motorrijtuig)", body, 12, 4));
-
-        document.add(table);
     }
 
     /**
      * Add 3 GreenCardCells to the table of colspan and widthspan 1.
      * There will be 1 cell for day, month and year
+     *
      * @param table table where the cells should be added to
-     * @param date date value that should be put in the cells
+     * @param date  date value that should be put in the cells
      */
     private void addDateTimeCells(PdfPTable table, LocalDateTime date) {
         String day = "";
@@ -123,32 +108,41 @@ public class GreenCard {
         table.addCell(new GreenCardCell("Jaar", year + "" + "", 1, 1));
     }
 
-    private void init() throws DocumentException {
-        document = new Document();
-        baos = new ByteArrayOutputStream();
-        PdfWriter.getInstance(document, baos);
-        document.open();
+    private void addVehicleInformation(PdfPTable table) {
+        Vehicle vehicle = insurance.getVehicle();
+        String body = vehicle.getLicensePlate();
+        if (vehicle.getLicensePlate() == null) {
+            body = vehicle.getVin();
+        }
+        table.addCell(new GreenCardCell("Kenteken (of, indien geen kenteken) chassis- of motornummer", body, 6, 2));
+        table.addCell(new GreenCardCell("Soort motorrijtuig", vehicle.getType().getType(), 3, 2));
+        table.addCell(new GreenCardCell("Merk motorrijtuig", vehicle.getBrand() + " " + vehicle.getModel(), 3, 2));
     }
 
-    private void finish() {
-        document.close();
+    private void addCoverageArea(PdfPTable table) {
+        PdfPCell c = new PdfPCell(new Paragraph("DEKKINGSGEBIED"));
+        c.setHorizontalAlignment(Element.ALIGN_CENTER);
+        c.setColspan(12);
+        table.addCell(c);
+        for (String country : countries) {
+            c = new PdfPCell(new Paragraph(country));
+            c.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.addCell(c);
+        }
+        int mod = countries.length % 12;
+        if (mod != 0) {
+            PdfPCell filler = new PdfPCell();
+            filler.setColspan(12 - mod);
+            table.addCell(filler);
+        }
     }
 
-    /**
-     * @return the pdf document as a byte array
-     */
-    public byte[] getAsByteArray() {
-        return baos.toByteArray();
-    }
-
-    /**
-     * Write the green card pdf to a file
-     * @param path path of the file where the green card should be written to
-     * @throws IOException could not write pdf to file
-     */
-    public void writeToFile(String path) throws IOException {
-        FileOutputStream fos = new FileOutputStream(path);
-        fos.write(baos.toByteArray());
-        fos.close();
+    private void addCustomerInformation(PdfPTable table) {
+        // Add information about the customer
+        Customer customer = insurance.getContract().getCustomer();
+        Address address = customer.getAddress();
+        String body = customer.getName() + "\n" + address.getStreet() + " " + address.getStreetNumber()
+                + "\n" + address.getPostalCode() + " " + address.getTown();
+        table.addCell(new GreenCardCell("Naam en andres van verzekeringsnemer (of houder van het motorrijtuig)", body, 12, 4));
     }
 }

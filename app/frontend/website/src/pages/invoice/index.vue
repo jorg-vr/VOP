@@ -22,7 +22,6 @@
     import listComponent from '../../assets/general/listComponent.vue'
     import buttonBack from '../../assets/buttons/buttonBack.vue'
     import {translateInvoiceTypes,centsToEuroArray} from '../../utils/utils'
-
     export default {
         data(){
             return {
@@ -66,7 +65,6 @@
             ...mapMutations([
                 'setLoading'
             ])
-
         }
     }
 </script>
