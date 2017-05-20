@@ -14,7 +14,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import pdf.InvoicePdf;
 import pdf.PdfException;
-import spring.exceptions.NotAuthorizedException;
 import spring.model.AuthenticationToken;
 import spring.model.RESTInvoice;
 import spring.model.RESTSchema;
@@ -35,7 +34,7 @@ import static util.UUIDUtil.toUUID;
  * 2) GET /companies/{id}/invoices/{id}
  * 3) GET /companies/{id}/invoices/{id}/pdf
  * 4) GET /companies/{id}/invoices/current
- * 5) GEt /companies/{id}/invoices/current/pdf
+ * 5) GET /companies/{id}/invoices/current/pdf
  */
 @RestController
 @RequestMapping("/${path.companies}/{companyId}/${path.invoices}")
@@ -56,7 +55,7 @@ public class RESTInvoiceController extends RESTAbstractController<RESTInvoice, I
                                           HttpServletRequest request,
                                           Integer page, Integer limit,
                                           @RequestHeader(value = "Authorization") String token,
-                                          @RequestHeader(value = "Function") String function) throws ObjectNotFoundException {
+                                          @RequestHeader(value = "Function") String function) throws ObjectNotFoundException, DataAccessException, UnAuthorizedException {
         UUID user = new AuthenticationToken(token).getAccountId();
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
             InvoiceController controller = manager.getInvoiceController();
@@ -70,20 +69,16 @@ public class RESTInvoiceController extends RESTAbstractController<RESTInvoice, I
                     .map(RESTInvoice::new)
                     .collect(Collectors.toList());
             return new RESTSchema<>(invoices, page, limit, request, (a, b) -> b.getStartDate().compareTo(a.getStartDate()));
-        } catch (UnAuthorizedException e) {
-            throw new NotAuthorizedException();
-        } catch (DataAccessException e) {
-            throw new RuntimeException(e);
         }
     }
 
-    @RequestMapping(value = "/{id}/${path.vehicleInvoices}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}/${path.vehicle_invoices}", method = RequestMethod.GET)
     public RESTSchema<RESTVehicleInvoice> getAllVehicleInvoices(@PathVariable String companyId,
                                                                 @PathVariable String id,
                                                                 HttpServletRequest request,
                                                                 Integer page, Integer limit,
                                                                 @RequestHeader(value = "Authorization") String token,
-                                                                @RequestHeader(value = "Function") String function) throws ObjectNotFoundException {
+                                                                @RequestHeader(value = "Function") String function) throws ObjectNotFoundException, DataAccessException, UnAuthorizedException {
         UUID user = new AuthenticationToken(token).getAccountId();
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
             InvoiceController controller = manager.getInvoiceController();
@@ -95,17 +90,13 @@ public class RESTInvoiceController extends RESTAbstractController<RESTInvoice, I
                     .map(RESTVehicleInvoice::new)
                     .collect(Collectors.toList());
             return new RESTSchema<>(invoices, page, limit, request);
-        } catch (UnAuthorizedException e) {
-            throw new NotAuthorizedException();
-        } catch (DataAccessException e) {
-            throw new RuntimeException(e);
         }
     }
 
     @GetMapping("/${path.current}")
     @ResponseBody
     public RESTInvoice getCurrent(@PathVariable("companyId") String companyId, @RequestHeader(value = "Authorization") String token,
-                                     @RequestHeader(value = "Function") String function) throws DataAccessException, UnAuthorizedException, ObjectNotFoundException, PdfException {
+                                  @RequestHeader(value = "Function") String function) throws DataAccessException, UnAuthorizedException, ObjectNotFoundException, PdfException {
         UUID uuid = toUUID(companyId);
         UUID user = new AuthenticationToken(token).getAccountId();
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
@@ -153,7 +144,7 @@ public class RESTInvoiceController extends RESTAbstractController<RESTInvoice, I
     @RequestMapping(method = RequestMethod.PUT)
     public void create(@PathVariable String companyId,
                        @RequestHeader(value = "Authorization") String token,
-                       @RequestHeader(value = "Function") String function) throws ObjectNotFoundException, ConstraintViolationException {
+                       @RequestHeader(value = "Function") String function) throws ObjectNotFoundException, ConstraintViolationException, DataAccessException, UnAuthorizedException {
         UUID user = new AuthenticationToken(token).getAccountId();
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
             InvoiceController controller = manager.getInvoiceController();
@@ -161,13 +152,6 @@ public class RESTInvoiceController extends RESTAbstractController<RESTInvoice, I
 
             Customer company = customerController.get(UUIDUtil.toUUID(companyId));
             controller.endStatement(company);
-        } catch (UnAuthorizedException e) {
-            throw new NotAuthorizedException();
-        } catch (DataAccessException e) {
-            throw new RuntimeException(e);
         }
-
-
     }
-
 }

@@ -8,7 +8,6 @@ import dao.exceptions.DataAccessException;
 import dao.exceptions.ObjectNotFoundException;
 import model.history.EditableObject;
 import org.springframework.web.bind.annotation.*;
-import spring.exceptions.InvalidInputException;
 import spring.model.AuthenticationToken;
 import spring.model.RESTAbstractModel;
 import spring.model.RESTModelFactory;
@@ -23,6 +22,8 @@ import static util.UUIDUtil.toUUID;
  * Basic means that it translates the RESTModel R to the domain specific model M
  * and that it calls the appropriate method of the controller corresponding with the Model M.
  * Authentication and exception handling is also implemented in the methods.
+ *
+ * There is no generic implementation for GET all requests because these requests have filters.
  *
  * @param <R> A subclass of RESTAbstractModel
  * @param <M> The model that corresponds to the RESTModel of type R
@@ -42,14 +43,12 @@ public abstract class RESTAbstractController<R extends RESTAbstractModel<M>, M e
 
     @RequestMapping(method = RequestMethod.POST)
     public R post(@RequestBody R rest, @RequestHeader(value = "Authorization") String token,
-                  @RequestHeader(value = "Function") String function) throws UnAuthorizedException, ConstraintViolationException, ObjectNotFoundException {
+                  @RequestHeader(value = "Function") String function) throws UnAuthorizedException, ConstraintViolationException, ObjectNotFoundException, DataAccessException {
         UUID user = new AuthenticationToken(token).getAccountId();
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
             AbstractController<M> controller = getController(manager);
             M model = controller.create(rest.translate(manager));
             return factory.create(model);
-        } catch (DataAccessException e) {
-            throw new InvalidInputException(e);
         }
     }
 

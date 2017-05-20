@@ -289,7 +289,8 @@ export default
             object: 'object',
             create: 'created',
             update: 'updated',
-            user: 'user'
+            user: 'user',
+            delete: 'deleted'
         },
         description: {
             property: 'property',
@@ -674,7 +675,8 @@ export default
             object: 'object',
             create: 'aangemaakt',
             update: 'gewijzigd',
-            user: 'gebruiker'
+            user: 'gebruiker',
+            delete: 'verwijderd'
 
         },
         description: {

@@ -24,7 +24,6 @@ public class RESTLogEntry {
     private Collection<RESTDescription> description;
     private LocalDateTime dateTime;
 
-
     public RESTLogEntry(LogEntry entry) {
         this.id = UUIDToNumberString(entry.getUuid());
         this.object = UUIDToNumberString(entry.getObject());

@@ -43,11 +43,13 @@ import static util.UUIDUtil.toUUID;
  * 3)  POST /fleets
  * 4)  PUT /fleets/{id}
  * 5)  DELETE /fleets/{id}
+ *
  * 6)  GET /companies/{companyId}/fleet
  * 7)  GET /companies/{companyId}/fleets/{id}
  * 8)  POST /companies/{companyId}/fleets
  * 9)  PUT /companies/{companyId}/fleets/{id}
  * 10) DELETE /companies/{companyId}/fleets/{id}
+ *
  * 11) POST /fleets/{id}/vehicles/import
  * 12) GET /fleets/{id}/vehicles/import/example
  * <p>

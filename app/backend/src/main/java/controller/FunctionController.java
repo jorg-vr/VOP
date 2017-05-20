@@ -19,12 +19,11 @@ import java.util.stream.Collectors;
 public class FunctionController extends AbstractController<Function> {
 
     private DAOManager manager;
-    private FunctionDAO functionDAO;
+    private FunctionDAO dao;
 
     public FunctionController(Function function, DAOManager manager) {
         super(manager, manager.getFunctionDAO(), Resource.FUNCTION, function);
-        this.manager = manager;
-        functionDAO = this.manager.getFunctionDAO();
+        dao = manager.getFunctionDAO();
     }
 
     @Override
@@ -33,9 +32,6 @@ public class FunctionController extends AbstractController<Function> {
     }
 
     public Collection<Function> getFiltered(User user, Company company, Role role) throws DataAccessException, UnAuthorizedException {
-
-        FunctionDAO dao = (FunctionDAO) getDao();
-
         Collection<Function> result = getAll(
                 dao.byCompany(company),
                 dao.byUser(user));

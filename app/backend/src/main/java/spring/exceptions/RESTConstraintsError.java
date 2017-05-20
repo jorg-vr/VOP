@@ -5,12 +5,19 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Object that will be returned when another object has one or more constraint errors
  * @author Billie Devolder
  */
 public class RESTConstraintsError extends RESTError {
 
+    // A list of all the errors that will be returned
     private List<ErrorItem> errors;
 
+    /**
+     * @param code http response code
+     * @param message message with more information about the error
+     * @param errors list of all the errors
+     */
     public RESTConstraintsError(int code, String message, Map<String, String> errors) {
         super(code, message);
         setErrors(errors);
@@ -36,7 +43,10 @@ public class RESTConstraintsError extends RESTError {
 
     private class ErrorItem {
 
+        // The field caused an error
         private String field;
+
+        // Information about what is wrong the the value of the field
         private String message;
 
         public ErrorItem(String field, String message) {

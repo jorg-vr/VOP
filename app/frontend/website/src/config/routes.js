@@ -68,7 +68,14 @@ import login from '../pages/login/login.vue'
 
 import ImportVehicles from '../pages/vehicle/import.vue'
 
-export default [
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+import store from '../store'
+import environments from '../config/environments'
+
+Vue.use(VueRouter)
+
+let routes = [
     {
         path: '',
         component: App,
@@ -147,3 +154,10 @@ export default [
     {path: '*', component: exception, props: {statusCode: 404}}
 ];
 
+console.log(environments[process.env.NODE_ENV])
+
+export default new VueRouter({
+    mode: 'history',
+    base: environments[process.env.NODE_ENV].BASE,
+    routes: routes,
+})
