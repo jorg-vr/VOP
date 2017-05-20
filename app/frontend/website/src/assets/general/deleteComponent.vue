@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="delete-component">
         <button-edit v-if="edit" :resource="resource" :params="params" ></button-edit>
         <button-remove v-if="remove" :resource="resource"  @click="tdshowModal()"></button-remove>
         <!-- Confirmation Modal -->
@@ -32,10 +32,7 @@
             resource: Object,
             params:Object,//for routing
             ids: Object, //for api
-            back:{
-                Object,
-                default: {name:this.resource.name.plural()}
-            }, //route used after delete
+            back:Object, //route used after delete
             edit: {
                 Boolean,
                 default: true
@@ -60,7 +57,7 @@
                 this.showModal=false
                 // remove object
                 this.$store.dispatch('delete' + this.resource.name.capitalize(), {id: this.id, ids: this.ids}).then(()=>
-                    this.$router.push(this.back)
+                    this.$router.push(this.back?this.back:{name:this.resource.name.plural()})
                 )
             },
             tdshowModal: function() {
@@ -69,3 +66,8 @@
         }
     }
 </script>
+<style>
+    .delete-component{
+        display: inline;
+    }
+</style>
