@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import store from '../store'
+import router from '../config/routes'
 
 /**
  * Interface for communicating with the backend API.
@@ -170,7 +171,7 @@ let formQuery = function(filters){
 
 let rejectResponse = function(response, reject){
     if(response.status===401){ //Invalid token
-        window.location = '/login'
+        router.push({name: 'login'})
     }
     store.commit('setError', response)
     reject(response)
