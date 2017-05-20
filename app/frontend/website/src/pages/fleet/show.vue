@@ -8,6 +8,10 @@
         <div class="page-header">
             <h1>
                 {{fleet.name}} <span v-if="fleet.companyName">- {{fleet.companyName }}</span>
+                <delete-component v-if="fleet" :resource="resourceFleet" :id="fleet.id" ></delete-component>
+            </h1>
+            <h4 class="fleet">
+                <span v-if="fleet.totalCost">  {{$t('fleet.totalCost')|capitalize}}: {{fleet.totalCostEuro }}</span>
                 <button-add :resource="resource" :params="{fleetId: fleet.id}"></button-add>
                 <button-link v-if="hasPermissionForRoute('import_vehicles')" buttonId="import" buttonClass="pull-right btn btn-primary"
                              :route="{name: 'import_vehicles', params: {fleetId: id}}">
@@ -17,10 +21,9 @@
                              :route="{name: 'fleet_logs'}">
                     {{$t('log.log') | capitalize}}
                 </button-link>
-            </h1>
-            <h4>
-                <span v-if="fleet.totalCost">  {{$t('fleet.totalCost')|capitalize}}: {{fleet.totalCostEuro }}</span>
-                <span v-if="fleet.totalTax">  |  {{$t('fleet.totalTax')|capitalize}}:  {{fleet.totalTaxEuro }}</span>
+                <br>
+                <span v-if="fleet.totalTax">  {{$t('fleet.totalTax')|capitalize}}:  {{fleet.totalTaxEuro }}</span>
+
             </h4>
         </div>
         <abstract-search-form :resource="resource" :filters="filters" :searchFunction="searchVehicles">
@@ -46,16 +49,18 @@
     import VehicleSearchInput from '../vehicle/VehicleSearchInput.vue'
     import ImportVehicles from '../vehicle/import.vue'
     import {centsToEuroObject,centsToEuroArray} from '../../utils/utils'
+    import deleteComponent from '../../assets/general/deleteComponent.vue'
 
     export default {
         data(){
             return {
                 filters: {},
-                resource: resources.VEHICLE
+                resource: resources.VEHICLE,
+                resourceFleet: resources.FLEET
             }
         },
         components: {
-            listComponent, buttonAdd, buttonBack, buttonLink, AbstractSearchForm, VehicleSearchInput, ImportVehicles
+            listComponent, buttonAdd, buttonBack, buttonLink, AbstractSearchForm, VehicleSearchInput, ImportVehicles,deleteComponent
         },
         props: {
             id: String
