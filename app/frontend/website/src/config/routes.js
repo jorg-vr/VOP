@@ -161,7 +161,7 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
     //This variable must be false at the start of a page!
     store.commit('setLoading', false)
-    if(to.path === '/login'){
+    if(to.name === 'login'){
         next()
     }
     else {
