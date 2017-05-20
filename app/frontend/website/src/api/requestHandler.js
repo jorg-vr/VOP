@@ -125,6 +125,24 @@ export default {
             })
         })
     },
+
+    /**
+     * This function does a DELETE request to the specified location. The specified ID is added to the location.
+     * @param location
+     * @param id: The id of the object to be removed.
+     * @param data: The body of this request
+     * @returns {Promise}
+     */
+    deleteWithBodyRequest(location, id,data){
+        return new Promise((resolve, reject) => {
+            Vue.http.delete(location + id, {body: data}).then(() => {
+                resolve()
+            }, response => {
+                rejectResponse(response, reject)
+            })
+        })
+    },
+
 }
 
 /**

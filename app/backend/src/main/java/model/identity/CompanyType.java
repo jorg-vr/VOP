@@ -7,7 +7,8 @@ import model.Factory;
 public enum CompanyType {
 
     CUSTOMER(Customer::new),
-    INSURANCE_COMPANY(InsuranceCompany::new);
+    INSURANCE_COMPANY(InsuranceCompany::new),
+    SOLVAS(Company::new);
 
     private Factory<Company> factory;
 

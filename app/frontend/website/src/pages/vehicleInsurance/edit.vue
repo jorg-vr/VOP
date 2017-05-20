@@ -21,8 +21,9 @@
             return {
                 actions: actions.UPDATE,
                 resource: resources.INSURANCE,
-                insurance: {},
-                back: {name:resources.INSURANCE.name,params:{id:this.contractId}}
+                insurance: {contract:this.contractId},
+                back: {name:resources.INSURANCE.name,params:{contractId:this.contractId}}
+
             }
         },
         created(){
@@ -31,7 +32,7 @@
             })
         },
         components: {
-            abstractForm, insuranceFormInput
+            abstractForm,insuranceFormInput
         },
         props: {
             id: String,
@@ -45,4 +46,3 @@
         }
     }
 </script>
-

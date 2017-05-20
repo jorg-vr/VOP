@@ -44,17 +44,15 @@
         </table>
         <!-- Confirmation Modam -->
         <confirm-modal v-show="showModal"
-                       @cancelModal="cancelCorrection"
-                       @confirmModal="confirmCorrection()"
-                       @optional="showModal=false"
+                       @cancelModal="cancelCorrection()"
+                       @confirmModal="SubmitFormHandler.submit()"
                        @close="showModal=false"
-                       :object="insurance"
+                       :object="correction"
                        :endDate="$t('insurance.endDate') | capitalize"
                        :modalHeaderTitle=" $t('modal.titleCorrection') | capitalize"
                        :modalBodyText="$t('modal.textCorrection') | capitalize"
                        :confirmButtonText="$t('modal.button1') | capitalize "
-                       :cancelButtonText="$t('modal.button2') | capitalize "
-                       :optionalButtonText="$t('modal.cancel') | capitalize ">
+                       :cancelButtonText="$t('modal.button2') | capitalize ">
         </confirm-modal>
 
         <div class="page-header">
@@ -82,6 +80,7 @@
     import buttonEdit from '../../assets/buttons/buttonEdit.vue'
     import buttonRemove from '../../assets/buttons/buttonRemove.vue'
     import confirmModal from '../../assets/general/modal.vue'
+    import {SubmitFormHandler} from '../../assets/form/SubmitFormHandler'
 
     export default {
         data(){
@@ -91,7 +90,9 @@
                 show1: false,
                 show2: false,
                 ids:{contract:this.id},
-                showModal:false
+                showModal:false,
+                correction: {},
+                SubmitFormHandler: SubmitFormHandler,
             }
         },
         components: {
@@ -102,6 +103,7 @@
             id: String
         },
         created(){
+            this.$on('mounted', components => this.initializeFormHandler(components));
             this.setLoading({loading: true })
             // fetch contract to display information
             let contractId = this.id;
@@ -125,6 +127,8 @@
                 this.setLoading({loading: false });
                 this.show1=true;
             });
+         SubmitFormHandler.setSubmitFunction(this.confirmCorrection)
+
         },
         computed: {
             ...mapGetters([
@@ -164,7 +168,7 @@
                 'fetchInsurances',
                 'fetchSureties',
                 'fetchInsurance',
-                'createCorrection'
+                'deleteBodyInsurance'
             ]),
             ...mapMutations([
                 'setLoading',
@@ -173,30 +177,24 @@
                 this.$router.push({name: this.resource1.name, params: {contractId:value.contract, id:value.id}});
             },
             confirmCorrection: function(){
-                // hide modal
-                let correction = {}
-                this.showModal=false
-                // create correction object
-                correction.vehicle= this.insurance.vehicle
-                correction.contract = this.insurance.contract
-                correction.date = this.insurance.endDate + "T00:00:00.00"
-                correction.tax = this.insurance.tax
-                this.deleteObject()
-                this.createCorrection({companyId: this.contract.customer, resource:correction})
+                if(this.correction.endDate) {
+                    this.showModal = false
+                    this.correction.endDate =  this.correction.endDate;
+                    this.deleteBodyInsurance({id: this.selectedvalue, ids: this.ids, data: this.correction.endDate})
+                }else{
+
+                }
             },
             cancelCorrection : function(){
                 this.showModal = false
-                this.deleteObject()
-            },
-            deleteObject : function(){
-                this.$store.dispatch('delete' + this.resource1.name.capitalize(), {id: this.selectedvalue, ids: this.ids})
             },
             tdshowModal: function(id) {
-                this.showModal = true
-                this.selectedvalue=id
-                // fetch clicked insuranc
-                this.fetchInsurance({ids:{ contract:this.id}, id:this.selectedvalue}).then(insurance => {
-                 })
+                this.showModal = true;
+                this.selectedvalue=id;
+            },
+            initializeFormHandler(components){
+                SubmitFormHandler.setInputComponents(components)
+                SubmitFormHandler.setSubmitFunction(this.confirmCorrection)
             }
         },
     }

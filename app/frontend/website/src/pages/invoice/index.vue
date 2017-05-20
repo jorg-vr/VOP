@@ -6,12 +6,12 @@
     <div class="col-lg-8 col-md-9 col-sm-11">
         <div class="page-header">
             <h1>
-                {{$t("invoice.invoices") | capitalize }} <span v-if="client">{{client.name}}</span>
+                {{$t("invoice.invoices") | capitalize }} {{client.name}}
             </h1>
         </div>
-        <list-component :objects="invoices" :resource="resource" :listObject="listObject">
-        </list-component>
-        <button-back :route="{name: 'client'}"></button-back>
+
+        <list-component v-if="show" :resource="resource" :listObject="listObject" :edit="false" :remove="false"></list-component>
+        <button-back :route="{name: 'client',params:{id:companyId}}"></button-back>
 
     </div>
 </template>
@@ -21,11 +21,12 @@
     import actions from '../../constants/actions'
     import listComponent from '../../assets/general/listComponent.vue'
     import buttonBack from '../../assets/buttons/buttonBack.vue'
-
+    import {translateInvoiceTypes,centsToEuroArray} from '../../utils/utils'
     export default {
         data(){
             return {
-                resource: resources.INVOICE
+                resource: resources.INVOICE,
+                show:false
             }
         },components: {
             listComponent,buttonBack
@@ -34,28 +35,32 @@
             companyId: String
         },
         created() {
-            this.setLoading({loading: true })
-            this.fetchClient({id: this.companyId})
-            this.fetchInvoicesByCompany({ filters: {companyId: this.companyId}).then(() => {
+            this.setLoading({loading: true });
+            this.fetchInvoices({ids:{company: this.companyId}}).then(() => {
+                translateInvoiceTypes(this.invoices);
+                centsToEuroArray(this.invoices,"totalAmount");
+                centsToEuroArray(this.invoices,"totalTax");
+                this.show=true;
                 this.setLoading({loading: false })
-            })
+            });
+            this.fetchClient({id:this.companyId});
         },
         computed: {
-            listObject() {
-                let listObj = {};
-                listObj.headers = ['showableStartDate', 'showableEndDate', 'totalAmount'];
-                listObj.values = this.invoices;
-                return listObj;
-            },
             ...mapGetters([
                 'invoices',
                 'client'
-            ])
+            ]),
+            listObject() {
+                var listObj = {};
+                listObj.headers = ["showableStartDate","invoiceTypeTranslation","totalAmountEuro","totalTaxEuro"];
+                listObj.values = this.invoices;
+                return listObj;
+            }
         },
         methods: {
             ...mapActions([
-                'fetchClient',
-                'fetchInvoicesBy',
+                'fetchInvoices',
+                'fetchClient'
             ]),
             ...mapMutations([
                 'setLoading'

@@ -40,6 +40,7 @@
                     <key column="customer_id" not-null="true"/>
                     <one-to-many class="model.insurance.Contract" />
                 </bag>
+                <many-to-one class="model.billing.Invoice" name="currentStatement" column="current_statement_id" />
                 <map name="commissions"
                      table="customer_commissions" cascade="all">
                     <key column="customer_id"/>

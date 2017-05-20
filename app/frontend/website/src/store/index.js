@@ -39,6 +39,7 @@ let conditionResource = resourceModule.initializeModule(locations.CONDITION, 'co
 let insuranceResource = resourceModule.initializeModule(locations.INSURANCE, 'insurance')
 let functionResource = resourceModule.initializeModule(locations.FUNCTION, 'function')
 let invoiceResource = resourceModule.initializeModule(locations.INVOICE, 'invoice')
+let vehicleInvoiceResource = resourceModule.initializeModule(locations.VEHICLE_INVOICE, 'vehicleInvoice')
 
 export default new Vuex.Store({
     modules : {
@@ -57,6 +58,7 @@ export default new Vuex.Store({
         commissionResource,
         functionResource,
         invoiceResource,
+        vehicleInvoiceResource,
         //The following modules provide additional functions for the previous resources (or are completely new modules).
         fleet,
         login,
