@@ -149,7 +149,7 @@ let routes = [
             {path: 'clients/:companyId(\\d+)/invoices/:id(\\d+)', name: 'invoice', component: showInvoice, props: true}
         ],
     },
-    {path: '/login', name: 'login', component: login},
+    {path: 'login', name: 'login', component: login},
     {path: '*', component: exception, props: {statusCode: 404}}
 ];
 
