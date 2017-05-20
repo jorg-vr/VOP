@@ -12,7 +12,7 @@ public enum  Periodicity {
     MONTHLY(1, "Maandelijks"),
     YEARLY(12, "Jaarlijks"),
     HALF_YEARLY(6, "Halfjaarlijks"),
-    QUARTERLY(4, "Driemaandelijks");
+    QUARTERLY(3, "Driemaandelijks");
 
     // The time between payments in months
     private int time;

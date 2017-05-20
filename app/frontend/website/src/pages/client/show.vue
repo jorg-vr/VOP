@@ -10,7 +10,7 @@
             <h1>
                 {{client.name| capitalize }}
                 <delete-component :resource="resources.CLIENT" :id="client.id" ></delete-component>
-                <button-link v-if="hasPermissionForRoute('invoices')"
+                <button-link v-if="hasPermissionForRoute('invoices')&&client.type===clientTypes.CUSTOMER.type"
                              buttonClass="pull-right btn btn-primary btn-add" :route="{name: 'invoices', params: {companyId: id}}">
                     {{$t("invoice.invoices") | capitalize }}
                 </button-link>
