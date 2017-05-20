@@ -1,6 +1,6 @@
 <template>
     <div class="delete-component">
-        <button-edit v-if="edit" :resource="resource" :params="params" ></button-edit>
+        <button-edit v-if="edit" :resource="resource" :params="par" ></button-edit>
         <button-remove v-if="remove" :resource="resource"  @click="tdshowModal()"></button-remove>
         <!-- Confirmation Modal -->
         <confirm-modal v-show="showModal"
@@ -42,9 +42,14 @@
                 default: true
             }
         },
-        created(){
-            this.params=this.params?this.params:{}
-            this.params.id=this.id;
+        computed:{
+            //not adviced to edit props
+            // so make a computed value to edit
+            par(){
+                let par=this.params?this.params:{};
+                par.id=this.id;
+                return par;
+            }
         },
         components: {
             buttonRemove,
