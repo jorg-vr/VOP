@@ -27,5 +27,5 @@ export const FUNCTION = 'users/{userId}/functions/'
 export const GREEN_CARD = 'contracts/{contractId}/insurances/{insuranceId}/green-card/'
 export const PERMISSION_LIST = 'auth/permissions'
 export const CORRECTION = "corrections/"
-
+export const INVOICE_PDF=INVOICE+"{invoiceId}/pdf"
 //Example location for updated resources: export const SURETY = 'contracts/{contract}/insurances'

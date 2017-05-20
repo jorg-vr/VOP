@@ -4,7 +4,10 @@
 <template>
     <div v-if="show">
         <div v-if="invoice" class="page-header">
-            <h1>{{$t("invoiceTypes."+invoice.type) | capitalize }} {{client.name}}</h1>
+            <h1>{{$t("invoiceTypes."+invoice.type) | capitalize }} {{client.name}}
+                <button-action @click="downloadGreenCard({contractId, insuranceId: id})" buttonClass="pull-right btn btn-primary">
+                    {{$t('vehicle.generate_green_card')}}
+                </button-action></h1>
             <h4 >{{showDate(invoice.startDate)}} - {{showDate(invoice.endDate)}}</h4>
             <h4> {{$t('invoice.totalAmountEuro') | capitalize }}: {{invoice.totalAmountEuro}}</h4>
             <h4>{{$t('invoice.totalTaxEuro') | capitalize }}: {{invoice.totalTaxEuro}}</h4>
