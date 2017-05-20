@@ -24,7 +24,7 @@ public class VehicleController extends CommissionContainerController<Vehicle> {
 
     public VehicleController(Function function, DAOManager manager) {
         super(manager, manager.getVehicleDAO(), Resource.VEHICLE, function);
-        this.dao = dao;
+        this.dao = manager.getVehicleDAO();
     }
 
 
