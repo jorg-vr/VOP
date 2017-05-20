@@ -68,7 +68,13 @@ import login from '../pages/login/login.vue'
 
 import ImportVehicles from '../pages/vehicle/import.vue'
 
-export default [
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+import store from '../store'
+
+Vue.use(VueRouter)
+
+let routes = [
     {
         path: '',
         component: App,
@@ -147,3 +153,51 @@ export default [
     {path: '*', component: exception, props: {statusCode: 404}}
 ];
 
+const router = new VueRouter({
+    mode: 'history',
+    routes: routes,
+})
+
+router.beforeEach((to, from, next) => {
+    //This variable must be false at the start of a page!
+    store.commit('setLoading', false)
+    if(to.path === '/login'){
+        next()
+    }
+    else {
+        let token = localStorage.getItem('authToken')
+        if(token){
+            store.commit('setAuthToken', {authToken: token})
+            store.dispatch('refreshToken').then(() => {
+                if(store.getters.hasPermissionForRoute(to.name)){
+                    store.commit('setError', null) //Reset the state errors. No errors have been thrown yet on the new page.
+                    next()
+                }
+                else {
+                    if(from.name !== null){ //If the user comes from a page. Let the user remain on that page.
+                        next(false)
+                    }
+                    else { //If the user does not come from a page. Redirect the user to the home page
+                        next({name: 'homeClient'})
+                    }
+                }
+            }, () => {
+                store.commit('setNextRoute' , {route: to})
+                next({name: 'login'});
+            })
+        }
+        else {
+            store.commit('setNextRoute' , {route: to})
+            next({name: 'login'});
+        }
+    }
+    if(!store.getters.isGoingBack){
+        store.commit('pushVisitedRoute', {route: from})
+    }
+    else {
+        store.commit('setIsGoingBack', {status: false})
+    }
+
+})
+
+export default router
