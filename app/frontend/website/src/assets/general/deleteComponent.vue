@@ -30,10 +30,7 @@
         props: {
             id:String,
             resource: Object,
-            params:{
-                Object,
-                default: {}
-            },//for routing
+            params:Object,//for routing
             ids: Object, //for api
             back:{
                 Object,
@@ -49,6 +46,7 @@
             }
         },
         created(){
+            this.params=this.params?this.params:{}
             this.params.id=this.id;
         },
         components: {
