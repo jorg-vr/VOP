@@ -19,7 +19,7 @@ import java.util.Collections;
 import static util.Formatter.euroFormat;
 
 /**
- * Created by Billie Devolder on 15/05/2017.
+ * This class represents a invoice pdf
  */
 public class InvoicePdf extends Pdf {
 
