@@ -73,7 +73,7 @@ public class RESTInvoiceController extends RESTAbstractController<RESTInvoice, I
         }
     }
 
-    @RequestMapping(value = "/{id}/${path.vehicleInvoices}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}/${path.vehicle_nvoices}", method = RequestMethod.GET)
     public RESTSchema<RESTVehicleInvoice> getAllVehicleInvoices(@PathVariable String companyId,
                                                                 @PathVariable String id,
                                                                 HttpServletRequest request,
