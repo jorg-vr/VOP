@@ -8,6 +8,9 @@ import util.UUIDUtil;
 
 import java.time.LocalDateTime;
 
+import static util.MyProperties.PATH_INVOICES;
+import static util.MyProperties.getProperty;
+
 /**
  * Created by Billie Devolder on 16/04/2017.
  */
@@ -51,7 +54,7 @@ public class RESTInvoice extends RESTAbstractModel<Invoice> {
     }
 
     public RESTInvoice(Invoice invoice) {
-        super(invoice.getUuid(), "invoices");
+        super(invoice.getUuid(), getProperty(PATH_INVOICES));
         setType(invoice.getType());
         setPaid(invoice.isPaid());
         setEndDate(invoice.getEndDate());
@@ -63,6 +66,7 @@ public class RESTInvoice extends RESTAbstractModel<Invoice> {
 
     /**
      * Cannot be used for put or post so no implementation needed
+     *
      * @throws NotImplementedException
      */
     @Override
@@ -110,8 +114,6 @@ public class RESTInvoice extends RESTAbstractModel<Invoice> {
     public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
     }
-
-
 
 
     public int getTotalAmount() {
