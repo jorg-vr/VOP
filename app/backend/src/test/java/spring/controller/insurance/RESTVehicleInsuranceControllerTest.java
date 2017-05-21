@@ -329,7 +329,7 @@ public class RESTVehicleInsuranceControllerTest {
                     .andExpect(jsonPath("$.brand", equalTo(vehicleInsurance.getVehicle().getBrand())))
                     .andExpect(jsonPath("$.suretyType", equalTo(vehicleInsurance.getSurety().getSuretyType().toString())))
                     .andExpect(jsonPath("$.insuranceCompanyName", equalTo(vehicleInsurance.getContract().getCompany().getName())));
-        } catch (Exception e) {
+        } catch (AssertionError e) {
             remove(vehicleInsurance.getUuid());
             throw e;
         }

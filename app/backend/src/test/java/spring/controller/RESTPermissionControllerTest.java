@@ -105,7 +105,7 @@ public class RESTPermissionControllerTest {
                     .content(TestUtil.convertObjectToJsonBytes(permissions))
             )
                     .andExpect(status().isOk());
-        } catch (Exception e) {
+        } catch (AssertionError e) {
             remove(role.getUuid());
             throw e;
         }

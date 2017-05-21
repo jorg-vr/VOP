@@ -195,7 +195,7 @@ public class RESTUserControllerTest {
                     .andExpect(jsonPath("$.lastName", equalTo(restUser.getLastName())))
                     .andExpect(jsonPath("$.email", equalTo(restUser.getEmail())))
                     .andExpect(jsonPath("$.password", equalTo(restUser.getPassword())));
-        } catch (Exception e) {
+        } catch (AssertionError e) {
             remove(user.getUuid());
             throw e;
         }

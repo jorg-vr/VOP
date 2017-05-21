@@ -284,7 +284,7 @@ public class RESTVehicleControllerTest {
                     .andExpect(jsonPath("$.mileage", equalTo(restVehicle.getMileage())))
                     .andExpect(jsonPath("$.year", equalTo(restVehicle.getYear())))
                     .andExpect(jsonPath("$.fleet", equalTo(restVehicle.getFleet())));
-        } catch (Exception e) {
+        } catch (AssertionError e) {
             remove(vehicle.getUuid());
             throw e;
         }

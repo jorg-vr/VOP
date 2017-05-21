@@ -236,7 +236,7 @@ public class RESTFunctionControllerTest {
                     .andExpect(jsonPath("$.role", equalTo(restFunction.getRole())))
                     .andExpect(jsonPath("$.roleName", equalTo(restFunction.getRoleName())))
                     .andExpect(jsonPath("$.user", equalTo(restFunction.getUser())));
-        } catch (Exception e) {
+        } catch (AssertionError e) {
             remove(function.getUuid());
             throw e;
         }

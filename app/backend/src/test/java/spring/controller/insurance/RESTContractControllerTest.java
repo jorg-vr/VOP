@@ -269,7 +269,7 @@ public class RESTContractControllerTest {
                     .andExpect(jsonPath("$.insuranceCompanyName", equalTo(insuranceCompany1.getName())))
                     .andExpect(jsonPath("$.totalCost", equalTo(contract.calculateCost())))
                     .andExpect(jsonPath("$.totalTax", equalTo(contract.calculateTax())));
-        } catch (Exception e) {
+        } catch (AssertionError e) {
             remove(contract.getUuid());
             throw e;
         }
