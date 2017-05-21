@@ -602,7 +602,7 @@ public class RealDataDatabaseFiller {
         Role role = new Role();
         role.setName("Productiebeheerder");
         for (Resource resource : Resource.values()) {
-            if (!resource.equals(Resource.USER) && !resource.equals(Resource.VEHICLETYPE)) {
+            if (!resource.equals(Resource.USER) && !resource.equals(Resource.VEHICLETYPE)&& !resource.equals(Resource.ROLE)) {
                 role.setAccess(resource, Action.CREATE_ALL);
                 role.setAccess(resource, Action.READ_ALL);
                 role.setAccess(resource, Action.REMOVE_ALL);
@@ -611,6 +611,7 @@ public class RealDataDatabaseFiller {
         }
         role.setAccess(Resource.VEHICLETYPE, Action.READ_ALL);
         role.setAccess(Resource.USER, Action.READ_MINE);
+        role.setAccess(Resource.ROLE,Action.READ_MINE);
         return role;
     }
 
@@ -634,7 +635,7 @@ public class RealDataDatabaseFiller {
         Role role = new Role();
         role.setName("Verzekeringsmakelaar");
         for (Resource resource : Resource.values()) {
-            if (!(resource.equals(Resource.LOG) || resource.equals(Resource.USER))) {
+            if (!(resource.equals(Resource.LOG) || resource.equals(Resource.USER)||resource.equals(Resource.ROLE))) {
                 role.setAccess(resource, Action.READ_ALL);
                 role.setAccess(resource, Action.CREATE_ALL);
                 role.setAccess(resource, Action.REMOVE_ALL);
