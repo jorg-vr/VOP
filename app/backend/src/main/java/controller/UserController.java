@@ -19,10 +19,12 @@ import java.util.Collection;
 public class UserController extends AbstractController<User> {
 
     private UserDAO dao;
+    private ControllerManager controllerManager;
 
-    public UserController(Function function, DAOManager manager) {
+    public UserController(Function function, DAOManager manager, ControllerManager controllerManager) {
         super(manager, manager.getUserDAO(), Resource.USER, function);
         this.dao = manager.getUserDAO();
+        this.controllerManager = controllerManager;
     }
 
     @Override

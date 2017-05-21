@@ -3,6 +3,7 @@ package controller;
 import controller.exceptions.UnAuthorizedException;
 import controller.insurance.CommissionContainerController;
 import dao.exceptions.DataAccessException;
+import dao.exceptions.ObjectNotFoundException;
 import dao.interfaces.DAOManager;
 import dao.interfaces.VehicleDAO;
 import model.account.Function;
@@ -13,6 +14,7 @@ import model.fleet.VehicleType;
 import model.identity.Customer;
 
 import java.util.Collection;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -21,10 +23,12 @@ import java.util.stream.Collectors;
 public class VehicleController extends CommissionContainerController<Vehicle> {
 
     private VehicleDAO dao;
+    private ControllerManager controllerManager;
 
-    public VehicleController(Function function, DAOManager manager) {
+    public VehicleController(Function function, DAOManager manager, ControllerManager controllerManager) {
         super(manager, manager.getVehicleDAO(), Resource.VEHICLE, function);
         this.dao = manager.getVehicleDAO();
+        this.controllerManager = controllerManager;
     }
 
 
@@ -62,5 +66,11 @@ public class VehicleController extends CommissionContainerController<Vehicle> {
                 .filter(c -> vin == null || c.getVin().toLowerCase().equals(vin.toLowerCase()))
                 .filter(c -> year == null || c.getYear().getYear() == year)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void archive(UUID uuid) throws DataAccessException, UnAuthorizedException, ObjectNotFoundException {
+
+        super.archive(uuid);
     }
 }

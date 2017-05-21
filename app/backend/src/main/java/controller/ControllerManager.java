@@ -90,11 +90,11 @@ public class ControllerManager implements AutoCloseable {
     }
 
     public UserController getUserController() {
-        return new UserController(function, daoManager);
+        return new UserController(function, daoManager,this);
     }
 
     public VehicleController getVehicleController() {
-        return new VehicleController(function, daoManager);
+        return new VehicleController(function, daoManager,this);
     }
 
     public VehicleTypeController getVehicleTypeController() {
