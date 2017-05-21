@@ -75,9 +75,12 @@ public class VehicleInsuranceController extends AbstractController<VehicleInsura
         LocalDate date = vehicleInsurance.getStartDate().toLocalDate();
         Invoice currentStatement = null;
         try {
+            if(vehicleInsurance.getVehicle().getFleet().getOwner().getCurrentStatement()==null){
+                return super.create(vehicleInsurance);
+            }
             currentStatement = manager.getInvoiceDao().get(vehicleInsurance.getVehicle().getFleet().getOwner().getCurrentStatement().getUuid());
         } catch (ObjectNotFoundException e) {
-            e.printStackTrace();
+            return super.create(insurance);
         }
 
         if (!date.isAfter(currentStatement.getEndDate().toLocalDate())) {

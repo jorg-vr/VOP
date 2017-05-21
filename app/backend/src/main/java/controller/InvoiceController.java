@@ -83,7 +83,6 @@ public class InvoiceController extends AbstractController<Invoice> {
             vehicleInvoice.setTotalCost(insurance.calculateCost() * duration);
             vehicleInvoice.setTotalTax(insurance.calculateTax() * duration);
             vehicleInvoice.setInsuredValue(insurance.getInsuredValue());
-            System.out.println(insurance.getUuid());
             vehicleInvoice.setVehicleInsuranceID(insurance.getUuid());
             vehicleInvoices.add(vehicleInvoice);
         }
