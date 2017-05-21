@@ -7,7 +7,7 @@ A collapsible form part of a searchbar. This form can be used for advanced searc
             {{$t('search_bar.search')}}
             <span class="caret"></span>
         </button>
-        <div class="panel-collapse collapse">
+        <div class="search-panel panel-collapse collapse">
             <form class="form-horizontal collapse-form" @submit.prevent="onSubmit" @keyup.enter="onSubmit" role="form">
                 <slot></slot>
                 <button type="button" class="btn btn-primary" @click="reset">Reset</button>

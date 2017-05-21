@@ -167,7 +167,7 @@ public class InvoicePdf extends Pdf {
             previousLicensePlate = licencePlate;
 
 
-            table.addCell(new PdfPCell(new Paragraph(vehicleInvoice.getSurety().getSuretyType().getDutchTranslation() + "")));
+            table.addCell(new PdfPCell(new Paragraph(vehicleInvoice.getSuretyType().getDutchTranslation() + "")));
 
             int cost = vehicleInvoice.getTotalCost();
             int tax = vehicleInvoice.getTotalTax();

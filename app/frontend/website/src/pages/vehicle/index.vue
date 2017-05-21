@@ -37,7 +37,7 @@
             this.clearVehicles()
         },
         mounted(){
-            $('.collapse').collapse("show")
+            $('.search-panel.collapse').collapse("show")
             if(this.isAuthorizedForOwnResourcesButNotAll(this.resource, actions.READ_ALL)){
                 this.filters.company = this.activeFunction.company
             }

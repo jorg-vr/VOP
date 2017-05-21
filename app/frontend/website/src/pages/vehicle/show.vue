@@ -154,6 +154,6 @@
         margin-right: 10px;
     }
     .vehicle-back {
-        margin-top: 0;
+        margin-top: 0 !important;
     }
 </style>

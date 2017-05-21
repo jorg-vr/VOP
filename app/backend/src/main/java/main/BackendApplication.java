@@ -17,8 +17,6 @@ import javax.annotation.PreDestroy;
 @ComponentScan(basePackages = {"spring"})
 public class BackendApplication {
 
-    public static final boolean DISABLE_AUTH = false;
-
     public static void main(String[] args) throws Exception {
 
         if (args.length == 1) {

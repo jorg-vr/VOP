@@ -48,7 +48,7 @@ public class RESTVehicleInvoice {
         setTotalCost(vehicleInvoice.getTotalCost());
         setTotalTax(vehicleInvoice.getTotalTax());
         setVin(vehicleInvoice.getVin());
-        setSuretyType(vehicleInvoice.getSurety().getSuretyType());
+        setSuretyType(vehicleInvoice.getSuretyType());
     }
 
     public SuretyType getSuretyType() {

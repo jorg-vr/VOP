@@ -51,4 +51,11 @@ Voor het versturen van e-mails zouden we gebruik maken van het observer patroon.
 
 Er zou in de applicatie ook een algemene log kunnen getoond worden. Bij het ontwerpen van het logsysteem hebben we hier rekening mee gehouden dus kan dit relatief gemakkelijk worden toegevoegd. Bij de \verb|LogEntryController| moet een methode worden aangemaakt die alle logs ophaalt van de \verb|LogEntryDAO|. Bij \verb|RESTLogEntryController| moet een methode worden aangemaakt die de methode van \verb|LogEntryController| oproept.
 
+\section{Ondersteunen van andere soorten correcties}
+
+Indien we andere soorten correcties willen ondersteunen, moet er bij het veranderen van een \verb|VehicleInsurance|, naast het object zelf, ook de datum waarop de verandering moet plaatsvinden worden meegegeven.  Voor de API call wordt er best een wrapper object aangemaakt die de datum en de \verb|RESTVehicleInsurance| bevat. Bij de put methode van \verb|VehicleInsuranceController| zal nu ook de datum moeten worden meegegeven. De code die moet gebruikt worden voor het genereren van correcties kan grotendeels hergebruikt worden van de andere soorten correcties (verzekering toevoegen en verwijderen).
+
+\section{Exporteren van voertuigen}
+
+Voor deze uitbreiding moeten we de bestaande code niet aanpassen maar gewoon code toevoegen. Ten eerste hebben we hier een nieuwe API call voor nodig. In de methode die de API call implementeert, zullen de voertuigen moeten worden opgehaald aan de hand van de \verb|VehicleController|. We zullen ook een nieuwe module moeten implementeren die een xls bestand kan aanmaken. Deze module zal ergens een methode nodig hebben waar de lijst van voertuigen aan moet worden meegegeven en die een bestand teruggeeft. De methode die de API call implementeert, zal dan deze nieuwe methode oproepen en het bestand teruggeven. Hier staan de aanpassingen in verhouding tot de uitbreiding: aan de bestaande code moet niets aangepast worden. 
 \end{document}
