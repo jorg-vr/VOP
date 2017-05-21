@@ -109,8 +109,6 @@ public class VehicleInsuranceController extends AbstractController<VehicleInsura
     public VehicleInsurance update(VehicleInsurance insurance, LocalDate date) throws DataAccessException, UnAuthorizedException, ObjectNotFoundException, ConstraintViolationException {
         VehicleInsurance vehicleInsurance = insurance;
         Invoice currentStatement = manager.getInvoiceDao().get(vehicleInsurance.getVehicle().getFleet().getOwner().getCurrentStatement().getUuid());
-        System.out.println("CurrentStatement: " + currentStatement);
-        System.out.println("Date: " + date);
         VehicleInsurance currentInsurance = get(vehicleInsurance.getUuid());
         if (!date.isAfter(currentStatement.getEndDate().toLocalDate())) {
             vehicleInsurance = super.update(vehicleInsurance);
