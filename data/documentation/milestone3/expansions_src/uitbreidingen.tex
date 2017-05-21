@@ -30,8 +30,25 @@ Misschien wil Solvas, in een verre toekomst, zich ook gaan bezighouden met het v
 In het domeinmodel zou er een nieuwe klasse, \verb|WaterCraft|, moeten toegevoegd worden. Deze klasse zou een boot voorstellen en sterk lijken op de huidige klasse \verb|Vehicle|. Deze 2 klassen zouden grote gelijkenissen vertonen dus zou hier best een gemeenschappelijke superklasse voor gemaakt worden. In dit document zal deze superklasse \verb|AbstractVehicle| worden genoemd. De klasse \verb|Fleet| zou dan ook een collectie \verb|AbstractVehicle| objecten moeten hebben in plaats van \verb|Vehicle| objecten.
 \\
 \\
-In de andere lagen zou er een \verb|DataAccessObject|, een \verb|Controller| en een \verb|RESTController| moeten bijkomen specifiek voor boten. \verb|WaterCraftDAO| en \verb|WaterCraftController| zouden dan overerven van respectievelijk \verb|DAO| en \verb|AbstractController| zodat enkel de update en create methodes nog moeten worden geïmplementeerd. Aan de klasse \verb|DAOProvider| zou er een methode moeten worden toegevoegd zodat de nieuwe \verb|DAO| kan worden opgevraagd. 
-\\
-\\
+In de andere lagen moeten volgende zaken worden toegevoegd/veranderd:
+\begin{enumerate}
+	\item Er moet een hibernate mapping gemaakt worden voor de nieuwe klasse.
+	\item Er moet een nieuw \verb|DataAccessObject| aangemaakt worden. Deze moet overerven van de abstracte klasse \verb|ProductionDAO|. In deze klasse moeten geen nieuwe methodes worden geïmplementeerd.
+	\item Het nieuwe \verb|DataAccessObject| moet toegevoegd worden aan de \verb|DAOProvider|.
+	\item Er moet een nieuwe \verb|Controller| worden aangemaakt die overerft van \verb|AbstractController|. In de nieuwe \verb|Controller| moet de isOwner function worden geïmplementeerd.
+	\item De nieuwe \verb|Controller| moet worden toegevoegd aan de \verb|ControllerManager|.
+	\item Er moet een \verb|RESTModel| worden aangemaakt voor de nieuwe klasse. Deze erft over van \verb|RESTAbstractModel|. In de klasse moet de constructor en de translate methode worden geïmplementeerd.
+	\item Er moet een nieuwe \verb|RESTController| worden aangemaakt die overerft van \verb|RESTAbstractController|. Hier moet de getController methode worden geïmplementeerd een een methode die alle objecten, al dan niet gefilterd, teruggeeft.
+\end{enumerate}
+
 We denken dat de aanpassingen in verhouding staan tot de uitbreiding. Het meeste werk zou kruipen in het doorgeven van de waarden van de velden en deze te setten in de objecten. Dit is repetitief werk maar niet iets dat gemakkelijk te veralgemenen is. De meeste veranderingen in het domeinmodel zijn eenmalig. Indien er nog een ander soort voertuig zou bijkomen met andere velden, zou er enkel een klasse moeten worden toegevoegd die overerft van \verb|AbstractVehicle|.
+
+\section{E-mails verzenden naar klanten bij bepaalde acties}
+
+Voor het versturen van e-mails zouden we gebruik maken van het observer patroon. Als tussenklasse zouden we een \verb|EventBroker| gebruiken die events ontvangt en ze doorstuurt naar geregistreerde listeners. Dit is een singleton klasse. Onze controllers zouden bij elke actie een event genereren en doorgeven aan de \verb|EventBroker|. Hierdoor blijven de controller module en e-mail module volledig ontkoppeld. De controllers kunnen eenvoudig aangepast geworden. Enkel \verb|AbstractController| zal moeten worden aangepast. De e-mail module zou een listener worden. Aan de hand van de informatie die wordt doorgestuurd bij een event kan er dan beslist worden of er al dan niet een e-mail moet verstuurd worden.
+
+\section{Algemene log tonen}
+
+Er zou in de applicatie ook een algemene log kunnen getoond worden. Bij het ontwerpen van het logsysteem hebben we hier rekening mee gehouden dus kan dit relatief gemakkelijk worden toegevoegd. Bij de \verb|LogEntryController| moet een methode worden aangemaakt die alle logs ophaalt van de \verb|LogEntryDAO|. Bij \verb|RESTLogEntryController| moet een methode worden aangemaakt die de methode van \verb|LogEntryController| oproept.
+
 \end{document}
