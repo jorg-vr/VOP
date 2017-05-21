@@ -11,7 +11,10 @@
                  <delete-component v-if="insurance" :resource="resourceVI" :id="insurance.id" :remove="false" :params="params"></delete-component>
                  <button-remove :resource="resourceVI"  @click="tdshowModal(insurance.id)"></button-remove>
              </h1>
-             <h4 v-if="insurance" >{{showDate(insurance.startDate)}} - {{showDate(insurance.endDate)}}</h4>
+             <h4 v-if="insurance" >
+                 {{showDate(insurance.startDate)}} 
+                 <span v-if="insurance.endDate != null"> - {{showDate(insurance.endDate)}}</span>
+             </h4>
         </div>
         <div class="col-md-8">
             <h4 >
