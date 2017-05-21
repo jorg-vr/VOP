@@ -30,7 +30,7 @@
                 </th>
             </tr>
             </thead>
-            <tbody>
+            <tbody v-if="show">
             <tr v-for="value in listObject.values" class="list-tr">
                 <td v-for="header in listObject.headers" class="clickable-td" @click="tdclick(value)">
                     {{value[header]}}
@@ -79,7 +79,8 @@
                 ids:{contract:this.id},
                 correction: {},
                 SubmitFormHandler: SubmitFormHandler,
-                showModal: false
+                showModal: false,
+                show:false
             }
         },
         components: {
