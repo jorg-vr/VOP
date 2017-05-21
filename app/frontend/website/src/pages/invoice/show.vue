@@ -86,7 +86,7 @@
                 'setLoading'
             ]),
             fetchPdf(){
-                this.fetchInvoicePdf({companyId:this.companyId, invoiceId:this.id}).then(blob => {
+                this.fetchInvoicePdf({company:this.companyId, invoiceId:this.id}).then(blob => {
                     console.log(blob)
                     //Download the response.
                     //Based on: https://github.com/pagekit/vue-resource/issues/285
