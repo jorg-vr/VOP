@@ -23,6 +23,9 @@
                         <dropdown :resources="[resources.CLIENT,resources.FLEET,resources.VEHICLE]"></dropdown>
                         <dropdown :resources="[resources.USER,resources.ROLE]"></dropdown>
                         <dropdown :resources="[resources.CONTRACT,resources.CONDITION,resources.VEHICLE_TYPE]"></dropdown>
+                        <li>
+                            <billing-resource-link></billing-resource-link>
+                        </li>
                     </template>
                 </ul><!-- /.navbar-nav -->
 
@@ -62,15 +65,16 @@ import functionPicker from './functionPicker.vue'
 import formSelect from '../form/FormGroups/SelectInputFormGroup.vue'
 import ResourcesLink from './ResourcesLink.vue'
 import dropdown from './navbarDropdown.vue'
+import billingResourceLink from './billingResourceLink.vue'
 
     export default {
         data(){
             return {
-                resources: resources
+                resources: resources,
             }
         },
         components: {
-            functionPicker, formSelect, ResourcesLink,dropdown
+            functionPicker, formSelect, ResourcesLink,dropdown,billingResourceLink
         },
         computed: {
             ...mapGetters([
