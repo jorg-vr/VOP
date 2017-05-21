@@ -646,7 +646,7 @@ export default
         },
         condition:{
             condition: 'speciale conditie',
-            conditions: 'special condities',
+            conditions: 'speciale condities',
             referenceCode: 'code',
             title: 'titel',
             text: 'tekst'
