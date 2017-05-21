@@ -6,7 +6,7 @@
     <div class="col-lg-8 col-md-9 col-sm-11">
         <div class="page-header">
             <h1>
-                {{$t("contract.contract") | capitalize}}
+                {{$t("contract.contracts") | capitalize}}
                 <button-add :resource="resource"></button-add>
             </h1>
         </div>
