@@ -10,25 +10,6 @@ import static org.junit.Assert.fail;
 
 public class VehicleTest {
 
-    @Ignore
-    @Test
-    public void setLicensePlate() throws Exception {
-        Vehicle vehicle = new Vehicle();
-        String[] plates = {"ABC 960", "", "AZR "};
-        for (int i = 0; i < 3; i++) {
-            try {
-                vehicle.setLicensePlate(plates[i]);
-                fail("Managed to set an invalid License Plate");
-            } catch (InvalidInputException e) {
-
-            }
-        }
-        try {
-            vehicle.setLicensePlate("ABC1230F");
-        } catch (InvalidInputException e) {
-            fail("Could not set a valid License Plate");
-        }
-    }
 
     @Test
     public void setChassisNumber() throws Exception {

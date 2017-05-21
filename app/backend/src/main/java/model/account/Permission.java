@@ -96,5 +96,20 @@ public class Permission {
         }
         actions.add(action);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Permission that = (Permission) o;
+
+        return getUuid() != null ? getUuid().equals(that.getUuid()) : that.getUuid() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return getUuid() != null ? getUuid().hashCode() : 0;
+    }
 }
 

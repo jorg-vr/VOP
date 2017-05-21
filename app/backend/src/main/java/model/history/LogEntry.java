@@ -1,6 +1,7 @@
 package model.history;
 
 import model.account.User;
+import model.identity.Address;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -165,5 +166,20 @@ public class LogEntry {
         LogEntry entry = new LogEntry(uuid, user, action, resource);
         entries.add(entry);
         return entries;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return this == o ||
+                !(o == null ||
+                        !(o instanceof LogEntry)) && uuid != null && getUuid().equals(((LogEntry) o).getUuid());
+    }
+
+    @Override
+    public int hashCode() {
+        if (uuid != null) {
+            return uuid.hashCode();
+        }
+        return super.hashCode();
     }
 }

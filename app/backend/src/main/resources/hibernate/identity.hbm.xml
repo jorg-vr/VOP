@@ -12,10 +12,10 @@
             <generator class="uuid2"/>
         </id>
 
-        <many-to-one name="address" column="address_id" class="model.identity.Address" lazy="proxy" fetch="select" cascade="all"/>
+        <many-to-one name="address" class="model.identity.Address" lazy="proxy" column="address" cascade="all"/>
         <property name="phoneNumber" column="phonenumber" type="string"/>
         <joined-subclass name="model.identity.Company" table="companies">
-            <key column="identity_id"/>
+            <key column="identity_id" on-delete="cascade"/>
             <property name="name" column="name" type="string"/>
             <property name="btwNumber" column="btw_number" type="string"/>
             <property name="paymentPeriod">
@@ -29,7 +29,7 @@
                 </type>
             </property>
             <joined-subclass name="model.identity.Customer" table="customers">
-                <key column="identity_id"/>
+                <key column="identity_id" on-delete="cascade"/>
                 <bag name="fleets" access="field" table="fleets"
                      lazy="true" fetch="select" inverse="true">
                     <key column="owner_id" not-null="true"/>
@@ -54,7 +54,7 @@
                 </map>
             </joined-subclass>
             <joined-subclass name="model.identity.InsuranceCompany" table="insurancecompanies">
-                <key column="identity_id"/>
+                <key column="identity_id" on-delete="cascade"/>
                 <bag name="sureties" access="field" table="contracts"
                      lazy="true" fetch="select" inverse="true">
                     <key column="company_id" not-null="true"/>
