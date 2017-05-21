@@ -43,17 +43,27 @@
         },
         created() {
             this.setLoading({loading: true })
-            this.fetchContracts().then(() => {
-                centsToEuroArray(this.contracts,"totalCost");
-                centsToEuroArray(this.contracts,"totalTax");
-                this.setLoading({loading: false });
-                this.show=true;
-            })
+            if(this.isAuthorizedForAllResources(this.resource, actions.READ_ALL)) {
+                this.fetchContracts().then(() => {
+                    centsToEuroArray(this.contracts, "totalCost");
+                    centsToEuroArray(this.contracts, "totalTax");
+                    this.setLoading({loading: false});
+                    this.show = true;
+                })
+            }else{
+                this.fetchContractsBy({filters: {customer: this.activeFunction.company}}).then(() => {
+                    centsToEuroArray(this.contracts, "totalCost");
+                    centsToEuroArray(this.contracts, "totalTax");
+                    this.setLoading({loading: false});
+                    this.show = true;
+                })
+            }
         },
         computed: {
             ...mapGetters([
                 'contracts',
                 'activeFunction',
+                'isAuthorizedForAllResources'
             ]),
             listObject() {
                 var listObj = {};
@@ -64,7 +74,8 @@
         },
         methods: {
             ...mapActions([
-                'fetchContracts'
+                'fetchContracts',
+                'fetchContractsBy'
             ]),
 
             ...mapMutations([
