@@ -9,6 +9,10 @@ import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
 import spring.TestPagination;
 import spring.controller.*;
+import spring.controller.insurance.RESTContractControllerTest;
+import spring.controller.insurance.RESTSpecialConditionControllerTest;
+import spring.controller.insurance.RESTSuretyControllerTest;
+import spring.controller.insurance.RESTVehicleInsuranceControllerTest;
 
 
 public class TestRunner {
@@ -72,6 +76,15 @@ public class TestRunner {
         Result daoResult10 = JUnitCore.runClasses(ProductionCustomerDAOFiltersTest.class);
         Result daoResult11 = JUnitCore.runClasses(ProductionVehicleDAOFiltersTest.class);
         Result daoResult12 = JUnitCore.runClasses(ProductionVehicleTypeDAOFiltersTest.class);
+        Result daoResult13 = JUnitCore.runClasses(ProductionContractDAOTest.class);
+        Result daoResult14 = JUnitCore.runClasses(ProductionFlatSuretyDAOTest.class);
+        Result daoResult15 = JUnitCore.runClasses(ProductionInsuranceCompanyDAOTest.class);
+        Result daoResult16 = JUnitCore.runClasses(ProductionInvoiceDAOTest.class);
+        Result daoResult17 = JUnitCore.runClasses(ProductionLogEntryDAOTest.class);
+        Result daoResult18 = JUnitCore.runClasses(ProductionNonFlatSuretyDAOTest.class);
+        Result daoResult19 = JUnitCore.runClasses(ProductionSpecialConditionDAOTest.class);
+        Result daoResult20 = JUnitCore.runClasses(ProductionSuretyDAOTest.class);
+        Result daoResult21 = JUnitCore.runClasses(ProductionVehicleInsuranceDAOTest.class);
         System.out.print("\n\n\n");
         System.out.println("DAO unit tests:");
 
@@ -123,15 +136,61 @@ public class TestRunner {
         for (Failure failure : daoResult12.getFailures()) {
             System.out.println(failure.getMessage());
         }
+        System.out.printf("%-25s %s\n", "ContractDAO:", String.valueOf(daoResult13.wasSuccessful()));
+        for (Failure failure : daoResult13.getFailures()) {
+            System.out.println(failure.getMessage());
+        }
+        System.out.printf("%-25s %s\n", "FlatSuretyDAO:", String.valueOf(daoResult14.wasSuccessful()));
+        for (Failure failure : daoResult14.getFailures()) {
+            System.out.println(failure.getMessage());
+        }
+        System.out.printf("%-25s %s\n", "InsuranceCompanyDAO:", String.valueOf(daoResult15.wasSuccessful()));
+        for (Failure failure : daoResult15.getFailures()) {
+            System.out.println(failure.getMessage());
+        }
+        System.out.printf("%-25s %s\n", "InvoiceDAO:", String.valueOf(daoResult16.wasSuccessful()));
+        for (Failure failure : daoResult16.getFailures()) {
+            System.out.println(failure.getMessage());
+        }
+        System.out.printf("%-25s %s\n", "LogEntryDAO:", String.valueOf(daoResult17.wasSuccessful()));
+        for (Failure failure : daoResult17.getFailures()) {
+            System.out.println(failure.getMessage());
+        }
+        System.out.printf("%-25s %s\n", "NonFlatSuretyDAO:", String.valueOf(daoResult18.wasSuccessful()));
+        for (Failure failure : daoResult18.getFailures()) {
+            System.out.println(failure.getMessage());
+        }
+        System.out.printf("%-25s %s\n", "SpecialConditionDAO:", String.valueOf(daoResult19.wasSuccessful()));
+        for (Failure failure : daoResult19.getFailures()) {
+            System.out.println(failure.getMessage());
+        }
+        System.out.printf("%-25s %s\n", "SuretyDAO:", String.valueOf(daoResult20.wasSuccessful()));
+        for (Failure failure : daoResult20.getFailures()) {
+            System.out.println(failure.getMessage());
+        }
+        System.out.printf("%-25s %s\n", "VehicleInsuranceDAO:", String.valueOf(daoResult21.wasSuccessful()));
+        for (Failure failure : daoResult21.getFailures()) {
+            System.out.println(failure.getMessage());
+        }
     }
 
     private static void runRESTControllerTests(){
         Result controllerResults1 = JUnitCore.runClasses(RESTCompanyControllerTest.class);
         Result controllerResults2 = JUnitCore.runClasses(RESTFleetControllerTest.class);
         Result controllerResults3 = JUnitCore.runClasses(RESTRoleControllerTest.class);
-        //Result controllerResults4 = JUnitCore.runClasses(RESTUserControllerTest.class);
+        Result controllerResults4 = JUnitCore.runClasses(RESTUserControllerTest.class);
         Result controllerResults5 = JUnitCore.runClasses(UUIDUtilTest.class);
         Result controllerResults6 = JUnitCore.runClasses(TestPagination.class);
+        Result controllerResults7 = JUnitCore.runClasses(RESTFunctionControllerTest.class);
+        Result controllerResults8 = JUnitCore.runClasses(RESTLogEntryControllerTest.class);
+        Result controllerResults9 = JUnitCore.runClasses(RESTPermissionControllerTest.class);
+        Result controllerResults10 = JUnitCore.runClasses(RESTUserMeControllerTest.class);
+        Result controllerResults11 = JUnitCore.runClasses(RESTVehicleControllerTest.class);
+        Result controllerResults12 = JUnitCore.runClasses(RESTVehicleTypeControllerTest.class);
+        Result controllerResults13 = JUnitCore.runClasses(RESTContractControllerTest.class);
+        Result controllerResults14 = JUnitCore.runClasses(RESTSpecialConditionControllerTest.class);
+        Result controllerResults15 = JUnitCore.runClasses(RESTSuretyControllerTest.class);
+        Result controllerResults16 = JUnitCore.runClasses(RESTVehicleInsuranceControllerTest.class);
         System.out.print("\n\n\n");
         System.out.println("RESTControllers integration tests:");
 
@@ -147,16 +206,56 @@ public class TestRunner {
         for (Failure failure : controllerResults3.getFailures()) {
             System.out.println(failure.getMessage());
         }
-        /*System.out.printf("%-25s %s\n", "RESTUserController:", String.valueOf(controllerResults4.wasSuccessful()));
+        System.out.printf("%-25s %s\n", "RESTUserController:", String.valueOf(controllerResults4.wasSuccessful()));
         for (Failure failure : controllerResults4.getFailures()) {
             System.out.println(failure.getMessage());
-        }*/
+        }
         System.out.printf("%-25s %s\n", "UUIDUtil:", String.valueOf(controllerResults5.wasSuccessful()));
         for (Failure failure : controllerResults5.getFailures()) {
             System.out.println(failure.getMessage());
         }
         System.out.printf("%-25s %s\n", "Pagination:", String.valueOf(controllerResults6.wasSuccessful()));
         for (Failure failure : controllerResults6.getFailures()) {
+            System.out.println(failure.getMessage());
+        }
+        System.out.printf("%-25s %s\n", "RESTFunctionController:", String.valueOf(controllerResults7.wasSuccessful()));
+        for (Failure failure : controllerResults7.getFailures()) {
+            System.out.println(failure.getMessage());
+        }
+        System.out.printf("%-25s %s\n", "RESTLogEntryController:", String.valueOf(controllerResults8.wasSuccessful()));
+        for (Failure failure : controllerResults8.getFailures()) {
+            System.out.println(failure.getMessage());
+        }
+        System.out.printf("%-25s %s\n", "RESTPermissionController:", String.valueOf(controllerResults9.wasSuccessful()));
+        for (Failure failure : controllerResults9.getFailures()) {
+            System.out.println(failure.getMessage());
+        }
+        System.out.printf("%-25s %s\n", "RESTUserMeController:", String.valueOf(controllerResults10.wasSuccessful()));
+        for (Failure failure : controllerResults10.getFailures()) {
+            System.out.println(failure.getMessage());
+        }
+        System.out.printf("%-25s %s\n", "RESTvehicleController:", String.valueOf(controllerResults11.wasSuccessful()));
+        for (Failure failure : controllerResults11.getFailures()) {
+            System.out.println(failure.getMessage());
+        }
+        System.out.printf("%-25s %s\n", "RESTVehicleTypeController:", String.valueOf(controllerResults12.wasSuccessful()));
+        for (Failure failure : controllerResults12.getFailures()) {
+            System.out.println(failure.getMessage());
+        }
+        System.out.printf("%-25s %s\n", "RESTContractController:", String.valueOf(controllerResults13.wasSuccessful()));
+        for (Failure failure : controllerResults13.getFailures()) {
+            System.out.println(failure.getMessage());
+        }
+        System.out.printf("%-25s %s\n", "RESTSpecialConditionController:", String.valueOf(controllerResults14.wasSuccessful()));
+        for (Failure failure : controllerResults14.getFailures()) {
+            System.out.println(failure.getMessage());
+        }
+        System.out.printf("%-25s %s\n", "RESTSuretyController:", String.valueOf(controllerResults15.wasSuccessful()));
+        for (Failure failure : controllerResults15.getFailures()) {
+            System.out.println(failure.getMessage());
+        }
+        System.out.printf("%-25s %s\n", "RESTVehicleInsuranceController:", String.valueOf(controllerResults16.wasSuccessful()));
+        for (Failure failure : controllerResults16.getFailures()) {
             System.out.println(failure.getMessage());
         }
     }
@@ -233,12 +332,31 @@ public class TestRunner {
         Result daoResult10 = JUnitCore.runClasses(ProductionCustomerDAOFiltersTest.class);
         Result daoResult11 = JUnitCore.runClasses(ProductionVehicleDAOFiltersTest.class);
         Result daoResult12 = JUnitCore.runClasses(ProductionVehicleTypeDAOFiltersTest.class);
+        Result daoResult13 = JUnitCore.runClasses(ProductionContractDAOTest.class);
+        Result daoResult14 = JUnitCore.runClasses(ProductionFlatSuretyDAOTest.class);
+        Result daoResult15 = JUnitCore.runClasses(ProductionInsuranceCompanyDAOTest.class);
+        Result daoResult16 = JUnitCore.runClasses(ProductionInvoiceDAOTest.class);
+        Result daoResult17 = JUnitCore.runClasses(ProductionLogEntryDAOTest.class);
+        Result daoResult18 = JUnitCore.runClasses(ProductionNonFlatSuretyDAOTest.class);
+        Result daoResult19 = JUnitCore.runClasses(ProductionSpecialConditionDAOTest.class);
+        Result daoResult20 = JUnitCore.runClasses(ProductionSuretyDAOTest.class);
+        Result daoResult21 = JUnitCore.runClasses(ProductionVehicleInsuranceDAOTest.class);
         Result controllerResults1 = JUnitCore.runClasses(RESTCompanyControllerTest.class);
         Result controllerResults2 = JUnitCore.runClasses(RESTFleetControllerTest.class);
         Result controllerResults3 = JUnitCore.runClasses(RESTRoleControllerTest.class);
-        //Result controllerResults4 = JUnitCore.runClasses(RESTUserControllerTest.class);
+        Result controllerResults4 = JUnitCore.runClasses(RESTUserControllerTest.class);
         Result controllerResults5 = JUnitCore.runClasses(UUIDUtilTest.class);
         Result controllerResults6 = JUnitCore.runClasses(TestPagination.class);
+        Result controllerResults7 = JUnitCore.runClasses(RESTFunctionControllerTest.class);
+        Result controllerResults8 = JUnitCore.runClasses(RESTLogEntryControllerTest.class);
+        Result controllerResults9 = JUnitCore.runClasses(RESTPermissionControllerTest.class);
+        Result controllerResults10 = JUnitCore.runClasses(RESTUserMeControllerTest.class);
+        Result controllerResults11 = JUnitCore.runClasses(RESTVehicleControllerTest.class);
+        Result controllerResults12 = JUnitCore.runClasses(RESTVehicleTypeControllerTest.class);
+        Result controllerResults13 = JUnitCore.runClasses(RESTContractControllerTest.class);
+        Result controllerResults14 = JUnitCore.runClasses(RESTSpecialConditionControllerTest.class);
+        Result controllerResults15 = JUnitCore.runClasses(RESTSuretyControllerTest.class);
+        Result controllerResults16 = JUnitCore.runClasses(RESTVehicleInsuranceControllerTest.class);
         Result databaseResult1 = JUnitCore.runClasses(AddressParametersTest.class);
         Result databaseResult2 = JUnitCore.runClasses(CompanyParametersTest.class);
         Result databaseResult3 = JUnitCore.runClasses(ContractParametersTest.class);
@@ -317,6 +435,42 @@ public class TestRunner {
         for (Failure failure : daoResult12.getFailures()) {
             System.out.println(failure.getMessage());
         }
+        System.out.printf("%-25s %s\n", "ContractDAO:", String.valueOf(daoResult13.wasSuccessful()));
+        for (Failure failure : daoResult13.getFailures()) {
+            System.out.println(failure.getMessage());
+        }
+        System.out.printf("%-25s %s\n", "FlatSuretyDAO:", String.valueOf(daoResult14.wasSuccessful()));
+        for (Failure failure : daoResult14.getFailures()) {
+            System.out.println(failure.getMessage());
+        }
+        System.out.printf("%-25s %s\n", "InsuranceCompanyDAO:", String.valueOf(daoResult15.wasSuccessful()));
+        for (Failure failure : daoResult15.getFailures()) {
+            System.out.println(failure.getMessage());
+        }
+        System.out.printf("%-25s %s\n", "InvoiceDAO:", String.valueOf(daoResult16.wasSuccessful()));
+        for (Failure failure : daoResult16.getFailures()) {
+            System.out.println(failure.getMessage());
+        }
+        System.out.printf("%-25s %s\n", "LogEntryDAO:", String.valueOf(daoResult17.wasSuccessful()));
+        for (Failure failure : daoResult17.getFailures()) {
+            System.out.println(failure.getMessage());
+        }
+        System.out.printf("%-25s %s\n", "NonFlatSuretyDAO:", String.valueOf(daoResult18.wasSuccessful()));
+        for (Failure failure : daoResult18.getFailures()) {
+            System.out.println(failure.getMessage());
+        }
+        System.out.printf("%-25s %s\n", "SpecialConditionDAO:", String.valueOf(daoResult19.wasSuccessful()));
+        for (Failure failure : daoResult19.getFailures()) {
+            System.out.println(failure.getMessage());
+        }
+        System.out.printf("%-25s %s\n", "SuretyDAO:", String.valueOf(daoResult20.wasSuccessful()));
+        for (Failure failure : daoResult20.getFailures()) {
+            System.out.println(failure.getMessage());
+        }
+        System.out.printf("%-25s %s\n", "VehicleInsuranceDAO:", String.valueOf(daoResult21.wasSuccessful()));
+        for (Failure failure : daoResult21.getFailures()) {
+            System.out.println(failure.getMessage());
+        }
 
 
         System.out.println();
@@ -334,16 +488,56 @@ public class TestRunner {
         for (Failure failure : controllerResults3.getFailures()) {
             System.out.println(failure.getMessage());
         }
-        /*System.out.printf("%-25s %s\n", "RESTUserController:", String.valueOf(controllerResults4.wasSuccessful()));
+        System.out.printf("%-25s %s\n", "RESTUserController:", String.valueOf(controllerResults4.wasSuccessful()));
         for (Failure failure : controllerResults4.getFailures()) {
             System.out.println(failure.getMessage());
-        }*/
+        }
         System.out.printf("%-25s %s\n", "UUIDUtil:", String.valueOf(controllerResults5.wasSuccessful()));
         for (Failure failure : controllerResults5.getFailures()) {
             System.out.println(failure.getMessage());
         }
         System.out.printf("%-25s %s\n", "Pagination:", String.valueOf(controllerResults6.wasSuccessful()));
         for (Failure failure : controllerResults6.getFailures()) {
+            System.out.println(failure.getMessage());
+        }
+        System.out.printf("%-25s %s\n", "RESTFunctionController:", String.valueOf(controllerResults7.wasSuccessful()));
+        for (Failure failure : controllerResults7.getFailures()) {
+            System.out.println(failure.getMessage());
+        }
+        System.out.printf("%-25s %s\n", "RESTLogEntryController:", String.valueOf(controllerResults8.wasSuccessful()));
+        for (Failure failure : controllerResults8.getFailures()) {
+            System.out.println(failure.getMessage());
+        }
+        System.out.printf("%-25s %s\n", "RESTPermissionController:", String.valueOf(controllerResults9.wasSuccessful()));
+        for (Failure failure : controllerResults9.getFailures()) {
+            System.out.println(failure.getMessage());
+        }
+        System.out.printf("%-25s %s\n", "RESTUserMeController:", String.valueOf(controllerResults10.wasSuccessful()));
+        for (Failure failure : controllerResults10.getFailures()) {
+            System.out.println(failure.getMessage());
+        }
+        System.out.printf("%-25s %s\n", "RESTvehicleController:", String.valueOf(controllerResults11.wasSuccessful()));
+        for (Failure failure : controllerResults11.getFailures()) {
+            System.out.println(failure.getMessage());
+        }
+        System.out.printf("%-25s %s\n", "RESTVehicleTypeController:", String.valueOf(controllerResults12.wasSuccessful()));
+        for (Failure failure : controllerResults12.getFailures()) {
+            System.out.println(failure.getMessage());
+        }
+        System.out.printf("%-25s %s\n", "RESTContractController:", String.valueOf(controllerResults13.wasSuccessful()));
+        for (Failure failure : controllerResults13.getFailures()) {
+            System.out.println(failure.getMessage());
+        }
+        System.out.printf("%-25s %s\n", "RESTSpecialConditionController:", String.valueOf(controllerResults14.wasSuccessful()));
+        for (Failure failure : controllerResults14.getFailures()) {
+            System.out.println(failure.getMessage());
+        }
+        System.out.printf("%-25s %s\n", "RESTSuretyController:", String.valueOf(controllerResults15.wasSuccessful()));
+        for (Failure failure : controllerResults15.getFailures()) {
+            System.out.println(failure.getMessage());
+        }
+        System.out.printf("%-25s %s\n", "RESTVehicleInsuranceController:", String.valueOf(controllerResults16.wasSuccessful()));
+        for (Failure failure : controllerResults16.getFailures()) {
             System.out.println(failure.getMessage());
         }
 
