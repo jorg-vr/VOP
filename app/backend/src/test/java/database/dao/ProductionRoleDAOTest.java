@@ -78,7 +78,7 @@ public class ProductionRoleDAOTest {
         }
     }
 
-    @Ignore
+
     @Test
     public void update() throws Exception {
 
@@ -94,7 +94,11 @@ public class ProductionRoleDAOTest {
 
         try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()) {
             Role role1 = manager.getRoleDAO().get(role.getUuid());
-            assertEquals(role.getRights(), role1.getRights());
+            for(Map.Entry<Resource,Permission> entry : role1.getRights().entrySet()){
+                role.getRights().containsKey(entry.getKey());
+                role.getRights().get(entry.getKey()).getActions().containsAll(entry.getValue().getActions());
+            }
+
         }
         role.setAccess(Resource.BILLING, Action.READ_ALL);
         role.setAccess(Resource.BILLING, Action.UPDATE_ALL);
