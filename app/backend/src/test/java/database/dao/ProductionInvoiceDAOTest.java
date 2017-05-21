@@ -411,7 +411,7 @@ public class ProductionInvoiceDAOTest {
         vehicleInvoice.setVin("AAAAAAAAAAAAAAAAA");
         vehicleInvoice.setInsuredValue(5);
         vehicleInvoice.setLicensePlate("123123");
-        vehicleInvoice.setSurety(null);
+        vehicleInvoice.setSuretyType(null);
         vehicleInvoice.setVehicleInsuranceID(null);
         invoice2.setVehicleInvoices(new ArrayList<>(Arrays.asList(new VehicleInvoice[]{vehicleInvoice})));
         invoice3.setEndDate(LocalDateTime.of(2223, 1, 1, 1, 1));
@@ -435,7 +435,7 @@ public class ProductionInvoiceDAOTest {
             assertTrue(vehicleInvoice.getTotalCost() == 1);
             assertTrue(vehicleInvoice.getTotalTax() == 1);
             assertTrue(vehicleInvoice.getInsuredValue() == 5);
-            assertTrue(vehicleInvoice.getSurety() == null);
+            assertTrue(vehicleInvoice.getSuretyType() == null);
             assertTrue(vehicleInvoice.getVehicleInsuranceID() == null);
             assertTrue(vehicleInvoice.getVin().equals("AAAAAAAAAAAAAAAAA"));
             assertTrue(vehicleInvoice.getLicensePlate().equals("123123"));

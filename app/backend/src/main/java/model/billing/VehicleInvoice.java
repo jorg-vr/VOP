@@ -1,6 +1,7 @@
 package model.billing;
 
 import model.insurance.Surety;
+import model.insurance.SuretyType;
 import model.insurance.VehicleInsurance;
 
 import java.util.UUID;
@@ -18,7 +19,7 @@ public class VehicleInvoice {
     /**
      * The Surety of the invoice
      */
-    private Surety surety;
+    private SuretyType suretyType;
 
     /**
      * The proper way should be to have the vehicleInsurance itself as a property.
@@ -85,16 +86,16 @@ public class VehicleInvoice {
      * Gets the surety
      * @return the surety
      */
-    public Surety getSurety() {
-        return surety;
+    public SuretyType getSuretyType() {
+        return suretyType;
     }
 
     /**
      * Sets the surety
-     * @param surety the surety
+     * @param suretyType the surety
      */
-    public void setSurety(Surety surety) {
-        this.surety = surety;
+    public void setSuretyType(SuretyType suretyType) {
+        this.suretyType = suretyType;
     }
 
     /**

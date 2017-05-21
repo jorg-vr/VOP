@@ -79,7 +79,7 @@ public class InvoiceController extends AbstractController<Invoice> {
             vehicleInvoice.setVin(insurance.getVehicle().getVin());
             vehicleInvoice.setLicensePlate(insurance.getVehicle().getLicensePlate());
             vehicleInvoice.setFranchise(insurance.getFranchise());
-            vehicleInvoice.setSurety(manager.getSuretyDao().get(insurance.getSurety().getUuid()));
+            vehicleInvoice.setSuretyType(manager.getSuretyDao().get(insurance.getSurety().getUuid()).getSuretyType());
             vehicleInvoice.setTotalCost(insurance.calculateCost() * duration);
             vehicleInvoice.setTotalTax(insurance.calculateTax() * duration);
             vehicleInvoice.setInsuredValue(insurance.getInsuredValue());

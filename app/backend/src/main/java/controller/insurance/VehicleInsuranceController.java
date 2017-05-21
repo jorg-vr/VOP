@@ -159,7 +159,7 @@ public class VehicleInsuranceController extends AbstractController<VehicleInsura
         vehicleInvoice.setTotalTax(tax * months + (int) Math.round(monthFactor * tax));
         vehicleInvoice.setTotalCost(cost * months + (int) Math.round(monthFactor * cost));
         try {
-            vehicleInvoice.setSurety(manager.getSuretyDao().get(insurance.getSurety().getUuid()));
+            vehicleInvoice.setSuretyType(manager.getSuretyDao().get(insurance.getSurety().getUuid()).getSuretyType());
         } catch (ObjectNotFoundException e) {
             throw new DataAccessException(e);
         }
