@@ -75,7 +75,7 @@
                             :listObject="listObjectSureties" :resource="resources.SURETY" :ids="{clientId: id}">
             </list-component>
 
-            <h2>{{$t("contract.contracts") | capitalize}}
+            <h2 v-if="client.type">{{$t("contract.contracts") | capitalize}}
                     <button-add :resource="resources.CONTRACT" :params="{clientId: client.id}"></button-add>
             </h2>
             <list-component v-if="show&&listObjectContracts.values.length>0" :resource="resources.CONTRACT" :listObject="listObjectContracts">
