@@ -73,6 +73,14 @@ permissions[actions.READ_ALL.path(resources.CLIENT.name)] = {
     }
 }
 
+permissions[actions.READ_ALL.path(resources.BILLING.name)] = {
+    resource: resources.BILLING,
+    actions: {
+        name: actions.READ_ALL.name,
+        path: actions.READ_ALL.path,
+        values: ['READ_MINE']
+    }
+}
 
 
 permissions[actions.READ_ALL.path(resources.VEHICLE_TYPE.name)] = {
