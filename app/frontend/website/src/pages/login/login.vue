@@ -130,9 +130,7 @@ TODO: document this page.
         text-align: center;
     }
     #loginWrapper{
-        margin-top: 8%;
         vertical-align: middle;
-
     }
 
     #loginContainer{
