@@ -13,8 +13,8 @@
         </id>
 
 
-        <many-to-one name="company" column="company_id" class="model.identity.InsuranceCompany" lazy="proxy" fetch="select"/>
-        <many-to-one name="customer" column="customer_id" class="model.identity.Customer" lazy="proxy" fetch="select"/>
+        <many-to-one name="company" column="company_id" class="model.identity.InsuranceCompany" lazy="no-proxy" fetch="select"/>
+        <many-to-one name="customer" column="customer_id" class="model.identity.Customer" lazy="no-proxy" fetch="select"/>
         <property name="startDate" column="start_date" type="java.time.LocalDateTime"/>
         <property name="endDate" column="end_date" type="java.time.LocalDateTime"/>
         <bag name="vehicleInsurances" access="field" table="vehicles" inverse="true"

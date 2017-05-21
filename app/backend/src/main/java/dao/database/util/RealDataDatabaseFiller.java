@@ -210,6 +210,15 @@ public class RealDataDatabaseFiller {
                 }
             }
         }
+        try(DAOManager manager = provider.getDaoManager()){
+            User user = manager.getUserDAO().getUserByLogin("patrick.oostvogels@solvas.be");
+            Function function = manager.getFunctionDAO().get(admin);
+            try(ControllerManager controllerManager = new ControllerManager(user.getUuid(),function.getUuid())){
+                for(Customer customer: manager.getCustomerDAO().listFiltered()) {
+                    controllerManager.getInvoiceController().endStatement(customer);
+                }
+            }
+        }
     }
 
     private Surety getRandomSurety(Collection<Surety> collection) {
@@ -405,7 +414,6 @@ public class RealDataDatabaseFiller {
             manager.getCustomerDAO().create(customerSam);
             manager.getUserDAO().create(userSam);
             manager.getFunctionDAO().create(functionSam);
-            controllerManager.getInvoiceController().endStatement(customerSam);
             Fleet fleetSam = createFleet("Antwerpen", customerSam, addressSam);
             controllerManager.getFleetController().create(fleetSam);
             customerSam.setFleets(new ArrayList<>(Arrays.asList(new Fleet[]{fleetSam})));
@@ -427,7 +435,6 @@ public class RealDataDatabaseFiller {
             manager.getCustomerDAO().create(customerJorg);
             manager.getUserDAO().create(userJorg);
             manager.getFunctionDAO().create(functionJorg);
-            controllerManager.getInvoiceController().endStatement(customerJorg);
             Fleet fleetJorg = createFleet("West Vlaanderen", customerJorg, addressJorg);
             controllerManager.getFleetController().create(fleetJorg);
             customerJorg.setFleets(new ArrayList<>(Arrays.asList(new Fleet[]{fleetJorg})));
@@ -449,7 +456,6 @@ public class RealDataDatabaseFiller {
             manager.getCustomerDAO().create(customerBillie);
             manager.getUserDAO().create(userBillie);
             manager.getFunctionDAO().create(functionBillie);
-            controllerManager.getInvoiceController().endStatement(customerBillie);
             Fleet fleetBillie = createFleet("West Vlaanderen", customerBillie, addressBillie);
             controllerManager.getFleetController().create(fleetBillie);
             customerBillie.setFleets(new ArrayList<>(Arrays.asList(new Fleet[]{fleetBillie})));

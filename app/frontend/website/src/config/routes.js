@@ -80,7 +80,8 @@ let routes = [
         path: '/',
         component: App,
         children: [
-            {path: '', name: 'homeClient', component: homeClient},
+            {path: '', name: 'root', component: homeClient},
+            {path: 'home', name: 'homeClient', component: homeClient},
             //User
             {path: 'users', name: 'users', component: indexUser},
             {path: 'users/new', name: 'new_user', component: newUser},

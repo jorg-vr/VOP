@@ -56,7 +56,7 @@ public class VehicleInsuranceController extends AbstractController<VehicleInsura
             int days = Period.between(date.plusMonths(months), LocalDate.now()).getDays();
             VehicleInvoice vehicleInvoice = currentStatement.getVehicleInvoice(uuid);
             if (vehicleInvoice == null) {
-                vehicleInvoice = createVehicleInvoice(null, insurance.calculateTax(), insurance.calculateCost(), -months, -days);
+                vehicleInvoice = createVehicleInvoice(insurance, insurance.calculateTax(), insurance.calculateCost(), -months, -days);
                 currentStatement.getVehicleInvoices().add(vehicleInvoice);
             } else {
                 LocalDate now = LocalDate.now();
@@ -75,9 +75,12 @@ public class VehicleInsuranceController extends AbstractController<VehicleInsura
         LocalDate date = vehicleInsurance.getStartDate().toLocalDate();
         Invoice currentStatement = null;
         try {
+            if(vehicleInsurance.getVehicle().getFleet().getOwner().getCurrentStatement()==null){
+                return super.create(vehicleInsurance);
+            }
             currentStatement = manager.getInvoiceDao().get(vehicleInsurance.getVehicle().getFleet().getOwner().getCurrentStatement().getUuid());
         } catch (ObjectNotFoundException e) {
-            e.printStackTrace();
+            return super.create(insurance);
         }
 
         if (!date.isAfter(currentStatement.getEndDate().toLocalDate())) {
