@@ -184,7 +184,7 @@ public class RESTRoleControllerTest {
             )
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.name", equalTo(restRole.getName())));
-        } catch (Exception e) {
+        } catch (AssertionError e) {
             remove(role.getUuid());
             throw e;
         }

@@ -207,7 +207,7 @@ public class RESTVehicleTypeControllerTest {
             )
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.name", equalTo(restVehicleType.getName())));
-        } catch (Exception e) {
+        } catch (AssertionError e) {
             remove(vehicleType.getUuid());
             throw e;
         }

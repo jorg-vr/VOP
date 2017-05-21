@@ -193,7 +193,7 @@ public class RESTSpecialConditionControllerTest {
                     .andExpect(jsonPath("$.title", equalTo(restSpecialCondition.getTitle())))
                     .andExpect(jsonPath("$.text", equalTo(restSpecialCondition.getText())))
                     .andExpect(jsonPath("$.referenceCode", equalTo(restSpecialCondition.getReferenceCode())));
-        } catch (Exception e) {
+        } catch (AssertionError e) {
             remove(specialCondition.getUuid());
             throw e;
         }

@@ -210,7 +210,7 @@ public class RESTFleetControllerTest {
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.name", equalTo(restFleet.getName())))
                     .andExpect(jsonPath("$.company", equalTo(restFleet.getCompany())));
-        } catch (Exception e) {
+        } catch (AssertionError e) {
             remove(fleet.getUuid());
             throw e;
         }

@@ -161,13 +161,12 @@ public class RESTUserMeControllerTest {
                     .header("Function", UUIDUtil.UUIDToNumberString(function.getUuid()))
                     .content(TestUtil.convertObjectToJsonBytes(restUser))
             )
-                    .andDo(print())
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.firstName", equalTo(restUser.getFirstName())))
                     .andExpect(jsonPath("$.lastName", equalTo(restUser.getLastName())))
                     .andExpect(jsonPath("$.email", equalTo(restUser.getEmail())))
                     .andExpect(jsonPath("$.password", equalTo(restUser.getPassword())));
-        } catch (Exception e) {
+        } catch (AssertionError e) {
             remove(function.getUuid());
             throw e;
         }
