@@ -13,7 +13,7 @@
         </div>
         <div class="col-md-8">
             <h4>{{$t('suretyTypes.' + surety.suretyType) | capitalize }}</h4>
-            <h4>{{surety.flat ? $t('surety.premium'): $t('surety.minPremium') | capitalize }}:  {{surety.premiumEuro}}</h4>
+            <h4 v-if="show">{{surety.flat ? $t('surety.premium'): $t('surety.minPremium') | capitalize }}:  {{surety.premiumEuro}}</h4>
             <h4 v-if="!surety.flat">{{$t('surety.premiumPercentage') | capitalize }}: {{(surety.premiumPercentage*100).toFixed(2)}} %</h4>
 
             <!-- special conditions for the insurance surety -->
@@ -45,6 +45,7 @@
             return{
                 resource: resources.CONDITION,
                 resourceSurety: resources.SURETY,
+                show:false
             }
         },
         components: {
@@ -57,6 +58,7 @@
         created(){
             this.fetchSurety({id:this.id}).then(surety => {
                 centsToEuroObject(surety,"premium");
+                this.show=true;
             })
         },
         computed: {
