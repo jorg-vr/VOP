@@ -4,6 +4,7 @@ import dao.interfaces.DAO;
 import dao.interfaces.Filter;
 import dao.interfaces.VehicleInsuranceDAO;
 import model.fleet.Vehicle;
+import model.insurance.Contract;
 import model.insurance.VehicleInsurance;
 import org.hibernate.Session;
 
@@ -22,6 +23,12 @@ public class ProductionVehicleInsuranceDAO extends ProductionDAO<VehicleInsuranc
     @Override
     public Filter<VehicleInsurance> byVehicle(Vehicle vehicle) {
          return filterEqual("vehicle",vehicle);
+    }
+
+
+    @Override
+    public Filter<VehicleInsurance> byContract(Contract contract) {
+        return filterEqual("contract",contract);
     }
 
     @Override

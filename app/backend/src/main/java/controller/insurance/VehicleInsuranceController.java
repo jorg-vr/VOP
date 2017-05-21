@@ -189,10 +189,7 @@ public class VehicleInsuranceController extends AbstractController<VehicleInsura
 
     public Collection<VehicleInsurance> getFiltered(Contract contract, Vehicle vehicle) throws DataAccessException, UnAuthorizedException {
 
-        Collection<VehicleInsurance> result = getBy(vehicle);
-        return result.stream()
-                .filter(c -> contract == null || c.getContract().equals(contract))
-                .collect(Collectors.toList());
+        return getAll(dao.byVehicle(vehicle),dao.byContract(contract));
 
     }
 }

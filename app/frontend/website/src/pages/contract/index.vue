@@ -4,16 +4,18 @@
 -->
 <template>
     <div class="col-lg-8 col-md-9 col-sm-11">
-        <div class="page-header">
-            <h1>
-                {{$t("contract.contracts") | capitalize}}
-                <button-add :resource="resource"></button-add>
-            </h1>
-        </div>
+            <div class="page-header">
+                <h1>
+                    {{$t("contract.contracts") | capitalize}}
+                    <button-add :resource="resource"></button-add>
+                </h1>
+            </div>
 
+        <protected-element :permission="permission">
         <abstract-search-form :resource="resource" :filters="filters">
             <contract-search-input :contract="filters"></contract-search-input>
         </abstract-search-form>
+        </protected-element>
 
         <!-- Render an info-pane for every contract. Once all the data is loaded, the table will be shown.-->
         <list-component v-if="show" :resource="resource" :listObject="listObject">
@@ -29,17 +31,22 @@
     import AbstractSearchForm from '../../assets/general/AbstractSearchForm.vue'
     import ContractSearchInput from './ContractSearchInput.vue'
     import {centsToEuroArray} from '../../utils/utils'
+    import ProtectedElement from '../../assets/protection/ProtectedElement.js'
 
     export default {
         data(){
             return {
+                permission: {
+                    resource: resources.CONTRACT,
+                    actions: actions.CREATE
+                },
                 filters: {},
                 resource: resources.CONTRACT,
                 show:false
             }
         },
         components: {
-            listComponent, buttonAdd, ContractSearchInput, AbstractSearchForm
+            listComponent, buttonAdd, ContractSearchInput, AbstractSearchForm,ProtectedElement
         },
         created() {
             this.setLoading({loading: true })

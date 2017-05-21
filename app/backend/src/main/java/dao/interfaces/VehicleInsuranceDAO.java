@@ -20,6 +20,8 @@ public interface VehicleInsuranceDAO extends DAO<VehicleInsurance>{
      */
     Filter<VehicleInsurance> byVehicle(Vehicle vehicle);
 
+    Filter<VehicleInsurance> byContract(Contract contract);
+
     /**
      * Returns a Filter to use in ListFiltered in this class, which returns all {@link VehicleInsurance} starting before the given date.
      * @param date The date to use in the filter
