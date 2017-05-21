@@ -60,7 +60,7 @@ public class InvoiceController extends AbstractController<Invoice> {
         statement.setStartDate(LocalDateTime.now());
         statement.setEndDate(LocalDateTime.now().plusMonths(customer.getPaymentPeriod().getTime()).minusDays(1));
         invoiceDAO.create(statement);
-//        manager.getCustomerDAO().update(customer);
+        manager.getCustomerDAO().update(customer);
     }
 
     private Collection<VehicleInvoice> createVehicleInvoices(Customer customer, int duration) throws DataAccessException, ObjectNotFoundException {
