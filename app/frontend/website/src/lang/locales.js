@@ -91,6 +91,7 @@ export default
             remove: 'remove',
             removed: 'removed',
             back: 'back',
+            edit: 'wijzig',
             name: 'name',
             cancel: 'cancel',
             add: 'add',
