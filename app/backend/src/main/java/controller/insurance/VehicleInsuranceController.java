@@ -61,8 +61,8 @@ public class VehicleInsuranceController extends AbstractController<VehicleInsura
             } else {
                 LocalDate now = LocalDate.now();
                 double monthFactor = (double) days / (double) now.getMonth().length(now.isLeapYear());
-                vehicleInvoice.setTotalTax(vehicleInvoice.getTotalTax() - insurance.calculateTax() * months + (int) Math.round(monthFactor * insurance.calculateTax()));
-                vehicleInvoice.setTotalCost(vehicleInvoice.getTotalCost() + insurance.calculateCost() * months + (int) Math.round(monthFactor * insurance.calculateCost()));
+                vehicleInvoice.setTotalTax(vehicleInvoice.getTotalTax() - insurance.calculateTax() * months - (int) Math.round(monthFactor * insurance.calculateTax()));
+                vehicleInvoice.setTotalCost(vehicleInvoice.getTotalCost() - insurance.calculateCost() * months - (int) Math.round(monthFactor * insurance.calculateCost()));
             }
             manager.getInvoiceDao().update(currentStatement);
         }
