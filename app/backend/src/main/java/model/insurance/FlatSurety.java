@@ -1,6 +1,7 @@
 package model.insurance;
 
 import model.history.EditableObject;
+import model.identity.InsuranceCompany;
 
 import java.util.ArrayList;
 
@@ -23,6 +24,7 @@ public class FlatSurety extends Surety {
 
     /**
      * Constructor
+     *
      * @param premium the premium
      */
     public FlatSurety(int premium) {
@@ -30,7 +32,20 @@ public class FlatSurety extends Surety {
     }
 
     /**
+     * Constructor
+     *
+     * @param insuranceCompany
+     * @param suretyType
+     * @param premium
+     */
+    public FlatSurety(InsuranceCompany insuranceCompany, SuretyType suretyType, int premium) {
+        super(insuranceCompany, suretyType);
+        this.premium = premium;
+    }
+
+    /**
      * Returns the premium
+     *
      * @param value value of which the premium has to be calculated. This is e.g the insuredValue of a car
      * @return the calculated premium, in this case the premium given
      */
@@ -41,6 +56,7 @@ public class FlatSurety extends Surety {
 
     /**
      * Gets the premium
+     *
      * @return the premium
      */
     public int getPremium() {
@@ -49,6 +65,7 @@ public class FlatSurety extends Surety {
 
     /**
      * Sets the premium
+     *
      * @param premium the premium
      */
     public void setPremium(int premium) {
@@ -73,13 +90,15 @@ public class FlatSurety extends Surety {
 
         FlatSurety that = (FlatSurety) o;
 
-        return getUuid()!=null && getUuid().equals(that.getUuid());
+        return getUuid() != null && getUuid().equals(that.getUuid());
 
     }
 
     @Override
     public int hashCode() {
-        if(getUuid()!=null){return getUuid().hashCode();}
+        if (getUuid() != null) {
+            return getUuid().hashCode();
+        }
         return super.hashCode();
     }
 }

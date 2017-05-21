@@ -7,6 +7,7 @@ import model.history.LogEntry;
 import model.history.LogResource;
 import model.identity.InsuranceCompany;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
@@ -42,6 +43,17 @@ public abstract class Surety implements EditableObject {
      * Constructor
      */
     public Surety() {
+    }
+
+    /**
+     * Constructor
+     *
+     * @param insuranceCompany
+     * @param suretyType
+     */
+    public Surety(InsuranceCompany insuranceCompany, SuretyType suretyType) {
+        this.insuranceCompany = insuranceCompany;
+        this.suretyType = suretyType;
     }
 
     /**

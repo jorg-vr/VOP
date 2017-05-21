@@ -56,8 +56,10 @@ public class RESTSurety extends RESTAbstractModel<Surety> {
         this.suretyType = surety.getSuretyType();
         this.insuranceCompany = UUIDToNumberString(surety.getInsuranceCompany().getUuid());
         this.specialConditions = new ArrayList<>();
-        for (SpecialCondition specialCondition : surety.getSpecialConditions()) {
-            this.specialConditions.add(new RESTSpecialCondition(specialCondition));
+        if (surety.getSpecialConditions() != null) {
+            for (SpecialCondition specialCondition : surety.getSpecialConditions()) {
+                this.specialConditions.add(new RESTSpecialCondition(specialCondition));
+            }
         }
     }
 

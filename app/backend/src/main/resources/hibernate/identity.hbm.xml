@@ -12,7 +12,7 @@
             <generator class="uuid2"/>
         </id>
 
-        <many-to-one name="address" class="model.identity.Address" lazy="proxy" column="address" cascade="all"/>
+        <many-to-one name="address" class="model.identity.Address" lazy="no-proxy" column="address" cascade="all"/>
         <property name="phoneNumber" column="phonenumber" type="string"/>
         <joined-subclass name="model.identity.Company" table="companies">
             <key column="identity_id" on-delete="cascade"/>
@@ -40,7 +40,7 @@
                     <key column="customer_id" not-null="true"/>
                     <one-to-many class="model.insurance.Contract" />
                 </bag>
-                <many-to-one class="model.billing.Invoice" name="currentStatement" column="current_statement_id" />
+                <many-to-one class="model.billing.Invoice" name="currentStatement" column="current_statement_id" lazy="no-proxy"/>
                 <map name="commissions"
                      table="customer_commissions" cascade="all">
                     <key column="customer_id"/>
