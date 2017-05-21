@@ -22,10 +22,11 @@ import static model.account.Action.*;
 /**
  * This class and it's subclasses are framework independent controller classes.
  * These classes should act as a protecting interface of the backend model.
- * The methods of these classes take care of
- * 1) Logging
- * 2) Authorization
  * <p>
+ * The methods of these classes take care of
+ * <li>Logging</li>
+ * <li>Authorization</li>
+ * </p>
  * Currently there is a generic implementation for the get all , get id, update, create and archive methods.
  */
 public abstract class AbstractController<T extends EditableObject> {

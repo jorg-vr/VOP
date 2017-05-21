@@ -180,14 +180,8 @@ public class User implements EditableObject, java.io.Serializable {
     }
 
     /**
-<<<<<<< HEAD
      * Sets the hashed password
      * @param password the hashed password
-=======
-     * Sets the password
-     *
-     * @param password the password
->>>>>>> master
      */
     public void setPassword(String password) {
         this.password = password;
