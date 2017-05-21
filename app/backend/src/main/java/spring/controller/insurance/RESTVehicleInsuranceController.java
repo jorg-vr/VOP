@@ -103,7 +103,7 @@ public class RESTVehicleInsuranceController {
                                  @RequestHeader(value = "Function") String function) throws DataAccessException, UnAuthorizedException, ConstraintViolationException, ObjectNotFoundException {
         UUID uuid = toUUID(id);
         UUID user = new AuthenticationToken(token).getAccountId();
-        LocalDate localDate = LocalDate.parse(date, DateTimeFormatter.ISO_DATE);
+        LocalDate localDate = LocalDate.parse(date, DateTimeFormatter.ISO_DATE_TIME);
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
             VehicleInsuranceController controller = manager.getVehicleInsuranceController();
             controller.archive(uuid, localDate);

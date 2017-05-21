@@ -60,7 +60,7 @@ public class InvoiceController extends AbstractController<Invoice> {
         statement.setStartDate(LocalDateTime.now());
         statement.setEndDate(LocalDateTime.now().plusMonths(customer.getPaymentPeriod().getTime()).minusDays(1));
         invoiceDAO.create(statement);
-//        manager.getCustomerDAO().update(customer);
+        manager.getCustomerDAO().update(customer);
     }
 
     private Collection<VehicleInvoice> createVehicleInvoices(Customer customer, int duration) throws DataAccessException, ObjectNotFoundException {
@@ -83,7 +83,6 @@ public class InvoiceController extends AbstractController<Invoice> {
             vehicleInvoice.setTotalCost(insurance.calculateCost() * duration);
             vehicleInvoice.setTotalTax(insurance.calculateTax() * duration);
             vehicleInvoice.setInsuredValue(insurance.getInsuredValue());
-            System.out.println(insurance.getUuid());
             vehicleInvoice.setVehicleInsuranceID(insurance.getUuid());
             vehicleInvoices.add(vehicleInvoice);
         }

@@ -13,9 +13,9 @@
         </id>
         <property name="franchise" column="franchise" type="int"/>
         <property name="insuredValue" column="value" type="int"/>
-        <many-to-one name="contract" column="contract_id" class="model.insurance.Contract"/>
-        <many-to-one name="vehicle" column="vehicle_id" class="model.fleet.Vehicle"/>
-        <many-to-one name="surety" column="surety_id" class="model.insurance.Surety"/>
+        <many-to-one name="contract" column="contract_id" class="model.insurance.Contract" lazy="no-proxy"/>
+        <many-to-one name="vehicle" column="vehicle_id" class="model.fleet.Vehicle" lazy="no-proxy"/>
+        <many-to-one name="surety" column="surety_id" class="model.insurance.Surety" lazy="no-proxy"/>
         <property name="startDate" column="start_date" type="java.time.LocalDateTime"/>
         <property name="endDate" column="end_date" type="java.time.LocalDateTime"/>
 
