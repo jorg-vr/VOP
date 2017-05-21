@@ -2,6 +2,7 @@ package controller;
 
 import controller.exceptions.UnAuthorizedException;
 import controller.insurance.CommissionContainerController;
+import dao.exceptions.ConstraintViolationException;
 import dao.exceptions.DataAccessException;
 import dao.exceptions.ObjectNotFoundException;
 import dao.interfaces.DAOManager;
@@ -12,7 +13,9 @@ import model.fleet.Fleet;
 import model.fleet.Vehicle;
 import model.fleet.VehicleType;
 import model.identity.Customer;
+import model.insurance.VehicleInsurance;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -70,7 +73,13 @@ public class VehicleController extends CommissionContainerController<Vehicle> {
 
     @Override
     public void archive(UUID uuid) throws DataAccessException, UnAuthorizedException, ObjectNotFoundException {
-
+        for (VehicleInsurance vehicleInsurance : controllerManager.getVehicleInsuranceController().getBy(get(uuid))) {
+            try {
+                controllerManager.getVehicleInsuranceController().archive(vehicleInsurance.getUuid(), LocalDate.now());
+            } catch (ConstraintViolationException e) {
+                throw new DataAccessException(e);
+            }
+        }
         super.archive(uuid);
     }
 }
