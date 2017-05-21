@@ -74,6 +74,7 @@ Vue.filter('capitalize', function(value){
 })
 
 router.beforeEach((to, from, next) => {
+    console.log(to)
     //This variable must be false at the start of a page!
     if(to.name === 'login'){
         next()
