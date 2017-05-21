@@ -316,7 +316,7 @@ public class RealDataDatabaseFiller {
                 "Nader wordt aangetekend dat wijzigingen in het risico en/of samenstelling van het wagenpark eens per 01 maand(en) schrijftelijk worden vastgelegd en verrekend." +
                         "De verzekeringnemmer blijft echter gehouden om iedere wijzigingen in risico of wagenpark ten spoedigste aan de maatschappij te melden.",
         "In tegenstelling tot hetgeen in de Polis is bepaald, bedraagt het verzekerde bedrag voor de dekking CTA, niet 33.00 EUR maar 30.000 EUR."};
-        String[] referenceCodes = {"024", "060"};
+        String[] referenceCodes = {"024", "060", "951"};
         List<SpecialCondition> specialConditions = new ArrayList<>();
 
 
