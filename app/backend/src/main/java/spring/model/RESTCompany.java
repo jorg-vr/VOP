@@ -7,13 +7,13 @@ import model.identity.Company;
 import model.identity.CompanyType;
 import model.identity.Periodicity;
 import spring.exceptions.ErrorCode;
-import util.UUIDUtil;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static util.MyProperties.PATH_COMPANIES;
 import static util.MyProperties.getProperty;
+import static util.UUIDUtil.toUUID;
 
 /**
  * This is a bean class as specified in the API specification
@@ -65,9 +65,13 @@ public class RESTCompany extends RESTAbstractModel<Company> {
     public Company translate(ControllerManager manager) throws ConstraintViolationException {
         Company company;
         try {
-            company = CompanyType.valueOf(type).getFactory().create();
-        } catch (IllegalArgumentException | NullPointerException e) {
-            throw new ConstraintViolationException("type", ErrorCode.INVALID.toString());
+            company = manager.getCompanyController().get(toUUID(getType()));
+        } catch (Exception e) {
+            try {
+                company = CompanyType.valueOf(type).getFactory().create();
+            } catch (IllegalArgumentException | NullPointerException ex) {
+                throw new ConstraintViolationException("type", ErrorCode.INVALID.toString());
+            }
         }
 
         Map<String, String> violations = new HashMap<>();
@@ -89,7 +93,7 @@ public class RESTCompany extends RESTAbstractModel<Company> {
         company.setBtwNumber(getVatNumber());
         company.setPhoneNumber(getPhoneNumber());
         company.setAddress(getAddress().translate());
-        company.setUuid(UUIDUtil.toUUID(getId()));
+        company.setUuid(toUUID(getId()));
         return company;
     }
 
