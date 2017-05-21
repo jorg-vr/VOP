@@ -61,10 +61,12 @@ export default {
         let fetchResource = 'fetch' + capName
         let fetchResources = 'fetch' + capNames
         let fetchResourcesBy = fetchResources + 'By'
+        let fetchResourcesByLocation = fetchResourcesBy + 'Location'
         let createResource = 'create' + capName
         let updateResource = 'update' + capName
         let deleteResource = 'delete' + capName
         let deleteBodyResource = 'deleteBody'+ capName
+        let fetchResourcesPage = fetchResources + 'Page'
         module = {
             state: {},
             getters: {},
@@ -111,6 +113,31 @@ export default {
             return new Promise((resolveSuccess, resolveFailure) => {
                 RequestHandler.getObjectsRequestBy(formatLocation(location, payload.ids), payload.filters).then(resources => {
                     context.commit(setResources, resources)
+                    resolveSuccess(resources)
+                }, response => {
+                    resolveFailure(response)
+                })
+            })
+        }
+        //Need a limit, a page, and filters
+        module.actions[fetchResourcesPage] = function(context, payload){
+            //Empty the previous list of resources.
+            context.commit(clearResources)
+            return new Promise((resolveSuccess, resolveFailure) => {
+                RequestHandler.getRequest(formatLocation(location, payload.ids), payload.filters).then(resources => {
+                    context.commit(setResources, resources.body.data)
+                    resolveSuccess(resources)
+                }, response => {
+                    resolveFailure(response)
+                })
+            })
+        }
+        module.actions[fetchResourcesByLocation] = function(context, {location}){
+            //Empty the previous list of resources.
+            context.commit(clearResources)
+            return new Promise((resolveSuccess, resolveFailure) => {
+                RequestHandler.getRequest(location).then(resources => {
+                    context.commit(setResources, resources.body.data)
                     resolveSuccess(resources)
                 }, response => {
                     resolveFailure(response)
