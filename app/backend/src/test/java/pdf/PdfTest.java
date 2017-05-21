@@ -84,7 +84,7 @@ public class PdfTest {
             vehicleInvoice.setTotalTax(i * 19);
             FlatSurety surety = new FlatSurety();
             surety.setSuretyType(SuretyType.values()[i % SuretyType.values().length]);
-            vehicleInvoice.setSurety(surety);
+            vehicleInvoice.setSuretyType(surety.getSuretyType());
             vehicleInvoice.setLicensePlate("ABC-" + i / 4);
             vehicleInvoices.add(vehicleInvoice);
         }

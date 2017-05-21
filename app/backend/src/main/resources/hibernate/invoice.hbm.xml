@@ -36,7 +36,11 @@
         <id name="uuid" type="uuid-binary" column="id">
             <generator class="uuid2"/>
         </id>
-        <many-to-one name="surety" column="surety_id" class="model.insurance.Surety" lazy="false" not-null="false" />
+        <property name="suretyType" lazy="false">
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">model.insurance.SuretyType</param>
+            </type>
+        </property>
         <property name="vehicleInsuranceID" column="vehicle_insurance_id" type="uuid-binary"/>
         <property name="franchise" column="franchise" type="int"/>
         <property name="insuredValue" column="insured_value" type="int"/>
