@@ -25,7 +25,7 @@
                     <param name="enumClass" >model.account.Resource</param>
                 </type>
             </map-key>
-            <many-to-many class="model.account.Permission"/>
+            <many-to-many class="model.account.Permission" />
         </map>
     </class>
 
