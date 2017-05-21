@@ -10,7 +10,6 @@ import dao.interfaces.DAOManager;
 import dao.interfaces.DAOProvider;
 import dao.interfaces.VehicleTypeDAO;
 import model.account.*;
-import model.billing.Invoice;
 import model.fleet.Fleet;
 import model.fleet.Vehicle;
 import model.fleet.VehicleType;
@@ -27,6 +26,7 @@ import static model.insurance.SuretyType.*;
  * Created by sam on 5/12/17.
  */
 public class RealDataDatabaseFiller {
+
     private static final String VEHICLETYPE_1 = "Personenwagen";
     private static final String VEHICLETYPE_2 = "Vrachtauto";
     private static final String VEHICLETYPE_3 = "Vrachtauto (+12)";
@@ -223,7 +223,7 @@ public class RealDataDatabaseFiller {
             int franchiseMinimum = 10000;
             int franchiseMaximum = 100000;
             int insuredMinimum = 200000;
-            int insuredMaximum = 4000000;
+            int insuredMaximum = 1000000;
             VehicleInsurance insurance = new VehicleInsurance();
             insurance.setContract(contract);
             insurance.setSurety(surety);
@@ -255,21 +255,21 @@ public class RealDataDatabaseFiller {
             List<Surety> sureties = new ArrayList<>();
 
             FlatSurety flatSurety1 = new FlatSurety();
-            flatSurety1.setPremium(250);
+            flatSurety1.setPremium(2500);
             flatSurety1.setSuretyType(SuretyType.OMNIUM_FULL);
             flatSurety1.setSpecialConditions(specialConditions);
             flatSurety1.setInsuranceCompany(insuranceCompany);
             sureties.add(controllerManager.getSuretyController().create(flatSurety1));
 
             FlatSurety flatSurety2 = new FlatSurety();
-            flatSurety2.setPremium(140);
+            flatSurety2.setPremium(1400);
             flatSurety2.setSuretyType(SuretyType.LEGAL_AID);
             flatSurety2.setSpecialConditions(new ArrayList<>(Arrays.asList(new SpecialCondition[]{specialConditions.iterator().next()})));
             flatSurety2.setInsuranceCompany(insuranceCompany);
             sureties.add(controllerManager.getSuretyController().create(flatSurety2));
 
             NonFlatSurety flatSurety3 = new NonFlatSurety();
-            flatSurety3.setMinPremium(300);
+            flatSurety3.setMinPremium(3000);
             flatSurety3.setPremiumPercentage(0.165);
             flatSurety3.setSuretyType(SuretyType.OMNIUM_PARTIAL);
             flatSurety3.setSpecialConditions(specialConditions);
@@ -285,7 +285,7 @@ public class RealDataDatabaseFiller {
             List<Surety> sureties = new ArrayList<>();
 
             FlatSurety flatSurety1 = new FlatSurety();
-            flatSurety1.setPremium(1400);
+            flatSurety1.setPremium(14000);
             flatSurety1.setSuretyType(SuretyType.CIVIL_LIABILITY);
             flatSurety1.setSpecialConditions(specialConditions);
             flatSurety1.setInsuranceCompany(insuranceCompany);
@@ -293,14 +293,14 @@ public class RealDataDatabaseFiller {
 
             NonFlatSurety flatSurety2 = new NonFlatSurety();
             flatSurety2.setPremiumPercentage(0.25);
-            flatSurety2.setMinPremium(140);
+            flatSurety2.setMinPremium(1400);
             flatSurety2.setSuretyType(SuretyType.OMNIUM_PARTIAL);
             flatSurety2.setSpecialConditions(new ArrayList<>(Arrays.asList(new SpecialCondition[]{specialConditions.iterator().next()})));
             flatSurety2.setInsuranceCompany(insuranceCompany);
             sureties.add(controllerManager.getSuretyController().create(flatSurety2));
 
             NonFlatSurety flatSurety3 = new NonFlatSurety();
-            flatSurety3.setMinPremium(300);
+            flatSurety3.setMinPremium(3000);
             flatSurety3.setPremiumPercentage(0.165);
             flatSurety3.setSuretyType(SuretyType.TRAVEL_AID);
             flatSurety3.setSpecialConditions(specialConditions);
@@ -311,9 +311,12 @@ public class RealDataDatabaseFiller {
     }
 
     private Collection<SpecialCondition> initSpecialConditions(User user, Function function) throws DataAccessException, UnAuthorizedException, ConstraintViolationException {
-        String[] titles = {"Euromex polisnummer", "Dekking terrorisme TRIP"};
-        String[] texts = {"Voor de dekking rechtsbijstand geldt het Euromes polisnummer 3020980", "lange tekst"};
-        String[] referenceCodes = {"024", "029"};
+        String[] titles = {"Euromex polisnummer", "Mutatie termijn", "CTA verzekerde waarde"};
+        String[] texts = {"Voor de dekking rechtsbijstand geldt het Euromes polisnummer 3020980",
+                "Nader wordt aangetekend dat wijzigingen in het risico en/of samenstelling van het wagenpark eens per 01 maand(en) schrijftelijk worden vastgelegd en verrekend." +
+                        "De verzekeringnemmer blijft echter gehouden om iedere wijzigingen in risico of wagenpark ten spoedigste aan de maatschappij te melden.",
+        "In tegenstelling tot hetgeen in de Polis is bepaald, bedraagt het verzekerde bedrag voor de dekking CTA, niet 33.00 EUR maar 30.000 EUR."};
+        String[] referenceCodes = {"024", "060", "951"};
         List<SpecialCondition> specialConditions = new ArrayList<>();
 
 
