@@ -322,8 +322,8 @@ public class RealDataDatabaseFiller {
     private Collection<SpecialCondition> initSpecialConditions(User user, Function function) throws DataAccessException, UnAuthorizedException, ConstraintViolationException {
         String[] titles = {"Euromex polisnummer", "Mutatie termijn", "CTA verzekerde waarde"};
         String[] texts = {"Voor de dekking rechtsbijstand geldt het Euromes polisnummer 3020980",
-                "Nader wordt aangetekend dat wijzigingen in het risico en/of samenstelling van het wagenpark eens per 01 maand(en) schrijftelijk worden vastgelegd en verrekend." +
-                        "De verzekeringnemmer blijft echter gehouden om iedere wijzigingen in risico of wagenpark ten spoedigste aan de maatschappij te melden.",
+                "Nader wordt aangetekend dat wijzigingen in het risico en/of samenstelling van het wagenpark eens per 01 maand(en) schriftelijk worden vastgelegd en verrekend." +
+                        "De verzekeringnemer blijft echter gehouden om iedere wijzigingen in risico of wagenpark ten spoedigste aan de maatschappij te melden.",
         "In tegenstelling tot hetgeen in de Polis is bepaald, bedraagt het verzekerde bedrag voor de dekking CTA, niet 33.00 EUR maar 30.000 EUR."};
         String[] referenceCodes = {"024", "060", "951"};
         List<SpecialCondition> specialConditions = new ArrayList<>();
