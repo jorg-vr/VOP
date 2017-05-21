@@ -34,15 +34,10 @@ public class AuthUtil {
         AddressDAO addressDAO = manager.getAddressDao();
 
         Role role = roleDAO.create(new Role("roleName-AuthUtil"));
-        addActions(role, Resource.USER);
-        addActions(role, Resource.FLEET);
-        addActions(role, Resource.FUNCTION);
-        addActions(role, Resource.ROLE);
-        addActions(role, Resource.BILLING);
-        addActions(role, Resource.VEHICLE);
-        addActions(role, Resource.VEHICLETYPE);
-        addActions(role, Resource.COMPANY);
-        addActions(role, Resource.INSURANCE);
+        for (Resource resource: Resource.values()) {
+            addActions(role, resource);
+        }
+
         roleDAO.update(role);
         role = roleDAO.get(role.getUuid());
 
@@ -84,21 +79,9 @@ public class AuthUtil {
         AddressDAO addressDAO = manager.getAddressDao();
 
         Role role = roleDAO.create(new Role("roleName-AuthUtil"));
-        addActions(role, Resource.USER);
-        addActions(role, Resource.FLEET);
-        addActions(role, Resource.FUNCTION);
-        addActions(role, Resource.ROLE);
-        addActions(role, Resource.BILLING);
-        //addActions(role, Resource.VEHICLE);
-        addActions(role, Resource.VEHICLETYPE);
-        addActions(role, Resource.COMPANY);
-        addActions(role, Resource.INSURANCE);
-
-
-        role.setAccess(Resource.VEHICLE, Action.READ_MINE);
-        role.setAccess(Resource.VEHICLE, Action.UPDATE_ALL);
-        role.setAccess(Resource.VEHICLE, Action.REMOVE_ALL);
-        role.setAccess(Resource.VEHICLE, Action.CREATE_ALL);
+        for (Resource resource: Resource.values()) {
+            addActions(role, resource);
+        }
         roleDAO.update(role);
         role = roleDAO.get(role.getUuid());
 
