@@ -35,11 +35,20 @@ export default {
     /**
      * This function does a GET request to the specified location
      * @param location: The location of the the get request
+     * @param filters: Additional filters: this can be
      * @returns {Promise}
      */
-    getRequest(location){
+    getRequest(location, filters){
+        if(location && location.charAt(0)==='/'){
+            location = location.substr(1)
+        }
+        let query = ''
+        if(filters){
+            query = '?' + formQuery(filters)
+            query =  query.slice(0, -1)
+        }
         return new Promise((resolve, reject) => {
-            Vue.http.get(location).then(response => {
+            Vue.http.get(location + query).then(response => {
                 resolve(response)
             }, response => {
                 rejectResponse(response, reject)
