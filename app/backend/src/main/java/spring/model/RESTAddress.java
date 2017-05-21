@@ -6,6 +6,7 @@ import model.identity.Address;
  * This is a bean class as specified in the API specification
  */
 public class RESTAddress {
+
     private String country;
     private String city;
     private String street;

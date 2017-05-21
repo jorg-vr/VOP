@@ -10,7 +10,6 @@ import model.fleet.Vehicle;
 import model.fleet.VehicleType;
 import model.identity.Customer;
 import org.springframework.web.bind.annotation.*;
-import spring.exceptions.InvalidInputException;
 import spring.model.AuthenticationToken;
 import spring.model.RESTSchema;
 import spring.model.RESTVehicle;
@@ -77,16 +76,17 @@ public class RESTVehicleController extends RESTAbstractController<RESTVehicle, V
                                        @RequestParam(required = false) Integer page,
                                        @RequestParam(required = false) Integer limit,
                                        @RequestHeader(value = "Authorization") String token,
-                                       @RequestHeader(value = "Function") String function) throws UnAuthorizedException {
+                                       @RequestHeader(value = "Function") String function) throws UnAuthorizedException, DataAccessException {
+        String fleetFilter = fleet;
         if (fleetId.isPresent()) {
-            fleet = fleetId.get();
+            fleetFilter = fleetId.get();
         }
 
         UUID user = new AuthenticationToken(token).getAccountId();
         try (ControllerManager manager = new ControllerManager(user, toUUID(function))) {
             VehicleController controller = manager.getVehicleController();
 
-            Fleet fleetObject = fleet != null ? new Fleet(toUUID(fleet)) : null;
+            Fleet fleetObject = fleetFilter != null ? new Fleet(toUUID(fleetFilter)) : null;
             Customer customer = company != null ? new Customer(toUUID(company)) : null;
             VehicleType vehicleTypeObject = null;
             if(type != null){
@@ -99,8 +99,6 @@ public class RESTVehicleController extends RESTAbstractController<RESTVehicle, V
                     .map(RESTVehicle::new)
                     .collect(Collectors.toList());
             return new RESTSchema<>(result, page, limit, request);
-        } catch (DataAccessException e) {
-            throw new InvalidInputException("Some parameters where invalid");
         }
     }
 }

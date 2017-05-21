@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import store from '../store'
+import router from '../config/routes'
 
 /**
  * Interface for communicating with the backend API.
@@ -12,14 +13,34 @@ import store from '../store'
 export default {
 
     /**
-     * This function does a GET request to the specified location.
+     * This function does a GET request to the specified location and returns the data
      * @param location: The location of the objects
      * @returns {Promise}
      */
     getObjectsRequest(location){
         return new Promise((resolve, reject) => {
             Vue.http.get(location).then(response => {
-                resolve(response.body.data)
+                if(response.body && response.body.data){
+                    resolve(response.body.data)
+                }
+                else {
+                    resolve(response)
+                }
+            }, response => {
+                rejectResponse(response, reject)
+            })
+        })
+    },
+
+    /**
+     * This function does a GET request to the specified location
+     * @param location: The location of the the get request
+     * @returns {Promise}
+     */
+    getRequest(location){
+        return new Promise((resolve, reject) => {
+            Vue.http.get(location).then(response => {
+                resolve(response)
             }, response => {
                 rejectResponse(response, reject)
             })
@@ -55,12 +76,7 @@ export default {
     //For example, some properties can't be filtered, some properties might be nested
     getObjectsRequestBy(location, filters){
         let locationTrimmed = location.rtrim('/')
-        let query = '?'
-        for(const filter in filters){
-            if(filters.hasOwnProperty(filter) && filters[filter] !== ''){
-                query += filter + '=' + filters[filter] + '&'
-            }
-        }
+        let query = '?' + formQuery(filters)
         query =  query.slice(0, -1)
         return this.getObjectsRequest(locationTrimmed + query)
     },
@@ -125,11 +141,52 @@ export default {
             })
         })
     },
+
+    /**
+     * This function does a DELETE request to the specified location. The specified ID is added to the location.
+     * @param location
+     * @param id: The id of the object to be removed.
+     * @param data: The body of this request
+     * @returns {Promise}
+     */
+    deleteWithBodyRequest(location, id,data){
+        return new Promise((resolve, reject) => {
+            Vue.http.delete(location + id, {body: data}).then(() => {
+                resolve()
+            }, response => {
+                rejectResponse(response, reject)
+            })
+        })
+    },
+
+}
+
+/**
+ * Create a query with the given filters.
+ * @param currentQuery the current value of the query
+ * @param filters A remaining object with filters.
+ */
+let formQuery = function(filters){
+    let query = ''
+    for(const filter in filters){
+        if(filters.hasOwnProperty(filter)){
+            let filterValue = filters[filter]
+            if(filterValue instanceof Object){
+                query += formQuery(filterValue)
+            }
+            else {
+                if(filterValue !== ''){
+                    query += filter + '=' + filters[filter] + '&'
+                }
+            }
+        }
+    }
+    return query
 }
 
 let rejectResponse = function(response, reject){
     if(response.status===401){ //Invalid token
-        window.location = '/login'
+        router.push({name: 'login'})
     }
     store.commit('setError', response)
     reject(response)

@@ -6,30 +6,18 @@
 -->
 <template>
     <div>
-       <div class="page-header">
-        <h1>{{$t("condition.condition") | capitalize }} </h1>
+        <div class="page-header">
+            <h1>{{condition.title | capitalize }} ({{condition.referenceCode}})
+                <delete-component  :resource="resource" :id="condition.id" :back="back"></delete-component>  </h1>
         </div>
-    <div class="col-md-8">
-      <table class="table show-table" v-if="condition">
-        <tr>
-            <td>{{$t('condition.title') | capitalize }}</td>
-            <td>{{condition.title}} </td>
-        </tr>
-        <tr>
-            <td>{{$t('condition.referenceCode') | capitalize }}</td>
-            <td> {{condition.referenceCode}}  </td>
-        </tr>
-        <tr>
-            <td>{{$t('condition.text') | capitalize }}</td>
-            <td> {{condition.text}}  </td>
-        </tr>
-    </table> 
+        <div class="col-md-8">
+            <p>{{condition.text}}</p>
 
-    <!-- Go back to overview contract page -->
-    <button-back> </button-back>
+            <!-- Go back to overview contract page -->
+            <button-back :route="back"> </button-back>
 
+        </div>
     </div>
-</div>
 </template>
 <script>
     import {mapGetters, mapActions,mapMutations} from 'vuex'
@@ -37,29 +25,36 @@
     import resources from '../../constants/resources'
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
     import buttonBack from '../../assets/buttons/buttonBack.vue'
+    import deleteComponent from '../../assets/general/deleteComponent.vue'
 
     export default {
+        data(){
+            return {
+                resource: resources.CONDITION,
+                back:{name:resources.CONDITION.name.plural()}
+            }
+        },
         components: {
-            listComponent,buttonAdd,buttonBack
+            listComponent,buttonAdd,buttonBack,deleteComponent
         },
         props: {
             id: String,
         },
         created(){
-           this.fetchCondition({id: this.id})         
-       },
-       computed: {
-        ...mapGetters([
-            'condition'
+            this.fetchCondition({id: this.id})
+        },
+        computed: {
+            ...mapGetters([
+                'condition'
             ])
-    },
-    methods: {
-        ...mapActions([
-            'fetchCondition',
+        },
+        methods: {
+            ...mapActions([
+                'fetchCondition',
             ]),
-        ...mapMutations([
-            'setSpecialConditions'
+            ...mapMutations([
+                'setSpecialConditions'
             ]),
-    },
-}
+        },
+    }
 </script>

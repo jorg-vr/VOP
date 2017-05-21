@@ -68,7 +68,14 @@ import login from '../pages/login/login.vue'
 
 import ImportVehicles from '../pages/vehicle/import.vue'
 
-export default [
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+import store from '../store'
+import environments from '../config/environments'
+
+Vue.use(VueRouter)
+
+let routes = [
     {
         path: '',
         component: App,
@@ -107,10 +114,9 @@ export default [
             {path: 'vehicles/types/:id(\\d+)/edit', name: 'edit_vehicleType', component: editVehicleType, props: true},
 
             // sureties
-            {path: 'sureties', name: 'suretys', component: indexContract},
-            {path: 'sureties/new', name: 'new_surety', component: newSurety},
-            {path: 'sureties/:id(\\d+)', name: 'surety', component: showSurety, props: true},
-            {path: 'sureties/:id(\\d+)/edit', name: 'edit_surety', component: editSurety, props: true},
+            {path: 'clients/:clientId(\\d+)/sureties/new', name: 'new_surety', component: newSurety},
+            {path: 'clients/:clientId(\\d+)/sureties/:id(\\d+)', name: 'surety', component: showSurety, props: true},
+            {path: 'clients/:clientId(\\d+)/sureties/:id(\\d+)/edit', name: 'edit_surety', component: editSurety, props: true},
             
             // contracts
             {path: 'contracts', name: 'contracts', component: indexContract},
@@ -147,3 +153,10 @@ export default [
     {path: '*', component: exception, props: {statusCode: 404}}
 ];
 
+console.log(environments[process.env.NODE_ENV])
+
+export default new VueRouter({
+    mode: 'history',
+    base: environments[process.env.NODE_ENV].BASE,
+    routes: routes,
+})

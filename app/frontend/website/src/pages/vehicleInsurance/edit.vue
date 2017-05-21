@@ -5,7 +5,7 @@
 -->
 <template>
     <abstract-form :actions="actions" :object="insurance" :back="back" :resource="resource" :ids="{contract: insurance.contract}">
-        <insurance-form-input :object="insurance"></insurance-form-input>
+        <insurance-form-input :contractId="contractId" :object="insurance"></insurance-form-input>
     </abstract-form>
 </template>
 
@@ -21,18 +21,15 @@
             return {
                 actions: actions.UPDATE,
                 resource: resources.INSURANCE,
-                insurance:{contract:this.contractId},
-                back:{name:resources.INSURANCE.name,params:{id:this.contractId}}
+                insurance: {contract:this.contractId},
+                back: {name:resources.INSURANCE.name,params:{contractId:this.contractId}}
+
             }
         },
         created(){
-            if(this.id){
-                this.fetchInsurance({id: this.id,ids:{contract: this.contractId}}).then(insurance => {
-                    this.insurance = insurance;
-                    this.insurance.startDate = this.insurance.startDate.substring(0,10)
-                    this.insurance.endDate = this.insurance.endDate.substring(0,10)
-                })
-            }
+            this.fetchInsurance({id: this.id, ids:{contract: this.contractId}}).then(insurance => {
+                this.insurance = insurance;
+            })
         },
         components: {
             abstractForm,insuranceFormInput
@@ -49,4 +46,3 @@
         }
     }
 </script>
-

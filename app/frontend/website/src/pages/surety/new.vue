@@ -18,9 +18,12 @@
                 actions: actions.CREATE,
                 resource: resources.SURETY,
                 surety: {},
-                back: {name:resources.SURETY.name.plural()}
+                back: {name:resources.CLIENT, params: {id: this.clientId}}
 
             }
+        },
+        props: {
+            clientId: String
         },
         components: {
             suretyFormInput,abstractForm

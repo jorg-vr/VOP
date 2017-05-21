@@ -1,45 +1,36 @@
 <!--
     This page shows a certain insurance surety in detail.
-
     @param id: The id of the insurance surety to be shown.
-
 -->
 <template>
-    <div>
-       <div class="page-header">
-        <h1>{{$t("surety.surety") | capitalize }} </h1>
+    <div v-if="surety" >
+        <div class="page-header">
+            <h1 v-if="surety.flat">{{$t('surety.flatAdjective') | capitalize }} {{$t("surety.surety")}}
+               <delete-component  :resource="resourceSurety" :id="surety.id" :back="back"></delete-component> </h1>
+            <h1 v-else>{{$t("surety.surety") | capitalize }}
+               <delete-component :resource="resourceSurety" :id="surety.id" :back="back"></delete-component> </h1>
+
         </div>
-    <div class="col-md-8">
-      <table class="table show-table" v-if="surety">
-        <tr>
-            <td>{{$t('surety.surety') | capitalize }}</td>
-            <td>{{surety.suretyType}} </td>
-        </tr>
-        <tr>
-            <td>{{$t('surety.premium') | capitalize }}</td>
-            <td> {{surety.premium}}  </td>
-        </tr>
-        <tr>
-            <td>{{$t('surety.premiumPercentage') | capitalize }}</td>
-            <td> {{surety.premiumPercentage}} % </td>
-        </tr>
-    </table> 
+        <div class="col-md-8">
+            <h4>{{$t('suretyTypes.' + surety.suretyType) | capitalize }}</h4>
+            <h4>{{surety.flat ? $t('surety.premium'): $t('surety.minPremium') | capitalize }}:  {{surety.premiumEuro}}</h4>
+            <h4 v-if="!surety.flat">{{$t('surety.premiumPercentage') | capitalize }}: {{(surety.premiumPercentage*100).toFixed(2)}} %</h4>
 
-    <!-- special conditions for the insurance surety -->
-        <div class="page-header">   
-            <!-- <button-add :resource="resource"></button-add>   -->
-            <h2>{{$t("surety.coverage") | capitalize }}</h2>
-        </div>   
+            <!-- special conditions for the insurance surety -->
+            <div class="page-header">
+                <!-- <button-add :resource="resource"></button-add>   -->
+                <h2>{{$t("surety.coverage") | capitalize }}</h2>
+            </div>
 
-    <list-component :resource="resource" :listObject="listObject">
-    </list-component>
+            <list-component :resource="resource" :listObject="listObject" :remove="false" :edit="false">
+            </list-component>
 
-    <!-- Go back to overview contract page -->
-    <button-back :route="{name: 'contracts'}"></button-back>
+            <!-- Go back to overview contract page -->
+            <button-back :route="back"></button-back>
 
 
+        </div>
     </div>
-</div>
 </template>
 <script>
     import {mapGetters, mapActions,mapMutations} from 'vuex'
@@ -47,55 +38,49 @@
     import listComponent from "../../assets/general/listComponent.vue"
     import resources from '../../constants/resources'
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
-
+    import {centsToEuroObject} from '../../utils/utils'
+    import deleteComponent from '../../assets/general/deleteComponent.vue'
     export default {
         data(){
             return{
                 resource: resources.CONDITION,
-                values: []
+                resourceSurety: resources.SURETY,
             }
         },
         components: {
-            buttonBack,listComponent,buttonAdd
+            buttonBack,listComponent,buttonAdd,deleteComponent
         },
         props: {
             id: String,
-            //contractId: String
+            clientId: String
         },
         created(){
-           let suretyId = this.id
-           this.fetchSurety({id:suretyId}).then(surety => {
-                this.values = this.surety.specialConditions
-           })
-           // Needs to be removed after back end support
-           // if back end support
-           // this.setSpecialConditions(this.surety.specialConditions)
-           // bind specialConditions in store to surety resource
-       },
-       computed: {
-        ...mapGetters([
-            'contractId',
-            'surety',
-            'conditions'
+            this.fetchSurety({id:this.id}).then(surety => {
+                centsToEuroObject(surety,"premium");
+            })
+        },
+        computed: {
+            ...mapGetters([
+                'surety',
+                'conditions'
             ]),
-        listObject() {
+            listObject() {
                 var listObj = {};
                 listObj.headers = ['referenceCode','title'];
-                listObj.values = this.values
+                listObj.values = this.surety.specialConditions
                 return listObj;
-        }
-    },
-    methods: {
-        ...mapActions([
-            'fetchSurety',
+            },
+            back(){
+                return {name:resources.CLIENT.name ,params: {id:this.clientId}};
+            }
+        },
+        methods: {
+            ...mapActions([
+                'fetchSurety',
             ]),
-        ...mapMutations([
-            'setConditions'
-            ]),
-        showDate: function (date) {
-            var d=new Date(date)
-            return d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear()
-        }
-    },
-}
+            ...mapMutations([
+                'setConditions'
+            ])
+        },
+    }
 </script>

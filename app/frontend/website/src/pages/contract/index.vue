@@ -16,8 +16,7 @@
         </abstract-search-form>
 
         <!-- Render an info-pane for every contract. Once all the data is loaded, the table will be shown.-->
-        <!-- TODO ADD EXTRA FIELDS -->
-        <list-component :resource="resource" :listObject="listObject">
+        <list-component v-if="show" :resource="resource" :listObject="listObject">
         </list-component>
     </div>
 </template>
@@ -29,12 +28,14 @@
     import buttonAdd from '../../assets/buttons/buttonAdd.vue'
     import AbstractSearchForm from '../../assets/general/AbstractSearchForm.vue'
     import ContractSearchInput from './ContractSearchInput.vue'
+    import {centsToEuroArray} from '../../utils/utils'
 
     export default {
         data(){
             return {
                 filters: {},
-                resource: resources.CONTRACT
+                resource: resources.CONTRACT,
+                show:false
             }
         },
         components: {
@@ -43,7 +44,10 @@
         created() {
             this.setLoading({loading: true })
             this.fetchContracts().then(() => {
+                centsToEuroArray(this.contracts,"totalCost");
+                centsToEuroArray(this.contracts,"totalTax");
                 this.setLoading({loading: false });
+                this.show=true;
             })
         },
         computed: {
@@ -53,7 +57,7 @@
             ]),
             listObject() {
                 var listObj = {};
-                listObj.headers = ['customerName','insuranceCompanyName','showableStartDate','totalCost','totalTax'];
+                listObj.headers = ['customerName','insuranceCompanyName','showableStartDate','totalCostEuro','totalTaxEuro'];
                 listObj.values = this.contracts;
                 return listObj;
             }

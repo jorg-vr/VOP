@@ -85,7 +85,7 @@ permissions[actions.READ_ALL.path(resources.VEHICLE_TYPE.name)] = {
 }
 
 permissions[actions.READ_ALL.path(resources.ROLE.name)] = {
-    resource: resources.CLIENT,
+    resource: resources.ROLE,
     actions: {
         name: actions.READ_ALL.name,
         path: actions.READ_ALL.path,

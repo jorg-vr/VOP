@@ -6,7 +6,9 @@
 <template>
     <div v-if="vehicle">
         <div class="page-header">
-            <h1> {{$t('vehicle.vehicle') | capitalize }} {{vehicle.licensePlate}}</h1>
+            <h1> {{$t('vehicle.vehicle') | capitalize }} {{vehicle.licensePlate}}
+                <delete-component v-if="vehicle" :resource="resourceVehicle" :id="vehicle.id" :back="back" ></delete-component>
+            </h1>
         </div>
         <div class="col-md-8">
             <table id="show-vehicle" class="table show-table">
@@ -40,12 +42,12 @@
                 </tr>
             </table>
         </div>
-        <commissions :id="id" loc="vehicles" :back="back" ></commissions>
+        <commissions :id="id" loc="vehicles" ></commissions>
         <div class="col-md-12">
             <h3>
                 {{$t("vehicle_insurance.vehicle_insurances") | capitalize }}
             </h3>
-            <table class="table-hover table">
+            <table v-if="show" class="table-hover table">
                 <thead>
                 <tr>
                     <th v-for="head in listObject.headers">
@@ -60,7 +62,6 @@
                     </td>
                     <td class="stretch">
                         <button-edit :resource="resource" :params="{id:value.id,contractId:value.contract}" ></button-edit>
-                        <button-remove :resource="resource"  @click="tdshowModal(value.id)"></button-remove>
                     </td>
                 </tr>
                 </tbody>
@@ -70,7 +71,7 @@
                      :route="{name: 'vehicle_logs', params: {id: this.id}}">
             {{$t('log.log') | capitalize}}
         </button-link>
-        <button-back v-if="vehicle.fleet" :route="{name: 'fleet', params: {id: vehicle.fleet}}"></button-back>
+        <button-back v-if="vehicle.fleet" :route="{name: 'fleet', params: {id: vehicle.fleet}}" buttonClass="btn btn-default pull-left vehicle-back"></button-back>
         <button-back v-else :route="{name: 'fleets'}"></button-back>
     </div>
 </template>
@@ -82,18 +83,21 @@
     import {mapGetters, mapActions} from 'vuex'
     import listComponent from '../../assets/general/listComponent.vue'
     import resources from '../../constants/resources'
-    import * as utils from '../../utils/utils'
     import commissions from '../commission/collapse.vue'
+    import deleteComponent from '../../assets/general/deleteComponent.vue'
+    import {translateSuretyTypes,centsToEuroArray} from '../../utils/utils'
 
     export default {
         data(){
             return {
                 resource: resources.INSURANCE,
-                back:{name:resources.VEHICLE.name,params:{id:this.id}}
+                resourceVehicle: resources.VEHICLE,
+                show:false
             }
         },
         components: {
-            buttonBack,listComponent, buttonLink,buttonEdit,buttonRemove,commissions
+            buttonBack,listComponent, buttonLink,buttonEdit,buttonRemove,commissions,deleteComponent
+
         },
         props: {
             id: String
@@ -104,7 +108,11 @@
             });
             this.fetchInsurancesBy({filters: {vehicleId: this.id}}).then(
                     ()=>{
-                        utils.translateSuretyTypes(this.insurances);
+                        translateSuretyTypes(this.insurances);
+                        centsToEuroArray(this.insurances,"cost");
+                        centsToEuroArray(this.insurances,"tax");
+                        centsToEuroArray(this.insurances,"insuredValue");
+                        this.show=true;
                     }
             )
         },
@@ -112,13 +120,17 @@
             ...mapGetters([
                 'vehicle',
                 'vehicleType',
-                'insurances'
+                'insurances',
+                'hasPermissionForRoute'
             ]),
             listObject() {
                 var listObj = {};
-                listObj.headers = ["insuranceCompanyName",'suretyTypeTranslation','insuredValue','showableStartDate','cost','tax'];
+                listObj.headers = ["insuranceCompanyName",'suretyTypeTranslation','insuredValueEuro','showableStartDate','costEuro','taxEuro'];
                 listObj.values = this.insurances;
                 return listObj;
+            },
+            back(){
+                return {name:resources.FLEET.name,params:{id:this.vehicle.fleet}};
             }
         },
         methods: {
@@ -140,5 +152,8 @@
 <style>
     #log {
         margin-right: 10px;
+    }
+    .vehicle-back {
+        margin-top: 0;
     }
 </style>

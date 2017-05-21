@@ -15,9 +15,7 @@ import java.util.Map;
 public class RESTPermission {
 
     private long id;
-
     private String resource;
-
     private String action;
 
     public RESTPermission(Resource resource, Action action) {

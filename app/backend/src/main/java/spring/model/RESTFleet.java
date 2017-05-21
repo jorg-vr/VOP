@@ -9,8 +9,6 @@ import dao.exceptions.ObjectNotFoundException;
 import model.fleet.Fleet;
 import spring.exceptions.ErrorCode;
 import util.UUIDUtil;
-import spring.exceptions.InvalidInputException;
-import spring.exceptions.NotAuthorizedException;
 
 import static util.MyProperties.PATH_FLEETS;
 import static util.MyProperties.getProperty;

@@ -2,11 +2,11 @@ package controller;
 
 import controller.exceptions.UnAuthorizedException;
 import dao.exceptions.DataAccessException;
-import dao.interfaces.*;
+import dao.interfaces.DAOManager;
+import dao.interfaces.FleetDAO;
 import model.account.Function;
 import model.account.Resource;
 import model.fleet.Fleet;
-import model.fleet.Vehicle;
 import model.identity.Customer;
 
 import java.util.Collection;
@@ -19,8 +19,11 @@ import static util.Compare.containsIgnoreCase;
  */
 public class FleetController extends AbstractController<Fleet> {
 
+    private FleetDAO dao;
+
     public FleetController(Function function, DAOManager manager) {
         super(manager, manager.getFleetDAO(), Resource.FLEET, function);
+        this.dao = manager.getFleetDAO();
     }
 
     @Override
@@ -35,8 +38,6 @@ public class FleetController extends AbstractController<Fleet> {
      * @throws UnAuthorizedException Function is not authorized to get all the objects.
      */
     public Collection<Fleet> getFiltered(Customer owner, String name) throws DataAccessException, UnAuthorizedException {
-        FleetDAO dao = (FleetDAO) getDao();
-
         // Filter vehicles on criteria that are supported by the database
         Collection<Fleet> result = getAll(
                 dao.byOwner(owner)

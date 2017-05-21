@@ -167,7 +167,7 @@ public class TestRunner {
         Result databaseResult3 = JUnitCore.runClasses(ContractParametersTest.class);
         Result databaseResult4 = JUnitCore.runClasses(FleetParametersTest.class);
         Result databaseResult5 = JUnitCore.runClasses(FunctionParametersTest.class);
-        Result databaseResult6 = JUnitCore.runClasses(InvoiceParametersTest.class);
+//        Result databaseResult6 = JUnitCore.runClasses(InvoiceParametersTest.class);
         Result databaseResult7 = JUnitCore.runClasses(RoleParametersTest.class);
         Result databaseResult8 = JUnitCore.runClasses(UserParametersTest.class);
         Result databaseResult9 = JUnitCore.runClasses(VehicleParametersTest.class);
@@ -195,10 +195,10 @@ public class TestRunner {
         for (Failure failure : databaseResult5.getFailures()) {
             System.out.println(failure.getMessage());
         }
-        System.out.printf("%-25s %s\n", "InvoiceParameters:", String.valueOf(databaseResult6.wasSuccessful()));
-        for (Failure failure : databaseResult6.getFailures()) {
-            System.out.println(failure.getMessage());
-        }
+//        System.out.printf("%-25s %s\n", "InvoiceParameters:", String.valueOf(databaseResult6.wasSuccessful()));
+//        for (Failure failure : databaseResult6.getFailures()) {
+//            System.out.println(failure.getMessage());
+//        }
         System.out.printf("%-25s %s\n", "RoleParameters:", String.valueOf(databaseResult7.wasSuccessful()));
         for (Failure failure : databaseResult7.getFailures()) {
             System.out.println(failure.getMessage());
@@ -244,7 +244,7 @@ public class TestRunner {
         Result databaseResult3 = JUnitCore.runClasses(ContractParametersTest.class);
         Result databaseResult4 = JUnitCore.runClasses(FleetParametersTest.class);
         Result databaseResult5 = JUnitCore.runClasses(FunctionParametersTest.class);
-        Result databaseResult6 = JUnitCore.runClasses(InvoiceParametersTest.class);
+//        Result databaseResult6 = JUnitCore.runClasses(InvoiceParametersTest.class);
         Result databaseResult7 = JUnitCore.runClasses(RoleParametersTest.class);
         Result databaseResult8 = JUnitCore.runClasses(UserParametersTest.class);
         Result databaseResult9 = JUnitCore.runClasses(VehicleParametersTest.class);
@@ -371,10 +371,10 @@ public class TestRunner {
         for (Failure failure : databaseResult5.getFailures()) {
             System.out.println(failure.getMessage());
         }
-        System.out.printf("%-25s %s\n", "InvoiceParameters:", String.valueOf(databaseResult6.wasSuccessful()));
-        for (Failure failure : databaseResult6.getFailures()) {
-            System.out.println(failure.getMessage());
-        }
+//        System.out.printf("%-25s %s\n", "InvoiceParameters:", String.valueOf(databaseResult6.wasSuccessful()));
+//        for (Failure failure : databaseResult6.getFailures()) {
+//            System.out.println(failure.getMessage());
+//        }
         System.out.printf("%-25s %s\n", "RoleParameters:", String.valueOf(databaseResult7.wasSuccessful()));
         for (Failure failure : databaseResult7.getFailures()) {
             System.out.println(failure.getMessage());

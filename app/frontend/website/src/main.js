@@ -2,10 +2,9 @@ import Vue from 'vue'
 
 import VeeValidate, {Validator} from 'vee-validate'
 import VueResource from 'vue-resource'
-import VueRouter from 'vue-router'
 import VueI18n from 'vue-i18n'
 
-import routes from './config/routes'
+import router from './config/routes'
 import locales from './lang/locales'
 import store from './store'
 import environments from './config/environments'
@@ -21,8 +20,6 @@ Validator.addLocale(nl)
 
 //Validation support
 Vue.use(VeeValidate);
-//Routing support
-Vue.use(VueRouter);
 //Backend support
 Vue.use(VueResource);
 //Language support
@@ -45,16 +42,40 @@ Object.keys(locales).forEach(function (lang) {
 window.document.base = Vue.config.env.BASE
 let locale = localStorage.getItem('languageCode')
 store.commit('setLanguage', {language: locale ? locale : 'nl'})
-const router = new VueRouter({
-    mode: 'history',
-    base: Vue.config.env.BASE,
-    routes: routes,
+
+//A list of general functions
+
+String.prototype.capitalize = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+}
+
+String.prototype.rtrim = function(s) {
+    return this.replace(new RegExp(s + "*$"),'');
+};
+
+String.prototype.showableDate = function() {
+    let d = new Date(this)
+    return d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear()
+}
+
+String.prototype.showableDateTime = function() {
+    let d = new Date(this)
+    let hours = d.getHours().toString().length==2 ? d.getHours() : '0' + d.getHours()
+    let minutes = d.getMinutes().toString().length==2 ? d.getMinutes() : '0' + d.getMinutes()
+    return this.showableDate() + ' ' + hours + ':' + minutes
+}
+
+String.prototype.plural = function() {
+    return this + 's'
+}
+
+Vue.filter('capitalize', function(value){
+    return value.capitalize()
 })
 
 router.beforeEach((to, from, next) => {
     //This variable must be false at the start of a page!
-    store.commit('setLoading', false)
-    if(to.path === '/login'){
+    if(to.name === 'login'){
         next()
     }
     else {
@@ -90,37 +111,6 @@ router.beforeEach((to, from, next) => {
     else {
         store.commit('setIsGoingBack', {status: false})
     }
-
-})
-
-//A list of general functions
-
-String.prototype.capitalize = function() {
-    return this.charAt(0).toUpperCase() + this.slice(1);
-}
-
-String.prototype.rtrim = function(s) {
-    return this.replace(new RegExp(s + "*$"),'');
-};
-
-String.prototype.showableDate = function() {
-    let d = new Date(this)
-    return d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear()
-}
-
-String.prototype.showableDateTime = function() {
-    let d = new Date(this)
-    let hours = d.getHours().toString().length==2 ? d.getHours() : '0' + d.getHours()
-    let minutes = d.getMinutes().toString().length==2 ? d.getMinutes() : '0' + d.getMinutes()
-    return this.showableDate() + ' ' + hours + ':' + minutes
-}
-
-String.prototype.plural = function() {
-    return this + 's'
-}
-
-Vue.filter('capitalize', function(value){
-    return value.capitalize()
 })
 
 new Vue({

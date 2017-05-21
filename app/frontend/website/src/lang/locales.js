@@ -18,14 +18,17 @@ export default
             sureties: 'sureties',
             totalCost: 'price',
             totalTax: 'tax',
+            totalCostEuro: 'price',
+            totalTaxEuro: 'tax',
             import: 'import',
             failImport: 'The given CSV file does not have the correct format.',
-            example: 'Download example file'
+            example: 'Download example file',
+            generate_green_card: 'Generate green card'
         },
         vehicleType: {
             name: 'name',
             vehicleType: 'vehicle type',
-            vehicleTypes: 'vehicle types',
+            vehicleTypes: 'commissions & taxes',
             tax:'tax',
             taxes:'taxes'
         },
@@ -86,6 +89,7 @@ export default
         common: {
             new: 'new',
             remove: 'remove',
+            removed: 'removed',
             back: 'back',
             name: 'name',
             cancel: 'cancel',
@@ -109,8 +113,9 @@ export default
         modal:{
             titleConfirm: 'Confirmation',
             textConfirm: 'Are you sure you want to proceed with this action?',
-            titleCorrection: 'Correction',
-            textCorrection: 'would you like to make a correction for this ',
+            titleCorrection: 'End date',
+            textCorrection: 'On which date do you wish to end this insurance?',
+            bodyCorrection: 'The entered start date is in the past. The system will automatically make a correction for this insurance. ',
             button1: 'Yes',
             button2: 'No',
             cancel: 'cancel'
@@ -146,18 +151,27 @@ export default
             showableStartDate: 'startdatum',
             showableEndDate: 'einddatum ',
             insuredValue: 'insured value',
+            insuredValueEuro: 'insured value',
             percentage: 'percentage',
             coverageClauses: 'coverage clauses',
             exemptions: 'exemptions',
             contract: 'contract',
             cost: 'total cost',
             tax: 'tax ',
+            costEuro: 'price',
+            taxEuro: 'tax ',
             insuranceCompany: 'insurance company',
             insuranceCompanyName: 'insurance company',
             brand:'brand',
             licensePlate:'license plate',
             suretyType:'surety',
-            suretyTypeTranslation:'surety'
+            suretyTypeTranslation:'surety',
+            startsBefore: 'starts before',
+            startsOn: 'starts on',
+            startsAfter: 'starts after',
+            endsBefore: 'ends before',
+            endsOn: 'ends on',
+            endsAfter: 'ends after'
         },
         invoice:{
             invoice: 'invoice',
@@ -175,8 +189,29 @@ export default
             paymentPeriod: 'payment period',
             totalAmount: 'total amount',
             totalTax: 'total tax',
-            export: 'export as pdf'
+            totalAmountEuro: 'price',
+            totalTaxEuro: 'tax',
+            export: 'export as pdf',
+            invoiceTypeTranslation:'type'
 
+        },
+        invoiceTypes:{
+            BILLING:"billing",
+            STATEMENT:"statement",
+            CORRECTION:"correction"
+        },
+        vehicleInvoice:{
+            vehicleInvoices:"cost objects",
+            licensePlate:"license plate",
+            insuredValue:"insured value" ,
+            franchise:"franchise",
+            totalCost:"price",
+            totalTax:"tax",
+            insuredValueEuro:"insured value" ,
+            franchiseEuro:"franchise",
+            totalCostEuro:"price",
+            totalTaxEuro:"tax",
+            suretyTypeTranslation:'surety'
         },
         surety:{
             surety:'insurance surety',
@@ -186,12 +221,14 @@ export default
             startDate: 'start date',
             showableStartDate: 'start date',
             premium: 'premium',
+            premiumEuro: 'premium',
             premiumPercentage: 'premium percentage',
             coverage: 'coverage clauses',
             exceptions: 'exceptions',
             suretyType: 'type',
             suretyTypeTranslation:'surety',
             flat: 'flat',
+            flatAdjective: 'flat',
             minPremium:'minimal premium',
             yes: 'yes',
             no: 'no'
@@ -204,6 +241,8 @@ export default
             showableEndDate: 'end date',
             totalCost: 'total cost',
             totalTax: 'total tax',
+            totalCostEuro: 'total cost',
+            totalTaxEuro: 'total tax',
             customer: 'company',
             insuranceCompany: 'insurance company',
             offer: 'all insurance sureties offered by',
@@ -250,6 +289,8 @@ export default
             object: 'object',
             create: 'created',
             update: 'updated',
+            user: 'user',
+            delete: 'deleted'
         },
         description: {
             property: 'property',
@@ -284,7 +325,7 @@ export default
             log: 'log',
             company: 'company',
             insurance: 'insurance',
-            vehicletype: 'vehicle type'
+            vehicletype: 'commissions & taxes'
         },
         period: {
             quarterly: 'quarterly',
@@ -293,11 +334,63 @@ export default
             monthly: 'monthly'
         },
         error: {
+            PersistenceException: 'The given resource cannot be removed as other resources depend on it.',
             NOT_FOUND: "{subject} was not found.",
-            INVALID: "{subject} is incorrect."
+            INVALID: "{subject} is incorrect.",
+            NULL: '{subject} does not exist.',
+            UNIQUE: '{subject} must be unique.',
+            FORMAT: '{subject} has an incorrect format.',
+            NEGATIVE: '{subject} cannot be negative.',
+            EMAIL: '{subject} is not an email.'
         },
         field: {
-            company: 'company'
+            company: 'company',
+            vin: 'chassis number',
+            brand: 'brand',
+            model: 'model',
+            vehicleType: 'type',
+            mileage: 'mileage',
+            year: 'year',
+            value: 'value',
+            tax:'tax',
+            fleet: 'fleet',
+            firstName: 'first name',
+            lastName: 'last name',
+            email: 'email',
+            password: 'password',
+            client: 'company',
+            type: 'type',
+            name: 'name',
+            phoneNumber: 'phone number',
+            vatNumber: 'VAT number',
+            facturationPeriod: 'facturation period',
+            paymentPeriod: 'payment period',
+            country: 'country',
+            address: 'address',
+            city: 'city',
+            street: 'street',
+            postalCode: 'postal code',
+            houseNumber: 'house number',
+            startDate: 'start date',
+            vehicle: 'vehicle',
+            franchise: 'franchise',
+            endDate: 'end date',
+            premium: 'premium',
+            premiumEuro: 'premium',
+            premiumPercentage: 'premium percentage',
+            coverage: 'coverage clauses',
+            exceptions: 'exceptions',
+            suretyType: 'type',
+            flat: 'flat',
+            minPremium:'minimal premium',
+            totalCost: 'total cost',
+            totalTax: 'total tax',
+            totalCostEuro: 'total cost',
+            totalTaxEuro: 'total tax',
+
+        },
+        language: {
+            language: 'language'
         }
     },
     nl : {
@@ -315,14 +408,17 @@ export default
             sureties: 'waarborgen',
             totalCost: 'prijs',
             totalTax: 'btw',
+            totalCostEuro: 'prijs',
+            totalTaxEuro: 'btw',
             import: 'importeer',
             failImport: 'Het gegeven CSV bestand voldoet niet aan het correcte formaat.',
-            example: 'Download voorbeeld bestand'
+            example: 'Download voorbeeld bestand',
+            generate_green_card: 'Genereer groene kaart'
         },
         vehicleType: {
             name: 'naam',
             vehicleType: 'voertuigtype',
-            vehicleTypes: 'voertuigtypes',
+            vehicleTypes: 'commissies & taksen',
             tax:'btw',
             taxes:'belastingen'
         },
@@ -377,6 +473,7 @@ export default
         common: {
             new: 'nieuwe',
             remove: 'verwijder',
+            removed: 'verwijderd',
             edit: 'wijzig',
             back: 'terug',
             name: 'naam',
@@ -402,8 +499,9 @@ export default
         modal:{
             titleConfirm: 'Bevestiging',
             textConfirm: 'Weet u zeker dat u wil doorgaan met deze actie?',
-            titleCorrection: 'Correctie',
-            textCorrection: 'wil u hiervoor een correctie doorvoeren?',
+            titleCorrection: 'eind datum',
+            textCorrection: 'vanaf welke datum wilt u deze verzekering stopzetten?',
+            bodyCorrection: 'De ingevoerde startdatum ligt in het verleden. Het systeem zal voor deze verzekering automatisch een correctie doorvoeren. ',
             button1: 'ja',
             button2: 'nee',
             cancel: 'annuleer'
@@ -440,18 +538,27 @@ export default
             showableStartDate: 'startdatum',
             showableEndDate: 'einddatum ',
             insuredValue: 'verzekerd bedrag',
+            insuredValueEuro: 'verzekerd bedrag',
             percentage: 'percentage',
             coverageClauses: 'dekkingsclausules',
-            exemptions: 'vrijstellingen',
+            exceptions: 'vrijstellingen',
             contract: 'contract',
             cost: 'totaal bedrag',
             tax: 'tax',
+            costEuro: 'prijs',
+            taxEuro: 'BTW',
             insuranceCompany: 'verzekeringsbedrijf',
             insuranceCompanyName: 'verzekeringsbedrijf',
             brand:'merk',
             licensePlate:'nummer plaat',
             suretyType:'waarborg',
-            suretyTypeTranslation:'waarborg'
+            suretyTypeTranslation:'waarborg',
+            startsBefore: 'begint voor',
+            startsOn: 'begint op',
+            startsAfter: 'begint na',
+            endsBefore: 'eindigt voor',
+            endsOn: 'eindigt op',
+            endsAfter: 'eindigt na'
         },
         invoice:{
             invoice: 'factuur',
@@ -469,8 +576,29 @@ export default
             paymentPeriod: 'afrekeningsperiode',
             totalAmount: 'totaal bedrag',
             totalTax: 'totale belasting',
-            export: 'exporteer als pdf'
+            totalAmountEuro: 'bedrag',
+            totalTaxEuro: 'btw',
+            export: 'exporteer als pdf',
+            invoiceTypeTranslation:'type'
 
+        },
+        invoiceTypes:{
+            BILLING:"factuur",
+            STATEMENT:"afrekening",
+            CORRECTION:"correctie"
+        },
+        vehicleInvoice:{
+            vehicleInvoices:"aangerekende kosten",
+            licensePlate:"nummer plaat",
+            insuredValue:"verzekerde waarde" ,
+            franchise:"franchise",
+            totalCost:"prijs",
+            totalTax:"BTW",
+            insuredValueEuro:"verzekerde waarde" ,
+            franchiseEuro:"franchise",
+            totalCostEuro:"prijs",
+            totalTaxEuro:"BTW",
+            suretyTypeTranslation:'waarborg'
         },
         surety: {
             surety:'verzekeringswaarborg',
@@ -480,12 +608,14 @@ export default
             startDate: 'startdatum',
             showableStartDate: 'startdatum',
             premium: 'premie',
+            premiumEuro: 'premie',
             premiumPercentage: 'premie percentage',
             coverage: 'dekkingsclausules',
             exceptions: 'vrijstellingen',
             suretyType: 'type',
             suretyTypeTranslation:'waarborg',
             flat: 'forfaitair',
+            flatAdjective: 'forfaitaire',
             minPremium:'minimum premie',
             yes: 'ja',
             no: 'nee'
@@ -497,6 +627,8 @@ export default
             showableEndDate: 'einddatum',
             totalCost: 'totale kost',
             totalTax: 'totale tax',
+            totalCostEuro: 'prijs',
+            totalTaxEuro: 'BTW',
             customer: 'bedrijf',
             insuranceCompany: 'verzekeringsmaatschappij',
             offer: 'alle verzekeringswaarborgen aangeboden door',
@@ -543,6 +675,8 @@ export default
             object: 'object',
             create: 'aangemaakt',
             update: 'gewijzigd',
+            user: 'gebruiker',
+            delete: 'verwijderd'
 
         },
         description: {
@@ -568,7 +702,7 @@ export default
             log: 'log',
             company: 'bedrijf',
             insurance: 'verzekering',
-            vehicletype: 'voertuigtype'
+            vehicletype: 'Taksen'
         },
         period: {
             quarterly: 'driemaandelijks',
@@ -583,11 +717,64 @@ export default
             companyName: 'bedrijf'
         },
         error: {
+            PersistenceException: 'De gegeven bron kan niet verwijderd worden omdat andere bronnen hiervan afhankelijk zijn.',
             NOT_FOUND: "{subject} werd niet gevonden.",
-            INVALID: "{subject} is incorrect."
+            INVALID: "{subject} is incorrect.",
+            NULL: '{subject} bestaat niet.',
+            UNIQUE: '{subject} moet uniek zijn.',
+            FORMAT: '{subject} heeft een incorrect formaat.',
+            NEGATIVE: '{subject} mag niet negatief zijn.',
+            EMAIL: '{subject} is geen e-mail.'
         },
         field: {
-            company: 'bedrijf'
+            company: 'bedrijf',
+            vin: 'chassis nummer',
+            brand: 'merk',
+            model: 'model',
+            vehicleType: 'type',
+            mileage: 'kilometerstand',
+            year: 'jaar',
+            value: 'waarde',
+            fleet: 'vloot',
+            user: 'gebruiker',
+            users: 'gebruikers',
+            firstName: 'voornaam',
+            lastName: 'achternaam',
+            client: 'bedrijf',
+            type: 'type',
+            name: 'naam',
+            phoneNumber: 'telefoonnummer',
+            vatNumber: 'BTW-nummer',
+            country: 'land',
+            address: 'adres',
+            city: 'stad',
+            street: 'straat',
+            postalCode: 'postcode',
+            houseNumber: 'huisnummer',
+            insurance: 'verzekering',
+            vehicle: 'voertuig',
+            premium: 'verzekeringspremie',
+            totalTax: 'Totale taks',
+            franchise: 'franchise',
+            startDate: 'startdatum',
+            endDate: 'einddatum',
+            insuredValue: 'verzekerd bedrag',
+            insuredValueEuro: 'verzekerd bedrag',
+            percentage: 'percentage',
+            coverageClauses: 'dekkingsclausules',
+            contract: 'contract',
+            cost: 'totaal bedrag',
+            tax: 'tax',
+            costEuro: 'prijs',
+            taxEuro: 'BTW',
+            invoice: 'factuur',
+            invoices: 'facturen',
+            payer: 'betaler',
+            beneficiary: 'begunstigde',
+            paid: 'betaald',
+            contracts: 'verzekeringen',
+            facturationPeriod: 'facturatieperiode',
+            paymentPeriod: 'afrekeningsperiode',
         },
         action: {
             READ_MINE: 'eigen lezen',
@@ -599,5 +786,8 @@ export default
             REMOVE_ALL: 'alles verwijderen',
             REMOVE_MINE: 'eigen verwijderen'
         },
+        language: {
+            language: 'taal'
+        }
     }
 }

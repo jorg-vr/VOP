@@ -5,6 +5,9 @@ package util;
  */
 public class Compare {
 
+    /**
+     * @return whether a contains b, ignoring the case
+     */
     public static boolean containsIgnoreCase(String a, String b) {
         return b != null && a.toLowerCase().contains(b.toLowerCase());
     }

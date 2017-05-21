@@ -10,9 +10,8 @@
             </h1>
         </div>
 
-        <list-component :objects="invoices" :resource="resource" :visibleKeys="['showableStartDate', 'showableEndDate', 'totalAmount']">
-        </list-component>
-        <button-back :route="{name: 'client'}"></button-back>
+        <list-component v-if="show" :resource="resource" :listObject="listObject" :edit="false" :remove="false"></list-component>
+        <button-back :route="{name: 'client',params:{id:companyId}}"></button-back>
 
     </div>
 </template>
@@ -22,11 +21,12 @@
     import actions from '../../constants/actions'
     import listComponent from '../../assets/general/listComponent.vue'
     import buttonBack from '../../assets/buttons/buttonBack.vue'
-
+    import {translateInvoiceTypes,centsToEuroArray} from '../../utils/utils'
     export default {
         data(){
             return {
-                resource: resources.INVOICE
+                resource: resources.INVOICE,
+                show:false
             }
         },components: {
             listComponent,buttonBack
@@ -35,29 +35,36 @@
             companyId: String
         },
         created() {
-            this.setLoading({loading: true })
-            this.fetchInvoicesByCompany({companyId: this.companyId}).then(() => {
+            this.setLoading({loading: true });
+            this.fetchInvoices({ids:{company: this.companyId}}).then(() => {
+                translateInvoiceTypes(this.invoices);
+                centsToEuroArray(this.invoices,"totalAmount");
+                centsToEuroArray(this.invoices,"totalTax");
+                this.show=true;
                 this.setLoading({loading: false })
-            })
+            });
+            this.fetchClient({id:this.companyId});
         },
         computed: {
             ...mapGetters([
                 'invoices',
-                'clients',
                 'client'
-            ])
+            ]),
+            listObject() {
+                var listObj = {};
+                listObj.headers = ["showableStartDate","invoiceTypeTranslation","totalAmountEuro","totalTaxEuro"];
+                listObj.values = this.invoices;
+                return listObj;
+            }
         },
         methods: {
             ...mapActions([
-                'fetchClients',
-                'fetchClient',
-                'fetchInvoicesByCompany',
+                'fetchInvoices',
+                'fetchClient'
             ]),
             ...mapMutations([
-                'setFilteredClients',
                 'setLoading'
             ])
-
         }
     }
 </script>

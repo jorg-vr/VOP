@@ -3,9 +3,9 @@ package spring.model;
 
 import controller.ControllerManager;
 import model.account.Role;
-import util.UUIDUtil;
 
 import static util.MyProperties.*;
+import static util.UUIDUtil.toUUID;
 
 /**
  * This is a bean class as specified in the API specification
@@ -24,9 +24,14 @@ public class RESTRole extends RESTAbstractModel<Role> {
     }
 
     public Role translate(ControllerManager manager) {
-        Role role = new Role();
+        Role role;
+        try {
+            role = manager.getRoleController().get(toUUID(getId()));
+        } catch (Exception e) {
+            role = new Role();
+        }
         role.setName(name);
-        role.setUuid(UUIDUtil.toUUID(getId()));
+        role.setUuid(toUUID(getId()));
         return role;
     }
 

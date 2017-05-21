@@ -9,7 +9,7 @@ TODO: document this page.
                     <h3> {{$t("login.header") | capitalize }} Solvas Fleet</h3>
                     <h5> {{$t("login.text") | capitalize }}  </h5>
                 </div>
-                <div class="modal-body" id="loginBody">
+                <div class="modal-body col-lg-offset-4 col-lg-4 col-md-offset-3 col-md-6 col-sm-offset-2 col-sm-8" id="loginBody">
                     <form id="loginform">
                         <p id="error" v-show="showError"> {{$t("login.error") | capitalize }}  </p>
                         <div class="input-group" id="username">
@@ -41,10 +41,11 @@ TODO: document this page.
         data() {
             return {
                 credentials:{
-                    login:'billie.devolder@gmail.com',
-                    password:'informatica'
+                    login:'',
+                    password:''
                 },
-                showError: false
+                showError: false,
+                loading: false
             }
         },
         components: {
@@ -53,7 +54,6 @@ TODO: document this page.
         computed: {
             ...mapGetters([
                 'nextRoute',
-                'loading'
             ]),
             buttonClass() {
                 return this.loading ? 'loading' : ''
@@ -69,20 +69,20 @@ TODO: document this page.
             confirmLogin:function(){
                 this.showError=false;
                 if(!this.loading){
-                    this.setLoading({loading: true})
+                    this.loading = true
                     // Get webtoken and account information
                     this.authenticate(this.credentials).then(() => {
                         // Succes, return to home
                         if(this.nextRoute.path !== null){
-                            this.$router.push({name: this.nextRoute.name, params: this.nextRoute.params})
+                            this.$router.push(this.nextRoute.path)
                         }
                         else {
                             this.$router.push({name: 'homeClient'})
                         }
-                        this.setLoading({loading: false})
+                        this.loading = false
                     }, () => {
                         this.showError=true
-                        this.setLoading({loading: false})
+                        this.loading = false
                     })
                 }
             }
@@ -136,7 +136,6 @@ TODO: document this page.
     }
 
     #loginContainer{
-        width: 40%;
         margin: auto;
         background-color: #304052;
         padding:25px;
@@ -147,7 +146,7 @@ TODO: document this page.
         color: white;
         background-color: #304052;
         border:none;
-       
+
     }
 
 

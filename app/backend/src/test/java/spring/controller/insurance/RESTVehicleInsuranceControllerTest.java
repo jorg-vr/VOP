@@ -14,6 +14,7 @@ import model.identity.Periodicity;
 import model.insurance.*;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -62,6 +63,7 @@ public class RESTVehicleInsuranceControllerTest {
     private static String[] authPair;
 
     @BeforeClass
+    @Ignore
     public static void setup() throws Exception {
         ProductionProvider.initializeProvider("unittest");
         authPair = AuthUtil.getAdminToken();
@@ -108,6 +110,7 @@ public class RESTVehicleInsuranceControllerTest {
 
 
     @AfterClass
+    @Ignore
     public static void afterTransaction() throws Exception {
         try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()) {
             manager.getContractDao().remove(contract.getUuid());
@@ -126,6 +129,7 @@ public class RESTVehicleInsuranceControllerTest {
 
 
     @Test
+    @Ignore
     public void get() throws Exception {
 
         //Add to database directly with DAO
@@ -152,6 +156,7 @@ public class RESTVehicleInsuranceControllerTest {
     }
 
     @Test
+    @Ignore
     public void post() throws Exception {
 
         RESTVehicleInsurance restVehicleInsurance = new RESTVehicleInsurance(new VehicleInsurance(vehicle1, flatSurety, null, null, contract, 50, 300));
@@ -214,6 +219,7 @@ public class RESTVehicleInsuranceControllerTest {
     }
 
     @Test
+    @Ignore
     public void deleteId() throws Exception {
 
         //Add to database directly with DAO
@@ -242,6 +248,7 @@ public class RESTVehicleInsuranceControllerTest {
     }
 
     @Test
+    @Ignore
     public void getId() throws Exception {
 
         //Add to database directly with DAO
@@ -285,6 +292,7 @@ public class RESTVehicleInsuranceControllerTest {
     }
 
     @Test
+    @Ignore
     public void putId() throws Exception {
 
         //Add to database directly with DAO
@@ -348,18 +356,21 @@ public class RESTVehicleInsuranceControllerTest {
         }
     }
 
+    @Ignore
     private void remove(UUID uuid) throws Exception {
         try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()) {
             manager.getVehicleInsuranceDao().remove(uuid);
         }
     }
 
+    @Ignore
     private VehicleInsurance create(VehicleInsurance vehicleInsurance) throws Exception {
         try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()) {
             return manager.getVehicleInsuranceDao().create(vehicleInsurance);
         }
     }
 
+    @Ignore
     private VehicleInsurance get(UUID uuid) throws Exception {
         try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()) {
             return manager.getVehicleInsuranceDao().get(uuid);

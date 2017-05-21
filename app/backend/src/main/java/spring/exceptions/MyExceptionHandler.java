@@ -16,16 +16,24 @@ import pdf.PdfException;
 
 
 /**
- * Created by jorg on 3/10/17.
+ * This class is translates all the exceptions that get thrown in the application to the correct HTTP return code.
  */
 @ControllerAdvice
 public class MyExceptionHandler {
 
+    /**
+     * Generate a response entity with a certain http resonse code
+     *
+     * @param status  the status that should be returned
+     * @param message message with more information about what went wrong
+     * @return a response entity with a status equal to the status argument and a body that contains a RESTError with the message argument
+     */
     private ResponseEntity<Object> generateErrorResponse(HttpStatus status, String message) {
         return ResponseEntity
                 .status(status)
                 .body(new RESTError(status.value(), message));
     }
+
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     protected ResponseEntity<Object> handleBadInput(HttpMessageNotReadableException ex) {
@@ -75,6 +83,7 @@ public class MyExceptionHandler {
 
     @ExceptionHandler(ConstraintViolationException.class)
     protected ResponseEntity<Object> handleServerErrorException(ConstraintViolationException ex) {
+        ex.printStackTrace();
         return ResponseEntity
                 .status(HttpStatus.UNPROCESSABLE_ENTITY)
                 .body(new RESTConstraintsError(HttpStatus.UNPROCESSABLE_ENTITY.value(),

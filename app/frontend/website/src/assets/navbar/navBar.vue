@@ -7,7 +7,7 @@
         <div class="container-fluid">
             <!-- Header with button to toggle on mobile and brand logo -->
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
@@ -16,40 +16,19 @@
             </div><!-- /.navbar-header -->
             
             <!-- Navbar with toggable links -->
-            <div class="collapse navbar-collapse" id="navbar-collapse-1">
+            <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
                      <!-- conditional group rendering for navbar links-->
                     <template v-if="hasActiveAccount">
-                        <li>
-                            <resources-link :resource="resources.FLEET"></resources-link>
-                        </li>
-                        <li>
-                            <resources-link :resource="resources.USER"></resources-link>
-                        </li>
-                        <li>
-                            <resources-link :resource="resources.CLIENT"></resources-link>
-                        </li>
-                        <li>
-                            <resources-link :resource="resources.VEHICLE"></resources-link>
-                        </li>
-                        <li>
-                            <resources-link :resource="resources.CONTRACT"></resources-link>
-                        </li>
-                        <li>
-                            <resources-link :resource="resources.VEHICLE_TYPE"></resources-link>
-                        </li>
-                        <li>
-                            <resources-link :resource="resources.ROLE"></resources-link>
-                        </li>
+                        <dropdown :resources="[resources.CLIENT,resources.FLEET,resources.VEHICLE]"></dropdown>
+                        <dropdown :resources="[resources.USER,resources.ROLE]"></dropdown>
+                        <dropdown :resources="[resources.CONTRACT,resources.CONDITION,resources.VEHICLE_TYPE]"></dropdown>
                     </template>
                 </ul><!-- /.navbar-nav -->
 
                 <ul class="nav navbar-nav navbar-right">
                     <li v-if="hasActiveAccount == false">
                         <router-link :to="{path: '/login'}"> {{$t("login.login") | capitalize }}  </router-link>
-                    </li>
-                    <li>
-                        <language-picker></language-picker>
                     </li>
                     <function-picker></function-picker>
                     <!-- condition group rendering for navbar login info-->
@@ -79,10 +58,10 @@
 <script>
 import { mapGetters, mapActions, mapMutations } from 'vuex'
 import resources from '../../constants/resources'
-import languagePicker from './languagePicker.vue'
 import functionPicker from './functionPicker.vue'
 import formSelect from '../form/FormGroups/SelectInputFormGroup.vue'
 import ResourcesLink from './ResourcesLink.vue'
+import dropdown from './navbarDropdown.vue'
 
     export default {
         data(){
@@ -91,7 +70,7 @@ import ResourcesLink from './ResourcesLink.vue'
             }
         },
         components: {
-            languagePicker, functionPicker, formSelect, ResourcesLink
+            functionPicker, formSelect, ResourcesLink,dropdown
         },
         computed: {
             ...mapGetters([
@@ -106,19 +85,29 @@ import ResourcesLink from './ResourcesLink.vue'
                 this.logout()
                 this.$router.push({path: '/login'})
             }
+        },
+        mounted() {
+            $(document).on('click','.navbar-collapse.in',function(e) {
+                if( $(e.target).is('a') ) {
+                    $(this).collapse('hide');
+                }
+            });
         }
     }
 </script>
 <style>
-    .navbar-right {
-        margin-right: 0px;
-    }
     .navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus {
         color: white;
     }
     .navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:hover, .navbar-default .navbar-nav>.open>a:focus {
         background-color: #2c3e50;
         color: #18bc9c;
+    }
+    .nav>li>a {
+        padding-right: 5px;
+    }
+    .nav>li:last-child {
+        margin-right: 10px;
     }
 
     #submenu li{
@@ -132,9 +121,6 @@ import ResourcesLink from './ResourcesLink.vue'
     #usericon{
         margin-right: 5px;
         font-size: 20px;
-    }
-    .dropdown{
-        text-indent: 10px;
     }
 
     #logout{

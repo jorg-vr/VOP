@@ -18,17 +18,16 @@ public class RESTLogEntry {
 
     private String id;
     private String object;
-    private String user;
+    private RESTUser user;
     private LogResource resource;
     private LogAction action;
     private Collection<RESTDescription> description;
     private LocalDateTime dateTime;
 
-
     public RESTLogEntry(LogEntry entry) {
         this.id = UUIDToNumberString(entry.getUuid());
         this.object = UUIDToNumberString(entry.getObject());
-        this.user = UUIDToNumberString(entry.getUser() != null ? entry.getUser().getUuid() : null);
+        this.user = entry.getUser() != null ? new RESTUser(entry.getUser()) : null;
         this.resource = entry.getResource();
         this.action = entry.getAction();
         this.description = entry.getDescriptions()
@@ -86,11 +85,11 @@ public class RESTLogEntry {
         this.dateTime = dateTime;
     }
 
-    public String getUser() {
+    public RESTUser getUser() {
         return user;
     }
 
-    public void setUser(String user) {
+    public void setUser(RESTUser user) {
         this.user = user;
     }
 
