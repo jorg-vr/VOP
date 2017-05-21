@@ -5,6 +5,7 @@ import model.insurance.Contract;
 import model.insurance.VehicleInsurance;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * DAO for bean VehicleInsurance
@@ -24,12 +25,12 @@ public interface VehicleInsuranceDAO extends DAO<VehicleInsurance>{
      * @param date The date to use in the filter
      * @return A useable Filter for listFiltered
      */
-    Filter<VehicleInsurance> startsBefore(LocalDate date);
+    Filter<VehicleInsurance> startsBefore(LocalDateTime date);
 
     /**
      * Returns a Filter to use in ListFiltered in this class, which returns all {@link VehicleInsurance} ending after the given date.
      * @param date The date to use in the filter
      * @return A useable Filter for listFiltered
      */
-    Filter<VehicleInsurance> endsAfter(LocalDate date);
+    Filter<VehicleInsurance> endsAfter(LocalDateTime date);
 }
