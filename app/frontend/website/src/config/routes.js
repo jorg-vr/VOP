@@ -77,7 +77,7 @@ Vue.use(VueRouter)
 
 let routes = [
     {
-        path: '',
+        path: '/',
         component: App,
         children: [
             {path: 'home', name: 'homeClient', component: homeClient},
