@@ -77,10 +77,10 @@ Vue.use(VueRouter)
 
 let routes = [
     {
-        path: '',
+        path: '/',
         component: App,
         children: [
-            {path: 'home', name: 'homeClient', component: homeClient},
+            {path: '', name: 'homeClient', component: homeClient},
             //User
             {path: 'users', name: 'users', component: indexUser},
             {path: 'users/new', name: 'new_user', component: newUser},
