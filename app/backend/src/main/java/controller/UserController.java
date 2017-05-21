@@ -10,8 +10,11 @@ import dao.interfaces.UserDAO;
 import model.account.Function;
 import model.account.Resource;
 import model.account.User;
+import model.insurance.VehicleInsurance;
 
+import java.time.LocalDate;
 import java.util.Collection;
+import java.util.UUID;
 
 /**
  * Created by Billie Devolder on 5/04/2017.
@@ -19,10 +22,12 @@ import java.util.Collection;
 public class UserController extends AbstractController<User> {
 
     private UserDAO dao;
+    private ControllerManager controllerManager;
 
-    public UserController(Function function, DAOManager manager) {
+    public UserController(Function function, DAOManager manager, ControllerManager controllerManager) {
         super(manager, manager.getUserDAO(), Resource.USER, function);
         this.dao = manager.getUserDAO();
+        this.controllerManager = controllerManager;
     }
 
     @Override
@@ -53,5 +58,13 @@ public class UserController extends AbstractController<User> {
                 dao.byEmail(email),
                 dao.byFirstName(firstName),
                 dao.byLastName(lastName));
+    }
+
+    @Override
+    public void archive(UUID uuid) throws DataAccessException, UnAuthorizedException, ObjectNotFoundException {
+        for (Function function : get(uuid).getFunctions()) {
+            controllerManager.getFunctionController().archive(function.getUuid());
+        }
+        super.archive(uuid);
     }
 }
