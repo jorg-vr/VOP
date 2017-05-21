@@ -1,6 +1,7 @@
 package model.insurance;
 
 import model.history.EditableObject;
+import model.identity.InsuranceCompany;
 
 import java.util.ArrayList;
 
@@ -33,6 +34,20 @@ public class NonFlatSurety extends Surety {
      * @param minPremium        the minimum premium
      */
     public NonFlatSurety(double premiumPercentage, int minPremium) {
+        this.premiumPercentage = premiumPercentage;
+        this.minPremium = minPremium;
+    }
+
+    /**
+     * Constructor
+     *
+     * @param insuranceCompany
+     * @param suretyType
+     * @param premiumPercentage
+     * @param minPremium
+     */
+    public NonFlatSurety(InsuranceCompany insuranceCompany, SuretyType suretyType, double premiumPercentage, int minPremium) {
+        super(insuranceCompany, suretyType);
         this.premiumPercentage = premiumPercentage;
         this.minPremium = minPremium;
     }
@@ -91,6 +106,7 @@ public class NonFlatSurety extends Surety {
 
     /**
      * Copies the object
+     *
      * @return the copy
      */
     @Override

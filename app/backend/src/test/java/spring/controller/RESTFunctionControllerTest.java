@@ -32,6 +32,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 /**
  * Created by Ponti on 4/05/2017.
@@ -54,7 +55,7 @@ public class RESTFunctionControllerTest {
     public static void setup() throws Exception {
         ProductionProvider.initializeProvider("unittest");
         authPair = AuthUtil.getAdminToken();
-        try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()){
+        try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()) {
             Address address = new Address("mystreet", "123", "lala", "12345", "land");
             customer = new Customer(address, "04789456123", "anita", "123456789", Periodicity.QUARTERLY, Periodicity.QUARTERLY);
             customer = manager.getCustomerDAO().create(customer);
@@ -73,7 +74,7 @@ public class RESTFunctionControllerTest {
 
     @AfterClass
     public static void afterTransaction() throws Exception {
-        try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()){
+        try (DAOManager manager = ProductionProvider.getInstance().getDaoManager()) {
             manager.getCustomerDAO().remove(customer.getUuid());
             manager.getRoleDAO().remove(role1.getUuid());
             manager.getRoleDAO().remove(role2.getUuid());
@@ -98,6 +99,7 @@ public class RESTFunctionControllerTest {
                     .header("Function", authPair[1])
             )
                     .andExpect(status().isOk())
+                    .andDo(print())
                     .andExpect(jsonPath("$.data", hasSize(greaterThanOrEqualTo(2))))
                     .andExpect(jsonPath("$.total", greaterThanOrEqualTo(2)));
         } catch (Exception e) {
@@ -129,11 +131,12 @@ public class RESTFunctionControllerTest {
         try {
             resultActions
                     .andExpect(status().isOk())
-                .andExpect(jsonPath("$.company", equalTo(restFunction.getCompany())))
-                .andExpect(jsonPath("$.companyName", equalTo(restFunction.getCompanyName())))
-                .andExpect(jsonPath("$.role", equalTo(restFunction.getRole())))
-                .andExpect(jsonPath("$.roleName", equalTo(restFunction.getRoleName())))
-                .andExpect(jsonPath("$.user", equalTo(restFunction.getUser())));
+                    .andDo(print())
+                    .andExpect(jsonPath("$.company", equalTo(restFunction.getCompany())))
+                    .andExpect(jsonPath("$.companyName", equalTo(restFunction.getCompanyName())))
+                    .andExpect(jsonPath("$.role", equalTo(restFunction.getRole())))
+                    .andExpect(jsonPath("$.roleName", equalTo(restFunction.getRoleName())))
+                    .andExpect(jsonPath("$.user", equalTo(restFunction.getUser())));
         } catch (AssertionError e) {
             remove(restId);
             throw e;
@@ -143,9 +146,9 @@ public class RESTFunctionControllerTest {
         try {
             Function function = get(restId);
             try {
-            assertEquals("customer field not created correctly", customer, function.getCompany());
-            assertEquals("role field not created correctly", role1, function.getRole());
-            assertEquals("user field not created correctly", user, function.getUser());
+                assertEquals("customer field not created correctly", customer, function.getCompany());
+                assertEquals("role field not created correctly", role1, function.getRole());
+                assertEquals("user field not created correctly", user, function.getUser());
             } finally {
                 remove(restId);
             }
@@ -163,10 +166,10 @@ public class RESTFunctionControllerTest {
         //Attempt to remove from the database with delete request
         try {
             mvc.perform(MockMvcRequestBuilders.delete("/users/" + UUIDUtil.UUIDToNumberString(user.getUuid()) + "/functions/{id}", UUIDUtil.UUIDToNumberString(function.getUuid()))
-                .header("Authorization", authPair[0])
-                .header("Function", authPair[1])
-        )
-                .andExpect(status().isOk());
+                    .header("Authorization", authPair[0])
+                    .header("Function", authPair[1])
+            )
+                    .andExpect(status().isOk());
         } catch (Exception e) {
             remove(function.getUuid());
             throw e;
@@ -191,15 +194,15 @@ public class RESTFunctionControllerTest {
         //Attempt to retrieve the object with the given id
         try {
             mvc.perform(MockMvcRequestBuilders.get("/users/" + UUIDUtil.UUIDToNumberString(user.getUuid()) + "/functions/{id}", UUIDUtil.UUIDToNumberString(function.getUuid()))
-                .header("Authorization", authPair[0])
-                .header("Function", authPair[1])
-        )
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.company", equalTo(UUIDUtil.UUIDToNumberString(function.getCompany().getUuid()))))
-                .andExpect(jsonPath("$.companyName", equalTo(function.getCompany().getName())))
-                .andExpect(jsonPath("$.role", equalTo(UUIDUtil.UUIDToNumberString(function.getRole().getUuid()))))
-                .andExpect(jsonPath("$.roleName", equalTo(function.getRole().getName())))
-                .andExpect(jsonPath("$.user", equalTo(UUIDUtil.UUIDToNumberString(function.getUser().getUuid()))));
+                    .header("Authorization", authPair[0])
+                    .header("Function", authPair[1])
+            )
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.company", equalTo(UUIDUtil.UUIDToNumberString(function.getCompany().getUuid()))))
+                    .andExpect(jsonPath("$.companyName", equalTo(function.getCompany().getName())))
+                    .andExpect(jsonPath("$.role", equalTo(UUIDUtil.UUIDToNumberString(function.getRole().getUuid()))))
+                    .andExpect(jsonPath("$.roleName", equalTo(function.getRole().getName())))
+                    .andExpect(jsonPath("$.user", equalTo(UUIDUtil.UUIDToNumberString(function.getUser().getUuid()))));
         } catch (Exception e) {
             remove(function.getUuid());
             throw e;
@@ -222,17 +225,17 @@ public class RESTFunctionControllerTest {
         //Perform the put request to update the object and check the fields of the returned object
         try {
             mvc.perform(MockMvcRequestBuilders.put("/users/" + UUIDUtil.UUIDToNumberString(user.getUuid()) + "/functions/{id}", UUIDUtil.UUIDToNumberString(function.getUuid()))
-                .header("Content-Type", "application/json")
-                .header("Authorization", authPair[0])
-                .header("Function", authPair[1])
-                .content(TestUtil.convertObjectToJsonBytes(restFunction))
-        )
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.company", equalTo(restFunction.getCompany())))
-                .andExpect(jsonPath("$.companyName", equalTo(restFunction.getCompanyName())))
-                .andExpect(jsonPath("$.role", equalTo(restFunction.getRole())))
-                .andExpect(jsonPath("$.roleName", equalTo(restFunction.getRoleName())))
-                .andExpect(jsonPath("$.user", equalTo(restFunction.getUser())));
+                    .header("Content-Type", "application/json")
+                    .header("Authorization", authPair[0])
+                    .header("Function", authPair[1])
+                    .content(TestUtil.convertObjectToJsonBytes(restFunction))
+            )
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.company", equalTo(restFunction.getCompany())))
+                    .andExpect(jsonPath("$.companyName", equalTo(restFunction.getCompanyName())))
+                    .andExpect(jsonPath("$.role", equalTo(restFunction.getRole())))
+                    .andExpect(jsonPath("$.roleName", equalTo(restFunction.getRoleName())))
+                    .andExpect(jsonPath("$.user", equalTo(restFunction.getUser())));
         } catch (Exception e) {
             remove(function.getUuid());
             throw e;
@@ -242,9 +245,9 @@ public class RESTFunctionControllerTest {
         try {
             function = get(function.getUuid());
             try {
-            assertEquals("customer field not updated correctly", customer, function.getCompany());
-            assertEquals("role field not updated correctly", role2, function.getRole());
-            assertEquals("user field not updated correctly", user, function.getUser());
+                assertEquals("customer field not updated correctly", customer, function.getCompany());
+                assertEquals("role field not updated correctly", role2, function.getRole());
+                assertEquals("user field not updated correctly", user, function.getUser());
             } finally {
                 //Clean up database for other tests
                 remove(function.getUuid());
