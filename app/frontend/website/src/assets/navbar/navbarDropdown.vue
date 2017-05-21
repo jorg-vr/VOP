@@ -2,7 +2,7 @@
     Component usable creating a dropdown with different pages
 -->
 <template>
-    <li  v-if="list.length>0" class="dropdown">
+    <li  v-if="list.length>1" class="dropdown">
         <a href="#" class="dropdown-toggle"  role="button" ariahaspopu="true" aria-expanded="false">
             <resources-link :resource="title" ></resources-link>
             <span class="caret"></span>
@@ -37,7 +37,7 @@
                     this.list.push(this.resources[i]);
                 }
             }
-            this.title=this.list.shift();
+            this.title=this.list[0];
         },
         props:{
             resources:Array,
