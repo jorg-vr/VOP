@@ -2,9 +2,13 @@
     Component usable creating a dropdown with different pages
 -->
 <template>
-    <li  v-if="list.length>1" class="dropdown">
-        <a href="#" class="dropdown-toggle"  role="button" ariahaspopu="true" aria-expanded="false">
+    <li  v-if="list.length>1" class="dropdown auto-popup">
+        <a href="#" class="dropdown-toggle dropdown-pc"  role="button" ariahaspopup="true" aria-expanded="false">
             <resources-link :resource="title" ></resources-link>
+            <span class="caret"></span>
+        </a>
+        <a href="#" class="dropdown-toggle dropdown-mobile" data-toggle="dropdown" role="button" ariahaspopup="true" aria-expanded="false">
+            {{ ($t(title.name + "." + title.name.plural()).capitalize()) }}
             <span class="caret"></span>
         </a>
         <ul class="dropdown-menu">
@@ -48,14 +52,26 @@
     }
 </script>
 <style>
-    a a{
+    
+    @media(min-width: 768px) {
+        .dropdown-mobile {
+            display: none !important;
+        }
+        li.auto-popup.dropdown:hover .dropdown-menu {
+            display: block;
+        }
+    }
+    @media(max-width: 768px) {
+        .dropdown-pc {
+            display: none !important;
+        }
+    }
+
+    a a {
         color: white;
     }
 
-    a a:hover, a a:focus{
+    li.auto-popup a a:hover, a a:focus{
         text-decoration: none;
-    }
-    .dropdown:hover .dropdown-menu {
-        display: block;
     }
 </style>
