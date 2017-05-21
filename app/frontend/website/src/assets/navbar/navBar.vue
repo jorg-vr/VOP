@@ -20,27 +20,9 @@
                 <ul class="nav navbar-nav">
                      <!-- conditional group rendering for navbar links-->
                     <template v-if="hasActiveAccount">
-                        <li>
-                            <resources-link :resource="resources.FLEET"></resources-link>
-                        </li>
-                        <li>
-                            <resources-link :resource="resources.USER"></resources-link>
-                        </li>
-                        <li>
-                            <resources-link :resource="resources.CLIENT"></resources-link>
-                        </li>
-                        <li>
-                            <resources-link :resource="resources.VEHICLE"></resources-link>
-                        </li>
-                        <li>
-                            <resources-link :resource="resources.CONTRACT"></resources-link>
-                        </li>
-                        <li>
-                            <resources-link :resource="resources.VEHICLE_TYPE"></resources-link>
-                        </li>
-                        <li>
-                            <resources-link :resource="resources.ROLE"></resources-link>
-                        </li>
+                        <dropdown :resources="[resources.CLIENT,resources.FLEET,resources.VEHICLE]"></dropdown>
+                        <dropdown :resources="[resources.USER,resources.ROLE]"></dropdown>
+                        <dropdown :resources="[resources.CONTRACT,resources.CONDITION,resources.VEHICLE_TYPE]"></dropdown>
                     </template>
                 </ul><!-- /.navbar-nav -->
 
@@ -79,6 +61,7 @@ import resources from '../../constants/resources'
 import functionPicker from './functionPicker.vue'
 import formSelect from '../form/FormGroups/SelectInputFormGroup.vue'
 import ResourcesLink from './ResourcesLink.vue'
+import dropdown from './navbarDropdown.vue'
 
     export default {
         data(){
@@ -87,7 +70,7 @@ import ResourcesLink from './ResourcesLink.vue'
             }
         },
         components: {
-            functionPicker, formSelect, ResourcesLink
+            functionPicker, formSelect, ResourcesLink,dropdown
         },
         computed: {
             ...mapGetters([

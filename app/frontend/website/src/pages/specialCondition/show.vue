@@ -31,7 +31,7 @@
         data(){
             return {
                 resource: resources.CONDITION,
-                back:{name:resources.CONTRACT.name.plural()}
+                back:{name:resources.CONDITION.name.plural()}
             }
         },
         components: {
