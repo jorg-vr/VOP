@@ -114,10 +114,9 @@ let routes = [
             {path: 'vehicles/types/:id(\\d+)/edit', name: 'edit_vehicleType', component: editVehicleType, props: true},
 
             // sureties
-            {path: 'sureties', name: 'suretys', component: indexContract},
-            {path: 'sureties/new', name: 'new_surety', component: newSurety},
-            {path: 'sureties/:id(\\d+)', name: 'surety', component: showSurety, props: true},
-            {path: 'sureties/:id(\\d+)/edit', name: 'edit_surety', component: editSurety, props: true},
+            {path: 'clients/:clientId(\\d+)/sureties/new', name: 'new_surety', component: newSurety},
+            {path: 'clients/:clientId(\\d+)/sureties/:id(\\d+)', name: 'surety', component: showSurety, props: true},
+            {path: 'clients/:clientId(\\d+)/sureties/:id(\\d+)/edit', name: 'edit_surety', component: editSurety, props: true},
             
             // contracts
             {path: 'contracts', name: 'contracts', component: indexContract},

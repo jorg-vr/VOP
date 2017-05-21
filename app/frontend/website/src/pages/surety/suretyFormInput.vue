@@ -8,79 +8,48 @@ All of the fields for insurance input for the insurance form
         <checkbox-input-form-group
                 :object="object" name="flat" :text="$t('surety.flat')" >
         </checkbox-input-form-group>
-      <!--surety type-->
+        <!--surety type-->
         <select-input-form-group
                 :object="object" name="suretyType" optionPropertyName="name" visibleKey="translation"
                 :text="$t('surety.surety')" :rules="'required'" :options="suretyTypes">
         </select-input-form-group>
-      <!-- premium -->
+        <!-- premium -->
 
-       <euro-input-form-group
-          :object="object" name="premium"
-          :rules="'required'"
-          :text="object.flat==true ? $t('surety.premium'): $t('surety.minPremium')" >
-      </euro-input-form-group>
+        <euro-input-form-group
+                :object="object" name="premium"
+                :rules="'required'"
+                :text="object.flat==true ? $t('surety.premium'): $t('surety.minPremium')" >
+        </euro-input-form-group>
 
-      <!-- premium percentage -->
+        <!-- premium percentage -->
 
-       <percent-input-form-group v-if="object.flat==false||object.flat==undefined"
-          :object="object" name="premiumPercentage" :text="$t('surety.premiumPercentage')" :rules="'required'">  
-      </percent-input-form-group>
+        <percent-input-form-group v-if="object.flat==false||object.flat==undefined"
+                                  :object="object" name="premiumPercentage" :text="$t('surety.premiumPercentage')" :rules="'required'">
+        </percent-input-form-group>
 
-      <!-- Insurance Company -->
-        <select-input-form-group 
-                     :object="object" name="insuranceCompany" optionPropertyName="id" visibleKey="name"
-                     :text="$t('clientTypes.insuranceCompany')" :rules="'required'" :options="clients">
+        <!-- Insurance Company -->
+        <select-input-form-group
+                :object="object" name="insuranceCompany" optionPropertyName="id" visibleKey="name"
+                :text="$t('clientTypes.insuranceCompany')" :rules="'required'" :options="clients">
         </select-input-form-group>
 
-      <div class="page-header">
-        <button-add :resource="resource"></button-add>
-        <h2>{{$t("surety.coverage") | capitalize }} </h2>
-      </div>
+        <div class="page-header">
+            <h2>{{$t("surety.coverage") | capitalize }} </h2>
+        </div>
 
-      <div class="page-header">
+        <div class="page-header">
+            <select-input-form-group
+                    :object="selectedCondition" name="id" optionPropertyName="id" visibleKey="referenceCode"
+                    :text="$t('condition.condition')" :options="conditions" rules="">
+            </select-input-form-group>
 
-        <select-input-form-group 
-                     :object="selectedCondition" name="id" optionPropertyName="id" visibleKey="referenceCode"
-                     :text="$t('condition.condition')" :options="conditions" rules="">
-        </select-input-form-group>
+            <button @click='pushCondition()' type="button" class="btn pull-right btn btn-primary"> {{$t("common.add") | capitalize }} </button>
+        </div>
 
-       <button @click='pushCondition()' type="button" class="btn pull-right btn btn-primary "> {{$t("common.add") | capitalize }} </button>
-      </div>
+        <!-- All special conditions of surety -->
+        <list-component :resource="resource" :listObject="listObject" :show="false" :edit="false"></list-component>
 
-    <!-- All special conditions of surety -->
-            <table class="table-hover table">
-            <thead>
-                <tr>
-                    <th v-for="head in listObject.headers">
-                        {{$t(resource.name + '.' + head).capitalize()}}
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="value in listObject.values" class="list-tr">
-                    <td v-for="header in listObject.headers" class="clickable-td" @click="tdclick(value)">
-                        {{value[header]}}
-                    </td>
-                    <td class="stretch">
-                    <button-edit :resource="resource" :params="{id:value.id}" ></button-edit>
-                    <button-remove :resource="resource"  @click="tdshowModal(value.id)"></button-remove>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <!-- Confirmation Modam -->
-        <confirm-modal v-show="showModal" 
-            @cancelModal="showModal=false" 
-            @confirmModal="confirmAction()" 
-            @close="showModal=false "
-            :modalHeaderTitle=" $t('modal.titleConfirm') | capitalize"
-            :modalBodyText="$t('modal.textConfirm') | capitalize" 
-            :confirmButtonText="$t('modal.button1') | capitalize "
-            :cancelButtonText="$t('modal.button2') | capitalize ">        
-        </confirm-modal>  
-
-  </div>
+    </div>
 </template>
 <script>
     import {mapGetters, mapActions,mapMutations} from 'vuex'
@@ -101,9 +70,7 @@ All of the fields for insurance input for the insurance form
     export default {
         data(){
             return{
-                referenceCode: 'referenceCode',
                 selectedCondition: {},
-                id:'id',
                 suretyTypes:suretyTypes,
                 resource: resources.CONDITION,
                 flatData: [{text:'true', value: true},{text:"false" , value: false}],
@@ -115,26 +82,19 @@ All of the fields for insurance input for the insurance form
             object: Object,
         },
         components: {
-            percentInputFormGroup,CheckboxInputFormGroup,SelectInputFormGroup,DateInputFormGroup,listComponent,buttonAdd,EuroInputFormGroup,buttonEdit,buttonRemove,buttonEdit,confirmModal
+            percentInputFormGroup,CheckboxInputFormGroup,SelectInputFormGroup,DateInputFormGroup,listComponent,buttonAdd,EuroInputFormGroup,buttonRemove,buttonEdit,confirmModal
         },
         mounted(){
             this.$parent.$emit('mounted', this.$children)
         },
         computed: {
             ...mapGetters([
-                'clients',  
-                'fleets',
-                'suretyData',
-                'suretyDetail',
-                'contractId',
-                'sureties',
-                'vehicles',
+                'clients',
                 'conditions',
-                'insuranceCompanyId',
                 'selectedConditions'
-                ]),
-             listObject() {
-                var listObj = {};
+            ]),
+            listObject() {
+                let listObj = {};
                 listObj.headers = ['referenceCode','title','text'];
                 listObj.values = this.selectedConditions;
                 return listObj;
@@ -142,19 +102,16 @@ All of the fields for insurance input for the insurance form
         },
         methods: {
             ...mapActions([
-                'fetchSureties',
-                'fetchVehicles',
                 'fetchConditions',
                 'fetchCondition',
                 'fetchClientsBy',
-                ]),
+            ]),
             ...mapMutations([
                 'setConditions',
                 'setCondition',
-                'setSelectedConditions',
                 'addSelectedCondition',
                 'clearSelectedConditions'
-                ]),
+            ]),
             pushCondition(){
                 // fetch info for selected special condition
                 this.fetchCondition({id: this.selectedCondition.id}).then(condition => {
@@ -174,31 +131,28 @@ All of the fields for insurance input for the insurance form
                 // hide modal
                 this.showModal=false
                 this.object.specialConditions = this.removeSpecialCondition(this.selectedvalue,this.object.specialConditions)
-                console.log(this.object)
             },
             removeSpecialCondition : function(id,arr){
-              console.log('removing '+id+' on '+arr)
-                  for(let i=0; i<arr.length; i++){
-                      if(arr[i].id === id){
-                          let newArr = arr.filter(obj => obj.id !== id)
-                          this.selectedConditions.splice(i, 1);
-                          return newArr
-                      }
-                  }
+                for(let i=0; i<arr.length; i++){
+                    if(arr[i].id === id){
+                        let newArr = arr.filter(obj => obj.id !== id)
+                        this.selectedConditions.splice(i, 1);
+                        return newArr
+                    }
+                }
             }
         },
         created(){
-          // set correct insurance company id 
-          this.object.insuranceCompany = this.insuranceCompanyId
-          // clear previous storage for selected conditions
-          this.clearSelectedConditions()
-          // Fetch all special conditions
-          this.fetchConditions()
-          // get all insurance companies
-          this.fetchClientsBy({filters: {type: clientTypes.INSURANCE_COMPANY.type}}).then(() => {
-          })
-          // bind specialConditions to seleced conditions
-          this.object.specialConditions = this.selectedConditions
+            // set correct insurance company id
+            this.object.insuranceCompany = this.insuranceCompanyId
+            // clear previous storage for selected conditions
+            this.clearSelectedConditions()
+            // Fetch all special conditions
+            this.fetchConditions()
+            // get all insurance companies
+            this.fetchClientsBy({filters: {type: clientTypes.INSURANCE_COMPANY.type}})
+            // bind specialConditions to seleced conditions
+            this.object.specialConditions = this.selectedConditions
         }
     }
 </script>

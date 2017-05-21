@@ -75,7 +75,6 @@ Vue.filter('capitalize', function(value){
 
 router.beforeEach((to, from, next) => {
     //This variable must be false at the start of a page!
-    store.commit('setLoading', false)
     if(to.name === 'login'){
         next()
     }
