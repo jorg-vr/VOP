@@ -33,11 +33,11 @@ export default {
     },
 
     /**
-     * This function does a GET request to the specified location and returns the body
-     * @param location: The location of the objects
+     * This function does a GET request to the specified location
+     * @param location: The location of the the get request
      * @returns {Promise}
      */
-    getObjectsRequestBody(location){
+    getRequest(location){
         return new Promise((resolve, reject) => {
             Vue.http.get(location).then(response => {
                 resolve(response)

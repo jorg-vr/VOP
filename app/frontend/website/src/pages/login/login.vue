@@ -41,8 +41,8 @@ TODO: document this page.
         data() {
             return {
                 credentials:{
-                    login:'patrick.oostvogels@solvas.be',
-                    password:'1h8xE660mn'
+                    login:'',
+                    password:''
                 },
                 showError: false,
                 loading: false
@@ -74,7 +74,7 @@ TODO: document this page.
                     this.authenticate(this.credentials).then(() => {
                         // Succes, return to home
                         if(this.nextRoute.path !== null){
-                            this.$router.push({name: this.nextRoute.name, params: this.nextRoute.params})
+                            this.$router.push(this.nextRoute.path)
                         }
                         else {
                             this.$router.push({name: 'homeClient'})
@@ -146,7 +146,7 @@ TODO: document this page.
         color: white;
         background-color: #304052;
         border:none;
-       
+
     }
 
 
