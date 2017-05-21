@@ -4,7 +4,6 @@ import controller.exceptions.UnAuthorizedException;
 import controller.insurance.CommissionContainerController;
 import dao.exceptions.ConstraintViolationException;
 import dao.exceptions.DataAccessException;
-import dao.exceptions.ObjectNotFoundException;
 import dao.interfaces.DAOManager;
 import model.account.Function;
 import model.account.Resource;
@@ -32,7 +31,8 @@ public class CustomerController extends CommissionContainerController<Customer> 
     }
 
     @Override
-    public Customer create(Customer customer) throws DataAccessException, UnAuthorizedException, ConstraintViolationException {
+    public Customer create(Customer newCustomer) throws DataAccessException, UnAuthorizedException, ConstraintViolationException {
+        Customer customer = newCustomer;
         customer = super.create(customer);
         Invoice invoice = new Invoice();
         invoice.setPayer(customer);

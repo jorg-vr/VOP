@@ -54,7 +54,7 @@ public class InvoicePdf extends Pdf {
 
         // Add the logo
         try {
-            Image img = Image.getInstance(ClassLoader.getSystemResource("solvas_logo.png"));
+            Image img = Image.getInstance(getClass().getClassLoader().getSystemResource("solvas_logo.png"));
             img.scaleAbsolute(150f, 150f);
             document.add(img);
         } catch (IOException e) {
