@@ -6,6 +6,7 @@ import model.identity.Company;
 import model.insurance.VehicleInsurance;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * DAO for the bean Invoice
@@ -20,26 +21,21 @@ public interface InvoiceDAO extends DAO<Invoice> {
      */
     Filter<Invoice> byPayer(Company payer);
 
-    /**
-     * Returns a Filter to use in ListFiltered in this class, which returns all invoices the given beneficiary has.
-     * @param beneficiary the beneficiary
-     * @return a useable Filter for listFiltered
-     */
-    Filter<Invoice> byBeneficiary(Company beneficiary);
+
 
     /**
      * Returns a Filter to use in ListFiltered in this class, which returns all invoices starting before the given date.
      * @param date the date
      * @return a useable Filter for listFiltered
      */
-    Filter<Invoice> startsBefore(LocalDate date);
+    Filter<Invoice> startsBefore(LocalDateTime date);
 
     /**
      * Returns a Filter to use in ListFiltered in this class, which returns all invoices ending after the given date.
      * @param date the date
      * @return a useable Filter for listFiltered
      */
-    Filter<Invoice> endsAfter(LocalDate date);
+    Filter<Invoice> endsAfter(LocalDateTime date);
 
     /**
      * Returns a Filter to use in ListFiltered in this class, which returns all invoices that are paid.
