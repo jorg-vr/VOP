@@ -8,8 +8,10 @@ import model.billing.VehicleInvoice;
 import model.identity.Address;
 import model.identity.Company;
 import model.identity.Periodicity;
+import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -54,7 +56,8 @@ public class InvoicePdf extends Pdf {
 
         // Add the logo
         try {
-            Image img = Image.getInstance(getClass().getClassLoader().getSystemResource("solvas_logo.png"));
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("solvas_logo.png");
+            Image img = Image.getInstance(IOUtils.toByteArray(inputStream));
             img.scaleAbsolute(150f, 150f);
             document.add(img);
         } catch (IOException e) {
