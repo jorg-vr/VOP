@@ -251,7 +251,7 @@ public class RealDataDatabaseFiller {
             insurance.setInsuredValue(new Random().nextInt(insuredMaximum - insuredMinimum) + insuredMinimum);
             insurance.setVehicle(vehicle);
             insurance.setStartDate(LocalDateTime.now().minusMonths(10));
-            insurance.setStartDate(LocalDateTime.now().plusMonths(10));
+            insurance.setEndDate(LocalDateTime.now().plusMonths(10));
             controllerManager.getVehicleInsuranceController().create(insurance);
         }
     }
