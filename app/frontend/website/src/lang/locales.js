@@ -611,7 +611,7 @@ export default
             premium: 'premie',
             premiumEuro: 'premie',
             premiumPercentage: 'premie percentage',
-            coverage: 'dekkingsclausules',
+            coverage: 'bijzondere voorwaarden',
             exceptions: 'vrijstellingen',
             suretyType: 'type',
             suretyTypeTranslation:'waarborg',
