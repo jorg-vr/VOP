@@ -148,8 +148,8 @@
                                     vehicles[i].totalCost=vehicles[i].totalCost+vi[i][j].cost;
                                     vehicles[i].totalTax=vehicles[i].totalTax+vi[i][j].tax;
                                 }
-                                vehicles[i].sureties=vehicles[i].sureties.substring(0,vehicles[i].sureties-2);
                             }
+                            vehicles[i].sureties=vehicles[i].sureties.substring(0,vehicles[i].sureties.length-2);
                             this.fleet.totalCost=this.fleet.totalCost+vehicles[i].totalCost;
                             this.fleet.totalTax=this.fleet.totalTax+vehicles[i].totalTax;
                         }
