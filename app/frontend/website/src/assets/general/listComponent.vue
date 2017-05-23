@@ -21,10 +21,10 @@
             </tbody>
         </table>
         <ul class="pager" v-if="pager">
-            <li><a class="btn btn-link" @click="$emit('first')">First</a></li>
-            <li><a class="btn btn-link" @click="$emit('previous')">Previous</a></li>
-            <li><a class="btn btn-link" @click="$emit('next')">Next</a></li>
-            <li><a class="btn btn-link" @click="$emit('last')">Last</a></li>
+            <li><a class="btn btn-link" @click="$emit('first')">Eerste</a></li>
+            <li><a class="btn btn-link" @click="$emit('previous')">Vorige</a></li>
+            <li><a class="btn btn-link" @click="$emit('next')">Volgende</a></li>
+            <li><a class="btn btn-link" @click="$emit('last')">Laatste</a></li>
         </ul>
         <!-- Confirmation Modal -->
         <confirm-modal v-show="showModal" 
