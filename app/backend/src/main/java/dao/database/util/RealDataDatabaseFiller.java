@@ -34,7 +34,7 @@ public class RealDataDatabaseFiller {
 
 
     public static void main(String[] args) throws DataAccessException {
-        ProductionProvider.initializeProvider("localtest");
+        ProductionProvider.initializeProvider("production");
         try (DAOProvider provider = ProductionProvider.getInstance()) {
             RealDataDatabaseFiller filler = new RealDataDatabaseFiller();
             filler.initVehicleTypes(provider);
@@ -204,7 +204,9 @@ public class RealDataDatabaseFiller {
                 for (Contract contract : customer.getContracts()) {
                     for (Fleet fleet : customer.getFleets()) {
                         for (Vehicle vehicle : fleet.getVehicles()) {
-                            initVehicleInsurance(user, function, contract, getRandomSurety(contract.getCompany().getSureties()), vehicle);
+                            for(Surety surety: getRandomSureties(contract.getCompany().getSureties())) {
+                                initVehicleInsurance(user, function, contract, surety, vehicle);
+                            }
                         }
                     }
                 }
@@ -221,10 +223,19 @@ public class RealDataDatabaseFiller {
         }
     }
 
-    private Surety getRandomSurety(Collection<Surety> collection) {
+    private Collection<Surety> getRandomSureties(Collection<Surety> collection) {
         Random rnd = new Random();
-        int i = rnd.nextInt(collection.size());
-        return collection.toArray(new Surety[collection.size()])[i];
+        Collection<Surety> sureties = new ArrayList<>();
+        int number = 1+rnd.nextInt(collection.size());
+        Surety[] array =  collection.toArray(new Surety[collection.size()]);
+        for(int i =0;i<number;i++){
+            int index = rnd.nextInt(collection.size());
+            while(sureties.contains(array[index])){
+                index = rnd.nextInt(collection.size());
+            }
+            sureties.add(array[index]);
+        }
+        return sureties;
     }
 
     private void initVehicleInsurance(User user, Function function, Contract contract, Surety surety, Vehicle vehicle) throws DataAccessException, UnAuthorizedException, ConstraintViolationException, ObjectNotFoundException {
@@ -240,7 +251,7 @@ public class RealDataDatabaseFiller {
             insurance.setInsuredValue(new Random().nextInt(insuredMaximum - insuredMinimum) + insuredMinimum);
             insurance.setVehicle(vehicle);
             insurance.setStartDate(LocalDateTime.now().minusMonths(10));
-            insurance.setStartDate(LocalDateTime.now().plusMonths(10));
+            insurance.setEndDate(LocalDateTime.now().plusMonths(10));
             controllerManager.getVehicleInsuranceController().create(insurance);
         }
     }
@@ -436,9 +447,15 @@ public class RealDataDatabaseFiller {
             manager.getUserDAO().create(userJorg);
             manager.getFunctionDAO().create(functionJorg);
             Fleet fleetJorg = createFleet("West Vlaanderen", customerJorg, addressJorg);
+            Fleet fleet2Jorg = createFleet("Meetjesland",customerJorg, addressJorg);
+            Fleet fleet3Jorg = createFleet("Waasland",customerJorg,addressJorg);
+
             controllerManager.getFleetController().create(fleetJorg);
-            customerJorg.setFleets(new ArrayList<>(Arrays.asList(new Fleet[]{fleetJorg})));
+            controllerManager.getFleetController().create(fleet2Jorg);
+            controllerManager.getFleetController().create(fleet3Jorg);
+            customerJorg.setFleets(new ArrayList<>(Arrays.asList(new Fleet[]{fleetJorg,fleet2Jorg,fleet3Jorg})));
             createVehiclesJorg(fleetJorg, manager, controllerManager);
+            createVehicles2Jorg(fleet2Jorg,manager,controllerManager);
             return customerJorg;
         }
     }
@@ -494,6 +511,18 @@ public class RealDataDatabaseFiller {
         createVehicleToDatabase(fleetJorg, "5JPUNZCVSF62VFM6Z", 10000, "DAF", "XF 610", "HSA-444", manager, controllerManager, VEHICLETYPE_2);
         createVehicleToDatabase(fleetJorg, "DWBYG9KH8NRAZHGP3", 3300, "DAF", "CK Euro 6", "JUX-1-PP", manager, controllerManager, VEHICLETYPE_2);
     }
+
+    private void createVehicles2Jorg(Fleet fleetJorg, DAOManager manager, ControllerManager controllerManager) {
+        createVehicleToDatabase(fleetJorg, "WWDRSG2USGRZHT3GK", 64000, "Fiat", "Punto", "1-KKK-OK", manager, controllerManager, VEHICLETYPE_1);
+        createVehicleToDatabase(fleetJorg, "6LPK7YVMKPT9000NV", 8700, "Audi", "A1", "1-BNA-861", manager, controllerManager, VEHICLETYPE_1);
+
+        createVehicleToDatabase(fleetJorg, "WHR3B86S8W934MVZ7", 9600, "MAN", "TGS", "LKF-191", manager, controllerManager, VEHICLETYPE_2);
+
+        createVehicleToDatabase(fleetJorg, "5JPUNZCVSF62LFM6Z", 14000, "DAF", "XF 610", "HBQ-010", manager, controllerManager, VEHICLETYPE_3);
+
+        createVehicleToDatabase(fleetJorg, "DWBYG9KH66NRAZHG3", 59000, "DAF", "CK Euro 6", "JKK-1PP", manager, controllerManager, VEHICLETYPE_4);
+    }
+
 
     private void createVehiclesBillie(Fleet fleetSam, DAOManager manager, ControllerManager controllerManager) {
         createVehicleToDatabase(fleetSam, "W6846L45MWJ60R99V", 17000, "Renault", "Clio", "18-12-C1", manager, controllerManager, VEHICLETYPE_1);
