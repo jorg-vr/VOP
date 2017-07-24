@@ -225,8 +225,8 @@ public class Customer extends Company implements java.io.Serializable, Commissio
         customer.setName(getName());
         customer.setCompanyType(getCompanyType());
         customer.setAddress((Address)getAddress().copy());
-        customer.setPaymentPeriod(getPaymentPeriod());
-        customer.setFacturationPeriod(getFacturationPeriod());
+        customer.setStatementPeriod(getStatementPeriod());
+        customer.setInvoicingPeriod(getInvoicingPeriod());
         customer.setBtwNumber(getBtwNumber());
         customer.setUuid(getUuid());
         customer.setPhoneNumber(getPhoneNumber());

@@ -22,6 +22,7 @@ import java.util.Collection;
 
 /**
  * Created by jorg on 4/18/17.
+ * Opmerking: statementPeriod = Afrekeningsperiode & invoicingPeriod = facturatieperiode
  */
 public class InvoiceController extends AbstractController<Invoice> {
 
@@ -36,17 +37,16 @@ public class InvoiceController extends AbstractController<Invoice> {
 
     public void endStatement(Customer customer) throws DataAccessException, ConstraintViolationException, ObjectNotFoundException {
 
-        for (int i = 0; i < customer.getPaymentPeriod().getTime(); i += customer.getFacturationPeriod().getTime()) {
+        for (int i = 0; i < customer.getStatementPeriod().getTime(); i += customer.getInvoicingPeriod().getTime()) {
             Invoice invoice = new Invoice();
-
             invoice.setType(InvoiceType.BILLING);
             invoice.setPayer(customer);
             invoice.setStartDate(LocalDateTime.now().plusMonths(i));
             invoice.setEndDate(LocalDateTime.now().
-                    plusMonths(i + customer.getFacturationPeriod().getTime()).
+                    plusMonths(i + customer.getInvoicingPeriod().getTime()).
                     minusDays(1));
             invoice.setPaid(false);
-            invoice.setVehicleInvoices(createVehicleInvoices(customer, customer.getFacturationPeriod().getTime()));
+            invoice.setVehicleInvoices(createVehicleInvoices(customer, customer.getInvoicingPeriod().getTime()));
             invoiceDAO.create(invoice);
         }
 
@@ -58,7 +58,7 @@ public class InvoiceController extends AbstractController<Invoice> {
         customer.setCurrentStatement(statement);
 
         statement.setStartDate(LocalDateTime.now());
-        statement.setEndDate(LocalDateTime.now().plusMonths(customer.getPaymentPeriod().getTime()).minusDays(1));
+        statement.setEndDate(LocalDateTime.now().plusMonths(customer.getStatementPeriod().getTime()).minusDays(1));
         invoiceDAO.create(statement);
         manager.getCustomerDAO().update(customer);
     }

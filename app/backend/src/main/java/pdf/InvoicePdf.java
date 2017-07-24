@@ -108,7 +108,7 @@ public class InvoicePdf extends Pdf {
         table.addCell(new InvoiceCell("Van", startDate.format(formatter), 2, 1));
         table.addCell(new InvoiceCell("Tot", endDate.format(formatter), 2, 1));
 
-        Periodicity periodicity = payer.getPaymentPeriod();
+        Periodicity periodicity = payer.getStatementPeriod();
         table.addCell(new InvoiceCell("Periodiciteit", periodicity.getDutchTranslation(), 2, 1));
 
         int cost = invoice.calculateCost();
