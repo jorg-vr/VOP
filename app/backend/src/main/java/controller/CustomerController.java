@@ -38,7 +38,7 @@ public class CustomerController extends CommissionContainerController<Customer> 
         invoice.setPayer(customer);
         invoice.setType(InvoiceType.STATEMENT);
         invoice.setStartDate(LocalDateTime.now());
-        invoice.setEndDate(LocalDateTime.now().plusMonths(customer.getPaymentPeriod().getTime()));
+        invoice.setEndDate(LocalDateTime.now().plusMonths(customer.getStatementPeriod().getTime()));
         invoice.setPaid(false);
         manager.getInvoiceDao().create(invoice);
 

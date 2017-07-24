@@ -46,11 +46,11 @@ public class RESTCompany extends RESTAbstractModel<Company> {
         if (company.getCompanyType() != null) {
             this.type = company.getCompanyType().toString();
         }
-        if (company.getPaymentPeriod() != null) {
-            this.paymentPeriod = company.getPaymentPeriod().getTime();
+        if (company.getStatementPeriod() != null) {
+            this.paymentPeriod = company.getStatementPeriod().getTime();
         }
-        if (company.getFacturationPeriod() != null) {
-            this.facturationPeriod = company.getFacturationPeriod().getTime();
+        if (company.getInvoicingPeriod() != null) {
+            this.facturationPeriod = company.getInvoicingPeriod().getTime();
         }
     }
 
@@ -79,12 +79,12 @@ public class RESTCompany extends RESTAbstractModel<Company> {
         if (payment == null) {
             violations.put("paymentPeriod", ErrorCode.INVALID.toString());
         }
-        company.setPaymentPeriod(payment);
+        company.setStatementPeriod(payment);
         Periodicity facturation = Periodicity.fromTime(facturationPeriod);
         if (facturation == null) {
             violations.put("facturationPeriod", ErrorCode.INVALID.toString());
         }
-        company.setFacturationPeriod(facturation);
+        company.setInvoicingPeriod(facturation);
         if (violations.size() > 0) {
             throw new ConstraintViolationException(violations);
         }

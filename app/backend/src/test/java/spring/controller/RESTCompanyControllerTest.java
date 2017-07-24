@@ -70,8 +70,8 @@ public class RESTCompanyControllerTest {
                 c.setName(NAMES[i]);
                 c.setPhoneNumber("04789456123");
                 c.setBtwNumber("123456789");
-                c.setFacturationPeriod(Periodicity.HALF_YEARLY);
-                c.setPaymentPeriod(Periodicity.HALF_YEARLY);
+                c.setInvoicingPeriod(Periodicity.HALF_YEARLY);
+                c.setStatementPeriod(Periodicity.HALF_YEARLY);
                 dao.create(c);
                 companies.add(c);
             }

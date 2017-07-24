@@ -36,7 +36,7 @@ public class PdfTest {
         Contract contract = new Contract();
         InsuranceCompany insuranceCompany = new InsuranceCompany();
         insuranceCompany.setName("Freddy en dochters");
-        insuranceCompany.setPaymentPeriod(Periodicity.MONTHLY);
+        insuranceCompany.setStatementPeriod(Periodicity.MONTHLY);
         insuranceCompany.setAddress(new Address("street", "12", "town", "postalCode", "country"));
         Customer customer = new Customer();
         customer.setAddress(new Address("street", "12", "town", "postalCode", "country"));
@@ -74,7 +74,7 @@ public class PdfTest {
         invoice.setType(InvoiceType.BILLING);
         Customer customer = new Customer();
         customer.setName("Freddy en dochters");
-        customer.setPaymentPeriod(Periodicity.MONTHLY);
+        customer.setStatementPeriod(Periodicity.MONTHLY);
         customer.setAddress(new Address("street", "12", "town", "postalCode", "country"));
         invoice.setPayer(customer);
         Collection<VehicleInvoice> vehicleInvoices = new ArrayList<>();
