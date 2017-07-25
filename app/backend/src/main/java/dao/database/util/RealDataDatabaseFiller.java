@@ -34,7 +34,7 @@ public class RealDataDatabaseFiller {
 
 
     public static void main(String[] args) throws DataAccessException {
-        ProductionProvider.initializeProvider("production");
+        ProductionProvider.initializeProvider("inmemtest");
         try (DAOProvider provider = ProductionProvider.getInstance()) {
             RealDataDatabaseFiller filler = new RealDataDatabaseFiller();
             filler.initVehicleTypes(provider);
