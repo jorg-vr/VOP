@@ -86,7 +86,8 @@ public class VehicleInsurance implements EditableObject {
     }
 
     /**
-     * Calculates the cost of this insurance in eurocents
+     * Calculates the netto-premium of this insurance in eurocents
+     * netto-premium = risk-premium + commission
      *
      * @return the cost of this insurance in eurocents
      */
@@ -103,7 +104,7 @@ public class VehicleInsurance implements EditableObject {
      * @return the tax of this insurance in eurocents
      */
     public int calculateTax() {
-        int premium = surety.calculatePremium(insuredValue);
+        int premium = calculateCost();
         return (int) Math.round(premium * vehicle.getType().getTax(surety.getSuretyType()));
     }
 
