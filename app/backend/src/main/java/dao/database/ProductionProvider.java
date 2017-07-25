@@ -61,6 +61,8 @@ public class ProductionProvider implements DAOProvider {
             provider = new ProductionProvider("hibernate/test.cfg.xml");
         } else if (environment.equals("unittest")) {
             provider = new ProductionProvider("hibernate/test-in-memory.cfg.xml");
+        } else if (environment.equals("inmemtest")) {
+            provider = new ProductionProvider("hibernate/in-memory-local-test.cfg.xml");
         }
 
     }

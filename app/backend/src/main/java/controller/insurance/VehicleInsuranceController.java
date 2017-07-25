@@ -75,16 +75,20 @@ public class VehicleInsuranceController extends AbstractController<VehicleInsura
         LocalDate date = vehicleInsurance.getStartDate().toLocalDate();
         Invoice currentStatement = null;
         try {
-            if(vehicleInsurance.getVehicle().getFleet().getOwner().getCurrentStatement()==null){
+            currentStatement = vehicleInsurance.getVehicle().getFleet().getOwner().getCurrentStatement();
+            // if there is no current statement for the Insurance, just create and return
+            if (currentStatement == null) {
                 return super.create(vehicleInsurance);
             }
-            currentStatement = manager.getInvoiceDao().get(vehicleInsurance.getVehicle().getFleet().getOwner().getCurrentStatement().getUuid());
+            //If the given Insurance has a non-empty currentStatement field, continue further to adjust the statement accordingly
+            currentStatement = manager.getInvoiceDao().get(currentStatement.getUuid());
         } catch (ObjectNotFoundException e) {
             return super.create(insurance);
         }
 
-        if (!date.isAfter(currentStatement.getEndDate().toLocalDate())) {
-            //Add as Correction
+
+        if (!date.isAfter(currentStatement.getEndDate().toLocalDate())) {// if insurance start-date comes before the end of the current statement
+            //Add as Correction if the start-date of the Insurance overlaps with the current statement
             if (date.isBefore(LocalDate.now())) {
                 Period period = Period.between(date, LocalDate.now());
                 int months = period.getMonths();
@@ -189,7 +193,7 @@ public class VehicleInsuranceController extends AbstractController<VehicleInsura
 
     public Collection<VehicleInsurance> getFiltered(Contract contract, Vehicle vehicle) throws DataAccessException, UnAuthorizedException {
 
-        return getAll(dao.byVehicle(vehicle),dao.byContract(contract));
+        return getAll(dao.byVehicle(vehicle), dao.byContract(contract));
 
     }
 }

@@ -33,11 +33,14 @@ public class CustomerController extends CommissionContainerController<Customer> 
     @Override
     public Customer create(Customer newCustomer) throws DataAccessException, UnAuthorizedException, ConstraintViolationException {
         Customer customer = newCustomer;
-        customer = super.create(customer);
+        customer = super.create(customer);// create the customer
+
+        //Create the the first active statement, starting at the moment the customer is created
         Invoice invoice = new Invoice();
         invoice.setPayer(customer);
         invoice.setType(InvoiceType.STATEMENT);
         invoice.setStartDate(LocalDateTime.now());
+        //TODO: make starting statement end at the end of  month instead of potentially the middle of a month (ex. statement of 3 months starts on juli 15th -> ends on september 30th instead of oktober 15th)
         invoice.setEndDate(LocalDateTime.now().plusMonths(customer.getStatementPeriod().getTime()));
         invoice.setPaid(false);
         manager.getInvoiceDao().create(invoice);
